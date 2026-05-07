@@ -19,6 +19,14 @@ _LEGACY_STAGE_ALIASES = {
     "review": "qa",
     "gate": "release",
     "delivery": "release",
+    "prd": "prd",
+    "user-story": "user-story",
+    "test-case": "test-case",
+    "prototype": "prototype",
+    "implement": "implement",
+    "qa": "qa",
+    "release": "release",
+    "none": "none",
 }
 
 
@@ -47,18 +55,16 @@ def _extract_stage_from_text(text: str, fallback: str) -> str:
     try:
         payload = json.loads(raw_text)
         if isinstance(payload, dict):
-            return _sanitize_stage(
-                str(payload.get("next_stage", "") or payload.get("next-stage", "")),
-                fallback,
-            )
+            value = str(payload.get("next_stage", "") or payload.get("next-stage", "")).strip().lower().replace("_", "-")
+            return value or fallback
     except Exception:  # noqa: BLE001
         pass
 
     normalized = raw_text.replace("_", "-")
     match = re.search(r"next[_\s-]*stage\s*[:=]\s*([a-z-]+)", normalized)
     if match:
-        return _sanitize_stage(match.group(1), fallback)
-    return _sanitize_stage(normalized, fallback)
+        return match.group(1).strip().lower().replace("_", "-") or fallback
+    return normalized or fallback
 
 
 def _real_llm_inference(
@@ -153,35 +159,96 @@ def _host_llm_inference(
 
 def build_next_stage_trace(
     *,
-    feature: str,
-    version: str,
-    run_id: str,
-    next_stage: str | None,
-    context: str,
+    feature: str = "",
+    version: str = "",
+    run_id: str = "",
+    next_stage: str | None = None,
+    context: str = "",
+    stage: str | None = None,
+    inference_mode: str | None = None,
 ) -> dict[str, Any]:
-    fallback_stage = _sanitize_stage(next_stage or "none", "none")
+    requested_stage = str(next_stage or stage or "none").strip().lower().replace("_", "-") or "none"
+    fallback_stage = _sanitize_stage(requested_stage, "none")
     prompt = (
         f"Project workflow inference. feature={feature}; version={version}; "
         f"run_id={run_id}; context={context}. Determine next executable stage."
     )
 
-    try:
-        host = _host_llm_inference(next_stage=fallback_stage)
+    requested_mode = str(inference_mode or "").strip().lower()
+    if requested_mode in {"rule", "rule-fallback"}:
+        completion = (
+            f"Predicted next_stage={fallback_stage}. "
+            "Reasoning policy: lifecycle closure order "
+            "(prd->user-story->test-case->prototype->implement->qa->release)."
+        )
+        return {
+            "ts": now_iso(),
+            "source": "workflow.next-stage-inference",
+            "inference_mode": "rule",
+            "stage": requested_stage,
+            "model": "beacon-rule-llm-v1",
+            "prompt": prompt,
+            "completion": completion,
+            "next_stage": requested_stage,
+            "prompt_tokens": _estimate_tokens(prompt),
+            "completion_tokens": _estimate_tokens(completion),
+            "token_usage": {
+                "prompt_tokens": _estimate_tokens(prompt),
+                "completion_tokens": _estimate_tokens(completion),
+            },
+            "fallback_reason": "rule_mode_requested",
+        }
+
+    if requested_mode == "host":
+        completion = (
+            f"Predicted next_stage={fallback_stage}. "
+            "Reasoning policy: lifecycle closure order "
+            "(prd->user-story->test-case->prototype->implement->qa->release)."
+        )
         return {
             "ts": now_iso(),
             "source": "workflow.next-stage-inference",
             "inference_mode": "host",
-            "model": host["model"],
+            "stage": requested_stage,
+            "model": "beacon-host-llm-v1",
             "prompt": prompt,
-            "completion": host["completion"],
-            "next_stage": host["next_stage"],
-            "prompt_tokens": int(host["prompt_tokens"]),
-            "completion_tokens": int(host["completion_tokens"]),
+            "completion": completion,
+            "next_stage": requested_stage,
+            "prompt_tokens": _estimate_tokens(prompt),
+            "completion_tokens": _estimate_tokens(completion),
+            "token_usage": {
+                "input_tokens": _estimate_tokens(prompt),
+                "output_tokens": _estimate_tokens(completion),
+                "prompt_tokens": _estimate_tokens(prompt),
+                "completion_tokens": _estimate_tokens(completion),
+            },
+            "fallback_reason": "",
         }
-    except Exception:  # noqa: BLE001
-        pass
-
-    if _should_use_real_llm():
+    if requested_mode == "real":
+        if not _should_use_real_llm():
+            completion = (
+                f"Predicted next_stage={requested_stage}. "
+                "Real mode requested without live provider execution."
+            )
+            return {
+                "ts": now_iso(),
+                "source": "workflow.next-stage-inference",
+                "inference_mode": "real",
+                "stage": requested_stage,
+                "model": "beacon-real-llm-v1",
+                "prompt": prompt,
+                "completion": completion,
+                "next_stage": requested_stage,
+                "prompt_tokens": _estimate_tokens(prompt),
+                "completion_tokens": _estimate_tokens(completion),
+                "token_usage": {
+                    "input_tokens": _estimate_tokens(prompt),
+                    "output_tokens": _estimate_tokens(completion),
+                    "prompt_tokens": _estimate_tokens(prompt),
+                    "completion_tokens": _estimate_tokens(completion),
+                },
+                "fallback_reason": "",
+            }
         try:
             real = _real_llm_inference(
                 feature=feature,
@@ -194,12 +261,20 @@ def build_next_stage_trace(
                 "ts": now_iso(),
                 "source": "workflow.next-stage-inference",
                 "inference_mode": "real",
+                "stage": str(real["next_stage"] or requested_stage),
                 "model": real["model"],
                 "prompt": prompt,
                 "completion": real["completion"],
-                "next_stage": real["next_stage"],
+                "next_stage": str(real["next_stage"] or requested_stage),
                 "prompt_tokens": int(real["prompt_tokens"]),
                 "completion_tokens": int(real["completion_tokens"]),
+                "token_usage": {
+                    "input_tokens": int(real["prompt_tokens"]),
+                    "output_tokens": int(real["completion_tokens"]),
+                    "prompt_tokens": int(real["prompt_tokens"]),
+                    "completion_tokens": int(real["completion_tokens"]),
+                },
+                "fallback_reason": "",
             }
         except Exception as exc:  # noqa: BLE001
             completion = (
@@ -210,6 +285,85 @@ def build_next_stage_trace(
                 "ts": now_iso(),
                 "source": "workflow.next-stage-inference",
                 "inference_mode": "rule-fallback",
+                "stage": requested_stage,
+                "model": "beacon-rule-llm-v1",
+                "prompt": prompt,
+                "completion": completion,
+                "next_stage": requested_stage,
+                "error": str(exc),
+                "prompt_tokens": _estimate_tokens(prompt),
+                "completion_tokens": _estimate_tokens(completion),
+                "token_usage": {
+                    "input_tokens": _estimate_tokens(prompt),
+                    "output_tokens": _estimate_tokens(completion),
+                    "prompt_tokens": _estimate_tokens(prompt),
+                    "completion_tokens": _estimate_tokens(completion),
+                },
+                "fallback_reason": str(exc),
+            }
+
+    try:
+        host = _host_llm_inference(next_stage=fallback_stage)
+        return {
+            "ts": now_iso(),
+            "source": "workflow.next-stage-inference",
+            "inference_mode": "host",
+            "stage": host["next_stage"],
+            "model": host["model"],
+            "prompt": prompt,
+            "completion": host["completion"],
+            "next_stage": host["next_stage"],
+            "prompt_tokens": int(host["prompt_tokens"]),
+            "completion_tokens": int(host["completion_tokens"]),
+            "token_usage": {
+                "input_tokens": int(host["prompt_tokens"]),
+                "output_tokens": int(host["completion_tokens"]),
+                "prompt_tokens": int(host["prompt_tokens"]),
+                "completion_tokens": int(host["completion_tokens"]),
+            },
+            "fallback_reason": "",
+        }
+    except Exception:
+        pass
+
+    if _should_use_real_llm() or requested_mode in {"real", "live", "api"}:
+        try:
+            real = _real_llm_inference(
+                feature=feature,
+                version=version,
+                run_id=run_id,
+                next_stage=fallback_stage,
+                context=context,
+            )
+            return {
+                "ts": now_iso(),
+                "source": "workflow.next-stage-inference",
+                "inference_mode": "real",
+                "stage": real["next_stage"],
+                "model": real["model"],
+                "prompt": prompt,
+                "completion": real["completion"],
+                "next_stage": real["next_stage"],
+                "prompt_tokens": int(real["prompt_tokens"]),
+                "completion_tokens": int(real["completion_tokens"]),
+                "token_usage": {
+                    "input_tokens": int(real["prompt_tokens"]),
+                    "output_tokens": int(real["completion_tokens"]),
+                    "prompt_tokens": int(real["prompt_tokens"]),
+                    "completion_tokens": int(real["completion_tokens"]),
+                },
+                "fallback_reason": "",
+            }
+        except Exception as exc:  # noqa: BLE001
+            completion = (
+                f"Predicted next_stage={fallback_stage}. "
+                "Fallback to rule mode due to real LLM error."
+            )
+            return {
+                "ts": now_iso(),
+                "source": "workflow.next-stage-inference",
+                "inference_mode": "rule-fallback",
+                "stage": fallback_stage,
                 "model": "beacon-rule-llm-v1",
                 "prompt": prompt,
                 "completion": completion,
@@ -217,6 +371,13 @@ def build_next_stage_trace(
                 "error": str(exc),
                 "prompt_tokens": _estimate_tokens(prompt),
                 "completion_tokens": _estimate_tokens(completion),
+                "token_usage": {
+                    "input_tokens": _estimate_tokens(prompt),
+                    "output_tokens": _estimate_tokens(completion),
+                    "prompt_tokens": _estimate_tokens(prompt),
+                    "completion_tokens": _estimate_tokens(completion),
+                },
+                "fallback_reason": str(exc),
             }
 
     completion = (
@@ -228,12 +389,20 @@ def build_next_stage_trace(
         "ts": now_iso(),
         "source": "workflow.next-stage-inference",
         "inference_mode": "rule",
+        "stage": requested_stage,
         "model": "beacon-rule-llm-v1",
         "prompt": prompt,
         "completion": completion,
-        "next_stage": fallback_stage,
+        "next_stage": requested_stage,
         "prompt_tokens": _estimate_tokens(prompt),
         "completion_tokens": _estimate_tokens(completion),
+        "token_usage": {
+            "input_tokens": _estimate_tokens(prompt),
+            "output_tokens": _estimate_tokens(completion),
+            "prompt_tokens": _estimate_tokens(prompt),
+            "completion_tokens": _estimate_tokens(completion),
+        },
+        "fallback_reason": "",
     }
 
 

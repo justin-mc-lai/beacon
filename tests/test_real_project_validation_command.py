@@ -53,6 +53,21 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
     monkeypatch.setattr(report_module, "_git_status_lines", lambda _root: [])
     monkeypatch.setattr(
         report_module,
+        "build_acceptance_kit_projection",
+        lambda *_args, **_kwargs: {
+            "present": True,
+            "summary": {
+                "summary": "Contract Pass",
+                "verdict": "passed",
+                "failed_layers": [],
+                "all_layers_passed": True,
+            },
+            "links": [],
+            "reason_code": "",
+        },
+    )
+    monkeypatch.setattr(
+        report_module,
         "build_release_scorecard",
         lambda _root, version: {
             "version": version,
@@ -106,6 +121,7 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
     assert f"release check {version} --project-root {tmp_path} --json" in payload["executed_commands"]
     check_ids = {item["id"]: item["status"] for item in payload["latest_feature_overlay"]["checks"]}
     assert check_ids["acceptance_projection_transaction_dual_write"] == "pass"
+    assert check_ids["acceptance_kit_shared_proof_chain"] == "pass"
     assert check_ids["prototype_auto_template_downgrade_guard"] == "pass"
     assert check_ids["prompt_boundary_gate_release_convergence"] == "pass"
     assert check_ids["archive_governance_support_surface"] == "pass"

@@ -150,27 +150,49 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
 
     for raw_line in str(content or "").splitlines():
         stripped = raw_line.strip()
-        if not stripped.startswith("| TC-"):
-            continue
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
         if len(cells) < 6:
             continue
-        tc_id = cells[0]
-        if not tc_id.upper().startswith("TC-"):
+        first = cells[0].upper()
+        second = cells[1].upper()
+
+        if first.startswith("TC-"):
+            tc_id = first
+            story_id = story_id_from_tc_id(tc_id)
+            rows.append(
+                {
+                    "tc_id": tc_id,
+                    "story_id": story_id,
+                    "case_type": cells[1],
+                    "scenario": cells[2],
+                    "steps": cells[3],
+                    "expected_result": cells[4],
+                    "execution": cells[5],
+                    "source": source,
+                }
+            )
             continue
-        story_id = story_id_from_tc_id(tc_id)
-        rows.append(
-            {
-                "tc_id": tc_id.upper(),
-                "story_id": story_id,
-                "case_type": cells[1],
-                "scenario": cells[2],
-                "steps": cells[3],
-                "expected_result": cells[4],
-                "execution": cells[5],
-                "source": source,
-            }
-        )
+
+        if first.startswith("AC-") and second.startswith("TC-"):
+            tc_id = second
+            story_id = story_id_from_tc_id(tc_id)
+            rows.append(
+                {
+                    "ac_id": first,
+                    "tc_id": tc_id,
+                    "story_id": story_id,
+                    "case_type": cells[2],
+                    "scenario": cells[4],
+                    "steps": "",
+                    "expected_result": cells[4],
+                    "execution": cells[3],
+                    "explicit_layer": cells[2],
+                    "explicit_command": cells[3],
+                    "explicit_assertion": cells[4],
+                    "explicit_evidence_path": cells[5],
+                    "source": source,
+                }
+            )
     return rows
 
 

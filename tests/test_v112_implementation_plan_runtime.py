@@ -505,6 +505,21 @@ def test_v112_implement_run_and_status_should_surface_plan_progress(tmp_path: Pa
     assert status_payload["implementation_plan_progress"]["counts"]["completed"] == 2
 
 
+def test_v112_status_should_surface_v140_implementation_order(tmp_path: Path):
+    _seed_docs(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    status = _invoke(["status", "--project-root", str(tmp_path), "--version", "v1.4.0"])
+    assert status.exit_code == 0, status.stdout
+    status_payload = json.loads(status.stdout)
+    assert status_payload["implementation_order"]["ordered_feature_slugs"] == [
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ]
+
+
 def test_v112_writeback_should_update_plan_progress_and_verification_state(tmp_path: Path):
     _seed_docs(tmp_path)
     assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
@@ -535,6 +550,27 @@ def test_v112_writeback_should_update_plan_progress_and_verification_state(tmp_p
     progress = load_implementation_plan_progress(tmp_path, version=VERSION, feature=FEATURE)
     assert verify["implementation_plan"]["tasks"][1]["status"] == "blocked"
     assert "ITASK-002" in progress["blocked_task_ids"]
+
+
+def test_v112_verification_failure_should_block_best_effort_pending_task_when_mapping_is_missing(tmp_path: Path):
+    _seed_docs(tmp_path)
+    assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
+    assert _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION]).exit_code == 0
+
+    plan_before = load_implementation_plan(tmp_path, version=VERSION, feature=FEATURE)
+    assert plan_before["tasks"][0]["status"] == "planned"
+
+    result = record_verification_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-verify",
+        verified_item_ids=[],
+        failed_item_ids=["TEST-999"],
+        evidence_ref=[".beacon/auto-test-status.json"],
+    )
+    assert result["implementation_plan"]["tasks"][0]["status"] == "blocked"
+    assert result["implementation_plan"]["tasks"][0]["blocked_reason"] == "verification_failed"
 
 
 def test_v112_external_runner_task_ids_and_report_review_should_consume_plan_truth(tmp_path: Path):

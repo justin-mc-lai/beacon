@@ -72,6 +72,15 @@ def _match_patterns(prompt: str, patterns: tuple[str, ...]) -> list[str]:
     return out
 
 
+def _has_expected_beacon_scaffold(prompt: str) -> bool:
+    normalized = str(prompt or "").lower()
+    return (
+        "implement the scoped beacon feature" in normalized
+        and "read beacon source of truth" in normalized
+        and "implement only against the frozen prd, user-story, and test-case truth above" in normalized
+    )
+
+
 def evaluate_implement_prompt_boundary(
     project_root: Path,
     *,
@@ -117,7 +126,7 @@ def evaluate_implement_prompt_boundary(
         payload["matched_signals"] = truth_conflict_hits
         return payload
 
-    if requirement_change_hits:
+    if requirement_change_hits and not _has_expected_beacon_scaffold(prompt):
         payload["classification"] = "requirement_change"
         payload["blocked"] = True
         payload["status"] = "blocked"

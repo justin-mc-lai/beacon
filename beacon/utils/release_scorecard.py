@@ -21,6 +21,7 @@ from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.revision_state import load_revision_state
+from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
@@ -521,6 +522,9 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and qa_version_match
     )
     release_ready = legacy_release_ready
+    acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature) if feature else {}
+    acceptance_kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
+    acceptance_kit_pass = (not acceptance_kit) or bool(acceptance_kit_summary.get("all_layers_passed", False))
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
         release_ready = (
             gate_pass
@@ -533,6 +537,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and (exhaustiveness_pass or feature_scorecard_authoritative)
             and gate_version_match
             and qa_version_match
+            and acceptance_kit_pass
         )
     if project_runtime_feature_enabled(
         project_root,
@@ -555,7 +560,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and bool(change_documents.get("version_match", False))
             and bool(change_documents.get("includes_current_feature", False))
             and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
-        )
+            and acceptance_kit_pass
+    )
     if project_runtime_feature_enabled(
         project_root,
         "v1.3.9",
@@ -704,6 +710,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "revision_binding": revision_binding,
         "exhaustiveness": exhaustiveness if isinstance(exhaustiveness, dict) else {},
         "acceptance": acceptance,
+        "acceptance_kit": acceptance_kit,
         "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
@@ -753,6 +760,8 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     gate = payload.get("gate") if isinstance(payload.get("gate"), dict) else {}
     qa = payload.get("qa") if isinstance(payload.get("qa"), dict) else {}
     acceptance = payload.get("acceptance") if isinstance(payload.get("acceptance"), dict) else {}
+    acceptance_kit = payload.get("acceptance_kit") if isinstance(payload.get("acceptance_kit"), dict) else {}
+    acceptance_kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
     exhaustiveness = payload.get("exhaustiveness") if isinstance(payload.get("exhaustiveness"), dict) else {}
     feature_scorecard = payload.get("feature_qa_scorecard") if isinstance(payload.get("feature_qa_scorecard"), dict) else {}
     prototype_projection = payload.get("prototype_projection") if isinstance(payload.get("prototype_projection"), dict) else {}
@@ -783,6 +792,9 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "qa_project_profile_gate_status": str(qa.get("project_profile_gate_status") or "not_configured"),
         "acceptance_status": str(acceptance.get("status") or ""),
         "acceptance_source": str(acceptance.get("source") or ""),
+        "acceptance_kit_summary": str(acceptance_kit_summary.get("summary") or ""),
+        "acceptance_kit_verdict": str(acceptance_kit_summary.get("verdict") or ""),
+        "acceptance_kit_failed_layers": list(acceptance_kit_summary.get("failed_layers") or []),
         "exhaustiveness_status": str(exhaustiveness.get("status") or ""),
         "exhaustiveness_score": exhaustiveness.get("score"),
         "exhaustiveness_threshold": exhaustiveness.get("threshold"),

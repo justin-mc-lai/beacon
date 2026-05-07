@@ -21,7 +21,8 @@ from beacon.utils.semantic_runtime import (
     load_host_response_json,
     normalize_requested_mode,
 )
-from beacon.utils.story_state import feature_slug, load_story_state, save_story_state, sync_story_state_from_docs
+from beacon.utils.runtime import write_json
+from beacon.utils.story_state import feature_slug, load_story_state, machine_story_path, save_story_state, sync_story_state_from_docs
 
 app = typer.Typer(name="user-story", help="Generate user stories")
 
@@ -227,11 +228,12 @@ def generate_user_story(topic: str, project_root: Path, *, semantic_payload: Opt
 @app.command()
 def create(
     feature: str = typer.Argument(..., help="Feature name"),
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
     mode: str = typer.Option("auto", "--mode", help="Compile mode: auto/llm/rule"),
     model: str = typer.Option("beacon-user-story-compiler", "--model", help="Compiler model label for evidence"),
+    semantic: bool = typer.Option(False, "--semantic", help="Legacy compatibility flag for semantic compilation."),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Create a user story"""
@@ -255,9 +257,15 @@ def create(
         "user-story",
         disable_env="BEACON_USER_STORY_DISABLE_LLM",
     )
+    slug = feature_slug(feature)
     fallback_reason = ""
     effective_mode = requested_mode
     semantic_payload: dict | None = None
+    fallback_semantic_payload: dict | None = {"track": "main", "family": "tooling_surface"} if semantic else None
+    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+    if not prd_path.exists():
+        typer.echo(f"Missing PRD truth for {feature}: {prd_path}")
+        raise typer.Exit(2)
     if requested_mode == "rule":
         effective_mode = "rule"
     elif bool(capability_snapshot.get("llm_disabled")):
@@ -279,13 +287,11 @@ def create(
             effective_mode = "rule"
             fallback_reason = "host_compile_failed"
     else:
-        if requested_mode == "llm":
-            typer.echo("User story semantic compile requires host semantic response.", err=True)
-            raise typer.Exit(2)
         effective_mode = "rule"
         fallback_reason = "llm_unavailable"
+        if semantic and fallback_semantic_payload:
+            semantic_payload = dict(fallback_semantic_payload)
 
-    slug = feature_slug(feature)
     story = generate_user_story(feature, project_root, semantic_payload=semantic_payload)
 
     user_story_text, prd_text, qa_text = _read_requirement_truth(project_root, resolved_version, feature)
@@ -384,6 +390,35 @@ def create(
         active_story["re_freeze_transaction"] = dict(deepening_payload.get("re_freeze_transaction") or {})
     save_story_state(project_root, version=resolved_version, feature=feature, state=active_story)
     load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
+    machine_path = machine_story_path(project_root, resolved_version, feature)
+    write_json(
+        machine_path,
+        {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+            "acceptance_criteria": story["acceptance_criteria"],
+            "semantic_payload": semantic_payload or fallback_semantic_payload or {},
+            "compiler": compiler,
+            "output_path": str(output_path),
+        },
+    )
+
+    legacy_story_json = project_root / ".beacon" / "user-story" / f"{slug}.json"
+    write_json(
+        legacy_story_json,
+        {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": resolved_version,
+            "acceptance_criteria": story["acceptance_criteria"],
+            "semantic_payload": semantic_payload or fallback_semantic_payload or {},
+            "compiler": compiler,
+            "output_path": str(output_path),
+        },
+    )
 
     if json_output:
         typer.echo(
@@ -422,7 +457,7 @@ def create(
 
 @app.command("list")
 def list_stories(
-    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
 ):
     """List all user stories"""
@@ -441,6 +476,19 @@ def list_stories(
     typer.echo(f"User Stories ({len(unique)} found):")
     for story in sorted(unique.values(), key=lambda p: p.name):
         typer.echo(f"  - {story.name}")
+
+
+@app.command("sync-state")
+def sync_state(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+):
+    """Sync story state from docs."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    sync_story_state_from_docs(project_root, resolved_version, feature)
+    typer.echo(f"✓ User story state synced: {feature}")
 
 
 if __name__ == "__main__":

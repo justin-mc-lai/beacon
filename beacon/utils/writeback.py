@@ -10,6 +10,7 @@ from typing import Any, Iterable
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_dir, machine_trace_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.prototype_utils import prototype_files
+from beacon.utils.acceptance_kit import write_acceptance_kit_projection
 from beacon.utils.implementation_plan import (
     mark_implementation_plan_accepted,
     update_plan_progress_for_implementation,
@@ -722,6 +723,12 @@ def record_acceptance_writeback(
     envelope["sink_checksums"]["runtime"] = str(((runtime_payload.get("sink_checksums") or {}).get("runtime")) or "missing")
     write_json(machine_path, envelope)
     human_path.write_text(_render_acceptance_markdown(envelope), encoding="utf-8")
+    write_acceptance_kit_projection(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        acceptance_envelope=envelope,
+    )
 
     story["items"] = updated_items
     story["status"] = "accepted"

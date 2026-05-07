@@ -94,6 +94,8 @@ def _render_human(payload: dict[str, object]) -> str:
     requirement_gap_digest = payload.get("requirement_gap_digest", {}) if isinstance(payload.get("requirement_gap_digest"), dict) else {}
     brainstorm_hint = payload.get("brainstorm_hint", {}) if isinstance(payload.get("brainstorm_hint"), dict) else {}
     requirement_package = payload.get("requirement_package_gate", {}) if isinstance(payload.get("requirement_package_gate"), dict) else {}
+    acceptance_kit = payload.get("acceptance_kit", {}) if isinstance(payload.get("acceptance_kit"), dict) else {}
+    acceptance_summary = acceptance_kit.get("summary", {}) if isinstance(acceptance_kit.get("summary"), dict) else {}
     if bool(requirement_package.get("enabled")):
         lines.extend(
             [
@@ -107,6 +109,18 @@ def _render_human(payload: dict[str, object]) -> str:
         lines.append(f"- failures    : {', '.join(str(item) for item in failure_categories) if failure_categories else 'none'}")
         if requirement_package.get("recommended_command"):
             lines.append(f"- command     : {requirement_package.get('recommended_command', '')}")
+    if acceptance_summary:
+        lines.extend(
+            [
+                "",
+                "acceptance kit",
+                f"- summary     : {acceptance_summary.get('summary', '')}",
+                f"- verdict     : {acceptance_summary.get('verdict', '')}",
+            ]
+        )
+        failed_layers = acceptance_summary.get("failed_layers", [])
+        if failed_layers:
+            lines.append(f"- failed      : {', '.join(str(item) for item in failed_layers)}")
     if change_loop.get("intent") or bool(change_loop.get("recommended")):
         lines.extend(
             [

@@ -10,6 +10,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, execution_file_output
+from beacon.utils.implement_adapters import build_default_task_prompt
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 
@@ -46,6 +47,41 @@ def _seed_feature_docs(root: Path, *, version: str = "v1.1.4", feature: str = "m
     (base / "prd" / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
     (base / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Cases\n", encoding="utf-8")
     (base / "qa" / "test-cases" / f"{slug}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
+    return slug
+
+
+def _seed_v140_incomplete_closure_docs(root: Path, *, feature: str = "My Feature") -> str:
+    slug = _seed_feature_docs(root, version="v1.4.0", feature=feature)
+    base = root / "docs" / "beacon" / "v1.4.0"
+    (base / "prd" / f"{slug}.md").write_text(
+        (
+            "# PRD: My Feature\n\n"
+            "- version: `v1.4.0`\n"
+            "- feature: `My Feature`\n"
+            "- status: `draft`\n"
+        ),
+        encoding="utf-8",
+    )
+    (base / "user-story" / f"{slug}.md").write_text(
+        (
+            "# User Story: My Feature\n\n"
+            "## Acceptance Criteria\n\n"
+            "| AC ID | Theme | Description |\n"
+            "| --- | --- | --- |\n"
+            "| AC-001 | happy-path | 系统可以完成补齐。 |\n"
+        ),
+        encoding="utf-8",
+    )
+    (base / "qa" / "test-cases" / f"{slug}.md").write_text(
+        (
+            "# Test Cases: My Feature\n\n"
+            "## Coverage Matrix\n\n"
+            "| TC ID | AC ID | Scenario | Layer | Expected |\n"
+            "| --- | --- | --- | --- | --- |\n"
+            "| TC-001 | AC-001 | happy | unit | ok |\n"
+        ),
+        encoding="utf-8",
+    )
     return slug
 
 
@@ -293,6 +329,29 @@ def test_implement_run_task_template_should_remain_additive_to_frozen_truth_prom
     assert "Frozen-truth boundary remains authoritative." in task_prompt
 
 
+def test_implement_default_task_prompt_should_not_trigger_requirement_change_boundary(tmp_path: Path) -> None:
+    _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
+    prompt = build_default_task_prompt(
+        feature="My Feature",
+        version="v1.3.7",
+        source_of_truth_root="docs/beacon/v1.3.7",
+        feature_slug="my-feature",
+        result_file=".beacon/implement/run-001/result.json",
+        implementation_plan_file="docs/beacon/v1.3.7/.machine/execution/implementation-plan-my-feature.json",
+        operator_prompt="",
+    )
+
+    payload = evaluate_implement_prompt_boundary(
+        tmp_path,
+        version="v1.3.7",
+        feature="My Feature",
+        host_prompt=prompt,
+    )
+
+    assert payload["blocked"] is False
+    assert payload["classification"] == "in_scope_implementation"
+
+
 @pytest.mark.parametrize("mode", ["single", "team", "ralph"])
 def test_implement_run_should_block_requirement_change_task_template_before_execution(
     monkeypatch,
@@ -413,6 +472,74 @@ def test_implement_plan_should_block_requirement_change_host_prompt_before_compi
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "implement_prompt_requirement_change"
     assert payload["prompt_boundary"]["classification"] == "requirement_change"
+
+
+def test_implement_run_should_block_when_v140_closure_preflight_requires_supplement(monkeypatch, tmp_path: Path):
+    _seed_v140_incomplete_closure_docs(tmp_path, feature="My Feature")
+
+    monkeypatch.setattr(
+        implement_cmd._legacy_cli,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
+    )
+    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.4.0",
+            "--mode",
+            "single",
+            "--runner",
+            "native-single",
+            "--dry-run",
+            "--json",
+        ]
+    )
+
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "requirement_closure_supplement_required"
+    assert payload["closure_preflight"]["status"] == "blocked"
+    assert payload["closure_preflight"]["closure_verdict"] == "supplement_required"
+    assert "goal_defined" in payload["closure_preflight"]["closure_analysis"]["missing_evidence"]
+
+
+def test_implement_plan_should_block_when_v140_closure_preflight_requires_supplement(monkeypatch, tmp_path: Path):
+    _seed_v140_incomplete_closure_docs(tmp_path, feature="My Feature")
+
+    def _unexpected_compile(*_args, **_kwargs):
+        raise AssertionError("implementation plan should not compile when closure preflight is blocked")
+
+    monkeypatch.setattr(
+        implement_cmd._legacy_cli,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
+    )
+    monkeypatch.setattr(implement_cmd._legacy_cli, "compile_implementation_plan", _unexpected_compile)
+
+    result = _invoke(
+        [
+            "implement",
+            "plan",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.4.0",
+            "--json",
+        ]
+    )
+
+    assert result.exit_code == 2, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["reason_code"] == "requirement_closure_supplement_required"
+    assert payload["closure_preflight"]["package_state"] == "full_consistent"
 
 
 def test_implement_run_handoff_should_write_markdown_request(tmp_path: Path):
@@ -1082,6 +1209,92 @@ def test_implement_run_ralph_should_forward_prompt_boundary_to_controller(monkey
     assert isinstance(prompt_boundary, dict)
     assert prompt_boundary["classification"] == "in_scope_implementation"
     assert prompt_boundary["blocked"] is False
+
+
+def test_ralph_summary_should_surface_v140_three_prd_implementation_order(monkeypatch, tmp_path: Path):
+    base = _seed_feature_docs(tmp_path, version="v1.4.0", feature="Beacon v1.4.0 lightweight kernel and core surface refactor")
+    docs_root = tmp_path / "docs" / "beacon" / "v1.4.0"
+    for feature in (
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ):
+        (docs_root / "prd" / f"{feature}.md").write_text("# PRD\n", encoding="utf-8")
+        (docs_root / "user-story" / f"{feature}.md").write_text("# User Story\n", encoding="utf-8")
+        (docs_root / "qa" / "test-cases" / f"{feature}.md").write_text("# Test Cases\n", encoding="utf-8")
+    (docs_root / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / "execution" / "architecture-blueprint.md").write_text("# Blueprint\n", encoding="utf-8")
+    (docs_root / ".machine" / "execution").mkdir(parents=True, exist_ok=True)
+    for slug in (
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ):
+        (docs_root / ".machine" / "execution" / f"{slug}.revision.json").write_text(
+            json.dumps({"feature_slug": slug, "revision_id": "R1", "version": "v1.4.0"}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+    (docs_root / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
+    for slug in (
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ):
+        (docs_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json").write_text(
+            json.dumps({"entries": []}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        (docs_root / ".machine" / "qa" / f"{slug}.story-scenario-map.json").write_text(
+            json.dumps({"scenarios": []}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        (docs_root / ".machine" / "qa" / f"{slug}.qa9-matrix.json").write_text(
+            json.dumps({"entries": []}, ensure_ascii=False),
+            encoding="utf-8",
+        )
+
+    def _fake_ralph_controller(**kwargs):
+        return 0, {
+            "schema_version": "1.0",
+            "status": "completed",
+            "run_id": "run-ralph-controller",
+            "mode": "ralph",
+            "implementation_order": {
+                "status": "analyzed",
+                "feature_count": 3,
+                "ordered_feature_slugs": [
+                    "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+                    "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+                    "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+                ],
+                "waves": [
+                    {"wave": 1, "parallelizable": False, "features": [{"feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor"}]},
+                    {"wave": 2, "parallelizable": False, "features": [{"feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure"}]},
+                    {"wave": 3, "parallelizable": False, "features": [{"feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration"}]},
+                ],
+            },
+        }
+
+    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _fake_ralph_controller)
+    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+        feature="Beacon v1.4.0 lightweight kernel and core surface refactor",
+        project_root=tmp_path,
+        version="v1.4.0",
+        runner="native-single",
+        skill=None,
+        task_template=None,
+        prompt_boundary=None,
+        timeout_sec=None,
+        auto_switch_branch=None,
+        team_runtime=None,
+        host_runtime="codex",
+        max_rounds=1,
+    )
+    assert payload["implementation_order"]["ordered_feature_slugs"] == [
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ]
 
 
 def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatch, tmp_path: Path):

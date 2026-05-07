@@ -151,6 +151,62 @@ def test_v1311_board_should_surface_supplement_jump_links(tmp_path: Path) -> Non
     assert "jump-link" in html
 
 
+def test_v1311_board_should_surface_acceptance_kit_links(tmp_path: Path) -> None:
+    version = "v1.3.11"
+    feature = "Beacon Operator Workbench And Board Launcher"
+    feature_slug = "beacon-operator-workbench-and-board-launcher"
+    _prepare_sources(tmp_path, feature_slug, version)
+    _freeze_bundle(tmp_path, version, feature)
+
+    acceptance_path = tmp_path / "docs" / "beacon" / version / ".machine" / "execution" / f"acceptance-kit-{feature_slug}.json"
+    acceptance_path.parent.mkdir(parents=True, exist_ok=True)
+    acceptance_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": version,
+                "verdict": "passed",
+                "layers": {
+                    "skill-contract": {"status": "pass", "source_truth_ref": "docs/beacon/v1.3.11/prd/beacon-operator-workbench-and-board-launcher.md"},
+                    "scenario-suite": {"status": "pass", "source_truth_ref": "docs/beacon/v1.3.11/user-story/beacon-operator-workbench-and-board-launcher.md"},
+                    "trace-scorecard": {"status": "pass", "source_truth_ref": "docs/beacon/v1.3.11/.machine/qa/beacon-operator-workbench-and-board-launcher.qa9-matrix.json"},
+                    "real-project-proof": {"status": "pass", "source_truth_ref": ".beacon/transactions/acceptance-kit.json"},
+                },
+                "real_project_proof": {"status": "pass", "evidence_refs": [".beacon/transactions/acceptance-kit.json"], "source": "real-project-validation"},
+                "regression_pass": True,
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    contract = _invoke(
+        [
+            "board",
+            "--project",
+            str(tmp_path),
+            "--version",
+            version,
+            "--feature",
+            feature,
+            "--dry-run",
+            "--json",
+        ]
+    )
+    assert contract.exit_code == 0, contract.stdout
+    payload = json.loads(contract.stdout)
+    workbench = payload["operator_workbench"]
+    assert workbench["acceptance_kit"]["summary"]["verdict"] == "passed"
+    assert any(item["layer"] == "skill-contract" for item in workbench["acceptance_kit"]["links"])
+    bundle_root = Path(payload["bundle_root"])
+    html = (bundle_root / "index.html").read_text(encoding="utf-8")
+    assert "Acceptance Kit" in html
+    assert "skill-contract" in html
+
+
 def test_v1311_board_dry_run_should_reuse_persistent_bundle_and_serve_index(tmp_path: Path) -> None:
     version = "v1.3.11"
     feature = "Reusable Board Bundle"

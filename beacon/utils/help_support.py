@@ -32,6 +32,7 @@ from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.ralph_runtime import load_ralph_state
 from beacon.utils.requirement_deepening import (
     build_requirement_completeness_gate,
@@ -1260,6 +1261,7 @@ def build_help_payload(
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
     release_scorecard = build_release_scorecard(project_root, version=resolved_version) if feature_name else {}
     release_summary = summarize_release_scorecard(release_scorecard) if release_scorecard else {}
+    acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature_name) if feature_name else {}
     discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
     discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
     control_plane = build_resume_contract(project_root, run_id=resolved_run_id or None)
@@ -1792,6 +1794,7 @@ def build_help_payload(
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
         "release_summary": release_summary,
+        "acceptance_kit": acceptance_kit,
         "control_plane": control_plane,
         "coverage": coverage,
         "story_summary": story_summary,

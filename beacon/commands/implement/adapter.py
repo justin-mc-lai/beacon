@@ -18,7 +18,7 @@ from beacon.utils.implement_adapters import (
 
 def discover_adapters(project_root: Path) -> list[dict[str, Any]]:
     """Discover available skill adapters."""
-    return discover_skill_adapters(project_root)
+    return [{"name": key, **value} for key, value in discover_skill_adapters(project_root).items()]
 
 
 def resolve_adapter_for_feature(
@@ -37,11 +37,10 @@ def resolve_adapter_for_feature(
                 return adapter
 
     # Use default adapter resolution
-    return resolve_adapter(
-        feature=feature,
-        adapters=adapters,
-        default_runner=resolve_default_runner(project_root),
-    )
+    adapter_id, adapter = resolve_adapter(project_root, runner or resolve_default_runner(project_root))
+    if adapter_id is None:
+        return None
+    return {"name": adapter_id, **adapter}
 
 
 def build_adapter_context(

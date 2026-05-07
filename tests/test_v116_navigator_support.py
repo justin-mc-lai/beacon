@@ -175,6 +175,52 @@ def test_acceptance_writeback_should_write_machine_human_and_runtime_projection(
     assert result["revision"]["delivery_status"] == "accepted"
 
 
+def test_acceptance_writeback_should_materialize_acceptance_kit_projection(tmp_path: Path) -> None:
+    _seed_user_story(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl",
+        implemented_item_ids=["AC-001", "AC-002", "TEST-001", "TEST-002"],
+        changed_files=["beacon/commands/qa.py"],
+    )
+    record_verification_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-qa",
+        verified_item_ids=["AC-001", "AC-002", "TEST-001", "TEST-002"],
+        failed_item_ids=[],
+        evidence_ref=[".beacon/qa/status.json", "docs/beacon/v1.1.6/qa/test-cases/navigator-feature.md"],
+    )
+    run_dir = tmp_path / ".beacon" / "runs" / "run-qa"
+    run_dir.mkdir(parents=True, exist_ok=True)
+    write_json(
+        run_dir / "state.json",
+        {"workflow": "workflow.start", "run_id": "run-qa", "version": VERSION, "feature": FEATURE},
+    )
+
+    record_acceptance_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        accepted_by="qa",
+        verdict="passed",
+        run_id="run-qa",
+        evidence_ref=[".beacon/qa/status.json"],
+        source_command='beacon qa run "Navigator Feature" --project-root . --version v1.1.6',
+    )
+
+    kit_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"acceptance-kit-{SLUG}.json"
+    assert kit_path.exists()
+    kit = json.loads(kit_path.read_text(encoding="utf-8"))
+    assert kit["verdict"] == "passed"
+    assert kit["layers"]["skill-contract"]["status"] == "pass"
+    assert kit["layers"]["real-project-proof"]["status"] == "pass"
+
+
 def test_help_payload_should_recommend_freeze_then_implement_then_quality(tmp_path: Path):
     _seed_user_story(tmp_path)
 

@@ -24,6 +24,7 @@ from beacon.utils.artifact_paths import (
 from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
+from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
@@ -60,6 +61,7 @@ from beacon.utils.learning_loop import write_requirement_rewrite_input
 from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.material_audit import build_requirement_package_gate
+from beacon.utils.prd_bootstrap import inspect_requirement_closure
 from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
@@ -509,6 +511,47 @@ def _normalize_string_list(value: Any) -> list[str]:
     if isinstance(value, str) and str(value).strip():
         return [str(value).strip()]
     return []
+
+
+def _requirement_closure_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    if _semver_tuple(resolved_version) < (1, 4, 0):
+        return {
+            "enabled": False,
+            "status": "pass",
+            "reason_code": "",
+            "feature": feature,
+            "version": resolved_version,
+        }
+
+    inspection = inspect_requirement_closure(
+        project_root,
+        feature=feature,
+        version=resolved_version,
+    )
+    verdict = str(inspection.get("closure_verdict") or "").strip().lower()
+    readiness = str(inspection.get("readiness_verdict") or "").strip().lower()
+    blocked = verdict in {"supplement_required", "drift_repair_required"} or readiness != "implementation_pending"
+    reason_code = ""
+    recommended_command = ""
+    if verdict == "drift_repair_required":
+        reason_code = "requirement_closure_drift_repair_required"
+        recommended_command = f'beacon change "{feature}" --project-root {project_root} --version {resolved_version}'
+    elif blocked:
+        reason_code = "requirement_closure_supplement_required"
+        recommended_command = (
+            f'beacon prd-bootstrap run "{feature}" --desc "补齐 requirement closure" '
+            f'--project-root {project_root} --version {resolved_version} --dry-run'
+        )
+
+    return {
+        "enabled": True,
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "reason_code": reason_code,
+        "recommended_command": recommended_command,
+        **inspection,
+    }
 
 
 def _run_auto_qa(project_root: Path, *, feature: str, version: str, extra_args: list[str]) -> tuple[int, dict[str, Any] | None]:
@@ -1028,7 +1071,70 @@ def _render_ralph_summary_markdown(payload: dict[str, Any]) -> str:
                 f"continue_decision=`{item.get('continue_decision', '')}` next_action=`{item.get('next_action', '')}` "
                 f"round_ref=`{item.get('round_ref', '')}`"
             )
+    implementation_order = payload.get("implementation_order") if isinstance(payload.get("implementation_order"), dict) else {}
+    waves = implementation_order.get("waves") if isinstance(implementation_order.get("waves"), list) else []
+    lines.extend(["", "## Implementation Order"])
+    if not waves:
+        lines.append("- none")
+    else:
+        for wave in waves:
+            if not isinstance(wave, dict):
+                continue
+            lines.append(f"- wave `{wave.get('wave', '')}`")
+            for item in wave.get("features", []):
+                if not isinstance(item, dict):
+                    continue
+                slug = str(item.get("feature_slug", "") or "").strip()
+                deps = ", ".join(str(dep) for dep in item.get("depends_on_features", []) if str(dep).strip())
+                suffix = f" (depends_on={deps})" if deps else ""
+                lines.append(f"  - `{slug}`{suffix}")
     return "\n".join(lines) + "\n"
+
+
+def _v140_implementation_order(project_root: Path, *, version: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    host = load_implementation_delivery_host(project_root, version=resolved_version)
+    feature_order = [
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ]
+    host_features = host.get("features") if isinstance(host.get("features"), list) else []
+    ordered: list[dict[str, Any]] = []
+    for slug in feature_order:
+        row = next(
+            (
+                item
+                for item in host_features
+                if isinstance(item, dict) and str(item.get("feature_slug") or "") == slug
+            ),
+            None,
+        )
+        if not isinstance(row, dict):
+            continue
+        ordered.append(
+            {
+                "feature": str(row.get("feature") or ""),
+                "feature_slug": slug,
+                "depends_on_features": [str(dep) for dep in row.get("depends_on_features", []) if str(dep).strip()],
+            }
+        )
+    if not ordered:
+        return {"status": "missing", "feature_count": 0, "ordered_feature_slugs": [], "waves": []}
+    waves = [
+        {
+            "wave": index + 1,
+            "parallelizable": False,
+            "features": [row],
+        }
+        for index, row in enumerate(ordered)
+    ]
+    return {
+        "status": "analyzed",
+        "feature_count": len(ordered),
+        "ordered_feature_slugs": [row["feature_slug"] for row in ordered],
+        "waves": waves,
+    }
 
 
 def _normalize_list(value: Any) -> list[Any]:
@@ -1663,6 +1769,24 @@ def run_implement_stage(  # noqa: PLR0913
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+        }
+        return 2, payload
+    closure_preflight = _requirement_closure_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(closure_preflight.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "requirement_package_gate": requirement_package_gate,
+            "closure_preflight": closure_preflight,
+            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
         }
         return 2, payload
     resolved_mode = _normalize_mode(mode)
@@ -2315,6 +2439,7 @@ def run_implement_stage(  # noqa: PLR0913
             },
             "implementation_plan": implementation_plan_file,
             "implementation_plan_progress": load_implementation_plan_progress(project_root, version=resolved_version, feature=feature),
+            "implementation_order": _v140_implementation_order(project_root, version=resolved_version) if resolved_version == "v1.4.0" else {},
             "requirement_traceability": requirement_traceability,
             "delivery_surfaces": delivery_surfaces,
             "revision_cleanup": revision_cleanup_summary,
@@ -3009,6 +3134,7 @@ def run_implement_stage(  # noqa: PLR0913
             auto_qa=summary_payload.get("auto_qa", {}),
             gate_release=gate_release_info or {},
         )
+        summary_payload["ralph"]["implementation_order"] = summary_payload.get("implementation_order", {})
         ralph_paths = _ralph_summary_paths(project_root, resolved_version, feature)
         write_json(ralph_paths["json"], summary_payload["ralph"])
         _write_text(ralph_paths["md"], _render_ralph_summary_markdown(summary_payload["ralph"]))
@@ -3496,6 +3622,50 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
         else:
             typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
         return 2
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        strict=True,
+    )
+    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
+    closure_preflight = _requirement_closure_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(closure_preflight.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "closure_preflight": closure_preflight,
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
     code, payload = compile_implementation_plan(project_root, version=version, feature=feature)
     if prompt_boundary:
         payload["prompt_boundary"] = prompt_boundary
@@ -3548,6 +3718,50 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
                 mapped_command=f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
                 payload=payload,
             )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    requirement_package_gate = build_requirement_package_gate(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        strict=True,
+    )
+    if str(requirement_package_gate.get("status") or "").lower() == "blocked":
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    closure_preflight = _requirement_closure_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(closure_preflight.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "closure_preflight": closure_preflight,
+            "requirement_package_gate": requirement_package_gate,
+            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
+        }
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:

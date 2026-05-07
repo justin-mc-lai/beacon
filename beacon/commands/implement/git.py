@@ -51,7 +51,6 @@ def run_branch_preflight(
     # Build branch guard payload
     guard_payload = build_implement_branch_guard_payload(
         project_root,
-        feature=feature,
         version=version,
         expected_branch=expected_branch or f"{branch_prefix}{version}",
     )

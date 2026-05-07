@@ -145,6 +145,13 @@ def _default_priority_for_qa_type(qa_type: str) -> str:
     }.get(qa_type, "P2")
 
 
+def _strip_markdown_ticks(value: str) -> str:
+    text = str(value or "").strip()
+    if text.startswith("`") and text.endswith("`") and len(text) >= 2:
+        return text[1:-1].strip()
+    return text
+
+
 def _load_prototype_contract_artifacts(project_root: Path, version: str, feature_slug: str) -> tuple[dict, dict]:
     proto_root = project_root / "docs" / "beacon" / version / "prototype" / feature_slug
     navigation = {}
@@ -337,11 +344,33 @@ def _build_entries_from_qa_case_rows(
     fallback_ac_id = str(ac_items[0].get("ac_id") or "AC-001") if ac_items else "AC-001"
     entries: list[dict[str, Any]] = []
     for index, row in enumerate(qa_rows, start=1):
-        qa_type = _qa_case_type_to_qa_type(str(row.get("case_type") or ""), str(row.get("execution") or ""))
+        explicit_layer = str(row.get("explicit_layer") or "").strip()
+        qa_type = (
+            normalize_qa_type(explicit_layer)
+            if explicit_layer
+            else _qa_case_type_to_qa_type(str(row.get("case_type") or ""), str(row.get("execution") or ""))
+        )
         tc_id = str(row.get("tc_id") or f"TC-{index:03d}").strip() or f"TC-{index:03d}"
         story_id = str(row.get("story_id") or "").strip().upper()
-        ac_id = story_to_ac.get(story_id, fallback_ac_id)
-        assertion = str(row.get("expected_result") or row.get("scenario") or default_assertion_for_qa_type(qa_type)).strip()
+        ac_id = str(row.get("ac_id") or story_to_ac.get(story_id, fallback_ac_id)).strip() or fallback_ac_id
+        assertion = str(
+            row.get("explicit_assertion")
+            or row.get("expected_result")
+            or row.get("scenario")
+            or default_assertion_for_qa_type(qa_type)
+        ).strip()
+        command = _strip_markdown_ticks(
+            str(
+            row.get("explicit_command")
+            or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+            )
+        ) or default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+        evidence_path = _strip_markdown_ticks(
+            str(
+            row.get("explicit_evidence_path")
+            or f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json"
+            )
+        )
         entries.append(
             {
                 "tc_id": tc_id,
@@ -352,9 +381,9 @@ def _build_entries_from_qa_case_rows(
                 "title": f"{feature} {story_id or ac_id} :: {str(row.get('scenario') or assertion).strip()[:80]}",
                 "priority": _default_priority_for_qa_type(qa_type),
                 "automation": _qa_case_automation(str(row.get("execution") or "")),
-                "command": default_command_for_qa_type(qa_type, ui_runner=ui_runner),
+                "command": command,
                 "assertion": assertion,
-                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{{run_id}}/{tc_id}.json",
+                "evidence_path": evidence_path,
                 "required_files": ["command.txt", "stdout.log", "stderr.log", "result.json", "junit.xml"],
                 "status": "pending",
                 "source": str(row.get("source") or "qa:test-cases"),

@@ -24,13 +24,22 @@ def _print_human(payload: dict) -> None:
     typer.echo(f"feature          : {payload.get('feature', '')}")
     typer.echo(f"version          : {payload.get('version', '')}")
     typer.echo(f"status           : {payload.get('status', '')}")
+    typer.echo(f"package_state    : {payload.get('package_state', '')}")
+    typer.echo(f"closure_verdict  : {payload.get('closure_verdict', '')}")
+    typer.echo(f"readiness_verdict: {payload.get('readiness_verdict', '')}")
     typer.echo(f"dry_run          : {payload.get('dry_run', True)}")
     typer.echo(f"no_overwrite     : {payload.get('no_overwrite', True)}")
     typer.echo(f"state_path       : {payload.get('state_path', '')}")
     quality = payload.get("quality") if isinstance(payload.get("quality"), dict) else {}
     consistency = payload.get("consistency") if isinstance(payload.get("consistency"), dict) else {}
+    closure = payload.get("closure_analysis") if isinstance(payload.get("closure_analysis"), dict) else {}
     typer.echo(f"quality_ok       : {quality.get('ok', False)}")
     typer.echo(f"consistency_ok   : {consistency.get('ok', False)}")
+    typer.echo(f"closure_ok       : {closure.get('ok', False)}")
+    reverse_derived = payload.get("reverse_derived_layers") if isinstance(payload.get("reverse_derived_layers"), list) else []
+    drift_digest = payload.get("drift_digest") if isinstance(payload.get("drift_digest"), list) else []
+    typer.echo(f"reverse_derived  : {len(reverse_derived)}")
+    typer.echo(f"drift_items      : {len(drift_digest)}")
     if payload.get("reason_code"):
         typer.echo(f"reason_code      : {payload.get('reason_code')}")
     if payload.get("recommended_command"):

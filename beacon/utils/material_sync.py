@@ -34,9 +34,17 @@ def sync_feature_requirement_materials(
     resolved_version = resolve_target_version(project_root, version)
     slug = str(feature or "").strip().lower().replace(" ", "-")
     preserved_matrix_path = project_root / "docs" / "beacon" / resolved_version / ".machine" / "qa" / f"{slug}.ac-test-matrix.json"
+    preserved_story_map_path = project_root / "docs" / "beacon" / resolved_version / ".machine" / "qa" / f"{slug}.story-scenario-map.json"
+    preserved_qa9_matrix_path = project_root / "docs" / "beacon" / resolved_version / ".machine" / "qa" / f"{slug}.qa9-matrix.json"
     preserved_matrix_raw = ""
+    preserved_story_map_raw = ""
+    preserved_qa9_matrix_raw = ""
     if not overwrite_test_doc and preserved_matrix_path.exists():
         preserved_matrix_raw = preserved_matrix_path.read_text(encoding="utf-8")
+    if not overwrite_test_doc and preserved_story_map_path.exists():
+        preserved_story_map_raw = preserved_story_map_path.read_text(encoding="utf-8")
+    if not overwrite_test_doc and preserved_qa9_matrix_path.exists():
+        preserved_qa9_matrix_raw = preserved_qa9_matrix_path.read_text(encoding="utf-8")
     if dry_run:
         return {
             "feature": feature,
@@ -86,6 +94,10 @@ def sync_feature_requirement_materials(
     slug = str(story_sync.get("feature") or feature).strip().lower().replace(" ", "-")
     if preserved_matrix_raw and preserved_matrix_path.exists():
         preserved_matrix_path.write_text(preserved_matrix_raw, encoding="utf-8")
+    if preserved_story_map_raw and preserved_story_map_path.exists():
+        preserved_story_map_path.write_text(preserved_story_map_raw, encoding="utf-8")
+    if preserved_qa9_matrix_raw and preserved_qa9_matrix_path.exists():
+        preserved_qa9_matrix_path.write_text(preserved_qa9_matrix_raw, encoding="utf-8")
     return {
         "feature": feature,
         "version": resolved_version,

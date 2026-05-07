@@ -10,6 +10,7 @@ from typing import Any
 
 from beacon import __toolkit_version__
 from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_stage
+from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.project_skills import project_skill_config_path
 from beacon.utils.qa_runtime import (
     list_qa_sessions,
@@ -1063,6 +1064,7 @@ def build_runtime_projection(
         if isinstance(help_payload.get("requirement_completeness"), dict)
         else {}
     )
+    acceptance_kit = build_acceptance_kit_projection(root, version=resolved_version, feature=primary_feature)
 
     source_snapshot = {
         "project_root": str(root),
@@ -1107,6 +1109,7 @@ def build_runtime_projection(
             "active_run_id": str(ralph_state.get("active_run_id") or ""),
             "round_count": int(ralph_state.get("round_count", 0) or 0),
         },
+        "acceptance_kit": acceptance_kit,
     }
     source_hash = _stable_hash(source_snapshot)
     projection_seq = f"ps-{source_hash[:16]}"
@@ -1318,8 +1321,12 @@ def build_runtime_projection(
             "requirement_downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
             "requirement_focus_areas": list(requirement_completeness.get("focus_areas") or []),
             "requirement_trace_loop_status": str(requirement_completeness.get("trace_loop_status") or ""),
+            "acceptance_kit_status": str((acceptance_kit.get("summary") or {}).get("summary") or ""),
+            "acceptance_kit_verdict": str((acceptance_kit.get("summary") or {}).get("verdict") or ""),
+            "acceptance_kit_failed_layers": list((acceptance_kit.get("summary") or {}).get("failed_layers") or []),
             "active_runs": len([row for row in runs if str(row.get("status") or "").strip() in active_statuses]),
             "active_agents": len(run_workers),
         },
+        "acceptance_kit": acceptance_kit,
     }
     return envelope

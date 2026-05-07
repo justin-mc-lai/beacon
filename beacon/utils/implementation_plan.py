@@ -509,6 +509,11 @@ def implementation_plan_progress_path(project_root: Path, version: str, feature:
     return machine_execution_file(project_root, resolved_version, f"implementation-plan-{feature_slug(feature)}.progress.json")
 
 
+def implementation_task_ledger_markdown_path(project_root: Path, version: str, feature: str) -> Path:
+    resolved_version = resolve_target_version(project_root, version)
+    return human_execution_file(project_root, resolved_version, f"tasks-{feature_slug(feature)}.md")
+
+
 def _task_title(ac_id: str, text: str) -> str:
     body = str(text or "").strip() or "Implementation task"
     if len(body) > 72:
@@ -698,12 +703,24 @@ def summarize_implementation_plan(plan: dict[str, Any] | None) -> dict[str, Any]
         }
     tasks = [task for task in plan.get("tasks", []) if isinstance(task, dict)]
     counts = _task_counts(tasks)
+    next_task_id = _next_task_id(tasks)
+    next_task = next(
+        (task for task in tasks if str(task.get("task_id", "") or "").strip() == next_task_id),
+        {},
+    )
+    blocked_tasks = [
+        task
+        for task in tasks
+        if str(task.get("status", "")).strip().lower() == "blocked"
+    ]
     return {
         "plan_id": str(plan.get("plan_id", "") or ""),
         "status": _derive_plan_status(tasks),
         "counts": counts,
-        "next_task_id": _next_task_id(tasks),
-        "blocked_task_ids": [str(task.get("task_id", "") or "") for task in tasks if str(task.get("status", "")).strip().lower() == "blocked"],
+        "next_task_id": next_task_id,
+        "next_task_title": str(next_task.get("title", "") or ""),
+        "blocked_task_ids": [str(task.get("task_id", "") or "") for task in blocked_tasks],
+        "blocked_task_titles": [str(task.get("title", "") or "") for task in blocked_tasks if str(task.get("title", "") or "").strip()],
         "completed_task_ids": [str(task.get("task_id", "") or "") for task in tasks if str(task.get("status", "")).strip().lower() == "completed"],
         "feature": str(plan.get("feature", "") or ""),
         "version": str(plan.get("version", "") or ""),
@@ -1386,6 +1403,10 @@ def load_implementation_plan_progress(project_root: Path, *, version: str = "aut
     path = implementation_plan_progress_path(project_root, resolved_version, feature)
     payload = read_json(path, {})
     if isinstance(payload, dict) and payload:
+        if "task_ledger_path" not in payload:
+            payload["task_ledger_path"] = str(
+                implementation_task_ledger_markdown_path(project_root, resolved_version, feature).relative_to(project_root)
+            )
         return payload
     plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
     summary = summarize_implementation_plan(plan)
@@ -1395,11 +1416,16 @@ def load_implementation_plan_progress(project_root: Path, *, version: str = "aut
         "feature": summary.get("feature", ""),
         "version": summary.get("version", ""),
         "revision_id": summary.get("revision_id", ""),
+        "plan_path": str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "progress_path": str(path.relative_to(project_root)),
+        "task_ledger_path": str(implementation_task_ledger_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "status": summary.get("status", "missing"),
         "counts": summary.get("counts", {}),
         "blocked_task_ids": summary.get("blocked_task_ids", []),
+        "blocked_task_titles": summary.get("blocked_task_titles", []),
         "completed_task_ids": summary.get("completed_task_ids", []),
         "next_task_id": summary.get("next_task_id", ""),
+        "next_task_title": summary.get("next_task_title", ""),
         "updated_at": summary.get("updated_at", ""),
         "task_states": [
             {
@@ -1415,6 +1441,66 @@ def load_implementation_plan_progress(project_root: Path, *, version: str = "aut
             if isinstance(task, dict)
         ],
     }
+
+
+def _render_task_ledger_markdown(payload: dict[str, Any], progress_payload: dict[str, Any]) -> str:
+    counts = progress_payload.get("counts") if isinstance(progress_payload.get("counts"), dict) else {}
+    total = int(counts.get("total", 0) or 0)
+    completed = int(counts.get("completed", 0) or 0)
+    next_task_id = str(progress_payload.get("next_task_id", "") or "")
+    next_task_title = str(progress_payload.get("next_task_title", "") or "")
+    blocked_task_ids = progress_payload.get("blocked_task_ids") if isinstance(progress_payload.get("blocked_task_ids"), list) else []
+    blocked_task_titles = progress_payload.get("blocked_task_titles") if isinstance(progress_payload.get("blocked_task_titles"), list) else []
+    lines = [
+        "# Beacon Implementation Tasks Ledger",
+        "",
+        f"- feature: `{payload.get('feature', '')}`",
+        f"- version: `{payload.get('version', '')}`",
+        f"- plan_id: `{payload.get('plan_id', '')}`",
+        f"- revision_id: `{payload.get('revision_id', '')}`",
+        f"- progress: `{completed}/{total}`",
+        f"- status: `{progress_payload.get('status', '')}`",
+        f"- next_task: `{next_task_id}` {next_task_title}".rstrip(),
+        f"- blocked_tasks: `{len(blocked_task_ids)}`",
+        "",
+        "## Recovery",
+        f"- progress_json: `{progress_payload.get('progress_path', '')}`",
+        f"- canonical_plan_json: `{progress_payload.get('plan_path', '')}`",
+        "- task ledger is a human-readable projection only; gate and machine progress still read canonical plan/progress artifacts.",
+        "",
+        "## Tasks",
+        "",
+    ]
+    tasks = [task for task in payload.get("tasks", []) if isinstance(task, dict)]
+    if not tasks:
+        lines.append("- none")
+        return "\n".join(lines) + "\n"
+    for task in tasks:
+        task_id = str(task.get("task_id", "") or "")
+        title = str(task.get("title", "") or "")
+        status = str(task.get("status", "") or "").strip().lower()
+        checkbox = "[x]" if status == "completed" else "[-]" if status == "blocked" else "[ ]"
+        lines.append(f"{checkbox} `{task_id}` {title}")
+        detail = []
+        blocked_reason = str(task.get("blocked_reason", "") or "")
+        if blocked_reason:
+            detail.append(f"blocked={blocked_reason}")
+        mapped_test_ids = task.get("mapped_test_ids") if isinstance(task.get("mapped_test_ids"), list) else []
+        if mapped_test_ids:
+            detail.append("tests=" + ",".join(str(item) for item in mapped_test_ids if str(item).strip()))
+        depends_on = task.get("depends_on") if isinstance(task.get("depends_on"), list) else []
+        if depends_on:
+            detail.append("depends_on=" + ",".join(str(item) for item in depends_on if str(item).strip()))
+        if task_id == next_task_id:
+            detail.append("next")
+        if detail:
+            lines.append(f"  - {' | '.join(detail)}")
+    if blocked_task_titles:
+        lines.extend(["", "## Blockers"])
+        for item in blocked_task_titles:
+            if str(item).strip():
+                lines.append(f"- {item}")
+    return "\n".join(lines) + "\n"
 
 
 def _write_implementation_plan(project_root: Path, *, version: str, feature: str, payload: dict[str, Any]) -> dict[str, Any]:
@@ -1437,11 +1523,15 @@ def _write_implementation_plan(project_root: Path, *, version: str, feature: str
         "feature": feature,
         "version": resolved_version,
         "revision_id": str(payload.get("revision_id", "") or ""),
+        "plan_path": str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root)),
+        "progress_path": str(implementation_plan_progress_path(project_root, resolved_version, feature).relative_to(project_root)),
         "status": progress_summary.get("status", "missing"),
         "counts": progress_summary.get("counts", {}),
         "blocked_task_ids": progress_summary.get("blocked_task_ids", []),
+        "blocked_task_titles": progress_summary.get("blocked_task_titles", []),
         "completed_task_ids": progress_summary.get("completed_task_ids", []),
         "next_task_id": progress_summary.get("next_task_id", ""),
+        "next_task_title": progress_summary.get("next_task_title", ""),
         "task_states": [
             {
                 "task_id": str(task.get("task_id", "") or ""),
@@ -1457,6 +1547,11 @@ def _write_implementation_plan(project_root: Path, *, version: str, feature: str
         ],
         "updated_at": payload["updated_at"],
     }
+    write_json(implementation_plan_progress_path(project_root, resolved_version, feature), progress_payload)
+    ledger_path = implementation_task_ledger_markdown_path(project_root, resolved_version, feature)
+    ledger_path.parent.mkdir(parents=True, exist_ok=True)
+    progress_payload["task_ledger_path"] = str(ledger_path.relative_to(project_root))
+    ledger_path.write_text(_render_task_ledger_markdown(payload, progress_payload), encoding="utf-8")
     write_json(implementation_plan_progress_path(project_root, resolved_version, feature), progress_payload)
     return payload
 
@@ -2146,6 +2241,8 @@ def update_plan_progress_for_verification(
     verified_ids = _normalize_ids(verified_item_ids)
     failed_ids = _normalize_ids(failed_item_ids)
     refs = _normalize_text_list([*(evidence_refs or []), f"verify:{run_id}"])
+    matched_failure = False
+    matched_verified = False
     for task in [task for task in plan.get("tasks", []) if isinstance(task, dict)]:
         mapped_ac_ids = _normalize_ids(task.get("mapped_ac_ids", []))
         mapped_test_ids = _normalize_ids(task.get("mapped_test_ids", []))
@@ -2154,6 +2251,7 @@ def update_plan_progress_for_verification(
             task["blocked_reason"] = "verification_failed"
             task["active_run_id"] = ""
             task["evidence_refs"] = _normalize_text_list([*(task.get("evidence_refs", []) or []), *refs])
+            matched_failure = True
             continue
         if verified_ids and (not verified_ids.isdisjoint(mapped_test_ids) or not verified_ids.isdisjoint(mapped_ac_ids)):
             if str(task.get("status", "")).strip().lower() in {"draft", "planned", "in_progress", "blocked"}:
@@ -2162,6 +2260,38 @@ def update_plan_progress_for_verification(
                 task["active_run_id"] = ""
                 task["blocked_reason"] = ""
             task["evidence_refs"] = _normalize_text_list([*(task.get("evidence_refs", []) or []), *refs])
+            matched_verified = True
+    if failed_ids and not matched_failure:
+        fallback_task = next(
+            (
+                task
+                for task in plan.get("tasks", [])
+                if isinstance(task, dict)
+                and str(task.get("status", "")).strip().lower() in {"in_progress", "planned", "draft"}
+            ),
+            None,
+        )
+        if fallback_task is not None:
+            fallback_task["status"] = "blocked"
+            fallback_task["blocked_reason"] = "verification_failed"
+            fallback_task["active_run_id"] = ""
+            fallback_task["evidence_refs"] = _normalize_text_list([*(fallback_task.get("evidence_refs", []) or []), *refs])
+    if verified_ids and not matched_verified and not failed_ids:
+        fallback_task = next(
+            (
+                task
+                for task in plan.get("tasks", [])
+                if isinstance(task, dict)
+                and str(task.get("status", "")).strip().lower() in {"blocked", "in_progress", "planned", "draft"}
+            ),
+            None,
+        )
+        if fallback_task is not None:
+            fallback_task["status"] = "completed"
+            fallback_task["completed_at"] = str(fallback_task.get("completed_at", "") or now_iso())
+            fallback_task["active_run_id"] = ""
+            fallback_task["blocked_reason"] = ""
+            fallback_task["evidence_refs"] = _normalize_text_list([*(fallback_task.get("evidence_refs", []) or []), *refs])
     return _write_implementation_plan(project_root, version=version, feature=feature, payload=plan)
 
 

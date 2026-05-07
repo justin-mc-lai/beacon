@@ -27,6 +27,7 @@ from beacon.utils.material_audit import build_material_audit
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.v110_metrics import (
     compute_baseline_drift_metrics,
@@ -652,8 +653,10 @@ def _real_project_overlay(
     version: str,
     surface_results: dict[str, dict[str, Any]],
     release_scorecard: dict[str, Any],
+    acceptance_kit: dict[str, Any],
 ) -> dict[str, Any]:
     summary = summarize_release_scorecard(release_scorecard)
+    kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
     materials_verify = surface_results.get("doctor_verify_materials", {})
     materials_verify_payload = materials_verify.get("json") if isinstance(materials_verify.get("json"), dict) else {}
     materials_verify_result = (
@@ -740,6 +743,11 @@ def _real_project_overlay(
                     "source": "release_scorecard.qa.acceptance_transaction_status",
                 },
                 {
+                    "id": "acceptance_kit_shared_proof_chain",
+                    "status": "pass" if bool(kit_summary.get("all_layers_passed", False)) else "blocked",
+                    "source": "acceptance_kit.summary",
+                },
+                {
                     "id": "prototype_auto_template_downgrade_guard",
                     "status": "pass" if "prototype_auto_template_downgrade_blocked" not in gate_prototype_reason_codes else "blocked",
                     "source": "gate_check_prototype",
@@ -771,6 +779,7 @@ def real_project_validation(
     primary_feature = str(feature or ((release_scorecard.get("qa") or {}).get("feature")) or "").strip()
     if not primary_feature:
         raise typer.BadParameter("feature is required for real-project validation")
+    acceptance_kit = build_acceptance_kit_projection(root, version=resolved_version, feature=primary_feature) if primary_feature else {}
 
     worktree_lines = _git_status_lines(root)
     executed: list[dict[str, Any]] = []
@@ -789,6 +798,7 @@ def real_project_validation(
         version=resolved_version,
         surface_results={key: {"json": value.get("json") or {}, "exit_code": (value.get("record") or {}).get("exit_code", 1)} for key, value in by_name.items()},
         release_scorecard=release_scorecard,
+        acceptance_kit=acceptance_kit,
     )
     current_feature_ready = bool(release_scorecard.get("release_ready", False))
     version_line_open = str(release_summary.get("change_documents_status") or "").strip().lower() != "pass"
@@ -828,6 +838,7 @@ def real_project_validation(
             "summary": release_summary,
         },
         "latest_feature_overlay": overlay,
+        "acceptance_kit": acceptance_kit,
         "covered_paths": {
             "current_version_release_proof": True,
             "specialized_board_acceptance": False,

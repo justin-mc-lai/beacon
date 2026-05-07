@@ -10,6 +10,7 @@ import typer
 from beacon.utils.artifact_paths import machine_root, uses_machine_surface
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
+from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.material_audit import build_material_audit, build_requirement_package_gate
@@ -32,6 +33,67 @@ app = typer.Typer(
     invoke_without_command=True,
     no_args_is_help=False,
 )
+
+
+def _implementation_order_view(root: Path, *, version: str) -> dict[str, object]:
+    host = load_implementation_delivery_host(root, version=version)
+    feature_order = [
+        "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+        "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+        "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    ]
+    host_features = host.get("features") if isinstance(host.get("features"), list) else []
+    ordered: list[dict[str, object]] = []
+    for slug in feature_order:
+        item = next(
+            (
+                feature
+                for feature in host_features
+                if isinstance(feature, dict) and str(feature.get("feature_slug") or "") == slug
+            ),
+            None,
+        )
+        if not isinstance(item, dict):
+            continue
+        ordered.append(
+            {
+                "feature": str(item.get("feature") or ""),
+                "feature_slug": slug,
+                "depends_on_features": [
+                    str(dep) for dep in item.get("depends_on_features", []) if str(dep).strip()
+                ],
+            }
+        )
+    if not ordered and version == "v1.4.0":
+        ordered = [
+            {
+                "feature": "Beacon v1.4.0 lightweight kernel and core surface refactor",
+                "feature_slug": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
+                "depends_on_features": [],
+            },
+            {
+                "feature": "Beacon v1.4.0 PRD bootstrap safe requirement bootstrap and freeze closure",
+                "feature_slug": "beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure",
+                "depends_on_features": ["beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor"],
+            },
+            {
+                "feature": "Beacon v1.4.0 PRD bootstrap unified requirement closure orchestration",
+                "feature_slug": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+                "depends_on_features": ["beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure"],
+            },
+        ]
+    if not ordered:
+        return {"status": "missing", "feature_count": 0, "ordered_feature_slugs": [], "waves": []}
+    waves = [
+        {"wave": index + 1, "parallelizable": False, "features": [row]}
+        for index, row in enumerate(ordered)
+    ]
+    return {
+        "status": "analyzed",
+        "feature_count": len(ordered),
+        "ordered_feature_slugs": [row["feature_slug"] for row in ordered],
+        "waves": waves,
+    }
 
 
 def _status_impl(
@@ -141,6 +203,7 @@ def _status_impl(
     keep_discard_engine = load_keep_discard_engine(root)
     release_scorecard = build_release_scorecard(root, version=coverage_version)
     release_summary = summarize_release_scorecard(release_scorecard)
+    implementation_order = _implementation_order_view(root, version=coverage_version)
     acceptance_feature = (
         target_feature
         or str(((release_scorecard.get("acceptance") or {}).get("feature")) if isinstance(release_scorecard.get("acceptance"), dict) else "")
@@ -225,8 +288,12 @@ def _status_impl(
             "status": implementation_plan_progress.get("status", "missing"),
             "counts": implementation_plan_progress.get("counts", {}),
             "next_task_id": implementation_plan_progress.get("next_task_id", ""),
+            "next_task_title": implementation_plan_progress.get("next_task_title", ""),
             "blocked_task_ids": implementation_plan_progress.get("blocked_task_ids", []),
+            "blocked_task_titles": implementation_plan_progress.get("blocked_task_titles", []),
+            "task_ledger_path": implementation_plan_progress.get("task_ledger_path", ""),
         },
+        "implementation_order": implementation_order,
         "requirement_clarity": {
             "status": requirement_clarity_gate.get("status", "not_required"),
             "blocked": requirement_clarity_gate.get("blocked", False),
@@ -332,6 +399,22 @@ def _status_impl(
                 f"- board.re_freeze: refreeze={re_freeze_transaction.get('refreeze_required')} "
                 f"revalidate={re_freeze_transaction.get('revalidate_required')}"
             )
+        acceptance_kit = (payload.get("runtime_projection", {}) if isinstance(payload.get("runtime_projection"), dict) else {}).get("acceptance_kit", {})
+        acceptance_kit = acceptance_kit if isinstance(acceptance_kit, dict) else {}
+        acceptance_summary = acceptance_kit.get("summary", {}) if isinstance(acceptance_kit.get("summary"), dict) else {}
+        if acceptance_summary:
+            typer.echo(
+                f"- board.acceptance_kit: {acceptance_summary.get('summary') or 'unknown'} "
+                f"verdict={acceptance_summary.get('verdict') or 'unknown'}"
+            )
+            failed_layers = acceptance_summary.get("failed_layers", [])
+            if failed_layers:
+                typer.echo(f"- board.acceptance_failed_layers: {', '.join(str(item) for item in failed_layers)}")
+            for item in acceptance_kit.get("links", []) if isinstance(acceptance_kit.get("links"), list) else []:
+                layer = str(item.get("layer") or "")
+                href = str(item.get("evidence_ref") or item.get("source_truth_ref") or "")
+                if layer and href:
+                    typer.echo(f"- board.acceptance_jump[{layer}]: {href}")
         typer.echo(f"- board.active_runs: {board_summary.get('active_runs') or 0}")
         typer.echo(f"- board.active_agents: {board_summary.get('active_agents') or 0}")
         typer.echo(f"- board.ledger_sync: {runtime_ledger.get('status') or 'unknown'}")
@@ -405,6 +488,22 @@ def _status_impl(
                 f"next={payload.get('implementation_plan', {}).get('next_task_id') or 'none'} "
                 f"counts={payload.get('implementation_plan', {}).get('counts', {})}"
             )
+        implementation_order = payload.get("implementation_order", {}) if isinstance(payload.get("implementation_order"), dict) else {}
+        if implementation_order.get("ordered_feature_slugs"):
+            typer.echo(
+                f"- implementation_order: {', '.join(str(item) for item in implementation_order.get('ordered_feature_slugs', []) if str(item).strip())}"
+            )
+            waves = implementation_order.get("waves", []) if isinstance(implementation_order.get("waves"), list) else []
+            for wave in waves:
+                if not isinstance(wave, dict):
+                    continue
+                feature_slugs = [
+                    str(item.get("feature_slug") or "")
+                    for item in wave.get("features", [])
+                    if isinstance(item, dict) and str(item.get("feature_slug") or "").strip()
+                ]
+                if feature_slugs:
+                    typer.echo(f"- implementation_wave.{wave.get('wave', '')}: {', '.join(feature_slugs)}")
         if target_feature:
             typer.echo(
                 f"- requirement_clarity: {payload.get('requirement_clarity', {}).get('status')} "
@@ -457,6 +556,16 @@ def _status_impl(
                 f"- release.binding: {payload.get('release_binding', {}).get('status') or 'unknown'} "
                 f"current={payload.get('release_binding', {}).get('gate_bound_to_latest_revision')}"
             )
+        acceptance_kit = (payload.get("runtime_projection", {}) if isinstance(payload.get("runtime_projection"), dict) else {}).get("acceptance_kit", {})
+        acceptance_kit = acceptance_kit if isinstance(acceptance_kit, dict) else {}
+        acceptance_summary = acceptance_kit.get("summary", {}) if isinstance(acceptance_kit.get("summary"), dict) else {}
+        if acceptance_summary:
+            typer.echo(
+                f"- acceptance_kit: {acceptance_summary.get('summary') or 'unknown'} "
+                f"verdict={acceptance_summary.get('verdict') or 'unknown'}"
+            )
+            if acceptance_summary.get("failed_layers"):
+                typer.echo(f"- acceptance_failed_layers: {', '.join(str(item) for item in acceptance_summary.get('failed_layers', []))}")
         if payload.get("revision", {}).get("release_delivery_type"):
             typer.echo(f"- revision.delivery_type: {payload.get('revision', {}).get('release_delivery_type')}")
         typer.echo(
@@ -535,6 +644,14 @@ def _status_impl(
         if workflow_progress.get("stages", {}).get("prototype"):
             typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")
         if verbose:
+            implementation_plan_view = payload.get("implementation_plan", {}) if isinstance(payload.get("implementation_plan"), dict) else {}
+            if implementation_plan_view.get("task_ledger_path"):
+                typer.echo(f"- implementation.task_ledger: {implementation_plan_view.get('task_ledger_path')}")
+            if implementation_plan_view.get("next_task_title"):
+                typer.echo(f"- implementation.next_task_title: {implementation_plan_view.get('next_task_title')}")
+            blocked_task_titles = implementation_plan_view.get("blocked_task_titles", [])
+            if isinstance(blocked_task_titles, list) and blocked_task_titles:
+                typer.echo(f"- implementation.blocked_task_titles: {', '.join(str(item) for item in blocked_task_titles)}")
             typer.echo(f"- run.latest_run_id: {latest or 'none'}")
             typer.echo(f"- run.selected_run_id: {resolved_run_id or 'none'}")
             typer.echo(f"- memory.missing_closure_stages: {memory_metrics.get('missing_closure_stages')}")

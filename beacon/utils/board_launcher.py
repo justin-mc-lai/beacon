@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.implementation_plan import load_implementation_plan_progress
+from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.prototype_utils import evaluate_prototype_status, slugify_feature
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.runtime import read_json
@@ -296,6 +297,15 @@ def _build_operator_actions(
     return actions
 
 
+def _board_jump_target(kind: str) -> str:
+    return {
+        "prd": "beacon prd create",
+        "user-story": "beacon user-story create",
+        "test-case": "beacon test-case create",
+        "prototype": "#feature-detail",
+    }.get(kind, "#feature-detail")
+
+
 def _review_hints(release_scorecard: dict[str, Any], run_state: dict[str, Any]) -> list[str]:
     hints: list[str] = []
     qa_status = (release_scorecard.get("acceptance") or {}).get("status") if isinstance(release_scorecard.get("acceptance"), dict) else ""
@@ -465,6 +475,7 @@ def build_operator_workbench_payload(
     )
     supplement_task = runtime_projection.get("supplement_task") if isinstance(runtime_projection.get("supplement_task"), dict) else {}
     re_freeze_transaction = runtime_projection.get("re_freeze_transaction") if isinstance(runtime_projection.get("re_freeze_transaction"), dict) else {}
+    acceptance_kit = build_acceptance_kit_projection(project_root, version=version, feature=feature)
     operator_actions = _build_operator_actions(
         project_root=project_root,
         version=version,
@@ -492,6 +503,7 @@ def build_operator_workbench_payload(
             "downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
             "focus_areas": list(requirement_completeness.get("focus_areas") or []),
             "trace_loop_status": str(requirement_completeness.get("trace_loop_status") or ""),
+            "acceptance_kit": acceptance_kit,
         },
         "views": [
             "portfolio-board",
@@ -555,6 +567,7 @@ def build_operator_workbench_payload(
                 "downgraded_subgates": list(requirement_completeness.get("downgraded_subgates") or []),
                 "focus_areas": list(requirement_completeness.get("focus_areas") or []),
                 "human_loop_handoff": requirement_completeness.get("human_loop_handoff", {}),
+                "acceptance_kit": acceptance_kit,
             },
             "supplement_task": supplement_task,
             "re_freeze_transaction": re_freeze_transaction,
@@ -588,6 +601,7 @@ def build_operator_workbench_payload(
             "review_hints": _review_hints(release_scorecard, selected_run_state),
             "related_feature": feature,
         },
+        "acceptance_kit": acceptance_kit,
         "recovery_diagnostics": diagnostics,
         "operator_action_contract": {
             "source_of_truth": "workflow/resume/implement/doctor/release cli surfaces",
@@ -820,7 +834,7 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
         supplement_links.append(
             {
                 "label": f"跳到 {target_artifact}",
-                "href": f"beacon {target_artifact} create",
+                "href": _board_jump_target(target_artifact),
                 "note": note or "查看补料提示",
             }
         )
@@ -832,6 +846,19 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
                 "note": f"refreeze={re_freeze_transaction.get('refreeze_required')} revalidate={re_freeze_transaction.get('revalidate_required')}",
             }
         )
+    acceptance_kit = payload.get("acceptance_kit") if isinstance(payload.get("acceptance_kit"), dict) else {}
+    acceptance_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
+    acceptance_links = []
+    for item in acceptance_kit.get("links", []) if isinstance(acceptance_kit.get("links"), list) else []:
+        layer = str(item.get("layer") or "")
+        acceptance_links.append(
+            {
+                "label": f"{layer} / {item.get('status') or 'missing'}",
+                "href": "#feature-detail",
+                "note": str(item.get("source_truth_ref") or item.get("evidence_ref") or ""),
+            }
+        )
+    supplement_links.extend(acceptance_links)
 
     group_summary_cards = []
     for key in ("queued", "active", "blocked", "retry_scheduled", "needs_review"):
@@ -1040,7 +1067,7 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
       <h2>需求详情</h2>
       <div class="grid-2">
         <div>{_render_kv_list([("需求", _cn_feature_label(feature_detail.get("feature"))), ("阶段", _cn_status(feature_detail.get("current_stage"))), ("是否阻塞", "是" if feature_detail.get("blocked") else "否"), ("阻塞原因", _cn_reason(feature_detail.get("blocked_reason")) if feature_detail.get("blocked_reason") else "无")])}</div>
-        <div>{_render_kv_list([("计划状态", _cn_status(plan_progress.get("status"))), ("计划编号", plan_progress.get("plan_id") or "未生成"), ("下一任务", plan_progress.get("next_task_id") or "待生成"), ("可写服务", ", ".join(feature_detail.get("writable_services", [])) or "未声明")])}</div>
+        <div>{_render_kv_list([("计划状态", _cn_status(plan_progress.get("status"))), ("计划编号", plan_progress.get("plan_id") or "未生成"), ("下一任务", plan_progress.get("next_task_id") or "待生成"), ("可写服务", ", ".join(feature_detail.get("writable_services", [])) or "未声明"), ("Acceptance Kit", _cn_status(acceptance_summary.get("summary"))), ("Kit verdict", _cn_status(acceptance_summary.get("verdict")))])}</div>
       </div>
       <div>
         <h3>补料跳转</h3>

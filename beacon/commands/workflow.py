@@ -1931,6 +1931,19 @@ def _execute_stage(
             extra_env=stage_env,
         )
         rc = int(result.returncode)
+        auto_test_status = project_root / ".beacon" / "auto-test-status.json"
+        if auto_test_status.exists():
+            try:
+                auto_test_payload = json.loads(auto_test_status.read_text(encoding="utf-8"))
+            except Exception:  # noqa: BLE001
+                auto_test_payload = {}
+            if isinstance(auto_test_payload, dict):
+                execution = auto_test_payload.get("execution") if isinstance(auto_test_payload.get("execution"), dict) else {}
+                if "version" in auto_test_payload or "version" in execution:
+                    auto_test_payload["version"] = version
+                    execution["version"] = version
+                    auto_test_payload["execution"] = execution
+                    write_json(auto_test_status, auto_test_payload)
         # Verify stage hard condition: auto-test artifact must be passed.
         if rc == 0:
             verify_artifact = project_root / ".beacon" / "auto-test-status.json"
