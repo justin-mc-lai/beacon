@@ -792,7 +792,7 @@ def resolve_workflow_run_id(
         if not run_dir.is_dir():
             continue
         rid = run_dir.name
-        if not rid.startswith("run-"):
+        if not rid.startswith(("run-", "repair-")):
             continue
         state = load_run_state(project_root, rid)
         if not isinstance(state, dict):
@@ -835,7 +835,7 @@ def resolve_workflow_run_id(
             if not isinstance(item, dict):
                 continue
             rid = str(item.get("run_id", "") or "")
-            if not rid.startswith("run-"):
+            if not rid.startswith(("run-", "repair-")):
                 continue
             state = load_run_state(project_root, rid)
             if not isinstance(state, dict):
@@ -898,7 +898,7 @@ def _select_default_run_id(events: list[dict[str, Any]]) -> str | None:
         stage = normalize_workflow_stage(str(item.get("stage", "") or ""))
         event = str(item.get("event", "") or "")
         ts = str(item.get("ts", "") or "")
-        if not run_id.startswith("run-"):
+        if not run_id.startswith(("run-", "repair-")):
             continue
         if stage not in WORKFLOW_STAGES + OPTIONAL_WORKFLOW_STAGES or event not in workflow_event_names:
             continue

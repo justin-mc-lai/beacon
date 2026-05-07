@@ -99,6 +99,30 @@ def test_v120_workflow_run_resolution_should_fallback_to_lifecycle_feature_detai
     assert resolved == run_id
 
 
+def test_v120_workflow_run_resolution_should_include_repair_run_prefix(tmp_path: Path):
+    run_id = "repair-v1.4.0-20260506T185413433584Z0000"
+    save_run_state(
+        tmp_path,
+        run_id,
+        {
+            "run_id": run_id,
+            "workflow": "workflow.start",
+            "feature": "beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+            "version": "v1.4.0",
+            "status": "completed",
+            "started_at": "2026-05-06T18:54:13Z",
+            "ended_at": "2026-05-06T18:54:14Z",
+        },
+    )
+
+    resolved = resolve_workflow_run_id(
+        tmp_path,
+        version="v1.4.0",
+        feature="beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration",
+    )
+    assert resolved == run_id
+
+
 def test_v120_technical_review_contract_should_backfill_reviewed_at_when_approved(tmp_path: Path):
     feature = "beacon-v1.3.6-visual-management-console-and-material-viewer"
     payload = materialize_technical_review_contract(

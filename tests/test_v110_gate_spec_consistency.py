@@ -225,6 +225,74 @@ def test_gate_should_prefer_gate_report_run_id_for_spec_consistency(tmp_path: Pa
     assert verdict.get("actual_spec_fingerprint") == new_hash
 
 
+def test_gate_should_fallback_to_terminal_repair_run_for_spec_consistency(tmp_path: Path):
+    _seed_docs(tmp_path)
+    fp = generate_spec_fingerprint(tmp_path, run_id="repair-v1.1.0-20260101T000000Z0000", version="v1.1.0")
+    expected_hash = str(fp.get("fingerprint_hash", ""))
+    assert expected_hash
+
+    record_baseline_snapshot(
+        tmp_path,
+        run_id="repair-v1.1.0-20260101T000000Z0000",
+        version="v1.1.0",
+        feature="Debug Loop",
+        workflow_status="completed",
+    )
+
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "run_id": "run-auto-003"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "auto-test-status.json").write_text(
+        json.dumps(
+            {
+                "status": "passed",
+                "run_id": "run-auto-003",
+                "execution": {
+                    "run_id": "run-auto-003",
+                    "layers": [],
+                    "spec_fingerprint": {"fingerprint_hash": expected_hash},
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    terminal = tmp_path / "docs" / "beacon" / "v1.1.0" / ".machine" / "execution"
+    terminal.mkdir(parents=True, exist_ok=True)
+    (terminal / "terminal.json").write_text(
+        json.dumps({"run_id": "repair-v1.1.0-20260101T000000Z0000", "status": "Pass"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (terminal / "source.json").write_text(
+        json.dumps(
+            {"run_id": "repair-v1.1.0-20260101T000000Z0000", "version": "v1.1.0", "feature": "Debug Loop"},
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke([
+        "gate",
+        "check",
+        "release",
+        "--strict",
+        "--project-root",
+        str(tmp_path),
+        "--version",
+        "v1.1.0",
+        "--json",
+    ])
+    assert result.exit_code in {0, 2}
+    verdict = json.loads(result.stdout).get("doc_impl_verdict", {})
+    assert verdict.get("baseline_id") == "bl-repair-v1.1.0-20260101T000000Z0000-001"
+    assert verdict.get("expected_spec_fingerprint") == expected_hash
+
+
 def test_gate_strict_should_block_when_baseline_missing(tmp_path: Path):
     _seed_docs(tmp_path)
     fp = generate_spec_fingerprint(tmp_path, run_id="run-doc-fp-003", version="v1.1.0")

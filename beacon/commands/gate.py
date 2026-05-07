@@ -51,7 +51,12 @@ from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
 )
-from beacon.utils.workflow_memory import compute_memory_metrics, load_lifecycle_events, workflow_memory_transaction_contract
+from beacon.utils.workflow_memory import (
+    compute_memory_metrics,
+    load_lifecycle_events,
+    resolve_workflow_run_id,
+    workflow_memory_transaction_contract,
+)
 
 app = typer.Typer(name="gate", help="Run gate checks for workflow stages")
 
@@ -1048,20 +1053,33 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
 
 
 def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+
+    def _workflow_run(candidate: str) -> str:
+        text = str(candidate or "").strip()
+        if not text:
+            return ""
+        return resolve_workflow_run_id(project_root, run_id=text, version=resolved_version) or ""
+
     gate_report_path = project_root / ".beacon" / "gate-report.json"
     gate_payload, gate_status = _load_json_file(gate_report_path)
     if gate_status == "ok" and isinstance(gate_payload, dict):
-        run_id = str(gate_payload.get("run_id", "") or "").strip()
-        if run_id.startswith("run-"):
-            return run_id
+        gate_stage = str(gate_payload.get("stage", "") or "").strip().lower()
+        if gate_stage in {"", "release"}:
+            run_id = _workflow_run(str(gate_payload.get("run_id", "") or ""))
+            if run_id:
+                return run_id
 
-    resolved_version = _resolved_gate_version(project_root, version)
     terminal_path = _resolve_existing_execution_file(project_root, resolved_version, "terminal.json")
-    payload, status = _load_json_file(terminal_path)
-    if status != "ok" or not isinstance(payload, dict):
-        return ""
-    run_id = str(payload.get("run_id", "") or "").strip()
-    return run_id if run_id.startswith("run-") else ""
+    source_path = _resolve_existing_execution_file(project_root, resolved_version, "source.json")
+    for candidate_path in (terminal_path, source_path):
+        payload, status = _load_json_file(candidate_path)
+        if status != "ok" or not isinstance(payload, dict):
+            continue
+        run_id = _workflow_run(str(payload.get("run_id", "") or ""))
+        if run_id:
+            return run_id
+    return ""
 
 
 def _load_run_scoped_spec_fingerprint(project_root: Path, *, version: str, run_id: str) -> dict[str, Any]:

@@ -71,8 +71,9 @@ def _resolve_acceptance_workflow_run_id(project_root: Path, version: str, featur
     ):
         payload = _read_json_if_exists(candidate)
         value = str(payload.get("run_id", "") or "").strip()
-        if value.startswith("run-"):
-            return value
+        resolved = resolve_workflow_run_id(project_root, run_id=value, version=version, feature=feature)
+        if resolved:
+            return resolved
     return ""
 
 
