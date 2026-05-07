@@ -4,10 +4,10 @@
 - feature: `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
 - version: `v1.4.0`
 - revision_id: `R1`
-- baseline_hash: `sha256:1174849126ad499d60f21c90e5a035c7366f34a544e753abb831e0cc9bfb642d`
+- baseline_hash: `sha256:b022b31c5589eb698e36f03d89b80b4b16b2a3acb81a8556e1e8fc2b39ce1c54`
 - delivery_baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration-R1`
 - delivery_baseline_source_hash: `sha256:108cfb84612b60249a8d6b133707d82e04d05e3d760f0902d3f5d0ae40a598b8`
-- plan_hash: `sha256:b421b695904489acdb09ea4d4e8afd7962b9f0f1fdd5c408807b19aa713059a6`
+- plan_hash: `sha256:82fb15973acaa4da166ffb09365535686da951913a5b8fb535654b83bd53da77`
 - status: `completed`
 
 ## Source Refs
@@ -60,8 +60,8 @@
 - status: `completed`
 - mapped_ac_ids: AC-001
 - mapped_test_ids: TC-001, TC-029, TC-030, TC-031, TC-032, TC-033, TC-034, TC-035, TC-036, TC-037
-- mapped_scenario_ids: SC-001
-- mapped_qa_case_ids: TC-001
+- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004, SC-005, SC-006, SC-007, SC-008, SC-009, SC-010
+- mapped_qa_case_ids: TC-001, TC-029, TC-030, TC-031, TC-032, TC-033, TC-034, TC-035, TC-036, TC-037
 - depends_on: -
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -72,7 +72,7 @@
 - status: `completed`
 - mapped_ac_ids: AC-005, AC-002, AC-022
 - mapped_test_ids: TEST-005, TC-002, TEST-022
-- mapped_scenario_ids: SC-002
+- mapped_scenario_ids: SC-011
 - mapped_qa_case_ids: TC-002
 - depends_on: ITASK-001
 - direct_delivery_services: .
@@ -144,7 +144,7 @@
 - status: `completed`
 - mapped_ac_ids: AC-012, AC-004
 - mapped_test_ids: TEST-012, TC-004
-- mapped_scenario_ids: SC-004
+- mapped_scenario_ids: SC-013
 - mapped_qa_case_ids: TC-004
 - depends_on: ITASK-007
 - direct_delivery_services: .
@@ -168,7 +168,7 @@
 - status: `completed`
 - mapped_ac_ids: AC-003, AC-010, AC-011, AC-007, AC-008, AC-014, AC-015, AC-016, AC-018, AC-020, AC-021, AC-023, AC-024, AC-026, AC-028
 - mapped_test_ids: TC-003, TEST-010, TEST-011, TEST-007, TEST-008, TEST-014, TEST-015, TEST-016, TEST-018, TEST-020, TEST-021, TEST-023, TEST-024, TEST-026, TEST-028
-- mapped_scenario_ids: SC-003
+- mapped_scenario_ids: SC-012
 - mapped_qa_case_ids: TC-003
 - depends_on: ITASK-009
 - direct_delivery_services: .
