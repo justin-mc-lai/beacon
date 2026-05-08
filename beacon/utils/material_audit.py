@@ -155,7 +155,13 @@ def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[s
     }
 
 
-def build_material_audit(project_root: Path | str, *, version: str | None = None, strict: bool = False) -> dict[str, Any]:
+def build_material_audit(
+    project_root: Path | str,
+    *,
+    version: str | None = None,
+    strict: bool = False,
+    feature: str = "",
+) -> dict[str, Any]:
     root = Path(project_root)
     resolved_version = resolve_target_version(root, version)
     requires_minimum_closure = _parse_semver_tuple(resolved_version) >= (1, 1, 3)
@@ -206,9 +212,17 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
     prd_features = _feature_names(prd_dir)
     tc_features = _feature_names(tc_dir)
     feature_names = sorted(us_features | prd_features | tc_features)
+    target_feature = str(feature or "").strip().lower().replace(" ", "-")
+    if target_feature:
+        if target_feature in feature_names:
+            feature_names = [target_feature]
+        else:
+            feature_names = [target_feature]
     missing_by_feature: dict[str, list[str]] = {}
+    derived_missing_by_feature: dict[str, list[str]] = {}
     for name in feature_names:
         missing: list[str] = []
+        derived_missing: list[str] = []
         if name not in us_features:
             missing.append("user-story")
         if name not in prd_features:
@@ -216,31 +230,33 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
         if name not in tc_features:
             missing.append("test-case")
         if not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
-            missing.append("ac-test-matrix")
+            derived_missing.append("ac-test-matrix")
         if requires_change_loop_dual_write and not machine_story_path(root, resolved_version, name).exists():
-            missing.append("machine-user-story")
+            derived_missing.append("machine-user-story")
         if requires_change_loop_dual_write and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "story-scenario-map")
         ):
-            missing.append("story-scenario-map")
+            derived_missing.append("story-scenario-map")
         if requires_requirement_deepening:
             deepening = requirement_paths(root, resolved_version, name)
             if not deepening["freeze_contract"].exists():
-                missing.append("requirement-freeze-contract")
+                derived_missing.append("requirement-freeze-contract")
             if not deepening["completeness"].exists():
-                missing.append("requirement-completeness")
+                derived_missing.append("requirement-completeness")
             if not deepening["envelope"].exists():
-                missing.append("requirement-envelope")
+                derived_missing.append("requirement-envelope")
             if not deepening["candidate_ledger"].exists():
-                missing.append("candidate-ledger")
+                derived_missing.append("candidate-ledger")
             if not deepening["decision_log"].exists():
-                missing.append("supplement-decision-log")
+                derived_missing.append("supplement-decision-log")
         if not requires_minimum_closure and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
         ):
-            missing.append("qa9-matrix")
+            derived_missing.append("qa9-matrix")
         if missing:
             missing_by_feature[name] = missing
+        if derived_missing:
+            derived_missing_by_feature[name] = derived_missing
 
     revision_drift_by_feature: dict[str, dict[str, Any]] = {}
     prd_mirror_drift_by_feature: dict[str, dict[str, Any]] = {}
@@ -346,6 +362,17 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             },
         }
     )
+    derived_projection_status = "pass" if not derived_missing_by_feature else "warn"
+    checks.append(
+        {
+            "name": "derived_requirement_projection_health",
+            "status": derived_projection_status,
+            "details": {
+                "feature_count": len(feature_names),
+                "missing_by_feature": derived_missing_by_feature,
+            },
+        }
+    )
     if requires_change_loop_dual_write:
         revision_drift_status = "pass" if not revision_drift_by_feature else ("fail" if strict else "warn")
         checks.append(
@@ -359,7 +386,7 @@ def build_material_audit(project_root: Path | str, *, version: str | None = None
             }
         )
         if requires_prd_mirror_dual_write:
-            prd_mirror_status = "pass" if not prd_mirror_drift_by_feature else ("fail" if strict else "warn")
+            prd_mirror_status = "pass" if not prd_mirror_drift_by_feature else "warn"
             checks.append(
                 {
                     "name": "prd_machine_mirror_sync",
@@ -713,12 +740,12 @@ def build_requirement_package_gate(
             "recommended_command": "",
             "audit": {},
         }
-    audit = build_material_audit(root, version=resolved_version, strict=strict)
-    status = str(audit.get("status") or "fail").lower()
+    audit = build_material_audit(root, version=resolved_version, strict=strict, feature=feature)
     failing_checks = [
         item for item in audit.get("checks", [])
         if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
     ]
+    status = "fail" if failing_checks else "pass"
     failure_summary = _requirement_package_failure_summary(failing_checks)
     failure_categories = failure_summary.get("categories", [])
     drift_categories = {
@@ -733,17 +760,6 @@ def build_requirement_package_gate(
         "stale_prd_compile_mirror",
         "stale_prd_latest_transaction_pointer",
     }
-    machine_repair_categories = {
-        "missing_machine_ac_matrix",
-        "missing_machine_user_story",
-        "missing_machine_story_scenario_map",
-        "missing_machine_qa9_matrix",
-        "missing_requirement_freeze_contract",
-        "missing_requirement_completeness",
-        "missing_requirement_envelope",
-        "missing_requirement_candidate_ledger",
-        "missing_requirement_decision_log",
-    }
     recommended_action = ""
     recommended_reason = ""
     remediation_mode = "none" if status == "pass" else "verify"
@@ -754,14 +770,6 @@ def build_requirement_package_gate(
             recommended_action = "beacon-change"
             recommended_reason = "frozen requirement package drifted from the approved baseline and must re-enter the change loop"
             recommended_command = "beacon-change"
-        elif str(feature or "").strip() and any(category in machine_repair_categories for category in failure_categories):
-            remediation_mode = "repair"
-            recommended_action = "doctor-sync-materials"
-            recommended_reason = "machine requirement artifacts are missing and should be rebuilt from the current human package"
-            recommended_command = (
-                f"beacon doctor sync-materials --project-root {root} --version {resolved_version} "
-                f"--feature {feature} --single-feature"
-            )
         else:
             remediation_mode = "verify"
             recommended_action = "doctor-verify-materials"

@@ -687,7 +687,7 @@ def _real_project_overlay(
     if materials_verify_payload:
         checks.append(
             {
-                "id": "requirement_package_dual_write_contract",
+                "id": "requirement_package_truth_contract",
                 "status": "pass" if str(materials_verify_result.get("status") or "").strip().lower() == "pass" else "blocked",
                 "source": "doctor_verify_materials",
             }

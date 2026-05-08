@@ -429,7 +429,7 @@ def test_report_real_project_validation_should_include_requirement_package_contr
     material_blocker = next(item for item in payload["surfaces"]["project_state_blockers"] if item["name"] == "doctor_verify_materials")
     assert "change_loop_requirement_package_sync" in material_blocker["reason_codes"]
     check_ids = {item["id"]: item["status"] for item in payload["latest_feature_overlay"]["checks"]}
-    assert check_ids["requirement_package_dual_write_contract"] == "blocked"
+    assert check_ids["requirement_package_truth_contract"] == "blocked"
 
 
 def test_report_real_project_validation_should_capture_help_next_step_for_requirement_package_remediation(

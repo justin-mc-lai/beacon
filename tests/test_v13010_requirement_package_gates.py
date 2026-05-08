@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.material_audit import build_requirement_package_gate
 
 
 runner = CliRunner()
@@ -182,35 +183,25 @@ def test_v13010_help_should_route_doc_drift_to_beacon_change(tmp_path: Path) -> 
     assert payload["next_step"]["command"] == "beacon-change"
 
 
-def test_v13010_help_should_route_missing_machine_artifact_to_sync_materials(tmp_path: Path) -> None:
+def test_v13010_missing_machine_projection_does_not_block_feature_gate(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
     _freeze(tmp_path)
     machine_story = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json"
     assert machine_story.exists()
     machine_story.unlink()
 
-    result = _invoke(
-        [
-            "help",
-            "--project-root",
-            str(tmp_path),
-            "--version",
-            VERSION,
-            "--feature",
-            FEATURE,
-            "--json",
-        ]
+    payload = build_requirement_package_gate(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
     )
-    assert result.exit_code == 0, result.stdout
-    payload = json.loads(result.stdout)
-    assert payload["requirement_package_gate"]["status"] == "blocked"
-    assert "missing_machine_user_story" in payload["requirement_package_gate"]["failure_categories"]
-    assert payload["next_step"]["action"] == "doctor-sync-materials"
-    assert "beacon doctor sync-materials" in payload["next_step"]["command"]
-    assert f"--feature {FEATURE}" in payload["next_step"]["command"]
+
+    assert payload["status"] == "pass"
+    failing_checks = {item["name"] for item in payload["failing_checks"]}
+    assert "main_chain_feature_completeness" not in failing_checks
 
 
-def test_v13010_help_should_route_stale_prd_machine_mirror_to_beacon_change(tmp_path: Path) -> None:
+def test_v13010_stale_prd_machine_mirror_does_not_block_feature_gate(tmp_path: Path) -> None:
     version = "v1.3.11"
     _seed_docs(tmp_path, version=version)
     result = _invoke(
@@ -232,24 +223,70 @@ def test_v13010_help_should_route_stale_prd_machine_mirror_to_beacon_change(tmp_
     payload["content"] = payload["markdown"]
     legacy_prd.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
 
-    result = _invoke(
-        [
-            "help",
-            "--project-root",
-            str(tmp_path),
-            "--version",
-            version,
-            "--feature",
-            FEATURE,
-            "--json",
-        ]
+    gate = build_requirement_package_gate(
+        tmp_path,
+        version=version,
+        feature=FEATURE,
     )
-    assert result.exit_code == 0, result.stdout
-    payload = json.loads(result.stdout)
-    assert payload["requirement_package_gate"]["status"] == "blocked"
-    assert "stale_prd_legacy_mirror" in payload["requirement_package_gate"]["failure_categories"]
-    assert payload["requirement_package_gate"]["recommended_action"] == "beacon-change"
-    assert payload["requirement_package_gate"]["recommended_command"] == "beacon-change"
+
+    assert gate["status"] == "pass"
+    assert gate["failing_checks"] == []
+
+
+def test_v13010_feature_scope_does_not_inherit_sibling_drift(tmp_path: Path) -> None:
+    sibling = "Sibling Feature"
+    sibling_slug = "sibling-feature"
+    _seed_docs(tmp_path)
+    version = VERSION
+    base = tmp_path / "docs" / "beacon" / version
+    (base / "prd" / f"{sibling_slug}.md").write_text("# PRD\n", encoding="utf-8")
+    (base / "user-story" / f"{sibling_slug}.md").write_text("# User Story\n", encoding="utf-8")
+    (base / "qa" / "test-cases" / f"{sibling_slug}.md").write_text("# Test Cases\n", encoding="utf-8")
+    _freeze(tmp_path, feature=FEATURE)
+    _freeze(tmp_path, feature=sibling)
+
+    sibling_story = base / "user-story" / f"{sibling_slug}.md"
+    sibling_story.write_text("# User Story\n\n- drift after freeze\n", encoding="utf-8")
+
+    gate = build_requirement_package_gate(
+        tmp_path,
+        version=version,
+        feature=FEATURE,
+    )
+
+    assert gate["status"] == "pass"
+    assert gate["failing_checks"] == []
+
+
+def test_v13010_human_docs_still_block(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _freeze(tmp_path)
+    prd_path = tmp_path / "docs" / "beacon" / VERSION / "prd" / f"{SLUG}.md"
+    prd_path.unlink()
+
+    gate = build_requirement_package_gate(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+    )
+
+    assert gate["status"] == "blocked"
+    assert "missing_human_prd" in gate["failure_categories"]
+
+
+def test_v13010_freeze_receipt_drift_still_blocks(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _freeze(tmp_path)
+    _mutate_docs_after_freeze(tmp_path)
+
+    gate = build_requirement_package_gate(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+    )
+
+    assert gate["status"] == "blocked"
+    assert "baseline_hash_mismatch" in gate["failure_categories"]
 
 
 def test_v13010_status_board_should_surface_requirement_package_failure_categories(tmp_path: Path) -> None:
