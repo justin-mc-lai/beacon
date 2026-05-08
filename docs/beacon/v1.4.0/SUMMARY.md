@@ -4,7 +4,7 @@
 
 - `v1.4.0` 当前主题是：`lightweight kernel and core surface refactor`
 - 当前版本不是做“能力删除”，而是做“能力分层、减重、真相收敛”
-- 当前版本材料状态：`two-feature-accepted / main-kernel-feature-refrozen-pending-implementation / branch-governance-requirement-frozen`
+- 当前版本材料状态：`two-feature-accepted / main-kernel-feature-refrozen-pending-implementation / branch-governance-requirement-frozen / llm-decision-surface-requirement-and-prototype-frozen-pending-implementation`
 
 ## 版本目标
 
@@ -26,16 +26,19 @@
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
   - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+  - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - User Story
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
   - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+  - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - Test Cases
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
   - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+  - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - Execution
   - `docs/beacon/v1.4.0/execution/index.md`
   - `docs/beacon/v1.4.0/execution/boundaries.md`
@@ -47,6 +50,7 @@
 - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration`
 - `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
+- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
 
 ## 当前冻结判断
 
@@ -58,20 +62,26 @@
   - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / change-refreeze-frozen / implementation-completed / qa-passed / acceptance-accepted`
 - `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate`
   - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / implementation-not-started / qa-not-started`
+- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
+  - `prd-freeze-ready / story-freeze-ready / test-case-freeze-ready / prototype-frozen / implementation-not-started / qa-not-started`
 
 ## 当前收口结论
 
-- `v1.4.0` 继续坚持 Beacon 主流程：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+- `v1.4.0` 继续坚持 Beacon 主链：
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
+- `prototype` 改为条件触发层：
+  - 仅当 feature 存在真实 UX/UI surface 或 route/state/interaction handoff 需求时，才进入 `test-case -> prototype -> implement`
 - `v1.4.0` 不新增公开一级主命令
 - `beacon-prd-bootstrap` 继续存在，但只作为 optional support skill
 - 新增 branch governance requirement 子线，目标是在不扩张主流程的前提下补齐人类面 git workflow / implement gate 治理缺口
+- 新增 llm decision surface 子线，目标是在不扩张主流程的前提下，把既有 ask / learning / diagram / semantic 能力收敛成正式 decision surface
 - 主内核重构线已按 `beacon-change` 回路重新补齐“版本号/版本元信息漂移治理” requirement，并重新冻结到待实现
 - bootstrap 可以降低 requirement 启动摩擦，但不能伪装成 frozen truth 或绕过主链
 - `beacon-prd-bootstrap` 当前已进一步被补强为 unified requirement closure entry 候选，但仍是 support surface，不是主流程替代
 - 当前版本有两条 support 子线已形成 implementation / QA / acceptance 证据链
-- 主内核重构线与 branch governance 子线当前都处于 requirement 已冻结、待实现状态
+- 主内核重构线、branch governance 子线与 llm decision surface 子线当前都处于 requirement 已冻结、待实现状态
 - branch governance 新子线当前 requirement package 已冻结，尚未进入 implementation / QA execution
+- llm decision surface 新子线当前 requirement package 已冻结；由于该 feature 具备真实 route/state/interaction handoff 需求，prototype 已被条件触发并完成冻结，当前待进入 implementation / QA execution
 
 ## 当前冻结基线
 
@@ -91,6 +101,8 @@
 - 当前版本有两条 requirement 子线处于冻结待实现：
   - 主内核重构线已补齐版本漂移治理 requirement，并完成 R2 冻结
   - branch governance 子线 requirement package 已冻结，尚未进入 implementation / QA execution
+- 当前版本新增一条 requirement-frozen / prototype-frozen 子线：
+  - llm decision surface 子线已完成 PRD / story / test-case / prototype 冻结，当前待进入 implementation
 - 当前版本尚未进入“版本发布完成”：
   - release scorecard 仍未到 `release_ready`
   - release gate 仍有版本级阻断需要收口
@@ -112,10 +124,12 @@
 
 - `release scorecard v1.4.0` 仍显示 `release_ready=false`
 - 当前主要版本级阻断来自 release gate / evidence governance，以及主内核与 branch governance 两条 feature 的实现未闭环
+- 当前主要版本级阻断来自 release gate / evidence governance，以及主内核、branch governance 与 llm decision surface 三条 feature 的后续交付未闭环
 - 因此本版本当前应被表述为：
   - `two feature packages accepted`
   - `main kernel feature requirement-refrozen to pending implementation`
   - `branch-governance feature requirement-frozen`
+  - `llm-decision-surface feature requirement-frozen / prototype-frozen / pending-implementation`
   - `version release still pending final governance closure`
 
 ## 关键验收锚点
@@ -134,6 +148,9 @@
 - `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
 - `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- `docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+- `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+- `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - `skills/beacon/beacon-prd-bootstrap/SKILL.md`
 - `beacon/commands/prd_bootstrap.py`
 - `beacon/utils/prd_bootstrap.py`

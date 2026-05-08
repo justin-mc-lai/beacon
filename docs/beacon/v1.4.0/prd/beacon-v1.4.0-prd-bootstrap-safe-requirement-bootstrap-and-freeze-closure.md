@@ -84,7 +84,7 @@ Out of scope: public lifecycle expansion, automated truth promotion, or bypassin
   - 统一 slug / version / revision 语义
   对齐
 - 输出要进入后续：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
   的正式主链，而不是形成旁路真相
 
 ### 1.3 `prd-bootstrap` 必须保留，但不能污染 Beacon 主面和真相层级

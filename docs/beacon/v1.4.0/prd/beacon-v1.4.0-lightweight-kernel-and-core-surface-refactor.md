@@ -269,8 +269,10 @@ Out of scope:
 
 ### 2.2 非目标
 
-- 不改变人类主流程：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+- 不改变人类主链：
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
+- 不把 `prototype` 重新扩张成默认必经层：
+  - 只有在实际存在 UX/UI surface 或 route/state/interaction handoff 需求时，才允许进入 `test-case -> prototype -> implement`
 - 不新增新的公开一级主命令
 - 不让 board/sqlite/pocketbase/runtime ledger 继续默认定义 truth closure
 - 不让 Brainstorm 直接 freeze、change、implement 或 release
@@ -1180,8 +1182,9 @@ Change kernel 建议至少形成以下单元：
 
 ### AC-001 Beacon v1.4.0 能在不改变主流程的前提下完成内核减重
 
-- 人类主流程仍为：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+- 人类主链仍为：
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
+- `prototype` 只在真实 UX/UI handoff 场景下作为条件层触发
 - `implement` 与 `qa` 仍为唯一执行入口
 - 无新增公开一级主命令
 

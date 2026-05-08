@@ -1,14 +1,14 @@
 ---
 name: beacon-test-case
-description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.3.9 runtime surface.
+description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.4.0 runtime surface.
 ---
 
 # Beacon Test Case
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
-The public command stays on the current `v1.3.9` runtime line and uses the host-native requirement runtime defined by the `v1.3.12` requirement closure docs.
-Default host execution now enters the requirement bridge family before compatibility fallback.
+The active coverage contract is aligned to the `v1.4.0` docs line.
+Compatibility bridges may still resolve older entrypoints, but the truth package should be read from `docs/beacon/v1.4.0/`.
 
 ## Use for
 
@@ -28,3 +28,40 @@ Prefer:
 The public goal is coverage readiness, not exposing internal QA lanes yet.
 When host-native runtime is available, `test-case` should first use the wrapper-provided bridge and project from requirement truth or existing QA rows instead of emitting a generic placeholder matrix.
 If coverage is incomplete, surface the supplement task and re-freeze transaction rather than treating the matrix as final.
+
+## Inputs Contract
+
+- `project-root`
+- `version`
+- `feature`
+- upstream `user-story` and `prd`
+- existing `qa/test-cases` truth when revising
+- diagram / semantic inputs when route, state, or invariant coverage is required
+
+## Decision Protocol
+
+- Continue in `test-case` when acceptance criteria are ready to compile into verifiable scenarios.
+- Route back to `user-story` if acceptance criteria are still ambiguous.
+- Route to `change` when frozen acceptance coverage must materially change.
+- Require negative, boundary, recovery, and fallback coverage when the feature introduces blocked paths or guardrail behavior.
+- If the feature has real UX/UI handoff, determine whether `prototype` should be conditionally triggered before implementation.
+
+## Anti-Inertia Notes
+
+- A matrix of happy-path rows alone is not coverage closure.
+- `test-case` does not make a feature implemented or accepted by itself.
+- Prototype is conditional globally, but once UX/UI handoff is real it must not be skipped casually.
+- Machine matrices are projections; they do not replace frozen requirement truth.
+- `test-case` cannot rewrite frozen truth or override gate truth by itself.
+
+## Learning Notes
+
+- Reuse learning to improve scenario sharpness, especially around stale-data, downgrade, and recovery cases.
+- Stale learning should produce cautionary scenarios, not silent assumptions.
+- Learning cannot define pass/fail by itself.
+
+## Backstop CLI
+
+- `beacon test-case ...`
+- `beacon user-story ...` when ACs are under-specified
+- `beacon prototype ...` when real UX/UI handoff is present

@@ -6,6 +6,7 @@
 - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md`
 - `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`
+- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 
 ## Machine Secondary Surface
 

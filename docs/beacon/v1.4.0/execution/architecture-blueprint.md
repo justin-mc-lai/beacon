@@ -104,6 +104,7 @@ Rules:
 - surfaces explain and route
 - surfaces do not own truth
 - support surfaces must answer “what next, why, and what unlocks”
+- `prototype` remains on the lifecycle surface list, but is conditionally triggered only when a feature has real UX/UI surface or route/state/interaction handoff needs
 
 ### 5. Plugin and Projection Layer
 
@@ -653,21 +654,6 @@ It is a simplification-by-separation release:
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.4.0`
-- feature_count: `4`
-- transaction_id: `tx-94cb0cffdb226d37e`
-- source_hash: `sha256:f7f5b5e42eba71b283a558a5ce09831431da952d82316527da5e81d6232557c8`
-
-### Registered Feature Baselines
-- `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json`
-- `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json`
-- `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json`
-- `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:START -->
 ## Technical Delta Blueprint
 
@@ -736,3 +722,88 @@ It is a simplification-by-separation release:
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-branch-governance-human-surface-and-implement-gate:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.4.0`
+- feature_count: `5`
+- transaction_id: `tx-75446365e394fa5e2`
+- source_hash: `sha256:18077c95167843aa2e762978d525bc18e16122a884dd1c244cf68c20436f4c30`
+
+### Registered Feature Baselines
+- `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json`
+- `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json`
+- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json`
+- `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json`
+- `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
+- version: `v1.4.0`
+
+### Source Refs
+- prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+- user_story: `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+- test_case: `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1`
+- transaction_id: `tx-556bdede19143af58`
+- source_hash: `sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293`
+- projection_seq: `1`
+- version: `v1.4.0`
+- feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.4.0`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `/Users/apple/Developer/Personal/products/beacon`
+- workspace_root: `/Users/apple/Developer/Personal/products/beacon`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution:END -->

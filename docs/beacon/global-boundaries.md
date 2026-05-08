@@ -10,9 +10,23 @@
 
 ## 人类主面约束
 
-### 1. 人类主流程升级为 7 段
+### 1. 人类主流程收敛为 6 段主链 + 条件 prototype 层
 
 无论 `team`、`subagent`、`ralph` 或宿主原生能力如何增强，人类主流程都必须保持为：
+
+```text
+prd
+→ user-story
+→ test-case
+→ implement
+→ qa
+→ release
+```
+
+其中：
+
+- `prototype` 不是默认必经主链，而是条件触发层
+- 只有在 feature 实际存在 UX/UI surface、页面/状态/导航/交互 handoff 需求时，才要求进入：
 
 ```text
 prd
@@ -24,11 +38,10 @@ prd
 → release
 ```
 
-其中：
-
 - `prototype` 只表示 `requirement-driven wireframe freeze`
-- 它位于 `test-case` 与 `implement` 之间
+- 它仍位于 `test-case` 与 `implement` 之间
 - 它不承担高保真视觉稿、最终前端页面或设计系统定稿职责
+- 对纯后端、纯契约、纯治理、无实际 UX/UI handoff 的 feature，不应强制插入 `prototype`
 
 这是 Beacon 的人类主心智面，不得因内部能力增强而继续扩张。
 
@@ -167,9 +180,11 @@ Beacon 默认必须支持把下列对齐关系做成正式检查对象：
 
 而不能静默滑过。
 
-### 9A. `prototype` 必须是闭环推理产物，不得退化为静态模板说明
+### 9A. `prototype` 在被触发时必须是闭环推理产物，不得退化为静态模板说明
 
-`prototype` 可以保留结构化模板骨架，但页面内容必须基于真实：
+当且仅当 feature 具备实际 UX/UI surface、页面/状态/导航/交互 handoff 需求时，`prototype` 才应被触发。
+
+一旦触发，`prototype` 可以保留结构化模板骨架，但页面内容必须基于真实：
 
 - `prd`
 - `user-story`

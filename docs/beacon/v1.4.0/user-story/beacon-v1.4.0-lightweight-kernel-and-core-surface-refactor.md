@@ -14,7 +14,8 @@
 ## Diagram Truth
 
 - `branch-flow`
-  - 人类主流程仍固定为 `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+  - 人类主链仍固定为 `prd -> user-story -> test-case -> implement -> qa -> release`
+  - `prototype` 只在真实 UX/UI surface 或 route/state/interaction handoff 场景下插入为条件层
   - `change` 是 truth 变更路由，不是新 stage
   - `brainstorm` 是只读收敛面，不是 truth 面
   - `help/status/archive/boundaries` 属于 support surface，不取代主链

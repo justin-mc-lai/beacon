@@ -51,7 +51,7 @@ Out of scope:
 
 - 新增新的公开一级主命令。
 - 改写 Beacon 主流程：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
 - 让 `beacon-toolkit-branch-governance` 替代 `implement` 成为独立开发入口。
 - 在本轮要求完整覆盖所有企业 GitFlow 变体、发布平台或 CI 平台细节。
 - 在本轮细化到具体命令参数、JSON 文件路径、类名、模块拆分或底层 git 实现细节。
@@ -98,7 +98,7 @@ Out of scope:
 
 - 新增新的公开一级主命令。
 - 改写 Beacon 主流程：
-  - `prd -> user-story -> test-case -> prototype -> implement -> qa -> release`
+  - `prd -> user-story -> test-case -> implement -> qa -> release`
 - 让 `beacon-toolkit-branch-governance` 替代 `implement` 成为独立开发入口。
 - 在本轮要求完整覆盖所有企业 GitFlow 变体、发布平台或 CI 平台细节。
 - 在本轮细化到具体命令参数、JSON 文件路径、类名、模块拆分或底层 git 实现细节。
