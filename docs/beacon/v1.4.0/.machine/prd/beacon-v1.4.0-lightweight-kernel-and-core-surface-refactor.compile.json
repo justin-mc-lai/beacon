@@ -35,6 +35,8 @@
     "docs/beacon/global-boundaries.md",
     "docs/beacon/v1.4.0/SUMMARY.md",
     "docs/beacon/v1.4.0/execution/index.md",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
     "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.md",
     "docs/beacon/v1.4.0/prd/beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.md",
     ".beacon/debug/index.json",
@@ -98,6 +100,38 @@
         "event_type": "update",
         "committed_at": "2026-05-06T18:58:26.603561+00:00",
         "source_hash": "7551ca6c4eda4248fe36509d9bd42329d6ad412b8f6df8b6e47ca954e9abf063"
+      },
+      "branch_governance": {
+        "schema_version": "1.0",
+        "tool_name": "beacon-toolkit-branch-governance",
+        "feature": "",
+        "version": "v1.4.0",
+        "template_name": "standard-feature",
+        "template_source": "default",
+        "service_key": "beacon",
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "base_branch": "main",
+        "current_branch": "main",
+        "target_branch": "main",
+        "worktree_mode": "branch-only",
+        "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "previous_version_baseline_branch": "",
+        "next_version_feature_branch": "",
+        "hotfix_branch_naming_rule": "",
+        "allow_worktree_when_feature_dirty": false,
+        "merge_direction_policy": [],
+        "forbidden_directions": [],
+        "evidence_contract": [],
+        "evidence": {},
+        "status": "pass",
+        "blocked": false,
+        "reason_codes": [],
+        "blocked_reason": "",
+        "recommended_action": "",
+        "missing_evidence_fields": [],
+        "evidence_contract_status": "pass",
+        "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `default`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `main`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> main [current]\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
       }
     }
   },
@@ -111,16 +145,16 @@
   "missing_headings": [],
   "open_questions": [],
   "contract_ok": true,
-  "compile_hash": "41877fef2b54cae1d6bdafb449499d01a195e41a2e409c8317d493da4dd98327",
-  "source_hash": "9cb6e658492b5291ad158ee3989c4f556378315b393946948a9bf6c53b6d7a9c",
-  "projection_seq": "prd-9cb6e658492b5291",
-  "transaction_id": "tx-prd-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor-prd-9cb6e658492b5291",
-  "committed_at": "2026-05-07T01:10:21.302308+00:00",
+  "compile_hash": "8fb7f009644c7c556d91bff93bc33ad22cf25b7285f7c7ac4d75e307d6fddf74",
+  "source_hash": "a7328f35710f4621114a034eea25cc2ffb2837a2645e4f4a2360c06b34b6d69c",
+  "projection_seq": "prd-a7328f35710f4621",
+  "transaction_id": "tx-prd-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor-prd-a7328f35710f4621",
+  "committed_at": "2026-05-08T10:21:50.548835+00:00",
   "sink_checksums": {
-    "human": "41877fef2b54cae1d6bdafb449499d01a195e41a2e409c8317d493da4dd98327",
-    "machine": "988c41633dcb785327be86af1f3a2547fea3e19c4b13de37b6f482e251c7a6a2"
+    "human": "8fb7f009644c7c556d91bff93bc33ad22cf25b7285f7c7ac4d75e307d6fddf74",
+    "machine": "bf57b26b80ddbdfeafdd0d39e0957e3091a7d5b728a2aa0734747a0f3dbc55f9"
   },
   "status": "applied",
-  "supersedes_transaction_id": "tx-prd-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor-prd-bc62510f3c123478",
-  "supersedes_projection_seq": "prd-bc62510f3c123478"
+  "supersedes_transaction_id": "tx-prd-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor-prd-9cb6e658492b5291",
+  "supersedes_projection_seq": "prd-9cb6e658492b5291"
 }
