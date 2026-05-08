@@ -197,6 +197,19 @@
 | AC-1203 | state-nav-interaction-frozen | prototype 必须至少冻结 state visibility、navigation contract、interaction contract。 |
 | AC-1204 | no-implement-ready-before-prototype | 在 prototype 相关产物未冻结前，本 feature 不得表述为 `implement-ready`。 |
 
+## Story 14: requirement gate 必须从 machine 预写前置收敛到 human truth + 最小 freeze receipt
+
+作为 runtime governance owner，我希望 `implement / qa / release` 的 requirement gate 在保持 fail-closed 强度的同时，不再把 machine-side requirement materials 与长期 mirror 双写当成默认主链前置，而是收敛到 human truth 完整性、最小 freeze receipt 与确定性编译能力，这样 Beacon 才能同时满足“唯一冻结真相”和“继续减重”。
+
+### Acceptance Criteria
+
+| AC ID | Theme | Description |
+| --- | --- | --- |
+| AC-1301 | human-truth-hard-gate | hard gate 必须继续要求 human PRD / user-story / test-case 完整，且在条件触发时要求 prototype 完整。 |
+| AC-1302 | machine-derived-not-truth | machine-side user-story、AC matrix、story scenario map、envelope、candidate ledger、decision log 等 requirement materials 必须被明确降级为 compiled projection / cache / audit evidence，而不是第二真相或默认前置。 |
+| AC-1303 | deterministic-rebuild-before-block | 当 machine projection 缺失时，若能从当前 frozen human truth 确定性重建，则系统必须优先重建或按需编译，而不是直接 route 到 change。 |
+| AC-1304 | minimal-freeze-receipt-hard-gate | strong gate 仍必须保留最小 freeze receipt 校验；若 baseline hash / revision receipt 证明 human truth 已漂移，系统必须继续 fail-closed 并 route 到 `beacon-change`。 |
+
 ## Delivery Notes
 
 - 本 story package 的目标不是直接约束代码实现细节，而是把“继续减重 Beacon、释放 LLM 推力能力”的方向拆成可执行故事。

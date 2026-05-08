@@ -212,11 +212,34 @@ Learning kernel 已经存在 typed contract、subject surface、forbidden surfac
 - 已存在的 `ask`、learning、diagram、semantic 能力优先复用。
 - 能通过升格现有能力解决的问题，不再新增并行目录、并行命令、并行真相。
 
+### 3.1A Canonical Truth First, Machine Projection Derived
+
+- `docs/beacon/<version>/prd/`、`user-story/`、`qa/test-cases/`、以及条件触发时的 `prototype/` 继续构成唯一冻结 truth root。
+- `.machine/` requirement materials 必须被重新定义为:
+  - compiled projection
+  - runtime cache
+  - audit evidence
+  - deterministic downstream input
+- `.machine/` requirement materials 不得继续被表述为第二真相源，也不得因“尚未预写出投影文件”而默认阻断 `implement / qa`。
+- 如果某个 machine projection 缺失，但能从当前 frozen human truth 确定性重建，则系统应优先重建或按需编译，而不是直接把操作者退回 change loop。
+- 只有在 frozen human truth 本身不完整，或无法生成确定性编译结果时，主链 gate 才允许 fail-closed 阻断。
+
 ### 3.2 Decision In Prompt, Guardrail In Python
 
 - LLM 负责现场决策协议、建模推理、收敛解释。
 - Python 负责事实采集、schema 校验、contract 编译、gate 写入、阻断护栏。
 - 两者必须明确分工，不得继续把解释性判断无边界堆回 Python。
+
+### 3.2A Minimal Freeze Receipt Over Dual-Write Mirrors
+
+- 强 gate 必须保留，但 gate 绑定的对象应收敛到最小 freeze receipt，而不是长期双重事务多写。
+- 最小 freeze receipt 至少应能表达：
+  - 当前 feature 对应的 canonical truth paths
+  - freeze 时的 source hash / baseline hash
+  - compile/runtime line stamp
+  - 当前 feature 的 frozen transaction / revision receipt
+- 旧式 PRD mirror、latest pointer、以及多份长期并行 machine mirror 可以继续存在于兼容窗口，但默认定位必须降级为 cache/audit，而不是主链 hard prerequisite。
+- dual-read 仍应用于决策协议 cutover 对账；但 requirement package 不应长期依赖 dual-write mirror 作为 freeze 真相校验主手段。
 
 ### 3.3 Learning Is Hint, Not Truth
 

@@ -80,6 +80,10 @@
 | AC-1202 | TC-050 | contract | `python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k "route_surface_is_frozen_in_prototype_scope" --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | prototype scope covers decision-surface route presentation for core skills and ask/brainstorm/change | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-050.json` |
 | AC-1203 | TC-051 | integration | `python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k "state_navigation_and_interaction_contracts_are_required" --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | prototype handoff requires state visibility, navigation contract, and interaction contract | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-051.json` |
 | AC-1204 | TC-052 | regression | `python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k "cannot_claim_implement_ready_before_prototype_freeze" --junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"` | the feature cannot be described as implement-ready before prototype freeze artifacts exist | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-052.json` |
+| AC-1301 | TC-053 | contract | `python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k "human_docs_still_block"` | requirement gate still blocks when frozen human requirement truth is incomplete | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-053.json` |
+| AC-1302 | TC-054 | regression | `python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k "missing_machine_projection_does_not_block"` | missing machine-side requirement projections no longer act as default hard gate blockers | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-054.json` |
+| AC-1303 | TC-055 | integration | `python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k "feature_scope_does_not_inherit_sibling_drift"` | feature-level implement/qa gate does not inherit unrelated sibling feature drift from the same version line | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-055.json` |
+| AC-1304 | TC-056 | regression | `python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k "freeze_receipt_drift_still_blocks"` | baseline hash / revision receipt drift remains a fail-closed blocker even after machine projection slimming | `.beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-056.json` |
 
 ---
 
@@ -139,6 +143,10 @@
 | TC-050 | Pending | from AC-1202 |
 | TC-051 | Pending | from AC-1203 |
 | TC-052 | Pending | from AC-1204 |
+| TC-053 | Pending | from AC-1301 |
+| TC-054 | Pending | from AC-1302 |
+| TC-055 | Pending | from AC-1303 |
+| TC-056 | Pending | from AC-1304 |
 
 ---
 
