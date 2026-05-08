@@ -3,21 +3,35 @@
   "feature": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
   "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
   "version": "v1.4.0",
-  "current_revision_id": "R1",
+  "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-05-07T16:05:42.969964+00:00",
+  "updated_at": "2026-05-08T10:17:28.254724+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:f3aa5845d7b5d81f518f7c660f3a29a05cddbee8d5e7b784170bda4a635e2d69",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-05-07T06:17:12.464421+00:00",
       "frozen_at": "2026-05-07T06:48:07.207295+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "source_revision_id": "R1",
+      "reason": "change-request",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:fc738cdac05e4a4e68c0bcb747ef0f983a10d3043f1f50074d43b4f44a14d197",
+      "superseded_by": null,
+      "created_at": "2026-05-08T10:17:20.506035+00:00",
+      "frozen_at": "2026-05-08T10:17:30.897607+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +42,7 @@
       "revision_id": "R1",
       "title": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -1067,6 +1081,1018 @@
       ],
       "accepted_at": "2026-05-07T06:48:56.439288+00:00",
       "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-v1.4.0-branch-governance-human-surface-and-implement-gate",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "toolkit-tier",
+          "text": "`beacon-toolkit-branch-governance` 必须作为 optional support/toolkit skill 暴露。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "no-public-command",
+          "text": "系统不得为该能力新增新的公开一级主命令。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "no-new-stage",
+          "text": "系统不得把该能力升级成新的 lifecycle stage。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "alongside-toolkits",
+          "text": "该能力必须与 `beacon-toolkit-metadata`、`beacon-toolkit-lighthouse` 并排存在。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "flow-diagram-required",
+          "text": "人类面必须输出正式分支流程图，而不是只显示 branch 文本。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "current-position-visible",
+          "text": "流程图必须显示当前 workspace 位于图上的哪个节点。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "allowed-forbidden-visible",
+          "text": "流程图必须明确区分允许路径与禁止路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "next-action-visible",
+          "text": "人类面必须为当前状态给出下一步推荐动作。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "service-repo-visible",
+          "text": "人类面必须显示目标 `service_key` 与 `repo_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "branch-state-visible",
+          "text": "人类面必须显示 `base_branch / current_branch / target_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "worktree-state-visible",
+          "text": "人类面必须显示 `worktree_mode / worktree_path`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "governance-verdict-visible",
+          "text": "人类面必须显示 `branch_template_name / evidence_contract_status / blocked_reason / recommended_action`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "project-default-template",
+          "text": "系统必须支持项目级默认 branch governance template。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "task-override-template",
+          "text": "系统必须支持当前任务/当前版本的显式覆盖规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "override-cannot-break-hard-rules",
+          "text": "覆盖规则不得突破 protected branch、merge direction、evidence contract 等硬约束。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "template-selection-visible",
+          "text": "当前采用的是默认模板还是覆盖模板，必须对人类可见。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "baseline-field",
+          "text": "metadata/profile 必须支持 `previous_version_baseline_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "next-feature-field",
+          "text": "metadata/profile 必须支持 `next_version_feature_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-019",
+          "kind": "ac",
+          "theme": "hotfix-and-worktree-fields",
+          "text": "metadata/profile 必须支持 `hotfix_branch_naming_rule` 与 `allow_worktree_when_feature_dirty`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-020",
+          "kind": "ac",
+          "theme": "governance-contract-fields",
+          "text": "metadata/profile 必须支持 `merge_direction_policy` 与 `evidence_contract`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-021",
+          "kind": "ac",
+          "theme": "implement-loads-contract",
+          "text": "`implement` 进入执行前必须载入 branch governance contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-022",
+          "kind": "ac",
+          "theme": "implement-verifies-alignment",
+          "text": "`implement` 必须校验 repo / service / branch / worktree / merge direction 对齐。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-023",
+          "kind": "ac",
+          "theme": "evidence-checked",
+          "text": "`implement` 必须校验 evidence contract 要求。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-024",
+          "kind": "ac",
+          "theme": "blocked-no-code",
+          "text": "contract 不通过时不得进入编码实现。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-025",
+          "kind": "ac",
+          "theme": "switch-to-compliant-branch",
+          "text": "合规条件满足时，系统必须支持切换到既有合规 branch。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-026",
+          "kind": "ac",
+          "theme": "create-or-switch-worktree",
+          "text": "模板要求 worktree 隔离时，系统必须支持创建或切换到合规 worktree。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-027",
+          "kind": "ac",
+          "theme": "switch-explained-to-human",
+          "text": "该切换动作必须对人类可见并有清楚说明。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-028",
+          "kind": "ac",
+          "theme": "fail-closed-if-cannot-switch",
+          "text": "不满足切换条件时必须阻断，不得静默继续开发。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-029",
+          "kind": "ac",
+          "theme": "previous-hotfix-forward-port-template",
+          "text": "系统必须支持 `previous baseline -> hotfix -> uat -> forward-port -> next feature` 模板。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-030",
+          "kind": "ac",
+          "theme": "forbidden-next-feature-first-fix",
+          "text": "系统必须明确禁止 `next feature` 作为上版生产缺陷的首修承接线。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-031",
+          "kind": "ac",
+          "theme": "evidence-fields-minimum",
+          "text": "该场景至少要求 `source_commit / forward_port_commit / origin_uat_head / pipeline_run_id`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "AC-032",
+          "kind": "ac",
+          "theme": "flow-diagram-shows-dual-lane",
+          "text": "人类面流程图必须清楚表达上版 lane 与下版 lane 是两条不同线。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-toolkit-branch-governance` 必须作为 optional support/toolkit skill 暴露。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 系统不得为该能力新增新的公开一级主命令。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 系统不得把该能力升级成新的 lifecycle stage。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — 该能力必须与 `beacon-toolkit-metadata`、`beacon-toolkit-lighthouse` 并排存在。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — 人类面必须输出正式分支流程图，而不是只显示 branch 文本。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 流程图必须显示当前 workspace 位于图上的哪个节点。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — 流程图必须明确区分允许路径与禁止路径。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — 人类面必须为当前状态给出下一步推荐动作。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — 人类面必须显示目标 `service_key` 与 `repo_root`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 人类面必须显示 `base_branch / current_branch / target_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — 人类面必须显示 `worktree_mode / worktree_path`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — 人类面必须显示 `branch_template_name / evidence_contract_status / blocked_reason / recommended_action`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — 系统必须支持项目级默认 branch governance template。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — 系统必须支持当前任务/当前版本的显式覆盖规则。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — 覆盖规则不得突破 protected branch、merge direction、evidence contract 等硬约束。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — 当前采用的是默认模板还是覆盖模板，必须对人类可见。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — metadata/profile 必须支持 `previous_version_baseline_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-017"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — metadata/profile 必须支持 `next_version_feature_branch`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-018"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-019",
+          "kind": "test",
+          "text": "Verify AC-019 — metadata/profile 必须支持 `hotfix_branch_naming_rule` 与 `allow_worktree_when_feature_dirty`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-019"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-020",
+          "kind": "test",
+          "text": "Verify AC-020 — metadata/profile 必须支持 `merge_direction_policy` 与 `evidence_contract`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-020"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-021",
+          "kind": "test",
+          "text": "Verify AC-021 — `implement` 进入执行前必须载入 branch governance contract。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-021"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-022",
+          "kind": "test",
+          "text": "Verify AC-022 — `implement` 必须校验 repo / service / branch / worktree / merge direction 对齐。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-022"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-023",
+          "kind": "test",
+          "text": "Verify AC-023 — `implement` 必须校验 evidence contract 要求。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-023"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-024",
+          "kind": "test",
+          "text": "Verify AC-024 — contract 不通过时不得进入编码实现。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-024"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-025",
+          "kind": "test",
+          "text": "Verify AC-025 — 合规条件满足时，系统必须支持切换到既有合规 branch。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-025"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-026",
+          "kind": "test",
+          "text": "Verify AC-026 — 模板要求 worktree 隔离时，系统必须支持创建或切换到合规 worktree。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-026"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-027",
+          "kind": "test",
+          "text": "Verify AC-027 — 该切换动作必须对人类可见并有清楚说明。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-027"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-028",
+          "kind": "test",
+          "text": "Verify AC-028 — 不满足切换条件时必须阻断，不得静默继续开发。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-028"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-029",
+          "kind": "test",
+          "text": "Verify AC-029 — 系统必须支持 `previous baseline -> hotfix -> uat -> forward-port -> next feature` 模板。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-029"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-030",
+          "kind": "test",
+          "text": "Verify AC-030 — 系统必须明确禁止 `next feature` 作为上版生产缺陷的首修承接线。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-030"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-031",
+          "kind": "test",
+          "text": "Verify AC-031 — 该场景至少要求 `source_commit / forward_port_commit / origin_uat_head / pipeline_run_id`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-031"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        },
+        {
+          "id": "TEST-032",
+          "kind": "test",
+          "text": "Verify AC-032 — 人类面流程图必须清楚表达上版 lane 与下版 lane 是两条不同线。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-032"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/user-story/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md"
+        }
+      ]
     }
   ]
 }
