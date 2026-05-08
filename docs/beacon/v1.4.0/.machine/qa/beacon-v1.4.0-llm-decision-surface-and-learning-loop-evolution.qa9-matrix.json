@@ -1,0 +1,1669 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-08T18:00:10.039449",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-08T18:00:10.038136",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-001 :: the six core skills are all covered by one thickening governance surface",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"core_skills_are_in_scope\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the six core skills are all covered by one thickening governance surface",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-001/command.txt"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-002 :: each core skill exposes Inputs Contract, Decision Protocol, Anti-Inertia Notes, ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"stable_sections_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "each core skill exposes Inputs Contract, Decision Protocol, Anti-Inertia Notes, Learning Notes, and Backstop CLI",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-002/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-002/command.txt"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-003 :: the thickened skill surface can be consumed by the host without relying on hidde",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"host_readable_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the thickened skill surface can be consumed by the host without relying on hidden code-only fallback",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-003/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-003/command.txt"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-004 :: thickened skill surfaces do not become freeform frozen-truth write surfaces",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"skill_surface_cannot_write_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "thickened skill surfaces do not become freeform frozen-truth write surfaces",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-004/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-004/command.txt"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-101",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-101 :: Beacon formally treats `beacon ask` as an existing public route surface rather t",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_ask_governance.py -k \"ask_is_real_public_surface\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon formally treats `beacon ask` as an existing public route surface rather than a proposed future command",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-005/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-005/command.txt"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-102",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-102 :: `beacon ask` continues to default to plan-only mode",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_ask_governance.py -k \"ask_plan_only_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon ask` continues to default to plan-only mode",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-006/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-006/command.txt"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-103",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-103 :: `ask --execute` can only route into existing legal Beacon surfaces and cannot by",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_ask_governance.py -k \"ask_execute_is_bounded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`ask --execute` can only route into existing legal Beacon surfaces and cannot bypass implement, qa, or gate",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-007/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-007/command.txt"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-104",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-104 :: `ask` cannot directly write frozen truth, gate verdict, or release state",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_ask_governance.py -k \"ask_cannot_freeform_writeback\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`ask` cannot directly write frozen truth, gate verdict, or release state",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-008/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-008/command.txt"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-201",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-201 :: `ask` is classified as natural-language entry, route preview, and controlled exe",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_route_role_split.py -k \"ask_role_is_route_preview_execute\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`ask` is classified as natural-language entry, route preview, and controlled execution surface",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-009/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-009/command.txt"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-202",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-202 :: `brainstorm` is classified as read-only convergence, contradiction check, and ro",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_route_role_split.py -k \"brainstorm_is_read_only_convergence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`brainstorm` is classified as read-only convergence, contradiction check, and route suggestion surface",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-010/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-010/command.txt"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-203",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-203 :: frozen-truth change requests route to the change loop instead of remaining in as",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_route_role_split.py -k \"frozen_truth_changes_route_to_change\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "frozen-truth change requests route to the change loop instead of remaining in ask or brainstorm",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-011/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-011/command.txt"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-204",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-204 :: ask, brainstorm, and change are not presented as replacements for the seven-stag",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_route_role_split.py -k \"no_new_stage_confusion\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "ask, brainstorm, and change are not presented as replacements for the seven-stage main lifecycle",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-012/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-012/command.txt"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-301",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-301 :: learning disclosure reuses the existing typed learning contract kernel rather th",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_learning_disclosure.py -k \"reuse_existing_learning_kernel\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "learning disclosure reuses the existing typed learning contract kernel rather than inventing a parallel system",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-013/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-013/command.txt"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-302",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-302 :: learning hints can be disclosed in feature, host, runner, then domain order",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_learning_disclosure.py -k \"progressive_disclosure_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "learning hints can be disclosed in feature, host, runner, then domain order",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-014/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-014/command.txt"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-303",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-303 :: learning hints influence routing or explanation but cannot define truth, gate ve",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_learning_disclosure.py -k \"learning_is_hint_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "learning hints influence routing or explanation but cannot define truth, gate verdict, or release-ready",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-015/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-015/command.txt"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-304",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-304 :: stale or superseded learning notes downgrade cleanly instead of continuing to st",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_learning_disclosure.py -k \"stale_and_superseded_learning_downgrade\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "stale or superseded learning notes downgrade cleanly instead of continuing to steer decisions as fresh evidence",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-016/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-016/command.txt"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-401",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-401 :: when diagram-truth complexity is present, requirement generation cannot fall bac",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_requirement_reasoning.py -k \"diagram_trigger_blocks_template_fill\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "when diagram-truth complexity is present, requirement generation cannot fall back to shallow template fill",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-017/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-017/command.txt"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-402",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-402 :: prd, user-story, and test-case generation explicitly reason about states, transi",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_requirement_reasoning.py -k \"state_transition_reasoning_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prd, user-story, and test-case generation explicitly reason about states, transitions, exceptional paths, and invariants",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-018/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-018/command.txt"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-403",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-403 :: state-axis information is detected and reused when the problem exposes a stable ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_requirement_reasoning.py -k \"state_axis_is_reused_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "state-axis information is detected and reused when the problem exposes a stable state ladder",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-019/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-019/command.txt"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-404",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-404 :: requirement outputs remain consistent with existing diagram truth artifacts",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_requirement_reasoning.py -k \"output_stays_consistent_with_diagram_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement outputs remain consistent with existing diagram truth artifacts",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-020/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-020/command.txt"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-501",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-501 :: semantic trace is treated as a shared input for requirement generation and valid",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_semantic_requirement_alignment.py -k \"semantic_trace_is_shared_input\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "semantic trace is treated as a shared input for requirement generation and validation",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-021/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-021/command.txt"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-502",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-502 :: official state, action, module, and page terms are preferred over ad hoc wording",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_semantic_requirement_alignment.py -k \"official_vocabulary_is_reused\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "official state, action, module, and page terms are preferred over ad hoc wording",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-022/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-022/command.txt"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-503",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-503 :: semantic trace can validate wording but does not become a second truth root",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_semantic_requirement_alignment.py -k \"semantic_trace_is_not_second_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "semantic trace can validate wording but does not become a second truth root",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-023/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-023/command.txt"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-504",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-504 :: requirement wording drift against semantic trace is surfaced and reduced",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_semantic_requirement_alignment.py -k \"wording_drift_is_reduced\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement wording drift against semantic trace is surfaced and reduced",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-024/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-024/command.txt"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-601",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-601 :: the first-stage modeling upgrade explicitly reuses diagram truth and semantic di",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_modeling_upgrade_strategy.py -k \"reuse_diagram_and_semantic_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the first-stage modeling upgrade explicitly reuses diagram truth and semantic dictionary before adding new structures",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-025/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-025/command.txt"
+    },
+    {
+      "tc_id": "TC-026",
+      "ac_id": "AC-602",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-602 :: any addition of events, invariants, or entities remains minimal and justified by",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_modeling_upgrade_strategy.py -k \"minimal_extension_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "any addition of events, invariants, or entities remains minimal and justified by gaps in existing modeling",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-026/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-026/command.txt"
+    },
+    {
+      "tc_id": "TC-027",
+      "ac_id": "AC-603",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-603 :: the feature does not require a full new five-folder business-model truth structu",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_modeling_upgrade_strategy.py -k \"no_forced_business_model_five_folders\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the feature does not require a full new five-folder business-model truth structure as an entry condition",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-027/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-027/command.txt"
+    },
+    {
+      "tc_id": "TC-028",
+      "ac_id": "AC-604",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-604 :: governance closes around existing modeling before heavier structural expansion i",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_modeling_upgrade_strategy.py -k \"governance_before_expansion\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "governance closes around existing modeling before heavier structural expansion is allowed",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-028/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-028/command.txt"
+    },
+    {
+      "tc_id": "TC-029",
+      "ac_id": "AC-701",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-701 :: Python responsibility converges on fact read, schema validation, contract write,",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_guardrail_split.py -k \"python_four_duties_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Python responsibility converges on fact read, schema validation, contract write, and gate verdict write",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-029/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-029/command.txt"
+    },
+    {
+      "tc_id": "TC-030",
+      "ac_id": "AC-702",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-702 :: explanatory and decision-protocol content is promoted into skill surfaces instea",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_guardrail_split.py -k \"explanation_moves_to_skill_surface\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "explanatory and decision-protocol content is promoted into skill surfaces instead of remaining hidden in Python fallback",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-030/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-030/command.txt"
+    },
+    {
+      "tc_id": "TC-031",
+      "ac_id": "AC-703",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-703 :: Python still enforces fail-closed behavior after explanation logic is migrated u",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_guardrail_split.py -k \"python_remains_fail_closed_guardrail\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Python still enforces fail-closed behavior after explanation logic is migrated upward",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-031/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-031/command.txt"
+    },
+    {
+      "tc_id": "TC-032",
+      "ac_id": "AC-704",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-704 :: the feature does not drift into a language-migration objective",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_guardrail_split.py -k \"not_a_language_migration_project\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the feature does not drift into a language-migration objective",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-032/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-032/command.txt"
+    },
+    {
+      "tc_id": "TC-033",
+      "ac_id": "AC-801",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-801 :: qa, implement, prd, and release all enter the same slimming-governance scope",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_slimming_scope.py -k \"four_heavy_modules_are_covered\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "qa, implement, prd, and release all enter the same slimming-governance scope",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-033/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-033/command.txt"
+    },
+    {
+      "tc_id": "TC-034",
+      "ac_id": "AC-802",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-802 :: each target module separates fact-write logic from explanation-judgment logic",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_slimming_scope.py -k \"read_write_vs_judgment_classification\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "each target module separates fact-write logic from explanation-judgment logic",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-034/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-034/command.txt"
+    },
+    {
+      "tc_id": "TC-035",
+      "ac_id": "AC-803",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-803 :: migration prioritizes explanation and judgment logic before touching guardrail w",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_slimming_scope.py -k \"judgment_logic_migrates_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "migration prioritizes explanation and judgment logic before touching guardrail write paths",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-035/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-035/command.txt"
+    },
+    {
+      "tc_id": "TC-036",
+      "ac_id": "AC-804",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-804 :: all four modules share one slimming-governance standard rather than diverging in",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_python_slimming_scope.py -k \"shared_governance_view_across_modules\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "all four modules share one slimming-governance standard rather than diverging into local heuristics",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-036/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-036/command.txt"
+    },
+    {
+      "tc_id": "TC-037",
+      "ac_id": "AC-901",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-901 :: no decision cutover occurs before dual-read comparison is available",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_dual_read_cutover.py -k \"dual_read_required_before_cutover\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "no decision cutover occurs before dual-read comparison is available",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-037/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-037/command.txt"
+    },
+    {
+      "tc_id": "TC-038",
+      "ac_id": "AC-902",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-902 :: blocked reason, downgrade path, fallback path, and gate verdict consistency are ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_dual_read_cutover.py -k \"reason_and_gate_consistency_checked\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "blocked reason, downgrade path, fallback path, and gate verdict consistency are all checked during dual-read",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-038/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-038/command.txt"
+    },
+    {
+      "tc_id": "TC-039",
+      "ac_id": "AC-903",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-903 :: cutover remains blocked when dual-read consistency is insufficient",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_dual_read_cutover.py -k \"inconsistent_cutover_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "cutover remains blocked when dual-read consistency is insufficient",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-039/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-039/command.txt"
+    },
+    {
+      "tc_id": "TC-040",
+      "ac_id": "AC-904",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-904 :: a compatibility window preserves legacy fallback even after primary cutover",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_dual_read_cutover.py -k \"compatibility_window_retains_legacy_fallback\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "a compatibility window preserves legacy fallback even after primary cutover",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-040/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-040/command.txt"
+    },
+    {
+      "tc_id": "TC-041",
+      "ac_id": "AC-1001",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1001 :: core skills no longer present mixed v1.3.9, v1.3.12, and v1.4.0 storytelling dri",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_skill_version_alignment.py -k \"no_mixed_old_version_lines\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "core skills no longer present mixed v1.3.9, v1.3.12, and v1.4.0 storytelling drift",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-041/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-041/command.txt"
+    },
+    {
+      "tc_id": "TC-042",
+      "ac_id": "AC-1002",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1002 :: operator-rule text matches the current runtime and docs reality",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_skill_version_alignment.py -k \"operator_rule_matches_runtime_and_docs\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "operator-rule text matches the current runtime and docs reality",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-042/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-042/command.txt"
+    },
+    {
+      "tc_id": "TC-043",
+      "ac_id": "AC-1003",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1003 :: runtime, docs, and host-native version lines are internally consistent",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_skill_version_alignment.py -k \"runtime_docs_host_lines_are_consistent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "runtime, docs, and host-native version lines are internally consistent",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-043/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-043/command.txt"
+    },
+    {
+      "tc_id": "TC-044",
+      "ac_id": "AC-1004",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1004 :: version-surface alignment occurs before or alongside thickening rather than afte",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_skill_version_alignment.py -k \"version_alignment_precedes_surface_thickening\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "version-surface alignment occurs before or alongside thickening rather than after it",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-044/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-044/command.txt"
+    },
+    {
+      "tc_id": "TC-045",
+      "ac_id": "AC-1101",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1101 :: help, status, doctor, and ask can explain why a route is recommended",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_support_route_explainability.py -k \"route_reason_is_visible\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "help, status, doctor, and ask can explain why a route is recommended",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-045/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-045/command.txt"
+    },
+    {
+      "tc_id": "TC-046",
+      "ac_id": "AC-1102",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1102 :: human-facing recommendation can indicate whether learning hints were used",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_support_route_explainability.py -k \"learning_hint_usage_is_visible\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "human-facing recommendation can indicate whether learning hints were used",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-046/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-046/command.txt"
+    },
+    {
+      "tc_id": "TC-047",
+      "ac_id": "AC-1103",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1103 :: the system can clearly explain when brainstorm is appropriate and when change is",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_support_route_explainability.py -k \"brainstorm_vs_change_reasoning_is_clear\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the system can clearly explain when brainstorm is appropriate and when change is mandatory",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-047/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-047/command.txt"
+    },
+    {
+      "tc_id": "TC-048",
+      "ac_id": "AC-1104",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1104 :: default support output prioritizes action rationale over raw command dumping",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_support_route_explainability.py -k \"action_reason_precedes_command_dump\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "default support output prioritizes action rationale over raw command dumping",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-048/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-048/command.txt"
+    },
+    {
+      "tc_id": "TC-049",
+      "ac_id": "AC-1201",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1201 :: the feature formally treats prototype as a conditionally triggered stage before ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k \"prototype_stage_is_conditionally_required_before_implement\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the feature formally treats prototype as a conditionally triggered stage before implement because a real UX/UI handoff surface exists",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-049/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-049/command.txt"
+    },
+    {
+      "tc_id": "TC-050",
+      "ac_id": "AC-1202",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1202 :: prototype scope covers decision-surface route presentation for core skills and a",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k \"route_surface_is_frozen_in_prototype_scope\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prototype scope covers decision-surface route presentation for core skills and ask/brainstorm/change",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-050/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-050/command.txt"
+    },
+    {
+      "tc_id": "TC-051",
+      "ac_id": "AC-1203",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1203 :: prototype handoff requires state visibility, navigation contract, and interactio",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k \"state_navigation_and_interaction_contracts_are_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "prototype handoff requires state visibility, navigation contract, and interaction contract",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-051/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-051/command.txt"
+    },
+    {
+      "tc_id": "TC-052",
+      "ac_id": "AC-1204",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1204 :: the feature cannot be described as implement-ready before prototype freeze artif",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_prototype_handoff_contract.py -k \"cannot_claim_implement_ready_before_prototype_freeze\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "the feature cannot be described as implement-ready before prototype freeze artifacts exist",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-052/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-052/command.txt"
+    },
+    {
+      "tc_id": "TC-053",
+      "ac_id": "AC-1301",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1301 :: requirement gate still blocks when frozen human requirement truth is incomplete",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k \"human_docs_still_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "requirement gate still blocks when frozen human requirement truth is incomplete",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-053/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-053/command.txt"
+    },
+    {
+      "tc_id": "TC-054",
+      "ac_id": "AC-1302",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1302 :: missing machine-side requirement projections no longer act as default hard gate ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k \"missing_machine_projection_does_not_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "missing machine-side requirement projections no longer act as default hard gate blockers",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-054/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-054/command.txt"
+    },
+    {
+      "tc_id": "TC-055",
+      "ac_id": "AC-1303",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1303 :: feature-level implement/qa gate does not inherit unrelated sibling feature drift",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k \"feature_scope_does_not_inherit_sibling_drift\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "feature-level implement/qa gate does not inherit unrelated sibling feature drift from the same version line",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-055/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-055/command.txt"
+    },
+    {
+      "tc_id": "TC-056",
+      "ac_id": "AC-1304",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution AC-1304 :: baseline hash / revision receipt drift remains a fail-closed blocker even after ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v13010_requirement_package_gates.py -k \"freeze_receipt_drift_still_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "baseline hash / revision receipt drift remains a fail-closed blocker even after machine projection slimming",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-056/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "last_run_id": "run-20260508T181024559040",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260508T181024559040/qa9-tc/TC-056/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-08T18:00:10.039480",
+  "coverage_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "exception",
+    "recovery",
+    "compatibility",
+    "permission",
+    "stale-data-or-drift",
+    "downgrade-or-fallback"
+  ],
+  "requirement_completeness_verdict": "pass",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project <project-root> --version v1.4.0 --json",
+  "supplement_task": {
+    "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "version": "v1.4.0",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "writeback_target": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project <project-root> --version v1.4.0 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "version": "v1.4.0",
+    "revision_id": "R1",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement",
+      "envelope": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.envelope.json",
+      "candidate_ledger": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.candidate-ledger.json",
+      "decision_log": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.supplement-decision-log.json",
+      "freeze_contract": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.freeze-contract.json",
+      "completeness": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.completeness.json",
+      "supplement_task": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.supplement-task.json",
+      "re_freeze_transaction": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.re-freeze-transaction.json"
+    },
+    "refreeze_required": true,
+    "revalidate_required": true,
+    "decision_count": 15,
+    "generated_at": "2026-05-08T10:00:05.754220+00:00"
+  }
+}

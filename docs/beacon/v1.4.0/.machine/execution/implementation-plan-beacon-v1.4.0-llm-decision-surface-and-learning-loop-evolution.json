@@ -1,0 +1,2222 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-r1",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:8a5a26ddd92a21386c2a13a23aeb358b86309df25edea37d1cebaf8b7726006a",
+  "plan_hash": "sha256:c1f5cef40f9c483776fd69cbe50bccc839b87be40e8761cdc8e05f6a91985f18",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "ac_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.0/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.0",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "skill_surface_state",
+      "thin | thickened | governed | stable",
+      "python_responsibility_state",
+      "overloaded | split_read_write | reduced | minimal_guardrail",
+      "learning_state",
+      "latent | readable | injected | audited",
+      "modeling_state",
+      "implicit | diagram_aware | semantic_aware | gate_consumed",
+      "prd / user-story / test-case",
+      "branch-flow / state-machine / decision-priority / state axis"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axis",
+      "state axes",
+      "state machine"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`",
+        "3. `diagram_truth.py` 已存在，能识别 `branch-flow / state-machine / decision-priority`。",
+        "- diagram truth 已能识别状态机与分支流；",
+        "- 是否存在 branch-flow",
+        "- `state-machine / branch-flow / decision-priority` 优先复用；",
+        "- `branch-flow`",
+        "作为 requirement author，我希望 `prd / user-story / test-case` 在遇到复杂问题时被正式要求检查 `branch-flow / state-machine / decision-priority / state axis`，而不是继续用模板直接填空，这样输出才能体现状态、转移、异常路径与不变量层面的真实推理。"
+      ],
+      "state-machine": [
+        "- `state-machine`",
+        "3. `diagram_truth.py` 已存在，能识别 `branch-flow / state-machine / decision-priority`。",
+        "- diagram truth 已能识别状态机与分支流；",
+        "- 是否存在 state-machine",
+        "- `state-machine / branch-flow / decision-priority` 优先复用；",
+        "```mermaid",
+        "stateDiagram-v2",
+        "[*] --> Latent"
+      ],
+      "decision-priority": [
+        "- `decision-priority`",
+        "3. `diagram_truth.py` 已存在，能识别 `branch-flow / state-machine / decision-priority`。",
+        "- 是否存在 decision-priority",
+        "- `state-machine / branch-flow / decision-priority` 优先复用；",
+        "- `decision-priority`",
+        "作为 requirement author，我希望 `prd / user-story / test-case` 在遇到复杂问题时被正式要求检查 `branch-flow / state-machine / decision-priority / state axis`，而不是继续用模板直接填空，这样输出才能体现状态、转移、异常路径与不变量层面的真实推理。"
+      ],
+      "state-axes": [
+        "- `skill_surface_state`",
+        "- `thin | thickened | governed | stable`",
+        "- `python_responsibility_state`",
+        "- `overloaded | split_read_write | reduced | minimal_guardrail`",
+        "- `learning_state`",
+        "- `latent | readable | injected | audited`",
+        "- `modeling_state`",
+        "- `implicit | diagram_aware | semantic_aware | gate_consumed`"
+      ]
+    },
+    "generated_at": "2026-05-08T10:02:59.476275+00:00",
+    "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "prd_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "user_story_ref": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 核心 skill 必须升级为正式 decision surface",
+      "description": "以下核心 skill 至少应进入统一的厚化治理： `beacon-prd` `beacon-user-story` `beacon-test-case` `beacon-implement` `beacon-qa` `beacon-release` 每个 skill 至少要具备以下稳定段落： 1. Inputs Contract 2. Decision Protocol 3. Anti-Inertia Notes 4. Learning Notes 5. Backstop CLI",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-002",
+        "TC-001",
+        "TC-057",
+        "TC-058",
+        "TC-059",
+        "TC-060",
+        "TC-061",
+        "TC-062",
+        "TC-063",
+        "TC-064",
+        "TC-065"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260508T100500Z-manual-evidence",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/scorecard.json"
+      ],
+      "changed_files": [
+        "beacon/utils/material_audit.py",
+        "beacon/commands/report.py",
+        "tests/test_v13010_requirement_package_gates.py",
+        "tests/test_real_project_validation_command.py",
+        "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-08T10:06:45.624697+00:00",
+      "completed_at": "2026-05-08T10:07:42.599392+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Inputs Contract 必须最小但可机器消费",
+      "description": "每个核心 skill 至少要显式说明： `project-root` `version` `feature` 上游 truth / contract refs 可接受的 host / bridge 输入 输出边界 要求： 输入契约可以被宿主 LLM 直接消费； 不要求宿主理解底层实现细节； 但必须足以避免“凭印象调用”。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/scorecard.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923894+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Decision Protocol 必须承载主要判断逻辑",
+      "description": "每个核心 skill 的主要判断协议应优先写在 skill surface 中，而不是只藏在 Python fallback 内。 至少包括： 何时继续 何时阻断 何时降级 何时建议进入 `change` 何时建议进入 `brainstorm` 何时建议回退到 legacy Python 判定",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-050"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TEST-050"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/scorecard.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923921+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Anti-Inertia Notes 必须显式纠正常见误锚",
+      "description": "至少要覆盖： “ask 可以自由写真相”之类误解 “goal / checkbox / board 可以替代 gate”之类误解 “brainstorm 是新 stage”之类误解 “learning 是第二真相”之类误解 目的不是加长文案，而是： > 让宿主 LLM 在高频误区上被主动纠偏。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007",
+        "AC-008",
+        "AC-011",
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TEST-008",
+        "TEST-011",
+        "TEST-015"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923932+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Learning Notes 必须复用现有 learning plane kernel",
+      "description": "Learning Notes 段不得绕过现有 learning plane 重新造轮。 最小要求： 复用 `learning_loop.py` 的 typed contract 概念； 允许按 `feature -> host -> runner -> domain` 顺序做渐进披露； 允许 note 过期、降级为 hint； learning 不得直接写入 frozen truth 或 gate。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-013"
+      ],
+      "mapped_test_ids": [
+        "TEST-013"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923945+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 `beacon ask` 必须被冻结为正式的自然语言路由入口",
+      "description": "系统必须正式承认： `beacon ask` 已存在且属于公开一级命令现实； 默认模式是 `plan-only`； `--execute` 是受安全边界约束的执行模式。 并要求： 为其补齐正式 skill surface 与使用边界； 明确其与 `brainstorm` 的职责分工； 明确其不得越权直写 truth / gate / release 状态。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TEST-005"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923955+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 `beacon ask` 的 `--execute` 必须有更严格的边界契约",
+      "description": "当 `ask` 进入执行模式时，至少必须满足： 被路由到合法已存在的 Beacon surface； 不得绕过 `implement` / `qa` 唯一执行入口； 不得直接对 frozen truth 执行自由写入； 对混合边界 / 低置信度必须保留显式阻断或人工确认路径。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923964+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 `brainstorm` 与 `ask` 必须建立清晰分工",
+      "description": "最小分工要求： `ask`: 自然语言入口、路由、计划预览、受控执行； `brainstorm`: 只读收敛、矛盾核实、开放问题澄清、路线建议； 两者都不能替代 `prd -> user-story -> test-case -> implement -> qa -> release` 主链。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-012"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923973+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 requirement 三件套必须增加 diagram-aware 深度思考协议",
+      "description": "`beacon-prd / beacon-user-story / beacon-test-case` 的 Decision Protocol 必须显式要求宿主 LLM 优先检查： 是否存在 branch-flow 是否存在 state-machine 是否存在 decision-priority 是否需要 state axis 要求： 若问题复杂度达到 diagram truth 触发条件，则不允许直接模板填空； 必须围绕状态、转移、异常路径、不变量做显式建模推理； 相关输出应与 diagram truth 保持一致。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-020",
+        "AC-018",
+        "AC-017"
+      ],
+      "mapped_test_ids": [
+        "TEST-020",
+        "TEST-018",
+        "TEST-017"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923982+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 semantic trace 必须成为 requirement 深度思考的共享输入",
+      "description": "在不新增第二真相的前提下，semantic trace 至少应服务于： 官方状态名引用 官方动作名引用 官方模块名引用 官方页面名引用 要求： PRD / story / case 生成时优先复用现有官方词汇； 避免 requirement 文本与实现/semantic trace 长期漂移； semantic trace 可作为校验输入，但不得单独成为 truth root。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-021"
+      ],
+      "mapped_test_ids": [
+        "TEST-021"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.923992+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 requirement 建模增强优先采用“升格现有 diagram + semantic”，而不是直接新增五件套目录",
+      "description": "本轮 requirement 建模增强策略应优先是： 1. 升格现有 diagram truth 到更强的 requirement protocol； 2. 升格现有 semantic dictionary 到更强的用词与映射校验源； 3. 仅对现有不足概念做最小增量扩展。 这意味着： `state-machine / branch-flow / decision-priority` 优先复用； `events / invariants / entities` 如确需补充，可作为后续最小扩展； 不在第一步就强制引入新的五件 truth 目录。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-025",
+        "AC-026",
+        "AC-054",
+        "AC-023",
+        "AC-024",
+        "AC-055"
+      ],
+      "mapped_test_ids": [
+        "TEST-025",
+        "TEST-026",
+        "TEST-054",
+        "TEST-023",
+        "TEST-024",
+        "TEST-055"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.924003+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 Python 后端必须逐步退回四类职责",
+      "description": "迁移完成后的 Python 主职责应收敛为： 1. 事实采集 2. schema 校验 3. contract / projection 写入 4. gate 阻断与 verdict 写入 不再鼓励 Python 长期继续承载： 大段策略文案 主要决策协议 宿主使用说明 可迁移到 skill surface 的误区纠正",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-029"
+      ],
+      "mapped_test_ids": [
+        "TEST-029"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.924012+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-013 Python 职责瘦身必须覆盖 `qa / implement / prd / release`",
+      "description": "本轮不得只盯 `qa`。 至少需要把以下模块纳入同一瘦身治理视角： `beacon/commands/qa.py` `beacon/commands/implement.py` `beacon/commands/prd.py` `beacon/commands/release.py` 并要求： 先识别哪部分是“事实/写入逻辑”，哪部分是“解释/判断逻辑”； 优先迁出后者； 迁移时保留 legacy 对账开关。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-033",
+        "AC-052"
+      ],
+      "mapped_test_ids": [
+        "TEST-033",
+        "TEST-052"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.924022+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-014 skill surface 的版本漂移必须先修复",
+      "description": "在释放 LLM 决策能力前，必须先确保核心 skill 的版本叙事统一到当前 `v1.4.0` 线。 要求至少包括： 版本文字与 operator rule 对齐； docs line、runtime line、host-native line 解释一致； skill surface 不再混用过期版本叙事误导宿主。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-042",
+        "AC-043",
+        "AC-014"
+      ],
+      "mapped_test_ids": [
+        "TEST-042",
+        "TEST-043",
+        "TEST-014"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.924031+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-015 迁移必须采用 trace-scorecard 或等价一致性回归",
+      "description": "任何判断逻辑从 Python 迁入 skill surface 前，必须有一致性对账机制。 至少要验证： LLM decision surface 与旧 Python 判定的一致性； blocked reason 是否一致； downgrade / fallback 路线是否一致； gate 结果是否保持 fail-closed。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-038",
+        "AC-031",
+        "AC-039",
+        "AC-056"
+      ],
+      "mapped_test_ids": [
+        "TEST-038",
+        "TEST-031",
+        "TEST-039",
+        "TEST-056"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:10:52.145056+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-016 support surface 必须能够解释“为什么推荐这条 route”",
+      "description": "当 skill surface 更厚以后，`help / status / doctor / ask` 至少应能更明确解释： 为什么建议进入 `brainstorm` 为什么建议进入 `change` 为什么建议走 `implement` 或 `qa` 当前 learning hint 是否被采用",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-045"
+      ],
+      "mapped_test_ids": [
+        "TEST-045"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:08:27.924049+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "FR-017 本特性不得破坏 `v1.4.0` 已冻结的五层架构",
+      "description": "本特性的所有演进都必须满足： truth 仍唯一； contract 仍单向； surface 仍最小； plugin/projection 仍为可选； 公开主命令面仍 version-frozen。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-058"
+      ],
+      "mapped_test_ids": [
+        "TEST-058"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "FR-018 prototype 在本 feature 中必须被条件触发并补入正式 requirement 链",
+      "description": "全局上，`prototype` 不再是默认必经主链。 但本 feature 实际存在宿主可见 route surface、状态展示、导航关系与交互 handoff 需求，因此不得停留在 `prd / user-story / test-case` 三层后直接宣称可进入实现。 对本 feature 而言，prototype 必须作为条件触发后的正式 requirement stage 被补入，且至少要冻结： 1. 核心 skill decision surface 的宿主可见结构 2. `ask / brainstorm / change` 的入口分工与跳转关系 3. learning hint 渐进披露的可见性层次 4. diagram / semantic 输入如何影响三件套与 support route 5. Python guardrail 与 LLM decision surface 的职责分层 约束： prototype 仍然只是 `requirement-driven wireframe freeze`； 必须覆盖页面职责、状态流转、导航关系、交互契约； 不要求在本 PRD 冻结时就已经产出完整 prototype bundle； 但在 prototype 未冻结前，本 feature 最多只能达到 `requirement-frozen / prototype-pending`，不得表述为 `implement-ready`。 ## 6. 数据 / 状态 / 集成 ### 6.1 Truth 输入 唯一 truth root 仍为： `docs/beacon/global-boundaries.md` `docs/beacon/<version>/**/*.md` ### 6.2 Skill Decision Surface 建议每个核心 skill 至少形成： human-readable skill contract host-readable decision protocol anti-inertia notes learning disclosure rules backstop CLI ### 6.3 Learning 集成 learning 集成优先复用现有 typed contract，并在必要时增加 version-scoped learning note projection。 允许的最小形态包括： runtime/state learning contract version-scoped `.machine` learning note stale / superseded 标记 但要求始终成立： learning 不写真相 learning 不决定 gate learning 只能作为 hint / route input ### 6.4 Diagram 与 Semantic 集成 三件套相关 skill 在生成或校验时，应优先读取： diagram truth 信号 semantic dictionary semantic contract host response payload 这些输入应帮助宿主 LLM 做更深的 requirement 建模，而不是仅生成格式化模板。 ### 6.5 Ask 与 Brainstorm 集成 建议形成如下稳定关系： `ask`: 用户自由自然语言入口 路由到 skill 或计划预览 `brainstorm`: 只读收敛与矛盾识别 不做 truth 写入 `change`: frozen truth 变更路由 ### 6.6 Python 双读迁移 迁移路径应至少包括： 1. 保留旧 Python 判定 2. 新增 skill decision protocol 3. 双读并记录差异 4. 达到一致性阈值后切主 5. 保留一段兼容窗口 ## 7. 风险与缓解 | 风险 | 影响 | 缓解 | |------|------|------| | 把“释放 LLM”误做成“允许自由写真相” | 高 | 强化 truth / contract / gate 不变量，禁止 freeform truth writeback | | 新增大量目录或命令，反而让系统更重 | 高 | 坚持 reuse before invent，优先升格现有能力 | | `ask` 执行模式边界不清导致越权执行 | 高 | 冻结 `plan-only` 默认与 `--execute` 安全契约 | | learning 被误当成第二真相源 | 高 | 明确 learning 只作 hint，不参与 truth 或 gate 独占判定 | | diagram / semantic 增强做成双轨建模体系 | 高 | 先升格现有 diagram truth 与 semantic trace，再做最小扩展 | | Python 逻辑迁出后 verdict 漂移 | 高 | 双读对账、一致性回归、legacy fallback | | skill 版本漂移不修，导致新 decision surface 继续误导宿主 | 中 | 先修 version surface，再厚化 skill | | 为了“深度思考”把 PRD 再写成超重模板 | 中 | 约束为模型推理协议，而不是新增更长的静态模板 | ## 8. 验收标准 ### AC-001 核心 skill 已具备正式 decision surface 至少 `prd / user-story / test-case / implement / qa / release` 的 skill surface 完成统一厚化。 每个 skill 至少具有 Inputs Contract、Decision Protocol、Anti-Inertia Notes、Learning Notes、Backstop CLI 五类稳定段落。 ### AC-002 `beacon ask` 的定位与边界已冻结 系统正式承认 `beacon ask` 为自然语言路由入口。 `ask` 与 `brainstorm` 的职责边界清晰可见。 `ask --execute` 不会绕过 `implement / qa / gate` 独占入口。 ### AC-003 learning plane 已进入 skill 渐进披露闭环 至少一个核心 skill 能按 feature / host / runner / domain 读取相关 learning hint。 learning hint 支持 stale 或降级语义。 learning 不会单独定义 truth 或 gate verdict。 ### AC-004 requirement 三件套已具备 diagram-aware 深度思考协议 `beacon-prd / beacon-user-story / beacon-test-case` 的 decision protocol 能显式要求状态/转移/异常路径推理。 diagram truth 与 semantic trace 成为正式输入，而不是可选备注。 ### AC-005 Python 职责瘦身已进入可验证迁移态 至少 `qa / implement / prd / release` 四类模块拥有“判断逻辑迁移 vs 护栏逻辑保留”的明确边界。 至少一个模块完成双读对账或等价一致性回归。 ### AC-006 skill version surface 与当前 `v1.4.0` 叙事一致 核心 skill 不再混用过期 runtime line 叙事误导宿主。 operator rule、docs line、runtime line 与当前版本包保持一致。 ### AC-007 本特性不破坏既有全局边界 无新增公开一级主命令。 `implement` 仍是唯一实现入口。 `qa` 仍是唯一验收入口。 `gate` 仍是最终阻断与完成判定器。 `docs/beacon/<version>/**/*.md` 仍是唯一 frozen truth root。 ### AC-008 prototype 已按条件触发方式纳入本 feature 的 requirement freeze 出口约束 本 feature 的 requirement package 必须明确声明：虽然 `prototype` 不是全局默认必经主链，但对当前 feature 属于被条件触发的正式阶段。 prototype 至少要覆盖 route surface、state visibility、navigation contract、interaction contract。 prototype 相关产物缺失时，本 feature 状态只能表述为 `prototype-pending`，不得宣称 `implement-ready`。 ## 9. 成功指标 主指标：宿主 LLM 对核心 skill 的一次性判断质量提升，减少因 skill surface 过薄导致的回退解释成本。 主指标：核心路径中由 Python 直接承载的解释性判断逻辑明显下降。 辅指标：`ask`、learning、diagram、semantic 这些“已存在能力”被统一纳入正式产品叙事，而不是继续隐性存在。 辅指标：requirement 三件套更少出现模板化输出，更常出现状态、转移、异常路径层面的显式推理。 辅指标：support surface 能更清楚回答 route 推荐原因，而不是只给命令名。 ## 10. 依赖与冻结决策 ### 10.1 依赖 依赖 `docs/beacon/global-boundaries.md` 作为全局边界源。 依赖 `docs/beacon/v1.4.0/execution/architecture-blueprint.md` 的五层架构冻结。 依赖现有 ask / learning / diagram / semantic / host bridge 实现作为演进基础。 后续需要基于本 PRD 拆解： `user-story` `test-case` skill surface rewrite plan dual-read regression plan ### 10.2 Requirement Freeze Verdict Verdict: `freeze-ready` Reason: 本特性方向已由 brainstorm 与现状核实共同收敛； `user-story` 与 `test-case` 已完成正式拆解； 各模块迁移优先级、双读切主纪律与边界约束已进入正式 requirement truth； prototype 已被正式补入 requirement stage，且当前 feature 的 prototype freeze 已完成。 Follow-up: 进入 `implement`，并以 dual-read consistency 与 support explainability 作为首批验证焦点； 后续进入 `qa`，验证 skill surface、route explainability 与 cutover guardrail 是否与 frozen prototype 一致。 ## 11. Diagram Truth Layer ### 11.1 LLM Decision Flow ```mermaid flowchart TD A[User Prompt] --> B[Skill Surface] B --> C[Inputs Contract] B --> D[Decision Protocol] B --> E[Anti-Inertia Notes] B --> F[Learning Notes] D --> G[Backstop CLI] G --> H[Python Guardrail] H --> I[Compiled Contract / Gate Writeback] ``` ### 11.2 Ask / Brainstorm / Change Route ```mermaid flowchart LR A[Freeform Intent] --> B[beacon ask] B --> C{Need read-only convergence?} C -->|yes| D[beacon brainstorm] C -->|no| E{Touches frozen truth?} E -->|yes| F[beacon-change route] E -->|no| G[beacon-prd / user-story / test-case / implement / qa / release] ``` ### 11.3 Responsibility Split ```mermaid flowchart TD A[Truth + Contract + Evidence] --> B[LLM Decision Surface] B --> C[Route / Explain / Model / Reason] A --> D[Python Guardrail] D --> E[Read Facts / Validate Schema / Write Contract / Write Gate] C --> F[Human-readable Output] E --> G[Fail-closed Machine Verdict] ``` ### 11.4 Learning Disclosure State Machine ```mermaid stateDiagram-v2 [*] --> Latent Latent --> Readable: note discovered Readable --> Injected: skill key matched Injected --> Audited: note verified useful Injected --> Readable: note stale or downgraded Audited --> Readable: new evidence supersedes ``` ### 11.5 Propagation Contract truth 仍是唯一 requirement 与 delivery truth； skill decision surface 只能解释、建模、路由、建议； Python guardrail 仍是 schema / contract / gate 的最后写入护栏； learning 只作 hint，不得反向定义 truth； ask 与 brainstorm 都不得成为自由 truth 写入口。 --- **Created**: 2026-05-08 **Version**: v1.4.0 **Status**: Freeze Ready **Change Context**: continue Beacon lightweight evolution by upgrading existing LLM decision surface instead of inventing parallel command or truth systems",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-049",
+        "AC-010",
+        "AC-016",
+        "AC-019",
+        "AC-022",
+        "AC-027",
+        "AC-028",
+        "AC-030",
+        "AC-032",
+        "AC-034",
+        "AC-035",
+        "AC-036",
+        "AC-037",
+        "AC-040",
+        "AC-041",
+        "AC-044",
+        "AC-046",
+        "AC-047",
+        "AC-048",
+        "AC-051",
+        "AC-053",
+        "AC-057",
+        "AC-059",
+        "AC-060"
+      ],
+      "mapped_test_ids": [
+        "TEST-049",
+        "TEST-010",
+        "TEST-016",
+        "TEST-019",
+        "TEST-022",
+        "TEST-027",
+        "TEST-028",
+        "TEST-030",
+        "TEST-032",
+        "TEST-034",
+        "TEST-035",
+        "TEST-036",
+        "TEST-037",
+        "TEST-040",
+        "TEST-041",
+        "TEST-044",
+        "TEST-046",
+        "TEST-047",
+        "TEST-048",
+        "TEST-051",
+        "TEST-053",
+        "TEST-057",
+        "TEST-059",
+        "TEST-060"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "diagram_state_axes": [
+        "skill_surface_state",
+        "thin | thickened | governed | stable",
+        "python_responsibility_state",
+        "overloaded | split_read_write | reduced | minimal_guardrail",
+        "learning_state",
+        "latent | readable | injected | audited",
+        "modeling_state",
+        "implicit | diagram_aware | semantic_aware | gate_consumed",
+        "prd / user-story / test-case",
+        "branch-flow / state-machine / decision-priority / state axis"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T180800776717/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260508T180800776717",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260508T181024559040/summary.json",
+        "verify:run-20260508T181024559040"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-08T10:10:52.145120+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.0",
+    "run_command": "beacon implement team-run \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.0",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.0",
+    "ralph_command": "beacon implement run \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.0 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.0",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+    "version": "v1.4.0",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.0",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.0.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-08T10:02:59.476563+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1",
+    "transaction_id": "tx-556bdede19143af58",
+    "source_hash": "sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.0/.machine/execution/git-workflow-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.0/execution/git-workflow-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.0",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "user_story": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "test_case": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1",
+    "transaction_id": "tx-556bdede19143af58",
+    "source_hash": "sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json",
+  "generated_at": "2026-05-08T10:02:59.621454+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1",
+  "transaction_id": "tx-556bdede19143af58",
+  "source_hash": "sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-08T10:10:52.264482+00:00",
+  "accepted_at": "2026-05-08T10:10:52.264462+00:00",
+  "accepted_by": "qa"
+}

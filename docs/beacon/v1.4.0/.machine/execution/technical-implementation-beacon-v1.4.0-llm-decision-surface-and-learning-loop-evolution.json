@@ -1,0 +1,150 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "revision_id": "R1",
+  "run_id": "run-20260508T100500Z-manual-evidence",
+  "implemented_at": "2026-05-08T10:07:42.606845+00:00",
+  "runner": "manual-writeback",
+  "skill": "beacon-implement",
+  "profile_id": "",
+  "git_commit": "",
+  "services": [
+    "beacon"
+  ],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "manual evidence writeback for requirement-gate slimming and decision-surface closure",
+  "business_goal_summary": "keep canonical frozen truth singular, slim Beacon, release LLM decision power, and preserve strong gates",
+  "acceptance_scope": [
+    "requirement gate slimming",
+    "decision surface closure",
+    "dual-read and fail-closed verification"
+  ],
+  "assumptions": [
+    "Formal implementation evidence is reconstructed from completed code/doc/test changes already present in the workspace.",
+    "Only files directly tied to this feature are attributed in the archive to avoid binding unrelated dirty-worktree changes."
+  ],
+  "simplicity_notes": [
+    "Kept human truth and freeze receipt as hard gate.",
+    "Downgraded machine requirement projections to derived warning layer instead of second truth.",
+    "Used existing Beacon writeback/archive surfaces instead of inventing a parallel evidence path."
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "Scope limited to requirement-gate policy, decision-surface explanation migration, and acceptance coverage for this feature.",
+    "allowed_paths": [
+      "beacon/utils/material_audit.py",
+      "beacon/commands/report.py",
+      "tests/",
+      "docs/beacon/v1.4.0/"
+    ]
+  },
+  "changed_files": [
+    "beacon/utils/material_audit.py",
+    "beacon/commands/report.py",
+    "tests/test_v13010_requirement_package_gates.py",
+    "tests/test_real_project_validation_command.py",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  ],
+  "modules_touched": [
+    "beacon/utils",
+    "beacon/commands",
+    "tests",
+    "docs/beacon/v1.4.0"
+  ],
+  "additions": [],
+  "modifications": [
+    "beacon/utils/material_audit.py",
+    "beacon/commands/report.py",
+    "tests/test_v13010_requirement_package_gates.py",
+    "tests/test_real_project_validation_command.py",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  ],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    "rtk python3 -m pytest -q tests/test_v13010_requirement_package_gates.py tests/test_real_project_validation_command.py tests/test_v140_branch_blocked_payload_consistency.py tests/test_v140_command_decision_surface.py tests/test_v140_llm_skill_surface.py tests/test_v140_ask_governance.py tests/test_v140_route_role_split.py tests/test_v140_learning_disclosure.py tests/test_v140_requirement_reasoning.py tests/test_v140_semantic_requirement_alignment.py tests/test_v140_modeling_upgrade_strategy.py tests/test_v140_python_guardrail_split.py tests/test_v140_python_slimming_scope.py tests/test_v140_dual_read_cutover.py tests/test_v140_skill_version_alignment.py tests/test_v140_support_route_explainability.py tests/test_v140_prototype_handoff_contract.py tests/test_v118_qa_primary_surface.py tests/test_v134_implement_status_missing_json.py",
+    "rtk python3 -m beacon.main implement plan beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.0 --json",
+    "rtk python3 -m beacon.main implement run beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.0 --dry-run --json"
+  ],
+  "verification_signals": {
+    "count": 3,
+    "has_acceptance_scope": true,
+    "has_assumptions": true
+  },
+  "known_risks": [
+    "formal qa evidence had not been recorded before this reconstructed writeback"
+  ],
+  "rollback_notes": [
+    "revert the scoped code/doc/test changes and regenerate requirement baseline if policy must be undone"
+  ],
+  "compatibility_notes": [
+    "dual-read and fail-closed behavior remain preserved during decision-surface migration"
+  ],
+  "artifact_updates": {
+    "review_quality": {
+      "required": true,
+      "reason": "qa remains the formal verification authority"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "release-facing acceptance still depends on qa verdict"
+    }
+  },
+  "revision_cleanup": {},
+  "traceability": {
+    "request_path": "",
+    "result_path": "",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

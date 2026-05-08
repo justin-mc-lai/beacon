@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-08T10:00:05.752764+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "user_story": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`",
+      "Version**: `v1.4.0`",
+      "Date**: `2026-05-08`",
+      "Status**: `freeze-ready`",
+      "Track**: `kernel-lightweight + skill-surface + learning-plane + prompt-governance`",
+      "Scenario**: `llm_decision_release + python_responsibility_reduction + governed_learning_reuse`",
+      "Template**: `main PRD / kernel-evolution supplement`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Version package: `docs/beacon/v1.4.0/SUMMARY.md`",
+      " Execution boundaries: `docs/beacon/v1.4.0/execution/index.md`",
+      " Architecture blueprint: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`",
+      " Related PRD:",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md`",
+      " `docs/beacon/v1.4.0/prd/beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.md`"
+    ],
+    "user_story": [
+      " version: `v1.4.0`",
+      " feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖 Beacon 在 `v1.4.0` 中继续减重、释放宿主 LLM 推理与判断能力的正式拆解。目标不是新增平行命令或新 truth 系统，而是在保持 `truth / contract / gate` 独占纪律不变的前提下，复用已存在的 `ask`、learning plane、diagram truth、semantic runtime、host bridge 等能力，把它们升格为正式的 skill decision surface，并推动 Python 从“判断主载体”退回“护栏与写入主载体”。",
+      " `branch-flow`",
+      " `frozen truth -> compiled contract -> skill decision surface -> canonical route -> python guardrail -> gate / projection writeback`",
+      " `freeform user intent -> beacon ask -> route preview or controlled execution`"
+    ],
+    "qa": [
+      "Feature**: beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+      "Test Type**: ALL",
+      "Version**: v1.4.0",
+      "Generated**: 2026-05-08 16:10",
+      "Status**: `freeze-ready`",
+      "Requested Mode**: auto",
+      "Effective Mode**: requirement-freeze",
+      "Fallback Reason**: implementation-and-machine-matrix-not-yet-materialized",
+      "Memory Context**: v1.4.0 llm decision surface + governed ask + learning disclosure + diagram semantic reasoning + python dual-read",
+      "Primary Truth**: docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+    ]
+  }
+}
