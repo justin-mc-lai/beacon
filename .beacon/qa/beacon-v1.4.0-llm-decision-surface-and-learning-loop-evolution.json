@@ -1,0 +1,402 @@
+{
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-065"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-101": [
+      "TC-005"
+    ],
+    "AC-102": [
+      "TC-006"
+    ],
+    "AC-103": [
+      "TC-007"
+    ],
+    "AC-104": [
+      "TC-008"
+    ],
+    "AC-201": [
+      "TC-009"
+    ],
+    "AC-202": [
+      "TC-010"
+    ],
+    "AC-203": [
+      "TC-011"
+    ],
+    "AC-204": [
+      "TC-012"
+    ],
+    "AC-301": [
+      "TC-013"
+    ],
+    "AC-302": [
+      "TC-014"
+    ],
+    "AC-303": [
+      "TC-015"
+    ],
+    "AC-304": [
+      "TC-016"
+    ],
+    "AC-401": [
+      "TC-017"
+    ],
+    "AC-402": [
+      "TC-018"
+    ],
+    "AC-403": [
+      "TC-019"
+    ],
+    "AC-404": [
+      "TC-020"
+    ],
+    "AC-501": [
+      "TC-021"
+    ],
+    "AC-502": [
+      "TC-022"
+    ],
+    "AC-503": [
+      "TC-023"
+    ],
+    "AC-504": [
+      "TC-024"
+    ],
+    "AC-601": [
+      "TC-025"
+    ],
+    "AC-602": [
+      "TC-026"
+    ],
+    "AC-603": [
+      "TC-027"
+    ],
+    "AC-604": [
+      "TC-028"
+    ],
+    "AC-701": [
+      "TC-029"
+    ],
+    "AC-702": [
+      "TC-030"
+    ],
+    "AC-703": [
+      "TC-031"
+    ],
+    "AC-704": [
+      "TC-032"
+    ],
+    "AC-801": [
+      "TC-033"
+    ],
+    "AC-802": [
+      "TC-034"
+    ],
+    "AC-803": [
+      "TC-035"
+    ],
+    "AC-804": [
+      "TC-036"
+    ],
+    "AC-901": [
+      "TC-037"
+    ],
+    "AC-902": [
+      "TC-038"
+    ],
+    "AC-903": [
+      "TC-039"
+    ],
+    "AC-904": [
+      "TC-040"
+    ],
+    "AC-1001": [
+      "TC-041"
+    ],
+    "AC-1002": [
+      "TC-042"
+    ],
+    "AC-1003": [
+      "TC-043"
+    ],
+    "AC-1004": [
+      "TC-044"
+    ],
+    "AC-1101": [
+      "TC-045"
+    ],
+    "AC-1102": [
+      "TC-046"
+    ],
+    "AC-1103": [
+      "TC-047"
+    ],
+    "AC-1104": [
+      "TC-048"
+    ],
+    "AC-1201": [
+      "TC-049"
+    ],
+    "AC-1202": [
+      "TC-050"
+    ],
+    "AC-1203": [
+      "TC-051"
+    ],
+    "AC-1204": [
+      "TC-052"
+    ],
+    "AC-1301": [
+      "TC-053"
+    ],
+    "AC-1302": [
+      "TC-054"
+    ],
+    "AC-1303": [
+      "TC-055"
+    ],
+    "AC-1304": [
+      "TC-056"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: the six core skills are all covered by one thickening governance surface",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"core_skills_are_in_scope\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: each core skill exposes Inputs Contract, Decision Protocol, Anti-Inertia Notes, Learning Notes, ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"stable_sections_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: the thickened skill surface can be consumed by the host without relying on hidden code-only fall",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"host_readable_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: thickened skill surfaces do not become freeform frozen-truth write surfaces",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v140_llm_skill_surface.py -k \"skill_surface_cannot_write_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/TC-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "requirement_deepening": {
+    "completeness_verdict": "pass",
+    "supplement_focus_areas": [
+      "复核 requirement completeness 的补料方向"
+    ],
+    "supplement_task": {
+      "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+      "version": "v1.4.0",
+      "target_artifact": "test-case",
+      "candidate_kind": "coverage",
+      "candidate_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "exception",
+        "recovery",
+        "compatibility"
+      ],
+      "candidate_payload": {
+        "focus_areas": [
+          "复核 requirement completeness 的补料方向"
+        ],
+        "open_questions": [
+          "happy 是否需要补成 machine-readable supplement candidate？",
+          "negative 是否需要补成 machine-readable supplement candidate？",
+          "boundary 是否需要补成 machine-readable supplement candidate？",
+          "exception 是否需要补成 machine-readable supplement candidate？"
+        ],
+        "missing_dimensions": [],
+        "high_risk_unresolved_categories": []
+      },
+      "source_truth_ref": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "writeback_target": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+      "rationale": "pass",
+      "confidence": "medium",
+      "human_decision": "pending",
+      "audit_trail_required": true,
+      "recommended_route": "beacon-test-case",
+      "recommended_command": "beacon test-case create \"beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution\" --project <project-root> --version v1.4.0 --json",
+      "recommended_mode": "requirement-convergence"
+    },
+    "re_freeze_transaction": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+      "version": "v1.4.0",
+      "revision_id": "R1",
+      "accepted_candidates": [
+        "GAP-001",
+        "GAP-002",
+        "GAP-003",
+        "GAP-004",
+        "GAP-005",
+        "GAP-006",
+        "GAP-007",
+        "GAP-008",
+        "GAP-009",
+        "GAP-010",
+        "GAP-011",
+        "GAP-012",
+        "GAP-013",
+        "GAP-014",
+        "GAP-015"
+      ],
+      "rejected_candidates": [],
+      "deferred_candidates": [],
+      "writeback_targets": [
+        "qa/test-cases.executable-matrix",
+        "user-story.acceptance-criteria"
+      ],
+      "machine_mirror_paths": {
+        "dir": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement",
+        "envelope": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.envelope.json",
+        "candidate_ledger": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.candidate-ledger.json",
+        "decision_log": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.supplement-decision-log.json",
+        "freeze_contract": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.freeze-contract.json",
+        "completeness": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.completeness.json",
+        "supplement_task": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.supplement-task.json",
+        "re_freeze_transaction": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.0/.machine/requirement/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.re-freeze-transaction.json"
+      },
+      "refreeze_required": true,
+      "revalidate_required": true,
+      "decision_count": 15,
+      "generated_at": "2026-05-08T10:23:04.882879+00:00"
+    }
+  }
+}

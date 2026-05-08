@@ -1,0 +1,168 @@
+{
+  "generated_at": "2026-05-08T10:24:38Z",
+  "source_hash": "3473c1b5a0c6b17a3c9eee41b5554a8dd5a749fcb2f4bce1b2a73a55a6353c77",
+  "source_feature": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
+  "source_requirement_refs": [
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  ],
+  "projection_role": "production-visible-copy",
+  "pages": [
+    {
+      "page_id": "home",
+      "title": "首页",
+      "subtitle": "今天先盯哪些项目，而不是先看所有项目明细。",
+      "primary_actions": [
+        "查看管理总览",
+        "进入重点项目"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "management-overview",
+      "title": "管理总览",
+      "subtitle": "多项目之间谁健康、谁阻塞、谁接近可发布。",
+      "primary_actions": [
+        "进入项目详情",
+        "返回首页"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "project-detail",
+      "title": "项目详情",
+      "subtitle": "这条版本线当前停在哪个阶段，下一步应该推进哪里。",
+      "primary_actions": [
+        "查看运行中心",
+        "查看恢复诊断",
+        "查看项目物料"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "runtime-center",
+      "title": "运行中心",
+      "subtitle": "当前到底是 single、team 还是 ralph 在推进。",
+      "primary_actions": [
+        "返回项目详情",
+        "返回管理总览"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "title": "恢复诊断",
+      "subtitle": "当前是 degraded、rebuild 还是 doctor 场景。",
+      "primary_actions": [
+        "返回项目详情",
+        "前往运行中心"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "material-viewer",
+      "title": "项目物料查看器",
+      "subtitle": "当前要看哪个版本、哪类文档、哪个 feature。",
+      "primary_actions": [
+        "打开文档",
+        "返回项目详情"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "material-document-detail",
+      "title": "物料文档详情",
+      "subtitle": "当前读的是哪一版、哪一类、哪个 feature 的文档。",
+      "primary_actions": [
+        "返回物料查看器",
+        "切换同版本文档"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    }
+  ]
+}

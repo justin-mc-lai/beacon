@@ -1,0 +1,76 @@
+{
+  "generated_at": "2026-05-08T10:24:38Z",
+  "source_hash": "3473c1b5a0c6b17a3c9eee41b5554a8dd5a749fcb2f4bce1b2a73a55a6353c77",
+  "source_feature": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
+  "source_requirement_refs": [
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  ],
+  "projection_role": "design-intelligence",
+  "pages": [
+    {
+      "page_id": "home",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "首页",
+      "primary_responsibility": "先回答经营判断，展示项目数、阻塞数、当前交付和介入点。",
+      "density": "workbench-medium",
+      "action_count": 2
+    },
+    {
+      "page_id": "management-overview",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "管理总览",
+      "primary_responsibility": "提供多项目密集管理视图，稳定扫描版本、阶段、进度、健康态和下一步。",
+      "density": "workbench-medium",
+      "action_count": 2
+    },
+    {
+      "page_id": "project-detail",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "项目详情",
+      "primary_responsibility": "成为接力页，展示版本线、主 PRD、并行 PRD、需求闭环和推荐动作。",
+      "density": "workbench-medium",
+      "action_count": 4
+    },
+    {
+      "page_id": "runtime-center",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "运行中心",
+      "primary_responsibility": "只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。",
+      "density": "workbench-medium",
+      "action_count": 2
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "恢复诊断",
+      "primary_responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "density": "workbench-medium",
+      "action_count": 2
+    },
+    {
+      "page_id": "material-viewer",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "项目物料查看器",
+      "primary_responsibility": "按 version -> document type -> feature 提供只读 Markdown 浏览。",
+      "density": "workbench-medium",
+      "action_count": 2
+    },
+    {
+      "page_id": "material-document-detail",
+      "surface_type": "management-workbench",
+      "layout_pattern": "header -> primary judgment -> supporting context -> next action",
+      "primary_object": "物料文档详情",
+      "primary_responsibility": "冻结文档阅读状态，包括来源路径、版本切换和同类文档切换。",
+      "density": "workbench-medium",
+      "action_count": 2
+    }
+  ]
+}

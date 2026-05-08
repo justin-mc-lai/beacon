@@ -1,28 +1,43 @@
-# DESIGN
+# DESIGN.md: beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution
 
-## Surface Type
+## Visual Theme
+- Design Preset: `apple-inspired-design-md`
+- Primary Accent: `#0071E3`
+- Secondary Surface: `#F5F5F7`
+- Atmosphere: quiet neutrals, restrained emphasis, dense but readable workbench hierarchy.
 
-Quiet operational workbench for requirement review and implementation handoff.
+## Typography
+- Bias toward SF Pro / system sans.
+- Hero-scale text is disallowed in workbench pages unless a real first-screen signal demands it.
 
-## Layout Pattern
+## Layout Principles
+- Recommended Pattern: header -> primary judgment -> supporting context -> next action
+- First screen answers the main question before secondary detail.
+- Keep navigation low-noise and avoid decorative dashboard filler.
 
-- left rail: route and section navigation
-- center: primary judgment panel
-- right rail: supporting contract, learning, and guardrail evidence
+## Component Styling
+- Compact toolbars, restrained cards, explicit empty/error/loading states.
+- Buttons and controls should privilege recognition over recall.
 
-## Visual Rules
+## Do
+- Show recovery actions when blocked, stale, or error states appear.
+- Keep source paths and machine references in secondary disclosure zones only.
 
-- neutral workbench palette
-- restrained accent color only for blocked / ready / learning states
-- section titles answer a question, not just name a file
-- avoid decorative hero sections and marketing composition
+## Don't
+- Do not produce a marketing hero dashboard.
+- Do not surface transaction metadata in primary UI copy.
+- Do not use a generic blue SaaS shell as the default design answer.
 
-## Density
+## Responsive
+- Preserve hierarchy and next-action clarity on desktop-first workbench layouts.
+- Collapse secondary detail before primary judgment content.
 
-Medium density, desktop-first, scan-friendly.
+## Agent Prompt Guide
+- Primary audience: Beacon 管理者 / 需求 owner / 实现协作者
+- Preserve page intent contracts and state visibility contracts during implementation.
+- Treat this file as projection from prototype truth, not an editable source of truth.
 
-## Interaction Rules
-
-- primary actions stay close to current judgment
-- return paths are always visible
-- blocked states surface recovery action before explanation detail
+## Semantic Guardrail
+- Title Rule: 标题仅陈述对象或状态，不解释设计意图。
+- State Rule: 状态文案必须先说明当前状态，再说明允许动作或禁止动作。
+- Action Rule: 动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。

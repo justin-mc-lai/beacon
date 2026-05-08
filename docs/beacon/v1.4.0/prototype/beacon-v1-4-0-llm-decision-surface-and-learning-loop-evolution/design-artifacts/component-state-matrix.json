@@ -1,0 +1,1330 @@
+{
+  "generated_at": "2026-05-08T10:24:38Z",
+  "source_hash": "3473c1b5a0c6b17a3c9eee41b5554a8dd5a749fcb2f4bce1b2a73a55a6353c77",
+  "source_feature": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
+  "source_requirement_refs": [
+    "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
+    "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+  ],
+  "projection_role": "design-intelligence",
+  "pages": [
+    {
+      "page_id": "home",
+      "components": [
+        {
+          "component": "经营总览条",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "重点介入区",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "项目推进摘要",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "当前交付卡片",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "下一步建议",
+          "priority": 5,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "正常总览",
+          "description": "展示项目数、阻塞数、当前交付和下一步。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "展示项目数、阻塞数、当前交付和下一步。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "blocked",
+          "label": "阻塞高亮",
+          "description": "把阻塞项目和介入点提升到首屏。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "把阻塞项目和介入点提升到首屏。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "intervention-needed",
+          "label": "需介入",
+          "description": "强调需要 CEO / 负责人介入的项目。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "强调需要 CEO / 负责人介入的项目。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "首页摘要数据仍在汇总。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "首页摘要数据仍在汇总。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "empty",
+          "label": "空状态",
+          "description": "当前没有受管项目。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "当前没有受管项目。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "摘要聚合失败，但提示可以进入详情或 doctor。",
+          "state_visibility_contract": {
+            "user_question": "首页 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "摘要聚合失败，但提示可以进入详情或 doctor。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看管理总览",
+              "进入重点项目"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "management-overview",
+      "components": [
+        {
+          "component": "筛选与排序条",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "项目注册表",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "阶段分布摘要",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "风险与调试摘要",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "推荐 skill 区",
+          "priority": 5,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "多项目已加载",
+          "description": "密集展示多项目当前状态。",
+          "state_visibility_contract": {
+            "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "密集展示多项目当前状态。"
+            ],
+            "primary_actions": [
+              "进入项目详情",
+              "返回首页"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "filtered",
+          "label": "已筛选",
+          "description": "按阶段、版本、健康态筛选项目。",
+          "state_visibility_contract": {
+            "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "按阶段、版本、健康态筛选项目。"
+            ],
+            "primary_actions": [
+              "进入项目详情",
+              "返回首页"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "empty",
+          "label": "无项目",
+          "description": "没有任何受管项目进入注册表。",
+          "state_visibility_contract": {
+            "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "没有任何受管项目进入注册表。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "进入项目详情",
+              "返回首页"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目注册表正在聚合。",
+          "state_visibility_contract": {
+            "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "项目注册表正在聚合。"
+            ],
+            "primary_actions": [
+              "进入项目详情",
+              "返回首页"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "总览聚合失败但保留恢复提示。",
+          "state_visibility_contract": {
+            "user_question": "管理总览 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "总览聚合失败但保留恢复提示。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "进入项目详情",
+              "返回首页"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "project-detail",
+      "components": [
+        {
+          "component": "项目头部摘要",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "版本与分支信息",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "主 PRD 与并行 PRD",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "需求物料闭环状态",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "最近交付与下一步",
+          "priority": 5,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "运行态摘要卡",
+          "priority": 6,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可接力",
+          "description": "版本、PRD、需求闭环和下一步信息完整。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "版本、PRD、需求闭环和下一步信息完整。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "requirement-missing",
+          "label": "需求缺口",
+          "description": "PRD / user-story / test-case 存在缺口。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "PRD / user-story / test-case 存在缺口。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "draft",
+          "label": "需求草稿",
+          "description": "需求已建立但未冻结。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "需求已建立但未冻结。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "frozen",
+          "label": "需求冻结",
+          "description": "需求链与 prototype 都已冻结。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "需求链与 prototype 都已冻结。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "runtime-active",
+          "label": "运行中",
+          "description": "存在 single / team / ralph 运行摘要。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "存在 single / team / ralph 运行摘要。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "项目详情正在聚合。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "项目详情正在聚合。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "详情聚合失败但给出恢复链路。",
+          "state_visibility_contract": {
+            "user_question": "项目详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "详情聚合失败但给出恢复链路。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看运行中心",
+              "查看恢复诊断",
+              "查看项目物料"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "runtime-center",
+      "components": [
+        {
+          "component": "运行态摘要头部",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "single / team / ralph 模式切换",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "agent/session 引用",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "artifact 与 linked run",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "最近结果与 blocker",
+          "priority": 5,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "single-active",
+          "label": "Single 运行",
+          "description": "展示单进程执行摘要和 linked run。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "展示单进程执行摘要和 linked run。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "team-active",
+          "label": "Team 运行",
+          "description": "展示 agent 数、角色、状态和 host session metadata。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "展示 agent 数、角色、状态和 host session metadata。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "ralph-active",
+          "label": "Ralph 闭环",
+          "description": "展示 round_count、failure_streak、next_action、blocker。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "展示 round_count、failure_streak、next_action、blocker。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "idle",
+          "label": "无活跃运行",
+          "description": "当前没有任何 active runtime。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "当前没有任何 active runtime。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "运行态数据仍在读取。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "运行态数据仍在读取。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "运行态投影异常，需要回到诊断页。",
+          "state_visibility_contract": {
+            "user_question": "运行中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "运行态投影异常，需要回到诊断页。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "返回管理总览"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "components": [
+        {
+          "component": "truth 来源说明",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "degraded / rebuild / doctor 诊断卡",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "恢复步骤",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "风险提示",
+          "priority": 4,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "healthy-warning",
+          "label": "健康但预警",
+          "description": "当前系统可用但存在恢复风险提示。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "当前系统可用但存在恢复风险提示。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "degraded",
+          "label": "降级",
+          "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "rebuild-suggested",
+          "label": "建议重建",
+          "description": "投影层需要重建。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "投影层需要重建。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "doctor-suggested",
+          "label": "建议 doctor",
+          "description": "推荐执行 doctor 修复上下文。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "推荐执行 doctor 修复上下文。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "诊断结果仍在采集。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "诊断结果仍在采集。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "诊断页本身无法完成聚合。",
+          "state_visibility_contract": {
+            "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "诊断页本身无法完成聚合。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回项目详情",
+              "前往运行中心"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "material-viewer",
+      "components": [
+        {
+          "component": "版本树",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "文档类型列表",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "feature 目录",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "文档阅读面板",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "来源路径信息",
+          "priority": 5,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "可浏览",
+          "description": "版本树和文档列表已加载。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "版本树和文档列表已加载。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "document-open",
+          "label": "文档已打开",
+          "description": "右侧阅读区显示当前文档正文。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "右侧阅读区显示当前文档正文。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "source-missing",
+          "label": "来源缺失",
+          "description": "目标文档不存在或暂不可读。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "目标文档不存在或暂不可读。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "加载中",
+          "description": "文档列表或内容仍在加载。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "文档列表或内容仍在加载。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "empty",
+          "label": "空状态",
+          "description": "该版本或类型下没有可读文档。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "该版本或类型下没有可读文档。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "错误",
+          "description": "文档读取失败。",
+          "state_visibility_contract": {
+            "user_question": "项目物料查看器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "文档读取失败。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "打开文档",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "page_id": "material-document-detail",
+      "components": [
+        {
+          "component": "文档头部信息",
+          "priority": 1,
+          "display_zone": "首屏"
+        },
+        {
+          "component": "版本 / 类型 / feature 面包屑",
+          "priority": 2,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "Markdown 正文区",
+          "priority": 3,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "同类文档切换",
+          "priority": 4,
+          "display_zone": "主体区"
+        },
+        {
+          "component": "来源路径与只读说明",
+          "priority": 5,
+          "display_zone": "收口区"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "文档已打开",
+          "description": "显示文档正文与来源路径。",
+          "state_visibility_contract": {
+            "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "显示文档正文与来源路径。"
+            ],
+            "primary_actions": [
+              "返回物料查看器",
+              "切换同版本文档"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "sibling-switch",
+          "label": "切换同类文档",
+          "description": "在阅读区切换相邻文档。",
+          "state_visibility_contract": {
+            "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "在阅读区切换相邻文档。"
+            ],
+            "primary_actions": [
+              "返回物料查看器",
+              "切换同版本文档"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "version-switch",
+          "label": "切换版本",
+          "description": "切换到同类型的其他版本文档。",
+          "state_visibility_contract": {
+            "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "切换到同类型的其他版本文档。"
+            ],
+            "primary_actions": [
+              "返回物料查看器",
+              "切换同版本文档"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "source-missing",
+          "label": "来源缺失",
+          "description": "文档不存在或来源路径不可达。",
+          "state_visibility_contract": {
+            "user_question": "物料文档详情 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "文档不存在或来源路径不可达。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回物料查看器",
+              "切换同版本文档"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

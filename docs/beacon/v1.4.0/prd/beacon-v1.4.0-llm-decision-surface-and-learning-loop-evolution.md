@@ -593,6 +593,15 @@ learning 集成优先复用现有 typed contract，并在必要时增加 version
 4. 达到一致性阈值后切主
 5. 保留一段兼容窗口
 
+### 6.7 恢复策略
+
+当 skill decision surface、learning 注入、diagram/semantic 输入或 dual-read 对账出现异常时，系统必须进入显式恢复路径，而不是静默继续：
+
+1. 优先回退到已存在的 Python guardrail / legacy 判定链，保持 gate fail-closed。
+2. 保留差异证据、fallback reason 与 recommended command，供后续 `implement / qa / release` 继续审计。
+3. 如异常来自 frozen truth 缺口或 requirement 不一致，必须路由回 `beacon-change`，而不是在 support surface 中直接热修真相。
+4. 如异常仅来自 machine projection 缺失或缓存漂移，系统应优先重建 projection / mirror，再恢复主链判定。
+
 ## 7. 风险与缓解
 
 | 风险 | 影响 | 缓解 |

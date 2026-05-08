@@ -1,41 +1,217 @@
 {
-  "schema_version": "1.0",
-  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
-  "primary_actions": [
+  "states": [
+    "blocked",
+    "degraded",
+    "doctor-suggested",
+    "document-open",
+    "draft",
+    "empty",
+    "error",
+    "filtered",
+    "frozen",
+    "healthy-warning",
+    "idle",
+    "intervention-needed",
+    "loading",
+    "ralph-active",
+    "ready",
+    "rebuild-suggested",
+    "requirement-missing",
+    "runtime-active",
+    "sibling-switch",
+    "single-active",
+    "source-missing",
+    "team-active",
+    "version-switch"
+  ],
+  "ctas": [
     {
-      "action": "route_preview",
-      "label": "预览 Route",
-      "surface": "intent-router"
+      "page_id": "home",
+      "label": "查看管理总览",
+      "target": "management-overview",
+      "trigger": "点击项目组合入口"
     },
     {
-      "action": "inspect_skill_contract",
-      "label": "查看 Skill Contract",
-      "surface": "skill-surface-detail"
+      "page_id": "home",
+      "label": "进入重点项目",
+      "target": "project-detail",
+      "trigger": "点击重点项目卡片"
     },
     {
-      "action": "inspect_learning",
-      "label": "查看 Learning Hint",
-      "surface": "learning-disclosure-center"
+      "page_id": "management-overview",
+      "label": "进入项目详情",
+      "target": "project-detail",
+      "trigger": "点击项目行或卡片"
     },
     {
-      "action": "inspect_reasoning",
-      "label": "查看 Reasoning Inputs",
-      "surface": "reasoning-contract-review"
+      "page_id": "management-overview",
+      "label": "返回首页",
+      "target": "home",
+      "trigger": "点击首页导航"
     },
     {
-      "action": "inspect_cutover",
-      "label": "查看 Cutover Audit",
-      "surface": "guardrail-cutover-audit"
+      "page_id": "project-detail",
+      "label": "查看运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态摘要"
     },
     {
-      "action": "enter_implement",
-      "label": "进入 Implement",
-      "surface": "guardrail-cutover-audit"
+      "page_id": "project-detail",
+      "label": "查看恢复诊断",
+      "target": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "查看项目物料",
+      "target": "material-viewer",
+      "trigger": "点击文档查看入口"
+    },
+    {
+      "page_id": "project-detail",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "runtime-center",
+      "label": "返回管理总览",
+      "target": "management-overview",
+      "trigger": "点击面包屑"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "recovery-diagnostics",
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
+    },
+    {
+      "page_id": "material-viewer",
+      "label": "打开文档",
+      "target": "material-document-detail",
+      "trigger": "点击文档列表项"
+    },
+    {
+      "page_id": "material-viewer",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "返回物料查看器",
+      "target": "material-viewer",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "material-document-detail",
+      "label": "切换同版本文档",
+      "target": "material-document-detail",
+      "trigger": "点击侧栏文档"
     }
   ],
-  "forbidden_actions": [
-    "freeform_truth_writeback",
-    "bypass_implement_gate",
-    "cutover_when_dual_read_mismatch"
+  "jump_map": [
+    {
+      "from": "home",
+      "to": "management-overview",
+      "trigger": "点击项目组合入口",
+      "type": "primary"
+    },
+    {
+      "from": "home",
+      "to": "project-detail",
+      "trigger": "点击重点项目卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "project-detail",
+      "trigger": "点击项目行/卡片",
+      "type": "primary"
+    },
+    {
+      "from": "management-overview",
+      "to": "home",
+      "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "runtime-center",
+      "trigger": "点击运行态摘要",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "recovery-diagnostics",
+      "trigger": "点击恢复诊断入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "material-viewer",
+      "trigger": "点击文档查看入口",
+      "type": "drill-down"
+    },
+    {
+      "from": "project-detail",
+      "to": "management-overview",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "runtime-center",
+      "to": "management-overview",
+      "trigger": "点击面包屑",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-viewer",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "material-viewer",
+      "to": "material-document-detail",
+      "trigger": "点击文档列表项",
+      "type": "drill-down"
+    },
+    {
+      "from": "material-document-detail",
+      "to": "material-viewer",
+      "trigger": "点击返回",
+      "type": "return"
+    }
   ]
 }
