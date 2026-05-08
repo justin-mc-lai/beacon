@@ -44,3 +44,5 @@ def test_v134_implement_status_json_should_return_structured_missing_payload(tmp
     assert payload["feature"] == "demo-feature"
     assert payload["feature_slug"] == "demo-feature"
     assert payload["version"] == "v1.3.4"
+    assert payload["decision_surface"]["stage"] == "implement"
+    assert payload["guardrail_contract"]["blocked"] is True

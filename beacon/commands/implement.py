@@ -79,6 +79,7 @@ from beacon.utils.ralph_runtime import (
 )
 from beacon.utils.runtime import generate_run_id, now_iso, read_json, write_json
 from beacon.utils.story_state import load_story_state
+from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
     detect_host_runtime,
@@ -92,6 +93,24 @@ from beacon.utils.versioning import normalize_version, release_line_key, resolve
 from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
+
+
+def _with_implement_surface(
+    payload: dict[str, Any],
+    *,
+    reason_code: str = "",
+    recommended_command: str = "",
+    blocked: bool | None = None,
+) -> dict[str, Any]:
+    blocked_value = bool(payload.get("status") == "blocked") if blocked is None else blocked
+    return attach_skill_decision_surface(
+        payload,
+        stage="implement",
+        reason_code=reason_code or str(payload.get("reason_code", "") or ""),
+        recommended_command=recommended_command or str(payload.get("recommended_command", "") or ""),
+        blocked=blocked_value,
+        dual_read_required=True,
+    )
 
 
 def _slug(text: str) -> str:
@@ -262,7 +281,7 @@ def _blocked_prompt_boundary_payload(
     prompt_boundary: dict[str, Any],
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    return {
+    return _with_implement_surface({
         "schema_version": "1.0",
         "status": "blocked",
         "reason_code": str(prompt_boundary.get("reason_code", "") or "implement_prompt_boundary_blocked"),
@@ -274,7 +293,7 @@ def _blocked_prompt_boundary_payload(
         "recommended_command": str(prompt_boundary.get("recommended_command", "") or ""),
         "source_of_truth_root": f"docs/beacon/{resolved_version}",
         "generated_at": now_iso(),
-    }
+    }, blocked=True)
 
 
 def _render_effective_task_prompt(
@@ -1795,7 +1814,7 @@ def run_implement_stage(  # noqa: PLR0913
     prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
     archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature)
     if bool(archive_boundary.get("archived", False)):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": "feature_archived_from_current_delivery",
@@ -1806,7 +1825,7 @@ def run_implement_stage(  # noqa: PLR0913
             "recommended_command": (
                 f'beacon archive status --project-root {project_root} --version {resolved_version} --feature "{feature}" --json'
             ),
-        }
+        }, blocked=True)
         return 2, payload
     requirement_package_gate = build_requirement_package_gate(
         project_root,
@@ -1815,7 +1834,7 @@ def run_implement_stage(  # noqa: PLR0913
         strict=True,
     )
     if str(requirement_package_gate.get("status") or "").lower() == "blocked":
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
@@ -1824,7 +1843,7 @@ def run_implement_stage(  # noqa: PLR0913
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         return 2, payload
     closure_preflight = _requirement_closure_preflight(
         project_root,
@@ -1832,7 +1851,7 @@ def run_implement_stage(  # noqa: PLR0913
         feature=feature,
     )
     if bool(closure_preflight.get("blocked")):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
@@ -1842,7 +1861,7 @@ def run_implement_stage(  # noqa: PLR0913
             "requirement_package_gate": requirement_package_gate,
             "closure_preflight": closure_preflight,
             "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         return 2, payload
     resolved_mode = _normalize_mode(mode)
     if resolved_mode == "ralph" and not dry_run and not str(run_id_override or "").strip():
@@ -1912,7 +1931,7 @@ def run_implement_stage(  # noqa: PLR0913
         )
     takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
     if str(takeover_gate.get("status", "") or "") == "blocked":
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "run_id": run_id,
             "feature": feature,
@@ -1923,7 +1942,7 @@ def run_implement_stage(  # noqa: PLR0913
             "takeover_gate": takeover_gate,
             "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
-        }
+        }, blocked=True)
         write_json(state_path, payload)
         return 2, payload
     branch_preflight_path = _branch_preflight_path(run_id)
@@ -1945,7 +1964,7 @@ def run_implement_stage(  # noqa: PLR0913
     branch_preflight["branch_preflight_path"] = str(branch_preflight_path)
     write_json(project_root / branch_preflight_path, branch_preflight)
     if branch_preflight.get("blocked"):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "run_id": run_id,
             "feature": feature,
@@ -1960,7 +1979,7 @@ def run_implement_stage(  # noqa: PLR0913
             "recommended_command": branch_preflight.get("recommended_command", ""),
             "git_workflow": git_workflow_contract,
             "generated_at": now_iso(),
-        }
+        }, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -1975,7 +1994,7 @@ def run_implement_stage(  # noqa: PLR0913
         )
         write_json(project_root / plan_preflight_path, implementation_plan_gate)
         if implementation_plan_gate.get("blocked"):
-            payload = {
+            payload = _with_implement_surface({
                 "schema_version": "1.0",
                 "run_id": run_id,
                 "feature": feature,
@@ -1990,7 +2009,7 @@ def run_implement_stage(  # noqa: PLR0913
                 "recommended_command": str(implementation_plan_gate.get("recommended_command", "") or ""),
                 "git_workflow": git_workflow_contract,
                 "generated_at": now_iso(),
-            }
+            }, blocked=True)
             write_json(state_path, payload)
             return 2, payload
 
@@ -2003,7 +2022,7 @@ def run_implement_stage(  # noqa: PLR0913
     )
     adapter_id, adapter = resolve_adapter(project_root, requested_runner)
     if not adapter_id or not adapter:
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": "runner_not_configured",
@@ -2013,7 +2032,7 @@ def run_implement_stage(  # noqa: PLR0913
             "feature_slug": feature_slug,
             "branch_preflight_path": str(branch_preflight_path),
             "branch_preflight": branch_preflight,
-        }
+        }, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -2036,7 +2055,7 @@ def run_implement_stage(  # noqa: PLR0913
             adapter_type=adapter_type,
         )
         if str(skill_admission.get("status", "")).strip().lower() != "pass":
-            payload = {
+            payload = _with_implement_surface({
                 "schema_version": "1.0",
                 "status": "blocked",
                 "reason_code": str(skill_admission.get("reason_code", "skill_admission_blocked") or "skill_admission_blocked"),
@@ -2050,7 +2069,7 @@ def run_implement_stage(  # noqa: PLR0913
                 "adapter_type": adapter_type,
                 "skill_admission": skill_admission,
                 "recommended_command": str(skill_admission.get("recommended_command", "") or ""),
-            }
+            }, blocked=True)
             write_json(state_path, payload)
             return 2, payload
     subagent_prechecks: dict[str, Any] = {
@@ -2091,7 +2110,7 @@ def run_implement_stage(  # noqa: PLR0913
             "delegation_readiness": delegation_precheck,
         }
         if str(runtime_precheck.get("status", "")).strip().lower() != "pass":
-            payload = {
+            payload = _with_implement_surface({
                 "schema_version": "1.0",
                 "status": "blocked",
                 "reason_code": str(runtime_precheck.get("reason_code", "runtime_not_ready") or "runtime_not_ready"),
@@ -2103,11 +2122,11 @@ def run_implement_stage(  # noqa: PLR0913
                 "mode": resolved_mode or "",
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(runtime_precheck.get("recommended_command", "") or ""),
-            }
+            }, blocked=True)
             write_json(state_path, payload)
             return 2, payload
         if str(delegation_precheck.get("status", "")).strip().lower() != "pass":
-            payload = {
+            payload = _with_implement_surface({
                 "schema_version": "1.0",
                 "status": "blocked",
                 "reason_code": str(delegation_precheck.get("reason_code", "delegation_not_ready") or "delegation_not_ready"),
@@ -2119,7 +2138,7 @@ def run_implement_stage(  # noqa: PLR0913
                 "mode": resolved_mode or "",
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(delegation_precheck.get("recommended_command", "") or ""),
-            }
+            }, blocked=True)
             write_json(state_path, payload)
             return 2, payload
 
@@ -2378,6 +2397,7 @@ def run_implement_stage(  # noqa: PLR0913
             ),
             "supported_execution_adapters": ["command-skill", "claude-skill"],
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
     if adapter_type == "native":
@@ -2410,6 +2430,7 @@ def run_implement_stage(  # noqa: PLR0913
                 "reason_code": str(result_payload.get("reason_code", "native_runner_failed") or "native_runner_failed"),
                 "result": result_payload,
             }
+            payload = _with_implement_surface(payload, blocked=True)
             write_json(state_path, payload)
             return 2, payload
         summary_paths = _summary_paths(project_root, resolved_version, feature)
@@ -2773,6 +2794,7 @@ def run_implement_stage(  # noqa: PLR0913
             "command": command,
             "timeout_sec": timeout,
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
     except FileNotFoundError:
@@ -2789,6 +2811,7 @@ def run_implement_stage(  # noqa: PLR0913
             "reason_code": "runner_command_not_found",
             "command": command,
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
     _write_text(project_root / stdout_path, result.stdout or "")
@@ -2811,6 +2834,7 @@ def run_implement_stage(  # noqa: PLR0913
             "stderr_path": str(stderr_path),
             "exit_code": result.returncode,
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -2831,6 +2855,7 @@ def run_implement_stage(  # noqa: PLR0913
             "stdout_path": str(stdout_path),
             "stderr_path": str(stderr_path),
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -2850,6 +2875,7 @@ def run_implement_stage(  # noqa: PLR0913
             "reason_code": "runner_result_invalid",
             "problems": [f"result json parse failed: {exc}"],
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
     problems = _validate_result(result_payload)
@@ -2867,6 +2893,7 @@ def run_implement_stage(  # noqa: PLR0913
             "reason_code": "runner_result_invalid",
             "problems": problems,
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -2884,6 +2911,7 @@ def run_implement_stage(  # noqa: PLR0913
             "reason_code": "implement_execution_failed",
             "result": result_payload,
         }
+        payload = _with_implement_surface(payload, blocked=True)
         write_json(state_path, payload)
         return 2, payload
 
@@ -3343,6 +3371,7 @@ def run(
     if prompt_boundary:
         payload["prompt_boundary"] = prompt_boundary
     _apply_post_team_ralph_handoff(payload, project_root=project_root, version=resolved_version, feature=feature)
+    payload = _with_implement_surface(payload)
     if prompt_trace:
         mapped_command = f'beacon implement run "{feature}" --project {project_root} --version {resolved_version}'
         if mode:
@@ -3470,7 +3499,7 @@ def dev_run(
 
     takeover_gate = evaluate_takeover_baseline_gate(project_root, version=resolved_version)
     if str(takeover_gate.get("status", "") or "") == "blocked":
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": "takeover_baseline_required",
@@ -3489,7 +3518,7 @@ def dev_run(
                     }
                 ],
             },
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3521,7 +3550,7 @@ def dev_run(
         }
     )
     if branch_preflight.get("blocked"):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": "implement_branch_guard_blocked",
@@ -3533,7 +3562,7 @@ def dev_run(
                 **preflight_resolution,
                 "status": "blocked",
             },
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3561,13 +3590,13 @@ def dev_run(
         }
     )
     if plan_code != 0:
-        payload = {
+        payload = _with_implement_surface({
             **plan_payload,
             "preflight_resolution": {
                 **preflight_resolution,
                 "status": "blocked",
             },
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3640,6 +3669,7 @@ def sync_git_workflow(
         "git_workflow": payload,
         "source_mode": "seed_refresh" if force_from_seed else str(payload.get("source", "") or "version_material"),
     }
+    output = _with_implement_surface(output)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
     else:
@@ -3687,7 +3717,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
         strict=True,
     )
     if str(requirement_package_gate.get("status") or "").lower() == "blocked":
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
@@ -3696,7 +3726,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3708,7 +3738,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
         feature=feature,
     )
     if bool(closure_preflight.get("blocked")):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
@@ -3718,7 +3748,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             "closure_preflight": closure_preflight,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3788,7 +3818,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         strict=True,
     )
     if str(requirement_package_gate.get("status") or "").lower() == "blocked":
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
@@ -3797,7 +3827,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3809,7 +3839,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         feature=feature,
     )
     if bool(closure_preflight.get("blocked")):
-        payload = {
+        payload = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
@@ -3819,7 +3849,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
             "closure_preflight": closure_preflight,
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -3839,6 +3869,7 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
         "team_mode": payload.get("team_mode", {}) or team_mode,
         "recommended_command": str((payload.get("team_mode", {}) or team_mode).get("run_command") or ""),
     }
+    payload = _with_implement_surface(payload)
     if prompt_boundary:
         payload["prompt_boundary"] = prompt_boundary
     if host_prompt:
@@ -4015,7 +4046,7 @@ def status(
             if state_path.exists():
                 state_payload = json.loads(state_path.read_text(encoding="utf-8"))
     if state_payload is None:
-        missing_payload = {
+        missing_payload = _with_implement_surface({
             "status": "missing",
             "reason_code": "implementation_run_not_found",
             "message": "Implementation run not found",
@@ -4032,7 +4063,7 @@ def status(
             "implementation_plan_markdown_exists": False,
             "implementation_plan_progress_exists": False,
             "implementation_plan_progress": {},
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
             return
@@ -4053,6 +4084,7 @@ def status(
     output["implementation_plan_progress_exists"] = implementation_plan_progress_path(project_root, resolved_version, slug).exists()
     output["implementation_plan_progress"] = load_implementation_plan_progress(project_root, version=resolved_version, feature=slug)
     output["requirement_completeness"] = load_requirement_completeness(project_root, resolved_version, slug)
+    output = _with_implement_surface(output)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         return
@@ -4071,6 +4103,7 @@ def ralph_status(
     if not payload:
         typer.echo("Ralph state not found", err=True)
         raise typer.Exit(2)
+    payload = _with_implement_surface(payload)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         raise typer.Exit(0)
@@ -4101,13 +4134,13 @@ def ralph_resume(
     next_action = str(payload.get("next_action", "") or "").strip()
     command = str(payload.get("recommended_command", "") or "").strip()
     if next_action not in {"implement", "qa", "verify", "test-case", "review_quality", "release"} or not command:
-        output = {
+        output = _with_implement_surface({
             "schema_version": "1.0",
             "status": "blocked",
             "reason_code": "ralph_resume_not_actionable",
             "feature": feature,
             "ralph": payload,
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
         else:
@@ -4123,14 +4156,14 @@ def ralph_resume(
         exit_code=exit_code,
         result=result if isinstance(result, dict) else {},
     )
-    output = {
+    output = _with_implement_surface({
         "schema_version": "1.0",
         "status": "completed" if exit_code == 0 else "failed",
         "feature": feature,
         "recommended_command": command,
         "exit_code": exit_code,
         "result": result,
-    }
+    }, blocked=exit_code != 0)
     if json_output:
         typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
     else:

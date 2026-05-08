@@ -24,9 +24,27 @@ from beacon.utils.semantic_runtime import (
     load_host_response_json,
     normalize_requested_mode,
 )
+from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="prd", help="Generate Product Requirements Document")
+
+
+def _with_prd_surface(
+    payload: dict[str, object],
+    *,
+    reason_code: str = "",
+    recommended_command: str = "",
+    blocked: bool = False,
+) -> dict[str, object]:
+    return attach_skill_decision_surface(
+        payload,
+        stage="prd",
+        reason_code=reason_code,
+        recommended_command=recommended_command,
+        blocked=blocked,
+        dual_read_required=True,
+    )
 
 _TOOLING_KEYWORDS = (
     "toolkit",
@@ -1425,25 +1443,30 @@ def create(
         typer.echo(f"PRD transaction failed: {exc}", err=True)
         raise typer.Exit(2)
     if json_output:
+        payload = _with_prd_surface(
+            {
+                "status": "ok",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": resolved_version,
+                "effective_mode": effective_mode,
+                "generator_mode": generator_mode,
+                "requested_mode": requested_mode,
+                "fallback_reason": fallback_reason,
+                "capability_snapshot": capability_snapshot,
+                "contract_ok": bool(contract.get("ok", False)),
+                "output_path": str(output_path),
+                "compile_path": str(projection["compile_path"]),
+                "canonical_path": str(projection["canonical_path"]),
+                "transaction_path": str(projection["transaction_path"]),
+                "latest_transaction_path": str(projection["latest_transaction_path"]),
+            },
+            recommended_command=f'beacon prd create "{feature}" --project-root {project_root} --version {resolved_version}',
+            blocked=False,
+        )
         typer.echo(
             json.dumps(
-                {
-                    "status": "ok",
-                    "feature": feature,
-                    "feature_slug": slug,
-                    "version": resolved_version,
-                    "effective_mode": effective_mode,
-                    "generator_mode": generator_mode,
-                    "requested_mode": requested_mode,
-                    "fallback_reason": fallback_reason,
-                    "capability_snapshot": capability_snapshot,
-                    "contract_ok": bool(contract.get("ok", False)),
-                    "output_path": str(output_path),
-                    "compile_path": str(projection["compile_path"]),
-                    "canonical_path": str(projection["canonical_path"]),
-                    "transaction_path": str(projection["transaction_path"]),
-                    "latest_transaction_path": str(projection["latest_transaction_path"]),
-                },
+                payload,
                 ensure_ascii=False,
                 indent=2,
             )
@@ -1470,19 +1493,21 @@ def reconcile_prd(
     md_content = prd_path.read_text(encoding="utf-8")
     contract = _validate_contract(md_content, require_no_placeholders=False)
     if not bool(contract.get("ok")):
+        payload = _with_prd_surface(
+            {
+                "status": "blocked",
+                "reason_code": "contract_invalid",
+                "feature": feature,
+                "version": resolved_version,
+                "missing_headings": contract.get("missing_headings", []),
+                "semantic_hits": contract.get("semantic_hits", {}),
+            },
+            reason_code="contract_invalid",
+            recommended_command=f'beacon prd reconcile "{feature}" --project-root {project_root} --version {resolved_version} --json',
+            blocked=True,
+        )
         typer.echo(
-            json.dumps(
-                {
-                    "status": "blocked",
-                    "reason_code": "contract_invalid",
-                    "feature": feature,
-                    "version": resolved_version,
-                    "missing_headings": contract.get("missing_headings", []),
-                    "semantic_hits": contract.get("semantic_hits", {}),
-                },
-                ensure_ascii=False,
-                indent=2,
-            )
+            json.dumps(payload, ensure_ascii=False, indent=2)
             if json_output
             else f"Contract invalid: missing_headings={contract.get('missing_headings', [])} semantic_hits={contract.get('semantic_hits', {})}",
             err=True,
@@ -1552,22 +1577,23 @@ def reconcile_prd(
         raise typer.Exit(2)
 
     if json_output:
+        payload = _with_prd_surface(
+            {
+                "status": "ok",
+                "feature": feature_display,
+                "feature_slug": slug,
+                "version": resolved_version,
+                "output_path": str(output_path),
+                "compile_path": str(projection["compile_path"]),
+                "canonical_path": str(projection["canonical_path"]),
+                "transaction_path": str(projection["transaction_path"]),
+                "latest_transaction_path": str(projection["latest_transaction_path"]),
+            },
+            recommended_command=f'beacon prd reconcile "{feature_display}" --project-root {project_root} --version {resolved_version}',
+            blocked=False,
+        )
         typer.echo(
-            json.dumps(
-                {
-                    "status": "ok",
-                    "feature": feature_display,
-                    "feature_slug": slug,
-                    "version": resolved_version,
-                    "output_path": str(output_path),
-                    "compile_path": str(projection["compile_path"]),
-                    "canonical_path": str(projection["canonical_path"]),
-                    "transaction_path": str(projection["transaction_path"]),
-                    "latest_transaction_path": str(projection["latest_transaction_path"]),
-                },
-                ensure_ascii=False,
-                indent=2,
-            )
+            json.dumps(payload, ensure_ascii=False, indent=2)
         )
         return
     typer.echo(f"✓ PRD reconciled: {output_path}")

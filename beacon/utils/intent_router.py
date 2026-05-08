@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 from urllib import request
 
+from beacon.utils.learning_loop import load_learning_plane_contract
 from beacon.utils.runtime import now_iso
 from beacon.utils.semantic_runtime import load_host_response_json
 from beacon.utils.versioning import load_version_truth, resolve_docs_version
@@ -354,6 +355,28 @@ VERSION_EVOLUTION_KEYWORDS = (
     "新方向",
     "路线",
     "roadmap",
+)
+CHANGE_ROUTE_KEYWORDS = (
+    "change",
+    "变更",
+    "改需求",
+    "修改需求",
+    "范围调整",
+    "scope change",
+    "reopen",
+    "重新冻结",
+    "冻结后",
+    "frozen truth",
+    "revision",
+)
+BRAINSTORM_ROUTE_KEYWORDS = (
+    "brainstorm",
+    "脑暴",
+    "收敛",
+    "开放问题",
+    "矛盾",
+    "clarify",
+    "澄清",
 )
 SUBAGENT_PLANNING_KEYWORDS = (
     "subagent",
@@ -759,6 +782,89 @@ def _render_template(template: Any, *, context: dict[str, str]) -> list[str]:
     return []
 
 
+def _goal_requires_change_route(goal: str) -> bool:
+    return bool(_keyword_hits(_normalize_text(goal), CHANGE_ROUTE_KEYWORDS))
+
+
+def _goal_prefers_brainstorm(goal: str) -> bool:
+    return bool(_keyword_hits(_normalize_text(goal), BRAINSTORM_ROUTE_KEYWORDS))
+
+
+def _build_learning_disclosure(project_root: Path) -> dict[str, Any]:
+    contract = load_learning_plane_contract(project_root)
+    policy_topics = contract.get("policy_topics") if isinstance(contract.get("policy_topics"), dict) else {}
+    return {
+        "used": True,
+        "source": "existing_learning_plane_contract",
+        "contract_ref": ".beacon/state/evo/decision-engine.json",
+        "disclosure_order": ["feature", "host", "runner", "domain"],
+        "used_for": ["route_explanation", "operator_caution"],
+        "truth_role": "hint_only",
+        "cannot_override": ["frozen_truth", "gate_verdict", "release_ready"],
+        "freshness_policy": {
+            "fresh": "apply_as_hint",
+            "stale": "downgrade",
+            "superseded": "downgrade",
+        },
+        "main_kpi": str(contract.get("main_kpi") or ""),
+        "subject_surface": list(contract.get("subject_surface") or []),
+        "program_surface": list(contract.get("program_surface") or []),
+        "policy_families": [str(key) for key in policy_topics.keys()],
+    }
+
+
+def _build_route_explanation(
+    *,
+    goal: str,
+    intent: str,
+    command: str,
+    confidence: float,
+    boundary: dict[str, Any],
+    learning_disclosure: dict[str, Any],
+) -> dict[str, Any]:
+    boundary_state = str(boundary.get("state", "in_scope") or "in_scope")
+    route = command or f"beacon {intent}"
+    if boundary_state == "out_of_scope":
+        summary = "This request is outside Beacon's workflow/governance boundary."
+        primary_reason = "Production coding, deploy, or infrastructure work must not execute through Beacon ask."
+    elif boundary_state == "mixed_need_confirm":
+        summary = "This prompt mixes Beacon governance intent with out-of-scope execution intent."
+        primary_reason = "Split the prompt before execution so Beacon can keep route and gate semantics explicit."
+    elif _goal_requires_change_route(goal):
+        route = "beacon-change"
+        summary = "This request looks like a frozen-truth change and should re-enter the change loop."
+        primary_reason = "Changes to frozen scope, requirement truth, or revisioned artifacts must route through change."
+    elif intent == "brainstorm" or _goal_prefers_brainstorm(goal):
+        route = "beacon brainstorm"
+        summary = "This request fits a read-only convergence route before any truth mutation."
+        primary_reason = "Use brainstorm for contradiction checks, open questions, and route suggestions."
+    elif intent in {"help", "status", "doctor"}:
+        summary = "This request is best served by a support surface before moving to a lifecycle stage."
+        primary_reason = "The user asked for diagnosis, current state, or next-step guidance rather than a truth-writing artifact."
+    else:
+        summary = "This request can stay on Beacon's governed route preview / controlled execution surface."
+        primary_reason = "The prompt maps to an existing Beacon surface without introducing a new lifecycle stage."
+
+    why_now = [primary_reason]
+    if boundary_state != "in_scope":
+        why_now.append(str(boundary.get("reason") or boundary_state))
+    why_now.append(f"intent={intent}")
+    why_now.append(f"confidence={round(confidence, 2)}")
+
+    return {
+        "summary": summary,
+        "primary_reason": primary_reason,
+        "recommended_route": route,
+        "why_now": why_now,
+        "brainstorm_when": "Use `brainstorm` for read-only convergence, contradiction checks, open questions, and route suggestions.",
+        "change_when": "Use `change` when the request alters frozen truth, scope, acceptance, or any revisioned requirement artifact.",
+        "learning_hint_used": bool(learning_disclosure.get("used")),
+        "learning_hint_policy": "Learning hints may shape route explanation and caution, but cannot override frozen truth or gate verdict.",
+        "action_before_command": True,
+        "command_after_reason": True,
+    }
+
+
 def _build_command_plan(
     *,
     intent: str,
@@ -854,6 +960,7 @@ def optimize_prompt_to_plan(
     boundary = route.get("boundary", {"state": "in_scope", "in_scope": True, "reason": "in_scope"})
     boundary_state = str(boundary.get("state", "in_scope"))
     min_confidence = float(router_config["confidence_threshold"])
+    learning_disclosure = _build_learning_disclosure(root)
 
     risk_hints: list[str] = []
     if intent in {"gate", "release"}:
@@ -885,9 +992,17 @@ def optimize_prompt_to_plan(
         "requires_confirmation": boundary_state == "mixed_need_confirm" or confidence < min_confidence,
         "allow_execute": boundary_state == "in_scope" and confidence >= min_confidence,
     }
+    route_explanation = _build_route_explanation(
+        goal=goal,
+        intent=intent,
+        command=command,
+        confidence=confidence,
+        boundary=boundary if isinstance(boundary, dict) else {},
+        learning_disclosure=learning_disclosure,
+    )
 
     return {
-        "schema_version": "1.1",
+        "schema_version": "1.2",
         "ts": now_iso(),
         "input_goal": goal,
         "intent": intent,
@@ -902,6 +1017,8 @@ def optimize_prompt_to_plan(
         "boundary_hints": boundary_hints,
         "fallback": fallback,
         "execution_policy": execution_policy,
+        "route_explanation": route_explanation,
+        "learning_disclosure": learning_disclosure,
         "router_config": {
             "config_loaded": bool(router_config.get("config_loaded")),
             "config_path": str(router_config.get("config_path", "")),

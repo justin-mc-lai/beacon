@@ -53,6 +53,7 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.story_state import feature_slug
+from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
     delegation_readiness_precheck,
     detect_host_runtime,
@@ -82,6 +83,24 @@ session_app = typer.Typer(name="session", help="QA login/session state helpers")
 audit_app = typer.Typer(name="audit", help="QA audit truth helpers")
 app.add_typer(session_app, name="session")
 app.add_typer(audit_app, name="audit")
+
+
+def _with_qa_surface(
+    payload: dict[str, Any],
+    *,
+    reason_code: str = "",
+    recommended_command: str = "",
+    blocked: bool | None = None,
+) -> dict[str, Any]:
+    blocked_value = bool(str(payload.get("status", "")).lower() == "blocked") if blocked is None else blocked
+    return attach_skill_decision_surface(
+        payload,
+        stage="qa",
+        reason_code=reason_code or ",".join(str(x) for x in payload.get("reason_codes", []) if str(x).strip()),
+        recommended_command=recommended_command or str(payload.get("recommended_command", "") or ""),
+        blocked=blocked_value,
+        dual_read_required=True,
+    )
 
 KNOWN_SCOPES = {
     "all",
@@ -689,7 +708,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     if metadata_machine_path(project_root).exists():
         metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
         if str(metadata_verdict.get("status") or "").lower() == "fail":
-            blocked_payload = {
+            blocked_payload = _with_qa_surface({
                 "schema_version": "1.0",
                 "feature": feature,
                 "version": version,
@@ -697,7 +716,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "reason_codes": ["project_metadata_contract_blocked"],
                 "project_metadata_verification": metadata_verdict,
                 "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {version}",
-            }
+            }, blocked=True)
             if json_output:
                 typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
             else:
@@ -711,7 +730,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         strict=True,
     )
     if str(requirement_package_gate.get("status") or "").lower() == "blocked":
-        blocked_payload = {
+        blocked_payload = _with_qa_surface({
             "schema_version": "1.0",
             "feature": feature,
             "version": version,
@@ -719,7 +738,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "reason_codes": ["requirement_package_contract_blocked"],
             "requirement_package_gate": requirement_package_gate,
             "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
         else:
@@ -732,7 +751,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         target_stage="qa",
     )
     if str(requirement_completeness_gate.get("status") or "").lower() == "blocked":
-        blocked_payload = {
+        blocked_payload = _with_qa_surface({
             "schema_version": "1.0",
             "feature": feature,
             "version": version,
@@ -741,7 +760,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "requirement_package_gate": requirement_package_gate,
             "requirement_completeness_gate": requirement_completeness_gate,
             "recommended_command": str(requirement_completeness_gate.get("recommended_command") or "beacon-change"),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
         else:
@@ -803,7 +822,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             profile_id=str(project_profile.get("profile_id") or ""),
         )
         if orchestration_exit != 0 or str(project_profile_gate.get("status") or "") == "blocked":
-            blocked_payload = {
+            blocked_payload = _with_qa_surface({
                 "schema_version": "1.0",
                 "feature": feature,
                 "version": version,
@@ -813,7 +832,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "project_profile_gate": project_profile_gate,
                 "project_orchestration": project_orchestration,
                 "session_id": str(current_session.get("session_id") or ""),
-            }
+            }, blocked=True)
             _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
@@ -855,7 +874,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "delegation_readiness": delegation_precheck,
         }
         if str(runtime_precheck.get("status", "")).strip().lower() != "pass":
-            blocked_payload = {
+            blocked_payload = _with_qa_surface({
                 "schema_version": "1.0",
                 "feature": feature,
                 "version": version,
@@ -864,7 +883,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "host_runtime": resolved_host_runtime,
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(runtime_precheck.get("recommended_command", "") or ""),
-            }
+            }, blocked=True)
             _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
@@ -873,7 +892,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 typer.echo(f"Beacon QA blocked: {blocked_payload['reason_codes'][0]}", err=True)
             return 2, blocked_payload
         if str(delegation_precheck.get("status", "")).strip().lower() != "pass":
-            blocked_payload = {
+            blocked_payload = _with_qa_surface({
                 "schema_version": "1.0",
                 "feature": feature,
                 "version": version,
@@ -882,7 +901,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "host_runtime": resolved_host_runtime,
                 "subagent_prechecks": subagent_prechecks,
                 "recommended_command": str(delegation_precheck.get("recommended_command", "") or ""),
-            }
+            }, blocked=True)
             _with_delivery_contract(blocked_payload)
             write_feature_qa_status(project_root, feature=feature, payload=blocked_payload)
             if json_output:
@@ -971,6 +990,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 run_id=current_run_id,
                 version=version,
             )
+            payload = _with_qa_surface(payload)
             if json_output:
                 typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
             else:
@@ -1112,6 +1132,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             run_id=current_run_id,
             version=version,
         )
+        payload = _with_qa_surface(payload)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -1163,7 +1184,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     ):
         command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
     if command_exit != 0:
-        blocked_payload = {
+        blocked_payload = _with_qa_surface({
             **plan,
             "status": "blocked",
             "reason_codes": sorted({*list(plan.get("reason_codes") or []), "auto_test_invocation_failed"}),
@@ -1175,7 +1196,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
-        }
+        }, blocked=True)
         _with_delivery_contract(
             blocked_payload,
             requirement_binding={"source_of_truth_root": f"docs/beacon/{version}"},
@@ -1211,7 +1232,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         exclude_run_ids=known_matching_run_ids,
     )
     if not _qa_matrix_matches_expected(qa_status, matrix_path):
-        blocked_payload = {
+        blocked_payload = _with_qa_surface({
             **plan,
             "status": "blocked",
             "reason_codes": sorted({*list(plan.get("reason_codes") or []), "qa_matrix_mismatch"}),
@@ -1224,7 +1245,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
-        }
+        }, blocked=True)
         _with_delivery_contract(
             blocked_payload,
             requirement_binding={"source_of_truth_root": f"docs/beacon/{version}"},
@@ -1559,6 +1580,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     if exit_code == 0 and final_status != "passed":
         exit_code = 2
 
+    payload = _with_qa_surface(payload)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
@@ -1597,31 +1619,32 @@ def run(
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Run QA in scope mode or feature-aware mode (`beacon qa run <feature>`)."""
-    raw_args: list[str] = []
+    feature_candidate_args: list[str] = []
     if feature:
-        raw_args.append(feature)
+        feature_candidate_args.append(feature)
     if project:
-        raw_args.extend(["--project", project])
+        feature_candidate_args.extend(["--project", project])
     if version:
-        raw_args.extend(["--version", version])
-    if mode:
-        raw_args.extend(["--mode", mode])
-    if runtime:
-        raw_args.extend(["--runtime", runtime])
-    if host_runtime:
-        raw_args.extend(["--host-runtime", host_runtime])
+        feature_candidate_args.extend(["--version", version])
     for item in layer_command or []:
-        raw_args.extend(["--layer-command", item])
-    if team_mode:
-        raw_args.append("--team-mode")
+        feature_candidate_args.extend(["--layer-command", item])
     if json_output:
-        raw_args.append("--json")
-    raw_args.extend(str(item) for item in ctx.args)
+        feature_candidate_args.append("--json")
+    feature_candidate_args.extend(str(item) for item in ctx.args)
 
-    if _looks_like_feature_request(raw_args):
+    if _looks_like_feature_request(feature_candidate_args):
+        raw_args = list(feature_candidate_args)
+        if mode:
+            raw_args.extend(["--mode", mode])
+        if runtime:
+            raw_args.extend(["--runtime", runtime])
+        if host_runtime:
+            raw_args.extend(["--host-runtime", host_runtime])
+        if team_mode:
+            raw_args.append("--team-mode")
         code, _ = _run_feature_aware_qa(raw_args)
         raise typer.Exit(code=code)
-    code = _beacon_exec(["auto-test", "create", *raw_args], cwd=_repo_root())
+    code = _beacon_exec(["auto-test", "create", *feature_candidate_args], cwd=_repo_root())
     raise typer.Exit(code=code)
 
 
@@ -1685,6 +1708,7 @@ def evolve(
         plan["feature_matrix_path"] = str(matrix_path.relative_to(project_root))
     if write_matrix:
         write_feature_qa_status(project_root, feature=feature, payload=plan)
+    plan = _with_qa_surface(plan)
     if json_output:
         typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
         return
@@ -1711,6 +1735,7 @@ def team_plan(
     plan["team_surface"] = "qa-team"
     plan["team_mode"] = True
     plan["team_contract"] = qa_team_contract(project_root, version=version, feature=feature)
+    plan = _with_qa_surface(plan)
     if json_output:
         typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
         return
@@ -1728,8 +1753,18 @@ def status(
     project_root = Path(project) if project else Path.cwd()
     payload = load_qa_status(project_root)
     if not payload:
-        typer.echo("No QA status found. Run `beacon qa run ...` first.")
+        missing_payload = _with_qa_surface({
+            "status": "missing",
+            "reason_codes": ["qa_status_missing"],
+            "message": "No QA status found. Run `beacon qa run ...` first.",
+            "project_root": str(project_root),
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(missing_payload["message"])
         raise typer.Exit(1)
+    payload = _with_qa_surface(payload)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
@@ -1810,7 +1845,7 @@ def session_save(
     }
     refs = write_qa_session(project_root, session_id, payload)
     current_ref = set_current_qa_session(project_root, session_id)
-    result = {"session_id": session_id, **refs, **current_ref}
+    result = _with_qa_surface({"status": "saved", "session_id": session_id, **refs, **current_ref})
     if json_output:
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
         return
@@ -1828,7 +1863,7 @@ def session_list(
     rows = list_qa_sessions(project_root)
     current = load_current_qa_session(project_root)
     current_id = str(current.get("session_id", "") or "")
-    payload = {"current_session_id": current_id, "sessions": rows}
+    payload = _with_qa_surface({"status": "listed", "current_session_id": current_id, "sessions": rows})
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
@@ -1848,10 +1883,19 @@ def session_use(
     project_root = Path(project) if project else Path.cwd()
     payload = load_qa_session(project_root, session_id)
     if not payload:
-        typer.echo(f"Session not found: {session_id}", err=True)
+        missing_payload = _with_qa_surface({
+            "status": "missing",
+            "reason_codes": ["qa_session_not_found"],
+            "session_id": session_id,
+            "message": f"Session not found: {session_id}",
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(missing_payload["message"], err=True)
         raise typer.Exit(2)
     refs = set_current_qa_session(project_root, session_id)
-    result = {"session_id": session_id, **refs}
+    result = _with_qa_surface({"status": "selected", "session_id": session_id, **refs})
     if json_output:
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
         return
@@ -1868,12 +1912,30 @@ def session_show(
     project_root = Path(project) if project else Path.cwd()
     target = session_id.strip() or str(load_current_qa_session(project_root).get("session_id", "") or "")
     if not target:
-        typer.echo("No current QA session selected", err=True)
+        missing_payload = _with_qa_surface({
+            "status": "missing",
+            "reason_codes": ["qa_current_session_missing"],
+            "message": "No current QA session selected",
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(missing_payload["message"], err=True)
         raise typer.Exit(2)
     payload = load_qa_session(project_root, target)
     if not payload:
-        typer.echo(f"Session not found: {target}", err=True)
+        missing_payload = _with_qa_surface({
+            "status": "missing",
+            "reason_codes": ["qa_session_not_found"],
+            "session_id": target,
+            "message": f"Session not found: {target}",
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(missing_payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(missing_payload["message"], err=True)
         raise typer.Exit(2)
+    payload = _with_qa_surface({"status": "loaded", "session_id": target, **payload})
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
@@ -1906,7 +1968,7 @@ def audit_label(
     path = write_qa_audit_label(project_root, run_id=run_id, scenario_id=scenario_id, payload=payload)
     calibration = refresh_qa_calibration_model(project_root)
     learning = refresh_learning_loop(project_root)
-    result = {
+    result = _with_qa_surface({
         "status": "recorded",
         "run_id": run_id,
         "scenario_id": scenario_id,
@@ -1914,7 +1976,7 @@ def audit_label(
         "calibration_model_path": str((project_root / ".beacon" / "state" / "qa-calibration" / "latest.json").relative_to(project_root)),
         "training_sample_count": calibration.get("training_sample_count"),
         "learning_counts": learning.get("counts", {}),
-    }
+    })
     if json_output:
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
         return
@@ -1929,6 +1991,7 @@ def audit_calibrate(
     """Recompute the QA calibration model from recorded audit labels."""
     project_root = Path(project) if project else Path.cwd()
     payload = refresh_qa_calibration_model(project_root)
+    payload = _with_qa_surface(payload)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return

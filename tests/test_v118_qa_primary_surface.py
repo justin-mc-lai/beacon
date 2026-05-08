@@ -65,6 +65,8 @@ def test_qa_session_save_list_use_and_show(tmp_path: Path):
     assert save.exit_code == 0, save.stdout
     save_payload = json.loads(save.stdout)
     assert save_payload["session_id"] == "uat-admin"
+    assert save_payload["decision_surface"]["stage"] == "qa"
+    assert save_payload["guardrail_contract"]["blocked"] is False
     manifest = tmp_path / save_payload["manifest"]
     assert manifest.exists()
 
@@ -73,9 +75,12 @@ def test_qa_session_save_list_use_and_show(tmp_path: Path):
     list_payload = json.loads(listing.stdout)
     assert list_payload["current_session_id"] == "uat-admin"
     assert len(list_payload["sessions"]) == 1
+    assert list_payload["decision_surface"]["stage"] == "qa"
 
     show = runner.invoke(app, ["qa", "session", "show", "--project", str(tmp_path), "--json"])
     assert show.exit_code == 0, show.stdout
     show_payload = json.loads(show.stdout)
     assert show_payload["origin"] == "https://example.test"
     assert show_payload["runner_type"] == "browser-use"
+    assert show_payload["decision_surface"]["stage"] == "qa"
+    assert show_payload["status"] == "loaded"

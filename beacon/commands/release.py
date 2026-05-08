@@ -19,11 +19,30 @@ from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import load_technical_review_contract
 from beacon.utils.version_surface import version_surface_repair_commands
 from beacon.utils.writeback import acceptance_projection_transaction_contract
+from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
 from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="release", help="Release checklist")
 _TECHNICAL_ARCHIVE_RE = re.compile(r"^technical-implementation-(?P<slug>.+)\.json$")
+
+
+def _with_release_surface(
+    payload: dict[str, Any],
+    *,
+    reason_code: str = "",
+    recommended_command: str = "",
+    blocked: Optional[bool] = None,
+) -> dict[str, Any]:
+    blocked_value = bool(str(payload.get("status", "")).lower() == "blocked") if blocked is None else blocked
+    return attach_skill_decision_surface(
+        payload,
+        stage="release",
+        reason_code=reason_code or str(payload.get("reason_code", "") or ""),
+        recommended_command=recommended_command or str(payload.get("recommended_command", "") or ""),
+        blocked=blocked_value,
+        dual_read_required=True,
+    )
 
 
 def _parse_semver_tuple(value: str) -> tuple[int, int, int]:
@@ -615,14 +634,14 @@ def check(
                 item for item in metadata_verdict.get("checks", [])
                 if isinstance(item, dict) and str(item.get("status") or "").lower() == "fail"
             ]
-            payload = {
+            payload = _with_release_surface({
                 "schema_version": "1.0",
                 "version": resolved_version,
                 "status": "blocked",
                 "reason_code": "project_metadata_contract_blocked",
                 "project_metadata_verification": metadata_verdict,
                 "recommended_command": f"beacon doctor metadata verify --project-root {project_root} --version {resolved_version}",
-            }
+            }, blocked=True)
             if json_output:
                 typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
             else:
@@ -640,7 +659,7 @@ def check(
     )
     requirement_package_gate_blocked = str(requirement_package_gate.get("status") or "").lower() == "blocked"
     if requirement_package_gate_blocked and json_output:
-        payload = {
+        payload = _with_release_surface({
             "schema_version": "1.0",
             "version": resolved_version,
             "status": "blocked",
@@ -650,7 +669,7 @@ def check(
                 requirement_package_gate.get("recommended_command")
                 or f"beacon doctor verify-materials --project-root {project_root} --version {resolved_version} --strict"
             ),
-        }
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -1090,7 +1109,7 @@ def check(
             failed_checks.append(check_name)
 
     status = "pass" if all_passed else "blocked"
-    payload = {
+    payload = _with_release_surface({
         "version": resolved_version,
         "runtime_version": resolved_runtime,
         "project_root": str(project_root),
@@ -1098,7 +1117,7 @@ def check(
         "release_ready": all_passed,
         "failed_checks": failed_checks,
         "checks": check_records,
-    }
+    }, blocked=status == "blocked")
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
