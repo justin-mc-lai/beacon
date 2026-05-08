@@ -6,7 +6,9 @@
 - Prefer project-local Beacon skills under `.trae/skills/`.
 - Prefer `beacon <subcommand>` as the stable execution entry.
 - Treat `docs/beacon/global-boundaries.md` and `docs/beacon/<version>/` as canonical truth.
+- Follow "Single Truth, Multiple Projections" for versioning: all versions must be projected from `beacon/version-truth.json`.
 - If skill materialization drifts, run `beacon doctor setup-agent-surface --project-root . --agent trae`.
+- If version surfaces drift, run `beacon doctor sync-version-surfaces --project-root .`.
 - Verify Trae skill availability with `beacon doctor verify-agent-surface --project-root . --agent trae --strict`.
 <!-- BEACON:AGENT_SURFACE:END -->
 

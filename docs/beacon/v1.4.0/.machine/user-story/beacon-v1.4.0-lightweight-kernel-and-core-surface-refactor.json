@@ -5,7 +5,7 @@
   "version": "v1.4.0",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-05-07T02:10:13.453126+00:00",
+  "updated_at": "2026-05-07T16:05:46.375587+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -14,7 +14,7 @@
       "reason": "draft",
       "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": "sha256:108a84b476801b9c7623ccae84d77f8e887bad1fc89b9c966b67025a82a0aaad",
+      "baseline_hash": "sha256:4b493acd5927745b8f3f568b8caa0bfaaa16b744a7956df15992c3605e1a64c2",
       "superseded_by": null,
       "created_at": "2026-05-06T18:50:07.655064+00:00",
       "frozen_at": "2026-05-07T01:10:25.080342+00:00",
@@ -28,7 +28,7 @@
       "revision_id": "R1",
       "title": "beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor",
       "priority": "medium",
-      "status": "accepted",
+      "status": "frozen",
       "items": [
         {
           "id": "AC-001",
@@ -153,6 +153,66 @@
         {
           "id": "AC-009",
           "kind": "ac",
+          "theme": "single-manifest",
+          "text": "Beacon 自仓库必须存在一个 canonical release manifest，作为 package/runtime/docs/release truth 的唯一编辑源。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "projected-surfaces",
+          "text": "`beacon/__init__.py`、version truth 兼容表面、skill/rules 版本标记、运行期版本解析输出都必须可回溯到同一 manifest。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "sync-version-surfaces",
+          "text": "系统必须提供显式的 `sync-version-surfaces` 治理能力，把 drifted 版本表面重新校准到 manifest。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "verify-version-surfaces",
+          "text": "系统必须提供显式的 `verify-version-surfaces` 治理能力，并在 strict 模式下对 drift 返回阻断 verdict。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
+          "changed_in_revision": "R1",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
           "theme": "borrow-container-not-cli",
           "text": "系统必须借鉴 OpenSpec 的单 change 工作单元，但不得因此新增新的公开一级主命令集合。",
           "required": true,
@@ -166,7 +226,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-010",
+          "id": "AC-014",
           "kind": "ac",
           "theme": "change-visibility",
           "text": "`help/status/report/gate` 至少要能统一投影当前 change id、change state、blocked reason、next action。",
@@ -181,7 +241,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-011",
+          "id": "AC-015",
           "kind": "ac",
           "theme": "no-new-stage",
           "text": "`beacon-change` 仍是 router，不得被误导为新的 primary lifecycle stage。",
@@ -196,7 +256,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-012",
+          "id": "AC-016",
           "kind": "ac",
           "theme": "drift-routing",
           "text": "当 frozen truth 漂移时，support surface 与 execution surface 必须统一推荐回到 change loop。",
@@ -211,7 +271,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-013",
+          "id": "AC-017",
           "kind": "ac",
           "theme": "goal-optional-host-capability",
           "text": "goal integration 只在 host=codex 且 feature enabled 时生效，非 Codex host 必须有显式 fallback。",
@@ -226,7 +286,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-014",
+          "id": "AC-018",
           "kind": "ac",
           "theme": "requirement-to-goal",
           "text": "goal objective 必须可追溯到 requirement package / implementation plan，而不是自由文本。",
@@ -241,7 +301,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-015",
+          "id": "AC-019",
           "kind": "ac",
           "theme": "goal-not-truth",
           "text": "`goal.complete` 不能单独定义 implement complete、qa pass 或 release pass。",
@@ -256,7 +316,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-016",
+          "id": "AC-020",
           "kind": "ac",
           "theme": "budget-limited-closure",
           "text": "当 goal 进入 `budget_limited` 时，系统必须进入收尾、handoff 或明确阻断，而不是静默继续。",
@@ -271,7 +331,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-017",
+          "id": "AC-021",
           "kind": "ac",
           "theme": "goal-aware-ralph",
           "text": "Ralph 每轮 round 至少能读取当前 goal objective 与 status。",
@@ -286,7 +346,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-018",
+          "id": "AC-022",
           "kind": "ac",
           "theme": "unified-stop-semantics",
           "text": "Ralph 的 `release_ready / human_blocked / budget_exhausted` 必须与 goal state 和 verification state 协同解释。",
@@ -301,7 +361,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-019",
+          "id": "AC-023",
           "kind": "ac",
           "theme": "qa-handoff",
           "text": "当 Ralph 完成实现但未完成 acceptance 时，系统必须能进入明确 QA handoff，而不是直接宣称 release-ready。",
@@ -316,7 +376,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-020",
+          "id": "AC-024",
           "kind": "ac",
           "theme": "execution-audit",
           "text": "Ralph rounds、goal state、QA handoff refs 必须保留为 execution audit evidence。",
@@ -331,7 +391,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-021",
+          "id": "AC-025",
           "kind": "ac",
           "theme": "task-ledger-exists",
           "text": "系统必须为实现阶段生成 human-readable tasks ledger。",
@@ -346,7 +406,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-022",
+          "id": "AC-026",
           "kind": "ac",
           "theme": "checkbox-or-equivalent",
           "text": "task ledger 必须能表达未完成/已完成状态，至少达到 checkbox 或等价低摩擦进度表达。",
@@ -361,7 +421,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-023",
+          "id": "AC-027",
           "kind": "ac",
           "theme": "progress-and-blockers",
           "text": "task ledger 至少能展示 `N/M progress`、current task、blocked tasks、next task。",
@@ -376,7 +436,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-024",
+          "id": "AC-028",
           "kind": "ac",
           "theme": "interruption-friendly",
           "text": "人类或 agent 在中断恢复时，能从 task ledger 快速判断从哪继续。",
@@ -391,7 +451,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-025",
+          "id": "AC-029",
           "kind": "ac",
           "theme": "canonical-plan-source",
           "text": "canonical execution task identity 仍来自 implementation plan json。",
@@ -406,7 +466,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-026",
+          "id": "AC-030",
           "kind": "ac",
           "theme": "machine-progress-source",
           "text": "machine aggregation 仍来自 progress json 或等价 machine progress artifact。",
@@ -421,7 +481,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-027",
+          "id": "AC-031",
           "kind": "ac",
           "theme": "task-ledger-human-projection",
           "text": "`tasks-<feature>.md` 只负责人类面进度与阻断提示，不得单独定义 machine truth。",
@@ -436,7 +496,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-028",
+          "id": "AC-032",
           "kind": "ac",
           "theme": "gate-does-not-trust-checkbox-alone",
           "text": "gate 不得只因为 checkbox 完成就判定实现闭环，而必须继续依赖 evidence、traceability 与 QA closure。",
@@ -451,7 +511,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-029",
+          "id": "AC-033",
           "kind": "ac",
           "theme": "human-usable-boundary-surface",
           "text": "系统必须存在显性人类面入口来操作 global boundary/context。",
@@ -466,7 +526,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-030",
+          "id": "AC-034",
           "kind": "ac",
           "theme": "explain-and-calibrate",
           "text": "该入口至少支持边界解释、越界判断、上下文校准。",
@@ -481,7 +541,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-031",
+          "id": "AC-035",
           "kind": "ac",
           "theme": "truth-layer-separation",
           "text": "该入口必须能区分 global、version、feature 三层约束。",
@@ -496,7 +556,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-032",
+          "id": "AC-036",
           "kind": "ac",
           "theme": "no-new-primary-stage",
           "text": "该入口属于 support surface，不得被误解为新的 lifecycle stage。",
@@ -511,7 +571,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-033",
+          "id": "AC-037",
           "kind": "ac",
           "theme": "no-config-drift",
           "text": "human boundary surface 不得直接把任意临时输入写成 canonical global truth。",
@@ -526,7 +586,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-034",
+          "id": "AC-038",
           "kind": "ac",
           "theme": "placement-judgment",
           "text": "系统必须能判断某条原则应进入 global-boundaries、version PRD，还是只保留在 brainstorm/research。",
@@ -541,7 +601,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-035",
+          "id": "AC-039",
           "kind": "ac",
           "theme": "canonical-writeback-route",
           "text": "若需要正式变更全局边界，必须走明确的 canonical writeback route，而不是 UI/skill 任意修改。",
@@ -556,7 +616,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-036",
+          "id": "AC-040",
           "kind": "ac",
           "theme": "boundary-auditability",
           "text": "任意上位边界变更建议都必须可被审计与追踪。",
@@ -571,7 +631,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-037",
+          "id": "AC-041",
           "kind": "ac",
           "theme": "current-artifact-focus",
           "text": "support surface 至少能回答当前卡在哪个 artifact。",
@@ -586,7 +646,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-038",
+          "id": "AC-042",
           "kind": "ac",
           "theme": "next-action-clarity",
           "text": "support surface 至少能回答下一个动作、原因、建议命令。",
@@ -601,7 +661,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-039",
+          "id": "AC-043",
           "kind": "ac",
           "theme": "unlock-visibility",
           "text": "support surface 至少能说明执行该动作后会 unlock 什么。",
@@ -616,7 +676,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-040",
+          "id": "AC-044",
           "kind": "ac",
           "theme": "machine-detail-second",
           "text": "复杂 machine/read-model 细节应退到 JSON 或 deeper layer，而不是默认人类输出。",
@@ -631,7 +691,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-041",
+          "id": "AC-045",
           "kind": "ac",
           "theme": "ready-blocked-completed",
           "text": "关键 artifact 至少能被表达为 ready / blocked / completed。",
@@ -646,7 +706,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-042",
+          "id": "AC-046",
           "kind": "ac",
           "theme": "dependency-visibility",
           "text": "blocked artifact 必须能说明缺失 dependency。",
@@ -661,7 +721,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-043",
+          "id": "AC-047",
           "kind": "ac",
           "theme": "recovery-anchor",
           "text": "interruption recovery 必须能锚定到 task / artifact 级别，而不是仅靠 run id 推断。",
@@ -676,7 +736,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-044",
+          "id": "AC-048",
           "kind": "ac",
           "theme": "no-duplicate-work",
           "text": "恢复信息必须帮助人类和 agent 避免重复完成已做任务。",
@@ -691,7 +751,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-045",
+          "id": "AC-049",
           "kind": "ac",
           "theme": "four-tier-taxonomy",
           "text": "系统至少定义 `lifecycle core / support core / advanced project-specific / internal maintainer` 四层 taxonomy。",
@@ -706,7 +766,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-046",
+          "id": "AC-050",
           "kind": "ac",
           "theme": "shared-consumption",
           "text": "该 taxonomy 必须能被 docs、router、help/status、skill discovery 共用。",
@@ -721,7 +781,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-047",
+          "id": "AC-051",
           "kind": "ac",
           "theme": "audience-model",
           "text": "每个 skill 至少应具备 intended audience 与 visibility tier。",
@@ -736,7 +796,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-048",
+          "id": "AC-052",
           "kind": "ac",
           "theme": "no-flat-skill-list",
           "text": "Beacon 不得继续把所有 skill 当作同层默认可见人类入口。",
@@ -751,7 +811,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-049",
+          "id": "AC-053",
           "kind": "ac",
           "theme": "existence-vs-visibility",
           "text": "系统必须正式区分 capability existence 与 default human-surface visibility。",
@@ -766,7 +826,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-050",
+          "id": "AC-054",
           "kind": "ac",
           "theme": "contextual-recommendation",
           "text": "advanced/internal skill 应由 support surface 在条件满足时推荐，而不是默认暴露。",
@@ -781,7 +841,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-051",
+          "id": "AC-055",
           "kind": "ac",
           "theme": "public-surface-freeze",
           "text": "默认 public skill surface 必须被正式冻结。",
@@ -796,7 +856,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-052",
+          "id": "AC-056",
           "kind": "ac",
           "theme": "visibility-audit",
           "text": "skill visibility 规则必须可被文档化、验证与演进。",
@@ -811,7 +871,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-053",
+          "id": "AC-057",
           "kind": "ac",
           "theme": "iteration-governance-tier",
           "text": "`beacon-iteration-governance` 必须被标记为 internal/maintainer skill。",
@@ -826,7 +886,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-054",
+          "id": "AC-058",
           "kind": "ac",
           "theme": "prototype-reconcile-tier",
           "text": "`beacon-prototype-reconcile` 必须被标记为 advanced/project-specific skill。",
@@ -841,7 +901,7 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-055",
+          "id": "AC-059",
           "kind": "ac",
           "theme": "not-default-public",
           "text": "二者都不得进入默认 public skill surface。",
@@ -856,61 +916,61 @@
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-056",
+          "id": "AC-060",
           "kind": "ac",
           "theme": "conditional-routing",
           "text": "只有在 Beacon self-repo release governance 或 severe prototype drift/takeover 等条件成立时，support/router 才应推荐它们。",
           "required": true,
-          "status": "accepted",
-          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
-          "verified_by_run_id": "review.accept",
-          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
-          "changed_in_revision": "R1",
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
           "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-057",
+          "id": "AC-061",
           "kind": "ac",
           "theme": "general",
           "text": "core commands 与 plugin commands 有正式边界",
           "required": true,
-          "status": "accepted",
-          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
-          "verified_by_run_id": "review.accept",
-          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
-          "changed_in_revision": "R1",
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
           "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-058",
+          "id": "AC-062",
           "kind": "ac",
           "theme": "general",
           "text": "metadata / learning / memory / archive 等基座能力仍可用",
           "required": true,
-          "status": "accepted",
-          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
-          "verified_by_run_id": "review.accept",
-          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
-          "changed_in_revision": "R1",
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
           "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
-          "id": "AC-059",
+          "id": "AC-063",
           "kind": "ac",
           "theme": "general",
           "text": "v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
           "required": true,
-          "status": "accepted",
-          "implemented_by_run_id": "run-20260507T013245Z-c0f5",
-          "verified_by_run_id": "review.accept",
-          "accepted_at": "2026-05-07T02:10:13.450022+00:00",
-          "changed_in_revision": "R1",
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
           "story_id": "",
           "details": [],
           "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
@@ -1057,7 +1117,7 @@
         {
           "id": "TEST-009",
           "kind": "test",
-          "text": "Verify AC-009 — 系统必须借鉴 OpenSpec 的单 change 工作单元，但不得因此新增新的公开一级主命令集合。",
+          "text": "Verify AC-009 — Beacon 自仓库必须存在一个 canonical release manifest，作为 package/runtime/docs/release truth 的唯一编辑源。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1073,7 +1133,7 @@
         {
           "id": "TEST-010",
           "kind": "test",
-          "text": "Verify AC-010 — `help/status/report/gate` 至少要能统一投影当前 change id、change state、blocked reason、next action。",
+          "text": "Verify AC-010 — `beacon/__init__.py`、version truth 兼容表面、skill/rules 版本标记、运行期版本解析输出都必须可回溯到同一 manifest。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1089,7 +1149,7 @@
         {
           "id": "TEST-011",
           "kind": "test",
-          "text": "Verify AC-011 — `beacon-change` 仍是 router，不得被误导为新的 primary lifecycle stage。",
+          "text": "Verify AC-011 — 系统必须提供显式的 `sync-version-surfaces` 治理能力，把 drifted 版本表面重新校准到 manifest。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1105,7 +1165,7 @@
         {
           "id": "TEST-012",
           "kind": "test",
-          "text": "Verify AC-012 — 当 frozen truth 漂移时，support surface 与 execution surface 必须统一推荐回到 change loop。",
+          "text": "Verify AC-012 — 系统必须提供显式的 `verify-version-surfaces` 治理能力，并在 strict 模式下对 drift 返回阻断 verdict。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1121,7 +1181,7 @@
         {
           "id": "TEST-013",
           "kind": "test",
-          "text": "Verify AC-013 — goal integration 只在 host=codex 且 feature enabled 时生效，非 Codex host 必须有显式 fallback。",
+          "text": "Verify AC-013 — 系统必须借鉴 OpenSpec 的单 change 工作单元，但不得因此新增新的公开一级主命令集合。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1137,7 +1197,7 @@
         {
           "id": "TEST-014",
           "kind": "test",
-          "text": "Verify AC-014 — goal objective 必须可追溯到 requirement package / implementation plan，而不是自由文本。",
+          "text": "Verify AC-014 — `help/status/report/gate` 至少要能统一投影当前 change id、change state、blocked reason、next action。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1153,7 +1213,7 @@
         {
           "id": "TEST-015",
           "kind": "test",
-          "text": "Verify AC-015 — `goal.complete` 不能单独定义 implement complete、qa pass 或 release pass。",
+          "text": "Verify AC-015 — `beacon-change` 仍是 router，不得被误导为新的 primary lifecycle stage。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1169,7 +1229,7 @@
         {
           "id": "TEST-016",
           "kind": "test",
-          "text": "Verify AC-016 — 当 goal 进入 `budget_limited` 时，系统必须进入收尾、handoff 或明确阻断，而不是静默继续。",
+          "text": "Verify AC-016 — 当 frozen truth 漂移时，support surface 与 execution surface 必须统一推荐回到 change loop。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1185,7 +1245,7 @@
         {
           "id": "TEST-017",
           "kind": "test",
-          "text": "Verify AC-017 — Ralph 每轮 round 至少能读取当前 goal objective 与 status。",
+          "text": "Verify AC-017 — goal integration 只在 host=codex 且 feature enabled 时生效，非 Codex host 必须有显式 fallback。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1201,7 +1261,7 @@
         {
           "id": "TEST-018",
           "kind": "test",
-          "text": "Verify AC-018 — Ralph 的 `release_ready / human_blocked / budget_exhausted` 必须与 goal state 和 verification state 协同解释。",
+          "text": "Verify AC-018 — goal objective 必须可追溯到 requirement package / implementation plan，而不是自由文本。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1217,7 +1277,7 @@
         {
           "id": "TEST-019",
           "kind": "test",
-          "text": "Verify AC-019 — 当 Ralph 完成实现但未完成 acceptance 时，系统必须能进入明确 QA handoff，而不是直接宣称 release-ready。",
+          "text": "Verify AC-019 — `goal.complete` 不能单独定义 implement complete、qa pass 或 release pass。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1233,7 +1293,7 @@
         {
           "id": "TEST-020",
           "kind": "test",
-          "text": "Verify AC-020 — Ralph rounds、goal state、QA handoff refs 必须保留为 execution audit evidence。",
+          "text": "Verify AC-020 — 当 goal 进入 `budget_limited` 时，系统必须进入收尾、handoff 或明确阻断，而不是静默继续。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1249,7 +1309,7 @@
         {
           "id": "TEST-021",
           "kind": "test",
-          "text": "Verify AC-021 — 系统必须为实现阶段生成 human-readable tasks ledger。",
+          "text": "Verify AC-021 — Ralph 每轮 round 至少能读取当前 goal objective 与 status。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1265,7 +1325,7 @@
         {
           "id": "TEST-022",
           "kind": "test",
-          "text": "Verify AC-022 — task ledger 必须能表达未完成/已完成状态，至少达到 checkbox 或等价低摩擦进度表达。",
+          "text": "Verify AC-022 — Ralph 的 `release_ready / human_blocked / budget_exhausted` 必须与 goal state 和 verification state 协同解释。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1281,7 +1341,7 @@
         {
           "id": "TEST-023",
           "kind": "test",
-          "text": "Verify AC-023 — task ledger 至少能展示 `N/M progress`、current task、blocked tasks、next task。",
+          "text": "Verify AC-023 — 当 Ralph 完成实现但未完成 acceptance 时，系统必须能进入明确 QA handoff，而不是直接宣称 release-ready。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1297,7 +1357,7 @@
         {
           "id": "TEST-024",
           "kind": "test",
-          "text": "Verify AC-024 — 人类或 agent 在中断恢复时，能从 task ledger 快速判断从哪继续。",
+          "text": "Verify AC-024 — Ralph rounds、goal state、QA handoff refs 必须保留为 execution audit evidence。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1313,7 +1373,7 @@
         {
           "id": "TEST-025",
           "kind": "test",
-          "text": "Verify AC-025 — canonical execution task identity 仍来自 implementation plan json。",
+          "text": "Verify AC-025 — 系统必须为实现阶段生成 human-readable tasks ledger。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1329,7 +1389,7 @@
         {
           "id": "TEST-026",
           "kind": "test",
-          "text": "Verify AC-026 — machine aggregation 仍来自 progress json 或等价 machine progress artifact。",
+          "text": "Verify AC-026 — task ledger 必须能表达未完成/已完成状态，至少达到 checkbox 或等价低摩擦进度表达。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1345,7 +1405,7 @@
         {
           "id": "TEST-027",
           "kind": "test",
-          "text": "Verify AC-027 — `tasks-<feature>.md` 只负责人类面进度与阻断提示，不得单独定义 machine truth。",
+          "text": "Verify AC-027 — task ledger 至少能展示 `N/M progress`、current task、blocked tasks、next task。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1361,7 +1421,7 @@
         {
           "id": "TEST-028",
           "kind": "test",
-          "text": "Verify AC-028 — gate 不得只因为 checkbox 完成就判定实现闭环，而必须继续依赖 evidence、traceability 与 QA closure。",
+          "text": "Verify AC-028 — 人类或 agent 在中断恢复时，能从 task ledger 快速判断从哪继续。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1377,7 +1437,7 @@
         {
           "id": "TEST-029",
           "kind": "test",
-          "text": "Verify AC-029 — 系统必须存在显性人类面入口来操作 global boundary/context。",
+          "text": "Verify AC-029 — canonical execution task identity 仍来自 implementation plan json。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1393,7 +1453,7 @@
         {
           "id": "TEST-030",
           "kind": "test",
-          "text": "Verify AC-030 — 该入口至少支持边界解释、越界判断、上下文校准。",
+          "text": "Verify AC-030 — machine aggregation 仍来自 progress json 或等价 machine progress artifact。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1409,7 +1469,7 @@
         {
           "id": "TEST-031",
           "kind": "test",
-          "text": "Verify AC-031 — 该入口必须能区分 global、version、feature 三层约束。",
+          "text": "Verify AC-031 — `tasks-<feature>.md` 只负责人类面进度与阻断提示，不得单独定义 machine truth。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1425,7 +1485,7 @@
         {
           "id": "TEST-032",
           "kind": "test",
-          "text": "Verify AC-032 — 该入口属于 support surface，不得被误解为新的 lifecycle stage。",
+          "text": "Verify AC-032 — gate 不得只因为 checkbox 完成就判定实现闭环，而必须继续依赖 evidence、traceability 与 QA closure。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1441,7 +1501,7 @@
         {
           "id": "TEST-033",
           "kind": "test",
-          "text": "Verify AC-033 — human boundary surface 不得直接把任意临时输入写成 canonical global truth。",
+          "text": "Verify AC-033 — 系统必须存在显性人类面入口来操作 global boundary/context。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1457,7 +1517,7 @@
         {
           "id": "TEST-034",
           "kind": "test",
-          "text": "Verify AC-034 — 系统必须能判断某条原则应进入 global-boundaries、version PRD，还是只保留在 brainstorm/research。",
+          "text": "Verify AC-034 — 该入口至少支持边界解释、越界判断、上下文校准。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1473,7 +1533,7 @@
         {
           "id": "TEST-035",
           "kind": "test",
-          "text": "Verify AC-035 — 若需要正式变更全局边界，必须走明确的 canonical writeback route，而不是 UI/skill 任意修改。",
+          "text": "Verify AC-035 — 该入口必须能区分 global、version、feature 三层约束。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1489,7 +1549,7 @@
         {
           "id": "TEST-036",
           "kind": "test",
-          "text": "Verify AC-036 — 任意上位边界变更建议都必须可被审计与追踪。",
+          "text": "Verify AC-036 — 该入口属于 support surface，不得被误解为新的 lifecycle stage。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1505,7 +1565,7 @@
         {
           "id": "TEST-037",
           "kind": "test",
-          "text": "Verify AC-037 — support surface 至少能回答当前卡在哪个 artifact。",
+          "text": "Verify AC-037 — human boundary surface 不得直接把任意临时输入写成 canonical global truth。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1521,7 +1581,7 @@
         {
           "id": "TEST-038",
           "kind": "test",
-          "text": "Verify AC-038 — support surface 至少能回答下一个动作、原因、建议命令。",
+          "text": "Verify AC-038 — 系统必须能判断某条原则应进入 global-boundaries、version PRD，还是只保留在 brainstorm/research。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1537,7 +1597,7 @@
         {
           "id": "TEST-039",
           "kind": "test",
-          "text": "Verify AC-039 — support surface 至少能说明执行该动作后会 unlock 什么。",
+          "text": "Verify AC-039 — 若需要正式变更全局边界，必须走明确的 canonical writeback route，而不是 UI/skill 任意修改。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1553,7 +1613,7 @@
         {
           "id": "TEST-040",
           "kind": "test",
-          "text": "Verify AC-040 — 复杂 machine/read-model 细节应退到 JSON 或 deeper layer，而不是默认人类输出。",
+          "text": "Verify AC-040 — 任意上位边界变更建议都必须可被审计与追踪。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1569,7 +1629,7 @@
         {
           "id": "TEST-041",
           "kind": "test",
-          "text": "Verify AC-041 — 关键 artifact 至少能被表达为 ready / blocked / completed。",
+          "text": "Verify AC-041 — support surface 至少能回答当前卡在哪个 artifact。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1585,7 +1645,7 @@
         {
           "id": "TEST-042",
           "kind": "test",
-          "text": "Verify AC-042 — blocked artifact 必须能说明缺失 dependency。",
+          "text": "Verify AC-042 — support surface 至少能回答下一个动作、原因、建议命令。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1601,7 +1661,7 @@
         {
           "id": "TEST-043",
           "kind": "test",
-          "text": "Verify AC-043 — interruption recovery 必须能锚定到 task / artifact 级别，而不是仅靠 run id 推断。",
+          "text": "Verify AC-043 — support surface 至少能说明执行该动作后会 unlock 什么。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1617,7 +1677,7 @@
         {
           "id": "TEST-044",
           "kind": "test",
-          "text": "Verify AC-044 — 恢复信息必须帮助人类和 agent 避免重复完成已做任务。",
+          "text": "Verify AC-044 — 复杂 machine/read-model 细节应退到 JSON 或 deeper layer，而不是默认人类输出。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1633,7 +1693,7 @@
         {
           "id": "TEST-045",
           "kind": "test",
-          "text": "Verify AC-045 — 系统至少定义 `lifecycle core / support core / advanced project-specific / internal maintainer` 四层 taxonomy。",
+          "text": "Verify AC-045 — 关键 artifact 至少能被表达为 ready / blocked / completed。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1649,7 +1709,7 @@
         {
           "id": "TEST-046",
           "kind": "test",
-          "text": "Verify AC-046 — 该 taxonomy 必须能被 docs、router、help/status、skill discovery 共用。",
+          "text": "Verify AC-046 — blocked artifact 必须能说明缺失 dependency。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1665,7 +1725,7 @@
         {
           "id": "TEST-047",
           "kind": "test",
-          "text": "Verify AC-047 — 每个 skill 至少应具备 intended audience 与 visibility tier。",
+          "text": "Verify AC-047 — interruption recovery 必须能锚定到 task / artifact 级别，而不是仅靠 run id 推断。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1681,7 +1741,7 @@
         {
           "id": "TEST-048",
           "kind": "test",
-          "text": "Verify AC-048 — Beacon 不得继续把所有 skill 当作同层默认可见人类入口。",
+          "text": "Verify AC-048 — 恢复信息必须帮助人类和 agent 避免重复完成已做任务。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1697,7 +1757,7 @@
         {
           "id": "TEST-049",
           "kind": "test",
-          "text": "Verify AC-049 — 系统必须正式区分 capability existence 与 default human-surface visibility。",
+          "text": "Verify AC-049 — 系统至少定义 `lifecycle core / support core / advanced project-specific / internal maintainer` 四层 taxonomy。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1713,7 +1773,7 @@
         {
           "id": "TEST-050",
           "kind": "test",
-          "text": "Verify AC-050 — advanced/internal skill 应由 support surface 在条件满足时推荐，而不是默认暴露。",
+          "text": "Verify AC-050 — 该 taxonomy 必须能被 docs、router、help/status、skill discovery 共用。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1729,7 +1789,7 @@
         {
           "id": "TEST-051",
           "kind": "test",
-          "text": "Verify AC-051 — 默认 public skill surface 必须被正式冻结。",
+          "text": "Verify AC-051 — 每个 skill 至少应具备 intended audience 与 visibility tier。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1745,7 +1805,7 @@
         {
           "id": "TEST-052",
           "kind": "test",
-          "text": "Verify AC-052 — skill visibility 规则必须可被文档化、验证与演进。",
+          "text": "Verify AC-052 — Beacon 不得继续把所有 skill 当作同层默认可见人类入口。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1761,7 +1821,7 @@
         {
           "id": "TEST-053",
           "kind": "test",
-          "text": "Verify AC-053 — `beacon-iteration-governance` 必须被标记为 internal/maintainer skill。",
+          "text": "Verify AC-053 — 系统必须正式区分 capability existence 与 default human-surface visibility。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1777,7 +1837,7 @@
         {
           "id": "TEST-054",
           "kind": "test",
-          "text": "Verify AC-054 — `beacon-prototype-reconcile` 必须被标记为 advanced/project-specific skill。",
+          "text": "Verify AC-054 — advanced/internal skill 应由 support surface 在条件满足时推荐，而不是默认暴露。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1793,7 +1853,7 @@
         {
           "id": "TEST-055",
           "kind": "test",
-          "text": "Verify AC-055 — 二者都不得进入默认 public skill surface。",
+          "text": "Verify AC-055 — 默认 public skill surface 必须被正式冻结。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1809,7 +1869,7 @@
         {
           "id": "TEST-056",
           "kind": "test",
-          "text": "Verify AC-056 — 只有在 Beacon self-repo release governance 或 severe prototype drift/takeover 等条件成立时，support/router 才应推荐它们。",
+          "text": "Verify AC-056 — skill visibility 规则必须可被文档化、验证与演进。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1825,7 +1885,7 @@
         {
           "id": "TEST-057",
           "kind": "test",
-          "text": "Verify AC-057 — core commands 与 plugin commands 有正式边界",
+          "text": "Verify AC-057 — `beacon-iteration-governance` 必须被标记为 internal/maintainer skill。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1836,12 +1896,12 @@
             "AC-057"
           ],
           "story_id": "",
-          "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
           "id": "TEST-058",
           "kind": "test",
-          "text": "Verify AC-058 — metadata / learning / memory / archive 等基座能力仍可用",
+          "text": "Verify AC-058 — `beacon-prototype-reconcile` 必须被标记为 advanced/project-specific skill。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1852,12 +1912,12 @@
             "AC-058"
           ],
           "story_id": "",
-          "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
         },
         {
           "id": "TEST-059",
           "kind": "test",
-          "text": "Verify AC-059 — v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
+          "text": "Verify AC-059 — 二者都不得进入默认 public skill surface。",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -1866,6 +1926,70 @@
           "changed_in_revision": "R1",
           "covers": [
             "AC-059"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "TEST-060",
+          "kind": "test",
+          "text": "Verify AC-060 — 只有在 Beacon self-repo release governance 或 severe prototype drift/takeover 等条件成立时，support/router 才应推荐它们。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-060"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.0/user-story/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "TEST-061",
+          "kind": "test",
+          "text": "Verify AC-061 — core commands 与 plugin commands 有正式边界",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-061"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "TEST-062",
+          "kind": "test",
+          "text": "Verify AC-062 — metadata / learning / memory / archive 等基座能力仍可用",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-062"
+          ],
+          "story_id": "",
+          "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"
+        },
+        {
+          "id": "TEST-063",
+          "kind": "test",
+          "text": "Verify AC-063 — v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-063"
           ],
           "story_id": "",
           "source": "prd:docs/beacon/v1.4.0/prd/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.md"

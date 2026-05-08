@@ -4,7 +4,7 @@
   "version": "v1.4.0",
   "ac_to_tc_mapping": {
     "AC-001": [
-      "TC-068"
+      "TC-069"
     ],
     "AC-002": [
       "TC-002"
@@ -26,6 +26,18 @@
     ],
     "AC-104": [
       "TC-008"
+    ],
+    "AC-105": [
+      "TC-008A"
+    ],
+    "AC-106": [
+      "TC-008B"
+    ],
+    "AC-107": [
+      "TC-008C"
+    ],
+    "AC-108": [
+      "TC-008D"
     ],
     "AC-201": [
       "TC-009"
@@ -170,15 +182,6 @@
     ],
     "AC-1304": [
       "TC-056"
-    ],
-    "AC-005": [
-      "TC-057"
-    ],
-    "AC-006": [
-      "TC-058"
-    ],
-    "AC-007": [
-      "TC-059"
     ]
   },
   "scenarios": [
@@ -187,10 +190,10 @@
       "source_tc_id": "TC-001",
       "tc_id": "TC-001-PRIMARY",
       "ac_id": "AC-001",
-      "qa_type": "unit",
-      "layer": "unit",
+      "qa_type": "contract",
+      "layer": "contract",
       "scenario_family": "primary",
-      "title": "AC-001 primary path :: 系统必须继续把 `docs/beacon/<version>/**/*.md` 定义为唯一冻结真相源。",
+      "title": "AC-001 primary path :: `docs/beacon/<version>/**/*.md` remains the only canonical frozen truth root",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -199,14 +202,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "contract",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest -q tests/test_v140_truth_contract_projection.py -k \"truth_root_is_docs_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-001-PRIMARY.json",
       "required_files": [
@@ -222,10 +225,10 @@
       "source_tc_id": "TC-002",
       "tc_id": "TC-002-PRIMARY",
       "ac_id": "AC-002",
-      "qa_type": "unit",
-      "layer": "unit",
+      "qa_type": "contract",
+      "layer": "contract",
       "scenario_family": "primary",
-      "title": "AC-002 primary path :: 系统必须把 `gate / implement / qa / release` 的机器主入口收敛为 compiled contract，而不是继续以碎片 mirror 作为默认主路径。",
+      "title": "AC-002 primary path :: `gate / implement / qa / release` resolve from one compiled contract entry instead of fragmented",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -234,14 +237,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "contract",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest -q tests/test_v140_truth_contract_projection.py -k \"compiled_contract_is_primary_machine_entry\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-002-PRIMARY.json",
       "required_files": [
@@ -257,10 +260,10 @@
       "source_tc_id": "TC-003",
       "tc_id": "TC-003-PRIMARY",
       "ac_id": "AC-003",
-      "qa_type": "unit",
-      "layer": "unit",
+      "qa_type": "integration",
+      "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-003 primary path :: sqlite / pocketbase / board / legacy mirror 必须被明确标记为 optional projection，而不是主路径 truth closure 依据",
+      "title": "AC-003 primary path :: sqlite / pocketbase / board / legacy mirrors are marked optional projections and excluded from t",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -269,14 +272,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "integration",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest -q tests/test_v140_truth_contract_projection.py -k \"legacy_projections_are_optional\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-003-PRIMARY.json",
       "required_files": [
@@ -292,10 +295,10 @@
       "source_tc_id": "TC-004",
       "tc_id": "TC-004-PRIMARY",
       "ac_id": "AC-004",
-      "qa_type": "unit",
-      "layer": "unit",
+      "qa_type": "regression",
+      "layer": "regression",
       "scenario_family": "primary",
-      "title": "AC-004 primary path :: 任意 projection 或 support read-model 都不得反向定义 truth。",
+      "title": "AC-004 primary path :: no projection or support read-model can write back truth-defining state",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -304,121 +307,16 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "regression",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest -q tests/test_v140_truth_contract_projection.py -k \"no_projection_reverse_write\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-004-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-005",
-      "source_tc_id": "TC-057",
-      "tc_id": "TC-057-PRIMARY",
-      "ac_id": "AC-005",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-005 primary path :: core commands 与 plugin commands 有正式边界",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-057-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-006",
-      "source_tc_id": "TC-058",
-      "tc_id": "TC-058-PRIMARY",
-      "ac_id": "AC-006",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-006 primary path :: metadata / learning / memory / archive 等基座能力仍可用",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-058-PRIMARY.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-007",
-      "source_tc_id": "TC-059",
-      "tc_id": "TC-059-PRIMARY",
-      "ac_id": "AC-007",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-007 primary path :: v1.4.0 保持 Python 主实现路线，并对热点建立性能观察基线",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor/TC-059-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -510,7 +408,7 @@
       "refreeze_required": true,
       "revalidate_required": true,
       "decision_count": 15,
-      "generated_at": "2026-05-07T01:10:21.857293+00:00"
+      "generated_at": "2026-05-07T16:05:46.714045+00:00"
     }
   }
 }

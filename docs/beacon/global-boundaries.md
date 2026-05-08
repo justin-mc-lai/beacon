@@ -198,6 +198,15 @@ Beacon 在原型与运行态相关能力中，默认存在多写入点：
 
 - canonical envelope 是唯一提交源，不允许多源并写。
 - 所有 sink 必须由 canonical 单向投影生成，不允许 human 文档反向驱动 machine 真相。
+
+### 9C. 版本表面治理（Version Surface Governance）
+
+Beacon 源码中的所有版本号变量（Versioned Strings）必须遵循“单真值、多投影”原则：
+
+- `beacon/version-truth.json` 是全仓版本号的唯一真值来源（Canonical Release Manifest）。
+- 严禁手动修改 `__init__.py`、`SKILL.md`、`metadata.json` 或 `.trae` 规则文件中的版本号。
+- 所有的版本变更必须首先在 Manifest 中修改，然后通过投影机制（如 `sync-version-surfaces`）同步到各受管表面。
+- `release check` 和 `gate check release` 必须强制校验版本漂移，并在发现不一致时阻断发布流程（Fail-Closed）。
 - 提交流程必须遵循：
   - `prepare -> validate -> commit -> publish -> verify`
 - 任一 sink 写入失败：
