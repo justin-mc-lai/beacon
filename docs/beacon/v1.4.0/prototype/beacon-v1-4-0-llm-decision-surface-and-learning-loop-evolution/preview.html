@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Beacon v1.4.0 LLM Decision Surface Prototype</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f5f7;
+        --panel: #ffffff;
+        --line: #d8dce3;
+        --text: #111827;
+        --muted: #5b6472;
+        --accent: #2563eb;
+        --warn: #b45309;
+        --danger: #b91c1c;
+        --ok: #15803d;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+      }
+      .app {
+        display: grid;
+        grid-template-columns: 240px minmax(0, 1fr) 320px;
+        min-height: 100vh;
+        gap: 16px;
+        padding: 16px;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 16px;
+      }
+      h1, h2, h3, p { margin: 0 0 12px; }
+      .nav a {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 6px;
+        color: var(--text);
+        text-decoration: none;
+        margin-bottom: 6px;
+        background: #eef2f7;
+      }
+      .status {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+      .blocked { background: #fee2e2; color: var(--danger); }
+      .ready { background: #dcfce7; color: var(--ok); }
+      .learning { background: #e0e7ff; color: #3730a3; }
+      .list { padding-left: 18px; margin: 0; }
+      .card {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        margin-bottom: 12px;
+      }
+      .muted { color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside class="panel nav">
+        <h2>Surfaces</h2>
+        <a href="#">Intent Router</a>
+        <a href="#">Decision Surface Overview</a>
+        <a href="#">Skill Surface Detail</a>
+        <a href="#">Learning Disclosure</a>
+        <a href="#">Reasoning Review</a>
+        <a href="#">Guardrail Cutover Audit</a>
+      </aside>
+      <main class="panel">
+        <h1>Intent Router</h1>
+        <p class="muted">The first screen answers where this freeform request should go, and why.</p>
+        <div class="card">
+          <h3>Recommended Route</h3>
+          <span class="status blocked">Change Required</span>
+          <p>Touches frozen truth semantics. Route back into `beacon-change` before implementation.</p>
+        </div>
+        <div class="card">
+          <h3>Learning Inputs</h3>
+          <span class="status learning">Learning Applied</span>
+          <ul class="list">
+            <li>Prefer route-first explanation over command dump.</li>
+            <li>Stale hints degrade instead of blocking.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Implementation Readiness</h3>
+          <span class="status ready">Prototype Frozen</span>
+          <p>Route, state, navigation, and cutover surfaces are frozen. Enter implement after truth refresh closes.</p>
+        </div>
+      </main>
+      <aside class="panel">
+        <h2>Guardrail Snapshot</h2>
+        <ul class="list">
+          <li>dual-read mismatch must block cutover</li>
+          <li>learning cannot define gate truth</li>
+          <li>ask cannot freeform write truth</li>
+          <li>implement remains the only execution entry</li>
+        </ul>
+      </aside>
+    </div>
+  </body>
+</html>

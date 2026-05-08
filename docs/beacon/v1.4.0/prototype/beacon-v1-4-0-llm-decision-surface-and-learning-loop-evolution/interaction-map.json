@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "primary_actions": [
+    {
+      "action": "route_preview",
+      "label": "预览 Route",
+      "surface": "intent-router"
+    },
+    {
+      "action": "inspect_skill_contract",
+      "label": "查看 Skill Contract",
+      "surface": "skill-surface-detail"
+    },
+    {
+      "action": "inspect_learning",
+      "label": "查看 Learning Hint",
+      "surface": "learning-disclosure-center"
+    },
+    {
+      "action": "inspect_reasoning",
+      "label": "查看 Reasoning Inputs",
+      "surface": "reasoning-contract-review"
+    },
+    {
+      "action": "inspect_cutover",
+      "label": "查看 Cutover Audit",
+      "surface": "guardrail-cutover-audit"
+    },
+    {
+      "action": "enter_implement",
+      "label": "进入 Implement",
+      "surface": "guardrail-cutover-audit"
+    }
+  ],
+  "forbidden_actions": [
+    "freeform_truth_writeback",
+    "bypass_implement_gate",
+    "cutover_when_dual_read_mismatch"
+  ]
+}

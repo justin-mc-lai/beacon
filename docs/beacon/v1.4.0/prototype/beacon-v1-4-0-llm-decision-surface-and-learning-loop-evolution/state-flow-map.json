@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "states": [
+    {
+      "id": "route-preview",
+      "meaning": "freeform intent 已被 route 成合法 surface，但还未执行"
+    },
+    {
+      "id": "change-required",
+      "meaning": "触及 frozen truth，必须从 ask / brainstorm 回到 change"
+    },
+    {
+      "id": "learning-applied",
+      "meaning": "相关 learning hint 已被采用并对 route 或说明生效"
+    },
+    {
+      "id": "learning-stale",
+      "meaning": "learning 已降级或 superseded，不应继续主导判断"
+    },
+    {
+      "id": "diagram-triggered",
+      "meaning": "diagram / semantic 已触发深度推理要求"
+    },
+    {
+      "id": "dual-read-mismatch",
+      "meaning": "LLM decision surface 与 legacy Python 判定尚未一致"
+    },
+    {
+      "id": "guardrail-blocked",
+      "meaning": "guardrail 阻断当前 cutover 或 execution"
+    },
+    {
+      "id": "implement-ready",
+      "meaning": "prototype 已冻结，guardrail 与 dual-read 状态允许进入 implement"
+    }
+  ],
+  "transitions": [
+    "route-preview -> change-required",
+    "route-preview -> learning-applied",
+    "learning-applied -> learning-stale",
+    "route-preview -> diagram-triggered",
+    "diagram-triggered -> dual-read-mismatch",
+    "dual-read-mismatch -> guardrail-blocked",
+    "guardrail-blocked -> implement-ready"
+  ]
+}

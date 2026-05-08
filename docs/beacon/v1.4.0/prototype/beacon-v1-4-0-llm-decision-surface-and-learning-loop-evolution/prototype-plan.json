@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
+  "feature_slug": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
+  "version": "v1.4.0",
+  "generated_at": "2026-05-08T00:00:00Z",
+  "prototype_mode": "wireframe",
+  "status": "frozen",
+  "prototype_type": "workflow-wireframe",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+    }
+  ],
+  "required_pages": [
+    "intent-router",
+    "decision-surface-overview",
+    "skill-surface-detail",
+    "learning-disclosure-center",
+    "reasoning-contract-review",
+    "guardrail-cutover-audit"
+  ],
+  "required_states": [
+    "route-preview",
+    "change-required",
+    "learning-applied",
+    "learning-stale",
+    "diagram-triggered",
+    "dual-read-mismatch",
+    "guardrail-blocked",
+    "implement-ready"
+  ],
+  "design_context": {
+    "target_audience": "Beacon requirement owner / host LLM operator / implementation maintainer",
+    "primary_use_cases": [
+      "审阅 ask 到 skill route 的入口逻辑",
+      "冻结 skill decision surface 的人类可见结构",
+      "确认 learning、diagram、semantic、guardrail 如何进入实现 handoff"
+    ],
+    "usage_environment": "桌面优先的 requirement review 与 implementation handoff 工作台",
+    "density_preference": "workbench-medium",
+    "design_preset": "apple-inspired-design-md"
+  },
+  "design_reasoning": {
+    "product_surface_type": "agent-governance-workbench",
+    "interaction_model": "route-first overview with drill-down into contract, state, and cutover evidence",
+    "anti_patterns": [
+      "marketing hero layout",
+      "single long-form document without route grouping",
+      "machine log spill into primary decision area"
+    ]
+  },
+  "ux_contract": {
+    "first_glance_question": "当前自由输入应进入哪条 Beacon surface，以及为什么？",
+    "primary_decision": "继续 route、改走 brainstorm/change，还是因为 guardrail 阻断而回退补 truth。",
+    "required_feedback": [
+      "当前 route 推荐原因",
+      "当前采用了哪些 learning hint",
+      "diagram / semantic 是否触发了深度推理",
+      "当前 cutover 是否仍被 dual-read 或 guardrail 阻断"
+    ]
+  },
+  "page_intent_contract": {
+    "intent-router": "收束 freeform intent 到合法 surface，并解释 route 原因。",
+    "decision-surface-overview": "展示六个核心 skill 的 decision surface 统一结构。",
+    "skill-surface-detail": "冻结单个 skill 的 inputs / protocol / anti-inertia / learning / backstop 结构。",
+    "learning-disclosure-center": "冻结 feature -> host -> runner -> domain 的 learning 渐进披露逻辑。",
+    "reasoning-contract-review": "冻结 diagram / semantic 输入如何进入三件套 reasoning。",
+    "guardrail-cutover-audit": "冻结 Python guardrail、dual-read、一致性回归与 implement-ready 判定。"
+  },
+  "state_visibility_contract": {
+    "must_surface": [
+      "route-preview",
+      "change-required",
+      "learning-applied",
+      "learning-stale",
+      "diagram-triggered",
+      "dual-read-mismatch",
+      "guardrail-blocked",
+      "implement-ready"
+    ],
+    "must_explain": [
+      "为什么推荐这条 route",
+      "为什么必须去 change",
+      "为什么 learning 被采用或降级",
+      "为什么当前还不能 cut over",
+      "为什么当前已经可以进入 implement"
+    ]
+  },
+  "interaction_contract": {
+    "primary_actions": [
+      "预览 route",
+      "查看 skill contract",
+      "查看 learning hint",
+      "查看 reasoning inputs",
+      "查看 cutover audit",
+      "进入 implement"
+    ],
+    "forbidden_actions": [
+      "从 prototype 直接自由写 truth",
+      "绕过 implement / qa gate",
+      "在 dual-read mismatch 时直接切主"
+    ]
+  }
+}
