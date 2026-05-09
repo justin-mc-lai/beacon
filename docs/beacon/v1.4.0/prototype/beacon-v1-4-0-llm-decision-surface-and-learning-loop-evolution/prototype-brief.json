@@ -11,7 +11,7 @@
     "secondary": "#F5F5F7",
     "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
   },
-  "page_count": 7,
+  "page_count": 9,
   "design_context": {
     "target_audience": "Beacon 管理者 / 需求 owner / 实现协作者",
     "primary_use_cases": [
@@ -30,9 +30,16 @@
     "density_preference": "workbench-medium",
     "design_preset": "apple-inspired-design-md",
     "design_preset_override_reason": "",
-    "explicit_context_fields": [],
-    "explicit_context_complete": false,
-    "page_count": 7
+    "explicit_context_fields": [
+      "target_audience",
+      "primary_use_cases",
+      "operator_mental_state",
+      "usage_environment",
+      "brand_tone",
+      "density_preference"
+    ],
+    "explicit_context_complete": true,
+    "page_count": 9
   },
   "design_reasoning": {
     "product_surface_type": "management-workbench",
@@ -80,6 +87,11 @@
       "使用稳定的页面结构和动作命名，减少重新学习成本。",
       "状态反馈必须直接说明发生了什么以及下一步去哪里。"
     ],
+    "required_feedback": [
+      "当前 route 推荐原因",
+      "当前状态发生了什么",
+      "下一步动作为什么安全"
+    ],
     "error_recovery_policy": [
       "error / blocked / stale 状态必须给出可执行恢复动作。",
       "恢复动作优先回到可信真相或上层页面，而不是停留在死路。"
@@ -102,5 +114,67 @@
     "design_md": "DESIGN.md",
     "preview_html": "preview.html",
     "preview_dark_html": "preview-dark.html"
+  },
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 9
   }
 }

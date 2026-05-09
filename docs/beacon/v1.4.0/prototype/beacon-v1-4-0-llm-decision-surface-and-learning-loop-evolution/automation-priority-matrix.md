@@ -20,6 +20,16 @@
 | `project-detail:runtime-active` | `state` | `manual-acceptable` | 存在 single / team / ralph 运行摘要。 | - | - |
 | `project-detail:loading` | `state` | `manual-acceptable` | 项目详情正在聚合。 | - | - |
 | `project-detail:error` | `state` | `manual-acceptable` | 详情聚合失败但给出恢复链路。 | - | - |
+| `intent-router:ready` | `state` | `manual-acceptable` | 当前 route、推荐原因和边界均已显示。 | - | - |
+| `intent-router:blocked` | `state` | `manual-acceptable` | 输入触及 frozen truth，必须返回 change 路由。 | - | - |
+| `intent-router:degraded` | `state` | `manual-acceptable` | 缺少部分上下文，只能给出保守 route。 | - | - |
+| `intent-router:loading` | `state` | `manual-acceptable` | 正在解析用户输入与上下文。 | - | - |
+| `intent-router:error` | `state` | `manual-acceptable` | 无法完成意图判断，提示回到明确命令或 doctor。 | - | - |
+| `learning-disclosure-center:ready` | `state` | `manual-acceptable` | learning hint 与使用层级已经明确展示。 | - | - |
+| `learning-disclosure-center:stale` | `state` | `manual-acceptable` | 存在 stale 或 superseded learning，只能作为弱提示。 | - | - |
+| `learning-disclosure-center:empty` | `state` | `manual-acceptable` | 没有匹配 feature / host / runner / domain 的 learning hint。 | - | - |
+| `learning-disclosure-center:loading` | `state` | `manual-acceptable` | 正在读取 learning plane。 | - | - |
+| `learning-disclosure-center:error` | `state` | `manual-acceptable` | learning 读取失败，不影响 truth/gate 判断。 | - | - |
 | `runtime-center:single-active` | `state` | `manual-acceptable` | 展示单进程执行摘要和 linked run。 | - | - |
 | `runtime-center:team-active` | `state` | `manual-acceptable` | 展示 agent 数、角色、状态和 host session metadata。 | - | - |
 | `runtime-center:ralph-active` | `state` | `manual-acceptable` | 展示 round_count、failure_streak、next_action、blocker。 | - | - |
@@ -46,6 +56,11 @@
 | `home:ready->project-detail:ready` | `transition` | `release-blocker` | 点击重点项目卡片 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
 | `management-overview:ready->project-detail:ready` | `transition` | `release-blocker` | 点击项目行/卡片 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
 | `management-overview:ready->home:ready` | `transition` | `release-blocker` | 点击首页导航 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
+| `project-detail:ready->intent-router:ready` | `transition` | `release-blocker` | 点击 route 推荐原因 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
+| `intent-router:ready->learning-disclosure-center:ready` | `transition` | `primary-automation` | 点击 learning hint 说明 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
+| `learning-disclosure-center:ready->intent-router:ready` | `transition` | `release-blocker` | 点击返回 route 解释 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
+| `intent-router:ready->project-detail:ready` | `transition` | `release-blocker` | 点击返回 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
+| `learning-disclosure-center:ready->project-detail:ready` | `transition` | `release-blocker` | 点击返回 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
 | `project-detail:ready->runtime-center:ready` | `transition` | `primary-automation` | 点击运行态摘要 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
 | `project-detail:ready->recovery-diagnostics:ready` | `transition` | `primary-automation` | 点击恢复诊断入口 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
 | `project-detail:ready->material-viewer:ready` | `transition` | `primary-automation` | 点击文档查看入口 transition must preserve guard, fallback, and evidence binding. | AC-001 | TC-001 |
@@ -73,6 +88,16 @@
 | `project-detail-component-04` | `component` | `primary-automation` | 需求物料闭环状态 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
 | `project-detail-component-05` | `component` | `primary-automation` | 最近交付与下一步 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
 | `project-detail-component-06` | `component` | `primary-automation` | 运行态摘要卡 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `intent-router-component-01` | `component` | `primary-automation` | 当前输入摘要 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `intent-router-component-02` | `component` | `primary-automation` | route 推荐原因 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `intent-router-component-03` | `component` | `primary-automation` | 边界与禁止动作 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `intent-router-component-04` | `component` | `primary-automation` | 候选 route 对比 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `intent-router-component-05` | `component` | `primary-automation` | 下一步动作 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `learning-disclosure-center-component-01` | `component` | `primary-automation` | 采用的 learning hint owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `learning-disclosure-center-component-02` | `component` | `primary-automation` | 渐进披露层级 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `learning-disclosure-center-component-03` | `component` | `primary-automation` | stale / superseded 标记 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `learning-disclosure-center-component-04` | `component` | `primary-automation` | 不能作为 truth 的提示 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
+| `learning-disclosure-center-component-05` | `component` | `primary-automation` | 返回 route 判断 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
 | `runtime-center-component-01` | `component` | `primary-automation` | 运行态摘要头部 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
 | `runtime-center-component-02` | `component` | `primary-automation` | single / team / ralph 模式切换 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |
 | `runtime-center-component-03` | `component` | `primary-automation` | agent/session 引用 owns visible state feedback and interaction continuity. | AC-001, AC-002, AC-003, AC-004 | TC-001, TC-002, TC-003, TC-004 |

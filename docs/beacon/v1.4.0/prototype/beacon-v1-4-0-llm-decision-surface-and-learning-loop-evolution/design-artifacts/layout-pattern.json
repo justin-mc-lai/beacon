@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-08T10:24:38Z",
-  "source_hash": "3473c1b5a0c6b17a3c9eee41b5554a8dd5a749fcb2f4bce1b2a73a55a6353c77",
+  "generated_at": "2026-05-08T13:49:05Z",
+  "source_hash": "cd5a3a0b2d9a0791cc10665bb8d4ba0079d40ca7b786f29e5659d7eb3a08b038",
   "source_feature": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
   "source_requirement_refs": [
     "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
@@ -56,6 +56,36 @@
         "项目头部先建立上下文，再展开需求闭环。",
         "主 PRD 与并行 PRD 要并排出现，避免真相散落。",
         "最近交付、下一步、推荐动作要形成明确收口。"
+      ]
+    },
+    {
+      "page_id": "intent-router",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "当前输入摘要",
+        "route 推荐原因",
+        "边界与禁止动作",
+        "候选 route 对比",
+        "下一步动作"
+      ],
+      "layout_rules": [
+        "首屏先回答当前页最重要的问题。",
+        "主体区只保留支撑判断的结构，不展开高保真视觉。"
+      ]
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "pattern": "header -> primary judgment -> supporting context -> next action",
+      "sections": [
+        "采用的 learning hint",
+        "渐进披露层级",
+        "stale / superseded 标记",
+        "不能作为 truth 的提示",
+        "返回 route 判断"
+      ],
+      "layout_rules": [
+        "首屏先回答当前页最重要的问题。",
+        "主体区只保留支撑判断的结构，不展开高保真视觉。"
       ]
     },
     {

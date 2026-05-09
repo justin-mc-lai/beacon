@@ -21,6 +21,7 @@
     "sibling-switch",
     "single-active",
     "source-missing",
+    "stale",
     "team-active",
     "version-switch"
   ],
@@ -71,6 +72,30 @@
       "page_id": "project-detail",
       "label": "返回管理总览",
       "target": "management-overview",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "intent-router",
+      "label": "查看 learning 披露",
+      "target": "learning-disclosure-center",
+      "trigger": "点击 learning hint 说明"
+    },
+    {
+      "page_id": "intent-router",
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "label": "返回意图路由器",
+      "target": "intent-router",
+      "trigger": "点击返回 route 解释"
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "label": "返回项目详情",
+      "target": "project-detail",
       "trigger": "点击返回"
     },
     {
@@ -145,6 +170,36 @@
       "from": "management-overview",
       "to": "home",
       "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "intent-router",
+      "trigger": "点击 route 推荐原因",
+      "type": "drill-down"
+    },
+    {
+      "from": "intent-router",
+      "to": "learning-disclosure-center",
+      "trigger": "点击 learning hint 说明",
+      "type": "drill-down"
+    },
+    {
+      "from": "learning-disclosure-center",
+      "to": "intent-router",
+      "trigger": "点击返回 route 解释",
+      "type": "return"
+    },
+    {
+      "from": "intent-router",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "learning-disclosure-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
       "type": "return"
     },
     {

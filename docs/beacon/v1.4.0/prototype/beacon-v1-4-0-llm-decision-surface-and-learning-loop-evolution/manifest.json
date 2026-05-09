@@ -5,15 +5,15 @@
   "version": "v1.4.0",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
-  "status": "draft",
-  "review_status": "missing",
+  "status": "frozen",
+  "review_status": "pass",
   "design_review_outcome": "pass",
   "prototype_type": "generic-wireframe",
   "compiler": {
-    "requested_mode": "auto",
+    "requested_mode": "rule",
     "effective_mode": "rule",
     "generator_mode": "rule",
-    "fallback_reason": "host_compile_failed",
+    "fallback_reason": "",
     "capability_snapshot": {
       "schema_version": "1.0",
       "command_name": "prototype",
@@ -35,8 +35,8 @@
     },
     "model": "beacon-prototype-compiler",
     "llm_trace": {},
-    "downgraded_from_auto": true,
-    "downgrade_blocking": true
+    "downgraded_from_auto": false,
+    "downgrade_blocking": false
   },
   "source_fingerprints": {
     "user-story": "ea67ce8f05280ccc0e49488de081be87cf26f8693b1907fecb5e743b8b0fa6c8",
@@ -47,11 +47,11 @@
     "source_hash": "806b70f2ef8c40c5702f42fbbeb80fb9c09a6aca29693018af92ed97a372ac7f",
     "projection_seq": "pp-806b70f2ef8c40c5",
     "transaction_id": "tx-beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution-pp-806b70f2ef8c40c5",
-    "committed_at": "2026-05-08T10:24:38Z",
+    "committed_at": "2026-05-08T13:49:27Z",
     "sink_checksums": {
-      "human": "2755e3b7865b1444252087305465d82279264026d3136ad241aa9395f9f826eb",
-      "machine": "53dc600726e612d4042e5fd39c1bf460e0e07dc5997b8be5085726a8150edf29",
-      "sqlite": "c510571937ab867da13a39c051c41d2dec36cb5a7299664e3dd27e27d5c44347"
+      "human": "b53f4ae670a9ff614e811facf782663a635e67350c876a44a26b62f0b53b4dc9",
+      "machine": "51da3d2f3a7772f424fe5abd96b89ea10043a3b7c8a3282edb12459dc4ede69f",
+      "sqlite": "9f5b8d8b5dbec4518bda584846b66a362368ba2c30ae27ee7f68cd14989c3ae9"
     },
     "sqlite_write": {
       "status": "committed",
@@ -112,9 +112,16 @@
     "density_preference": "workbench-medium",
     "design_preset": "apple-inspired-design-md",
     "design_preset_override_reason": "",
-    "explicit_context_fields": [],
-    "explicit_context_complete": false,
-    "page_count": 7
+    "explicit_context_fields": [
+      "target_audience",
+      "primary_use_cases",
+      "operator_mental_state",
+      "usage_environment",
+      "brand_tone",
+      "density_preference"
+    ],
+    "explicit_context_complete": true,
+    "page_count": 9
   },
   "design_reasoning": {
     "product_surface_type": "management-workbench",
@@ -161,6 +168,11 @@
       "把关键判断放在首屏，不要求用户回忆上一页信息。",
       "使用稳定的页面结构和动作命名，减少重新学习成本。",
       "状态反馈必须直接说明发生了什么以及下一步去哪里。"
+    ],
+    "required_feedback": [
+      "当前 route 推荐原因",
+      "当前状态发生了什么",
+      "下一步动作为什么安全"
     ],
     "error_recovery_policy": [
       "error / blocked / stale 状态必须给出可执行恢复动作。",
@@ -302,5 +314,72 @@
         "projection_seq"
       ]
     }
-  }
+  },
+  "human_view_status": "pass",
+  "machine_contract_status": "pass",
+  "sqlite_projection_status": "pass",
+  "drift_status": "consistent",
+  "software_semantic_profile": {
+    "tone": "formal-restrained-precise",
+    "title_rule": "标题仅陈述对象或状态，不解释设计意图。",
+    "state_rule": "状态文案必须先说明当前状态，再说明允许动作或禁止动作。",
+    "action_rule": "动作名称必须使用可执行动词，不使用泛化 SaaS 词汇。",
+    "field_rule": "字段与输入说明必须显式约束类型、非空、枚举或默认值。",
+    "exception_rule": "异常文案必须同时给出当前失败与恢复路径。",
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "production_banned_copy": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning",
+      "transaction_id",
+      "projection_seq"
+    ],
+    "page_count": 9
+  },
+  "frozen_at": "2026-05-08T13:49:27Z"
 }

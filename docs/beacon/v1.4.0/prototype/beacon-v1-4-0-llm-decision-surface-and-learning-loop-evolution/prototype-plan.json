@@ -3,7 +3,7 @@
   "feature": "beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution",
   "feature_slug": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
   "version": "v1.4.0",
-  "generated_at": "2026-05-08T10:24:38Z",
+  "generated_at": "2026-05-08T13:49:05Z",
   "prototype_mode": "wireframe",
   "ui_kit": "wireframe-markdown-v1",
   "source_documents": [
@@ -27,6 +27,8 @@
     "home",
     "management-overview",
     "project-detail",
+    "intent-router",
+    "learning-disclosure-center",
     "runtime-center",
     "recovery-diagnostics",
     "material-viewer",
@@ -54,6 +56,7 @@
     "sibling-switch",
     "single-active",
     "source-missing",
+    "stale",
     "team-active",
     "version-switch"
   ],
@@ -1327,6 +1330,12 @@
       "outbound_transitions": [
         {
           "from": "project-detail",
+          "to": "intent-router",
+          "trigger": "点击 route 推荐原因",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
           "to": "runtime-center",
           "trigger": "点击运行态摘要",
           "type": "drill-down"
@@ -1610,6 +1619,865 @@
             "查看运行中心",
             "查看恢复诊断",
             "查看项目物料"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      }
+    },
+    {
+      "page_id": "intent-router",
+      "name": "意图路由器",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+      "decision_supported": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+      "sections": [
+        "当前输入摘要",
+        "route 推荐原因",
+        "边界与禁止动作",
+        "候选 route 对比",
+        "下一步动作"
+      ],
+      "actions": [
+        {
+          "label": "查看 learning 披露",
+          "target": "learning-disclosure-center",
+          "trigger": "点击 learning hint 说明"
+        },
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "推荐可解释",
+          "description": "当前 route、推荐原因和边界均已显示。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "当前 route、推荐原因和边界均已显示。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "blocked",
+          "label": "需回到 change",
+          "description": "输入触及 frozen truth，必须返回 change 路由。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "输入触及 frozen truth，必须返回 change 路由。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "degraded",
+          "label": "降级推荐",
+          "description": "缺少部分上下文，只能给出保守 route。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "缺少部分上下文，只能给出保守 route。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "分析中",
+          "description": "正在解析用户输入与上下文。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "正在解析用户输入与上下文。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "解析失败",
+          "description": "无法完成意图判断，提示回到明确命令或 doctor。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "无法完成意图判断，提示回到明确命令或 doctor。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "intent-router",
+          "to": "learning-disclosure-center",
+          "trigger": "点击 learning hint 说明",
+          "type": "drill-down"
+        },
+        {
+          "from": "intent-router",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+        "decision_focus": [
+          "当前 route、推荐原因和边界均已显示。",
+          "确认是否执行 查看 learning 披露。"
+        ],
+        "layout_rules": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "visible_contract": {
+        "title": "意图路由器",
+        "subtitle": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+        "must_show_sections": [
+          "当前输入摘要",
+          "route 推荐原因",
+          "边界与禁止动作"
+        ],
+        "primary_actions": [
+          "查看 learning 披露",
+          "返回项目详情"
+        ],
+        "visible_states": [
+          {
+            "id": "ready",
+            "label": "推荐可解释",
+            "description": "当前 route、推荐原因和边界均已显示。"
+          },
+          {
+            "id": "blocked",
+            "label": "需回到 change",
+            "description": "输入触及 frozen truth，必须返回 change 路由。"
+          },
+          {
+            "id": "degraded",
+            "label": "降级推荐",
+            "description": "缺少部分上下文，只能给出保守 route。"
+          },
+          {
+            "id": "loading",
+            "label": "分析中",
+            "description": "正在解析用户输入与上下文。"
+          },
+          {
+            "id": "error",
+            "label": "解析失败",
+            "description": "无法完成意图判断，提示回到明确命令或 doctor。"
+          }
+        ],
+        "secondary_disclosure_only": [
+          "run list",
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ]
+      },
+      "internal_governance": {
+        "page_intent_contract": {
+          "why_this_page_exists": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+          "decision_supported": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "must_not_show": [
+            "transaction_id",
+            "projection metadata",
+            "无边界 runtime 明细"
+          ],
+          "entry_conditions": [
+            "用户进入 `intent-router` 需要先获得当前上下文。",
+            "当前 requirement truth 已经明确该页承担的主判断。"
+          ],
+          "exit_actions": [
+            {
+              "label": "查看 learning 披露",
+              "target": "learning-disclosure-center"
+            },
+            {
+              "label": "返回项目详情",
+              "target": "project-detail"
+            }
+          ]
+        },
+        "first_screen_contract": {
+          "primary_status": "当前 route、推荐原因和边界均已显示。",
+          "primary_blocker": "输入触及 frozen truth，必须返回 change 路由。",
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ],
+          "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+          "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail"
+          ]
+        },
+        "review_principles": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "layout_breakdown": [
+          {
+            "section": "当前输入摘要",
+            "purpose": "先建立上下文，让人快速判断当前局面。",
+            "display_zone": "首屏"
+          },
+          {
+            "section": "route 推荐原因",
+            "purpose": "把观察收口成明确动作，避免用户看完后不知道去哪里。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "边界与禁止动作",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "候选 route 对比",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "下一步动作",
+            "purpose": "把观察收口成明确动作，避免用户看完后不知道去哪里。",
+            "display_zone": "收口区"
+          }
+        ],
+        "interaction_contract": [
+          "- `查看 learning 披露`: 通过 点击 learning hint 说明 下钻到 `learning-disclosure-center`，只在当前页信息不足时继续展开。",
+          "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。"
+        ],
+        "state_contract": [
+          "- `推荐可解释`: 当前 route、推荐原因和边界均已显示。",
+          "- `需回到 change`: 输入触及 frozen truth，必须返回 change 路由。",
+          "- `降级推荐`: 缺少部分上下文，只能给出保守 route。",
+          "- `分析中`: 正在解析用户输入与上下文。 加载态只保留骨架结构，避免造成页面重新排版。",
+          "- `解析失败`: 无法完成意图判断，提示回到明确命令或 doctor。 页面要优先给出回退或恢复入口，而不是只报错。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "ui_copy_projection_contract": {
+        "page_id": "intent-router",
+        "first_screen_copy": {
+          "title": "意图路由器",
+          "primary_statement": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      },
+      "layout_lines": [
+        "+-----------------------------+",
+        "| 当前输入摘要                   |",
+        "+-----------------------------+",
+        "| route 推荐原因               |",
+        "+-----------------------------+",
+        "| 边界与禁止动作                  |",
+        "+-----------------------------+",
+        "| 候选 route 对比              |",
+        "+-----------------------------+",
+        "| 下一步动作                    |",
+        "+-----------------------------+"
+      ],
+      "production_ui_copy_profile": {
+        "page_id": "intent-router",
+        "title": "意图路由器",
+        "subtitle": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+        "primary_actions": [
+          "查看 learning 披露",
+          "返回项目详情"
+        ],
+        "allowed_recovery_surface_states": [
+          "blocked",
+          "failed",
+          "empty-risk"
+        ],
+        "forbidden_first_screen_terms": [
+          "当前状态",
+          "下一步动作",
+          "恢复路径",
+          "design asset catalog",
+          "review guidance",
+          "why/reasoning"
+        ]
+      },
+      "ui_copy_policy": {
+        "page_id": "intent-router",
+        "first_screen_copy": {
+          "title": "意图路由器",
+          "primary_statement": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      }
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "name": "Learning 披露中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+      "decision_supported": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+      "sections": [
+        "采用的 learning hint",
+        "渐进披露层级",
+        "stale / superseded 标记",
+        "不能作为 truth 的提示",
+        "返回 route 判断"
+      ],
+      "actions": [
+        {
+          "label": "返回意图路由器",
+          "target": "intent-router",
+          "trigger": "点击返回 route 解释"
+        },
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "已披露",
+          "description": "learning hint 与使用层级已经明确展示。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "learning hint 与使用层级已经明确展示。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "stale",
+          "label": "经验过期",
+          "description": "存在 stale 或 superseded learning，只能作为弱提示。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "存在 stale 或 superseded learning，只能作为弱提示。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "empty",
+          "label": "无相关经验",
+          "description": "没有匹配 feature / host / runner / domain 的 learning hint。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "没有匹配 feature / host / runner / domain 的 learning hint。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "读取中",
+          "description": "正在读取 learning plane。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "正在读取 learning plane。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "读取失败",
+          "description": "learning 读取失败，不影响 truth/gate 判断。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "learning 读取失败，不影响 truth/gate 判断。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "learning-disclosure-center",
+          "to": "intent-router",
+          "trigger": "点击返回 route 解释",
+          "type": "return"
+        },
+        {
+          "from": "learning-disclosure-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+        "decision_focus": [
+          "learning hint 与使用层级已经明确展示。",
+          "确认是否执行 返回意图路由器。"
+        ],
+        "layout_rules": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "visible_contract": {
+        "title": "Learning 披露中心",
+        "subtitle": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+        "must_show_sections": [
+          "采用的 learning hint",
+          "渐进披露层级",
+          "stale / superseded 标记"
+        ],
+        "primary_actions": [
+          "返回意图路由器",
+          "返回项目详情"
+        ],
+        "visible_states": [
+          {
+            "id": "ready",
+            "label": "已披露",
+            "description": "learning hint 与使用层级已经明确展示。"
+          },
+          {
+            "id": "stale",
+            "label": "经验过期",
+            "description": "存在 stale 或 superseded learning，只能作为弱提示。"
+          },
+          {
+            "id": "empty",
+            "label": "无相关经验",
+            "description": "没有匹配 feature / host / runner / domain 的 learning hint。"
+          },
+          {
+            "id": "loading",
+            "label": "读取中",
+            "description": "正在读取 learning plane。"
+          },
+          {
+            "id": "error",
+            "label": "读取失败",
+            "description": "learning 读取失败，不影响 truth/gate 判断。"
+          }
+        ],
+        "secondary_disclosure_only": [
+          "run list",
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ]
+      },
+      "internal_governance": {
+        "page_intent_contract": {
+          "why_this_page_exists": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+          "decision_supported": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "must_not_show": [
+            "transaction_id",
+            "projection metadata",
+            "无边界 runtime 明细"
+          ],
+          "entry_conditions": [
+            "用户进入 `learning-disclosure-center` 需要先获得当前上下文。",
+            "当前 requirement truth 已经明确该页承担的主判断。"
+          ],
+          "exit_actions": [
+            {
+              "label": "返回意图路由器",
+              "target": "intent-router"
+            },
+            {
+              "label": "返回项目详情",
+              "target": "project-detail"
+            }
+          ]
+        },
+        "first_screen_contract": {
+          "primary_status": "learning hint 与使用层级已经明确展示。",
+          "primary_blocker": "learning 读取失败，不影响 truth/gate 判断。",
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
+          ],
+          "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+          "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail"
+          ]
+        },
+        "review_principles": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "layout_breakdown": [
+          {
+            "section": "采用的 learning hint",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "首屏"
+          },
+          {
+            "section": "渐进披露层级",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "stale / superseded 标记",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "不能作为 truth 的提示",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "返回 route 判断",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "收口区"
+          }
+        ],
+        "interaction_contract": [
+          "- `返回意图路由器`: 通过 点击返回 route 解释 回到 `intent-router`，用于撤销下钻并保留上层判断。",
+          "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。"
+        ],
+        "state_contract": [
+          "- `已披露`: learning hint 与使用层级已经明确展示。",
+          "- `经验过期`: 存在 stale 或 superseded learning，只能作为弱提示。",
+          "- `无相关经验`: 没有匹配 feature / host / runner / domain 的 learning hint。 空态要说明为什么为空，以及下一步该回哪里。",
+          "- `读取中`: 正在读取 learning plane。 加载态只保留骨架结构，避免造成页面重新排版。",
+          "- `读取失败`: learning 读取失败，不影响 truth/gate 判断。 页面要优先给出回退或恢复入口，而不是只报错。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "ui_copy_projection_contract": {
+        "page_id": "learning-disclosure-center",
+        "first_screen_copy": {
+          "title": "Learning 披露中心",
+          "primary_statement": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      },
+      "layout_lines": [
+        "+-----------------------------+",
+        "| 采用的 learning hint        |",
+        "+-----------------------------+",
+        "| 渐进披露层级                   |",
+        "+-----------------------------+",
+        "| stale / superseded 标记    |",
+        "+-----------------------------+",
+        "| 不能作为 truth 的提示           |",
+        "+-----------------------------+",
+        "| 返回 route 判断              |",
+        "+-----------------------------+"
+      ],
+      "production_ui_copy_profile": {
+        "page_id": "learning-disclosure-center",
+        "title": "Learning 披露中心",
+        "subtitle": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+        "primary_actions": [
+          "返回意图路由器",
+          "返回项目详情"
+        ],
+        "allowed_recovery_surface_states": [
+          "blocked",
+          "failed",
+          "empty-risk"
+        ],
+        "forbidden_first_screen_terms": [
+          "当前状态",
+          "下一步动作",
+          "恢复路径",
+          "design asset catalog",
+          "review guidance",
+          "why/reasoning"
+        ]
+      },
+      "ui_copy_policy": {
+        "page_id": "learning-disclosure-center",
+        "first_screen_copy": {
+          "title": "Learning 披露中心",
+          "primary_statement": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
           ]
         },
         "secondary_disclosure": [
@@ -4592,6 +5460,12 @@
       "outbound_transitions": [
         {
           "from": "project-detail",
+          "to": "intent-router",
+          "trigger": "点击 route 推荐原因",
+          "type": "drill-down"
+        },
+        {
+          "from": "project-detail",
           "to": "runtime-center",
           "trigger": "点击运行态摘要",
           "type": "drill-down"
@@ -4875,6 +5749,865 @@
             "查看运行中心",
             "查看恢复诊断",
             "查看项目物料"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      }
+    },
+    {
+      "page_id": "intent-router",
+      "name": "意图路由器",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+      "decision_supported": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+      "sections": [
+        "当前输入摘要",
+        "route 推荐原因",
+        "边界与禁止动作",
+        "候选 route 对比",
+        "下一步动作"
+      ],
+      "actions": [
+        {
+          "label": "查看 learning 披露",
+          "target": "learning-disclosure-center",
+          "trigger": "点击 learning hint 说明"
+        },
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "推荐可解释",
+          "description": "当前 route、推荐原因和边界均已显示。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "当前 route、推荐原因和边界均已显示。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "blocked",
+          "label": "需回到 change",
+          "description": "输入触及 frozen truth，必须返回 change 路由。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "输入触及 frozen truth，必须返回 change 路由。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "degraded",
+          "label": "降级推荐",
+          "description": "缺少部分上下文，只能给出保守 route。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "缺少部分上下文，只能给出保守 route。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "分析中",
+          "description": "正在解析用户输入与上下文。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "正在解析用户输入与上下文。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "解析失败",
+          "description": "无法完成意图判断，提示回到明确命令或 doctor。",
+          "state_visibility_contract": {
+            "user_question": "意图路由器 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "无法完成意图判断，提示回到明确命令或 doctor。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "查看 learning 披露",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "intent-router",
+          "to": "learning-disclosure-center",
+          "trigger": "点击 learning hint 说明",
+          "type": "drill-down"
+        },
+        {
+          "from": "intent-router",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+        "decision_focus": [
+          "当前 route、推荐原因和边界均已显示。",
+          "确认是否执行 查看 learning 披露。"
+        ],
+        "layout_rules": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "visible_contract": {
+        "title": "意图路由器",
+        "subtitle": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+        "must_show_sections": [
+          "当前输入摘要",
+          "route 推荐原因",
+          "边界与禁止动作"
+        ],
+        "primary_actions": [
+          "查看 learning 披露",
+          "返回项目详情"
+        ],
+        "visible_states": [
+          {
+            "id": "ready",
+            "label": "推荐可解释",
+            "description": "当前 route、推荐原因和边界均已显示。"
+          },
+          {
+            "id": "blocked",
+            "label": "需回到 change",
+            "description": "输入触及 frozen truth，必须返回 change 路由。"
+          },
+          {
+            "id": "degraded",
+            "label": "降级推荐",
+            "description": "缺少部分上下文，只能给出保守 route。"
+          },
+          {
+            "id": "loading",
+            "label": "分析中",
+            "description": "正在解析用户输入与上下文。"
+          },
+          {
+            "id": "error",
+            "label": "解析失败",
+            "description": "无法完成意图判断，提示回到明确命令或 doctor。"
+          }
+        ],
+        "secondary_disclosure_only": [
+          "run list",
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ]
+      },
+      "internal_governance": {
+        "page_intent_contract": {
+          "why_this_page_exists": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+          "decision_supported": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "must_not_show": [
+            "transaction_id",
+            "projection metadata",
+            "无边界 runtime 明细"
+          ],
+          "entry_conditions": [
+            "用户进入 `intent-router` 需要先获得当前上下文。",
+            "当前 requirement truth 已经明确该页承担的主判断。"
+          ],
+          "exit_actions": [
+            {
+              "label": "查看 learning 披露",
+              "target": "learning-disclosure-center"
+            },
+            {
+              "label": "返回项目详情",
+              "target": "project-detail"
+            }
+          ]
+        },
+        "first_screen_contract": {
+          "primary_status": "当前 route、推荐原因和边界均已显示。",
+          "primary_blocker": "输入触及 frozen truth，必须返回 change 路由。",
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ],
+          "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+          "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail"
+          ]
+        },
+        "review_principles": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "layout_breakdown": [
+          {
+            "section": "当前输入摘要",
+            "purpose": "先建立上下文，让人快速判断当前局面。",
+            "display_zone": "首屏"
+          },
+          {
+            "section": "route 推荐原因",
+            "purpose": "把观察收口成明确动作，避免用户看完后不知道去哪里。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "边界与禁止动作",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "候选 route 对比",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "下一步动作",
+            "purpose": "把观察收口成明确动作，避免用户看完后不知道去哪里。",
+            "display_zone": "收口区"
+          }
+        ],
+        "interaction_contract": [
+          "- `查看 learning 披露`: 通过 点击 learning hint 说明 下钻到 `learning-disclosure-center`，只在当前页信息不足时继续展开。",
+          "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。"
+        ],
+        "state_contract": [
+          "- `推荐可解释`: 当前 route、推荐原因和边界均已显示。",
+          "- `需回到 change`: 输入触及 frozen truth，必须返回 change 路由。",
+          "- `降级推荐`: 缺少部分上下文，只能给出保守 route。",
+          "- `分析中`: 正在解析用户输入与上下文。 加载态只保留骨架结构，避免造成页面重新排版。",
+          "- `解析失败`: 无法完成意图判断，提示回到明确命令或 doctor。 页面要优先给出回退或恢复入口，而不是只报错。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "ui_copy_projection_contract": {
+        "page_id": "intent-router",
+        "first_screen_copy": {
+          "title": "意图路由器",
+          "primary_statement": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      },
+      "layout_lines": [
+        "+-----------------------------+",
+        "| 当前输入摘要                   |",
+        "+-----------------------------+",
+        "| route 推荐原因               |",
+        "+-----------------------------+",
+        "| 边界与禁止动作                  |",
+        "+-----------------------------+",
+        "| 候选 route 对比              |",
+        "+-----------------------------+",
+        "| 下一步动作                    |",
+        "+-----------------------------+"
+      ],
+      "production_ui_copy_profile": {
+        "page_id": "intent-router",
+        "title": "意图路由器",
+        "subtitle": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+        "primary_actions": [
+          "查看 learning 披露",
+          "返回项目详情"
+        ],
+        "allowed_recovery_surface_states": [
+          "blocked",
+          "failed",
+          "empty-risk"
+        ],
+        "forbidden_first_screen_terms": [
+          "当前状态",
+          "下一步动作",
+          "恢复路径",
+          "design asset catalog",
+          "review guidance",
+          "why/reasoning"
+        ]
+      },
+      "ui_copy_policy": {
+        "page_id": "intent-router",
+        "first_screen_copy": {
+          "title": "意图路由器",
+          "primary_statement": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+          "must_show_first": [
+            "当前输入摘要",
+            "route 推荐原因"
+          ],
+          "next_actions": [
+            "查看 learning 披露",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      }
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "name": "Learning 披露中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+      "decision_supported": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+      "sections": [
+        "采用的 learning hint",
+        "渐进披露层级",
+        "stale / superseded 标记",
+        "不能作为 truth 的提示",
+        "返回 route 判断"
+      ],
+      "actions": [
+        {
+          "label": "返回意图路由器",
+          "target": "intent-router",
+          "trigger": "点击返回 route 解释"
+        },
+        {
+          "label": "返回项目详情",
+          "target": "project-detail",
+          "trigger": "点击返回"
+        }
+      ],
+      "states": [
+        {
+          "id": "ready",
+          "label": "已披露",
+          "description": "learning hint 与使用层级已经明确展示。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "learning hint 与使用层级已经明确展示。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续主要操作",
+              "进入下一层或返回上层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "完成状态仍要求用户猜下一步"
+            ]
+          }
+        },
+        {
+          "id": "stale",
+          "label": "经验过期",
+          "description": "存在 stale 或 superseded learning，只能作为弱提示。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "存在 stale 或 superseded learning，只能作为弱提示。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "empty",
+          "label": "无相关经验",
+          "description": "没有匹配 feature / host / runner / domain 的 learning hint。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "没有匹配 feature / host / runner / domain 的 learning hint。",
+              "解释为什么为空，以及回到哪里继续。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        },
+        {
+          "id": "loading",
+          "label": "读取中",
+          "description": "正在读取 learning plane。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "正在读取 learning plane。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "继续等待数据加载",
+              "返回上一层"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "页面结构抖动",
+              "空白无提示"
+            ]
+          }
+        },
+        {
+          "id": "error",
+          "label": "读取失败",
+          "description": "learning 读取失败，不影响 truth/gate 判断。",
+          "state_visibility_contract": {
+            "user_question": "Learning 披露中心 当前发生了什么，我下一步该做什么？",
+            "required_feedback": [
+              "learning 读取失败，不影响 truth/gate 判断。",
+              "明确恢复动作与回退路径。"
+            ],
+            "primary_actions": [
+              "返回意图路由器",
+              "返回项目详情"
+            ],
+            "recovery_actions": [
+              "返回上一层",
+              "重试当前动作"
+            ],
+            "acceptance_refs": {
+              "ac_refs": [],
+              "tc_refs": []
+            },
+            "forbidden_feedback": [
+              "只显示技术错误码",
+              "隐藏下一步动作"
+            ]
+          }
+        }
+      ],
+      "requirement_refs": {
+        "user-story": [
+          "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "prd": [
+          "docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ],
+        "test-case": [
+          "docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+        ]
+      },
+      "outbound_transitions": [
+        {
+          "from": "learning-disclosure-center",
+          "to": "intent-router",
+          "trigger": "点击返回 route 解释",
+          "type": "return"
+        },
+        {
+          "from": "learning-disclosure-center",
+          "to": "project-detail",
+          "trigger": "点击返回",
+          "type": "return"
+        }
+      ],
+      "analysis": {
+        "target_user": "需要完成页面判断与下钻的 Beacon 使用者",
+        "decision_focus": [
+          "learning hint 与使用层级已经明确展示。",
+          "确认是否执行 返回意图路由器。"
+        ],
+        "layout_rules": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "visible_contract": {
+        "title": "Learning 披露中心",
+        "subtitle": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+        "must_show_sections": [
+          "采用的 learning hint",
+          "渐进披露层级",
+          "stale / superseded 标记"
+        ],
+        "primary_actions": [
+          "返回意图路由器",
+          "返回项目详情"
+        ],
+        "visible_states": [
+          {
+            "id": "ready",
+            "label": "已披露",
+            "description": "learning hint 与使用层级已经明确展示。"
+          },
+          {
+            "id": "stale",
+            "label": "经验过期",
+            "description": "存在 stale 或 superseded learning，只能作为弱提示。"
+          },
+          {
+            "id": "empty",
+            "label": "无相关经验",
+            "description": "没有匹配 feature / host / runner / domain 的 learning hint。"
+          },
+          {
+            "id": "loading",
+            "label": "读取中",
+            "description": "正在读取 learning plane。"
+          },
+          {
+            "id": "error",
+            "label": "读取失败",
+            "description": "learning 读取失败，不影响 truth/gate 判断。"
+          }
+        ],
+        "secondary_disclosure_only": [
+          "run list",
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ]
+      },
+      "internal_governance": {
+        "page_intent_contract": {
+          "why_this_page_exists": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+          "decision_supported": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "must_not_show": [
+            "transaction_id",
+            "projection metadata",
+            "无边界 runtime 明细"
+          ],
+          "entry_conditions": [
+            "用户进入 `learning-disclosure-center` 需要先获得当前上下文。",
+            "当前 requirement truth 已经明确该页承担的主判断。"
+          ],
+          "exit_actions": [
+            {
+              "label": "返回意图路由器",
+              "target": "intent-router"
+            },
+            {
+              "label": "返回项目详情",
+              "target": "project-detail"
+            }
+          ]
+        },
+        "first_screen_contract": {
+          "primary_status": "learning hint 与使用层级已经明确展示。",
+          "primary_blocker": "learning 读取失败，不影响 truth/gate 判断。",
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
+          ],
+          "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+          "secondary_disclosure_only": [
+            "run list",
+            "workspace path",
+            "artifact path",
+            "history timeline",
+            "machine trace detail"
+          ]
+        },
+        "review_principles": [
+          "首屏先回答当前页最重要的问题。",
+          "主体区只保留支撑判断的结构，不展开高保真视觉。"
+        ],
+        "layout_breakdown": [
+          {
+            "section": "采用的 learning hint",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "首屏"
+          },
+          {
+            "section": "渐进披露层级",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "stale / superseded 标记",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "不能作为 truth 的提示",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "主体区"
+          },
+          {
+            "section": "返回 route 判断",
+            "purpose": "承载该页完成核心判断所需的最小信息块。",
+            "display_zone": "收口区"
+          }
+        ],
+        "interaction_contract": [
+          "- `返回意图路由器`: 通过 点击返回 route 解释 回到 `intent-router`，用于撤销下钻并保留上层判断。",
+          "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。"
+        ],
+        "state_contract": [
+          "- `已披露`: learning hint 与使用层级已经明确展示。",
+          "- `经验过期`: 存在 stale 或 superseded learning，只能作为弱提示。",
+          "- `无相关经验`: 没有匹配 feature / host / runner / domain 的 learning hint。 空态要说明为什么为空，以及下一步该回哪里。",
+          "- `读取中`: 正在读取 learning plane。 加载态只保留骨架结构，避免造成页面重新排版。",
+          "- `读取失败`: learning 读取失败，不影响 truth/gate 判断。 页面要优先给出回退或恢复入口，而不是只报错。"
+        ],
+        "noise_guardrail": "首屏只保留操作者判断需要的信息；路径、历史与机器材料只能进入二级展开。"
+      },
+      "ui_copy_projection_contract": {
+        "page_id": "learning-disclosure-center",
+        "first_screen_copy": {
+          "title": "Learning 披露中心",
+          "primary_statement": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
+          ]
+        },
+        "secondary_disclosure": [
+          "workspace path",
+          "artifact path",
+          "history timeline",
+          "machine trace detail"
+        ],
+        "forbidden_first_screen_copy": [
+          "design asset catalog wording",
+          "why/reasoning explanation",
+          "review guidance",
+          "machine contract detail"
+        ]
+      },
+      "layout_lines": [
+        "+-----------------------------+",
+        "| 采用的 learning hint        |",
+        "+-----------------------------+",
+        "| 渐进披露层级                   |",
+        "+-----------------------------+",
+        "| stale / superseded 标记    |",
+        "+-----------------------------+",
+        "| 不能作为 truth 的提示           |",
+        "+-----------------------------+",
+        "| 返回 route 判断              |",
+        "+-----------------------------+"
+      ],
+      "production_ui_copy_profile": {
+        "page_id": "learning-disclosure-center",
+        "title": "Learning 披露中心",
+        "subtitle": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+        "primary_actions": [
+          "返回意图路由器",
+          "返回项目详情"
+        ],
+        "allowed_recovery_surface_states": [
+          "blocked",
+          "failed",
+          "empty-risk"
+        ],
+        "forbidden_first_screen_terms": [
+          "当前状态",
+          "下一步动作",
+          "恢复路径",
+          "design asset catalog",
+          "review guidance",
+          "why/reasoning"
+        ]
+      },
+      "ui_copy_policy": {
+        "page_id": "learning-disclosure-center",
+        "first_screen_copy": {
+          "title": "Learning 披露中心",
+          "primary_statement": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+          "must_show_first": [
+            "采用的 learning hint",
+            "渐进披露层级"
+          ],
+          "next_actions": [
+            "返回意图路由器",
+            "返回项目详情"
           ]
         },
         "secondary_disclosure": [
@@ -6723,6 +8456,36 @@
       },
       {
         "from": "project-detail",
+        "to": "intent-router",
+        "trigger": "点击 route 推荐原因",
+        "type": "drill-down"
+      },
+      {
+        "from": "intent-router",
+        "to": "learning-disclosure-center",
+        "trigger": "点击 learning hint 说明",
+        "type": "drill-down"
+      },
+      {
+        "from": "learning-disclosure-center",
+        "to": "intent-router",
+        "trigger": "点击返回 route 解释",
+        "type": "return"
+      },
+      {
+        "from": "intent-router",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "learning-disclosure-center",
+        "to": "project-detail",
+        "trigger": "点击返回",
+        "type": "return"
+      },
+      {
+        "from": "project-detail",
         "to": "runtime-center",
         "trigger": "点击运行态摘要",
         "type": "drill-down"
@@ -6807,9 +8570,16 @@
     "density_preference": "workbench-medium",
     "design_preset": "apple-inspired-design-md",
     "design_preset_override_reason": "",
-    "explicit_context_fields": [],
-    "explicit_context_complete": false,
-    "page_count": 7
+    "explicit_context_fields": [
+      "target_audience",
+      "primary_use_cases",
+      "operator_mental_state",
+      "usage_environment",
+      "brand_tone",
+      "density_preference"
+    ],
+    "explicit_context_complete": true,
+    "page_count": 9
   },
   "design_reasoning": {
     "product_surface_type": "management-workbench",
@@ -6856,6 +8626,11 @@
       "把关键判断放在首屏，不要求用户回忆上一页信息。",
       "使用稳定的页面结构和动作命名，减少重新学习成本。",
       "状态反馈必须直接说明发生了什么以及下一步去哪里。"
+    ],
+    "required_feedback": [
+      "当前 route 推荐原因",
+      "当前状态发生了什么",
+      "下一步动作为什么安全"
     ],
     "error_recovery_policy": [
       "error / blocked / stale 状态必须给出可执行恢复动作。",
@@ -6934,7 +8709,7 @@
       "transaction_id",
       "projection_seq"
     ],
-    "page_count": 7
+    "page_count": 9
   },
   "semantic_layer": {
     "artifacts": {
@@ -7090,6 +8865,20 @@
           "仅项目详情页支持 App"
         ]
       },
+      "intent-router": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
+      "learning-disclosure-center": {
+        "platforms": [
+          "Web",
+          "PC"
+        ],
+        "notes": []
+      },
       "runtime-center": {
         "platforms": [
           "Web",
@@ -7156,16 +8945,16 @@
   "parser": {
     "page_detection": "requirement-driven-parser",
     "fallback_used": true,
-    "discovered_page_count": 7,
+    "discovered_page_count": 9,
     "custom_page_count": 0,
     "cjk_detected": true,
     "cjk_parse_failed": false
   },
   "compiler": {
-    "requested_mode": "auto",
+    "requested_mode": "rule",
     "effective_mode": "rule",
     "generator_mode": "rule",
-    "fallback_reason": "host_compile_failed",
+    "fallback_reason": "",
     "capability_snapshot": {
       "schema_version": "1.0",
       "command_name": "prototype",
@@ -7187,8 +8976,8 @@
     },
     "model": "beacon-prototype-compiler",
     "llm_trace": {},
-    "downgraded_from_auto": true,
-    "downgrade_blocking": true
+    "downgraded_from_auto": false,
+    "downgrade_blocking": false
   },
   "theme": {
     "ui_kit": "wireframe-markdown-v1",
@@ -7200,5 +8989,6 @@
     "primary": "#0071E3",
     "secondary": "#F5F5F7",
     "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces."
-  }
+  },
+  "canonical_truth_source": "prototype-brief"
 }

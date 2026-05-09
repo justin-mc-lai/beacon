@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "component_count": 35,
+  "component_count": 45,
   "components": [
     {
       "component_id": "home-component-01",
@@ -1352,6 +1352,810 @@
         {
           "state_id": "loading",
           "feedback": "运行态摘要卡 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "intent-router-component-01",
+      "page_id": "intent-router",
+      "name": "当前输入摘要",
+      "responsibility": "当前输入摘要 模块负责承载 `意图路由器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "查看 learning 披露",
+        "trigger": "点击 learning hint 说明",
+        "target": "learning-disclosure-center"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "degraded",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "当前输入摘要 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "当前输入摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "缺少部分上下文，只能给出保守 route。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "当前输入摘要 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "当前输入摘要 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "查看 learning 披露",
+          "trigger": "点击 learning hint 说明",
+          "target": "learning-disclosure-center"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "intent-router-component-02",
+      "page_id": "intent-router",
+      "name": "route 推荐原因",
+      "responsibility": "route 推荐原因 模块负责承载 `意图路由器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回项目详情",
+        "trigger": "点击返回",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "degraded",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "route 推荐原因 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "route 推荐原因 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "缺少部分上下文，只能给出保守 route。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "route 推荐原因 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "route 推荐原因 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "intent-router-component-03",
+      "page_id": "intent-router",
+      "name": "边界与禁止动作",
+      "responsibility": "边界与禁止动作 模块负责承载 `意图路由器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "intent-router"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "degraded",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "边界与禁止动作 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "边界与禁止动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "缺少部分上下文，只能给出保守 route。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "边界与禁止动作 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "边界与禁止动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "intent-router-component-04",
+      "page_id": "intent-router",
+      "name": "候选 route 对比",
+      "responsibility": "候选 route 对比 模块负责承载 `意图路由器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "intent-router"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "degraded",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "候选 route 对比 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "候选 route 对比 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "缺少部分上下文，只能给出保守 route。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "候选 route 对比 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "候选 route 对比 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "intent-router-component-05",
+      "page_id": "intent-router",
+      "name": "下一步动作",
+      "responsibility": "下一步动作 模块负责承载 `意图路由器` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "intent-router"
+      },
+      "state_refs": [
+        "ready",
+        "blocked",
+        "degraded",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "下一步动作 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "blocked",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "degraded",
+          "feedback": "缺少部分上下文，只能给出保守 route。",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "下一步动作 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "下一步动作 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "learning-disclosure-center-component-01",
+      "page_id": "learning-disclosure-center",
+      "name": "采用的 learning hint",
+      "responsibility": "采用的 learning hint 模块负责承载 `Learning 披露中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回意图路由器",
+        "trigger": "点击返回 route 解释",
+        "target": "intent-router"
+      },
+      "state_refs": [
+        "ready",
+        "stale",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "采用的 learning hint must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "stale",
+          "feedback": "采用的 learning hint must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "采用的 learning hint must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "采用的 learning hint must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "采用的 learning hint must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回意图路由器",
+          "trigger": "点击返回 route 解释",
+          "target": "intent-router"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "learning-disclosure-center-component-02",
+      "page_id": "learning-disclosure-center",
+      "name": "渐进披露层级",
+      "responsibility": "渐进披露层级 模块负责承载 `Learning 披露中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "返回项目详情",
+        "trigger": "点击返回",
+        "target": "project-detail"
+      },
+      "state_refs": [
+        "ready",
+        "stale",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "渐进披露层级 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "stale",
+          "feedback": "渐进披露层级 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "渐进披露层级 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "渐进披露层级 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "渐进披露层级 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [
+        {
+          "label": "返回项目详情",
+          "trigger": "点击返回",
+          "target": "project-detail"
+        }
+      ],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "learning-disclosure-center-component-03",
+      "page_id": "learning-disclosure-center",
+      "name": "stale / superseded 标记",
+      "responsibility": "stale / superseded 标记 模块负责承载 `Learning 披露中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "learning-disclosure-center"
+      },
+      "state_refs": [
+        "ready",
+        "stale",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "stale / superseded 标记 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "stale",
+          "feedback": "stale / superseded 标记 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "stale / superseded 标记 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "stale / superseded 标记 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "stale / superseded 标记 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "learning-disclosure-center-component-04",
+      "page_id": "learning-disclosure-center",
+      "name": "不能作为 truth 的提示",
+      "responsibility": "不能作为 truth 的提示 模块负责承载 `Learning 披露中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "learning-disclosure-center"
+      },
+      "state_refs": [
+        "ready",
+        "stale",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "不能作为 truth 的提示 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "stale",
+          "feedback": "不能作为 truth 的提示 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "不能作为 truth 的提示 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "不能作为 truth 的提示 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "不能作为 truth 的提示 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        }
+      ],
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ],
+      "interaction_responsibilities": [],
+      "story_refs": [
+        "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md"
+      ]
+    },
+    {
+      "component_id": "learning-disclosure-center-component-05",
+      "page_id": "learning-disclosure-center",
+      "name": "返回 route 判断",
+      "responsibility": "返回 route 判断 模块负责承载 `Learning 披露中心` 的关键信息与操作。",
+      "data_source": [
+        "prototype-plan.page_specs",
+        "source-map.requirement_refs"
+      ],
+      "interaction": {
+        "label": "无直接动作",
+        "trigger": "被动展示",
+        "target": "learning-disclosure-center"
+      },
+      "state_refs": [
+        "ready",
+        "stale",
+        "empty",
+        "loading",
+        "error"
+      ],
+      "state_feedback_responsibilities": [
+        {
+          "state_id": "ready",
+          "feedback": "返回 route 判断 must preserve primary content hierarchy and next-step clarity.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "stale",
+          "feedback": "返回 route 判断 must show recovery guidance and explicit fallback action.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "empty",
+          "feedback": "返回 route 判断 must explain why content is empty and where to continue.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "loading",
+          "feedback": "返回 route 判断 must keep visible loading feedback without collapsing layout.",
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        {
+          "state_id": "error",
+          "feedback": "返回 route 判断 must show recovery guidance and explicit fallback action.",
           "ac_refs": [],
           "tc_refs": []
         }

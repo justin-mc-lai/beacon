@@ -8,6 +8,11 @@
 - `home` -> `project-detail`: 点击重点项目卡片 (primary)
 - `management-overview` -> `project-detail`: 点击项目行/卡片 (primary)
 - `management-overview` -> `home`: 点击首页导航 (return)
+- `project-detail` -> `intent-router`: 点击 route 推荐原因 (drill-down)
+- `intent-router` -> `learning-disclosure-center`: 点击 learning hint 说明 (drill-down)
+- `learning-disclosure-center` -> `intent-router`: 点击返回 route 解释 (return)
+- `intent-router` -> `project-detail`: 点击返回 (return)
+- `learning-disclosure-center` -> `project-detail`: 点击返回 (return)
 - `project-detail` -> `runtime-center`: 点击运行态摘要 (drill-down)
 - `project-detail` -> `recovery-diagnostics`: 点击恢复诊断入口 (drill-down)
 - `project-detail` -> `material-viewer`: 点击文档查看入口 (drill-down)
@@ -22,6 +27,9 @@
 
 ## 返回路径
 - `management-overview` 返回 `home`
+- `learning-disclosure-center` 返回 `intent-router`
+- `intent-router` 返回 `project-detail`
+- `learning-disclosure-center` 返回 `project-detail`
 - `project-detail` 返回 `management-overview`
 - `runtime-center` 返回 `project-detail`
 - `runtime-center` 返回 `management-overview`

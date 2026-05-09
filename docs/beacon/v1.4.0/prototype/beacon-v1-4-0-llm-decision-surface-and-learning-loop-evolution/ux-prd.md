@@ -43,6 +43,16 @@
 - 支持判断：这条版本线当前停在哪个阶段，下一步应该推进哪里。
 - 首屏必须展示：项目头部摘要, 版本与分支信息
 - 首屏禁止展示：transaction_id, projection metadata, 无边界 runtime 明细
+### 意图路由器
+- 页面职责：解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。
+- 支持判断：当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。
+- 首屏必须展示：当前输入摘要, route 推荐原因
+- 首屏禁止展示：transaction_id, projection metadata, 无边界 runtime 明细
+### Learning 披露中心
+- 页面职责：按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。
+- 支持判断：本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。
+- 首屏必须展示：采用的 learning hint, 渐进披露层级
+- 首屏禁止展示：transaction_id, projection metadata, 无边界 runtime 明细
 ### 运行中心
 - 页面职责：只在这里下钻 single / team / ralph 的 runtime 细节和有限 session metadata。
 - 支持判断：当前到底是 single、team 还是 ralph 在推进。
@@ -131,6 +141,18 @@
   - 恢复动作：返回上一层, 重试当前动作
   - AC Refs: -
   - TC Refs: -
+- `degraded`：意图路由器 当前发生了什么，我下一步该做什么？
+  - 必要反馈：缺少部分上下文，只能给出保守 route。
+  - 主动作：查看 learning 披露, 返回项目详情
+  - 恢复动作：返回上一层, 重试当前动作
+  - AC Refs: -
+  - TC Refs: -
+- `stale`：Learning 披露中心 当前发生了什么，我下一步该做什么？
+  - 必要反馈：存在 stale 或 superseded learning，只能作为弱提示。, 明确恢复动作与回退路径。
+  - 主动作：返回意图路由器, 返回项目详情
+  - 恢复动作：返回上一层, 重试当前动作
+  - AC Refs: -
+  - TC Refs: -
 - `single-active`：运行中心 当前发生了什么，我下一步该做什么？
   - 必要反馈：展示单进程执行摘要和 linked run。
   - 主动作：返回项目详情, 返回管理总览
@@ -157,12 +179,6 @@
   - TC Refs: -
 - `healthy-warning`：恢复诊断 当前发生了什么，我下一步该做什么？
   - 必要反馈：当前系统可用但存在恢复风险提示。
-  - 主动作：返回项目详情, 前往运行中心
-  - 恢复动作：返回上一层, 重试当前动作
-  - AC Refs: -
-  - TC Refs: -
-- `degraded`：恢复诊断 当前发生了什么，我下一步该做什么？
-  - 必要反馈：SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。
   - 主动作：返回项目详情, 前往运行中心
   - 恢复动作：返回上一层, 重试当前动作
   - AC Refs: -

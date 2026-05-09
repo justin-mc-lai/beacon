@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-05-08T10:24:38Z",
-  "source_hash": "3473c1b5a0c6b17a3c9eee41b5554a8dd5a749fcb2f4bce1b2a73a55a6353c77",
+  "generated_at": "2026-05-08T13:49:05Z",
+  "source_hash": "cd5a3a0b2d9a0791cc10665bb8d4ba0079d40ca7b786f29e5659d7eb3a08b038",
   "source_feature": "beacon-v1-4-0-llm-decision-surface-and-learning-loop-evolution",
   "source_requirement_refs": [
     "docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md",
@@ -61,6 +61,50 @@
         "查看运行中心",
         "查看恢复诊断",
         "查看项目物料"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "intent-router",
+      "title": "意图路由器",
+      "subtitle": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+      "primary_actions": [
+        "查看 learning 披露",
+        "返回项目详情"
+      ],
+      "allowed_recovery_surface_states": [
+        "blocked",
+        "failed",
+        "empty-risk"
+      ],
+      "forbidden_first_screen_terms": [
+        "当前状态",
+        "下一步动作",
+        "恢复路径",
+        "design asset catalog",
+        "review guidance",
+        "why/reasoning"
+      ]
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "title": "Learning 披露中心",
+      "subtitle": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+      "primary_actions": [
+        "返回意图路由器",
+        "返回项目详情"
       ],
       "allowed_recovery_surface_states": [
         "blocked",

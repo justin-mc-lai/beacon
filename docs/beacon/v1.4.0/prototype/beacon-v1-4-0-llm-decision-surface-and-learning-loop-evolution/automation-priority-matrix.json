@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "entry_count": 90,
+  "entry_count": 115,
   "entries": [
     {
       "target_id": "home:ready",
@@ -179,6 +179,106 @@
       "reason": "详情聚合失败但给出恢复链路。",
       "product_surface_type": "management-workbench",
       "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "intent-router:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "当前 route、推荐原因和边界均已显示。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "intent-router:blocked",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "输入触及 frozen truth，必须返回 change 路由。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "intent-router:degraded",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "缺少部分上下文，只能给出保守 route。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "intent-router:loading",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "正在解析用户输入与上下文。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "intent-router:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "无法完成意图判断，提示回到明确命令或 doctor。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "learning-disclosure-center:ready",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "learning hint 与使用层级已经明确展示。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "learning-disclosure-center:stale",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "存在 stale 或 superseded learning，只能作为弱提示。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "learning-disclosure-center:empty",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "没有匹配 feature / host / runner / domain 的 learning hint。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "learning-disclosure-center:loading",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "正在读取 learning plane。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "target_id": "learning-disclosure-center:error",
+      "target_type": "state",
+      "priority_class": "manual-acceptable",
+      "reason": "learning 读取失败，不影响 truth/gate 判断。",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
       "ac_refs": [],
       "tc_refs": []
     },
@@ -449,6 +549,76 @@
       "target_type": "transition",
       "priority_class": "release-blocker",
       "reason": "点击首页导航 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "project-detail:ready->intent-router:ready",
+      "target_type": "transition",
+      "priority_class": "release-blocker",
+      "reason": "点击 route 推荐原因 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "intent-router:ready->learning-disclosure-center:ready",
+      "target_type": "transition",
+      "priority_class": "primary-automation",
+      "reason": "点击 learning hint 说明 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center:ready->intent-router:ready",
+      "target_type": "transition",
+      "priority_class": "release-blocker",
+      "reason": "点击返回 route 解释 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "intent-router:ready->project-detail:ready",
+      "target_type": "transition",
+      "priority_class": "release-blocker",
+      "reason": "点击返回 transition must preserve guard, fallback, and evidence binding.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001"
+      ],
+      "tc_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center:ready->project-detail:ready",
+      "target_type": "transition",
+      "priority_class": "release-blocker",
+      "reason": "点击返回 transition must preserve guard, fallback, and evidence binding.",
       "product_surface_type": "management-workbench",
       "page_priority": "P0",
       "ac_refs": [
@@ -1039,6 +1209,286 @@
       "reason": "运行态摘要卡 owns visible state feedback and interaction continuity.",
       "product_surface_type": "management-workbench",
       "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "intent-router-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "当前输入摘要 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "intent-router-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "route 推荐原因 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "intent-router-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "边界与禁止动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "intent-router-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "候选 route 对比 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "intent-router-component-05",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "下一步动作 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P0",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center-component-01",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "采用的 learning hint owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center-component-02",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "渐进披露层级 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center-component-03",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "stale / superseded 标记 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center-component-04",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "不能作为 truth 的提示 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
+      "ac_refs": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008"
+      ],
+      "tc_refs": [
+        "TC-001",
+        "TC-002",
+        "TC-003",
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008"
+      ]
+    },
+    {
+      "target_id": "learning-disclosure-center-component-05",
+      "target_type": "component",
+      "priority_class": "primary-automation",
+      "reason": "返回 route 判断 owns visible state feedback and interaction continuity.",
+      "product_surface_type": "management-workbench",
+      "page_priority": "P1",
       "ac_refs": [
         "AC-001",
         "AC-002",

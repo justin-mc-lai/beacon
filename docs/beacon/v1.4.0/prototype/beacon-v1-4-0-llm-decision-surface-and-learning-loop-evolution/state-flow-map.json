@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
-  "node_count": 40,
-  "edge_count": 46,
+  "node_count": 50,
+  "edge_count": 59,
   "nodes": [
     {
       "state_key": "home:ready",
@@ -162,6 +162,96 @@
       "state_id": "error",
       "label": "错误",
       "description": "详情聚合失败但给出恢复链路。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "intent-router:ready",
+      "page_id": "intent-router",
+      "state_id": "ready",
+      "label": "推荐可解释",
+      "description": "当前 route、推荐原因和边界均已显示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "intent-router:blocked",
+      "page_id": "intent-router",
+      "state_id": "blocked",
+      "label": "需回到 change",
+      "description": "输入触及 frozen truth，必须返回 change 路由。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "intent-router:degraded",
+      "page_id": "intent-router",
+      "state_id": "degraded",
+      "label": "降级推荐",
+      "description": "缺少部分上下文，只能给出保守 route。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "intent-router:loading",
+      "page_id": "intent-router",
+      "state_id": "loading",
+      "label": "分析中",
+      "description": "正在解析用户输入与上下文。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "intent-router:error",
+      "page_id": "intent-router",
+      "state_id": "error",
+      "label": "解析失败",
+      "description": "无法完成意图判断，提示回到明确命令或 doctor。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "learning-disclosure-center:ready",
+      "page_id": "learning-disclosure-center",
+      "state_id": "ready",
+      "label": "已披露",
+      "description": "learning hint 与使用层级已经明确展示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "learning-disclosure-center:stale",
+      "page_id": "learning-disclosure-center",
+      "state_id": "stale",
+      "label": "经验过期",
+      "description": "存在 stale 或 superseded learning，只能作为弱提示。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "learning-disclosure-center:empty",
+      "page_id": "learning-disclosure-center",
+      "state_id": "empty",
+      "label": "无相关经验",
+      "description": "没有匹配 feature / host / runner / domain 的 learning hint。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "learning-disclosure-center:loading",
+      "page_id": "learning-disclosure-center",
+      "state_id": "loading",
+      "label": "读取中",
+      "description": "正在读取 learning plane。",
+      "ac_refs": [],
+      "tc_refs": []
+    },
+    {
+      "state_key": "learning-disclosure-center:error",
+      "page_id": "learning-disclosure-center",
+      "state_id": "error",
+      "label": "读取失败",
+      "description": "learning 读取失败，不影响 truth/gate 判断。",
       "ac_refs": [],
       "tc_refs": []
     },
@@ -534,6 +624,98 @@
       "test_refs": []
     },
     {
+      "from": "intent-router:loading",
+      "to": "intent-router:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "intent-router:ready",
+      "to": "intent-router:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "intent-router:ready",
+      "to": "intent-router:blocked",
+      "event": "enter_blocked",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "intent-router:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "intent-router:ready",
+      "to": "intent-router:degraded",
+      "event": "enter_degraded",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "intent-router:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "learning-disclosure-center:loading",
+      "to": "learning-disclosure-center:ready",
+      "event": "data_loaded",
+      "guard": "data_fetch_success",
+      "kind": "intra-page",
+      "fallback": null,
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "learning-disclosure-center:ready",
+      "to": "learning-disclosure-center:error",
+      "event": "data_failure",
+      "guard": "runtime_or_projection_error",
+      "kind": "intra-page",
+      "fallback": "recovery-diagnostics:ready",
+      "ac_refs": [],
+      "test_refs": [
+        "TC-001",
+        "TC-002"
+      ]
+    },
+    {
+      "from": "learning-disclosure-center:ready",
+      "to": "learning-disclosure-center:stale",
+      "event": "enter_stale",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "learning-disclosure-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
+      "from": "learning-disclosure-center:ready",
+      "to": "learning-disclosure-center:empty",
+      "event": "enter_empty",
+      "guard": "business_condition_detected",
+      "kind": "intra-page-business",
+      "fallback": "learning-disclosure-center:ready",
+      "ac_refs": [],
+      "test_refs": []
+    },
+    {
       "from": "runtime-center:ready",
       "to": "runtime-center:single-active",
       "event": "enter_single_active",
@@ -779,6 +961,116 @@
       "route_or_runtime_evidence": [
         "navigation-map:management-overview->home",
         "implementation:home"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "project-detail:ready",
+      "to": "intent-router:ready",
+      "from_page": "project-detail",
+      "from_state": "ready",
+      "to_page": "intent-router",
+      "to_state": "ready",
+      "event": "点击 route 推荐原因",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "project-detail:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:project-detail->intent-router",
+        "implementation:intent-router"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "intent-router:ready",
+      "to": "learning-disclosure-center:ready",
+      "from_page": "intent-router",
+      "from_state": "ready",
+      "to_page": "learning-disclosure-center",
+      "to_state": "ready",
+      "event": "点击 learning hint 说明",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "intent-router:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:intent-router->learning-disclosure-center",
+        "implementation:learning-disclosure-center"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "learning-disclosure-center:ready",
+      "to": "intent-router:ready",
+      "from_page": "learning-disclosure-center",
+      "from_state": "ready",
+      "to_page": "intent-router",
+      "to_state": "ready",
+      "event": "点击返回 route 解释",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "learning-disclosure-center:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:learning-disclosure-center->intent-router",
+        "implementation:intent-router"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "intent-router:ready",
+      "to": "project-detail:ready",
+      "from_page": "intent-router",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "intent-router:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:intent-router->project-detail",
+        "implementation:project-detail"
+      ],
+      "ac_refs": [
+        "AC-001"
+      ],
+      "test_refs": [
+        "TC-001"
+      ]
+    },
+    {
+      "from": "learning-disclosure-center:ready",
+      "to": "project-detail:ready",
+      "from_page": "learning-disclosure-center",
+      "from_state": "ready",
+      "to_page": "project-detail",
+      "to_state": "ready",
+      "event": "点击返回",
+      "guard": "route_allowed",
+      "kind": "cross-page-transition",
+      "fallback": "learning-disclosure-center:ready",
+      "route_or_runtime_evidence": [
+        "navigation-map:learning-disclosure-center->project-detail",
+        "implementation:project-detail"
       ],
       "ac_refs": [
         "AC-001"

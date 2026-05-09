@@ -17,6 +17,14 @@
 | `project-detail:ready` | `project-detail:draft` | enter_draft | business_condition_detected | project-detail:ready | - | - |
 | `project-detail:ready` | `project-detail:frozen` | enter_frozen | business_condition_detected | project-detail:ready | - | - |
 | `project-detail:ready` | `project-detail:runtime-active` | enter_runtime_active | business_condition_detected | project-detail:ready | - | - |
+| `intent-router:loading` | `intent-router:ready` | data_loaded | data_fetch_success | - | - | TC-001, TC-002 |
+| `intent-router:ready` | `intent-router:error` | data_failure | runtime_or_projection_error | recovery-diagnostics:ready | - | TC-001, TC-002 |
+| `intent-router:ready` | `intent-router:blocked` | enter_blocked | business_condition_detected | intent-router:ready | - | - |
+| `intent-router:ready` | `intent-router:degraded` | enter_degraded | business_condition_detected | intent-router:ready | - | - |
+| `learning-disclosure-center:loading` | `learning-disclosure-center:ready` | data_loaded | data_fetch_success | - | - | TC-001, TC-002 |
+| `learning-disclosure-center:ready` | `learning-disclosure-center:error` | data_failure | runtime_or_projection_error | recovery-diagnostics:ready | - | TC-001, TC-002 |
+| `learning-disclosure-center:ready` | `learning-disclosure-center:stale` | enter_stale | business_condition_detected | learning-disclosure-center:ready | - | - |
+| `learning-disclosure-center:ready` | `learning-disclosure-center:empty` | enter_empty | business_condition_detected | learning-disclosure-center:ready | - | - |
 | `runtime-center:ready` | `runtime-center:single-active` | enter_single_active | business_condition_detected | runtime-center:ready | - | - |
 | `runtime-center:ready` | `runtime-center:team-active` | enter_team_active | business_condition_detected | runtime-center:ready | - | - |
 | `runtime-center:ready` | `runtime-center:ralph-active` | enter_ralph_active | business_condition_detected | runtime-center:ready | - | - |
@@ -37,6 +45,11 @@
 | `home:ready` | `project-detail:ready` | 点击重点项目卡片 | route_allowed | home:ready | AC-001 | TC-001 |
 | `management-overview:ready` | `project-detail:ready` | 点击项目行/卡片 | route_allowed | management-overview:ready | AC-001 | TC-001 |
 | `management-overview:ready` | `home:ready` | 点击首页导航 | route_allowed | management-overview:ready | AC-001 | TC-001 |
+| `project-detail:ready` | `intent-router:ready` | 点击 route 推荐原因 | route_allowed | project-detail:ready | AC-001 | TC-001 |
+| `intent-router:ready` | `learning-disclosure-center:ready` | 点击 learning hint 说明 | route_allowed | intent-router:ready | AC-001 | TC-001 |
+| `learning-disclosure-center:ready` | `intent-router:ready` | 点击返回 route 解释 | route_allowed | learning-disclosure-center:ready | AC-001 | TC-001 |
+| `intent-router:ready` | `project-detail:ready` | 点击返回 | route_allowed | intent-router:ready | AC-001 | TC-001 |
+| `learning-disclosure-center:ready` | `project-detail:ready` | 点击返回 | route_allowed | learning-disclosure-center:ready | AC-001 | TC-001 |
 | `project-detail:ready` | `runtime-center:ready` | 点击运行态摘要 | route_allowed | project-detail:ready | AC-001 | TC-001 |
 | `project-detail:ready` | `recovery-diagnostics:ready` | 点击恢复诊断入口 | route_allowed | project-detail:ready | AC-001 | TC-001 |
 | `project-detail:ready` | `material-viewer:ready` | 点击文档查看入口 | route_allowed | project-detail:ready | AC-001 | TC-001 |

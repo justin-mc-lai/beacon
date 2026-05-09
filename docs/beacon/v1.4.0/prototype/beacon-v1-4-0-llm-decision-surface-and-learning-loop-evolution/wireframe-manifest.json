@@ -41,6 +41,28 @@
       "file": "pages/project-detail.md"
     },
     {
+      "page_id": "intent-router",
+      "name": "意图路由器",
+      "priority": "P0",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+      "file": "pages/intent-router.md"
+    },
+    {
+      "page_id": "learning-disclosure-center",
+      "name": "Learning 披露中心",
+      "priority": "P1",
+      "platforms": [
+        "Web",
+        "PC"
+      ],
+      "responsibility": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+      "file": "pages/learning-disclosure-center.md"
+    },
+    {
       "page_id": "runtime-center",
       "name": "运行中心",
       "priority": "P1",
@@ -108,6 +130,36 @@
       "from": "management-overview",
       "to": "home",
       "trigger": "点击首页导航",
+      "type": "return"
+    },
+    {
+      "from": "project-detail",
+      "to": "intent-router",
+      "trigger": "点击 route 推荐原因",
+      "type": "drill-down"
+    },
+    {
+      "from": "intent-router",
+      "to": "learning-disclosure-center",
+      "trigger": "点击 learning hint 说明",
+      "type": "drill-down"
+    },
+    {
+      "from": "learning-disclosure-center",
+      "to": "intent-router",
+      "trigger": "点击返回 route 解释",
+      "type": "return"
+    },
+    {
+      "from": "intent-router",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "learning-disclosure-center",
+      "to": "project-detail",
+      "trigger": "点击返回",
       "type": "return"
     },
     {

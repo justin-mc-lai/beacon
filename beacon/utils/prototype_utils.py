@@ -44,6 +44,8 @@ PAGE_ORDER_DEFAULT = (
     "home",
     "management-overview",
     "project-detail",
+    "intent-router",
+    "learning-disclosure-center",
     "runtime-center",
     "recovery-diagnostics",
     "material-viewer",
@@ -183,6 +185,58 @@ PAGE_CATALOG: dict[str, dict[str, Any]] = {
             {"id": "runtime-active", "label": "运行中", "description": "存在 single / team / ralph 运行摘要。"},
             {"id": "loading", "label": "加载中", "description": "项目详情正在聚合。"},
             {"id": "error", "label": "错误", "description": "详情聚合失败但给出恢复链路。"},
+        ],
+    },
+    "intent-router": {
+        "name": "意图路由器",
+        "keywords": ("intent-router", "意图路由", "自然语言路由", "ask route", "route 推荐", "route reason"),
+        "priority": "P0",
+        "platforms": ["Web", "PC"],
+        "responsibility": "解释 ask / brainstorm / change / implement / qa 的推荐理由和边界，避免只给命令名。",
+        "decision_supported": "当前 route 为什么被推荐，是否需要回到 change、继续 brainstorm，或进入 implement / qa。",
+        "sections": [
+            "当前输入摘要",
+            "route 推荐原因",
+            "边界与禁止动作",
+            "候选 route 对比",
+            "下一步动作",
+        ],
+        "actions": [
+            {"label": "查看 learning 披露", "target": "learning-disclosure-center", "trigger": "点击 learning hint 说明"},
+            {"label": "返回项目详情", "target": "project-detail", "trigger": "点击返回"},
+        ],
+        "states": [
+            {"id": "ready", "label": "推荐可解释", "description": "当前 route、推荐原因和边界均已显示。"},
+            {"id": "blocked", "label": "需回到 change", "description": "输入触及 frozen truth，必须返回 change 路由。"},
+            {"id": "degraded", "label": "降级推荐", "description": "缺少部分上下文，只能给出保守 route。"},
+            {"id": "loading", "label": "分析中", "description": "正在解析用户输入与上下文。"},
+            {"id": "error", "label": "解析失败", "description": "无法完成意图判断，提示回到明确命令或 doctor。"},
+        ],
+    },
+    "learning-disclosure-center": {
+        "name": "Learning 披露中心",
+        "keywords": ("learning-disclosure-center", "learning disclosure", "learning 披露", "learning hint", "渐进披露"),
+        "priority": "P1",
+        "platforms": ["Web", "PC"],
+        "responsibility": "按 feature / host / runner / domain 披露采用的 learning hint，并标记 stale 或降级语义。",
+        "decision_supported": "本次推荐采用了哪些 learning hint，这些 hint 是否仍可信，是否只作为参考。",
+        "sections": [
+            "采用的 learning hint",
+            "渐进披露层级",
+            "stale / superseded 标记",
+            "不能作为 truth 的提示",
+            "返回 route 判断",
+        ],
+        "actions": [
+            {"label": "返回意图路由器", "target": "intent-router", "trigger": "点击返回 route 解释"},
+            {"label": "返回项目详情", "target": "project-detail", "trigger": "点击返回"},
+        ],
+        "states": [
+            {"id": "ready", "label": "已披露", "description": "learning hint 与使用层级已经明确展示。"},
+            {"id": "stale", "label": "经验过期", "description": "存在 stale 或 superseded learning，只能作为弱提示。"},
+            {"id": "empty", "label": "无相关经验", "description": "没有匹配 feature / host / runner / domain 的 learning hint。"},
+            {"id": "loading", "label": "读取中", "description": "正在读取 learning plane。"},
+            {"id": "error", "label": "读取失败", "description": "learning 读取失败，不影响 truth/gate 判断。"},
         ],
     },
     "runtime-center": {
@@ -502,6 +556,11 @@ TRANSITION_LIBRARY = [
     {"from": "home", "to": "project-detail", "trigger": "点击重点项目卡片", "type": "primary"},
     {"from": "management-overview", "to": "project-detail", "trigger": "点击项目行/卡片", "type": "primary"},
     {"from": "management-overview", "to": "home", "trigger": "点击首页导航", "type": "return"},
+    {"from": "project-detail", "to": "intent-router", "trigger": "点击 route 推荐原因", "type": "drill-down"},
+    {"from": "intent-router", "to": "learning-disclosure-center", "trigger": "点击 learning hint 说明", "type": "drill-down"},
+    {"from": "learning-disclosure-center", "to": "intent-router", "trigger": "点击返回 route 解释", "type": "return"},
+    {"from": "intent-router", "to": "project-detail", "trigger": "点击返回", "type": "return"},
+    {"from": "learning-disclosure-center", "to": "project-detail", "trigger": "点击返回", "type": "return"},
     {"from": "project-detail", "to": "runtime-center", "trigger": "点击运行态摘要", "type": "drill-down"},
     {"from": "project-detail", "to": "recovery-diagnostics", "trigger": "点击恢复诊断入口", "type": "drill-down"},
     {"from": "project-detail", "to": "material-viewer", "trigger": "点击文档查看入口", "type": "drill-down"},
@@ -2905,6 +2964,11 @@ def _build_ux_contract(page_specs: list[dict[str, Any]]) -> dict[str, Any]:
             "使用稳定的页面结构和动作命名，减少重新学习成本。",
             "状态反馈必须直接说明发生了什么以及下一步去哪里。",
         ],
+        "required_feedback": [
+            "当前 route 推荐原因",
+            "当前状态发生了什么",
+            "下一步动作为什么安全",
+        ],
         "error_recovery_policy": [
             "error / blocked / stale 状态必须给出可执行恢复动作。",
             "恢复动作优先回到可信真相或上层页面，而不是停留在死路。",
@@ -3992,18 +4056,73 @@ def _build_wireframe_manifest(plan: dict[str, Any]) -> dict[str, Any]:
 
 
 def _build_coverage_report(plan: dict[str, Any]) -> dict[str, Any]:
+    required_pages = [str(item).strip() for item in (plan.get("required_pages") or []) if str(item).strip()]
+    generated_pages = list(required_pages)
+    transitions = [
+        item
+        for item in ((plan.get("navigation") or {}).get("transitions") or [])
+        if isinstance(item, dict)
+    ]
+    transition_pairs = {
+        (str(item.get("from") or "").strip(), str(item.get("to") or "").strip())
+        for item in transitions
+    }
+    page_specs = [item for item in (plan.get("page_specs") or []) if isinstance(item, dict)]
+    generated_page_set = set(generated_pages)
+    navigation = plan.get("navigation") if isinstance(plan.get("navigation"), dict) else {}
+    primary_entry = str(navigation.get("primary_entry") or (required_pages[0] if required_pages else "")).strip()
+    primary_exit = str(navigation.get("primary_exit") or (required_pages[-1] if required_pages else "")).strip()
+    valid_transition_pairs = {
+        (source, target)
+        for source, target in transition_pairs
+        if source in generated_page_set and target in generated_page_set
+    }
+    incoming_pages = {target for _, target in valid_transition_pairs}
+    outgoing_pages = {source for source, _ in valid_transition_pairs}
+    pages_with_actions = {
+        str(page.get("page_id") or "").strip()
+        for page in page_specs
+        if any(isinstance(action, dict) and str(action.get("target") or "").strip() for action in (page.get("actions") or []))
+    }
+    action_targets = {
+        str(action.get("target") or "").strip()
+        for page in page_specs
+        for action in (page.get("actions") or [])
+        if isinstance(action, dict) and str(action.get("target") or "").strip()
+    }
+    contract = plan.get("contract") if isinstance(plan.get("contract"), dict) else {}
+    route_closure_required = bool(contract.get("route_closure_required")) or bool(transitions)
+    navigation_contract_complete = (
+        bool(required_pages)
+        and set(required_pages).issubset(generated_page_set)
+        and bool(valid_transition_pairs)
+        and len(valid_transition_pairs) == len(transition_pairs)
+    )
+    interaction_contract_complete = (
+        bool(required_pages)
+        and all(page in pages_with_actions for page in required_pages)
+        and all(target in generated_page_set for target in action_targets)
+    )
+    route_closure_complete = (not route_closure_required) or (
+        navigation_contract_complete
+        and all(page == primary_entry or page in incoming_pages for page in required_pages)
+        and all(page == primary_exit or page in outgoing_pages for page in required_pages)
+    )
     return {
         "schema_version": SCHEMA_VERSION,
         "feature": plan["feature"],
         "feature_slug": plan["feature_slug"],
         "prototype_mode": plan["prototype_mode"],
-        "required_pages": list(plan["required_pages"]),
-        "generated_pages": list(plan["required_pages"]),
+        "required_pages": required_pages,
+        "generated_pages": generated_pages,
         "required_states": list(plan["required_states"]),
         "missing_state_variants": [],
         "compact_mode_detected": False,
         "page_count": len(plan["page_specs"]),
-        "transition_count": len(plan["navigation"]["transitions"]),
+        "transition_count": len(transitions),
+        "navigation_contract_complete": navigation_contract_complete,
+        "interaction_contract_complete": interaction_contract_complete,
+        "route_closure_complete": route_closure_complete,
     }
 
 
