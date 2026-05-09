@@ -23,6 +23,7 @@ class AgentSurfaceTarget:
     agent: str
     skills_root: Path
     rules_path: Path | None = None
+    rules_kind: str = ""
 
 
 def packaged_beacon_skill_root() -> Path:
@@ -34,11 +35,14 @@ def resolve_agent_surface_target(project_root: Path | str, agent: str) -> AgentS
     """Resolve project-local installation target for one supported agent."""
     root = Path(project_root).resolve()
     normalized = str(agent or "").strip().lower()
+    if normalized == "winsurf":
+        normalized = "windsurf"
     if normalized == "trae":
         return AgentSurfaceTarget(
             agent=normalized,
             skills_root=root / ".trae" / "skills",
             rules_path=root / ".trae" / "rules" / "project_rules.md",
+            rules_kind="markdown",
         )
     if normalized == "claude":
         return AgentSurfaceTarget(
@@ -50,7 +54,21 @@ def resolve_agent_surface_target(project_root: Path | str, agent: str) -> AgentS
             agent=normalized,
             skills_root=root / ".agents" / "skills",
         )
-    raise ValueError("agent must be one of: trae, claude, codex")
+    if normalized == "cursor":
+        return AgentSurfaceTarget(
+            agent=normalized,
+            skills_root=root / ".cursor" / "skills",
+            rules_path=root / ".cursor" / "rules" / "beacon-agent-surface.mdc",
+            rules_kind="cursor-mdc",
+        )
+    if normalized == "windsurf":
+        return AgentSurfaceTarget(
+            agent=normalized,
+            skills_root=root / ".windsurf" / "skills",
+            rules_path=root / ".windsurf" / "workflows" / "beacon-agent-surface.md",
+            rules_kind="windsurf-workflow",
+        )
+    raise ValueError("agent must be one of: trae, claude, codex, cursor, windsurf")
 
 
 def list_host_visible_skills(skill_root: Path | None = None) -> list[Path]:
@@ -128,13 +146,21 @@ def _merge_managed_block(existing_content: str, managed_block: str) -> tuple[str
     if start_count == 1 and end_count == 1:
         start_idx = current.find(_RULE_BLOCK_START)
         end_idx = current.find(_RULE_BLOCK_END) + len(_RULE_BLOCK_END)
+        if current.lstrip().startswith("---") and managed_block.lstrip().startswith("---"):
+            prefix = current[:start_idx].lstrip()
+            if prefix.startswith("---") and prefix.count("---") >= 2:
+                start_idx = 0
         return f"{current[:start_idx]}{managed_block}{current[end_idx:]}", "replaced"
 
     preserved = current.strip("\n")
     return f"{managed_block}\n\n{preserved}\n", "prepended"
 
 
-def _build_trae_rules_block(runtime_version: str, docs_version: str) -> str:
+def _skill_lines(skill_ids: list[str]) -> str:
+    return "\n".join(f"- `{skill_id}`" for skill_id in skill_ids)
+
+
+def _build_trae_rules_block(runtime_version: str, docs_version: str, skill_ids: list[str]) -> str:
     body = (
         f"{_RULE_BLOCK_START}\n"
         f"<!-- BEACON:VERSION:{runtime_version} -->\n"
@@ -145,17 +171,69 @@ def _build_trae_rules_block(runtime_version: str, docs_version: str) -> str:
         "- Treat `docs/beacon/global-boundaries.md` and `docs/beacon/<version>/` as canonical truth.\n"
         "- If skill materialization drifts, run `beacon doctor setup-agent-surface --project-root . --agent trae`.\n"
         "- Verify Trae skill availability with `beacon doctor verify-agent-surface --project-root . --agent trae --strict`.\n"
+        "\n## Installed Beacon Skills\n\n"
+        f"{_skill_lines(skill_ids)}\n"
         f"{_RULE_BLOCK_END}\n"
     )
     return body
 
 
-def _sync_rules_file(target: AgentSurfaceTarget, runtime_version: str, docs_version: str, *, dry_run: bool) -> dict[str, Any] | None:
+def _build_cursor_rules_block(runtime_version: str, docs_version: str, skill_ids: list[str]) -> str:
+    return (
+        "---\n"
+        f"description: Beacon {runtime_version} agent skill surface and routing\n"
+        "alwaysApply: true\n"
+        "---\n"
+        f"{_RULE_BLOCK_START}\n"
+        f"<!-- BEACON:VERSION:{runtime_version} -->\n"
+        f"<!-- BEACON:DOCS_VERSION:{docs_version} -->\n"
+        "# Beacon Cursor Agent Surface\n\n"
+        "- Beacon skills are materialized under `.cursor/skills/`.\n"
+        "- Use `beacon <subcommand>` as the stable local execution surface.\n"
+        "- Treat `docs/beacon/global-boundaries.md` and `docs/beacon/<version>/` as canonical truth.\n"
+        "- Refresh with `beacon doctor setup-agent-surface --project-root . --agent cursor`.\n"
+        "- Verify with `beacon doctor verify-agent-surface --project-root . --agent cursor --strict`.\n"
+        "\n## Installed Beacon Skills\n\n"
+        f"{_skill_lines(skill_ids)}\n"
+        f"{_RULE_BLOCK_END}\n"
+    )
+
+
+def _build_windsurf_workflow_block(runtime_version: str, docs_version: str, skill_ids: list[str]) -> str:
+    return (
+        "---\n"
+        f"description: Beacon {runtime_version} agent skill surface and routing\n"
+        "---\n"
+        f"{_RULE_BLOCK_START}\n"
+        f"<!-- BEACON:VERSION:{runtime_version} -->\n"
+        f"<!-- BEACON:DOCS_VERSION:{docs_version} -->\n"
+        "# Beacon Windsurf Agent Surface\n\n"
+        "Use this workflow to discover and route to project-local Beacon skills.\n\n"
+        "1. Prefer project-local Beacon skills under `.windsurf/skills/`.\n"
+        "2. Use `beacon <subcommand>` as the stable local execution surface.\n"
+        "3. Treat `docs/beacon/global-boundaries.md` and `docs/beacon/<version>/` as canonical truth.\n"
+        "4. Refresh with `beacon doctor setup-agent-surface --project-root . --agent windsurf`.\n"
+        "5. Verify with `beacon doctor verify-agent-surface --project-root . --agent windsurf --strict`.\n"
+        "\n## Installed Beacon Skills\n\n"
+        f"{_skill_lines(skill_ids)}\n"
+        f"{_RULE_BLOCK_END}\n"
+    )
+
+
+def _build_rules_block(target: AgentSurfaceTarget, runtime_version: str, docs_version: str, skill_ids: list[str]) -> str:
+    if target.rules_kind == "cursor-mdc":
+        return _build_cursor_rules_block(runtime_version, docs_version, skill_ids)
+    if target.rules_kind == "windsurf-workflow":
+        return _build_windsurf_workflow_block(runtime_version, docs_version, skill_ids)
+    return _build_trae_rules_block(runtime_version, docs_version, skill_ids)
+
+
+def _sync_rules_file(target: AgentSurfaceTarget, runtime_version: str, docs_version: str, skill_ids: list[str], *, dry_run: bool) -> dict[str, Any] | None:
     if target.rules_path is None:
         return None
     existed = target.rules_path.exists()
     current = target.rules_path.read_text(encoding="utf-8") if target.rules_path.exists() else ""
-    managed = _build_trae_rules_block(runtime_version, docs_version)
+    managed = _build_rules_block(target, runtime_version, docs_version, skill_ids)
     merged, merge_mode = _merge_managed_block(current, managed)
     changed = current != merged
     if not dry_run:
@@ -254,7 +332,8 @@ def setup_agent_surface(
             }
         )
 
-    rules_result = _sync_rules_file(target, runtime_version, docs_version, dry_run=dry_run)
+    skill_ids = [item.name for item in source_skills]
+    rules_result = _sync_rules_file(target, runtime_version, docs_version, skill_ids, dry_run=dry_run)
     state_payload = {
         **state,
         "updated_at": now_iso(),

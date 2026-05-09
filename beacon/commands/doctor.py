@@ -1298,7 +1298,7 @@ def verify_codex_hud_hook_command(
 def setup_agent_surface_command(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
-    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex"),
+    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex|cursor|windsurf"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Preview without writing files"),
     force: bool = typer.Option(False, "--force", help="Overwrite unmanaged Beacon skill directories if needed"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
@@ -1323,7 +1323,7 @@ def setup_agent_surface_command(
 def verify_agent_surface_command(
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
     version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
-    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex"),
+    agent: str = typer.Option("trae", "--agent", help="Agent host: trae|claude|codex|cursor|windsurf"),
     strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
     json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
 ):
