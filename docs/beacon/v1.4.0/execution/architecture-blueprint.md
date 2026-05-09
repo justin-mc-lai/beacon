@@ -728,13 +728,13 @@ It is a simplification-by-separation release:
 
 - version: `v1.4.0`
 - feature_count: `5`
-- transaction_id: `tx-75446365e394fa5e2`
-- source_hash: `sha256:18077c95167843aa2e762978d525bc18e16122a884dd1c244cf68c20436f4c30`
+- transaction_id: `tx-2478e3dde78312a8f`
+- source_hash: `sha256:963506f45aeb59d86bd61a88026de6d0a2448c2ea9194e53a95ba427f99fe624`
 
 ### Registered Feature Baselines
 - `beacon-v1.4.0-branch-governance-human-surface-and-implement-gate` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-branch-governance-human-surface-and-implement-gate.json`
 - `beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-lightweight-kernel-and-core-surface-refactor.json`
-- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json`
+- `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution` | revision=`R2` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json`
 - `beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-safe-requirement-bootstrap-and-freeze-closure.json`
 - `beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration` | revision=`R1` | branch=`beacon/v1.4.0` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.0/.machine/execution/implementation-delivery-baseline-beacon-v1.4.0-prd-bootstrap-unified-requirement-closure-orchestration.json`
 <!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
@@ -780,9 +780,9 @@ It is a simplification-by-separation release:
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution:START -->
 ## Implementation Delivery Baseline
 
-- baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1`
-- transaction_id: `tx-556bdede19143af58`
-- source_hash: `sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293`
+- baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R2`
+- transaction_id: `tx-74e82a3090f21430d`
+- source_hash: `sha256:a20b520e1cbe5e97217293bfa040f6b20f45eeb9115e92bd37d5fc235c798dcb`
 - projection_seq: `1`
 - version: `v1.4.0`
 - feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`

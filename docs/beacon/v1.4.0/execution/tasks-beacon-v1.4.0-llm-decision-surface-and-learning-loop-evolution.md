@@ -2,11 +2,11 @@
 
 - feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
 - version: `v1.4.0`
-- plan_id: `plan-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-r1`
-- revision_id: `R1`
-- progress: `17/18`
-- status: `planned`
-- next_task: `ITASK-017` FR-017 本特性不得破坏 `v1.4.0` 已冻结的五层架构
+- plan_id: `plan-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-r2`
+- revision_id: `R2`
+- progress: `18/18`
+- status: `completed`
+- next_task: ``
 - blocked_tasks: `0`
 
 ## Recovery
@@ -48,7 +48,7 @@
   - tests=TEST-038,TEST-031,TEST-039,TEST-056 | depends_on=ITASK-014
 [x] `ITASK-016` FR-016 support surface 必须能够解释“为什么推荐这条 route”
   - tests=TEST-045 | depends_on=ITASK-015
-[ ] `ITASK-017` FR-017 本特性不得破坏 `v1.4.0` 已冻结的五层架构
-  - tests=TEST-058 | depends_on=ITASK-016 | next
+[x] `ITASK-017` FR-017 本特性不得破坏 `v1.4.0` 已冻结的五层架构
+  - tests=TEST-058 | depends_on=ITASK-016
 [x] `ITASK-018` FR-018 prototype 在本 feature 中必须被条件触发并补入正式 requirement 链
   - tests=TEST-049,TEST-010,TEST-016,TEST-019,TEST-022,TEST-027,TEST-028,TEST-030,TEST-032,TEST-034,TEST-035,TEST-036,TEST-037,TEST-040,TEST-041,TEST-044,TEST-046,TEST-047,TEST-048,TEST-051,TEST-053,TEST-057,TEST-059,TEST-060 | depends_on=ITASK-017

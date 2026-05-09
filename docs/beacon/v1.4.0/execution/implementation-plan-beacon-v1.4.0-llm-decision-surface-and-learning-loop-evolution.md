@@ -1,19 +1,20 @@
 # Beacon Implementation Plan
 
-- plan_id: `plan-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-r1`
+- plan_id: `plan-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-r2`
 - feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
 - version: `v1.4.0`
-- revision_id: `R1`
-- baseline_hash: `sha256:8a5a26ddd92a21386c2a13a23aeb358b86309df25edea37d1cebaf8b7726006a`
-- delivery_baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R1`
-- delivery_baseline_source_hash: `sha256:646712fcd23903612d7f4c1391c2e7d505d611ff39a91a5ab9161dda235b7293`
-- plan_hash: `sha256:c1f5cef40f9c483776fd69cbe50bccc839b87be40e8761cdc8e05f6a91985f18`
-- status: `planned`
+- revision_id: `R2`
+- baseline_hash: `sha256:0f6ed69d2ebb5b9843b13ce26c610628f416b8c1e022e75efce9adf933df9e5b`
+- delivery_baseline_id: `impl-delivery-baseline-v1.4.0-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution-R2`
+- delivery_baseline_source_hash: `sha256:a20b520e1cbe5e97217293bfa040f6b20f45eeb9115e92bd37d5fc235c798dcb`
+- plan_hash: `sha256:e75a59fd002d43764ed6141c62a7ecd2d700891496d56788f9c08a011047a875`
+- status: `completed`
 
 ## Source Refs
 - user_story: `docs/beacon/v1.4.0/user-story/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - prd: `docs/beacon/v1.4.0/prd/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
 - test_case: `docs/beacon/v1.4.0/qa/test-cases/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.md`
+- revision_delta: `docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json`
 - ac_matrix: `docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.ac-test-matrix.json`
 - story_scenario_map: `docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.story-scenario-map.json`
 - qa9_matrix: `docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json`
@@ -53,6 +54,12 @@
 - state_axes: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis
 - review_gates: implementation must cover the declared branch-flow split points, implementation must preserve the declared state-machine transitions, implementation must preserve decision-priority ordering, implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis
 - qa_coverage_hints: cover primary and alternate branch-flow paths, cover state transitions, illegal transitions, and recovery paths, cover conflicting conditions using declared decision priority, cover axis combinations across: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis
+
+## Revision Delta
+- revision_id: `R2`
+- source_revision_id: `R1`
+- cleanup_required: `False`
+- revision_delta_ref: `docs/beacon/v1.4.0/.machine/execution/revision-delta-beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.json`
 
 ## Tasks
 
@@ -249,7 +256,7 @@
 - diagram_review_gates: implementation must cover the declared branch-flow split points, implementation must preserve the declared state-machine transitions, implementation must preserve decision-priority ordering, implementation must keep state axes explicit: skill_surface_state, thin | thickened | governed | stable, python_responsibility_state, overloaded | split_read_write | reduced | minimal_guardrail, learning_state, latent | readable | injected | audited, modeling_state, implicit | diagram_aware | semantic_aware | gate_consumed, prd / user-story / test-case, branch-flow / state-machine / decision-priority / state axis
 
 ### ITASK-017 — FR-017 本特性不得破坏 `v1.4.0` 已冻结的五层架构
-- status: `planned`
+- status: `completed`
 - mapped_ac_ids: AC-058
 - mapped_test_ids: TEST-058
 - mapped_scenario_ids: -

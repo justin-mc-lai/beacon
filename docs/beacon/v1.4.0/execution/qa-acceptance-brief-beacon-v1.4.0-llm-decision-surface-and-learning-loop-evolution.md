@@ -2,10 +2,10 @@
 
 - version: `v1.4.0`
 - feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
-- revision_id: `R1`
+- revision_id: `R2`
 - verdict: `passed`
-- accepted_at: `2026-05-08T10:10:52.195815+00:00`
-- accepted_by: `qa`
+- accepted_at: `2026-05-08T13:13:30.678429+00:00`
+- accepted_by: `codex`
 
 ## Summary
 - 可以进入 release 检查与收口。
@@ -23,13 +23,11 @@
 ## Evidence Refs
 - `.beacon/auto-test-status.json`
 - `.beacon/qa/status.json`
-- `docs/beacon/v1.4.0/.machine/qa/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution.qa9-matrix.json`
-- `.beacon/coverage-summary.json`
-- `.beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/ac-closure.json`
-- `.beacon/qa/features/beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution/scorecard.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/gate-report.json`
 
 ## Verdict Summary
-- required_ac_count: `4`
-- required_test_count: `0`
-- story_status: `implemented`
-- revision_delivery_status: `implemented`
+- required_ac_count: `60`
+- required_test_count: `60`
+- story_status: `verified`
+- revision_delivery_status: `verified`

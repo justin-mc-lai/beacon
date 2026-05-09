@@ -2,10 +2,10 @@
 
 - feature: `beacon-v1.4.0-llm-decision-surface-and-learning-loop-evolution`
 - version: `v1.4.0`
-- revision_id: `R1`
+- revision_id: `R2`
 - review_status: `approved`
 - approved_by: `codex`
-- reviewed_at: `2026-05-08T10:02:51.925864+00:00`
+- reviewed_at: `2026-05-08T18:50:00Z`
 
 ## Git
 - base_branch: `main`
