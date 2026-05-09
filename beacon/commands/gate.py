@@ -27,11 +27,16 @@ from beacon.utils.implementation_plan import (
     build_implementation_plan_gate_payload,
     implementation_plan_supported,
     list_implementation_git_workflow_contracts,
+    load_or_seed_implementation_git_workflow_contract,
     load_implementation_plan,
     load_implementation_plan_progress,
 )
+from beacon.utils.implement_adapters import load_beacon_config
+from beacon.utils.git_alignment import build_implement_branch_guard_payload
+from beacon.utils.project_metadata import resolve_project_metadata_view
 from beacon.utils.qa_precision import load_feature_qa_ac_closure, load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard
+from beacon.utils.runtime import load_run_state, runs_dir
 from beacon.utils.version_surface import (
     VERSION_SURFACE_GOVERNANCE_REASON_CODE,
     version_surface_repair_commands,
@@ -56,6 +61,7 @@ from beacon.utils.v110_baseline import (
     load_latest_spec_fingerprint,
 )
 from beacon.utils.workflow_memory import (
+    compute_workflow_progress,
     compute_memory_metrics,
     load_lifecycle_events,
     resolve_workflow_run_id,
@@ -985,7 +991,14 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
 
     contract_run_id = _resolve_release_contract_run_id(project_root, version=version)
     metrics = compute_memory_metrics(project_root, run_id=contract_run_id or None, version=version)
-    target_run_id = metrics.get("run_id")
+    target_run_id = str(metrics.get("run_id") or "")
+    if not metrics.get("closure_complete", False):
+        fallback_run_id = _resolve_latest_closed_workflow_run_id(project_root, version=version)
+        if fallback_run_id and fallback_run_id != target_run_id:
+            fallback_metrics = compute_memory_metrics(project_root, run_id=fallback_run_id, version=version)
+            if fallback_metrics.get("closure_complete", False):
+                metrics = fallback_metrics
+                target_run_id = str(metrics.get("run_id") or fallback_run_id)
     run_events = load_lifecycle_events(project_root, run_id=target_run_id) if target_run_id else events
     if not metrics.get("closure_complete", False):
         if authoritative_acceptance:
@@ -1057,6 +1070,63 @@ def check_memory_closure(project_root: Path, mode: GateMode, stage: str, version
     return issues
 
 
+def _resolve_latest_closed_workflow_run_id(project_root: Path, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+    lifecycle_events = load_lifecycle_events(project_root)
+    candidate_run_ids: set[str] = set()
+    latest_ts_by_run: dict[str, str] = {}
+    version_seen_by_run: dict[str, set[str]] = {}
+
+    for item in lifecycle_events:
+        if not isinstance(item, dict):
+            continue
+        run_id = str(item.get("run_id") or "").strip()
+        if not run_id.startswith(("run-", "repair-")):
+            continue
+        candidate_run_ids.add(run_id)
+        ts = str(item.get("ts") or "").strip()
+        if ts and ts > latest_ts_by_run.get(run_id, ""):
+            latest_ts_by_run[run_id] = ts
+        details = item.get("details") if isinstance(item.get("details"), dict) else {}
+        detail_version = str(details.get("version") or "").strip()
+        if detail_version:
+            version_seen_by_run.setdefault(run_id, set()).add(detail_version)
+
+    runs_root = runs_dir(project_root)
+    for run_dir in runs_root.iterdir():
+        if not run_dir.is_dir():
+            continue
+        run_id = run_dir.name
+        if run_id.startswith(("run-", "repair-")):
+            candidate_run_ids.add(run_id)
+
+    candidates: list[tuple[str, str]] = []
+    for run_id in sorted(candidate_run_ids):
+        state = load_run_state(project_root, run_id)
+        if isinstance(state, dict) and state:
+            workflow_name = str(state.get("workflow", "") or "")
+            if workflow_name and workflow_name not in {"workflow.start", "workflow"}:
+                continue
+            state_version = str(state.get("version", "") or "").strip()
+            if resolved_version and state_version and state_version != resolved_version:
+                continue
+        elif resolved_version:
+            seen_versions = version_seen_by_run.get(run_id, set())
+            if seen_versions and resolved_version not in seen_versions:
+                continue
+
+        progress = compute_workflow_progress(project_root, run_id=run_id, version=resolved_version)
+        if not bool(progress.get("closure_complete", False)):
+            continue
+        state_ts = str((state or {}).get("ended_at") or (state or {}).get("started_at") or "").strip()
+        ts = latest_ts_by_run.get(run_id, "") or state_ts or run_id
+        candidates.append((run_id, ts))
+    if not candidates:
+        return ""
+    candidates.sort(key=lambda item: item[1])
+    return candidates[-1][0]
+
+
 def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] = None) -> str:
     resolved_version = _resolved_gate_version(project_root, version)
 
@@ -1070,7 +1140,7 @@ def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] 
     gate_payload, gate_status = _load_json_file(gate_report_path)
     if gate_status == "ok" and isinstance(gate_payload, dict):
         gate_stage = str(gate_payload.get("stage", "") or "").strip().lower()
-        if gate_stage in {"", "release"}:
+        if gate_stage in {"", "release", "verify", "qa"}:
             run_id = _workflow_run(str(gate_payload.get("run_id", "") or ""))
             if run_id:
                 return run_id
@@ -1110,6 +1180,53 @@ def _load_run_scoped_baseline(project_root: Path, *, version: str, run_id: str) 
     if not matches:
         return {}
     return _load_json_file(matches[-1])[0] or {}
+
+
+def _dynamic_branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
+    service_directories = [
+        str(item).strip()
+        for item in (contract.get("service_directories") or contract.get("git_roots") or [])
+        if str(item).strip()
+    ] or ["."]
+    direct_delivery_services = [
+        str(item).strip()
+        for item in (contract.get("direct_delivery_services") or service_directories)
+        if str(item).strip()
+    ] or ["."]
+    payload = {
+        "expected_branch": str(contract.get("expected_branch", "") or "").strip(),
+        "branch_prefix": str(contract.get("branch_prefix", "") or "beacon/").strip() or "beacon/",
+        "base_branch": str(contract.get("base_branch", "") or "main").strip() or "main",
+        "git_roots": service_directories,
+        "direct_delivery_services": direct_delivery_services,
+        "require_clean_worktree_for_switch": bool(contract.get("require_clean_worktree_for_switch", True)),
+    }
+    metadata_view = resolve_project_metadata_view(project_root, version=version)
+    version_contract = metadata_view.get("version_contract") if isinstance(metadata_view.get("version_contract"), dict) else {}
+    selected_service = str(metadata_view.get("selected_service") or "").strip()
+    service_binding = metadata_view.get("selected_service_binding") if isinstance(metadata_view.get("selected_service_binding"), dict) else {}
+    if version_contract and selected_service and service_binding:
+        per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
+        selected_branch = str(per_service.get(selected_service) or "").strip()
+        participating = version_contract.get("participating_services") if isinstance(version_contract.get("participating_services"), list) else []
+        if selected_branch:
+            payload["expected_branch"] = selected_branch
+            if "/" in selected_branch:
+                payload["branch_prefix"] = selected_branch.split("/", 1)[0] + "/"
+        git_roots = [
+            str(item.get("repo_root") or "")
+            for item in metadata_view.get("service_bindings", [])
+            if isinstance(item, dict) and str(item.get("service_key") or "") in participating and str(item.get("repo_root") or "").strip()
+        ]
+        if git_roots:
+            payload["git_roots"] = git_roots
+        if participating:
+            payload["direct_delivery_services"] = [str(item) for item in participating]
+            if str(metadata_view.get("topology_kind") or "").strip() == "single_repo":
+                repo_aliases = [Path(item).name for item in git_roots if str(item).strip()]
+                payload["direct_delivery_services"] = list(dict.fromkeys(repo_aliases or payload["direct_delivery_services"]))
+    return payload
 
 
 def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str, version: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -1196,6 +1313,11 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             }
         )
         return issues
+
+    release_events = sorted(release_events, key=lambda item: str(item.get("ts", "") or ""))
+    latest_event = release_events[-1] if release_events else {}
+    if isinstance(latest_event, dict) and latest_event:
+        release_events = [latest_event]
 
     refs: list[str] = []
     for item in release_events:
@@ -1317,10 +1439,12 @@ def check_prototype_contract(
                 "blocked": True,
                 "message": f"prototype freeze/source metadata missing for feature {feature_dir.name}",
             })
+        compiler_fallback_accepted = bool(payload.get("compiler_fallback_accepted"))
         if (
             _parse_semver_tuple(resolved_version) >= (1, 3, 9)
             and str(compiler.get("requested_mode") or "").strip().lower() == "auto"
             and bool(str(compiler.get("fallback_reason") or "").strip())
+            and not compiler_fallback_accepted
         ):
             issues.append({
                 "reason_code": "prototype_auto_template_downgrade_blocked",
@@ -1329,6 +1453,7 @@ def check_prototype_contract(
                 "details": {
                     "fallback_reason": str(compiler.get("fallback_reason") or ""),
                     "generator_mode": str(compiler.get("generator_mode") or ""),
+                    "compiler_fallback_accepted": compiler_fallback_accepted,
                 },
             })
         if payload.get("status") == "draft":
@@ -1884,14 +2009,39 @@ def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage
                 }
             )
         elif bool(git_payload.get("blocked")):
-            issues.append(
-                {
-                    "reason_code": "git_alignment_blocked",
-                    "severity": "critical",
-                    "message": f"git alignment blocked: {git_payload.get('reason_codes', [])}",
-                    "blocked": True,
-                }
-            )
+            workflow_contracts = list_implementation_git_workflow_contracts(project_root, version=_resolved_gate_version(project_root, version))
+            dynamic_checks: list[dict[str, Any]] = []
+            for item in workflow_contracts:
+                payload = item.get("payload") if isinstance(item.get("payload"), dict) else {}
+                feature_name = str(payload.get("feature") or "").strip()
+                if not feature_name:
+                    continue
+                inputs = _dynamic_branch_guard_inputs(
+                    project_root,
+                    version=_resolved_gate_version(project_root, version),
+                    feature=feature_name,
+                )
+                dynamic_checks.append(
+                    build_implement_branch_guard_payload(
+                        project_root,
+                        _resolved_gate_version(project_root, version),
+                        require_clean_worktree_for_switch=bool(inputs.get("require_clean_worktree_for_switch", True)),
+                        expected_branch=str(inputs.get("expected_branch", "") or "").strip(),
+                        branch_prefix=str(inputs.get("branch_prefix", "beacon/") or "beacon/").strip() or "beacon/",
+                        base_branch=str(inputs.get("base_branch", "main") or "main").strip() or "main",
+                        git_roots=[str(root) for root in inputs.get("git_roots", [])],
+                        direct_delivery_services=[str(service) for service in inputs.get("direct_delivery_services", [])],
+                    )
+                )
+            if not dynamic_checks or any(bool(item.get("blocked")) for item in dynamic_checks):
+                issues.append(
+                    {
+                        "reason_code": "git_alignment_blocked",
+                        "severity": "critical",
+                        "message": f"git alignment blocked: {git_payload.get('reason_codes', [])}",
+                        "blocked": True,
+                    }
+                )
 
     manifest_payload = _required_json("delivery-manifest.json", "delivery_manifest_missing", "delivery_manifest_schema_invalid")
     if isinstance(manifest_payload, dict):

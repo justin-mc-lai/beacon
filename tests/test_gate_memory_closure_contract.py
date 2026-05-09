@@ -518,3 +518,170 @@ def test_gate_release_should_ignore_non_release_gate_report_run_id(tmp_path: Pat
     payload = _gate_release_payload(tmp_path)
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "memory_lifecycle_missing" not in reason_codes
+
+
+def test_gate_release_should_fallback_to_closed_lifecycle_run_without_run_state(tmp_path: Path):
+    version = "v1.0.0"
+    _write_core_gate_artifacts(tmp_path)
+
+    refs = ["docs/beacon/v1.0.0/execution/boundaries.md"]
+    closed_run_id = "repair-v1.0.0-20260101T000000Z0000"
+    current_run_id = "run-20260102T000000Z-aaaa"
+
+    for stage in ("prd", "user-story", "test-case", "implement", "qa", "release"):
+        append_lifecycle_event(
+            tmp_path,
+            run_id=closed_run_id,
+            stage=stage,
+            event="stage_started",
+            source="review.accept.sync",
+            evidence_ref=refs,
+            details={"feature": "feature-a", "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=closed_run_id,
+            stage=stage,
+            event="stage_context_injected",
+            source="workflow.memory.recall",
+            evidence_ref=refs,
+            details={"feature": "feature-a", "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=closed_run_id,
+            stage=stage,
+            event="stage_finished",
+            source="review.accept.sync",
+            evidence_ref=refs,
+            details={"feature": "feature-a", "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=closed_run_id,
+            stage=stage,
+            event="memory_writeback",
+            source="workflow.memory.writeback",
+            evidence_ref=refs,
+            details={"feature": "feature-a", "version": version},
+        )
+
+    append_lifecycle_event(
+        tmp_path,
+        run_id=current_run_id,
+        stage="qa",
+        event="memory_writeback",
+        source="workflow.memory.writeback",
+        evidence_ref=refs,
+        details={"feature": "feature-b", "version": version},
+    )
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"stage": "release", "mode": "strict", "status": "Pass", "issues": [], "run_id": current_run_id}),
+        encoding="utf-8",
+    )
+
+    payload = _gate_release_payload(tmp_path)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "memory_lifecycle_missing" not in reason_codes
+
+
+def test_gate_release_should_fallback_to_latest_closed_workflow_run_when_verify_run_is_incomplete(tmp_path: Path):
+    version = "v1.0.0"
+    feature = "repair-feature"
+    _write_core_gate_artifacts(tmp_path)
+
+    machine_exec = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_exec.mkdir(parents=True, exist_ok=True)
+    repair_run_id = "repair-v1.0.0-20260101T000000Z0000"
+    current_verify_run = "run-20260102T000000Z0000"
+    (machine_exec / "terminal.json").write_text(
+        json.dumps({"run_id": repair_run_id, "status": "Pass"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    (machine_exec / "source.json").write_text(
+        json.dumps({"run_id": repair_run_id, "version": version, "feature": feature}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    save_run_state(
+        tmp_path,
+        repair_run_id,
+        {
+            "run_id": repair_run_id,
+            "workflow": "workflow.start",
+            "feature": feature,
+            "version": version,
+            "status": "completed",
+            "started_at": "2026-01-01T00:00:00Z",
+            "ended_at": "2026-01-01T00:00:05Z",
+        },
+    )
+    save_run_state(
+        tmp_path,
+        current_verify_run,
+        {
+            "run_id": current_verify_run,
+            "workflow": "workflow.start",
+            "feature": feature,
+            "version": version,
+            "status": "running",
+            "started_at": "2026-01-02T00:00:00Z",
+        },
+    )
+
+    refs = ["docs/beacon/v1.0.0/execution/boundaries.md"]
+    for stage in ("prd", "user-story", "test-case", "implement", "qa", "release"):
+        append_lifecycle_event(
+            tmp_path,
+            run_id=repair_run_id,
+            stage=stage,
+            event="stage_started",
+            source="review.accept.sync",
+            evidence_ref=refs,
+            details={"feature": feature, "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=repair_run_id,
+            stage=stage,
+            event="stage_context_injected",
+            source="workflow.memory.recall",
+            evidence_ref=refs,
+            details={"feature": feature, "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=repair_run_id,
+            stage=stage,
+            event="stage_finished",
+            source="review.accept.sync",
+            evidence_ref=refs,
+            details={"feature": feature, "version": version},
+        )
+        append_lifecycle_event(
+            tmp_path,
+            run_id=repair_run_id,
+            stage=stage,
+            event="memory_writeback",
+            source="workflow.memory.writeback",
+            evidence_ref=refs,
+            details={"feature": feature, "version": version},
+        )
+    append_lifecycle_event(
+        tmp_path,
+        run_id=current_verify_run,
+        stage="qa",
+        event="stage_started",
+        source="qa.run",
+        evidence_ref=refs,
+        details={"feature": feature, "version": version},
+    )
+
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"stage": "verify", "mode": "strict", "status": "Blocked", "issues": [], "run_id": current_verify_run}),
+        encoding="utf-8",
+    )
+
+    payload = _gate_release_payload(tmp_path)
+    reason_codes = {item["reason_code"] for item in payload["issues"]}
+    assert "memory_lifecycle_missing" not in reason_codes
