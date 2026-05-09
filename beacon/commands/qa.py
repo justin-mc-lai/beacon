@@ -1024,6 +1024,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         precision_status["feature"] = feature
         precision_status["feature_slug"] = str(plan.get("feature_slug") or "")
         precision_status["execution_mode"] = str(plan.get("execution_mode") or mode)
+        precision_status["reason_codes"] = list(plan.get("reason_codes") or [])
         precision_status["targeted_rerun"] = {
             "required": True,
             "reason_codes": plan.get("reason_codes", []),
@@ -1088,6 +1089,19 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         )
         _with_delivery_contract(
             payload,
+            requirement_binding={
+                "source_of_truth_root": f"docs/beacon/{version}",
+                "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+            },
+            traceability_refs=[
+                str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                str(handoff.get("summary_ref") or ""),
+                str(handoff.get("technical_archive_ref") or ""),
+            ],
+            execution_surface="qa-team" if team_mode else "qa",
+        )
+        _with_delivery_contract(
+            precision_status,
             requirement_binding={
                 "source_of_truth_root": f"docs/beacon/{version}",
                 "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
@@ -1494,13 +1508,21 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                     str(acceptance_result.get("runtime_path") or ""),
                 ]
             )
+    final_reason_codes = list(plan.get("reason_codes") or [])
+    if bool(qa_status.get("evidence_done")) and str(qa_status.get("status") or "").strip().lower() == "passed":
+        final_reason_codes = []
     payload = {
         **plan,
         "run_id": str(qa_status.get("run_id") or ""),
         "status": str(qa_status.get("status") or "unknown"),
         "implementation_done": True,
         "evidence_done": bool(qa_status.get("evidence_done", False)),
+        "release_ready": bool(qa_status.get("release_ready", False)),
+        "reason_codes": final_reason_codes,
+        "current_spec_fingerprint_hash": str(qa_status.get("current_spec_fingerprint_hash") or plan.get("current_spec_fingerprint_hash") or ""),
+        "spec_fingerprint_hash": str(qa_status.get("spec_fingerprint_hash") or qa_status.get("current_spec_fingerprint_hash") or ""),
         "feature_matrix_path": feature_matrix_rel,
+        "canonical_matrix_path": str(qa_status.get("canonical_matrix_path") or ""),
         "blocking_artifact_updates": blocking_updates,
         "per_item_results": per_item_results,
         "verified_item_ids": verified_ids,

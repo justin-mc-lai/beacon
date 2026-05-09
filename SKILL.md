@@ -1,22 +1,22 @@
 ---
 name: beacon
-version: 1.4.0
+version: 1.4.2
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.4.0
-> **CLI Version**: v1.4.0
+> **Skill Version**: v1.4.2
+> **CLI Version**: v1.4.2
 > **Last Updated**: 2026-05-07
 
 Beacon 是 AI 产品工作流内核，把 requirement materials、实现证据、QA 结论和 release 决策统一到一个版本化系统。
 
 ## 当前版本 / 发布线
 
-- **当前发布线**：`v1.4.0`
-- **当前包版本**：`1.4.0`
-- **最新已接受文档线**：`v1.4.0`
+- **当前发布线**：`v1.4.2`
+- **当前包版本**：`1.4.2`
+- **最新已接受文档线**：`v1.4.2`
 - **标准打包入口**：`skills/beacon/`
 - **文档主源**：`docs/beacon/{version}/`
 - `beacon <subcommand>`（推荐）
@@ -156,6 +156,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 | `beacon brainstorm` | `brainstorm` |
 | `beacon data-dictionary` | `data-dictionary` |
 | `beacon debug` | `debug` |
+| `beacon deep` | `deep` |
 | `beacon design` | `design` |
 | `beacon doctor` | `doctor` |
 | `beacon evolution-summary` | `evolution-summary` |
@@ -217,6 +218,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 | `brainstorm` | `beacon brainstorm` |
 | `data-dictionary` | `beacon data-dictionary` |
 | `debug` | `beacon debug` |
+| `deep` | `beacon deep` |
 | `design` | `beacon design` |
 | `doctor` | `beacon doctor` |
 | `evolution-summary` | `beacon evolution-summary` |

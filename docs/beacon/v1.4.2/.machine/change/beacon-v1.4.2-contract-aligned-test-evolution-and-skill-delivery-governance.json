@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "version": "v1.4.2",
+  "run_id": "run-20260509T084048Z-a4d3",
+  "status": "completed",
+  "summary": "Implemented contract-aligned test evolution governance for Beacon v1.4.2, including Test Contract Index generation/verification, release scorecard and gate consumption, QA evidence writeback, lane-aligned tests, skill guidance, deep delta policy, and planning-line safety checks.",
+  "added": [
+    "Test Contract Index machine projection with canonical lanes, truth refs, AC/TC/evidence mapping, lane status, planning-line safety, and repair commands.",
+    "Doctor support commands to build and verify the Test Contract Index.",
+    "Release scorecard and strict gate consumption of test contract governance reason codes.",
+    "Contract-aligned v1.4.2 pytest coverage across the frozen AC matrix.",
+    "Skill delivery guidance for contract-lane verification and unclassified full-suite claim avoidance."
+  ],
+  "removed": [],
+  "fixed": [
+    "Cleared stale QA rerun reason codes after successful feature-aware QA writeback so release scorecard reads current closure truth.",
+    "Restored v1.4.2 frozen user-story truth and rebuilt derived machine story, scenario, implementation-plan, acceptance, and test contract projections.",
+    "Preserved v1.4.2 as planning_only while runtime, docs default, current runtime release, and package version remain v1.4.0."
+  ],
+  "implementation_impact": [
+    "Changed file: `beacon/utils/test_contract_governance.py`",
+    "Changed file: `beacon/commands/doctor.py`",
+    "Changed file: `beacon/commands/gate.py`",
+    "Changed file: `beacon/utils/release_scorecard.py`",
+    "Changed file: `beacon/commands/qa.py`",
+    "Changed file: `skills/beacon/SKILL.md`",
+    "Changed file: `skills/beacon/references/usage-rules.md`",
+    "Changed files: `tests/test_v142_*.py`"
+  ],
+  "verification_status": [
+    "passed: python3 -m pytest -q tests/test_v142_*.py tests/test_skill_command_alignment.py",
+    "passed: beacon doctor verify-test-contract-index \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project-root . --version v1.4.2 --strict --json",
+    "passed: BEACON_ALLOW_CONTEXT_VERSION_DRIFT=1 beacon gate check release --project-root . --version v1.4.2 --mode strict --json",
+    "passed: beacon doctor verify-materials --project-root . --version v1.4.2 --strict --json",
+    "passed: beacon doctor verify-version-surfaces --project-root . --strict --json"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+    "docs/beacon/v1.4.2/.machine/execution/implementation-plan-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+    "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+    ".beacon/transactions/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json"
+  ],
+  "generated_at": "2026-05-09T09:08:05.369338+00:00"
+}

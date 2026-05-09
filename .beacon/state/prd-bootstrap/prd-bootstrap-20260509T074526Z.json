@@ -1,0 +1,158 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260509T074526Z",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "description": "补齐 Beacon 自迭代和 skill 交付中的契约对齐测试演进治理能力，建立 Test Contract Index、测试 lane、AC/TC/pytest/evidence 映射、generated surface sync、legacy snapshot 分类和 release-facing reason codes，确保产品模型具备强交付演进能力。",
+  "version": "v1.4.2",
+  "generated_at": "2026-05-09T07:45:26.715389+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "user_story": "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "test_case": "docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+  },
+  "package_state": "empty",
+  "missing_layers": [
+    "prd",
+    "user_story",
+    "test_case"
+  ],
+  "generated_layers": [
+    "prd",
+    "user_story",
+    "test_case"
+  ],
+  "derived_layers": [],
+  "reverse_derived_layers": [],
+  "drift_digest": [],
+  "closure_verdict": "draft_generated",
+  "readiness_verdict": "supplement_required",
+  "closure_analysis": {
+    "ok": true,
+    "checks": {
+      "goal_defined": true,
+      "main_flow_defined": true,
+      "scope_defined": true,
+      "acceptance_coverage_sufficient": true,
+      "blocking_unknowns": false
+    },
+    "missing_evidence": [],
+    "blocking_items": []
+  },
+  "supplement_tasks": [],
+  "gap_digest": [
+    {
+      "gap_id": "GAP-001",
+      "theme": "missing-context",
+      "question": "当前仅基于意图生成 draft package，仍需补充边界与异常。",
+      "blocks": [
+        "freeze_ready",
+        "implementation_pending"
+      ]
+    }
+  ],
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.4.2",
+    "strict": true,
+    "status": "fail",
+    "ok": false,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "fail",
+        "details": {
+          "drifted": [
+            "CLAUDE.md",
+            "AGENTS.md"
+          ],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.0",
+        "managed_docs_version": "v1.4.0",
+        "version_drift": true
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.0",
+        "managed_docs_version": "v1.4.0",
+        "version_drift": true
+      }
+    }
+  },
+  "status": "blocked",
+  "reason_code": "context_verify_failed",
+  "recommended_command": "beacon doctor setup-context --project-root /Users/apple/Developer/Personal/products/beacon --sync-materials --version v1.4.2",
+  "write_actions": [],
+  "rollback_plan": []
+}

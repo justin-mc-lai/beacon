@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260509T031032Z",
+  "feature": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "feature_slug": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "description": "v1.4.1 beacon-deep loop-capable support skill/toolkit for PRD user-story test-case implement QA release closure",
+  "version": "v1.4.1",
+  "generated_at": "2026-05-09T03:10:32.234408+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+    "user_story": "docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+    "test_case": "docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+  },
+  "package_state": "prd_only",
+  "missing_layers": [
+    "user_story",
+    "test_case"
+  ],
+  "generated_layers": [
+    "user_story",
+    "test_case"
+  ],
+  "derived_layers": [
+    {
+      "layer": "user_story",
+      "derived_from": [
+        "prd"
+      ]
+    },
+    {
+      "layer": "test_case",
+      "derived_from": [
+        "prd",
+        "user_story"
+      ]
+    }
+  ],
+  "reverse_derived_layers": [],
+  "drift_digest": [],
+  "closure_verdict": "supplement_required",
+  "readiness_verdict": "supplement_required",
+  "closure_analysis": {
+    "ok": false,
+    "checks": {
+      "goal_defined": true,
+      "main_flow_defined": true,
+      "scope_defined": false,
+      "acceptance_coverage_sufficient": true,
+      "blocking_unknowns": false
+    },
+    "missing_evidence": [
+      "scope_defined"
+    ],
+    "blocking_items": []
+  },
+  "supplement_tasks": [],
+  "gap_digest": [],
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.4.1",
+    "strict": true,
+    "status": "fail",
+    "ok": false,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "fail",
+        "details": {
+          "drifted": [
+            "CLAUDE.md",
+            "AGENTS.md"
+          ],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.0",
+        "managed_docs_version": "v1.4.0",
+        "version_drift": true
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.0",
+        "managed_docs_version": "v1.4.0",
+        "version_drift": true
+      }
+    }
+  },
+  "status": "blocked",
+  "reason_code": "context_verify_failed",
+  "recommended_command": "beacon doctor setup-context --project-root /Users/apple/Developer/Personal/products/beacon --sync-materials --version v1.4.1",
+  "write_actions": [],
+  "rollback_plan": []
+}

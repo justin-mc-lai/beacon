@@ -82,6 +82,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.verify import app as verify_app
     from .commands.orchestrate import app as orchestrate_app
     from .commands.debug import app as debug_app
+    from .commands.deep import app as deep_app
     from .commands.feedback import app as feedback_app
     from .commands.help import help_entry
     from .commands.ask import ask_entry
@@ -155,6 +156,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(verify_app, name="verify", hidden=True)
     app.add_typer(orchestrate_app, name="orchestrate")
     app.add_typer(debug_app, name="debug")
+    app.add_typer(deep_app, name="deep")
     app.add_typer(friction_intake_app, name="friction-intake")
     app.add_typer(feedback_app, name="feedback", hidden=True)
     app.add_typer(prompt_app, name="prompt", hidden=True)

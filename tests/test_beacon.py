@@ -178,6 +178,7 @@ class TestBeaconUserStory:
 
     def test_user_story_create(self, tmp_path):
         """Test user-story create"""
+        runner.invoke(app, ["prd", "create", "Login Feature", "--project", str(tmp_path)])
         result = runner.invoke(app, ["user-story", "create", "Login Feature", "--project", str(tmp_path)])
         assert result.exit_code == 0
         assert "created" in result.stdout.lower()

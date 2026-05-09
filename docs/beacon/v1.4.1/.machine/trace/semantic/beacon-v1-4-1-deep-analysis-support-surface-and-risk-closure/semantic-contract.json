@@ -1,0 +1,189 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "feature_slug": "beacon-v1-4-1-deep-analysis-support-surface-and-risk-closure",
+  "version": "v1.4.1",
+  "stage": "prototype",
+  "generated_at": "2026-05-09T05:08:39.703240+00:00",
+  "source_hash": "004da7dfc5db0bc92f9c1e49e7f1568af8d6fa32dc9035a46561526ad9dea398",
+  "projection_seq": "semantic-004da7dfc5db0bc9",
+  "transaction_id": "tx-semantic-beacon-v1-4-1-deep-analysis-support-surface-and-risk-closure-semantic-004da7dfc5db0bc9",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "fingerprint": "6f4e11892806f7893033e2c0a96903732c7eb93d739bdbd914cacc137b171a59"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "fingerprint": "201d934dbd4e8bcfc901d80ccb025bb1d2b45885856057626fa3be7783fe3cfa"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "fingerprint": "e6a668e047f00e0c46978f9fa5a60a3648e9c314a122473b3de9cdf32b6109b0"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "prototype",
+    "feature": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+    "version": "v1.4.1",
+    "generated_at": "2026-05-09T05:08:39.692084+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "低风险静态页面",
+        "slug": "semantic-layer",
+        "source": "requirement_truth"
+      },
+      {
+        "label": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+        "slug": "beacon-v1-4-1-deep-analysis-support-surface-and-risk-closure",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "需求缺口",
+      "阻塞",
+      "正常",
+      "加载中",
+      "错误"
+    ],
+    "module_labels": [
+      "是推荐公共入口",
+      "但默认不增加人类主入口",
+      "缺陷只有在指向结构性状态",
+      "冻结后的状态",
+      "唯一实现入口",
+      "唯一验收入口",
+      "最终阻断入口",
+      "头部摘要",
+      "状态反馈",
+      "推荐动作"
+    ],
+    "action_labels": [
+      "进入",
+      "恢复路径必须可审计",
+      "恢复路径优先级为",
+      "进入已治理的",
+      "进入待实现阶段",
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prototype",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PROTOTYPE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PROTOTYPE_DISABLE_LLM"
+    }
+  }
+}

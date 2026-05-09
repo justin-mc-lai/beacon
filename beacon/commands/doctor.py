@@ -38,6 +38,8 @@ from beacon.utils.doctor_orchestrator import (
     run_subagent_delegation_verify,
     run_subagent_runtime_verify,
     run_technical_review_contract_sync,
+    run_test_contract_index_build,
+    run_test_contract_index_verify,
     run_version_surfaces_sync,
     run_version_surfaces_verify,
 )
@@ -793,6 +795,64 @@ def sync_technical_review_contract(
         typer.echo(f"json: {result['contract_json_path']}")
         typer.echo(f"markdown: {result['contract_markdown_path']}")
         typer.echo(f"state: {result['state_path']}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("build-test-contract-index")
+def build_test_contract_index(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Build the machine-readable Test Contract Index from frozen requirement truth."""
+    execution = run_test_contract_index_build(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Test Contract Index")
+        typer.echo("=" * 33)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result.get('version', version)}")
+        typer.echo(f"status: {result.get('status', '')}")
+        typer.echo(f"index: {result.get('index_path', '')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-test-contract-index")
+def verify_test_contract_index(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Treat warnings as blocked"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify Test Contract Index freshness, lane coverage, and release-facing safety."""
+    execution = run_test_contract_index_verify(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        strict=strict,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    gate = result.get("gate", {}) if isinstance(result.get("gate"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Test Contract Verify")
+        typer.echo("=" * 35)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result.get('version', version)}")
+        typer.echo(f"status: {gate.get('status', '')}")
+        typer.echo(f"reason_codes: {gate.get('reason_codes', [])}")
+        typer.echo(f"index: {gate.get('index_path', '')}")
     raise typer.Exit(code=execution.exit_code)
 
 

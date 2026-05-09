@@ -1,0 +1,404 @@
+{
+  "page_id": "recovery-diagnostics",
+  "name": "恢复诊断",
+  "priority": "P2",
+  "platforms": [
+    "Web",
+    "PC"
+  ],
+  "responsibility": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+  "sections": [
+    "truth 来源说明",
+    "degraded / rebuild / doctor 诊断卡",
+    "恢复步骤",
+    "风险提示"
+  ],
+  "actions": [
+    {
+      "label": "返回项目详情",
+      "target": "project-detail",
+      "trigger": "点击返回"
+    },
+    {
+      "label": "前往运行中心",
+      "target": "runtime-center",
+      "trigger": "点击运行态关联"
+    }
+  ],
+  "states": [
+    {
+      "id": "healthy-warning",
+      "label": "健康但预警",
+      "description": "当前系统可用但存在恢复风险提示。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "当前系统可用但存在恢复风险提示。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "degraded",
+      "label": "降级",
+      "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "rebuild-suggested",
+      "label": "建议重建",
+      "description": "投影层需要重建。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "投影层需要重建。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "doctor-suggested",
+      "label": "建议 doctor",
+      "description": "推荐执行 doctor 修复上下文。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "推荐执行 doctor 修复上下文。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    },
+    {
+      "id": "loading",
+      "label": "加载中",
+      "description": "诊断结果仍在采集。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "诊断结果仍在采集。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "继续等待数据加载",
+          "返回上一层"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "页面结构抖动",
+          "空白无提示"
+        ]
+      }
+    },
+    {
+      "id": "error",
+      "label": "错误",
+      "description": "诊断页本身无法完成聚合。",
+      "state_visibility_contract": {
+        "user_question": "恢复诊断 当前发生了什么，我下一步该做什么？",
+        "required_feedback": [
+          "诊断页本身无法完成聚合。",
+          "明确恢复动作与回退路径。"
+        ],
+        "primary_actions": [
+          "返回项目详情",
+          "前往运行中心"
+        ],
+        "recovery_actions": [
+          "返回上一层",
+          "重试当前动作"
+        ],
+        "acceptance_refs": {
+          "ac_refs": [],
+          "tc_refs": []
+        },
+        "forbidden_feedback": [
+          "只显示技术错误码",
+          "隐藏下一步动作"
+        ]
+      }
+    }
+  ],
+  "requirement_refs": {
+    "user-story": [
+      "docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+    ],
+    "prd": [
+      "docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+    ],
+    "test-case": [
+      "docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+    ]
+  },
+  "outbound_transitions": [
+    {
+      "from": "recovery-diagnostics",
+      "to": "project-detail",
+      "trigger": "点击返回",
+      "type": "return"
+    },
+    {
+      "from": "recovery-diagnostics",
+      "to": "runtime-center",
+      "trigger": "点击运行态关联",
+      "type": "drill-down"
+    }
+  ],
+  "visible_contract": {
+    "title": "恢复诊断",
+    "subtitle": "当前是 degraded、rebuild 还是 doctor 场景。",
+    "must_show_sections": [
+      "truth 来源说明",
+      "degraded / rebuild / doctor 诊断卡",
+      "恢复步骤"
+    ],
+    "primary_actions": [
+      "返回项目详情",
+      "前往运行中心"
+    ],
+    "visible_states": [
+      {
+        "id": "healthy-warning",
+        "label": "健康但预警",
+        "description": "当前系统可用但存在恢复风险提示。"
+      },
+      {
+        "id": "degraded",
+        "label": "降级",
+        "description": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。"
+      },
+      {
+        "id": "rebuild-suggested",
+        "label": "建议重建",
+        "description": "投影层需要重建。"
+      },
+      {
+        "id": "doctor-suggested",
+        "label": "建议 doctor",
+        "description": "推荐执行 doctor 修复上下文。"
+      },
+      {
+        "id": "loading",
+        "label": "加载中",
+        "description": "诊断结果仍在采集。"
+      },
+      {
+        "id": "error",
+        "label": "错误",
+        "description": "诊断页本身无法完成聚合。"
+      }
+    ],
+    "secondary_disclosure_only": [
+      "run list",
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ]
+  },
+  "internal_governance": {
+    "page_intent_contract": {
+      "why_this_page_exists": "解释 degraded / rebuild / doctor，明确 truth 仍来自 docs/beacon 与 .beacon。",
+      "decision_supported": "当前是 degraded、rebuild 还是 doctor 场景。",
+      "must_show_first": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡"
+      ],
+      "must_not_show": [
+        "transaction_id",
+        "projection metadata",
+        "无边界 runtime 明细"
+      ],
+      "entry_conditions": [
+        "用户进入 `recovery-diagnostics` 需要先获得当前上下文。",
+        "当前 requirement truth 已经明确该页承担的主判断。"
+      ],
+      "exit_actions": [
+        {
+          "label": "返回项目详情",
+          "target": "project-detail"
+        },
+        {
+          "label": "前往运行中心",
+          "target": "runtime-center"
+        }
+      ]
+    },
+    "first_screen_contract": {
+      "primary_status": "当前系统可用但存在恢复风险提示。",
+      "primary_blocker": "SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "next_actions": [
+        "返回项目详情",
+        "前往运行中心"
+      ],
+      "recovery_path": "优先进入恢复路径或返回上一层，不允许停留在无动作状态。",
+      "secondary_disclosure_only": [
+        "run list",
+        "workspace path",
+        "artifact path",
+        "history timeline",
+        "machine trace detail"
+      ]
+    },
+    "review_principles": [
+      "先讲 truth 来源，再给诊断卡和恢复步骤。",
+      "风险提示要比操作细节更醒目，避免误用恢复动作。",
+      "恢复动作要收口成少量步骤，不展开内部实现机制。"
+    ],
+    "layout_breakdown": [
+      {
+        "section": "truth 来源说明",
+        "purpose": "承载该页完成核心判断所需的最小信息块。",
+        "display_zone": "首屏"
+      },
+      {
+        "section": "degraded / rebuild / doctor 诊断卡",
+        "purpose": "集中暴露异常与介入信号，避免风险被正常信息淹没。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "恢复步骤",
+        "purpose": "集中暴露异常与介入信号，避免风险被正常信息淹没。",
+        "display_zone": "主体区"
+      },
+      {
+        "section": "风险提示",
+        "purpose": "集中暴露异常与介入信号，避免风险被正常信息淹没。",
+        "display_zone": "收口区"
+      }
+    ],
+    "interaction_contract": [
+      "- `返回项目详情`: 通过 点击返回 回到 `project-detail`，用于撤销下钻并保留上层判断。",
+      "- `前往运行中心`: 通过 点击运行态关联 下钻到 `runtime-center`，只在当前页信息不足时继续展开。"
+    ],
+    "state_contract": [
+      "- `健康但预警`: 当前系统可用但存在恢复风险提示。",
+      "- `降级`: SQLite 或 PocketBase 缺失，但 truth 仍可从文档恢复。",
+      "- `建议重建`: 投影层需要重建。",
+      "- `建议 doctor`: 推荐执行 doctor 修复上下文。",
+      "- `加载中`: 诊断结果仍在采集。 加载态只保留骨架结构，避免造成页面重新排版。",
+      "- `错误`: 诊断页本身无法完成聚合。 页面要优先给出回退或恢复入口，而不是只报错。"
+    ],
+    "noise_guardrail": "诊断页解释机器状态，但不能反客为主替代 requirement truth。"
+  },
+  "ui_copy_policy": {
+    "page_id": "recovery-diagnostics",
+    "first_screen_copy": {
+      "title": "恢复诊断",
+      "primary_statement": "当前是 degraded、rebuild 还是 doctor 场景。",
+      "must_show_first": [
+        "truth 来源说明",
+        "degraded / rebuild / doctor 诊断卡"
+      ],
+      "next_actions": [
+        "返回项目详情",
+        "前往运行中心"
+      ]
+    },
+    "secondary_disclosure": [
+      "workspace path",
+      "artifact path",
+      "history timeline",
+      "machine trace detail"
+    ],
+    "forbidden_first_screen_copy": [
+      "design asset catalog wording",
+      "why/reasoning explanation",
+      "review guidance",
+      "machine contract detail"
+    ]
+  },
+  "production_ui_copy_profile": {
+    "page_id": "recovery-diagnostics",
+    "title": "恢复诊断",
+    "subtitle": "当前是 degraded、rebuild 还是 doctor 场景。",
+    "primary_actions": [
+      "返回项目详情",
+      "前往运行中心"
+    ],
+    "allowed_recovery_surface_states": [
+      "blocked",
+      "failed",
+      "empty-risk"
+    ],
+    "forbidden_first_screen_terms": [
+      "当前状态",
+      "下一步动作",
+      "恢复路径",
+      "design asset catalog",
+      "review guidance",
+      "why/reasoning"
+    ]
+  }
+}

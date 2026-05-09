@@ -12,6 +12,7 @@ from beacon.utils.versioning import load_version_truth, normalize_version
 
 _INIT_FILE = Path("beacon/__init__.py")
 _MANIFEST_FILE = Path("beacon/version-truth.json")
+_PYPROJECT_FILE = Path("pyproject.toml")
 _SKILL_METADATA_FILE = Path("skills/beacon/metadata.json")
 _ROOT_SKILL_FILE = Path("SKILL.md")
 _AGENT_SURFACE_STATE_FILE = Path(".beacon/state/agent-surfaces.json")
@@ -20,6 +21,7 @@ VERSION_SURFACE_GOVERNANCE_REASON_CODE = "version_surface_governance_drift"
 
 _PACKAGE_VERSION_RE = re.compile(r'(^__version__\s*=\s*")(?P<value>[^"]+)(")', re.MULTILINE)
 _TOOLKIT_VERSION_RE = re.compile(r'(^__toolkit_version__\s*=\s*")(?P<value>[^"]+)(")', re.MULTILINE)
+_PYPROJECT_VERSION_RE = re.compile(r'(^version\s*=\s*")(?P<value>[^"]+)(")', re.MULTILINE)
 _JSON_VERSION_RE = re.compile(r'("version"\s*:\s*")(?P<value>[^"]+)(")')
 _RULE_RUNTIME_RE = re.compile(r"(<!--\s*BEACON:VERSION:)(?P<value>[^>\s]+)(\s*-->)")
 _RULE_DOCS_RE = re.compile(r"(<!--\s*BEACON:DOCS_VERSION:)(?P<value>[^>\s]+)(\s*-->)")
@@ -209,6 +211,35 @@ def _sync_init_surface(project_root: Path, versions: dict[str, str], *, dry_run:
     }
 
 
+def _sync_pyproject_surface(project_root: Path, versions: dict[str, str], *, dry_run: bool) -> dict[str, Any]:
+    path = project_root / _PYPROJECT_FILE
+    if not path.exists():
+        return {
+            "id": "pyproject",
+            "path": str(path),
+            "action": "skipped",
+            "changed": False,
+            "optional": True,
+            "reason": "missing",
+        }
+    current = path.read_text(encoding="utf-8")
+    updated = _PYPROJECT_VERSION_RE.sub(
+        rf'\g<1>{versions["package_version"]}\g<3>',
+        current,
+        count=1,
+    )
+    changed = updated != current
+    if changed and not dry_run:
+        path.write_text(updated, encoding="utf-8")
+    return {
+        "id": "pyproject",
+        "path": str(path),
+        "action": "planned" if dry_run and changed else "updated" if changed else "unchanged",
+        "changed": changed,
+        "expected": {"version": versions["package_version"]},
+    }
+
+
 def _sync_manifest_surface(project_root: Path, manifest: dict[str, Any], *, dry_run: bool) -> dict[str, Any]:
     path = project_root / _MANIFEST_FILE
     current = path.read_text(encoding="utf-8") if path.exists() else ""
@@ -381,6 +412,7 @@ def sync_version_surfaces(project_root: Path | str, *, dry_run: bool) -> dict[st
     surface_results = [
         _sync_manifest_surface(root, manifest, dry_run=dry_run),
         _sync_init_surface(root, versions, dry_run=dry_run),
+        _sync_pyproject_surface(root, versions, dry_run=dry_run),
         _sync_skill_metadata_surface(root, versions, dry_run=dry_run),
         _sync_root_skill_surface(root, versions, dry_run=dry_run),
         _sync_trae_rules_surface(root, versions, dry_run=dry_run),
@@ -407,6 +439,14 @@ def _read_init_surface(path: Path) -> dict[str, str]:
         "package_version": str(package_match.group("value")) if package_match else "",
         "runtime_version": normalize_version(str(toolkit_match.group("value"))) if toolkit_match else "",
     }
+
+
+def _read_pyproject_surface(path: Path) -> dict[str, str]:
+    if not path.exists():
+        return {}
+    content = path.read_text(encoding="utf-8")
+    package_match = _PYPROJECT_VERSION_RE.search(content)
+    return {"version": str(package_match.group("value")).strip() if package_match else ""}
 
 
 def _read_skill_metadata_surface(path: Path) -> dict[str, str]:
@@ -485,6 +525,7 @@ def verify_version_surfaces(project_root: Path | str, *, strict: bool) -> dict[s
     manifest = _canonical_manifest_payload(root)
     versions = _manifest_versions(root)
     init_path = root / _INIT_FILE
+    pyproject_path = root / _PYPROJECT_FILE
     skill_metadata_path = root / _SKILL_METADATA_FILE
     root_skill_path = root / _ROOT_SKILL_FILE
     trae_rules_path = root / _TRAE_RULES_FILE
@@ -518,6 +559,13 @@ def verify_version_surfaces(project_root: Path | str, *, strict: bool) -> dict[s
                 "actual": init_actual,
             },
         },
+        _compare_optional_surface(
+            name="pyproject_surface",
+            path=pyproject_path,
+            actual=_read_pyproject_surface(pyproject_path),
+            expected={"version": versions["package_version"]},
+            strict=strict,
+        ),
         _compare_optional_surface(
             name="skill_metadata_surface",
             path=skill_metadata_path,

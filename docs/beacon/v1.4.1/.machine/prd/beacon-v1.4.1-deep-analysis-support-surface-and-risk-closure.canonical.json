@@ -1,0 +1,154 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "feature_slug": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "version": "v1.4.1",
+  "track": "main",
+  "family": "tooling_surface",
+  "label": "主 PRD / tooling-surface",
+  "requested_mode": "rule",
+  "effective_mode": "rule",
+  "generator_mode": "rule",
+  "fallback_reason": "",
+  "capability_snapshot": {
+    "schema_version": "1.0",
+    "command_name": "prd",
+    "host_runtime": "codex",
+    "host_runtime_supported": true,
+    "host_bridge_declared": true,
+    "host_bridge_command_available": true,
+    "host_bridge_command_source": "env_cmd",
+    "host_bridge_command_env": "BEACON_HOST_PRD_BRIDGE_CMD",
+    "host_response_available": false,
+    "host_response_source": "none",
+    "host_response_path": "",
+    "host_transport": "command-bridge",
+    "host_semantic_ready": true,
+    "provider_available": false,
+    "provider_key_present": false,
+    "llm_disabled": false,
+    "disable_env": "BEACON_PRD_DISABLE_LLM"
+  },
+  "model": "beacon-prd-compiler",
+  "diagram_truth_request": {
+    "diagram_types": [],
+    "state_axes": []
+  },
+  "source_refs": [
+    "docs/beacon/global-boundaries.md",
+    "docs/beacon/v1.4.1/SUMMARY.md",
+    "docs/beacon/v1.4.1/execution/index.md",
+    ".beacon/debug/index.json",
+    ".beacon/metadata/project-version-metadata.json"
+  ],
+  "project_metadata_context": {
+    "metadata_ref": ".beacon/metadata/project-version-metadata.json",
+    "resolved_metadata_view": {
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "topology_kind": "single_repo",
+      "default_execution_service": "beacon",
+      "service_bindings": [
+        {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "app",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        }
+      ],
+      "service_bindings_by_key": {
+        "beacon": {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "app",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        }
+      },
+      "version": "v1.4.1",
+      "version_contract": {},
+      "selected_service": "beacon",
+      "selected_service_binding": {
+        "service_key": "beacon",
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "repo_root_relative": ".",
+        "role": "app",
+        "writable": true,
+        "worktree_path_policy": "follow-repo-root"
+      },
+      "selected_branch": "",
+      "paths": {
+        "machine": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.json",
+        "human": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.md",
+        "state": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/project-metadata/latest.json"
+      },
+      "transaction": {
+        "transaction_id": "tx-project-metadata-7551ca6c4eda4248",
+        "event_type": "update",
+        "committed_at": "2026-05-06T18:58:26.603561+00:00",
+        "source_hash": "7551ca6c4eda4248fe36509d9bd42329d6ad412b8f6df8b6e47ca954e9abf063"
+      },
+      "branch_governance": {
+        "schema_version": "1.0",
+        "tool_name": "beacon-toolkit-branch-governance",
+        "feature": "",
+        "version": "v1.4.1",
+        "template_name": "standard-feature",
+        "template_source": "default",
+        "service_key": "beacon",
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "base_branch": "",
+        "current_branch": "main",
+        "target_branch": "",
+        "worktree_mode": "branch-only",
+        "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "previous_version_baseline_branch": "",
+        "next_version_feature_branch": "",
+        "hotfix_branch_naming_rule": "",
+        "allow_worktree_when_feature_dirty": false,
+        "merge_direction_policy": [],
+        "forbidden_directions": [],
+        "evidence_contract": [],
+        "evidence": {},
+        "status": "pass",
+        "blocked": false,
+        "reason_codes": [],
+        "blocked_reason": "",
+        "recommended_action": "",
+        "missing_evidence_fields": [],
+        "evidence_contract_status": "pass",
+        "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `default`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: ``\n- current_branch: `main`\n- target_branch: ``\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nbase_branch\n    -> feature_branch\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+      }
+    }
+  },
+  "contract": {
+    "ok": true,
+    "missing_headings": [],
+    "placeholder_hits": [],
+    "semantic_hits": {
+      "boundary": true,
+      "layering": true,
+      "recovery": true,
+      "acceptance": true,
+      "risk_mitigation": true
+    }
+  },
+  "markdown": "# PRD: Beacon v1.4.1 Deep Analysis Support Surface and Risk Closure\n\n**Feature**: `beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure`  \n**Version**: `v1.4.1`  \n**Date**: `2026-05-09`  \n**Status**: `freeze-ready`  \n**Track**: `requirement-depth + qa-risk + release-governance`  \n**Scenario**: `complex-business-risk-discovery + deep-test-delta + release-supplement`  \n**Template**: `main PRD / next-version planning`\n\n## Context\n\n- Global boundaries: `docs/beacon/global-boundaries.md`\n- Previous release planning line: `docs/beacon/v1.4.0/SUMMARY.md`\n- Previous architecture blueprint: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`\n- Research supplement:\n  - `docs/beacon/v1.4.1/research/beacon-deep-capability-upgrade-research-supplement.md`\n- Source project research:\n  - `/Users/apple/Developer/Personal/products/slow_uni_bmtop/docs/beacon/v1.0.0/execution/2026-05-09-beacon-deep-capability-upgrade-research.md`\n\n## Overview\n\nBeacon already supports the standard requirement and delivery closure path:\n\n```text\nprd\n-> user-story\n-> test-case\n-> implement\n-> qa\n-> release\n```\n\nThis path is effective for validating known requirements. A real `slow_uni_bmtop / friend-match` QA loop showed that this is not always enough for complex business features. The feature passed after fixing a P2 issue, but the defect category revealed a deeper gap: the score fact source, derived ranking fields, detail response, personal statistics, and guest post-match attribution were not modeled as one explicit consistency chain.\n\n`v1.4.1` therefore introduces a next-version requirement for a deep analysis support surface.\n\nThe goal is not to add another mandatory stage. The goal is:\n\n> Let Beacon discover hidden state, transition, invariant, fact-source, and cross-module consistency risks for high-risk features, then converge those findings into test deltas and release-facing risk closure without expanding the human main lifecycle or weakening frozen-truth governance.\n\n## 4. 范围\n\nIn scope:\n\n- Define `deep` as a support/analysis/gate-supplement surface.\n- Define high-risk trigger rules for when deep analysis is required or recommended.\n- Define skip reason semantics for low-risk features.\n- Define human-readable artifacts for deep analysis, state machine, test delta, risk register, and closure brief.\n- Define how deep findings become requirement supplements through change/refreeze instead of direct truth mutation.\n- Define how QA consumes deep test deltas through supplemental QA.\n- Define how release consumes deep closure or skip reason as supporting evidence.\n- Define minimum CLI and artifact contract for a first implementation.\n\nOut of scope:\n\n- Making `deep` a new required human lifecycle stage.\n- Replacing `prd`, `user-story`, `test-case`, `qa`, or `release`.\n- Letting deep directly edit frozen PRD/user-story/test-case truth.\n- Letting deep findings become release gate truth without human acceptance.\n- Requiring deep for every low-risk feature.\n- Executing browser/API tests directly in the first deep iteration.\n- Creating a second canonical truth source under `.machine`, `.beacon`, or runtime projections.\n\n## Diagram Truth\n\n- `branch-flow`\n  - `known requirement -> MVP QA -> hidden structural risk -> deep analysis -> test delta -> supplemental QA -> release closure`\n  - `deep finding -> supplement proposal -> change/refreeze -> canonical truth update`\n  - `low-risk feature -> deep skip reason -> release evidence`\n- `state-machine`\n  - `deep_requirement_state: not_required | recommended | required | completed | waived`\n  - `deep_finding_state: candidate | accepted | deferred | rejected | closed`\n  - `deep_delta_state: proposed | adopted | executed | waived`\n  - `release_risk_state: none | accepted | blocked | waived`\n- `decision-priority`\n  - `global boundaries > frozen truth > accepted change/refreeze > deep finding > learning note`\n  - `test delta > test rewrite`\n  - `support surface > new lifecycle stage`\n  - `high-risk trigger > default deep everywhere`\n\n## 1. 问题\n\n### 1.1 MVP QA can pass while structural business risk remains under-modeled\n\nMVP QA answers whether defined acceptance criteria pass. It does not always answer whether a complex feature has complete state and data closure.\n\nExamples of structural risks:\n\n- scoring succeeds, but leaderboard derives from a stale or different field\n- detail page and list page read different fact sources\n- personal statistics do not reconcile with match results\n- post-match identity binding changes attribution unexpectedly\n- illegal state transitions are not explicitly rejected\n- repeated actions are not idempotent\n\n### 1.2 User-story-based test matrices can miss cross-story invariants\n\nBeacon's test-case generation is intentionally grounded in user stories and acceptance criteria. That is correct for traceability, but complex features often need an additional matrix:\n\n- entity state\n- transition\n- actor\n- event\n- fact source\n- derived field\n- page/API surface\n- invariant\n\nWithout this matrix, a feature can satisfy each individual story while still violating an end-to-end business invariant.\n\n### 1.3 Current support surfaces do not yet produce a release-facing deep risk closure\n\nBeacon has `qa`, `release`, `gate`, `learning`, and decision surface capability, but there is no standard artifact family for:\n\n- deep analysis\n- state-machine report\n- test delta\n- risk register\n- deep closure brief\n\nAs a result, deep insights are easy to keep as ad-hoc human notes instead of becoming auditable delivery evidence.\n\n## 2. 目标\n\n### 2.1 Primary goals\n\n1. Establish a formal deep analysis support surface for complex business features.\n2. Preserve the existing Beacon main lifecycle and global human-surface constraints.\n3. Force state-machine, invariant, and consistency-chain analysis for high-risk feature categories.\n4. Generate incremental test deltas rather than rewriting existing test cases.\n5. Route accepted requirement gaps through change/refreeze.\n6. Let QA execute adopted deep deltas as supplemental QA.\n7. Let release consume deep closure, waiver, or skip reason as evidence.\n8. Prevent scope creep by classifying findings as MVP / Deep / Release / Backlog.\n\n### 2.2 Non-goals\n\n- Deep does not replace QA.\n- Deep does not become a second PRD generator.\n- Deep does not write canonical truth directly.\n- Deep does not require every feature to perform heavyweight modeling.\n- Deep does not make backlog risks block release by default.\n- Deep does not bypass existing gate reason codes or release scorecards.\n\n## Scope\n\nThe v1.4.1 scope is limited to `beacon-deep` as a loop-capable support skill/toolkit surface, its artifact contracts, trigger and skip semantics, cross-stage routing rules, QA preflight delta handoff, release supplement semantics, and implementation-ready requirement package closure.\n\nThe scope explicitly excludes lifecycle expansion, direct frozen-truth mutation by deep artifacts, runtime release promotion, and implementation execution during requirement freeze.\n\n## 3. 设计原则\n\n### 3.1 Boundary first\n\n- `deep` 必须服从 `docs/beacon/global-boundaries.md` 的主流程边界。\n- `deep` 是支持面和分析面，不是新的主阶段。\n- `deep` 不能直接改写 frozen truth，不能替代 gate verdict。\n\n### 3.2 Layering first\n\n- 分层规则保持为：canonical markdown truth -> compiled contract -> support/runtime projection。\n- deep artifacts 只能作为分析证据、delta 建议和 release supplement，不能成为第二 truth root。\n- 任何被接受的需求缺口都必须回到 `change/refreeze`，再进入 implementation / QA / release。\n\n### 3.3 Recovery first\n\n- 当 deep 发现 requirement gap、test gap 或 release-blocking risk 时，恢复路径必须可审计。\n- 恢复路径优先级为：document finding -> classify risk -> propose delta -> human accept -> change/refreeze or supplemental QA。\n- 不能通过静默忽略 deep finding 来维持 release pass。\n\n### 3.4 Risk mitigation first\n\n- 风险必须被分类为 `MVP / Deep / Release / Backlog`。\n- 缓解方式必须显式记录为 `fix / test-delta / waiver / backlog / reject`。\n- Backlog 风险不得默认阻塞当前 release，除非被显式提升为 release-blocking。\n\n## 3A. Users and Operators\n\n### 3.1 Human operator\n\nNeeds to know whether a complex feature has hidden structural risk before release.\n\nThe operator should be able to see:\n\n- whether the feature requires deep analysis\n- which state machines and invariants were analyzed\n- which new test deltas were proposed\n- which deltas are release-blocking\n- which findings are accepted backlog\n\n### 3.2 Host LLM / agent\n\nNeeds a structured protocol for doing more than shallow template fill:\n\n- extract roles, states, events, and invariants\n- identify fact-source and derived-field relationships\n- map cross-surface consistency chains\n- produce delta cases with severity and gate classification\n\n### 3.3 Gate / release checker\n\nNeeds machine-checkable evidence that either:\n\n- deep was not required and a skip reason exists\n- deep was required and closure artifacts exist\n- release-blocking deep findings are closed or waived\n\n## 4A. Deep Trigger Rules\n\n### 4.1 Required deep triggers\n\nDeep should be required when a feature includes one or more high-risk domains:\n\n- payment, order, wallet, settlement\n- tournament, ranking, scoring, leaderboard\n- identity binding, account attribution, permission ownership\n- invitation, joining, relationship-chain mutation\n- reporting, statistics, historical record\n- migration, old-system takeover, cross-database reconciliation\n- multi-role, multi-state, multi-surface workflows\n- post-fact attribution or retroactive binding\n\n### 4.2 Recommended deep triggers\n\nDeep should be recommended when:\n\n- QA found a P0/P1/P2 defect caused by missing business modeling\n- acceptance passed but evidence shows cross-module uncertainty\n- user story count is high but state coverage is thin\n- implementation has derived fields that are not explicitly tied to a fact source\n\n### 4.3 Skip semantics\n\nDeep may be skipped for:\n\n- static display pages\n- simple forms\n- stateless utilities\n- visual-only changes\n- low-risk configuration changes\n\nSkip must be explicit:\n\n```yaml\ndeep_required: false\nskip_reason: low_risk_static_surface\n```\n\n## 5. 功能需求\n\n### FR-001 Deep artifact contract\n\nBeacon must define a stable artifact family for deep analysis so the output is reviewable, auditable, and reusable by `test-case`, `qa`, and `release`.\n\n### FR-002 Trigger and skip contract\n\nBeacon must distinguish high-risk features that require deep analysis from low-risk features that can provide an explicit skip reason.\n\n### FR-003 Delta-first contract\n\nBeacon must generate incremental test deltas and risk entries rather than rewriting existing test cases by default.\n\n### FR-004 Truth governance contract\n\nBeacon must route accepted deep findings through `change/refreeze` before altering frozen PRD, user story, or test-case truth.\n\n### FR-005 Release supplement contract\n\nBeacon must let release checks consume deep closure, waiver, or skip reason as supporting evidence without making deep a new lifecycle stage.\n\n### FR-006 Deep loop orchestration contract\n\nBeacon must support `deep` as a loop-capable human support skill/toolkit surface that can iterate across PRD, user-story, test-case, implement evidence, QA evidence, and release evidence without becoming a new main lifecycle stage.\n\nEach `deep run` should execute the smallest complete loop required for the current user intent:\n\n```text\nscan_truth\n-> model_business\n-> challenge_gaps\n-> derive_delta\n-> classify_findings\n-> route_repairs\n-> verify_closure\n```\n\nThe default target is one-pass closure. A `deep run` should continue internally until it either closes all findings for the current intent or routes accepted deltas into the correct Beacon surface.\n\n### FR-007 One-pass convergence contract\n\nBeacon must avoid turning `deep` into an infinite analysis loop.\n\nFor the same user intent, deep should close in one run when:\n\n- no new role, entity, business process, state machine, fact source, or cross-surface invariant is discovered\n- all findings are classified as `MVP | Deep | Release | Backlog`\n- all release-blocking findings are closed, waived, or routed\n- all accepted test deltas are attached to test-case or supplemental QA\n- all accepted requirement deltas are routed to `change/refreeze`\n\nA new deep loop is justified only when the user introduces a new prompt intent, feature, role, state machine, business process, or release-blocking evidence.\n\n### FR-008 Cross-stage delta routing contract\n\nDeep findings must route to the correct existing Beacon surface instead of creating a new lifecycle stage:\n\n| Finding type | Route |\n|---|---|\n| PRD gap | `change/refreeze` |\n| User story gap | `user-story` supplement or `change/refreeze` |\n| Acceptance gap | `test-case` delta |\n| Implementation gap | `implement` repair handoff |\n| QA evidence gap | supplemental `qa` loop |\n| Release risk | release closure, waiver, or backlog |\n\n### FR-009 Human support skill contract\n\nBeacon should expose `deep` as a human-facing support skill and toolkit family, not as a primary lifecycle command.\n\nThe user-facing skill should be discoverable as `beacon-deep`. Internal implementation may use support toolkit modules such as:\n\n- `beacon-toolkit-deep-loop`\n- `beacon-toolkit-state-machine`\n- `beacon-toolkit-test-delta`\n- `beacon-toolkit-risk-register`\n\nThe public mental model remains one support entry:\n\n```text\nbeacon deep run\n```\n\n### FR-010 Deep QA-preflight contract\n\nDeep test deltas should be usable as a pre-QA iterative evolution surface.\n\nBefore QA, deep may derive missing cases from PRD, user stories, state machines, fact-source maps, and existing test cases. After QA, deep may consume defects and evidence to decide whether the issue is a normal bug, a requirement gap, a state-machine gap, a test gap, or a release risk.\n\n## 5A. Artifact Contract\n\n### 5.1 Deep Analysis Report\n\nPath:\n\n```text\ndocs/beacon/<version>/deep/<feature>-deep-analysis.md\n```\n\nRequired content:\n\n- feature summary\n- role model\n- entity model\n- main business closure\n- cross-story invariant candidates\n- fact-source and derived-field map\n- deep findings\n- proposed next actions\n\n### 5.2 State Machine Report\n\nPath:\n\n```text\ndocs/beacon/<version>/deep/<feature>-state-machine.md\n```\n\nRequired content:\n\n- state list\n- allowed transition matrix\n- forbidden transition matrix\n- actor/action/API trigger map\n- transition invariants\n- idempotency expectations\n\n### 5.3 Deep Test Delta\n\nPath:\n\n```text\ndocs/beacon/<version>/qa/test-cases/<feature>-deep-delta.md\n```\n\nRequired content per case:\n\n- delta id\n- linked user story or requirement area\n- linked deep finding\n- scenario\n- expected result\n- automation candidate\n- gate classification: `MVP | Deep | Release | Backlog`\n- severity: `P0 | P1 | P2 | P3`\n- release blocking: `true | false`\n\n### 5.4 Risk Register\n\nPath:\n\n```text\ndocs/beacon/<version>/deep/<feature>-risk-register.md\n```\n\nRequired content:\n\n- risk id\n- description\n- affected surfaces\n- severity\n- release blocking status\n- owner or stage\n- handling: `fix | test-delta | waiver | backlog | reject`\n\n### 5.5 Deep Closure Brief\n\nPath:\n\n```text\ndocs/beacon/<version>/execution/deep-closure-brief-<feature>.md\n```\n\nRequired content:\n\n- deep requirement state\n- deep verdict\n- executed delta cases\n- open findings\n- waived findings\n- accepted backlog risks\n- release recommendation\n\n### 5.6 Deep Loop Trace\n\nPath:\n\n```text\ndocs/beacon/<version>/deep/<feature>-deep-loop-trace.md\n```\n\nRequired content:\n\n- user intent snapshot\n- loop iteration list\n- discovered role/entity/state/process changes\n- finding classification\n- route decision for each finding\n- closure decision\n- stop reason\n- next allowed route\n\nThe trace is the audit bridge proving that deep loop converged or intentionally routed work back into Beacon's existing surfaces.\n\n## 6. Command Surface\n\nThe first implementation should expose one support entry, a human skill, and optional subcommands.\n\nHuman skill:\n\n```text\nbeacon-deep\n```\n\nMinimum:\n\n```bash\nbeacon deep run \"<feature>\" --project-root . --version <version>\n```\n\nRecommended subcommands:\n\n```bash\nbeacon deep analyze \"<feature>\" --project-root . --version <version>\nbeacon deep state-machine \"<feature>\" --project-root . --version <version>\nbeacon deep derive-tests \"<feature>\" --project-root . --version <version>\nbeacon deep close-loop \"<feature>\" --project-root . --version <version>\n```\n\n`deep` is a support command family. It must not be presented as a new required lifecycle stage.\n\n`beacon deep run` is the preferred public entry because it can perform scan, model, challenge, derive, route, and closure verification in one guided loop.\n\n## 6A. Deep Loop State Machine\n\n```text\nnot_started\n-> scanning\n-> modeling\n-> challenging\n-> deriving_delta\n-> routing\n-> verifying\n-> closed\n```\n\nAllowed reopening conditions:\n\n- user introduces a new feature, role, business process, or state machine\n- QA evidence exposes a structural requirement or state gap\n- implementation evidence contradicts the deep model\n- release evidence exposes an unclosed high-risk finding\n- accepted test deltas reveal a new state or invariant\n\nDefault stop conditions:\n\n- no unclassified finding remains\n- no open release-blocking finding remains\n- all accepted deltas are routed\n- all waivers and backlog decisions are explicit\n- no new state machine or feature was introduced by the current prompt\n\n## 6B. State Axes\n\nThe first implementation must keep these state axes explicit through freeze readiness, implementation planning, QA coverage, and release evidence:\n\n- `deep_loop_state`: `not_started | scanning | modeling | challenging | deriving_delta | routing | verifying | closed`\n- `finding_state`: `candidate | classified | routed | closed | waived | backlog | rejected`\n- `delta_state`: `proposed | accepted | attached_to_test_case | executed_by_qa | closed`\n- `risk_state`: `open | release_blocking | waived | accepted_backlog | closed`\n- `requirement_package_state`: `prd_only | three_piece_complete | frozen | implement_pending`\n\nThese axes must not be compressed into one generic status field.\n\n## 7. Gate Semantics\n\nDeep gate semantics should be additive:\n\n- release may check deep closure for high-risk features\n- release may accept explicit skip reason for low-risk features\n- P0/P1/P2 release-blocking deep findings must be closed or waived\n- backlog findings must not block release unless explicitly promoted\n\nCandidate reason codes:\n\n- `deep_analysis_required`\n- `deep_closure_missing`\n- `deep_release_blocking_findings_open`\n- `deep_skip_reason_missing`\n- `deep_test_delta_unexecuted`\n- `deep_loop_unclosed`\n- `deep_delta_route_missing`\n- `deep_new_state_machine_unclassified`\n\n## 7A. 风险与缓解\n\n| 风险 | 影响 | 缓解 |\n|---|---|---|\n| deep 变成新的主阶段 | 破坏 Beacon 极简主流程 | 明确 deep 是 support surface，并要求 skip reason / trigger rule |\n| deep 直接改写 frozen truth | 破坏 canonical truth discipline | 所有 accepted finding 必须走 change/refreeze |\n| deep 与 QA 重复 | 扩大流程负担 | deep 只生成结构分析和 test delta，qa 负责执行 |\n| low-risk feature 被过度建模 | 降低交付效率 | 允许显式 skip reason，不默认阻塞 release |\n| backlog 风险误阻塞 release | release 判断噪音变高 | 风险分类必须区分 `Release` 与 `Backlog` |\n| deep loop 无限迭代 | 阻塞交付且削弱主流程心智 | 定义 one-pass closure、stop reason 和 allowed reopening conditions |\n| deep 发现无法路由 | finding 留在分析文档中失去执行价值 | 每个 finding 必须有 route decision 和 closure decision |\n\n## 8A. Truth Governance\n\nDeep findings are not truth by themselves.\n\nThe allowed path is:\n\n```text\ndeep finding\n-> supplement proposal\n-> human acceptance\n-> beacon change/refreeze\n-> updated PRD/user-story/test-case\n-> implementation/QA/release recheck\n```\n\nDeep may write supporting artifacts, but it may not directly mutate frozen PRD, user story, or test-case truth.\n\n## 8. 验收标准\n\n- [ ] `v1.4.1` documents `deep` as support surface rather than a new lifecycle stage.\n- [ ] High-risk trigger rules are documented.\n- [ ] Skip reason semantics are documented.\n- [ ] Deep artifact family is documented.\n- [ ] Deep test delta format is documented.\n- [ ] Release-facing deep closure semantics are documented.\n- [ ] Deep findings are routed through change/refreeze before altering frozen truth.\n- [ ] MVP / Deep / Release / Backlog classification is documented.\n- [ ] First implementation can read PRD, user-story, test-case, QA progress, acceptance brief, and architecture blueprint when present.\n- [ ] First implementation can produce at least deep analysis, state-machine report, test delta, and risk register.\n- [ ] First implementation can produce a deep loop trace with iteration, route, closure, and stop reason.\n- [ ] `beacon-deep` is described as a support skill/toolkit surface rather than a lifecycle stage.\n- [ ] `beacon deep run` can converge scan/model/challenge/delta/route/verify in one run for the same user intent.\n- [ ] Deep findings can route to PRD, user-story, test-case, implement repair, supplemental QA, release waiver, or backlog.\n- [ ] Deep loop reopening requires a new user intent, feature, role, state machine, business process, or release-blocking evidence.\n- [ ] Low-risk features can explicitly skip deep without release blockage.\n- [ ] High-risk features without deep closure or skip decision can be surfaced as release risk.\n\n## 10. Rollout Plan\n\n### Phase 1: Documentation and manual sample\n\n- Freeze this PRD.\n- Produce one manual deep sample from `friend-match`.\n- Validate artifact structure with human review.\n\n### Phase 2: CLI generation\n\n- Implement `beacon deep analyze`.\n- Implement `beacon deep derive-tests`.\n- Implement `beacon deep run` as the preferred one-pass loop orchestrator.\n- Materialize `beacon-deep` as a host-visible support skill.\n- Keep outputs as draft support artifacts.\n\n### Phase 3: QA and release integration\n\n- Let QA consume adopted deep deltas.\n- Let QA defects re-enter deep only when they imply a structural state, fact-source, or requirement gap.\n- Add deep closure brief generation.\n- Add deep loop trace generation.\n- Add release supplement checks for high-risk features.\n\n### Phase 4: Governance hardening\n\n- Add strict reason codes.\n- Add skip reason verification.\n- Add waiver handling for release-blocking deep findings.\n\n## 11. Implementation Decisions\n\n- `deep` will use its own support command family and human-facing support skill surface: `beacon-deep`.\n- The first runtime implementation will treat the documented high-risk trigger categories as advisory diagnostics, then promote strict enforcement after implementation evidence proves stability.\n- Human deep artifacts are required first; machine mirrors are allowed as compiled projections and audit evidence, not as a second truth root.\n- Deep delta adoption routes through `test-case` for acceptance coverage gaps and through `change/refreeze` for requirement truth gaps.\n- Release scorecards should reflect deep closure through closure brief presence, release-blocking finding status, waiver status, and backlog decision status.\n- Internal toolkit modules stay hidden behind `beacon-deep` unless a later version proves that separate human surfaces reduce rather than increase operator friction.\n- `deep_loop_unclosed`, `deep_delta_route_missing`, and `deep_new_state_machine_unclassified` start as explicit reason codes; strict gate promotion is deferred until implementation and QA evidence converge.\n\n## 12. Final Requirement Statement\n\nBeacon `v1.4.1` must add a loop-capable deep analysis support capability that helps complex business features expose hidden state, transition, invariant, fact-source, and cross-module consistency risks. It must converge those risks into test deltas, route accepted gaps back into the existing Beacon lifecycle, and produce release evidence while preserving Beacon's small human lifecycle, canonical truth discipline, and support-surface boundaries.\n",
+  "transaction": {
+    "transaction_id": "tx-prd-beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure-prd-543cc34fa98795af",
+    "source_hash": "543cc34fa98795afaa69231d34a8a786a1d0c4554d9ff1682617382dbfa2ca37",
+    "projection_seq": "prd-543cc34fa98795af",
+    "committed_at": "2026-05-09T03:22:26.022148+00:00",
+    "sink_checksums": {
+      "human": "6f4e11892806f7893033e2c0a96903732c7eb93d739bdbd914cacc137b171a59",
+      "machine": "9bb114feb7f85738f242169f14adc39d32137701bb944bf4a5516b4a4b9611cf"
+    },
+    "status": "applied",
+    "supersedes_transaction_id": "tx-prd-beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure-prd-b53fe3f9ad4c906d",
+    "supersedes_projection_seq": "prd-b53fe3f9ad4c906d",
+    "supersedes_source_hash": "b53fe3f9ad4c906da42ca7a125d50427dd9d5cf958f759e7e2700f845954ac49"
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "feature_slug": "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+  "version": "v1.4.1",
+  "generated_at": "2026-05-09T03:22:26.907281+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+    "user_story": "user-story:docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure`",
+      "Version**: `v1.4.1`",
+      "Date**: `2026-05-09`",
+      "Status**: `freeze-ready`",
+      "Track**: `requirement-depth + qa-risk + release-governance`",
+      "Scenario**: `complex-business-risk-discovery + deep-test-delta + release-supplement`",
+      "Template**: `main PRD / next-version planning`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Previous release planning line: `docs/beacon/v1.4.0/SUMMARY.md`",
+      " Previous architecture blueprint: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`",
+      " Research supplement:",
+      " `docs/beacon/v1.4.1/research/beacon-deep-capability-upgrade-research-supplement.md`",
+      " Source project research:",
+      " `/Users/apple/Developer/Personal/products/slow_uni_bmtop/docs/beacon/v1.0.0/execution/2026-05-09-beacon-deep-capability-upgrade-research.md`"
+    ],
+    "user_story": [
+      " version: `v1.4.1`",
+      " feature: `beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure`",
+      " status: `freeze-ready`",
+      " upstream_prd: `docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md`",
+      " research_supplement: `docs/beacon/v1.4.1/research/beacon-deep-capability-upgrade-research-supplement.md`",
+      " current_revision: `R1`",
+      " source_revision: `R0`",
+      "本故事线覆盖 Beacon `v1.4.1` 的 `beacon-deep` 支持面能力。目标是在不扩张 `prd -> user-story -> test-case -> implement -> qa -> release` 主生命周期的前提下，提供一个可多轮但默认一次闭环的 deep loop，用于发现复杂业务的流程、功能、状态机、事实源、一致性和 release 风险缺口，并把被接受的缺口路由回既有 Beacon surface。",
+      " `branch-flow`",
+      " `prd / user-story / test-case / implement evidence / qa evidence / release evidence -> beacon-deep -> deep loop trace -> route decision -> existing Beacon surface`"
+    ],
+    "qa": [
+      "Feature**: beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure",
+      "Test Type**: ALL",
+      "Version**: v1.4.1",
+      "Status**: `freeze-ready`",
+      "Primary Truth**: docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "Upstream User Story**: docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+      "Research Supplement**: docs/beacon/v1.4.1/research/beacon-deep-capability-upgrade-research-supplement.md",
+      "Global Boundary Truth**: docs/beacon/global-boundaries.md",
+      "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |",
+      "|-------|-------|-------|---------|-----------|---------------|"
+    ]
+  }
+}
