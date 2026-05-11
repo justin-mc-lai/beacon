@@ -83,14 +83,40 @@ pip install beacon
 cd beacon && pip install -e ".[dev]"
 ```
 
-### 全局安装约束
+### Host 安装矩阵
 
-Beacon 的全局安装必须遵守单一技能根约束，否则会出现：
+Beacon 的安装分两层：
+
+- CLI / Python 包：`beacon`
+- host-visible skills：按宿主类型挂到统一 skill 根或 project-local agent surface
+
+CLI 安装：
+
+```bash
+pip install beacon
+# 或
+cd beacon && pip install -e ".[dev]"
+```
+
+host-visible skills 安装必须遵守单一技能根约束，否则会出现：
 
 - Beacon 公共 skill 重复发现
 - Codex picker 同名 skill 成对出现
 - 安装源漂移到旧副本
 - 把 `beacon-change` 误解成 `beacon change` CLI 子命令
+
+统一 host matrix：
+
+| Host | 安装模式 | Canonical Root | 安装命令 | 校验命令 |
+|------|----------|----------------|----------|----------|
+| Codex / agent | 全局 symlink | `~/.agents/skills/beacon -> <repo>/skills/beacon` | `ln -sfn <repo>/skills/beacon ~/.agents/skills/beacon` | `find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md \| sort` |
+| Claude Code 主 skill | 全局 symlink | `~/.claude/skills/beacon -> <repo>` | `ln -sfn <repo> ~/.claude/skills/beacon` | `readlink ~/.claude/skills/beacon` |
+| Claude Code 子 skills | 全局 symlink | `~/.claude/skills/beacon-* -> <repo>/skills/beacon/<subskill>` | 由 Beacon repo 安装布局提供 | `find ~/.claude/skills -maxdepth 1 -name 'beacon-*' \| sort` |
+| Trae | project-local agent surface | `<project>/.trae/skills/` | `beacon doctor setup-agent-surface --project-root <project> --agent trae` | `beacon doctor verify-agent-surface --project-root <project> --agent trae --strict` |
+| Cursor | project-local agent surface | `<project>/.cursor/skills/` | `beacon doctor setup-agent-surface --project-root <project> --agent cursor` | `beacon doctor verify-agent-surface --project-root <project> --agent cursor --strict` |
+| Windsurf | project-local agent surface | `<project>/.windsurf/skills/` | `beacon doctor setup-agent-surface --project-root <project> --agent windsurf` | `beacon doctor verify-agent-surface --project-root <project> --agent windsurf --strict` |
+
+### 全局安装约束
 
 当前唯一允许的安装口径：
 
@@ -102,6 +128,10 @@ Beacon 的全局安装必须遵守单一技能根约束，否则会出现：
   - `~/.claude/skills/beacon -> <repo>`
 - Claude Code 子 skills：
   - `~/.claude/skills/beacon-* -> <repo>/skills/beacon/<subskill>`
+- project-local agent surfaces：
+  - Trae: `<project>/.trae/skills/`
+  - Cursor: `<project>/.cursor/skills/`
+  - Windsurf: `<project>/.windsurf/skills/`
 
 明确禁止：
 
@@ -114,8 +144,11 @@ Beacon 的全局安装必须遵守单一技能根约束，否则会出现：
 ```bash
 rm -rf ~/.codex/skills/beacon
 rm -f ~/.agents/skills/beacon
+rm -f ~/.claude/skills/beacon
 mkdir -p ~/.agents/skills
+mkdir -p ~/.claude/skills
 ln -sf /absolute/path/to/beacon/skills/beacon ~/.agents/skills/beacon
+ln -sf /absolute/path/to/beacon ~/.claude/skills/beacon
 ```
 
 安装后校验：
@@ -124,6 +157,8 @@ ln -sf /absolute/path/to/beacon/skills/beacon ~/.agents/skills/beacon
 beacon --version
 beacon --help
 find ~/.agents/skills/beacon -maxdepth 2 -name SKILL.md | sort
+readlink ~/.claude/skills/beacon
+beacon doctor verify-agent-surface --project-root . --agent windsurf --strict
 ```
 
 如果你看到 `Beacon Change` 这个 host skill，请记住：
