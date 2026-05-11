@@ -4,7 +4,7 @@
 - feature: `beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-05-11T08:28:55.007378+00:00`
+- accepted_at: `2026-05-11T08:51:25.970873+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -31,5 +31,5 @@
 ## Verdict Summary
 - required_ac_count: `18`
 - required_test_count: `0`
-- story_status: `implemented`
+- story_status: `accepted`
 - revision_delivery_status: `accepted`

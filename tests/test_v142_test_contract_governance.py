@@ -313,6 +313,19 @@ def test_browser_runtime_admission_lane_is_classified_and_release_blocking(tmp_p
     assert {item["ac_id"] for item in browser_lane} == {"AC-013", "AC-014", "AC-015", "AC-016", "AC-017", "AC-018"}
 
 
+def test_browser_runtime_admission_lane_accepts_legacy_tc_evidence_names(tmp_path: Path) -> None:
+    _seed_project(tmp_path, include_evidence=False)
+    evidence_root = tmp_path / ".beacon" / "evidence" / "test-results" / SLUG
+    for index in range(13, 19):
+        _write_json(evidence_root / f"TC-{index:03d}.json", {"status": "passed", "tc_id": f"TC-{index:03d}"})
+
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    browser_lane = payload["lanes"]["browser_runtime_admission"]
+
+    assert len(browser_lane) == 6
+    assert all(item["evidence_status"] == "passed" for item in browser_lane)
+
+
 def test_gate_precision_contract_surfaces_browser_release_blockers(tmp_path: Path, monkeypatch) -> None:
     version = "v1.4.2"
     monkeypatch.setattr(gate_module, "_resolved_gate_version", lambda *_args, **_kwargs: version)

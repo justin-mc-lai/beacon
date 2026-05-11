@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from pathlib import Path
 from typing import Any
 
@@ -148,12 +149,29 @@ def _entry_release_blocking(lane: str) -> bool:
     return lane in {"feature_release_facing", "current_runtime_contract", "generated_surface_sync", "compatibility_contract", "browser_runtime_admission"}
 
 
-def _evidence_status(project_root: Path, relative_path: str) -> str:
+_LEGACY_TC_EVIDENCE_RE = re.compile(r"^(TC)-US0*(\d+)-001(\.json)?$", re.IGNORECASE)
+
+
+def _resolve_evidence_path(project_root: Path, relative_path: str) -> Path | None:
     path_text = str(relative_path or "").strip()
     if not path_text:
-        return "missing"
+        return None
     path = project_root / path_text
-    if not path.exists():
+    if path.exists():
+        return path
+    match = _LEGACY_TC_EVIDENCE_RE.match(path.name)
+    if not match:
+        return None
+    legacy_name = f"{match.group(1).upper()}-{int(match.group(2)):03d}{match.group(3) or ''}"
+    legacy_path = path.with_name(legacy_name)
+    if legacy_path.exists():
+        return legacy_path
+    return None
+
+
+def _evidence_status(project_root: Path, relative_path: str) -> str:
+    path = _resolve_evidence_path(project_root, relative_path)
+    if path is None:
         return "missing"
     payload = read_json(path, {})
     if not isinstance(payload, dict):
