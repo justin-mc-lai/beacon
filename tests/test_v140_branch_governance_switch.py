@@ -97,3 +97,35 @@ def test_fail_closed_if_switch_not_safe(tmp_path: Path) -> None:
     )
     assert payload["blocked"] is True
     assert "implement_branch_switch_dirty_worktree" in payload["reason_codes"]
+
+
+def test_branch_preflight_preserves_service_repo_current_worktree(tmp_path: Path) -> None:
+    workspace = tmp_path / "workspace"
+    workspace.mkdir()
+    service_root = workspace / "marketing_sys"
+    service_root.mkdir()
+    _seed_repo(service_root, "feature/v1.3.5-mainline")
+    payload = _run_branch_preflight(
+        project_root=workspace,
+        version="v1.3.5",
+        run_id="run-test",
+        feature="partner-rule-adjustment",
+        auto_switch_branch=False,
+        require_clean_worktree_for_switch=True,
+        expected_branch="feature/v1.3.5-mainline",
+        branch_prefix="feature/",
+        base_branch="master",
+        git_roots=[str(service_root)],
+        direct_delivery_services=["marketing_sys"],
+        branch_governance={
+            "template_name": "standard-feature",
+            "worktree_mode": "dedicated-worktree",
+            "repo_root": str(service_root),
+            "worktree_path": str(service_root),
+            "current_worktree_path": str(service_root),
+            "evidence_contract": [],
+        },
+    )
+    assert payload["blocked"] is False
+    assert payload["branch_governance"]["blocked"] is False
+    assert payload["branch_governance"]["current_worktree_path"] == str(service_root.resolve())

@@ -1654,7 +1654,7 @@ def _run_branch_preflight(
                 **branch_governance,
                 "current_branch": str(branch_preflight.get("current_branch", "") or branch_governance.get("current_branch", "")),
                 "target_branch": str(branch_preflight.get("expected_branch", "") or branch_governance.get("target_branch", "")),
-                "current_worktree_path": str(project_root),
+                "current_worktree_path": str(branch_governance.get("current_worktree_path", "") or project_root),
             }
         )
         branch_preflight["branch_governance"] = governance_payload
@@ -1714,7 +1714,7 @@ def _run_branch_preflight(
                         **branch_governance,
                         "current_branch": str(refreshed.get("current_branch", "") or branch_governance.get("current_branch", "")),
                         "target_branch": str(refreshed.get("expected_branch", "") or branch_governance.get("target_branch", "")),
-                        "current_worktree_path": str(project_root),
+                        "current_worktree_path": str(branch_governance.get("current_worktree_path", "") or project_root),
                     }
                 )
                 refreshed["branch_governance"] = refreshed_governance

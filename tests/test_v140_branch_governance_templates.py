@@ -140,3 +140,66 @@ def test_selected_template_visible(tmp_path: Path) -> None:
     )
     assert payload["template_source"] == "task_override"
     assert "- template_source: `task_override`" in payload["human_markdown"]
+
+
+def test_monorepo_selected_service_uses_repo_root_as_current_worktree(tmp_path: Path) -> None:
+    workspace = tmp_path / "rolo"
+    workspace.mkdir()
+    service_root = workspace / "marketing_sys"
+    service_root.mkdir()
+    _seed_repo(service_root, "feature/v1.3.5-mainline")
+    metadata_root = workspace / ".beacon" / "metadata"
+    metadata_root.mkdir(parents=True)
+    (metadata_root / "project-version-metadata.json").write_text(
+        """
+{
+  "schema_version": "1.0",
+  "project_root": "__PROJECT_ROOT__",
+  "global_project_metadata": {
+    "project_root": "__PROJECT_ROOT__",
+    "topology_kind": "monorepo",
+    "default_execution_service": "marketing_sys",
+    "service_bindings": [
+      {
+        "service_key": "marketing_sys",
+        "repo_root": "__SERVICE_ROOT__",
+        "repo_root_relative": "marketing_sys",
+        "role": "service",
+        "writable": true,
+        "worktree_path_policy": "follow-repo-root"
+      }
+    ]
+  },
+  "version_scoped_metadata": {
+    "v1.3.5": {
+      "participating_services": ["marketing_sys"],
+      "per_service_canonical_branch": {
+        "marketing_sys": "feature/v1.3.5-mainline"
+      }
+    }
+  },
+  "transaction": {}
+}
+        """.strip()
+        .replace("__PROJECT_ROOT__", str(workspace.resolve()))
+        .replace("__SERVICE_ROOT__", str(service_root.resolve())),
+        encoding="utf-8",
+    )
+    payload = resolve_branch_governance_view(
+        project_root=workspace,
+        version="v1.3.5",
+        feature="partner-rule-adjustment",
+        metadata_view=resolve_project_metadata_view(workspace, version="v1.3.5"),
+        git_workflow={
+            "expected_branch": "feature/v1.3.5-mainline",
+            "base_branch": "master",
+            "use_git_worktree": True,
+            "worktree_mode": "dedicated-worktree",
+            "worktree_root": str(workspace),
+            "worktree_path": str(service_root),
+        },
+    )
+    assert payload["repo_root"] == str(service_root.resolve())
+    assert payload["current_worktree_path"] == str(service_root.resolve())
+    assert payload["worktree_path"] == str(service_root.resolve())
+    assert payload["blocked"] is False

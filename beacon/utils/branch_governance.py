@@ -18,6 +18,16 @@ def _string(value: Any) -> str:
     return str(value or "").strip()
 
 
+def _normalized_path(value: Any) -> str:
+    text = _string(value)
+    if not text:
+        return ""
+    try:
+        return str(Path(text).expanduser().resolve(strict=False))
+    except Exception:  # noqa: BLE001
+        return str(Path(text).expanduser())
+
+
 def _string_list(values: Any) -> list[str]:
     if not isinstance(values, list):
         return []
@@ -81,14 +91,25 @@ def _branch_governance_contract_from_sources(
         or STANDARD_TEMPLATE
     )
     template_source = "task_override" if override else ("project_metadata" if governance or version_contract.get("branch_governance_template") else "default")
-    repo_root = _string(override.get("repo_root")) or _string(selected_binding.get("repo_root")) or _string(git_workflow.get("worktree_root")) or _string(project_root)
+    selected_repo_root = _string(selected_binding.get("repo_root"))
+    worktree_path_policy = _string(selected_binding.get("worktree_path_policy")) or "follow-repo-root"
+    repo_root = _normalized_path(
+        _string(override.get("repo_root")) or selected_repo_root or _string(git_workflow.get("worktree_root")) or _string(project_root)
+    )
     target_branch = _string(git_workflow.get("expected_branch")) or selected_branch
     current_branch = git_output(Path(repo_root), "branch", "--show-current") if repo_root else ""
-    current_worktree_path = _string(project_root) if project_root else repo_root
-    worktree_path = (
+    current_worktree_path = _normalized_path(
+        _string(override.get("current_worktree_path"))
+        or _string(governance.get("current_worktree_path"))
+        or _string(git_workflow.get("current_worktree_path"))
+        or (selected_repo_root if worktree_path_policy == "follow-repo-root" and selected_repo_root else "")
+        or (_string(project_root) if project_root else repo_root)
+    )
+    worktree_path = _normalized_path(
         _string(override.get("worktree_path"))
         or _string(governance.get("worktree_path"))
         or _string(git_workflow.get("worktree_path"))
+        or (selected_repo_root if worktree_path_policy == "follow-repo-root" and selected_repo_root else "")
         or current_worktree_path
     )
     allow_worktree_when_feature_dirty = bool(
@@ -192,8 +213,8 @@ def evaluate_branch_governance(contract: dict[str, Any]) -> dict[str, Any]:
             "pipeline_run_id",
         ]
     target_branch = _string(payload.get("target_branch"))
-    current_worktree_path = _string(payload.get("current_worktree_path"))
-    worktree_path = _string(payload.get("worktree_path"))
+    current_worktree_path = _normalized_path(payload.get("current_worktree_path"))
+    worktree_path = _normalized_path(payload.get("worktree_path"))
     previous_baseline = _string(payload.get("previous_version_baseline_branch"))
     next_feature = _string(payload.get("next_version_feature_branch"))
     hotfix_rule = _string(payload.get("hotfix_branch_naming_rule"))
