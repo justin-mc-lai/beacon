@@ -910,6 +910,23 @@ def _next_step(
                 "reason": "qa round found an implementation blocker that must be fixed before the next round",
                 "command": _preferred_implement_command(feature=feature, project_root=project_root, version=version, base=base),
             }
+        if _blocking_reason_matches(
+            stop_reasons,
+            "protected_surface_session_bridge_missing",
+            "protected_surface_runner_priority_unavailable",
+            "browser_runner_learning_missing",
+        ):
+            return {
+                "action": "qa-session",
+                "reason": "browser QA is blocked on attached-session admission and needs a reusable QA session before rerun",
+                "command": f"beacon qa session list --project {project_root}",
+            }
+        if _blocking_reason_matches(stop_reasons, "browser_evidence_placeholder_only"):
+            return {
+                "action": "qa",
+                "reason": "browser QA only produced placeholder evidence and must be rerun through a real browser-attached path",
+                "command": _preferred_qa_command(feature=feature, project_root=project_root, version=version, base=base),
+            }
         if bool(feature_scorecard.get("test_case_backfill_required")):
             return {
                 "action": "test-case-create",

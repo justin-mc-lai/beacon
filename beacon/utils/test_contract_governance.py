@@ -16,6 +16,7 @@ CANONICAL_TEST_CONTRACT_LANES = (
     "generated_surface_sync",
     "compatibility_contract",
     "legacy_snapshot",
+    "browser_runtime_admission",
 )
 
 QA_FIRST_PRINCIPLES_ORDER = (
@@ -42,6 +43,11 @@ TEST_CONTRACT_REASON_CODES = (
     "planning_line_runtime_conflict",
     "unclassified_test_failure",
     "legacy_snapshot_misclassified_as_release_blocker",
+    "protected_surface_session_bridge_missing",
+    "protected_surface_runner_priority_unavailable",
+    "browser_evidence_placeholder_only",
+    "browser_runtime_admission_missing",
+    "browser_runner_learning_missing",
 )
 
 
@@ -101,6 +107,15 @@ def _ac_items(story_payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
 def _classify_lane(entry: dict[str, Any], ac_item: dict[str, Any]) -> str:
     ac_id = str(entry.get("ac_id") or "").strip().lower()
     theme = str(ac_item.get("theme") or "").strip().lower()
+    if theme in {
+        "browser-admission",
+        "browser-evidence-authenticity",
+        "browser-runner-priority",
+        "blocked-not-false-fail",
+        "runner-learning",
+        "browser-lane-traceability",
+    }:
+        return "browser_runtime_admission"
     if theme in {"legacy-classification"}:
         return "legacy_snapshot"
     if theme in {"generated-surface-sync", "skill-delivery"}:
@@ -124,11 +139,13 @@ def _classify_lane(entry: dict[str, Any], ac_item: dict[str, Any]) -> str:
         return "current_runtime_contract"
     if "compatibility_contract" in text or "compatibility contract" in text or "compatibility" in text:
         return "compatibility_contract"
+    if any(token in text for token in ("browser admission", "protected surface", "session bridge", "playwright attach/cdp", "web-access", "placeholder transcript", "runner-learning", "browser evidence")):
+        return "browser_runtime_admission"
     return "feature_release_facing"
 
 
 def _entry_release_blocking(lane: str) -> bool:
-    return lane in {"feature_release_facing", "current_runtime_contract", "generated_surface_sync", "compatibility_contract"}
+    return lane in {"feature_release_facing", "current_runtime_contract", "generated_surface_sync", "compatibility_contract", "browser_runtime_admission"}
 
 
 def _evidence_status(project_root: Path, relative_path: str) -> str:
@@ -298,6 +315,15 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
     generated_lane = lanes.get("generated_surface_sync") if isinstance(lanes.get("generated_surface_sync"), list) else []
     if any(str(item.get("evidence_status") or "") == "failed" for item in generated_lane if isinstance(item, dict)):
         codes.append("generated_surface_sync_drift")
+    browser_lane = lanes.get("browser_runtime_admission") if isinstance(lanes.get("browser_runtime_admission"), list) else []
+    if not browser_lane:
+        codes.append("browser_runtime_admission_missing")
+    for entry in browser_lane:
+        if not isinstance(entry, dict):
+            continue
+        status = str(entry.get("evidence_status") or "").strip().lower()
+        if status == "missing":
+            codes.append("browser_runtime_admission_missing")
     if bool((payload.get("planning_line_safety") or {}).get("blocked", False)):
         codes.append("planning_line_runtime_conflict")
     version_surface = get_version_surface_governance_payload(project_root, strict=True)

@@ -743,6 +743,7 @@ def collect_verification_writeback(
                     "browser_required": bool(item.get("browser_required")),
                     "replay_required": bool(item.get("replay_required")),
                     "browser_evidence_pack_ref": str(item.get("browser_evidence_pack_ref") or "").strip(),
+                    "browser_evidence_authenticity_status": str(item.get("browser_evidence_authenticity_status") or "").strip(),
                     "replay_ref": str(item.get("replay_ref") or "").strip(),
                     "evidence_ref": item.get("evidence_ref") if isinstance(item.get("evidence_ref"), list) else [],
                 }
@@ -795,6 +796,7 @@ def collect_verification_writeback(
                 "browser_required": bool(entry.get("browser_required")),
                 "replay_required": bool(entry.get("replay_required")),
                 "browser_evidence_pack_ref": str(entry.get("browser_evidence_pack_ref") or "").strip(),
+                "browser_evidence_authenticity_status": str(entry.get("browser_evidence_authenticity_status") or "").strip(),
                 "replay_ref": str(entry.get("replay_ref") or "").strip(),
                 "evidence_ref": [],
             }
@@ -819,8 +821,11 @@ def _evidence_sufficiency(item: dict[str, Any]) -> str:
     replay_required = bool(item.get("replay_required"))
     has_browser_pack = bool(str(item.get("browser_evidence_pack_ref") or "").strip())
     has_replay = bool(str(item.get("replay_ref") or "").strip())
+    authenticity = str(item.get("browser_evidence_authenticity_status") or "").strip().lower()
     has_refs = bool(item.get("evidence_ref")) or has_browser_pack or has_replay
     if browser_required:
+        if authenticity == "placeholder_only":
+            return "weak"
         if has_browser_pack and (not replay_required or has_replay):
             return "strong"
         if has_browser_pack or has_replay:
@@ -835,8 +840,11 @@ def _closure_outcome(item: dict[str, Any], *, evidence_sufficiency: str) -> str:
     replay_required = bool(item.get("replay_required"))
     has_replay = bool(str(item.get("replay_ref") or "").strip())
     has_browser_pack = bool(str(item.get("browser_evidence_pack_ref") or "").strip())
+    authenticity = str(item.get("browser_evidence_authenticity_status") or "").strip().lower()
     if browser_required and replay_required and not has_replay:
         return "needs_replay"
+    if browser_required and authenticity == "placeholder_only":
+        return "needs_more_evidence"
     if browser_required and not has_browser_pack:
         return "needs_more_evidence"
     if status == "passed":
@@ -912,6 +920,18 @@ def _calibrated_confidence(raw: float, calibration_model: dict[str, Any]) -> flo
     return _clamp_confidence(raw)
 
 
+def _browser_blocker_session_reason(stop_reasons: list[str]) -> str:
+    for reason in stop_reasons:
+        normalized = str(reason or "").strip()
+        if normalized in {
+            "protected_surface_session_bridge_missing",
+            "protected_surface_runner_priority_unavailable",
+            "browser_runner_learning_missing",
+        }:
+            return normalized
+    return ""
+
+
 def build_feature_qa_precision_artifacts(
     project_root: Path,
     *,
@@ -980,6 +1000,7 @@ def build_feature_qa_precision_artifacts(
                 "replay_required": bool(item.get("replay_required")),
                 "replay_present": bool(str(item.get("replay_ref") or "").strip()),
                 "browser_evidence_pack_ref": str(item.get("browser_evidence_pack_ref") or "").strip(),
+                "browser_evidence_authenticity_status": str(item.get("browser_evidence_authenticity_status") or "").strip(),
                 "judge_signals": judge_signals,
                 "evidence_ref": item.get("evidence_ref") if isinstance(item.get("evidence_ref"), list) else [],
             }
@@ -1157,6 +1178,13 @@ def build_feature_qa_precision_artifacts(
             if str(reason).strip()
         }
     )
+    scenario_reason_codes = sorted(
+        {
+            str(item.get("reason_code") or "").strip()
+            for item in scenario_results
+            if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
+        }
+    )
     stop_reasons: list[str] = []
     if project_gate_status == "blocked":
         gate_issues = project_profile_gate.get("issues") if isinstance(project_profile_gate.get("issues"), list) else []
@@ -1184,6 +1212,9 @@ def build_feature_qa_precision_artifacts(
                 "auth",
                 "session",
                 "environment",
+                "protected_surface",
+                "browser_evidence_placeholder_only",
+                "browser_runner_learning_missing",
                 "contract_drift",
                 "required_evidence_missing",
                 "required_case_missing",
@@ -1207,6 +1238,16 @@ def build_feature_qa_precision_artifacts(
         if code
     )
     stop_reasons.extend(quality_stop_reasons)
+    stop_reasons.extend(
+        code
+        for code in scenario_reason_codes
+        if code in {
+            "protected_surface_session_bridge_missing",
+            "protected_surface_runner_priority_unavailable",
+            "browser_evidence_placeholder_only",
+            "browser_runner_learning_missing",
+        }
+    )
     stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
     required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
     executed_scenarios = len(
@@ -1302,21 +1343,49 @@ def build_feature_qa_precision_artifacts(
     resume_command = (
         f'beacon help --project-root {project_root} --version {str(plan.get("version") or "")} --feature "{feature}"'
     )
+    browser_session_reason = _browser_blocker_session_reason(stop_reasons)
+    browser_placeholder_only = "browser_evidence_placeholder_only" in stop_reasons
     repair_handoff = {
-        "action": "implement"
-        if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
-        else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair")),
-        "reason": ", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"),
+        "action": (
+            "implement"
+            if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
+            else (
+                "qa-session"
+                if browser_session_reason
+                else (
+                    "qa-browser-rerun"
+                    if browser_placeholder_only
+                    else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair"))
+                )
+            )
+        ),
+        "reason": (
+            "protected browser surface requires an attached session or runner before QA can continue"
+            if browser_session_reason
+            else (
+                "browser evidence is placeholder-only and must be rerun with a real attached browser path"
+                if browser_placeholder_only
+                else (", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"))
+            )
+        ),
         "command": (
             f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
             if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
             else (
-                f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
-                if project_gate_status == "blocked"
+                f"beacon qa session list --project {project_root}"
+                if browser_session_reason
                 else (
-                    f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
-                    if test_case_backfill_required
-                    else (resume_command if coverage_gap_remaining else resume_command)
+                    f'beacon qa run "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
+                    if browser_placeholder_only
+                    else (
+                        f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
+                        if project_gate_status == "blocked"
+                        else (
+                            f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
+                            if test_case_backfill_required
+                            else (resume_command if coverage_gap_remaining else resume_command)
+                        )
+                    )
                 )
             )
         ),

@@ -5,7 +5,7 @@
   "version": "v1.4.2",
   "current_revision_id": "R1",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-05-09T09:32:41.006637+00:00",
+  "updated_at": "2026-05-11T08:18:29.131447+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -14,7 +14,7 @@
       "reason": "repair-restored-frozen-truth",
       "doc_status": "frozen",
       "delivery_status": "idle",
-      "baseline_hash": "sha256:16349dc50c33a9342a9a8b292fa2db9ff48a6c8c260def944f6882c716c9ca84",
+      "baseline_hash": "sha256:10e1b175838b51dc8ca362b207dff7c1698c11a13809779677ecd5870b940c3b",
       "superseded_by": null,
       "created_at": "2026-05-09T08:50:56.892660+00:00",
       "frozen_at": "2026-05-09T08:51:15.512281+00:00",
@@ -49,7 +49,7 @@
           "id": "AC-002",
           "kind": "ac",
           "theme": "lane-taxonomy",
-          "text": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, and legacy snapshot.",
+          "text": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission.",
           "required": true,
           "status": "accepted",
           "implemented_by_run_id": null,
@@ -211,6 +211,96 @@
           "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
         },
         {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "browser-admission",
+          "text": "Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "browser-evidence-authenticity",
+          "text": "Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "browser-runner-priority",
+          "text": "Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "blocked-not-false-fail",
+          "text": "Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "runner-learning",
+          "text": "QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "browser-lane-traceability",
+          "text": "Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
           "id": "TASK-001",
           "kind": "task",
           "text": "Implement current frozen revision",
@@ -240,7 +330,7 @@
         {
           "id": "TEST-002",
           "kind": "test",
-          "text": "Verify AC-002 — Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, and legacy snapshot.",
+          "text": "Verify AC-002 — Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission.",
           "required": true,
           "status": "draft",
           "implemented_by_run_id": null,
@@ -409,6 +499,102 @@
           "changed_in_revision": null,
           "covers": [
             "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-017"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-018"
           ],
           "story_id": "",
           "source": "user-story:docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"

@@ -153,3 +153,53 @@ def test_v138_help_should_not_block_release_ready_feature_when_feature_arg_is_sl
     assert payload["blocked"] is False
     assert "technical_review_contract_invalid" not in payload["blocking_reasons_raw"]
     assert payload["next_step"]["action"] == "release-check"
+
+
+def test_v138_help_should_route_browser_session_blocker_to_qa_session(monkeypatch, tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    _seed_execution_state(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+
+    from beacon.utils import help_support as help_support_module
+
+    write_json(
+        tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "run_id": "run-qa-browser-001",
+            "continue_decision": "stop_for_repair",
+            "release_ready": False,
+            "stop_reasons": ["protected_surface_session_bridge_missing"],
+            "resume_command": f'beacon help --project-root {tmp_path} --version {VERSION} --feature "{FEATURE}"',
+        },
+    )
+    write_json(
+        tmp_path / ".beacon" / "qa" / "status.json",
+        {
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "blocked",
+            "execution_mode": "story-exhaustive",
+            "evidence_done": False,
+        },
+    )
+
+    monkeypatch.setattr(
+        help_support_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "gate": {"status": "Blocked", "blocked_count": 0, "reason_codes": []},
+            "qa": {"status": "blocked", "release_ready": False, "evidence_done": False},
+            "acceptance": {"status": "blocked", "release_ready": False, "continue_decision": "stop_for_repair"},
+        },
+    )
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["blocked"] is True
+    assert payload["next_step"]["action"] == "qa-session"
+    assert "beacon qa session list" in payload["next_step"]["command"]

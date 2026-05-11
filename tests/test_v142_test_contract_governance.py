@@ -1,15 +1,21 @@
 from __future__ import annotations
 
+import importlib
 import json
 from pathlib import Path
 
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.commands.auto_test import _browser_evidence_authenticity, resolve_browser_runtime_admission
+from beacon.commands.auto_test import _write_browser_runner_learning_note
+from beacon.commands.qa import _default_feature_qa_ui_runner
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency
 from beacon.utils.test_contract_governance import (
     CANONICAL_TEST_CONTRACT_LANES,
     QA_FIRST_PRINCIPLES_ORDER,
+    TEST_CONTRACT_REASON_CODES,
     build_test_contract_gate_payload,
     build_test_contract_index,
     load_test_contract_index,
@@ -17,6 +23,7 @@ from beacon.utils.test_contract_governance import (
 )
 
 runner = CliRunner()
+gate_module = importlib.import_module("beacon.commands.gate")
 VERSION = "v1.4.2"
 FEATURE = "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance"
 SLUG = FEATURE
@@ -81,6 +88,12 @@ def _seed_project(tmp_path: Path, *, include_evidence: bool = True) -> None:
                         {"id": "AC-010", "kind": "ac", "theme": "deep-delta-adoption", "text": "Deep delta"},
                         {"id": "AC-011", "kind": "ac", "theme": "planning-line-safety", "text": "Planning line"},
                         {"id": "AC-012", "kind": "ac", "theme": "recovery-routing", "text": "Recovery routing"},
+                        {"id": "AC-013", "kind": "ac", "theme": "browser-admission", "text": "Protected browser admission"},
+                        {"id": "AC-014", "kind": "ac", "theme": "browser-evidence-authenticity", "text": "Browser evidence authenticity"},
+                        {"id": "AC-015", "kind": "ac", "theme": "browser-runner-priority", "text": "Browser runner priority"},
+                        {"id": "AC-016", "kind": "ac", "theme": "blocked-not-false-fail", "text": "Blocked not false fail"},
+                        {"id": "AC-017", "kind": "ac", "theme": "runner-learning", "text": "Runner learning"},
+                        {"id": "AC-018", "kind": "ac", "theme": "browser-lane-traceability", "text": "Browser lane traceability"},
                     ],
                 }
             ],
@@ -99,6 +112,12 @@ def _seed_project(tmp_path: Path, *, include_evidence: bool = True) -> None:
         ("TC-US010-001", "AC-010", "regression", "tests/test_v142_deep_delta_adoption.py", "deep delta routes to test-case or QA"),
         ("TC-US011-001", "AC-011", "regression", "tests/test_v142_planning_line_safety.py", "planning line safety"),
         ("TC-US012-001", "AC-012", "integration", "tests/test_v142_test_contract_recovery.py", "blocked governance has repair route"),
+        ("TC-US013-001", "AC-013", "integration", "tests/test_v142_browser_runtime_admission.py", "protected surface requires session admission"),
+        ("TC-US014-001", "AC-014", "regression", "tests/test_v142_browser_evidence_authenticity.py", "placeholder transcript is not browser closure"),
+        ("TC-US015-001", "AC-015", "contract", "tests/test_v142_browser_runner_priority.py", "protected surface runner priority"),
+        ("TC-US016-001", "AC-016", "integration", "tests/test_v142_browser_runtime_admission.py", "missing session bridge yields blocked or skip"),
+        ("TC-US017-001", "AC-017", "contract", "tests/test_v142_browser_runner_learning.py", "runner learning note contract"),
+        ("TC-US018-001", "AC-018", "integration", "tests/test_v142_browser_lane_traceability.py", "browser admission and evidence participate in lane reasoning"),
     ]
     matrix_entries = []
     for tc_id, ac_id, layer, command, assertion in entries:
@@ -143,9 +162,10 @@ def test_index_shape_and_canonical_lanes_from_frozen_truth(tmp_path: Path) -> No
     assert payload["runtime_line"] == VERSION
     assert payload["canonical_lanes"] == list(CANONICAL_TEST_CONTRACT_LANES)
     assert set(payload["lanes"]) == set(CANONICAL_TEST_CONTRACT_LANES)
-    assert len(payload["test_refs"]) == 12
+    assert len(payload["test_refs"]) == 18
     assert payload["truth_refs"]["prd"] == f"docs/beacon/{VERSION}/prd/{SLUG}.md"
     assert payload["ac_to_test_refs"]["AC-001"] == ["TC-US001-001"]
+    assert payload["ac_to_test_refs"]["AC-018"] == ["TC-US018-001"]
     assert contract_index_path(tmp_path, VERSION).exists()
 
 
@@ -212,6 +232,56 @@ def test_release_passes_test_contract_gate_after_index_build(tmp_path: Path) -> 
     assert summary["test_contract_release_blocked"] is False
 
 
+def test_release_surfaces_browser_blockers_in_host_native_delivery(tmp_path: Path) -> None:
+    _seed_project(tmp_path)
+    build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    _write_json(
+        tmp_path / ".beacon" / "qa" / "status.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "blocked",
+            "evidence_done": False,
+            "qa9": {
+                "tc_results": [
+                    {
+                        "tc_id": "TC-US013-001",
+                        "reason_code": "protected_surface_session_bridge_missing",
+                    }
+                ]
+            },
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "qa" / "features" / SLUG / "scorecard.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "stop_reasons": [
+                "browser_evidence_placeholder_only",
+                "protected_surface_runner_priority_unavailable",
+            ],
+            "continue_decision": "stop_for_repair",
+            "release_ready": False,
+            "unresolved_closure_outcomes": ["needs_more_evidence"],
+        },
+    )
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+    summary = summarize_release_scorecard(scorecard)
+
+    assert scorecard["browser_release_reason_codes"] == [
+        "browser_evidence_placeholder_only",
+        "protected_surface_runner_priority_unavailable",
+        "protected_surface_session_bridge_missing",
+    ]
+    assert "browser_evidence_placeholder_only" in scorecard["host_native_delivery"]["reason_codes"]
+    assert "protected_surface_session_bridge_missing" in summary["browser_release_reason_codes"]
+
+
 def test_qa_order_and_deep_delta_policy_are_indexed(tmp_path: Path) -> None:
     _seed_project(tmp_path)
     payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
@@ -231,6 +301,62 @@ def test_legacy_snapshot_not_release_blocker_by_default(tmp_path: Path) -> None:
 
     assert legacy_entries
     assert all(item["release_blocking"] is False for item in legacy_entries)
+
+
+def test_browser_runtime_admission_lane_is_classified_and_release_blocking(tmp_path: Path) -> None:
+    _seed_project(tmp_path)
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    browser_lane = payload["lanes"]["browser_runtime_admission"]
+
+    assert len(browser_lane) == 6
+    assert all(item["release_blocking"] is True for item in browser_lane)
+    assert {item["ac_id"] for item in browser_lane} == {"AC-013", "AC-014", "AC-015", "AC-016", "AC-017", "AC-018"}
+
+
+def test_gate_precision_contract_surfaces_browser_release_blockers(tmp_path: Path, monkeypatch) -> None:
+    version = "v1.4.2"
+    monkeypatch.setattr(gate_module, "_resolved_gate_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "qa": {
+                "feature": FEATURE,
+                "project_profile_gate_status": "pass",
+            },
+            "acceptance": {
+                "source": "feature_qa_scorecard",
+                "feature": FEATURE,
+                "release_ready": False,
+                "continue_decision": "stop_for_repair",
+                "project_profile_gate_status": "pass",
+                "unresolved_closure_outcomes": ["needs_more_evidence"],
+                "review_required_count": 0,
+                "needs_replay_count": 0,
+                "release_confidence_min": 0.4,
+            },
+            "browser_release_reason_codes": [
+                "protected_surface_session_bridge_missing",
+                "browser_evidence_placeholder_only",
+            ],
+            "host_native_delivery": {
+                "reason_codes": [
+                    "protected_surface_session_bridge_missing",
+                    "browser_evidence_placeholder_only",
+                ]
+            },
+        },
+    )
+
+    issues = gate_module.check_v110_precision_contract(
+        tmp_path,
+        gate_module.GateMode.STRICT,
+        "release",
+        version,
+    )
+
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "protected_surface_session_bridge_missing" in reason_codes
 
 
 def test_generated_surface_sync_lane_blocks_failed_evidence(tmp_path: Path) -> None:
@@ -266,3 +392,104 @@ def test_skill_guidance_mentions_contract_lanes_and_unclassified_full_suite() ->
     assert "generated_surface_sync" in combined
     assert "legacy_snapshot" in combined
     assert "unclassified full-suite" in combined
+
+
+def test_browser_runtime_admission_requires_session_for_protected_surface() -> None:
+    item = {"target_url": "https://demo-preview.vercel.app/dashboard", "exploratory_runner": "browser-use"}
+    payload = resolve_browser_runtime_admission(item=item, active_browser_session={})
+
+    assert payload["status"] == "blocked"
+    assert payload["reason_code"] == "protected_surface_session_bridge_missing"
+    assert payload["protected_surface"] is True
+
+
+def test_browser_runtime_admission_prefers_attached_session_runner() -> None:
+    item = {"target_url": "https://demo-preview.vercel.app/dashboard", "exploratory_runner": "browser-use"}
+    session = {
+        "session_id": "qa-live",
+        "runner_type": "web-access",
+        "origin": "https://demo-preview.vercel.app",
+        "storage_state_ref": ".beacon/qa/sessions/qa-live/storage-state.json",
+    }
+    payload = resolve_browser_runtime_admission(item=item, active_browser_session=session)
+
+    assert payload["status"] == "ready"
+    assert payload["preferred_runner"] == "web-access"
+    assert payload["attached_runner_available"] is True
+
+
+def test_browser_evidence_authenticity_marks_placeholder_runner_statuses() -> None:
+    payload = _browser_evidence_authenticity(
+        explore_bundle={"status": "fallback-executed"},
+        replay_bundle={},
+        admission={"status": "ready"},
+    )
+
+    assert payload["authentic"] is False
+    assert payload["reason_code"] == "browser_evidence_placeholder_only"
+
+
+def test_feature_qa_default_ui_runner_prefers_agent_browser_for_attached_session(tmp_path: Path) -> None:
+    session_root = tmp_path / ".beacon" / "qa" / "sessions" / "attached-demo"
+    session_root.mkdir(parents=True, exist_ok=True)
+    _write_json(
+        tmp_path / ".beacon" / "qa" / "current-session.json",
+        {"schema_version": "1.0", "session_id": "attached-demo"},
+    )
+    _write_json(
+        session_root / "manifest.json",
+        {
+            "schema_version": "1.0",
+            "session_id": "attached-demo",
+            "runner_type": "web-access",
+            "origin": "https://demo-preview.vercel.app",
+            "storage_state_ref": ".beacon/qa/sessions/attached-demo/storage-state.json",
+        },
+    )
+
+    assert _default_feature_qa_ui_runner(tmp_path) == "agent-browser"
+
+
+def test_browser_runner_learning_reason_code_is_frozen() -> None:
+    assert "browser_runner_learning_missing" in TEST_CONTRACT_REASON_CODES
+
+
+def test_browser_runner_learning_note_is_written(tmp_path: Path) -> None:
+    ref = _write_browser_runner_learning_note(
+        project_root=tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        tc_id="TC-US017-001",
+        admission={
+            "status": "blocked",
+            "reason_code": "protected_surface_session_bridge_missing",
+            "preferred_runner": "",
+            "requested_runner": "browser-use",
+            "target_url": "https://demo-preview.vercel.app/dashboard",
+            "protected_surface": True,
+        },
+        authenticity={"status": "placeholder_only", "reason_code": "browser_evidence_placeholder_only"},
+    )
+    path = tmp_path / ref
+    payload = json.loads(path.read_text(encoding="utf-8"))
+
+    assert payload["feature_slug"] == SLUG
+    assert payload["reason_code"] == "protected_surface_session_bridge_missing"
+    assert payload["fallback_runner"] == "web-access"
+
+
+def test_placeholder_browser_evidence_forces_needs_more_evidence() -> None:
+    item = {
+        "status": "passed",
+        "browser_required": True,
+        "replay_required": False,
+        "browser_evidence_pack_ref": ".beacon/evidence/browser-pack.json",
+        "browser_evidence_authenticity_status": "placeholder_only",
+        "replay_ref": "",
+        "evidence_ref": [".beacon/evidence/browser-pack.json"],
+    }
+    evidence = _evidence_sufficiency(item)
+    closure = _closure_outcome(item, evidence_sufficiency=evidence)
+
+    assert evidence == "weak"
+    assert closure == "needs_more_evidence"

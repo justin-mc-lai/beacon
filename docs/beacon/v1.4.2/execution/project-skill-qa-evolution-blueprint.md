@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This blueprint defines how Beacon skill delivery should guide QA and test evolution for Beacon self-iteration without turning full-suite drift into ambiguous release status.
+This blueprint defines how Beacon skill delivery should guide QA and test evolution for Beacon self-iteration without turning full-suite drift into ambiguous release status, and without letting protected live browser verification silently degrade into fake evidence or auth-noise failures.
 
 ## Skill Guidance Contract
 
@@ -19,8 +19,10 @@ Beacon skills must instruct agents to:
 3. read the frozen PRD, user-story, and test-case package;
 4. inspect or request the Test Contract Index;
 5. classify tests by lane before interpreting failures;
-6. run release-facing and current-runtime contract checks before release claims;
-7. route blockers through existing support surfaces such as `doctor`, `qa`, `release`, and `help`.
+6. classify browser-capable targets as anonymous, session-backed, or protected-live before selecting a runner;
+7. prefer `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright` for protected surfaces when those paths are actually available;
+8. run release-facing and current-runtime contract checks before release claims;
+9. route blockers through existing support surfaces such as `doctor`, `qa`, `release`, and `help`.
 
 ## QA Lane Order
 
@@ -47,12 +49,15 @@ user story / AC order
 - `generated_surface_sync`
 - `compatibility_contract`
 - `legacy_snapshot`
+- `browser_runtime_admission`
 
 ## Agent Anti-Patterns
 
 Agents must not:
 
 - claim release readiness from unclassified full-suite output;
+- treat transcript-only placeholder runner artifacts as browser QA closure;
+- keep retrying protected live URLs with clean-context Playwright when no session bridge exists;
 - treat planning-line docs as runtime release promotion;
 - rewrite frozen truth from skill text;
 - treat legacy snapshots as current release blockers by default;

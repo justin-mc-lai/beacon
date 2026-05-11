@@ -11,7 +11,7 @@
 
 `v1.4.2` 聚焦一条主线：
 
-> 把 Beacon 自迭代过程中的测试增量、契约 lane、AC/TC/pytest/evidence 映射、generated surface 同步、legacy snapshot 分类与 skill delivery 指引收敛为可审计的产品能力，确保 Beacon 在持续演进时仍能保持强交付闭环。
+> 把 Beacon 自迭代过程中的测试增量、契约 lane、AC/TC/pytest/evidence 映射、generated surface 同步、legacy snapshot 分类、browser-native QA admission 与 skill delivery 指引收敛为可审计的产品能力，确保 Beacon 在持续演进时仍能保持强交付闭环。
 
 ## 当前需求包
 
@@ -37,6 +37,8 @@
 - `legacy_snapshot` lane 不默认阻断当前 feature release，除非该测试被显式声明为 active compatibility contract。
 - generated skill/context/version surfaces 漂移必须被归类为阻断型交付风险。
 - skill delivery 文案必须指导 agent 按契约 lane 验证，而不是把 full-suite 失败作为无分类 release 判断。
+- browser-capable QA 不能停留在 placeholder runner 或 transcript-only evidence；受保护 live surface 必须显式执行 attached-session / CDP admission judgment。
+- `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright` 是 protected surface 的优先级方向；如果没有 session bridge，结果必须是 `skip/blocked`，不是假失败。
 
 ## 与 v1.4.1 的关系
 
@@ -48,6 +50,7 @@
 feature evolves
 -> affected contract layer is identified
 -> AC / TC / pytest / evidence mapping is indexed
+-> protected browser surfaces are admitted by session/runner truth
 -> tests are classified into lanes
 -> release-facing lanes gate current delivery
 -> generated surface drift blocks release

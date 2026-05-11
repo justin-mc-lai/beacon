@@ -273,6 +273,11 @@ REASON_CODES = [
     "planning_line_runtime_conflict",
     "unclassified_test_failure",
     "legacy_snapshot_misclassified_as_release_blocker",
+    "protected_surface_session_bridge_missing",
+    "protected_surface_runner_priority_unavailable",
+    "browser_evidence_placeholder_only",
+    "browser_runtime_admission_missing",
+    "browser_runner_learning_missing",
     VERSION_SURFACE_GOVERNANCE_REASON_CODE,
 ]
 
@@ -2317,6 +2322,11 @@ def check_v110_precision_contract(
             if isinstance(test_contract_governance.get("release_gate"), dict)
             else {}
         )
+        browser_release_reason_codes = [
+            str(code or "").strip()
+            for code in (release_scorecard.get("browser_release_reason_codes") or [])
+            if str(code or "").strip()
+        ]
 
         if bool(version_surface_governance.get("blocked", False)):
             manifest_path = str(version_surface_governance.get("manifest_path") or "beacon/version-truth.json").strip()
@@ -2362,6 +2372,28 @@ def check_v110_precision_contract(
                         "reason_codes": reason_codes,
                         "index_path": str(test_contract_governance.get("index_path") or ""),
                         "lane_counts": test_contract_governance.get("lane_counts", {}),
+                    },
+                }
+            )
+
+        if browser_release_reason_codes:
+            issues.append(
+                {
+                    "reason_code": browser_release_reason_codes[0],
+                    "severity": "critical",
+                    "message": f"browser QA release blockers remain open: {browser_release_reason_codes}",
+                    "blocked": True,
+                    "details": {
+                        "reason_codes": browser_release_reason_codes,
+                        "feature": str(qa_summary.get("feature") or acceptance.get("feature") or ""),
+                        "host_native_delivery_reason_codes": list(
+                            (
+                                release_scorecard.get("host_native_delivery")
+                                if isinstance(release_scorecard.get("host_native_delivery"), dict)
+                                else {}
+                            ).get("reason_codes")
+                            or []
+                        ),
                     },
                 }
             )

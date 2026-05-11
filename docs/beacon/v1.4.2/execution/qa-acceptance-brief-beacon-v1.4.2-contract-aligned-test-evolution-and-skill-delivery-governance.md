@@ -2,13 +2,14 @@
 
 - version: `v1.4.2`
 - feature: `beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance`
-- revision_id: `R1`
-- verdict: `passed`
-- accepted_at: `2026-05-09T08:57:31.665463+00:00`
-- accepted_by: `qa`
+- revision_id: `R2`
+- verdict: `stale_after_requirement_reopen`
+- accepted_at: ``
+- accepted_by: ``
 
 ## Summary
-- 可以进入 release 检查与收口。
+- R1 QA 结论因 requirement scope 扩展而失效，当前不能直接进入 release 检查。
+- 新增 browser-runtime admission / browser evidence authenticity / runner-learning 需求后，需重新生成 QA matrix、实现与验收证据。
 - source_command: `beacon qa run "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.2`
 
 ## Requirement Refs
@@ -29,7 +30,7 @@
 - `.beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json`
 
 ## Verdict Summary
-- required_ac_count: `12`
+- required_ac_count: `18`
 - required_test_count: `0`
-- story_status: `accepted`
-- revision_delivery_status: `accepted`
+- story_status: `reopened-to-r2`
+- revision_delivery_status: `pending`

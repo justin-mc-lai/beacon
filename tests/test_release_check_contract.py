@@ -503,3 +503,144 @@ def test_release_check_should_fail_when_version_surface_governance_drift_exists(
     assert "version_surface_governance_drift" in result.stdout
     assert f"repair=beacon doctor sync-version-surfaces --project-root {tmp_path}" in result.stdout
     assert f"verify=beacon doctor verify-version-surfaces --project-root {tmp_path} --strict" in result.stdout
+
+
+def test_release_check_should_print_browser_blocker_repairs(tmp_path: Path, monkeypatch):
+    version = "v1.4.2"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a"},
+            "semantic": {},
+            "browser_release_reason_codes": [
+                "protected_surface_session_bridge_missing",
+                "browser_evidence_placeholder_only",
+            ],
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 1, result.stdout
+    assert "Browser blockers:" in result.stdout
+    assert "protected_surface_session_bridge_missing" in result.stdout
+    assert "browser_evidence_placeholder_only" in result.stdout
+    assert "Recommended command: beacon qa run" in result.stdout
+
+
+def test_release_check_json_should_include_browser_blocker_repairs(tmp_path: Path, monkeypatch):
+    version = "v1.4.2"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a"},
+            "semantic": {},
+            "browser_release_reason_codes": [
+                "protected_surface_runner_priority_unavailable",
+            ],
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path), "--json"])
+
+    assert result.exit_code == 1, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["browser_release_blockers"][0]["reason_code"] == "protected_surface_runner_priority_unavailable"
+    assert "attached-session runner" in payload["browser_release_blockers"][0]["summary"]
+    assert payload["recommended_command"].startswith("beacon qa run")
+
+
+def test_release_scorecard_should_print_browser_blockers(tmp_path: Path, monkeypatch):
+    version = "v1.4.2"
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "version": version,
+            "release_ready": False,
+            "gate": {"status": "Blocked", "blocked_count": 1},
+            "qa": {"status": "blocked", "evidence_done": False, "execution_mode": "feature-aware", "feature": "feature-a"},
+            "browser_release_reason_codes": [
+                "protected_surface_session_bridge_missing",
+                "browser_evidence_placeholder_only",
+            ],
+            "feature_qa_scorecard": {
+                "release_confidence_min": 0.4,
+                "review_required_count": 1,
+                "needs_replay_count": 0,
+                "continue_decision": "stop_for_repair",
+                "test_case_backfill_required": False,
+            },
+            "learning_scorecard": {"decision_summary": {"keep": 0, "review": 1, "discard": 0}},
+        },
+    )
+
+    result = _invoke(["release", "scorecard", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "Browser release blockers:" in result.stdout
+    assert "protected_surface_session_bridge_missing" in result.stdout
+    assert "browser_evidence_placeholder_only" in result.stdout
+    assert "Recommended command: beacon qa run" in result.stdout
+
+
+def test_release_scorecard_json_should_preserve_browser_blocker_codes(tmp_path: Path, monkeypatch):
+    version = "v1.4.2"
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "version": version,
+            "release_ready": False,
+            "gate": {"status": "Blocked", "blocked_count": 1},
+            "qa": {"status": "blocked", "evidence_done": False, "execution_mode": "feature-aware", "feature": "feature-a"},
+            "browser_release_reason_codes": [
+                "browser_runner_learning_missing",
+            ],
+            "learning_scorecard": {"decision_summary": {"keep": 0, "review": 1, "discard": 0}},
+        },
+    )
+
+    result = _invoke(["release", "scorecard", version, "--project", str(tmp_path), "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["browser_release_reason_codes"] == ["browser_runner_learning_missing"]
