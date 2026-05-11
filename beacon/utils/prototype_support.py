@@ -15,10 +15,10 @@ from beacon.utils.prototype_utils import (
 
 
 PROTOTYPE_TRIGGER_PATTERNS = (
-    re.compile(r"\bprototype\b", re.IGNORECASE),
-    re.compile(r"\bwireframe\b", re.IGNORECASE),
     re.compile(r"ui_visualization_required\s*[:=]\s*true", re.IGNORECASE),
     re.compile(r"prototype_freeze_required\s*[:=]\s*true", re.IGNORECASE),
+    re.compile(r"interactive_prototype_required\s*[:=]\s*true", re.IGNORECASE),
+    re.compile(r"prototype_ux_prd_required\s*[:=]\s*true", re.IGNORECASE),
 )
 ROUTE_CLOSURE_PATTERNS = (
     re.compile(r"route_closure_required\s*[:=]\s*true", re.IGNORECASE),
@@ -65,6 +65,20 @@ def prototype_status(project_root: Path, version: str, feature: str) -> dict[str
     payload["files"] = files
     payload["paths"] = {key: str(path) for key, path in files.items()}
     return payload
+
+
+def feature_requires_prototype(project_root: Path, version: str, feature: str) -> bool:
+    refs = source_refs(project_root, version, feature)
+    for path in refs.values():
+        if not path.exists():
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            continue
+        if any(pattern.search(text) for pattern in PROTOTYPE_TRIGGER_PATTERNS):
+            return True
+    return False
 
 
 def version_requires_prototype(project_root: Path, version: str) -> bool:

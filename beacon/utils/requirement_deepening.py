@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, resolve_target_version
@@ -768,7 +769,12 @@ def build_requirement_completeness_gate(
 
     recommended_command = ""
     if blocked:
-        recommended_command = "beacon-change"
+        recommended_command = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="requirement-completeness-blocked",
+        )
     elif status == "pass_with_downgrade":
         recommended_command = f'beacon {target_stage} {"status" if target_stage == "prototype" else "run"} "{feature}"'
 

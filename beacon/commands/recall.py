@@ -5,6 +5,7 @@ from pathlib import Path
 import json
 
 from beacon.utils.memory import load_memory_entries, normalize_memory_type, search_memory_entries
+from beacon.utils.learn_surface import run_governed_recall
 
 app = typer.Typer(name="recall", help="Restore saved session")
 
@@ -139,6 +140,38 @@ def memory(
         refs = item.get("evidence_ref", [])
         if isinstance(refs, list) and refs:
             typer.echo(f"  evidence_ref: {', '.join(str(x) for x in refs)}")
+
+
+@app.command("governed")
+def governed(
+    feature: str = typer.Argument(..., help="Feature or surface name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    mode: str = typer.Option("recall", "--mode", help="Mode: recall|audit|prune"),
+    query: str = typer.Option("", "--query", help="Optional search query"),
+    memory_type: str = typer.Option("", "--type", "-y", help="Optional memory type filter"),
+    limit: int = typer.Option(10, "--limit", "-n", help="Max results"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Run governed learning recall and write a support-surface receipt."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = run_governed_recall(
+        project_root,
+        version=version,
+        feature=feature,
+        mode=mode,
+        query=query,
+        memory_type=memory_type,
+        limit=limit,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Governed learning complete: {payload.get('status')}")
+    typer.echo(f"✓ Summary: {payload.get('operator_visible_summary')}")
+    next_route = payload.get("next_route", {}) if isinstance(payload.get("next_route"), dict) else {}
+    if next_route.get("command"):
+        typer.echo(f"✓ Next route: {next_route.get('command')}")
 
 
 if __name__ == "__main__":

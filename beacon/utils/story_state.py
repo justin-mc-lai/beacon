@@ -292,7 +292,24 @@ def freeze_story_state(project_root: Path, version: str, feature: str) -> dict[s
     root_state = ensure_story_state(project_root, version, feature)
     rev = get_active_revision(root_state)
     if rev is None:
-        raise ValueError("active revision missing")
+        current_revision_id = str(root_state.get("current_revision_id", "") or "R1")
+        revisions = root_state.get("revisions") if isinstance(root_state.get("revisions"), list) else []
+        rev = {
+            "revision_id": current_revision_id,
+            "feature_slug": feature_slug(feature),
+            "source_revision_id": None,
+            "reason": "freeze",
+            "doc_status": "draft",
+            "delivery_status": "idle",
+            "baseline_hash": None,
+            "superseded_by": None,
+            "created_at": _now_iso(),
+            "frozen_at": None,
+            "accepted_at": None,
+            "accepted_by": None,
+        }
+        revisions.append(rev)
+        root_state["revisions"] = revisions
     rev["doc_status"] = "frozen"
     rev["reason"] = rev.get("reason") or "freeze"
     rev["frozen_at"] = _now_iso()

@@ -268,7 +268,7 @@ def test_v140_prd_bootstrap_unit_full_inconsistent_should_expose_beacon_change_r
     assert result.exit_code == 2, result.stdout
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "truth_drift_detected"
-    assert payload["recommended_command"] == "beacon-change"
+    assert payload["recommended_command"].startswith('beacon change "Unified Closure"')
 
 
 def test_v140_prd_bootstrap_prd_test_case_should_require_truth_review(tmp_path: Path) -> None:

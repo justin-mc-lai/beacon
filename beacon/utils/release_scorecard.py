@@ -661,8 +661,13 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and not bool(requirement_clarity_gate.get("blocked", False))
             and bool(requirement_clarity_state)
             and not bool(technical_review_gate.get("blocked", False))
-            and str(technical_review_state.get("review_status") or "").strip().lower() in {"approved", "accepted"}
-            and bool(technical_review_state)
+            and (
+                not bool(technical_review_gate.get("required", False))
+                or (
+                    str(technical_review_state.get("review_status") or "").strip().lower() in {"approved", "accepted"}
+                    and bool(technical_review_state)
+                )
+            )
             and bool(change_documents.get("markdown_exists", False))
             and bool(change_documents.get("json_exists", False))
             and bool(change_documents.get("version_match", False))

@@ -22,11 +22,14 @@ from beacon.utils.implementation_plan import (
 from beacon.utils.learning_loop import requirement_rewrite_input_path
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.project_skills import evaluate_project_profile_gate
+from beacon.utils.prototype_support import feature_requires_prototype
 from beacon.utils.prototype_utils import evaluate_prototype_status, review_prototype_bundle
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_closure import build_requirement_closure
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.runtime import now_iso
+from beacon.utils.ceo_review_surface import run_ceo_review
+from beacon.utils.design_review_surface import write_design_review_transaction
 from beacon.utils.story_state import load_story_state
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.workflow_memory import resolve_workflow_run_id
@@ -35,7 +38,7 @@ from beacon.utils.writeback import (
     record_verification_writeback,
     sync_acceptance_workflow_closure,
 )
-from beacon.utils.versioning import resolve_operational_docs_version
+from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="review", help="Formal implementation-stage review actions")
 
@@ -272,6 +275,99 @@ def _design_security_review(paths: dict[str, Path]) -> dict[str, Any]:
         ],
         "severity_counts": severity_counts,
         "findings": findings,
+    }
+
+
+def _design_requirement_review(paths: dict[str, Path]) -> dict[str, Any]:
+    texts: list[str] = []
+    evidence_refs: list[str] = []
+    for key in ("user_story", "prd", "test_case"):
+        path = paths[key]
+        if path.exists():
+            texts.append(path.read_text(encoding="utf-8", errors="ignore"))
+            evidence_refs.append(str(path.name))
+    joined = "\n".join(texts)
+    lowered = joined.lower()
+
+    findings: list[dict[str, Any]] = []
+
+    def add_finding(*, reason_code: str, severity: str, message: str) -> None:
+        findings.append(
+            {
+                "reason_code": reason_code,
+                "severity": severity,
+                "message": message,
+                "evidence": evidence_refs,
+            }
+        )
+
+    has_page_signal = any(
+        token in lowered
+        for token in (
+            "page",
+            "screen",
+            "ui",
+            "ux",
+            "wireframe",
+            "route",
+            "navigation",
+            "state",
+            "component",
+            "页面",
+            "界面",
+            "交互",
+            "原型",
+            "路由",
+            "导航",
+            "状态",
+            "组件",
+        )
+    )
+    has_hierarchy_signal = any(
+        token in lowered
+        for token in ("hierarchy", "information architecture", "layout", "section", "层级", "布局", "信息架构")
+    )
+    has_state_signal = any(
+        token in lowered
+        for token in ("state", "empty", "loading", "error", "success", "状态", "空态", "加载", "异常", "错误")
+    )
+    has_interaction_signal = any(
+        token in lowered
+        for token in ("click", "tap", "submit", "interaction", "flow", "trigger", "点击", "提交", "交互", "流程")
+    )
+
+    if has_page_signal and not has_hierarchy_signal:
+        add_finding(
+            reason_code="page_hierarchy_unspecified",
+            severity="medium",
+            message="UI/UX-related requirement materials mention pages or surfaces, but information hierarchy remains implicit.",
+        )
+    if has_page_signal and not has_state_signal:
+        add_finding(
+            reason_code="state_model_missing",
+            severity="high",
+            message="UI/UX-related requirement materials mention pages or routes, but user-visible states are not explicit.",
+        )
+    if has_page_signal and not has_interaction_signal:
+        add_finding(
+            reason_code="interaction_contract_ambiguous",
+            severity="medium",
+            message="UI/UX-related requirement materials mention pages or surfaces, but interaction triggers and transitions are ambiguous.",
+        )
+
+    status = "pass"
+    if any(str(item.get("severity", "")).lower() == "high" for item in findings):
+        status = "fail"
+    elif findings:
+        status = "warn"
+    return {
+        "mode": "requirement-driven-design-review",
+        "status": status,
+        "findings": findings,
+        "ui_surface_detected": has_page_signal,
+        "hierarchy_signal": has_hierarchy_signal,
+        "state_signal": has_state_signal,
+        "interaction_signal": has_interaction_signal,
     }
 
 
@@ -711,15 +807,35 @@ def review_design(
 ):
     """Review prototype design quality plus cso-inspired software-design security signals."""
     project_root = Path(project) if project else Path.cwd()
-    resolved_version = _resolved_operational_version(project_root, version, "review design")
+    resolved_version = resolve_target_version(project_root, version)
     paths = _feature_paths(project_root, resolved_version, feature)
     issues: list[dict[str, Any]] = []
     recommendations: list[str] = []
+    truth_missing = False
+    required_docs = {
+        "user_story_missing": paths["user_story"],
+        "prd_missing": paths["prd"],
+        "test_case_missing": paths["test_case"],
+    }
+    for reason_code, path in required_docs.items():
+        if not path.exists():
+            truth_missing = True
+            issues.append(
+                {
+                    "reason_code": reason_code,
+                    "severity": "critical",
+                    "message": f"required artifact missing: {path.relative_to(project_root)}",
+                }
+            )
+
+    prototype_required = feature_requires_prototype(project_root, resolved_version, feature)
+    prototype_exists = paths["prototype_dir"].exists()
+    requirement_design_review = _design_requirement_review(paths)
 
     prototype_payload: dict[str, Any] = {}
-    prototype_review_status = "missing"
+    prototype_review_status = "not_required"
     design_review_outcome = "missing"
-    if paths["prototype_dir"].exists():
+    if prototype_exists:
         try:
             prototype_payload = review_prototype_bundle(project_root, resolved_version, feature)
         except (FileNotFoundError, ValueError) as exc:
@@ -750,14 +866,31 @@ def review_design(
                     }
                 )
     else:
+        if prototype_required:
+            prototype_review_status = "missing"
+            issues.append(
+                {
+                    "reason_code": "prototype_missing",
+                    "severity": "warn" if not truth_missing else "critical",
+                    "message": "this feature still requires a prototype bundle before formal prototype freeze.",
+                }
+            )
+            recommendations.append("Run `beacon prototype create ...` after design-review findings are accepted.")
+        else:
+            prototype_review_status = "not_required"
+            design_review_outcome = "prototype_not_required"
+
+    for finding in requirement_design_review.get("findings", []):
+        if not isinstance(finding, dict):
+            continue
+        severity = str(finding.get("severity", "medium") or "medium")
         issues.append(
             {
-                "reason_code": "prototype_missing",
-                "severity": "critical",
-                "message": "review design requires a generated prototype bundle",
+                "reason_code": str(finding.get("reason_code", "ux_evidence_missing") or "ux_evidence_missing"),
+                "severity": "critical" if severity == "high" else "warn",
+                "message": str(finding.get("message", "") or ""),
             }
         )
-        recommendations.append("Run `beacon prototype create ...` before `beacon review design`.")
 
     security_design_review = _design_security_review(paths)
     for finding in security_design_review.get("findings", []):
@@ -775,12 +908,19 @@ def review_design(
         recommendations.append("Add explicit role/auth boundaries, sensitive-surface controls, and validation constraints to the user-story/PRD.")
     if security_design_review.get("severity_counts", {}).get("medium"):
         recommendations.append("Backfill auditability, trust-boundary, and evidence-trace rules before release gate.")
+    if requirement_design_review.get("findings"):
+        recommendations.append("Backfill page hierarchy, state model, and interaction contract details into PRD/user-story/test-case before prototype freeze.")
     if design_review_outcome == "blocked":
         recommendations.append("Fix critical design guideline findings before design/governance freeze.")
     elif design_review_outcome == "revise":
         recommendations.append("Apply the suggested design iteration writeback and rerun `beacon review design`.")
 
     gate_ready = not any(item.get("severity") == "critical" for item in issues)
+    if gate_ready:
+        if prototype_required:
+            design_review_outcome = "ready_for_prototype"
+        elif design_review_outcome in {"missing", ""}:
+            design_review_outcome = "prototype_not_required"
     status = "pass" if gate_ready and not issues else ("fail" if not gate_ready else "warn")
     payload = {
         "schema_version": "1.0",
@@ -793,10 +933,12 @@ def review_design(
         "gate_ready": gate_ready,
         "prototype_review_status": prototype_review_status,
         "design_review_outcome": design_review_outcome,
+        "prototype_required": prototype_required,
         "prototype_review": {
             "overall_status": prototype_payload.get("overall_status", ""),
             "iteration_writeback_path": prototype_payload.get("iteration_writeback_path", ""),
         },
+        "requirement_design_review": requirement_design_review,
         "security_design_review": security_design_review,
         "issues": issues,
         "recommendations": recommendations,
@@ -809,11 +951,60 @@ def review_design(
         markdown=_render_design_markdown(payload),
         artifact_name=artifact_name,
     )
+    payload["support_surface_transaction"] = write_design_review_transaction(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        status=status,
+        design_verdict=(
+            "prototype_not_required"
+            if gate_ready and not prototype_required
+            else "ready_for_prototype"
+            if gate_ready and prototype_required
+            else "needs_design_revision"
+        ),
+        issues=issues,
+        prototype_exists=prototype_exists,
+        evidence_refs=[
+            str(payload["artifacts"]["markdown"]),
+            str(payload["artifacts"]["json"]),
+        ],
+    )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     typer.echo(f"✓ Review design complete: {status}")
     typer.echo(f"✓ Review report: {paths['execution'] / f'{artifact_name}.md'}")
+
+
+@app.command("ceo")
+def review_ceo(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    focus: str = typer.Option("full", "--focus", help="Focus: problem|scope|promise|full"),
+    decision: str = typer.Option("", "--decision", help="Optional explicit decision: expand|hold|reduce|reframe"),
+    change_intent: str = typer.Option("", "--change-intent", help="Optional operator change-intent hint"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Run version-level CEO review over frozen requirement materials."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = run_ceo_review(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        focus=focus,
+        decision=decision,
+        change_intent=change_intent,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ CEO review complete: {payload.get('status')}")
+    next_route = payload.get("next_route", {}) if isinstance(payload.get("next_route"), dict) else {}
+    if next_route.get("command"):
+        typer.echo(f"✓ Next route: {next_route.get('command')}")
 
 
 @app.command("accept")

@@ -234,7 +234,7 @@ def test_implement_run_should_block_requirement_change_host_prompt_before_execut
     assert payload["prompt_boundary"]["classification"] == "requirement_change"
     assert payload["prompt_boundary"]["blocked"] is True
     assert payload["next_action"] == "beacon-change"
-    assert payload["recommended_command"] == "beacon-change"
+    assert payload["recommended_command"].startswith('beacon change "My Feature"')
 
 
 def test_implement_run_should_block_truth_conflict_host_prompt_before_execution(monkeypatch, tmp_path: Path):

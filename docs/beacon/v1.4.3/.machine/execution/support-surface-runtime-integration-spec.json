@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.3",
+  "status": "implementation-spec-ready",
+  "human_entry_skills": [
+    "skills/beacon/beacon-ceo-review/SKILL.md",
+    "skills/beacon/beacon-design-review/SKILL.md",
+    "skills/beacon/beacon-learn/SKILL.md"
+  ],
+  "runtime_command_anchors": [
+    "beacon/commands/review.py",
+    "beacon/commands/design.py",
+    "beacon/commands/recall.py",
+    "beacon/commands/help.py",
+    "beacon/commands/status.py"
+  ],
+  "recommended_utils": [
+    "beacon/utils/support_surface_transactions.py",
+    "beacon/utils/support_surface_reason_codes.py",
+    "beacon/utils/ceo_review_surface.py",
+    "beacon/utils/design_review_surface.py",
+    "beacon/utils/learn_surface.py"
+  ],
+  "read_model_fields": [
+    "status",
+    "blocked",
+    "reason_code",
+    "state_path",
+    "latest_next_route"
+  ],
+  "writeback_rule": "accepted support-surface outputs route into existing truth surfaces only"
+}

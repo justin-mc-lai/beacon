@@ -73,6 +73,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.init import app as init_app
     from .commands.status import app as status_app
     from .commands.archive import app as archive_app
+    from .commands.change import change_entry
     from .commands.report import app as report_app
     from .commands.review import app as review_app
     from .commands.skill import app as skill_app
@@ -143,6 +144,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(status_app, name="status")
     app.add_typer(doctor_app, name="doctor")
     app.add_typer(archive_app, name="archive")
+    app.command("change")(change_entry)
     app.add_typer(workflow_app, name="workflow", hidden=True)
     app.add_typer(init_app, name="init")
     app.add_typer(profile_app, name="profile")

@@ -9,6 +9,7 @@ import typer
 
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.runtime import load_run_state
+from beacon.utils.support_surface_transactions import load_support_surface_summary
 from beacon.utils.workflow_memory import resolve_workflow_run_id
 
 app = typer.Typer(
@@ -165,12 +166,22 @@ def _render_human(payload: dict[str, object]) -> str:
             f"- templates: {', '.join(discovery.get('templates', [])) if isinstance(discovery.get('templates'), list) else ''}",
         ])
     reasons = payload.get("blocking_reasons", []) if isinstance(payload.get("blocking_reasons"), list) else []
+    support_reviews = payload.get("support_reviews", {}) if isinstance(payload.get("support_reviews"), dict) else {}
     lines.extend(["", "blocking reasons"])
     if reasons:
         for reason in reasons:
             lines.append(f"- {reason}")
     else:
         lines.append("- none")
+    if support_reviews:
+        lines.extend(["", "support surfaces"])
+        for surface_key in ("ceo_review", "design_review", "learning_governance"):
+            item = support_reviews.get(surface_key, {}) if isinstance(support_reviews.get(surface_key), dict) else {}
+            if not item or not item.get("status"):
+                continue
+            lines.append(
+                f"- {surface_key}: status={item.get('status')} blocked={item.get('blocked')} next={item.get('latest_next_route') or 'none'}"
+            )
     return "\n".join(lines) + "\n"
 
 
@@ -195,6 +206,11 @@ def _help_impl(project_root: str, version: str, feature: str, run_id: str, chang
         run_id=run_id or None,
         change_intent=change_intent or None,
     )
+    payload["support_reviews"] = {
+        "ceo_review": load_support_surface_summary(root, surface="beacon-ceo-review"),
+        "design_review": load_support_surface_summary(root, surface="beacon-design-review"),
+        "learning_governance": load_support_surface_summary(root, surface="beacon-learn"),
+    }
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:

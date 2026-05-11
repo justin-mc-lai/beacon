@@ -52,6 +52,14 @@ _REQUIRED_LIST_FIELDS = (
 )
 
 
+def _feature_change_markdown_path(project_root: Path, version: str, feature: str) -> Path:
+    return project_root / "docs" / "beacon" / version / "change" / f"{feature_slug(feature)}.md"
+
+
+def _version_change_payload_path(project_root: Path, version: str) -> Path:
+    return project_root / "docs" / "beacon" / version / ".machine" / "change" / f"{version}.json"
+
+
 def _normalize_string_list(values: Any) -> list[str]:
     if not isinstance(values, list):
         return []
@@ -83,6 +91,55 @@ def technical_review_contract_supported(version: str | None) -> bool:
         return (int(major), int(minor), int(patch)) >= (1, 3, 1)
     except Exception:  # noqa: BLE001
         return False
+
+
+def feature_is_aggregation_contract(project_root: Path, *, version: str = "auto", feature: str) -> bool:
+    resolved_version = resolve_target_version(project_root, version)
+    change_path = _feature_change_markdown_path(project_root, resolved_version, feature)
+    if change_path.exists():
+        try:
+            text = change_path.read_text(encoding="utf-8")
+        except Exception:  # noqa: BLE001
+            text = ""
+        normalized = " ".join(text.lower().split())
+        if "reopened-for-subfeature-decomposition" in normalized:
+            return True
+        if "aggregation contract" in normalized and "subfeature" in normalized:
+            return True
+
+    version_change_payload = read_json(_version_change_payload_path(project_root, resolved_version), {})
+    waves = (
+        version_change_payload.get("implementation_order", {}).get("waves", [])
+        if isinstance(version_change_payload.get("implementation_order"), dict)
+        else []
+    )
+    for wave in waves if isinstance(waves, list) else []:
+        features = wave.get("features") if isinstance(wave, dict) else []
+        for item in features if isinstance(features, list) else []:
+            if not isinstance(item, dict):
+                continue
+            if str(item.get("feature_slug") or "").strip() != feature_slug(feature):
+                continue
+            if str(item.get("reason_code") or "").strip() == "umbrella_acceptance_aggregation":
+                return True
+
+    return False
+
+
+def feature_requires_technical_review(project_root: Path, *, version: str = "auto", feature: str) -> bool:
+    resolved_version = resolve_target_version(project_root, version)
+    resolved_runtime = resolve_runtime_version(project_root, "auto")
+    if not project_runtime_feature_enabled(
+        project_root,
+        "v1.3.1",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        return False
+    if feature_is_aggregation_contract(project_root, version=resolved_version, feature=feature):
+        return False
+
+    return True
 
 
 def technical_review_contract_json_path(project_root: Path, version: str, feature: str) -> Path:
@@ -467,12 +524,7 @@ def build_technical_review_gate_payload(
         "version": resolved_version,
         "runtime_version": resolved_runtime,
         "runtime_capability_line": "v1.3.1",
-        "required": project_runtime_feature_enabled(
-            project_root,
-            "v1.3.1",
-            docs_version=resolved_version,
-            runtime_version=resolved_runtime,
-        ),
+        "required": feature_requires_technical_review(project_root, version=resolved_version, feature=feature),
         "contract_json_path": str(json_path.relative_to(project_root)),
         "contract_markdown_path": str(markdown_path.relative_to(project_root)),
         "state_path": str(technical_review_state_path(project_root, feature).relative_to(project_root)),
@@ -481,6 +533,7 @@ def build_technical_review_gate_payload(
         "reason_code": "",
     }
     if not payload["required"]:
+        payload["status"] = "not_required"
         return payload
     if not json_path.exists():
         payload.update(

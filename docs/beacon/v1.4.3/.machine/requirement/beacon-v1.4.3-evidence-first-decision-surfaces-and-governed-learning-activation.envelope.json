@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "generated_at": "2026-05-11T13:00:48.524954+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+    "user_story": "user-story:docs/beacon/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`",
+      "Version**: `v1.4.3`",
+      "Date**: `2026-05-11`",
+      "Status**: `freeze-ready`",
+      "Track**: `human-surface + decision-protocol + prototype-governance + learning-plane + support-explainability`",
+      "Scenario**: `version-level-requirement-challenge + design-decision-governance + prototype-de-overloading + learning-default-input`",
+      "Template**: `main PRD / next-version planning`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Current runtime architecture: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`",
+      " Current runtime/default docs line: `docs/beacon/v1.4.0/SUMMARY.md`",
+      " Test-governance planning line: `docs/beacon/v1.4.2/SUMMARY.md`",
+      " Human-surface benchmark: `docs/analysis/beacon-v1.4.0-human-surface-and-subskill-benchmark-vs-gstack.md`",
+      " Command matrix and prototype gap analysis: `docs/analysis/beacon-v1.4.0-gstack-command-matrix-and-prototype-surface-gap.md`",
+      " Related PRD:"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`",
+      "Version**: `v1.4.3`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer or advanced operator,",
+      "I want** Beacon to challenge requirement direction earlier, separate design decision from prototype freeze, and inject learning into default decision surfaces visibly and safely,",
+      "So that** Beacon becomes stronger in evidence-first quality from problem framing through UX handoff and release, instead of only after frozen truth enters implementation.",
+      " AC-001 Beacon exposes `beacon-ceo-review` as a support/review surface for version-level or major-feature requirement challenge.",
+      " AC-002 `beacon-ceo-review` can explicitly produce `expand / hold / reduce / reframe` outputs.",
+      " AC-003 `ceo-review` cannot freeze truth directly and must route accepted changes through existing truth surfaces."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`",
+      "Test Type**: `contract + integration + regression`",
+      "Version**: `v1.4.3`",
+      "Status**: `freeze-ready`",
+      "Primary Truth**: `docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md`",
+      "Upstream User Story**: `docs/beacon/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md`",
+      "Global Boundary Truth**: `docs/beacon/global-boundaries.md`",
+      "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |",
+      "| AC-001 | TC-US001-001 | contract | `python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"ceo_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"` | CEO review subfeature acceptance is passed and projected into runtime acceptance artifacts | `.beacon/evidence/test-results/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/TC-US001-001.json` |",
+      "| AC-002 | TC-US002-001 | contract | `python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"ceo_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"` | CEO review subfeature acceptance includes explicit strategic judgment support inside the accepted closure | `.beacon/evidence/test-results/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/TC-US002-001.json` |"
+    ]
+  }
+}

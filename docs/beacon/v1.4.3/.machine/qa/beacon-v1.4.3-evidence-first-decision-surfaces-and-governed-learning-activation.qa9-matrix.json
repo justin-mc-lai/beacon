@@ -1,0 +1,680 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-11T19:02:01.066936",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-11T19:02:01.065798",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-US001-001",
+      "ac_id": "AC-001",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-001 :: `beacon-ceo-review` exists as a support/review surface rather than a lifecycle s",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-ceo-review` exists as a support/review surface rather than a lifecycle stage",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US002-001",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-002 :: `ceo-review` supports `expand / hold / reduce / reframe` outputs",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"scope_judgment_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`ceo-review` supports `expand / hold / reduce / reframe` outputs",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US003-001",
+      "ac_id": "AC-003",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-003 :: `ceo-review` cannot freeze truth directly and routes accepted changes through ex",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`ceo-review` cannot freeze truth directly and routes accepted changes through existing truth surfaces",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US004-001",
+      "ac_id": "AC-004",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-004 :: `beacon-design-review` exists as a support/review surface",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_design_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-design-review` exists as a support/review surface",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US005-001",
+      "ac_id": "AC-005",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-005 :: `design-review` owns UI/UX challenge while `prototype` remains formal freeze/han",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Design review subfeature acceptance proves `design-review -> prototype -> implement` layering when triggered",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US006-001",
+      "ac_id": "AC-006",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-006 :: `prototype` is explicitly prevented from defaulting into strategy or design-fina",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Design review subfeature acceptance proves prototype de-overloading is part of accepted closure",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US007-001",
+      "ac_id": "AC-007",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-007 :: `beacon-learn` exists as a visible learning governance surface",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"learn_surface_exists_and_is_visible\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-learn` exists as a visible learning governance surface",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US008-001",
+      "ac_id": "AC-008",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-008 :: core decision surfaces can inject relevant learning by default through governed ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Governed learning subfeature acceptance proves default learning injection is part of accepted closure",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US009-001",
+      "ac_id": "AC-009",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-009 :: operators can see which learning influenced the current route or judgment and it",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Governed learning subfeature acceptance proves applied learning remains visible with staleness/conflict context",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US010-001",
+      "ac_id": "AC-010",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-010 :: stale or conflicting learning is downgraded, flagged, or pruned instead of silen",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"stale_and_conflicting_learning_downgraded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "stale or conflicting learning is downgraded, flagged, or pruned instead of silently reused",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US011-001",
+      "ac_id": "AC-011",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-011 :: `help / status / ask / deep` explain route recommendation, evidence gaps, and le",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_route_explainability.py -k \"support_surfaces_explain_route_and_learning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`help / status / ask / deep` explain route recommendation, evidence gaps, and learning influence in human-readable form",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US012-001",
+      "ac_id": "AC-012",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-012 :: the new surfaces do not become a second truth root, second gate truth, or new li",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"version_line_preserves_boundary_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "The umbrella version line keeps the public lifecycle unchanged and keeps review surfaces as support surfaces",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt"
+    },
+    {
+      "tc_id": "TC-US013-001",
+      "ac_id": "AC-013",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation US-013 :: v1.4.3 splits into 3 freeze-ready subfeatures with implementation-not-started st",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"umbrella_subfeatures_are_qa_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.4.3 aggregates 3 freeze-ready subfeatures whose implementation is QA-accepted as umbrella evidence",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "last_run_id": "run-20260511T192413577986",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-11T19:02:01.066968",
+  "coverage_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "exception",
+    "recovery",
+    "compatibility",
+    "permission",
+    "stale-data-or-drift",
+    "downgrade-or-fallback"
+  ],
+  "requirement_completeness_verdict": "pass",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\" --project <project-root> --version v1.4.3 --json",
+  "supplement_task": {
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+    "writeback_target": "docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\" --project <project-root> --version v1.4.3 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "revision_id": "R1",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "docs/beacon/v1.4.3/.machine/requirement",
+      "envelope": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.re-freeze-transaction.json"
+    },
+    "refreeze_required": true,
+    "revalidate_required": true,
+    "decision_count": 15,
+    "generated_at": "2026-05-11T11:01:58.153491+00:00"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema_version": "1.0",
+  "review_type": "design",
+  "feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+  "feature_slug": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+  "version": "v1.4.3",
+  "generated_at": "2026-05-11T09:17:49.884102+00:00",
+  "status": "fail",
+  "gate_ready": false,
+  "prototype_review_status": "missing",
+  "design_review_outcome": "missing",
+  "prototype_review": {
+    "overall_status": "",
+    "iteration_writeback_path": ""
+  },
+  "security_design_review": {
+    "mode": "cso-inspired-design-review",
+    "status": "pass",
+    "security_dimensions": [
+      "privileged_action_boundaries",
+      "upload_and_file_constraints",
+      "secret_handling_surfaces",
+      "external_integration_boundaries",
+      "auditability_and_evidence"
+    ],
+    "severity_counts": {
+      "high": 0,
+      "medium": 0
+    },
+    "findings": []
+  },
+  "issues": [
+    {
+      "reason_code": "prototype_missing",
+      "severity": "critical",
+      "message": "review design requires a generated prototype bundle"
+    }
+  ],
+  "recommendations": [
+    "Run `beacon prototype create ...` before `beacon review design`."
+  ]
+}

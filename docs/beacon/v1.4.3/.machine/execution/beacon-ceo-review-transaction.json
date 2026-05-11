@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-beacon-ceo-review-v1.4.3-beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface-20260511t094429z",
+  "surface": "beacon-ceo-review",
+  "mode": "full",
+  "version": "v1.4.3",
+  "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "feature_slug": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "status": "accepted_for_writeback",
+  "decision": "reframe",
+  "reason_codes": [],
+  "truth_refs": [
+    "docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+    "docs/beacon/v1.4.3/user-story/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+    "docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md"
+  ],
+  "evidence_refs": [],
+  "route_decision": {
+    "route": "change/refreeze",
+    "target_surface": "beacon-change"
+  },
+  "next_route": {
+    "command": "beacon change \"beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface\" --project-root . --version v1.4.3 --reason \"reframe\"",
+    "why": "Requirement direction must be updated before implementation truth remains reliable.",
+    "target_surface": "beacon-change",
+    "priority": "high",
+    "prerequisites": [
+      "accepted ceo-review decision"
+    ]
+  },
+  "writeback_targets": [
+    "beacon-change",
+    "beacon-prd",
+    "beacon-user-story",
+    "beacon-test-case"
+  ],
+  "blocked": false,
+  "blocked_reason": "",
+  "operator_visible_summary": "CEO review decision is `reframe` for focus `full`.",
+  "created_at": "2026-05-11T09:44:29.418873+00:00"
+}

@@ -39,6 +39,7 @@ from beacon.utils.team_surface import implement_team_contract
 from beacon.utils.technical_review_contract import (
     approved_technical_review_contract,
     build_technical_review_gate_payload,
+    feature_requires_technical_review,
     load_technical_review_contract,
     materialize_technical_review_contract,
     technical_review_git_workflow_seed,
@@ -82,6 +83,10 @@ def implementation_plan_supported(version: str | None) -> bool:
         return (int(major), int(minor), int(patch)) >= (1, 1, 12)
     except Exception:  # noqa: BLE001
         return False
+
+
+def feature_requires_implementation_plan(project_root: Path, *, version: str = "auto", feature: str) -> bool:
+    return feature_requires_technical_review(project_root, version=version, feature=feature)
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
@@ -1623,6 +1628,16 @@ def _write_implementation_plan(project_root: Path, *, version: str, feature: str
 
 def compile_implementation_plan(project_root: Path, *, version: str = "auto", feature: str) -> tuple[int, dict[str, Any]]:
     resolved_version = resolve_target_version(project_root, version)
+    if not feature_requires_implementation_plan(project_root, version=resolved_version, feature=feature):
+        return 0, {
+            "schema_version": "1.0",
+            "status": "not_required",
+            "blocked": False,
+            "reason_code": "",
+            "feature": feature,
+            "feature_slug": feature_slug(feature),
+            "version": resolved_version,
+        }
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
     if str(revision.get("doc_status", "draft") or "draft") != "frozen":
         payload = {
@@ -2026,7 +2041,11 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
         "baseline_hash": str(revision.get("baseline_hash", "") or ""),
         "recommended_command": f'beacon implement plan "{feature}" --project-root {project_root} --version {resolved_version}',
         "generated_at": now_iso(),
+        "required": feature_requires_implementation_plan(project_root, version=resolved_version, feature=feature),
     }
+    if not payload["required"]:
+        payload.update({"status": "not_required", "blocked": False, "reason_code": ""})
+        return payload
     if str(revision.get("doc_status", "draft") or "draft") != "frozen":
         payload.update({"status": "blocked", "blocked": True, "reason_code": "revision_not_frozen"})
         return payload

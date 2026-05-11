@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.3",
+  "status": "implementation-spec-ready",
+  "required_fields": [
+    "command",
+    "why",
+    "target_surface",
+    "priority",
+    "prerequisites"
+  ],
+  "allowed_target_surfaces": [
+    "beacon-change",
+    "beacon-prd",
+    "beacon-user-story",
+    "beacon-test-case",
+    "beacon-prototype",
+    "beacon-help"
+  ],
+  "fallback_rule": {
+    "when_no_valid_next_route": true,
+    "blocked": true,
+    "target_surface": "beacon-help",
+    "command": "beacon help"
+  }
+}

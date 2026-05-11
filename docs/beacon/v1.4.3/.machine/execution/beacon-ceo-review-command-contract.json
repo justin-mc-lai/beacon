@@ -1,0 +1,38 @@
+{
+  "schema_version": "1.0",
+  "command_surface": "beacon-ceo-review",
+  "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "version": "v1.4.3",
+  "status": "implementation-spec-ready",
+  "required_inputs": [
+    "target version or feature slug",
+    "prd ref",
+    "user-story ref",
+    "test-case ref",
+    "review focus"
+  ],
+  "decision_values": ["expand", "hold", "reduce", "reframe"],
+  "output_fields": [
+    "decision",
+    "why_now",
+    "evidence_used",
+    "challenge_summary",
+    "risk_if_ignored",
+    "route_decision",
+    "writeback_targets",
+    "blocked_reason"
+  ],
+  "writeback_targets": [
+    "beacon-change",
+    "beacon-prd",
+    "beacon-user-story",
+    "beacon-test-case"
+  ],
+  "blocked_reasons": [
+    "truth_refs_missing",
+    "review_scope_ambiguous",
+    "version_level_target_missing",
+    "insufficient_promise_evidence",
+    "conflicting_learning_requires_operator_resolution"
+  ]
+}

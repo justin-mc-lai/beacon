@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "command_surface": "beacon-design-review",
+  "feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+  "version": "v1.4.3",
+  "status": "implementation-spec-ready",
+  "required_inputs": [
+    "target feature slug",
+    "prd ref",
+    "user-story ref",
+    "test-case ref",
+    "ui evidence package"
+  ],
+  "design_verdict_values": [
+    "ready_for_prototype",
+    "needs_design_revision",
+    "prototype_not_required"
+  ],
+  "output_fields": [
+    "design_verdict",
+    "hierarchy_findings",
+    "state_clarity_findings",
+    "interaction_findings",
+    "evidence_gap_summary",
+    "route_decision",
+    "writeback_targets",
+    "blocked_reason"
+  ],
+  "writeback_targets": [
+    "beacon-change",
+    "beacon-prd",
+    "beacon-user-story",
+    "beacon-test-case",
+    "beacon-prototype"
+  ],
+  "blocked_reasons": [
+    "ux_evidence_missing",
+    "state_model_missing",
+    "prototype_semantics_overloaded",
+    "interaction_contract_ambiguous",
+    "truth_refs_incomplete"
+  ]
+}

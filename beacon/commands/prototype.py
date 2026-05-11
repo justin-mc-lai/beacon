@@ -10,6 +10,7 @@ from typing import Optional
 
 import typer
 
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.prototype_utils import (
     _real_prototype_llm_inference,
     bind_prototype_bundle,
@@ -112,7 +113,15 @@ def plan(
             "status": "blocked",
             "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
             "requirement_completeness_gate": requirement_gate,
-            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-completeness-blocked",
+                )
+            ),
         }, ensure_ascii=False, indent=2))
         raise typer.Exit(2)
     try:
@@ -166,7 +175,15 @@ def create(
             "status": "blocked",
             "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
             "requirement_completeness_gate": requirement_gate,
-            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-completeness-blocked",
+                )
+            ),
         }, ensure_ascii=False, indent=2))
         raise typer.Exit(2)
     try:
@@ -389,7 +406,15 @@ def freeze(
             "status": "blocked",
             "reason_code": str(requirement_gate.get("reason_code") or "requirement_completeness_blocked"),
             "requirement_completeness_gate": requirement_gate,
-            "recommended_command": str(requirement_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-completeness-blocked",
+                )
+            ),
         }, ensure_ascii=False, indent=2))
         raise typer.Exit(2)
     try:

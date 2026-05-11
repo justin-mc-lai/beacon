@@ -217,7 +217,7 @@ def test_v135_help_and_status_should_route_change_intent_to_beacon_change(tmp_pa
     )
     assert help_payload["change_loop"]["recommended"] is True
     assert help_payload["next_step"]["action"] == "beacon-change"
-    assert help_payload["next_step"]["command"] == "beacon-change"
+    assert help_payload["next_step"]["command"].startswith('beacon change "Beacon Change Loop Surface"')
     assert help_payload["project_metadata_context"]["metadata_ref"] == ".beacon/metadata/project-version-metadata.json"
     assert help_payload["project_metadata_context"]["resolved_metadata_view"]["selected_branch"] == "beacon/v1.3.5"
     assert help_payload["change_loop"]["project_metadata_context"]["resolved_metadata_view"]["selected_service"] == "api"
@@ -242,7 +242,7 @@ def test_v135_help_and_status_should_route_change_intent_to_beacon_change(tmp_pa
     payload = json.loads(result.stdout)
     assert payload["change_loop"]["recommended"] is True
     assert payload["next_step"]["action"] == "beacon-change"
-    assert payload["change_loop"]["route"] == "beacon-change"
+    assert payload["change_loop"]["route"].startswith('beacon change "Beacon Change Loop Surface"')
     assert payload["project_metadata_context"]["resolved_metadata_view"]["topology_kind"] == "monorepo"
     assert payload["change_loop"]["metadata_verify_command"].startswith("beacon doctor metadata verify ")
 

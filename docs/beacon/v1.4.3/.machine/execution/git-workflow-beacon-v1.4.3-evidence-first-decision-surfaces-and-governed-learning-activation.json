@@ -1,0 +1,68 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "mode": "single-repo",
+  "expected_branch": "beacon/v1.4.3",
+  "branch_prefix": "beacon/",
+  "base_branch": "main",
+  "use_git_worktree": false,
+  "require_clean_worktree_for_switch": true,
+  "service_directories": [
+    "."
+  ],
+  "direct_delivery_services": [
+    "."
+  ],
+  "git_roots": [
+    "."
+  ],
+  "worktree_root": ".",
+  "implementation_preflight": [
+    "Before implementation, verify the target service belongs to: ..",
+    "Before implementation, verify every direct delivery service is on beacon/v1.4.3.",
+    "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+  ],
+  "source": "version_default",
+  "generated_at": "2026-05-11T11:58:50.324560+00:00",
+  "worktree_path": ".",
+  "branch_governance": {
+    "schema_version": "1.0",
+    "tool_name": "beacon-toolkit-branch-governance",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "template_name": "standard-feature",
+    "template_source": "project_metadata",
+    "service_key": "beacon",
+    "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+    "base_branch": "main",
+    "current_branch": "main",
+    "target_branch": "beacon/v1.4.3",
+    "worktree_mode": "branch-only",
+    "worktree_path": ".",
+    "current_worktree_path": ".",
+    "previous_version_baseline_branch": "",
+    "next_version_feature_branch": "",
+    "hotfix_branch_naming_rule": "",
+    "allow_worktree_when_feature_dirty": false,
+    "merge_direction_policy": [],
+    "forbidden_directions": [],
+    "evidence_contract": [],
+    "evidence": {},
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "blocked_reason": "",
+    "recommended_action": "",
+    "missing_evidence_fields": [],
+    "evidence_contract_status": "pass",
+    "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `beacon/v1.4.3`\n- worktree_mode: `branch-only`\n- worktree_path: `.`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> beacon/v1.4.3\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+  },
+  "baseline_id": "impl-delivery-baseline-v1.4.3-beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation-r0",
+  "transaction_id": "tx-447ec10ea369da4ad",
+  "source_hash": "sha256:cd923021eaa02740f821846cd9f6921507c117ce245d47c704c260e04004d04f",
+  "projection_seq": 1,
+  "canonical_envelope_ref": "docs/beacon/v1.4.3/.machine/execution/implementation-delivery-baseline-beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.json",
+  "projection_source": "implementation_delivery_baseline_envelope"
+}

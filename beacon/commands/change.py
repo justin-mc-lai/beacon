@@ -1,0 +1,77 @@
+"""Beacon change command - public router for frozen-truth change loops."""
+
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Optional
+
+import typer
+
+from beacon.commands.reopen import _reopen_impl
+from beacon.utils.help_support import build_help_payload
+from beacon.utils.change_surface import build_change_command
+from beacon.utils.versioning import resolve_target_version
+
+
+def _change_payload(project_root: Path, *, version: str, feature: str, reason: str) -> dict:
+    help_payload = build_help_payload(
+        project_root,
+        version=version,
+        feature=feature,
+        change_intent=reason,
+    )
+    change_loop = help_payload.get("change_loop", {}) if isinstance(help_payload.get("change_loop"), dict) else {}
+    next_step = help_payload.get("next_step", {}) if isinstance(help_payload.get("next_step"), dict) else {}
+    recommended_command = str(change_loop.get("route") or next_step.get("command") or "").strip()
+    if not recommended_command:
+        recommended_command = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=version,
+            reason=reason,
+        )
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "status": "change_loop_ready",
+        "reason": reason,
+        "route": "reopen -> revise -> freeze",
+        "recommended_command": recommended_command,
+        "change_loop": change_loop,
+        "next_step": next_step,
+    }
+
+
+def _change_impl(
+    feature: str,
+    project: Optional[str],
+    version: str,
+    reason: str,
+    reopen_now: bool,
+    json_output: bool,
+) -> int:
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    if reopen_now:
+        return _reopen_impl(feature, str(project_root), resolved_version, reason, json_output)
+    payload = _change_payload(project_root, version=resolved_version, feature=feature, reason=reason)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Change loop ready for {feature}")
+        typer.echo(f"Next route: {payload['recommended_command']}")
+    return 0
+
+
+def change_entry(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    reason: str = typer.Option("change-request", "--reason", help="Reason for reopening truth"),
+    reopen_now: bool = typer.Option(False, "--reopen-now", help="Immediately reopen the active revision"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Prepare the change loop or optionally reopen immediately."""
+    raise typer.Exit(code=_change_impl(feature, project, version, reason, reopen_now, json_output))

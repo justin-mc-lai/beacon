@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation-r1",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "revision_id": "R1",
+  "status": "draft",
+  "source_refs": {
+    "summary": "docs/beacon/v1.4.3/SUMMARY.md",
+    "boundaries": "docs/beacon/v1.4.3/execution/boundaries.md",
+    "umbrella_prd": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+    "ceo_review_prd": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+    "design_review_prd": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-design-review-surface-and-prototype-governance.md",
+    "learn_prd": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-governed-learning-recall-and-route-explainability.md"
+  },
+  "boundary_principles": [
+    "support_surface_only",
+    "truth_safe_writeback",
+    "prototype_de_overload",
+    "learning_advisory_only",
+    "evidence_first_upstream"
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "WS-001",
+      "title": "CEO Review Surface",
+      "target_feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "parallelizable": true
+    },
+    {
+      "workstream_id": "WS-002",
+      "title": "Design Review + Prototype Governance",
+      "target_feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "parallelizable": true
+    },
+    {
+      "workstream_id": "WS-003",
+      "title": "Governed Learning Recall",
+      "target_feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "parallelizable": false,
+      "depends_on_workstreams": [
+        "WS-001",
+        "WS-002"
+      ]
+    }
+  ],
+  "recommended_execution_order": [
+    "WS-001",
+    "WS-002",
+    "WS-003"
+  ],
+  "ready_to_implement_definition": [
+    "stable command contracts exist for each subfeature",
+    "input and output fields are explicit",
+    "writeback targets and truth boundaries are explicit",
+    "ac and test-case mapping remain aligned",
+    "no subfeature claims runtime completion before command wiring and tests exist"
+  ],
+  "updated_at": "2026-05-11T11:24:22.673079+00:00",
+  "plan_hash": "sha256:11602935df36543ada38d33257c829d9141147a6d5d7254625fe78c8ad34c549",
+  "accepted_at": "2026-05-11T11:24:22.673071+00:00",
+  "accepted_by": "qa"
+}

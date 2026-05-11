@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.context_files import verify_context_files
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
@@ -790,7 +791,12 @@ def run_prd_bootstrap(
     if orchestration["drift_digest"]:
         payload["status"] = "blocked"
         payload["reason_code"] = "truth_drift_detected"
-        payload["recommended_command"] = "beacon-change"
+        payload["recommended_command"] = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="truth-drift-detected",
+        )
         state_path = _write_state(project_root, run_id, payload)
         payload["state_path"] = str(state_path.relative_to(project_root))
         return payload

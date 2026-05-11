@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
@@ -122,7 +123,12 @@ def evaluate_implement_prompt_boundary(
         payload["status"] = "blocked"
         payload["reason_code"] = "implement_prompt_truth_conflict"
         payload["next_action"] = "beacon-change"
-        payload["recommended_command"] = "beacon-change"
+        payload["recommended_command"] = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="implement-prompt-truth-conflict",
+        )
         payload["matched_signals"] = truth_conflict_hits
         return payload
 
@@ -132,7 +138,12 @@ def evaluate_implement_prompt_boundary(
         payload["status"] = "blocked"
         payload["reason_code"] = "implement_prompt_requirement_change"
         payload["next_action"] = "beacon-change"
-        payload["recommended_command"] = "beacon-change"
+        payload["recommended_command"] = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="implement-prompt-requirement-change",
+        )
         payload["matched_signals"] = requirement_change_hits
         return payload
 

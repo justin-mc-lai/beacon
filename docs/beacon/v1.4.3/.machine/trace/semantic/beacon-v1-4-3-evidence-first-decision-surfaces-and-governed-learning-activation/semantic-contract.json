@@ -1,0 +1,160 @@
+{
+  "schema_version": "1.0",
+  "semantic_contract_version": "1.0",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1-4-3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "stage": "implement",
+  "generated_at": "2026-05-11T11:49:17.871580+00:00",
+  "source_hash": "73a87d5e442aafb2e61b7c7bd9f29044a3c98e50b6379ed14fb869ba796f97fd",
+  "projection_seq": "semantic-73a87d5e442aafb2",
+  "transaction_id": "tx-semantic-beacon-v1-4-3-evidence-first-decision-surfaces-and-governed-learning-activation-semantic-73a87d5e442aafb2",
+  "source_documents": [
+    {
+      "type": "prd",
+      "path": "docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "fingerprint": "baf71f7ffd185281119153538f600a91eb2611df0c948b3b48267119c58f4cf6"
+    },
+    {
+      "type": "user-story",
+      "path": "docs/beacon/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "fingerprint": "a4dc4e90fe0333839c6daff1f0cc6ca69bef3241d5edeae41389a9308b6ae20a"
+    },
+    {
+      "type": "test-case",
+      "path": "docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "fingerprint": "99fd04ef6b22982568ff882ef4d726b8e7742f4418886771624834d9083d5581"
+    }
+  ],
+  "stage_context": {
+    "schema_version": "1.0",
+    "run_id": "",
+    "stage": "implement",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "generated_at": "2026-05-11T11:49:17.864887+00:00",
+    "memory_recall": [],
+    "lifecycle_events": [],
+    "requirement_refs": [
+      "docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "docs/beacon/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+      "docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md"
+    ],
+    "evidence_refs": [],
+    "decision_trace": [],
+    "blockers": [],
+    "transaction_lineage": {
+      "current_transaction_id": "",
+      "projection_seq": "",
+      "source_hash": "",
+      "previous_transaction_id": "",
+      "recent_transaction_ids": [],
+      "attempt_seq": null,
+      "action": "semantic_stage_context"
+    },
+    "semantic_context_source": "requirement-docs"
+  },
+  "official_language": {
+    "page_names": [
+      {
+        "label": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+        "slug": "beacon-v1-4-3-evidence-first-decision-surfaces-and-governed-learning-activation",
+        "source": "requirement_truth"
+      }
+    ],
+    "status_labels": [
+      "错误",
+      "降级",
+      "正常",
+      "阻塞",
+      "加载中"
+    ],
+    "module_labels": [
+      "头部摘要",
+      "状态反馈",
+      "推荐动作"
+    ],
+    "action_labels": [
+      "进入范围",
+      "进入默认",
+      "进入默认决策路径",
+      "恢复策略",
+      "恢复到",
+      "恢复到无",
+      "查看详情",
+      "进入详情",
+      "返回总览"
+    ],
+    "preferred_terms": [
+      {
+        "from": "implementation",
+        "to": "implement",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "verify",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "review",
+        "to": "qa",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "delivery",
+        "to": "release",
+        "scope": "stage_vocabulary"
+      },
+      {
+        "from": "raw runtime log",
+        "to": "运行摘要",
+        "scope": "product_copy"
+      },
+      {
+        "from": "machine contract",
+        "to": "机器内部契约",
+        "scope": "product_copy"
+      }
+    ],
+    "banned_terms": [
+      "implementation",
+      "verify",
+      "review",
+      "delivery",
+      "machine contract",
+      "canonical-envelope",
+      "raw runtime log",
+      "transaction_id",
+      "projection_seq"
+    ]
+  },
+  "usage_guidelines": [
+    "先引用 semantic-contract.json，再进入 prototype 或 implement，不要在阶段内临时翻译需求。",
+    "页面名、状态名、模块名优先复用官方词表，避免 implementation / verify / delivery 这类旧阶段词汇出现在前台。",
+    "允许 taste-skill 做设计增强，但不得覆盖 requirement truth 或反向改写 semantic contract。",
+    "发现语义漂移时，优先重建 semantic layer，再继续 prototype freeze 或 implement delivery。"
+  ],
+  "default_design_bridge": {
+    "repo": "https://github.com/Leonxlnx/taste-skill",
+    "skill_id": "taste-skill",
+    "entry": "",
+    "detected": false,
+    "kind": "external-default-bridge",
+    "supported_stages": [
+      "prototype",
+      "implement"
+    ],
+    "capabilities": [
+      "prototype",
+      "implement",
+      "taste-design",
+      "semantic-normalization"
+    ],
+    "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+  },
+  "compiler": {
+    "semantic_context_source": "requirement-docs",
+    "capability_snapshot": {}
+  }
+}

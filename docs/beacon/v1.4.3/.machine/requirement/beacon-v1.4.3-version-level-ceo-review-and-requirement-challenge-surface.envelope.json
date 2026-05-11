@@ -1,0 +1,130 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "feature_slug": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "version": "v1.4.3",
+  "generated_at": "2026-05-11T13:00:53.570750+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+    "user_story": "user-story:docs/beacon/v1.4.3/user-story/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.3/user-story/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.3/prd/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface`",
+      "Version**: `v1.4.3`",
+      "Date**: `2026-05-11`",
+      "Status**: `freeze-ready`",
+      "Track**: `human-surface + requirement-challenge + scope-governance`",
+      "Scenario**: `version-level-problem-reframing + scope-judgment + truth-safe-routing`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Version summary: `docs/beacon/v1.4.3/SUMMARY.md`",
+      " Execution index: `docs/beacon/v1.4.3/execution/index.md`",
+      " Umbrella PRD: `docs/beacon/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md`",
+      " User story: `docs/beacon/v1.4.3/user-story/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md`",
+      " Test cases: `docs/beacon/v1.4.3/qa/test-cases/beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md`",
+      "Beacon 当前缺少一个公开的人类面，去在版本级或大 feature 级对 requirement package 做前置挑战。`brainstorm` 能分析和收敛，但不等于：",
+      " CEO / founder 级问题重构"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface`",
+      "Version**: `v1.4.3`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer or requirement owner,",
+      "I want** a version-level CEO-grade challenge surface before or across PRD/story/case freeze,",
+      "So that** Beacon can stop well-structured but wrong problem definitions from progressing into later evidence chains.",
+      " [ ] AC-001 `beacon-ceo-review` exists as a support/review surface.",
+      " [ ] AC-002 the surface supports `expand / hold / reduce / reframe`.",
+      " [ ] AC-003 it can challenge version-level requirement packages, not only implementation-local details."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface`",
+      "Version**: `v1.4.3`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-CEO-001 | contract | `python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\"` | `beacon-ceo-review` exists as support/review surface |",
+      "| AC-002 | TC-CEO-002 | contract | `python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"scope_judgment_modes\"` | `expand / hold / reduce / reframe` outputs exist |",
+      "| AC-003 | TC-CEO-003 | integration | `python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"version_level_challenge_scope\"` | the surface can challenge version-level requirement packages |",
+      "| AC-004 | TC-CEO-004 | regression | `python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\"` | accepted outputs route back through truth surfaces |",
+      "| AC-005 | TC-CEO-005 | regression | `python3 -m pytest -q tests/test_v143_boundary_safety.py -k \"ceo_review_not_second_truth\"` | the surface does not become a second truth source |"
+    ]
+  }
+}

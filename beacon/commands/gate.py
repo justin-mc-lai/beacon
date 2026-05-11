@@ -41,7 +41,11 @@ from beacon.utils.version_surface import (
     VERSION_SURFACE_GOVERNANCE_REASON_CODE,
     version_surface_repair_commands,
 )
-from beacon.utils.prototype_support import feature_requires_route_closure, prototype_status, version_requires_prototype
+from beacon.utils.prototype_support import (
+    feature_requires_route_closure,
+    prototype_status,
+    version_requires_prototype,
+)
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.requirement_clarity import (
@@ -2662,6 +2666,8 @@ def check_v112_implementation_plan_contract(
         version=resolved_version,
         feature=feature_name,
     )
+    if not bool(implementation_plan_gate.get("required", True)):
+        return issues
     if bool(implementation_plan_gate.get("blocked")):
         issues.append(
             {

@@ -25,6 +25,7 @@ from beacon.utils.branch_governance import evaluate_branch_governance
 from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.git_alignment import (
@@ -557,7 +558,12 @@ def _requirement_closure_preflight(project_root: Path, *, version: str, feature:
     recommended_command = ""
     if verdict == "drift_repair_required":
         reason_code = "requirement_closure_drift_repair_required"
-        recommended_command = f'beacon change "{feature}" --project-root {project_root} --version {resolved_version}'
+        recommended_command = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="drift-repair-required",
+        )
     elif blocked:
         reason_code = "requirement_closure_supplement_required"
         recommended_command = (
@@ -1842,7 +1848,15 @@ def run_implement_stage(  # noqa: PLR0913
             "feature_slug": _slug(feature),
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-package-contract-blocked",
+                )
+            ),
         }, blocked=True)
         return 2, payload
     closure_preflight = _requirement_closure_preflight(
@@ -1860,7 +1874,15 @@ def run_implement_stage(  # noqa: PLR0913
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
             "closure_preflight": closure_preflight,
-            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                closure_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-closure-blocked",
+                )
+            ),
         }, blocked=True)
         return 2, payload
     resolved_mode = _normalize_mode(mode)
@@ -3725,7 +3747,15 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             "feature_slug": _slug(feature),
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-package-contract-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -3747,7 +3777,15 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             "version": resolved_version,
             "closure_preflight": closure_preflight,
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                closure_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-closure-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -3826,7 +3864,15 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
             "feature_slug": _slug(feature),
             "version": resolved_version,
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-package-contract-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -3848,7 +3894,15 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
             "version": resolved_version,
             "closure_preflight": closure_preflight,
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(closure_preflight.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                closure_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-closure-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

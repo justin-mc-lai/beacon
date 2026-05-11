@@ -1,10 +1,10 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-11T16:51:12.757677",
+  "timestamp": "2026-05-11T19:24:13.579608",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.4.2",
-  "run_id": "run-20260511T165112756999",
-  "spec_fingerprint_hash": "28b07e447b639873415f174a3d795645d2c878110098f156447767135411ed20",
+  "version": "v1.4.3",
+  "run_id": "run-20260511T192413577986",
+  "spec_fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951",
   "status": "passed",
   "selected_layers": [
     "contract",
@@ -12,18 +12,18 @@
     "regression"
   ],
   "execution": {
-    "run_id": "run-20260511T165112756999",
-    "version": "v1.4.2",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260511T165112756999",
+    "run_id": "run-20260511T192413577986",
+    "version": "v1.4.3",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260511T192413577986",
     "spec_fingerprint": {
-      "fingerprint_hash": "28b07e447b639873415f174a3d795645d2c878110098f156447767135411ed20",
-      "version": "v1.4.2",
-      "generated_at": "2026-05-11T08:51:25.955907+00:00"
+      "fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951",
+      "version": "v1.4.3",
+      "generated_at": "2026-05-11T11:24:22.599053+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"index_shape\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -35,22 +35,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "9b8ed78c6c4a382209600511600a26ff4dd83b8a535fb0b95d630044ef1717e2",
-        "started_at": "2026-05-11T16:51:12.758012",
-        "ended_at": "2026-05-11T16:51:13.422451",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/contract/junit.xml",
+        "execution_fingerprint": "cb6f2ed46d253e63b6bae89b66828f96b31840231213d4ec7ca8e136fd1bb929",
+        "started_at": "2026-05-11T19:24:13.585192",
+        "ended_at": "2026-05-11T19:24:14.107689",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/result.json"
         ]
       },
       {
         "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v142_doctor_test_contract_governance.py -k \"doctor_build_and_verify\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -62,22 +62,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "7c639c8ac97661a4b8589bb31777963493951ed12b9955e90a6cd6703d12c463",
-        "started_at": "2026-05-11T16:51:13.424123",
-        "ended_at": "2026-05-11T16:51:14.296202",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/integration/junit.xml",
+        "execution_fingerprint": "1f60f8bb1220b6111f51078760fc5047532980005d31e1b6ccce3c41f010df96",
+        "started_at": "2026-05-11T19:24:14.119532",
+        "ended_at": "2026-05-11T19:24:14.445924",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/integration/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/integration/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/result.json"
         ]
       },
       {
         "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"release_facing_mapping_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -89,32 +89,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "b70685102343608eb01bb142f60996f41ae090df9c19fa05c5ea9ae49847791f",
-        "started_at": "2026-05-11T16:51:14.297189",
-        "ended_at": "2026-05-11T16:51:14.822080",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/regression/junit.xml",
+        "execution_fingerprint": "66d73888c9bb9901547ddd69e0dfea3e68cac152a0be9adb0a60a07edf9e2432",
+        "started_at": "2026-05-11T19:24:14.450110",
+        "ended_at": "2026-05-11T19:24:15.087710",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
-      "evidence_generated": 18,
-      "entry_count": 18,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+      "evidence_generated": 13,
+      "entry_count": 13,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260511T165112756999/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260511T165112756999/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260511T165112756999/summary.json",
+      ".beacon/evidence/auto-test/run-20260511T192413577986/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260511T192413577986/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260511T192413577986/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -133,7 +133,7 @@
       "integration",
       "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -146,25 +146,25 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 18,
-      "passed": 18,
+      "cases_total": 13,
+      "passed": 13,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 18,
-      "auto_cases_executed": 18,
+      "auto_cases_total": 13,
+      "auto_cases_executed": 13,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-US001-001-PRIMARY",
+        "tc_id": "TC-US001-001",
         "ac_id": "AC-001",
         "source_tc_id": "TC-US001-001",
-        "scenario_id": "SC-001",
-        "scenario_family": "primary",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "contract",
         "layer": "contract",
         "automation": "auto",
@@ -172,20 +172,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"index_shape\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us001-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us001-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
         ],
-        "execution_fingerprint": "b60f875d66b62be6bb587e1670bac5abc4a94af1d5ad128095585b1073c16c85",
-        "started_at": "2026-05-11T16:51:14.827799",
-        "ended_at": "2026-05-11T16:51:15.309279",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "a83141e6c64b5c7f4513ab6ea5c5f32f6d76e7eadb66bc8258db322cfb4e889b",
+        "started_at": "2026-05-11T19:24:15.091258",
+        "ended_at": "2026-05-11T19:24:15.606241",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -198,11 +198,11 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US002-001-PRIMARY",
+        "tc_id": "TC-US002-001",
         "ac_id": "AC-002",
         "source_tc_id": "TC-US002-001",
-        "scenario_id": "SC-002",
-        "scenario_family": "primary",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "contract",
         "layer": "contract",
         "automation": "auto",
@@ -210,20 +210,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_lanes.py -k \"canonical_lanes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us002-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"scope_judgment_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us002-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
         ],
-        "execution_fingerprint": "7714d5a8d2f26923ec0f9ce5bab66174fe7d536073481b54d7d696a6344c12fc",
-        "started_at": "2026-05-11T16:51:15.310253",
-        "ended_at": "2026-05-11T16:51:16.010894",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "7bcb6db28194119f07e0da8362ca50d09268ff55dd0e8028c84afbbaec54db65",
+        "started_at": "2026-05-11T19:24:15.607293",
+        "ended_at": "2026-05-11T19:24:16.091498",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -236,11 +236,11 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US003-001-PRIMARY",
+        "tc_id": "TC-US003-001",
         "ac_id": "AC-003",
         "source_tc_id": "TC-US003-001",
-        "scenario_id": "SC-003",
-        "scenario_family": "primary",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "regression",
         "layer": "regression",
         "automation": "auto",
@@ -248,20 +248,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"release_facing_mapping_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us003-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us003-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
         ],
-        "execution_fingerprint": "f6c044119c387e61da89500208a07ecdc46069ed63d5f5d1ff3722b0a670bbae",
-        "started_at": "2026-05-11T16:51:16.011690",
-        "ended_at": "2026-05-11T16:51:16.491665",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "e44a7dc2a304883c66e8cafbded460c23359a316d4b680cbeef47be9f18479b9",
+        "started_at": "2026-05-11T19:24:16.092786",
+        "ended_at": "2026-05-11T19:24:16.575047",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -274,32 +274,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US004-001-PRIMARY",
+        "tc_id": "TC-US004-001",
         "ac_id": "AC-004",
         "source_tc_id": "TC-US004-001",
-        "scenario_id": "SC-004",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_doctor_test_contract_governance.py -k \"doctor_build_and_verify\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us004-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_design_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us004-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
         ],
-        "execution_fingerprint": "0c0eda8009adf8b20ef4d31bc4ce883afcadbed25241db93c2dbbb6cb18721a6",
-        "started_at": "2026-05-11T16:51:16.492469",
-        "ended_at": "2026-05-11T16:51:17.295583",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "a8e9c2861c63eba4e6f37b4e0f3d0ace085de0537238190ad3c80ee99c11b17a",
+        "started_at": "2026-05-11T19:24:16.575991",
+        "ended_at": "2026-05-11T19:24:17.187141",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -312,32 +312,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US005-001-PRIMARY",
+        "tc_id": "TC-US005-001",
         "ac_id": "AC-005",
         "source_tc_id": "TC-US005-001",
-        "scenario_id": "SC-005",
-        "scenario_family": "primary",
-        "qa_type": "contract",
-        "layer": "contract",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_qa_lane_order.py -k \"qa_first_principles_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us005-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us005-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
         ],
-        "execution_fingerprint": "60cd3b3c3c8dfe524b6875df5d09c69ccff8862e09fb977826ccb8df8c1fb9b9",
-        "started_at": "2026-05-11T16:51:17.297086",
-        "ended_at": "2026-05-11T16:51:17.917834",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "c416dc9c54871645f2c844aca0d96da20d340578e54e62781b3e0ade30ae1974",
+        "started_at": "2026-05-11T19:24:17.188206",
+        "ended_at": "2026-05-11T19:24:17.476951",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -350,32 +350,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US006-001-PRIMARY",
+        "tc_id": "TC-US006-001",
         "ac_id": "AC-006",
         "source_tc_id": "TC-US006-001",
-        "scenario_id": "SC-006",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_release_test_contract_governance.py -k \"release_consumes_lane_status\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us006-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us006-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
         ],
-        "execution_fingerprint": "62cb647e1bacb0bde3f7983e155524cbf0427920e5dc5110d3306a12a14758f4",
-        "started_at": "2026-05-11T16:51:17.918725",
-        "ended_at": "2026-05-11T16:51:18.554883",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "f4f42cf6025b6d91d608363e1eefe5a53f2e03df47f1ef137a4a8f58ce513230",
+        "started_at": "2026-05-11T19:24:17.477994",
+        "ended_at": "2026-05-11T19:24:17.782464",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -388,32 +388,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US007-001-PRIMARY",
+        "tc_id": "TC-US007-001",
         "ac_id": "AC-007",
         "source_tc_id": "TC-US007-001",
-        "scenario_id": "SC-007",
-        "scenario_family": "primary",
-        "qa_type": "regression",
-        "layer": "regression",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_generated_surface_lane.py -k \"generated_surface_sync_blocks_drift\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us007-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"learn_surface_exists_and_is_visible\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us007-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
         ],
-        "execution_fingerprint": "e1165e908c36f2f2ee864ef21f86133c7e55eda56497815940fe5a1d406fe640",
-        "started_at": "2026-05-11T16:51:18.556191",
-        "ended_at": "2026-05-11T16:51:19.157133",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "8d619e7aeb5b8e334da03ec1fc879b265af024b88d53b12a8207e0ed7954356d",
+        "started_at": "2026-05-11T19:24:17.783276",
+        "ended_at": "2026-05-11T19:24:18.664618",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -426,32 +426,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US008-001-PRIMARY",
+        "tc_id": "TC-US008-001",
         "ac_id": "AC-008",
         "source_tc_id": "TC-US008-001",
-        "scenario_id": "SC-008",
-        "scenario_family": "primary",
-        "qa_type": "regression",
-        "layer": "regression",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_legacy_snapshot_classification.py -k \"legacy_snapshot_not_release_blocker_by_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us008-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us008-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
         ],
-        "execution_fingerprint": "4458717301e65630bd16c0c9c4ef36e7c8f2bcd10196b26f07524f5fda6af348",
-        "started_at": "2026-05-11T16:51:19.157946",
-        "ended_at": "2026-05-11T16:51:19.680549",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "216070130c00313cdf7f4f34fc7927001620a364323df38609cea7f2acb108fc",
+        "started_at": "2026-05-11T19:24:18.665605",
+        "ended_at": "2026-05-11T19:24:19.074248",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -464,32 +464,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US009-001-PRIMARY",
+        "tc_id": "TC-US009-001",
         "ac_id": "AC-009",
         "source_tc_id": "TC-US009-001",
-        "scenario_id": "SC-009",
-        "scenario_family": "primary",
-        "qa_type": "contract",
-        "layer": "contract",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_skill_delivery_guidance.py -k \"skill_guides_contract_lane_verification\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us009-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us009-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
         ],
-        "execution_fingerprint": "1f35a02f56d905428d50fd355e90ce092f4e5e75f57cfbccc9c35fda6959ca37",
-        "started_at": "2026-05-11T16:51:19.683339",
-        "ended_at": "2026-05-11T16:51:20.174180",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "55f2dc89c24e175b24ca74a420501897ee32b4e061679d3b3955e7eda492b457",
+        "started_at": "2026-05-11T19:24:19.075864",
+        "ended_at": "2026-05-11T19:24:19.504165",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -502,11 +502,11 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US010-001-PRIMARY",
+        "tc_id": "TC-US010-001",
         "ac_id": "AC-010",
         "source_tc_id": "TC-US010-001",
-        "scenario_id": "SC-010",
-        "scenario_family": "primary",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "regression",
         "layer": "regression",
         "automation": "auto",
@@ -514,20 +514,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_deep_delta_adoption.py -k \"deep_delta_routes_to_test_case_or_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us010-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"stale_and_conflicting_learning_downgraded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us010-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
         ],
-        "execution_fingerprint": "db142d36ad28f77abcd5dc12fff72448c611631a030c6d239c29e850c0c30cec",
-        "started_at": "2026-05-11T16:51:20.175008",
-        "ended_at": "2026-05-11T16:51:20.660728",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "a62f37ebd50d6064485d05b91bdc6e2369061accc8aa4efc18f8c1bbd1da963a",
+        "started_at": "2026-05-11T19:24:19.504966",
+        "ended_at": "2026-05-11T19:24:20.124567",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -540,32 +540,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US011-001-PRIMARY",
+        "tc_id": "TC-US011-001",
         "ac_id": "AC-011",
         "source_tc_id": "TC-US011-001",
-        "scenario_id": "SC-011",
-        "scenario_family": "primary",
-        "qa_type": "regression",
-        "layer": "regression",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_planning_line_safety.py -k \"v142_does_not_promote_runtime\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us011-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_route_explainability.py -k \"support_surfaces_explain_route_and_learning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us011-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
         ],
-        "execution_fingerprint": "ceacf3212e88848b27032f210f88be17d60f30a8acea326a46dcc38d834c8149",
-        "started_at": "2026-05-11T16:51:20.661585",
-        "ended_at": "2026-05-11T16:51:21.408302",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "795c19636374b1827700b4097508690d0beb73c6b2b0b73c6e24870e49b4d6b0",
+        "started_at": "2026-05-11T19:24:20.125925",
+        "ended_at": "2026-05-11T19:24:20.785559",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -578,87 +578,11 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US012-001-PRIMARY",
+        "tc_id": "TC-US012-001",
         "ac_id": "AC-012",
         "source_tc_id": "TC-US012-001",
-        "scenario_id": "SC-012",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_test_contract_recovery.py -k \"blocked_governance_has_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us012-001-primary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/result.json"
-        ],
-        "execution_fingerprint": "a84bfe6e107c5cdb7346404f681ec7d41da81f41e4c843560698e9dc81e2a0fb",
-        "started_at": "2026-05-11T16:51:21.409079",
-        "ended_at": "2026-05-11T16:51:21.942540",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US013-001-PRIMARY",
-        "ac_id": "AC-013",
-        "source_tc_id": "TC-US013-001",
-        "scenario_id": "SC-013",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"protected_surface_requires_session_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us013-001-primary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/result.json"
-        ],
-        "execution_fingerprint": "ea8f1a33c776e66b952b6a2215ee497c449da17d7670714fba997fc0e876d647",
-        "started_at": "2026-05-11T16:51:21.943317",
-        "ended_at": "2026-05-11T16:51:22.403743",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US014-001-PRIMARY",
-        "ac_id": "AC-014",
-        "source_tc_id": "TC-US014-001",
-        "scenario_id": "SC-014",
-        "scenario_family": "primary",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "regression",
         "layer": "regression",
         "automation": "auto",
@@ -666,20 +590,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_evidence_authenticity.py -k \"placeholder_transcript_is_not_browser_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us014-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"version_line_preserves_boundary_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us012-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
         ],
-        "execution_fingerprint": "f7be4a5a8b88484587c3292aa545e20399df3b6c9f499e5578c6198d21507f85",
-        "started_at": "2026-05-11T16:51:22.405206",
-        "ended_at": "2026-05-11T16:51:22.897237",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "88698272f97c6effd2192994d8692a4d6d9c08d5075329874f81062a2c4fa90a",
+        "started_at": "2026-05-11T19:24:20.786372",
+        "ended_at": "2026-05-11T19:24:21.107531",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -692,11 +616,11 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US015-001-PRIMARY",
-        "ac_id": "AC-015",
-        "source_tc_id": "TC-US015-001",
-        "scenario_id": "SC-015",
-        "scenario_family": "primary",
+        "tc_id": "TC-US013-001",
+        "ac_id": "AC-013",
+        "source_tc_id": "TC-US013-001",
+        "scenario_id": "",
+        "scenario_family": "",
         "qa_type": "contract",
         "layer": "contract",
         "automation": "auto",
@@ -704,134 +628,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_runner_priority.py -k \"protected_surface_runner_priority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us015-001-primary/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"umbrella_subfeatures_are_qa_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260511T192413577986",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us013-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/result.json"
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
         ],
-        "execution_fingerprint": "32107f45aa21776d236f8ae6843aa3a56b00c0475606746b3b90c611a5b352fc",
-        "started_at": "2026-05-11T16:51:22.898295",
-        "ended_at": "2026-05-11T16:51:23.357598",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US016-001-PRIMARY",
-        "ac_id": "AC-016",
-        "source_tc_id": "TC-US016-001",
-        "scenario_id": "SC-016",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"missing_session_bridge_yields_blocked_or_skip\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us016-001-primary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/result.json"
-        ],
-        "execution_fingerprint": "503557348e928e40f3bb029ce1b271fa445f798b0a720422c059d7bb886bc063",
-        "started_at": "2026-05-11T16:51:23.358375",
-        "ended_at": "2026-05-11T16:51:23.830989",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US017-001-PRIMARY",
-        "ac_id": "AC-017",
-        "source_tc_id": "TC-US017-001",
-        "scenario_id": "SC-017",
-        "scenario_family": "primary",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_runner_learning.py -k \"runner_learning_note_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us017-001-primary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/result.json"
-        ],
-        "execution_fingerprint": "fc70dffd7e821ada2971d793c4fc5f72cca545ac90e4bc4fb36b69988e59850d",
-        "started_at": "2026-05-11T16:51:23.832463",
-        "ended_at": "2026-05-11T16:51:24.305143",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US018-001-PRIMARY",
-        "ac_id": "AC-018",
-        "source_tc_id": "TC-US018-001",
-        "scenario_id": "SC-018",
-        "scenario_family": "primary",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v142_browser_lane_traceability.py -k \"browser_admission_and_evidence_participate_in_lane_reasoning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T165112756999",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/tc-us018-001-primary/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/result.json"
-        ],
-        "execution_fingerprint": "01548ed791e145c493867aa3f6899aafc632620ecd8273fb867403045b8bb982",
-        "started_at": "2026-05-11T16:51:24.306223",
-        "ended_at": "2026-05-11T16:51:24.835619",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/junit.xml",
+        "execution_fingerprint": "01c46f2e0ba928cef15a3dca78fef1e7a3550db335f75af4198b400f720235e2",
+        "started_at": "2026-05-11T19:24:21.111340",
+        "ended_at": "2026-05-11T19:24:21.541362",
+        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -847,16 +657,16 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-11T08:51:25.697797+00:00",
-  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "updated_at": "2026-05-11T11:24:22.341780+00:00",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "index-contract",
-      "text": "Test Contract Index exposes identity, truth refs, runtime/docs lines, lane membership, AC/TC/test/evidence mapping, status, and reason codes.",
+      "theme": "ceo-surface",
+      "text": "Beacon exposes `beacon-ceo-review` as a support/review surface for version-level or major-feature requirement challenge.",
       "tc_ids": [
         "TC-US001-001"
       ],
@@ -866,8 +676,8 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "lane-taxonomy",
-      "text": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission.",
+      "theme": "scope-judgment",
+      "text": "`beacon-ceo-review` can explicitly produce `expand / hold / reduce / reframe` outputs.",
       "tc_ids": [
         "TC-US002-001"
       ],
@@ -877,8 +687,8 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "release-facing-mapping",
-      "text": "Release-facing tests without AC/TC/evidence mapping are blocked unless classified as generated-surface contract checks.",
+      "theme": "truth-routing",
+      "text": "`ceo-review` cannot freeze truth directly and must route accepted changes through existing truth surfaces.",
       "tc_ids": [
         "TC-US003-001"
       ],
@@ -888,74 +698,74 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "doctor-ownership",
-      "text": "Doctor support surface builds and verifies test contract index without adding a public lifecycle stage.",
+      "theme": "design-surface",
+      "text": "Beacon exposes `beacon-design-review` as a support/review surface for UI/UX decision challenge.",
       "tc_ids": [
         "TC-US004-001"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-005",
-      "theme": "qa-order",
-      "text": "QA lane execution preserves AC order, evidence pack, coverage current/gap, continue decision, blocker stop, repair handoff, help resume, and backfill.",
+      "theme": "design-boundary",
+      "text": "`design-review` owns decision challenge while `prototype` remains formal freeze/handoff when triggered.",
       "tc_ids": [
         "TC-US005-001"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "theme": "release-gating",
-      "text": "Release scorecard and strict gate consume lane status and block missing, stale, failed, or unclassified release-facing evidence.",
-      "tc_ids": [
-        "TC-US006-001"
       ],
       "qa_types": [
         "integration"
       ]
     },
     {
+      "ac_id": "AC-006",
+      "theme": "prototype-de-overloading",
+      "text": "Beacon explicitly de-overloads `prototype` so it does not default into product strategy or design-final-approval semantics.",
+      "tc_ids": [
+        "TC-US006-001"
+      ],
+      "qa_types": [
+        "regression"
+      ]
+    },
+    {
       "ac_id": "AC-007",
-      "theme": "generated-surface-sync",
-      "text": "Generated skill, metadata, command, context, and agent surfaces are lane-classified and block delivery when drift affects truth or routing.",
+      "theme": "learn-surface",
+      "text": "Beacon exposes `beacon-learn` as a visible learning governance surface.",
       "tc_ids": [
         "TC-US007-001"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-008",
-      "theme": "legacy-classification",
-      "text": "Historical snapshot failures route to legacy snapshot or test evolution backlog unless promoted to active compatibility contract.",
-      "tc_ids": [
-        "TC-US008-001"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "theme": "skill-delivery",
-      "text": "Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims.",
-      "tc_ids": [
-        "TC-US009-001"
       ],
       "qa_types": [
         "contract"
       ]
     },
     {
+      "ac_id": "AC-008",
+      "theme": "learning-injection",
+      "text": "Relevant learning can be injected by default into core decision surfaces using governed progressive disclosure.",
+      "tc_ids": [
+        "TC-US008-001"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "learning-visibility",
+      "text": "Operators can see which learning influenced the current decision, route, or warning and whether it is stale or conflicting.",
+      "tc_ids": [
+        "TC-US009-001"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
       "ac_id": "AC-010",
-      "theme": "deep-delta-adoption",
-      "text": "Deep test deltas route through test-case or supplemental QA; deep remains support-only and does not execute QA.",
+      "theme": "stale-conflict",
+      "text": "Stale or conflicting learning is downgraded, flagged, or pruned instead of silently reused.",
       "tc_ids": [
         "TC-US010-001"
       ],
@@ -965,97 +775,42 @@
     },
     {
       "ac_id": "AC-011",
-      "theme": "planning-line-safety",
-      "text": "Freezing v1.4.2 requirement materials does not change current runtime release line, docs default line, or package version.",
+      "theme": "route-explainability",
+      "text": "`help / status / ask / deep` explain route recommendation, evidence gaps, and learning influence in human-readable form.",
       "tc_ids": [
         "TC-US011-001"
       ],
       "qa_types": [
-        "regression"
+        "integration"
       ]
     },
     {
       "ac_id": "AC-012",
-      "theme": "recovery-routing",
-      "text": "Test contract governance blockers include reason codes and repair or resume routes through existing support surfaces.",
+      "theme": "boundary-safety",
+      "text": "`v1.4.3` preserves minimal public surface, truth-first, and gate-first discipline while adding the new review/learning surfaces.",
       "tc_ids": [
         "TC-US012-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
-      "theme": "browser-admission",
-      "text": "Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright.",
-      "tc_ids": [
-        "TC-US013-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-014",
-      "theme": "browser-evidence-authenticity",
-      "text": "Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient.",
-      "tc_ids": [
-        "TC-US014-001"
       ],
       "qa_types": [
         "regression"
       ]
     },
     {
-      "ac_id": "AC-015",
-      "theme": "browser-runner-priority",
-      "text": "Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`.",
+      "ac_id": "AC-013",
+      "theme": "general",
+      "text": "`v1.4.3` splits the umbrella line into 3 freeze-ready subfeatures whose implementation is QA-accepted and can be aggregated as umbrella acceptance evidence.",
       "tc_ids": [
-        "TC-US015-001"
+        "TC-US013-001"
       ],
       "qa_types": [
         "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-016",
-      "theme": "blocked-not-false-fail",
-      "text": "Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures.",
-      "tc_ids": [
-        "TC-US016-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-017",
-      "theme": "runner-learning",
-      "text": "QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics.",
-      "tc_ids": [
-        "TC-US017-001"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-018",
-      "theme": "browser-lane-traceability",
-      "text": "Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping.",
-      "tc_ids": [
-        "TC-US018-001"
-      ],
-      "qa_types": [
-        "integration"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "spec_fingerprint_changed"
+      "previous_feature_qa_not_passed"
     ],
     "targeted_layers": [
       "contract",
@@ -1075,73 +830,42 @@
       "AC-010",
       "AC-011",
       "AC-012",
-      "AC-013",
-      "AC-014",
-      "AC-015",
-      "AC-016",
-      "AC-017",
-      "AC-018"
+      "AC-013"
     ],
     "targeted_tc_ids": [
-      "TC-US001-001-PRIMARY",
-      "TC-US002-001-PRIMARY",
-      "TC-US003-001-PRIMARY",
-      "TC-US004-001-PRIMARY",
-      "TC-US005-001-PRIMARY",
-      "TC-US006-001-PRIMARY",
-      "TC-US007-001-PRIMARY",
-      "TC-US008-001-PRIMARY",
-      "TC-US009-001-PRIMARY",
-      "TC-US010-001-PRIMARY",
-      "TC-US011-001-PRIMARY",
-      "TC-US012-001-PRIMARY",
-      "TC-US013-001-PRIMARY",
-      "TC-US014-001-PRIMARY",
-      "TC-US015-001-PRIMARY",
-      "TC-US016-001-PRIMARY",
-      "TC-US017-001-PRIMARY",
-      "TC-US018-001-PRIMARY"
+      "TC-US001-001",
+      "TC-US002-001",
+      "TC-US003-001",
+      "TC-US004-001",
+      "TC-US005-001",
+      "TC-US006-001",
+      "TC-US007-001",
+      "TC-US008-001",
+      "TC-US009-001",
+      "TC-US010-001",
+      "TC-US011-001",
+      "TC-US012-001",
+      "TC-US013-001"
     ],
-    "targeted_scenario_ids": [
-      "SC-001",
-      "SC-002",
-      "SC-003",
-      "SC-004",
-      "SC-005",
-      "SC-006",
-      "SC-007",
-      "SC-008",
-      "SC-009",
-      "SC-010",
-      "SC-011",
-      "SC-012",
-      "SC-013",
-      "SC-014",
-      "SC-015",
-      "SC-016",
-      "SC-017",
-      "SC-018"
-    ],
-    "targeted_scenario_families": [
-      "primary"
-    ]
+    "targeted_scenario_ids": [],
+    "targeted_scenario_families": []
   },
   "boundary_evidence": {
     "boundary_principles": [],
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 18
+    "verification_item_count": 13
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-US001-001-PRIMARY",
+      "tc_id": "TC-US001-001",
       "source_tc_id": "TC-US001-001",
-      "scenario_id": "SC-001",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1152,19 +876,19 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-US002-001-PRIMARY",
+      "tc_id": "TC-US002-001",
       "source_tc_id": "TC-US002-001",
-      "scenario_id": "SC-002",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1175,19 +899,19 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-US003-001-PRIMARY",
+      "tc_id": "TC-US003-001",
       "source_tc_id": "TC-US003-001",
-      "scenario_id": "SC-003",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1198,157 +922,157 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-US004-001-PRIMARY",
+      "tc_id": "TC-US004-001",
       "source_tc_id": "TC-US004-001",
-      "scenario_id": "SC-004",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-US005-001-PRIMARY",
+      "tc_id": "TC-US005-001",
       "source_tc_id": "TC-US005-001",
-      "scenario_id": "SC-005",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-US006-001-PRIMARY",
+      "tc_id": "TC-US006-001",
       "source_tc_id": "TC-US006-001",
-      "scenario_id": "SC-006",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "regression",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-US007-001-PRIMARY",
+      "tc_id": "TC-US007-001",
       "source_tc_id": "TC-US007-001",
-      "scenario_id": "SC-007",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-US008-001-PRIMARY",
+      "tc_id": "TC-US008-001",
       "source_tc_id": "TC-US008-001",
-      "scenario_id": "SC-008",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
       ]
     },
     {
       "ac_id": "AC-009",
-      "tc_id": "TC-US009-001-PRIMARY",
+      "tc_id": "TC-US009-001",
       "source_tc_id": "TC-US009-001",
-      "scenario_id": "SC-009",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
       ]
     },
     {
       "ac_id": "AC-010",
-      "tc_id": "TC-US010-001-PRIMARY",
+      "tc_id": "TC-US010-001",
       "source_tc_id": "TC-US010-001",
-      "scenario_id": "SC-010",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1359,88 +1083,42 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
       ]
     },
     {
       "ac_id": "AC-011",
-      "tc_id": "TC-US011-001-PRIMARY",
+      "tc_id": "TC-US011-001",
       "source_tc_id": "TC-US011-001",
-      "scenario_id": "SC-011",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
       ]
     },
     {
       "ac_id": "AC-012",
-      "tc_id": "TC-US012-001-PRIMARY",
+      "tc_id": "TC-US012-001",
       "source_tc_id": "TC-US012-001",
-      "scenario_id": "SC-012",
-      "scenario_family": "primary",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
-      "tc_id": "TC-US013-001-PRIMARY",
-      "source_tc_id": "TC-US013-001",
-      "scenario_id": "SC-013",
-      "scenario_family": "primary",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-014",
-      "tc_id": "TC-US014-001-PRIMARY",
-      "source_tc_id": "TC-US014-001",
-      "scenario_id": "SC-014",
-      "scenario_family": "primary",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1451,19 +1129,19 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
       ]
     },
     {
-      "ac_id": "AC-015",
-      "tc_id": "TC-US015-001-PRIMARY",
-      "source_tc_id": "TC-US015-001",
-      "scenario_id": "SC-015",
-      "scenario_family": "primary",
+      "ac_id": "AC-013",
+      "tc_id": "TC-US013-001",
+      "source_tc_id": "TC-US013-001",
+      "scenario_id": "",
+      "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
@@ -1474,84 +1152,15 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-016",
-      "tc_id": "TC-US016-001-PRIMARY",
-      "source_tc_id": "TC-US016-001",
-      "scenario_id": "SC-016",
-      "scenario_family": "primary",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-017",
-      "tc_id": "TC-US017-001-PRIMARY",
-      "source_tc_id": "TC-US017-001",
-      "scenario_id": "SC-017",
-      "scenario_family": "primary",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-018",
-      "tc_id": "TC-US018-001-PRIMARY",
-      "source_tc_id": "TC-US018-001",
-      "scenario_id": "SC-018",
-      "scenario_family": "primary",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
       ]
     }
   ],
-  "execution_mode": "story-exhaustive",
+  "execution_mode": "feature-aware",
   "project_profile": {},
   "project_profile_gate": {
     "status": "not_configured",
@@ -1570,17 +1179,17 @@
     "blocked": false,
     "reason_code": "",
     "target_stage": "qa",
-    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "version": "v1.4.2",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.re-freeze-transaction.json"
     },
     "unresolved_gap_count": 0,
     "high_risk_unresolved_categories": [],
@@ -1623,13 +1232,13 @@
         "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.re-freeze-transaction.json"
           }
         }
       },
@@ -1711,9 +1320,9 @@
     },
     "completeness": {
       "schema_version": "1.0",
-      "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "version": "v1.4.2",
+      "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "version": "v1.4.3",
       "revision_id": "R1",
       "completeness_verdict": "pass",
       "unresolved_gap_count": 0,
@@ -1745,12 +1354,12 @@
         "implement_ready": true,
         "release_ready": true
       },
-      "generated_at": "2026-05-11T08:31:16.668974+00:00"
+      "generated_at": "2026-05-11T11:22:07.429412+00:00"
     },
     "freeze_contract": {
       "schema_version": "1.0",
-      "version": "v1.4.2",
-      "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+      "version": "v1.4.3",
+      "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
       "revision_id": "R1",
       "status": "freeze-ready",
       "human_supplement_contract": {
@@ -1784,20 +1393,20 @@
       "freeze_verdict": "pass",
       "implementation_verdict": "pending",
       "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-11T08:31:16.669114+00:00"
+      "updated_at": "2026-05-11T11:22:07.430622+00:00"
     }
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.2/.machine/requirement/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "run_id": "run-20260511T165112756999",
-    "generated_at": "2026-05-11T08:51:25.951873+00:00",
-    "execution_mode": "story-exhaustive",
-    "scenario_count": 18,
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "run_id": "run-20260511T192413577986",
+    "generated_at": "2026-05-11T11:24:22.591996+00:00",
+    "execution_mode": "feature-aware",
+    "scenario_count": 13,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1817,12 +1426,12 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "SC-001",
-      "tc_id": "TC-US001-001-PRIMARY",
+      "scenario_id": "TC-US001-001",
+      "tc_id": "TC-US001-001",
       "source_tc_id": "TC-US001-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1845,20 +1454,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US001-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-002",
-      "tc_id": "TC-US002-001-PRIMARY",
+      "scenario_id": "TC-US002-001",
+      "tc_id": "TC-US002-001",
       "source_tc_id": "TC-US002-001",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1881,20 +1490,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US002-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-003",
-      "tc_id": "TC-US003-001-PRIMARY",
+      "scenario_id": "TC-US003-001",
+      "tc_id": "TC-US003-001",
       "source_tc_id": "TC-US003-001",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1917,20 +1526,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US003-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-004",
-      "tc_id": "TC-US004-001-PRIMARY",
+      "scenario_id": "TC-US004-001",
+      "tc_id": "TC-US004-001",
       "source_tc_id": "TC-US004-001",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1953,20 +1562,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US004-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-005",
-      "tc_id": "TC-US005-001-PRIMARY",
+      "scenario_id": "TC-US005-001",
+      "tc_id": "TC-US005-001",
       "source_tc_id": "TC-US005-001",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -1989,20 +1598,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US005-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-006",
-      "tc_id": "TC-US006-001-PRIMARY",
+      "scenario_id": "TC-US006-001",
+      "tc_id": "TC-US006-001",
       "source_tc_id": "TC-US006-001",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2025,20 +1634,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US006-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-007",
-      "tc_id": "TC-US007-001-PRIMARY",
+      "scenario_id": "TC-US007-001",
+      "tc_id": "TC-US007-001",
       "source_tc_id": "TC-US007-001",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2061,20 +1670,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US007-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-008",
-      "tc_id": "TC-US008-001-PRIMARY",
+      "scenario_id": "TC-US008-001",
+      "tc_id": "TC-US008-001",
       "source_tc_id": "TC-US008-001",
       "ac_id": "AC-008",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2097,20 +1706,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US008-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-009",
-      "tc_id": "TC-US009-001-PRIMARY",
+      "scenario_id": "TC-US009-001",
+      "tc_id": "TC-US009-001",
       "source_tc_id": "TC-US009-001",
       "ac_id": "AC-009",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2133,20 +1742,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US009-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-010",
-      "tc_id": "TC-US010-001-PRIMARY",
+      "scenario_id": "TC-US010-001",
+      "tc_id": "TC-US010-001",
       "source_tc_id": "TC-US010-001",
       "ac_id": "AC-010",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2169,20 +1778,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US010-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-011",
-      "tc_id": "TC-US011-001-PRIMARY",
+      "scenario_id": "TC-US011-001",
+      "tc_id": "TC-US011-001",
       "source_tc_id": "TC-US011-001",
       "ac_id": "AC-011",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2205,20 +1814,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US011-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-012",
-      "tc_id": "TC-US012-001-PRIMARY",
+      "scenario_id": "TC-US012-001",
+      "tc_id": "TC-US012-001",
       "source_tc_id": "TC-US012-001",
       "ac_id": "AC-012",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2241,20 +1850,20 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US012-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
       ]
     },
     {
-      "scenario_id": "SC-013",
-      "tc_id": "TC-US013-001-PRIMARY",
+      "scenario_id": "TC-US013-001",
+      "tc_id": "TC-US013-001",
       "source_tc_id": "TC-US013-001",
       "ac_id": "AC-013",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
       "confidence_raw": 1.0,
@@ -2277,205 +1886,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US013-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-014",
-      "tc_id": "TC-US014-001-PRIMARY",
-      "source_tc_id": "TC-US014-001",
-      "ac_id": "AC-014",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US014-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-015",
-      "tc_id": "TC-US015-001-PRIMARY",
-      "source_tc_id": "TC-US015-001",
-      "ac_id": "AC-015",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US015-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-016",
-      "tc_id": "TC-US016-001-PRIMARY",
-      "source_tc_id": "TC-US016-001",
-      "ac_id": "AC-016",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US016-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-017",
-      "tc_id": "TC-US017-001-PRIMARY",
-      "source_tc_id": "TC-US017-001",
-      "ac_id": "AC-017",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US017-001-PRIMARY/result.json"
-      ]
-    },
-    {
-      "scenario_id": "SC-018",
-      "tc_id": "TC-US018-001-PRIMARY",
-      "source_tc_id": "TC-US018-001",
-      "ac_id": "AC-018",
-      "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-      "scenario_family": "primary",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T165112756999/qa9-tc/TC-US018-001-PRIMARY/result.json"
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "run_id": "run-20260511T165112756999",
-    "ac_total": 18,
-    "ac_accepted": 18,
-    "scenario_total": 18,
-    "scenario_passed": 18,
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "run_id": "run-20260511T192413577986",
+    "ac_total": 13,
+    "ac_accepted": 13,
+    "scenario_total": 13,
+    "scenario_passed": 13,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -2485,8 +1914,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 18,
-      "executed_scenarios": 18,
+      "required_scenarios": 13,
+      "executed_scenarios": 13,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -2513,29 +1942,29 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 18,
+      "verification_item_count": 13,
       "targeted_scope_only": true
     },
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.2 --feature \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.3 --feature \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.2 --feature \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.3 --feature \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "version": "v1.4.2",
-    "requested_mode": "story-exhaustive",
-    "effective_mode": "story-exhaustive",
-    "generator_mode": "story-exhaustive",
-    "execution_mode": "story-exhaustive",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
     "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
@@ -2550,15 +1979,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.2",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.3",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
-      "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+      "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2571,12 +2000,12 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
-    "version": "v1.4.2",
-    "requested_mode": "story-exhaustive",
-    "effective_mode": "story-exhaustive",
-    "generator_mode": "story-exhaustive",
-    "execution_mode": "story-exhaustive",
+    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+    "version": "v1.4.3",
+    "requested_mode": "feature-aware",
+    "effective_mode": "feature-aware",
+    "generator_mode": "feature-aware",
+    "execution_mode": "feature-aware",
     "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
@@ -2591,15 +2020,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.2",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.3",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
-      "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+      "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2610,5 +2039,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "28b07e447b639873415f174a3d795645d2c878110098f156447767135411ed20"
+  "current_spec_fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951"
 }

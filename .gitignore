@@ -1,5 +1,5 @@
 # BEACON:GITIGNORE:START
-# BEACON:GITIGNORE:VERSION:v1.4.0
+# BEACON:GITIGNORE:VERSION:v1.4.3
 # Local orchestration scratch state
 .omx/
 .omc/
@@ -46,6 +46,12 @@
 .beacon/state/requirement-clarity-*.json
 .beacon/state/technical-review-contract-*.json
 .beacon/state/exhaustion.json
+.beacon/state/beacon-*-latest.json
+.beacon/state/prd-transactions/
+.beacon/transactions/
+.beacon/prd/
+.beacon/qa/beacon-v1.4.3-*.json
+.beacon/runs/repair-v1.4.3-*/
 
 # Only explicitly promoted canonical QA and test-result surfaces stay tracked
 .beacon/evidence/test-results/*
@@ -65,4 +71,6 @@
 # Python cache noise
 __pycache__/
 *.py[cod]
+*.egg-info/
+*.bak-*
 # BEACON:GITIGNORE:END

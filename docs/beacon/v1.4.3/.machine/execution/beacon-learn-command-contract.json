@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "command_surface": "beacon-learn",
+  "feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+  "version": "v1.4.3",
+  "status": "implementation-spec-ready",
+  "modes": ["recall", "audit", "prune"],
+  "required_inputs": [
+    "target surface or feature",
+    "current route context",
+    "current truth refs or execution refs"
+  ],
+  "output_fields": [
+    "learning_candidates",
+    "applied_learning",
+    "suppressed_learning",
+    "stale_learning",
+    "conflicting_learning",
+    "route_influence_summary",
+    "recommended_route",
+    "writeback_targets",
+    "blocked_reason"
+  ],
+  "writeback_targets": [
+    "learning audit log",
+    "learning downgrade recommendation",
+    "learning prune recommendation",
+    "route explanation output"
+  ],
+  "blocked_reasons": [
+    "learning_index_missing",
+    "route_context_missing",
+    "truth_binding_missing",
+    "learning_conflict_requires_operator_resolution",
+    "audit_surface_unavailable"
+  ]
+}

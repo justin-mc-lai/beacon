@@ -180,7 +180,7 @@ def test_v13010_help_should_route_doc_drift_to_beacon_change(tmp_path: Path) -> 
     assert "requirement_package_contract_blocked" in payload["blocking_reasons"]
     assert "baseline_hash_mismatch" in payload["requirement_package_gate"]["failure_categories"]
     assert payload["next_step"]["action"] == "beacon-change"
-    assert payload["next_step"]["command"] == "beacon-change"
+    assert payload["next_step"]["command"].startswith('beacon change "Requirement Package Gate Feature"')
 
 
 def test_v13010_missing_machine_projection_does_not_block_feature_gate(tmp_path: Path) -> None:
@@ -310,4 +310,4 @@ def test_v13010_status_board_should_surface_requirement_package_failure_categori
     assert result.exit_code == 0, result.stdout
     assert "- source_of_truth.requirement_package_gate: blocked" in result.stdout
     assert "- source_of_truth.requirement_package_failures: baseline_hash_mismatch" in result.stdout
-    assert "- source_of_truth.requirement_package_next: beacon-change" in result.stdout
+    assert '- source_of_truth.requirement_package_next: beacon change "Requirement Package Gate Feature"' in result.stdout

@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "status": "planned",
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "Define beacon-ceo-review command contract",
+      "maps_to_feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "covers_ac": ["AC-001", "AC-002", "AC-003"]
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "Define CEO review writeback routing",
+      "maps_to_feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "covers_ac": ["AC-004", "AC-005"],
+      "depends_on": ["ITASK-001"]
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "Define beacon-design-review command contract",
+      "maps_to_feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "covers_ac": ["AC-001", "AC-002"]
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "Define prototype de-overloading enforcement",
+      "maps_to_feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "covers_ac": ["AC-003", "AC-004", "AC-005"],
+      "depends_on": ["ITASK-003"]
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "Define beacon-learn command contract",
+      "maps_to_feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "covers_ac": ["AC-001", "AC-002"]
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "Define learning downgrade and pruning semantics",
+      "maps_to_feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "covers_ac": ["AC-003", "AC-004"],
+      "depends_on": ["ITASK-005"]
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "Define route explainability surfaces",
+      "maps_to_feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "covers_ac": ["AC-005"],
+      "depends_on": ["ITASK-006"]
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "Cross-feature acceptance alignment",
+      "maps_to_feature": "v1.4.3 umbrella",
+      "depends_on": ["ITASK-002", "ITASK-004", "ITASK-007"]
+    }
+  ]
+}

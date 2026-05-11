@@ -1,0 +1,106 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.3",
+  "status": "planned",
+  "feature_count": 4,
+  "features": [
+    {
+      "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "summary": "Keeps the umbrella version-line aggregation contract that binds CEO review, design review, and governed learning into one evidence-first decision surface package.",
+      "status": "qa-accepted"
+    },
+    {
+      "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "feature_slug": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "summary": "Adds a version-level CEO-grade challenge surface for requirement reframing and scope judgment.",
+      "status": "freeze-ready"
+    },
+    {
+      "feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "feature_slug": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "summary": "Separates design decision challenge from prototype freeze and de-overloads prototype.",
+      "status": "freeze-ready"
+    },
+    {
+      "feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "feature_slug": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+      "summary": "Activates governed learning recall as a default decision input with visible route explainability.",
+      "status": "freeze-ready"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 4,
+    "ordered_feature_slugs": [
+      "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+      "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+      "beacon-v1.4.3-governed-learning-recall-and-route-explainability"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": true,
+        "features": [
+          {
+            "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+            "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+            "depends_on_features": [
+              "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+              "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+              "beacon-v1.4.3-governed-learning-recall-and-route-explainability"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "umbrella_acceptance_aggregation"
+          },
+          {
+            "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+            "feature_slug": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "surface_addition_no_conflict"
+          },
+          {
+            "feature": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+            "feature_slug": "beacon-v1.4.3-design-review-surface-and-prototype-governance",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "surface_addition_no_conflict"
+          },
+          {
+            "feature": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+            "feature_slug": "beacon-v1.4.3-governed-learning-recall-and-route-explainability",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "surface_addition_no_conflict"
+          }
+        ]
+      }
+    ]
+  }
+}

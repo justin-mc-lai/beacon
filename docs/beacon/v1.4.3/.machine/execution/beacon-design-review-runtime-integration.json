@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "surface": "beacon-design-review",
+  "version": "v1.4.3",
+  "human_entry_skill": "skills/beacon/beacon-design-review/SKILL.md",
+  "command_anchor": "beacon/commands/review.py",
+  "secondary_command_anchor": "beacon/commands/design.py",
+  "recommended_command_shape": "beacon review design",
+  "recommended_utils": [
+    "beacon/utils/design_review_surface.py",
+    "beacon/utils/support_surface_transactions.py"
+  ],
+  "state_path": ".beacon/state/beacon-design-review-latest.json",
+  "history_path": ".beacon/transactions/beacon-design-review/<transaction-id>.json",
+  "read_model_surfaces": [
+    "beacon-help",
+    "beacon-status",
+    "beacon-prototype"
+  ],
+  "writeback_targets": [
+    "beacon-change",
+    "beacon-prd",
+    "beacon-user-story",
+    "beacon-test-case",
+    "beacon-prototype"
+  ]
+}

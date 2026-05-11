@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "version": "v1.4.3",
+  "run_id": "run-beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation-impl",
+  "runner": "codex-subagents",
+  "skill": "beacon:beacon-implement",
+  "summary": "v1.4.3 support surface runtime and route explainability implemented.",
+  "changed_files": [
+    "beacon/commands/review.py",
+    "beacon/commands/help.py",
+    "beacon/commands/status.py",
+    "beacon/utils/ceo_review_surface.py",
+    "beacon/utils/design_review_surface.py",
+    "beacon/utils/learn_surface.py",
+    "beacon/utils/support_surface_transactions.py"
+  ],
+  "services": [
+    {
+      "name": "beacon",
+      "role": "runtime",
+      "changed_files": [
+        "beacon/commands/review.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/ceo_review_surface.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/learn_surface.py",
+        "beacon/utils/support_surface_transactions.py"
+      ]
+    }
+  ],
+  "db_changes": {
+    "none": true
+  },
+  "api_changes": {
+    "none": true
+  },
+  "config_changes": [],
+  "env_changes": [],
+  "assumptions": [],
+  "simplicity_notes": [
+    "Reused support-surface transaction and review surfaces instead of adding new lifecycle commands."
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "support-surface runtime closure only",
+    "allowed_paths": [
+      "beacon/commands",
+      "beacon/utils",
+      "docs/beacon/v1.4.3",
+      "tests"
+    ]
+  },
+  "verification_signals": {
+    "has_assumptions": false
+  }
+}

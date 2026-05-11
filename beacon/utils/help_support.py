@@ -17,6 +17,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan,
     load_implementation_plan_progress,
 )
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.learning_loop import load_learning_plane_contract
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.minimal_hud import build_minimal_hud
@@ -28,7 +29,7 @@ from beacon.utils.project_skills import (
     resolve_profile_for_feature,
 )
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
-from beacon.utils.prototype_support import version_requires_prototype
+from beacon.utils.prototype_support import feature_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
@@ -531,7 +532,11 @@ def _profile_binding_source(project_root: Path, *, version: str, feature: str) -
 
 
 def _semantic_gate_required(project_root: Path, *, version: str, feature: str) -> bool:
-    return bool(str(feature or "").strip()) and _semver_tuple(version) >= (1, 3, 6) and version_requires_prototype(project_root, version)
+    return (
+        bool(str(feature or "").strip())
+        and _semver_tuple(version) >= (1, 3, 6)
+        and feature_requires_prototype(project_root, version, feature)
+    )
 
 
 def _normalize_intent_text(value: str | None) -> str:
@@ -584,8 +589,18 @@ def _build_change_loop_payload(
         "metadata_ref": str(metadata_path.relative_to(project_root)) if metadata_path.exists() else "",
         "resolved_metadata_view": resolve_project_metadata_view(project_root, version=version),
     }
+    route_command = (
+        build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=version,
+            reason=intent_text or "change-request",
+        )
+        if feature
+        else ""
+    )
     ladder = [
-        "beacon-change",
+        "beacon change",
         "reopen",
         "doctor metadata verify",
         "doctor metadata update",
@@ -603,7 +618,7 @@ def _build_change_loop_payload(
         "intent_detected": intent_detected,
         "has_post_freeze_context": has_post_freeze_context,
         "recommended": bool(feature and intent_detected and has_post_freeze_context),
-        "route": "beacon-change",
+        "route": route_command,
         "reason": (
             "feature is already in a frozen/revisioned state and the request looks like a post-freeze requirement change"
             if feature and intent_detected and has_post_freeze_context
@@ -611,11 +626,7 @@ def _build_change_loop_payload(
         ),
         "ladder": ladder,
         "project_metadata_context": project_metadata_context,
-        "reopen_command": (
-            f"beacon reopen {json.dumps(feature, ensure_ascii=False)} --project-root {project_root} --version {version} --reason change-request"
-            if feature
-            else ""
-        ),
+        "reopen_command": route_command,
         "metadata_verify_command": (
             f"beacon doctor metadata verify --project-root {project_root} --version {version} --json"
         ),

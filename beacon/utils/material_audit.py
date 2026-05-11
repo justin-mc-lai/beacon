@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
 from beacon.utils.requirement_deepening import requirement_paths
 from beacon.utils.revision_state import load_revision_state, revision_state_file
@@ -769,7 +770,12 @@ def build_requirement_package_gate(
             remediation_mode = "change-loop"
             recommended_action = "beacon-change"
             recommended_reason = "frozen requirement package drifted from the approved baseline and must re-enter the change loop"
-            recommended_command = "beacon-change"
+            recommended_command = build_change_command(
+                feature=feature,
+                project_root=root,
+                version=resolved_version,
+                reason="change-request",
+            )
         else:
             remediation_mode = "verify"
             recommended_action = "doctor-verify-materials"

@@ -8,6 +8,7 @@ from typing import Any
 from beacon.utils.artifact_paths import machine_root, qa_matrix_candidates
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, machine_story_path
+from beacon.utils.technical_review_contract import feature_is_aggregation_contract
 from beacon.utils.version_surface import get_version_surface_governance_payload
 from beacon.utils.versioning import load_version_truth, release_truth_status, resolve_runtime_version, resolve_target_version
 
@@ -318,15 +319,22 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
 
 def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[str]:
     codes: list[str] = []
+    feature = str(payload.get("feature") or "").strip()
+    version = str(payload.get("version") or "").strip()
+    aggregation_contract = bool(feature) and bool(version) and feature_is_aggregation_contract(
+        project_root,
+        version=version,
+        feature=feature,
+    )
     lanes = payload.get("lanes") if isinstance(payload.get("lanes"), dict) else {}
     feature_lane = lanes.get("feature_release_facing") if isinstance(lanes.get("feature_release_facing"), list) else []
-    if not feature_lane:
+    if not feature_lane and not aggregation_contract:
         codes.append("feature_release_lane_missing")
     for entry in feature_lane:
         if not isinstance(entry, dict):
             continue
         status = str(entry.get("evidence_status") or "").strip().lower()
-        if status == "missing":
+        if status == "missing" and not aggregation_contract:
             codes.append("feature_release_lane_missing")
         elif status in {"failed", "present"}:
             codes.append("feature_release_lane_failed")
@@ -334,13 +342,13 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
     if any(str(item.get("evidence_status") or "") == "failed" for item in generated_lane if isinstance(item, dict)):
         codes.append("generated_surface_sync_drift")
     browser_lane = lanes.get("browser_runtime_admission") if isinstance(lanes.get("browser_runtime_admission"), list) else []
-    if not browser_lane:
+    if not browser_lane and not aggregation_contract:
         codes.append("browser_runtime_admission_missing")
     for entry in browser_lane:
         if not isinstance(entry, dict):
             continue
         status = str(entry.get("evidence_status") or "").strip().lower()
-        if status == "missing":
+        if status == "missing" and not aggregation_contract:
             codes.append("browser_runtime_admission_missing")
     if bool((payload.get("planning_line_safety") or {}).get("blocked", False)):
         codes.append("planning_line_runtime_conflict")

@@ -14,6 +14,7 @@ from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.commands.auto_test import _normalize_browser_runner_type
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
 from beacon.utils.artifact_paths import machine_trace_dir
+from beacon.utils.change_surface import build_change_command
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
@@ -802,7 +803,15 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "status": "blocked",
             "reason_codes": ["requirement_package_contract_blocked"],
             "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(requirement_package_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_package_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature or "",
+                    project_root=project_root,
+                    version=str(requirement_package_gate.get("version") or version or "auto"),
+                    reason="requirement-package-contract-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
@@ -824,7 +833,15 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "reason_codes": ["requirement_completeness_blocked"],
             "requirement_package_gate": requirement_package_gate,
             "requirement_completeness_gate": requirement_completeness_gate,
-            "recommended_command": str(requirement_completeness_gate.get("recommended_command") or "beacon-change"),
+            "recommended_command": str(
+                requirement_completeness_gate.get("recommended_command")
+                or build_change_command(
+                    feature=feature or "",
+                    project_root=project_root,
+                    version=str(requirement_completeness_gate.get("version") or version or "auto"),
+                    reason="requirement-completeness-blocked",
+                )
+            ),
         }, blocked=True)
         if json_output:
             typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))

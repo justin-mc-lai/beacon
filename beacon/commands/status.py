@@ -26,6 +26,7 @@ from beacon.utils.versioning import describe_project_version_context, resolve_ta
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress, workflow_memory_transaction_contract
 from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_action, canonicalize_lifecycle_stage
+from beacon.utils.support_surface_transactions import load_support_surface_summary
 
 app = typer.Typer(
     name="status",
@@ -309,6 +310,9 @@ def _status_impl(
             "approved_by": technical_review_state.get("approved_by", ""),
             "state_path": technical_review_state.get("state_path", ""),
         },
+        "ceo_review": load_support_surface_summary(root, surface="beacon-ceo-review") if target_feature else {},
+        "design_review": load_support_surface_summary(root, surface="beacon-design-review") if target_feature else {},
+        "learning_governance": load_support_surface_summary(root, surface="beacon-learn") if target_feature else {},
         "requirement_completeness_gate": help_payload.get("requirement_completeness_gate", {}),
         "requirement_completeness": help_payload.get("requirement_completeness", {}),
         "requirement_gap_digest": help_payload.get("requirement_gap_digest", {}),
@@ -541,6 +545,21 @@ def _status_impl(
                 f"- technical_review: {payload.get('technical_review', {}).get('status')} "
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
             )
+        if target_feature and payload.get("ceo_review", {}).get("status"):
+            typer.echo(
+                f"- ceo_review: {payload.get('ceo_review', {}).get('status')} "
+                f"next={payload.get('ceo_review', {}).get('latest_next_route') or 'none'}"
+            )
+        if target_feature and payload.get("design_review", {}).get("status"):
+            typer.echo(
+                f"- design_review: {payload.get('design_review', {}).get('status')} "
+                f"next={payload.get('design_review', {}).get('latest_next_route') or 'none'}"
+            )
+        if target_feature and payload.get("learning_governance", {}).get("status"):
+            typer.echo(
+                f"- learning_governance: {payload.get('learning_governance', {}).get('status')} "
+                f"next={payload.get('learning_governance', {}).get('latest_next_route') or 'none'}"
+            )
         if target_feature:
             typer.echo(
                 f"- semantic: {payload.get('semantic', {}).get('status')} "
@@ -548,7 +567,7 @@ def _status_impl(
             )
         if target_feature and bool(payload.get("change_loop", {}).get("recommended")):
             typer.echo(
-                f"- change_loop: route={payload.get('change_loop', {}).get('route') or 'beacon-change'} "
+                f"- change_loop: route={payload.get('change_loop', {}).get('route') or 'beacon change'} "
                 f"intent={payload.get('change_loop', {}).get('intent') or '-'}"
             )
         if payload.get("release_binding"):

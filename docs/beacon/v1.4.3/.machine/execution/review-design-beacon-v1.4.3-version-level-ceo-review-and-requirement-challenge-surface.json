@@ -1,0 +1,58 @@
+{
+  "schema_version": "1.0",
+  "review_type": "design",
+  "feature": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "feature_slug": "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface",
+  "version": "v1.4.3",
+  "generated_at": "2026-05-11T09:44:29.481277+00:00",
+  "status": "fail",
+  "gate_ready": false,
+  "prototype_review_status": "missing",
+  "design_review_outcome": "missing",
+  "prototype_review": {
+    "overall_status": "",
+    "iteration_writeback_path": ""
+  },
+  "security_design_review": {
+    "mode": "cso-inspired-design-review",
+    "status": "fail",
+    "security_dimensions": [
+      "privileged_action_boundaries",
+      "upload_and_file_constraints",
+      "secret_handling_surfaces",
+      "external_integration_boundaries",
+      "auditability_and_evidence"
+    ],
+    "severity_counts": {
+      "high": 1,
+      "medium": 0
+    },
+    "findings": [
+      {
+        "reason_code": "privileged_action_role_boundary_missing",
+        "severity": "high",
+        "message": "privileged actions are present, but actor/role boundaries are not explicit in the requirement materials",
+        "evidence": [
+          "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md",
+          "beacon-v1.4.3-version-level-ceo-review-and-requirement-challenge-surface.md"
+        ]
+      }
+    ]
+  },
+  "issues": [
+    {
+      "reason_code": "prototype_missing",
+      "severity": "critical",
+      "message": "review design requires a generated prototype bundle"
+    },
+    {
+      "reason_code": "privileged_action_role_boundary_missing",
+      "severity": "critical",
+      "message": "privileged actions are present, but actor/role boundaries are not explicit in the requirement materials"
+    }
+  ],
+  "recommendations": [
+    "Run `beacon prototype create ...` before `beacon review design`.",
+    "Add explicit role/auth boundaries, sensitive-surface controls, and validation constraints to the user-story/PRD."
+  ]
+}
