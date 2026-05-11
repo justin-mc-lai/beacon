@@ -178,6 +178,54 @@ def test_v119_qa_evolve_story_exhaustive_should_target_scenarios(tmp_path: Path)
     assert payload["story_scenario_map_path"]
 
 
+def test_v119_qa_evolve_story_exhaustive_should_print_browser_prepare_guidance(tmp_path: Path):
+    _seed_story_docs(tmp_path)
+    _seed_feature_matrix(tmp_path)
+    _mark_implemented(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "evolve",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--mode",
+            "story-exhaustive",
+        ]
+    )
+
+    assert result.exit_code == 0, result.stdout
+    assert "browser_required_scenarios:" in result.stdout
+    assert "browser_prepare_command: beacon qa session list" in result.stdout
+
+
+def test_v119_qa_team_plan_should_print_browser_prepare_guidance(tmp_path: Path):
+    _seed_story_docs(tmp_path)
+    _seed_feature_matrix(tmp_path)
+    _mark_implemented(tmp_path)
+
+    result = _invoke(
+        [
+            "qa",
+            "team-plan",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--mode",
+            "story-exhaustive",
+        ]
+    )
+
+    assert result.exit_code == 0, result.stdout
+    assert "browser_required_scenarios:" in result.stdout
+    assert "browser_prepare_command: beacon qa session list" in result.stdout
+
+
 def test_v119_qa_run_story_exhaustive_should_write_browser_evidence_and_exhaustiveness(tmp_path: Path):
     _seed_story_docs(tmp_path)
     _seed_feature_matrix(tmp_path)

@@ -8,6 +8,7 @@ description: Use when the user wants to verify a Beacon feature, inspect new fin
 This skill routes verification work through Beacon's `qa` surface.
 
 The public command stays on the **`v1.4.0`** runtime line; docs and contracts live under `docs/beacon/v1.4.0/` unless your project pins another version.
+Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.0` docs line.
 
 `Beacon Acceptance Kit v1` is the shared QA verdict base. QA should read and project:
 
@@ -34,6 +35,42 @@ Prefer:
 - optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh qa ...`
 
 Keep `qa-team`, learning, and auto research hidden behind the public `qa` surface unless the user explicitly asks for internals.
+
+## Inputs Contract
+
+- `project-root`
+- `version`
+- `feature`
+- implementation evidence
+- frozen `prd / user-story / test-case`
+- conditionally triggered `prototype` handoff when applicable
+- acceptance kit proof layers and gate context
+
+## Decision Protocol
+
+- Continue in `qa` when implementation evidence exists and acceptance truth is frozen.
+- Route back to `implement` for execution gaps, to `change` for truth drift, or to `test-case` when coverage truth is insufficient.
+- Treat `skill-contract`, `scenario-suite`, `trace-scorecard`, and `real-project-proof` as layered verdicts, not one proxy score.
+- Verify route explainability, learning use visibility, and guardrail behavior when the feature claims a thicker human-facing decision surface.
+
+## Anti-Inertia Notes
+
+- `qa` is the only public verification entry, but it is not allowed to rewrite frozen truth silently.
+- Passing one layer does not imply release readiness.
+- Browser or live-environment blockers must be recorded explicitly, not masked as product failure.
+- `qa` cannot rewrite frozen truth or override gate truth by itself.
+
+## Learning Notes
+
+- Reuse prior QA findings as hint for scenario prioritization.
+- Learning can highlight likely failure modes, but it cannot convert blocked evidence into pass.
+- Stale learning should bias toward re-verification, not trust.
+
+## Backstop CLI
+
+- `beacon qa ...`
+- `beacon implement ...` for repair handoff
+- `beacon release ...` only after layered evidence is sufficient
 
 ## Protected live surfaces & browser runner admission
 

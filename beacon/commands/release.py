@@ -25,6 +25,28 @@ from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="release", help="Release checklist")
 _TECHNICAL_ARCHIVE_RE = re.compile(r"^technical-implementation-(?P<slug>.+)\.json$")
+BROWSER_RELEASE_GUIDANCE: dict[str, tuple[str, str]] = {
+    "protected_surface_session_bridge_missing": (
+        "Protected live surface has no session bridge.",
+        "Attach a logged-in browser session via `beacon qa session` or provide storage state / cookies before rerunning QA.",
+    ),
+    "protected_surface_runner_priority_unavailable": (
+        "Protected live surface did not have an attached-session runner available.",
+        "Prefer `web-access`, `agent-browser`, or Playwright attach/CDP for this surface instead of a bare runner.",
+    ),
+    "browser_evidence_placeholder_only": (
+        "Browser evidence is placeholder-only and does not count as real browser QA closure.",
+        "Rerun with a real browser-attached path and collect browser pack, transcript, and replay evidence.",
+    ),
+    "browser_runtime_admission_missing": (
+        "Browser runtime admission evidence is missing from release-facing QA proof.",
+        "Rebuild the test contract index and rerun QA so protected-surface admission is recorded in evidence.",
+    ),
+    "browser_runner_learning_missing": (
+        "Runner learning note is missing for a blocked browser QA path.",
+        "Regenerate QA evidence so the blocker is written into `.machine/learning/qa/` before release review.",
+    ),
+}
 
 
 def _with_release_surface(
@@ -111,6 +133,30 @@ def _payload_without_generated_at(payload: dict) -> dict:
     normalized = dict(payload)
     normalized.pop("generated_at", None)
     return normalized
+
+
+def _browser_release_blockers(release_scorecard: dict[str, Any]) -> list[dict[str, str]]:
+    raw_codes = release_scorecard.get("browser_release_reason_codes") if isinstance(release_scorecard, dict) else []
+    codes = _dedupe_strings(raw_codes if isinstance(raw_codes, list) else [])
+    blockers: list[dict[str, str]] = []
+    for code in codes:
+        summary, repair = BROWSER_RELEASE_GUIDANCE.get(
+            code,
+            ("Browser QA release blocker remains open.", "Rerun browser QA with attached-session evidence and refresh release proof."),
+        )
+        blockers.append(
+            {
+                "reason_code": code,
+                "summary": summary,
+                "repair": repair,
+            }
+        )
+    return blockers
+
+
+def _browser_release_recommended_command(project_root: Path, *, version: str, feature: str) -> str:
+    quoted_feature = f'"{feature}"' if feature else '""'
+    return f"beacon qa run {quoted_feature} --project {project_root} --version {version}"
 
 
 def _feature_change_paths(project_root: Path, version: str, slug: str) -> tuple[Path, Path]:
@@ -678,6 +724,7 @@ def check(
     release_scorecard = build_release_scorecard(project_root, version=resolved_version)
     change_documents = release_scorecard.get("change_documents") if isinstance(release_scorecard.get("change_documents"), dict) else {}
     prompt_boundary = release_scorecard.get("prompt_boundary") if isinstance(release_scorecard.get("prompt_boundary"), dict) else {}
+    browser_release_blockers = _browser_release_blockers(release_scorecard)
     version_surface_governance = (
         release_scorecard.get("version_surface_governance")
         if isinstance(release_scorecard.get("version_surface_governance"), dict)
@@ -1108,6 +1155,14 @@ def check(
             all_passed = False
             failed_checks.append(check_name)
 
+    recommended_command = ""
+    if browser_release_blockers:
+        recommended_command = _browser_release_recommended_command(
+            project_root,
+            version=resolved_version,
+            feature=authoritative_feature,
+        )
+
     status = "pass" if all_passed else "blocked"
     payload = _with_release_surface({
         "version": resolved_version,
@@ -1117,7 +1172,9 @@ def check(
         "release_ready": all_passed,
         "failed_checks": failed_checks,
         "checks": check_records,
-    }, blocked=status == "blocked")
+        "browser_release_blockers": browser_release_blockers,
+        "recommended_command": recommended_command,
+    }, blocked=status == "blocked", recommended_command=recommended_command)
 
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
@@ -1131,6 +1188,13 @@ def check(
             typer.echo("\n✓ Release conditions met")
         else:
             typer.echo("\n✗ Some checks failed")
+            if browser_release_blockers:
+                typer.echo("\nBrowser blockers:")
+                for item in browser_release_blockers:
+                    typer.echo(f"- {item['reason_code']}: {item['summary']}")
+                    typer.echo(f"  repair: {item['repair']}")
+                if recommended_command:
+                    typer.echo(f"Recommended command: {recommended_command}")
 
     append_memory_entry(
         project_root=project_root,
@@ -1200,6 +1264,16 @@ def scorecard(
         )
         typer.echo(
             f"Continue decision: {feature_scorecard.get('continue_decision', '')} backfill_required={feature_scorecard.get('test_case_backfill_required', False)}"
+        )
+    browser_release_blockers = payload.get("browser_release_reason_codes") if isinstance(payload.get("browser_release_reason_codes"), list) else []
+    if browser_release_blockers:
+        typer.echo(f"Browser release blockers: {', '.join(str(item) for item in browser_release_blockers if str(item).strip())}")
+        for item in _browser_release_blockers(payload):
+            typer.echo(f"- {item['reason_code']}: {item['summary']}")
+            typer.echo(f"  repair: {item['repair']}")
+        qa_feature = str(payload.get("qa", {}).get("feature") or "") if isinstance(payload.get("qa"), dict) else ""
+        typer.echo(
+            f"Recommended command: {_browser_release_recommended_command(project_root, version=str(payload.get('version') or version), feature=qa_feature)}"
         )
     prototype_projection = payload.get("prototype_projection", {})
     if isinstance(prototype_projection, dict) and prototype_projection:

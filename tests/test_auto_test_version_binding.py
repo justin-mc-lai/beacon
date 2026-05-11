@@ -64,3 +64,8 @@ def test_workflow_verify_should_pass_run_version_to_auto_test(tmp_path: Path):
     payload = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
     assert payload.get("version") == "v4.2.0"
     assert payload.get("execution", {}).get("version") == "v4.2.0"
+    implement_state = json.loads(
+        next((tmp_path / ".beacon" / "implement").glob("*/state.json")).read_text(encoding="utf-8")
+    )
+    assert implement_state["prompt_boundary"]["status"] == "pass"
+    assert implement_state["prompt_boundary"]["blocked"] is False

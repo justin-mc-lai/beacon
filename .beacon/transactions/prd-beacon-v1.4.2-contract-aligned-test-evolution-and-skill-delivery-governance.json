@@ -1,0 +1,168 @@
+{
+  "canonical_envelope": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "version": "v1.4.2",
+    "track": "main",
+    "family": "tooling_surface",
+    "label": "主 PRD / tooling-surface",
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "prd",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_PRD_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_PRD_DISABLE_LLM"
+    },
+    "model": "beacon-prd-compiler",
+    "diagram_truth_request": {
+      "diagram_types": [],
+      "state_axes": []
+    },
+    "source_refs": [
+      "docs/beacon/global-boundaries.md",
+      "docs/beacon/v1.4.2/SUMMARY.md",
+      "docs/beacon/v1.4.2/execution/index.md",
+      ".beacon/debug/index.json",
+      ".beacon/metadata/project-version-metadata.json"
+    ],
+    "project_metadata_context": {
+      "metadata_ref": ".beacon/metadata/project-version-metadata.json",
+      "resolved_metadata_view": {
+        "project_root": "/Users/apple/Developer/Personal/products/beacon",
+        "topology_kind": "single_repo",
+        "default_execution_service": "beacon",
+        "service_bindings": [
+          {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        ],
+        "service_bindings_by_key": {
+          "beacon": {
+            "service_key": "beacon",
+            "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+            "repo_root_relative": ".",
+            "role": "app",
+            "writable": true,
+            "worktree_path_policy": "follow-repo-root"
+          }
+        },
+        "version": "v1.4.2",
+        "version_contract": {},
+        "selected_service": "beacon",
+        "selected_service_binding": {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "app",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        },
+        "selected_branch": "",
+        "paths": {
+          "machine": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.json",
+          "human": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.md",
+          "state": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/project-metadata/latest.json"
+        },
+        "transaction": {
+          "transaction_id": "tx-project-metadata-b1bc29157f08fded",
+          "event_type": "update",
+          "committed_at": "2026-05-09T04:50:25.010247+00:00",
+          "source_hash": "b1bc29157f08fdedf9da66c268b35bafebbd51ea26bbde633189a19bdbd9fff3"
+        },
+        "branch_governance": {
+          "schema_version": "1.0",
+          "tool_name": "beacon-toolkit-branch-governance",
+          "feature": "",
+          "version": "v1.4.2",
+          "template_name": "standard-feature",
+          "template_source": "default",
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "base_branch": "",
+          "current_branch": "beacon/v1.4.1",
+          "target_branch": "",
+          "worktree_mode": "branch-only",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "previous_version_baseline_branch": "",
+          "next_version_feature_branch": "",
+          "hotfix_branch_naming_rule": "",
+          "allow_worktree_when_feature_dirty": false,
+          "merge_direction_policy": [],
+          "forbidden_directions": [],
+          "evidence_contract": [],
+          "evidence": {},
+          "status": "pass",
+          "blocked": false,
+          "reason_codes": [],
+          "blocked_reason": "",
+          "recommended_action": "",
+          "missing_evidence_fields": [],
+          "evidence_contract_status": "pass",
+          "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `default`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: ``\n- current_branch: `beacon/v1.4.1`\n- target_branch: ``\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nbase_branch\n    -> feature_branch\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+        }
+      }
+    },
+    "contract": {
+      "ok": true,
+      "missing_headings": [],
+      "placeholder_hits": [],
+      "semantic_hits": {
+        "boundary": true,
+        "layering": true,
+        "recovery": true,
+        "acceptance": true,
+        "risk_mitigation": true
+      }
+    },
+    "markdown": "# PRD: Beacon v1.4.2 Contract-Aligned Test Evolution and Skill Delivery Governance\n\n**Feature**: `beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance`  \n**Version**: `v1.4.2`  \n**Date**: `2026-05-09`  \n**Status**: `freeze-ready`  \n**Track**: `test-governance + skill-delivery + release-contract`  \n**Scenario**: `beacon-self-iteration + contract-lane-classification + skill-surface-guidance`  \n**Template**: `main PRD / next-version planning`\n\n## Context\n\n- Global boundaries: `docs/beacon/global-boundaries.md`\n- Current runtime architecture: `docs/beacon/v1.4.0/execution/architecture-blueprint.md`\n- Previous planning line: `docs/beacon/v1.4.1/SUMMARY.md`\n- Deep support surface PRD: `docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md`\n- Deep test delta sample: `docs/beacon/v1.4.1/deep/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure/deep-test-delta.md`\n- Skill QA order rule: `skills/beacon/references/usage-rules.md`\n\n## 1. 问题\n\nBeacon 自迭代已经具备 frozen truth、QA、release、deep delta、version surface governance 等能力，但测试集合在持续演进时仍可能混合当前功能验收、当前 runtime 契约、generated surface 同步、兼容承诺、历史快照与过期假设。缺少契约 lane 会让 full-suite 输出无法解释为明确的交付状态。\n\n## 2. 目标\n\n本需求目标是在不扩张主生命周期的边界下，为 Beacon 建立契约对齐的测试演进治理模型：以 frozen truth 为源头，以 Test Contract Index 为投影，以 QA evidence 和 release gate 为验收闭环，使测试增量、skill 指引、风险缓解和恢复路径都可审计。\n\n## 3. 设计原则\n\n### 3.1 边界优先\n\n- `Test Contract Index` 只能作为 machine projection，不能成为第二 truth root。\n- `doctor / qa / release / deep` 承担既有表面内的治理职责，不新增公开主阶段。\n- planning line 不能污染 current runtime release line。\n\n### 3.2 分层优先\n\n- 分层保持为 markdown truth -> compiled contract -> test contract index -> QA evidence -> release scorecard -> skill delivery guidance。\n- skill 文案只能提供交付指引，不能直接定义 release verdict。\n- runtime projection 只能消费契约，不能反向改写 frozen truth。\n\n### 3.3 恢复优先\n\n- 失败必须有 reason code、repair route 和 `beacon help` resume route。\n- severe blocker 必须 stop_for_repair，修复后再进入下一轮 QA backfill。\n- legacy snapshot drift 默认进入 test evolution backlog，除非被明确提升为 compatibility contract。\n\n### 3.4 风险缓解优先\n\n- generated surface drift、feature release lane failure、planning/runtime conflict 必须被识别为 release-facing 风险。\n- 风险缓解方式必须显式记录为 repair、waiver、backlog、compatibility promotion 或 reject。\n- unclassified full-suite output 不能被用作 release pass 或 release blocker 的唯一依据。\n\n## 4. 范围\n\nIn scope:\n\n- Define `Test Contract Index` as a machine-readable delivery governance projection.\n- Define canonical test lanes for Beacon self-iteration.\n- Define AC/TC/pytest/evidence mapping expectations.\n- Define doctor build/verify ownership for test contract governance.\n- Define QA and release consumption of lane status.\n- Define skill delivery guidance so agent surfaces route test work by contract lane.\n- Define release reason codes for missing, stale, failed, or unclassified test contract evidence.\n- Define how `deep` test deltas are adopted without letting deep execute QA or rewrite frozen truth.\n\nOut of scope:\n\n- Creating a new public lifecycle stage.\n- Promoting `v1.4.2` to runtime release line.\n- Rewriting all historical tests.\n- Treating full-suite output as a single release gate without lane classification.\n- Letting skill text define release truth independently from machine evidence.\n- Letting `Test Contract Index` become a second requirement truth root.\n\n## 5. 功能需求\n\n- FR-001: Beacon must define a Test Contract Index containing identity, truth refs, runtime/docs line, lane membership, AC/TC/test/evidence mapping, status, and reason codes.\n- FR-002: Beacon must verify release-facing lane classification and block unsafe unclassified failures.\n- FR-003: Beacon must require release-facing tests to map to AC/TC and evidence or declare an explicit generated-surface contract reason.\n- FR-004: Doctor support commands must own build/verify behavior for the test contract index.\n- FR-005: QA must preserve AC order, evidence pack, coverage current/gap, continue decision, repair handoff, help resume, and next-round backfill.\n- FR-006: Release scorecard and strict gate must consume lane status and expose reason codes.\n- FR-007: Beacon skill surfaces must guide agents to classify tests by lane.\n- FR-008: Deep-derived test deltas must route to test-case or supplemental QA.\n- FR-009: Planning-line safety must preserve runtime/package/docs-current version truth.\n\n## Overview\n\nBeacon now has a strong truth-to-delivery chain:\n\n```text\nprd\n-> user-story\n-> test-case\n-> implement\n-> qa\n-> release\n```\n\n`v1.4.1` added a support surface for deep analysis and test deltas. That exposed a higher-level product governance gap: once Beacon features evolve, tests must also evolve as a contract-aligned system rather than as a flat pytest collection.\n\nThe goal of `v1.4.2` is to make Beacon self-iteration and skill delivery capable of answering:\n\n```text\nWhich tests protect the current feature?\nWhich tests protect the current runtime line?\nWhich failures are generated-surface drift?\nWhich failures are active compatibility blockers?\nWhich failures are legacy snapshots or test evolution backlog?\nWhich evidence is required before release readiness can be claimed?\n```\n\n## Scope\n\nIn scope:\n\n- Define `Test Contract Index` as a machine-readable delivery governance projection.\n- Define canonical test lanes for Beacon self-iteration.\n- Define AC/TC/pytest/evidence mapping expectations.\n- Define doctor build/verify ownership for test contract governance.\n- Define QA and release consumption of lane status.\n- Define skill delivery guidance so agent surfaces route test work by contract lane.\n- Define release reason codes for missing, stale, failed, or unclassified test contract evidence.\n- Define how `deep` test deltas are adopted without letting deep execute QA or rewrite frozen truth.\n\nOut of scope:\n\n- Creating a new public lifecycle stage.\n- Promoting `v1.4.2` to runtime release line.\n- Rewriting all historical tests.\n- Treating full-suite output as a single release gate without lane classification.\n- Letting skill text define release truth independently from machine evidence.\n- Letting `Test Contract Index` become a second requirement truth root.\n\n## Problem\n\n### 1. Feature evolution currently creates mixed test semantics\n\nBeacon's full test suite contains different kinds of obligations:\n\n- current runtime contracts;\n- current feature release-facing tests;\n- generated surface sync checks;\n- compatibility promises;\n- historical snapshot checks;\n- old assumptions that need test evolution.\n\nWhen these are run as a flat suite, failures become ambiguous. A single failure may mean a current release blocker, a generated surface drift, a legacy snapshot mismatch, or an obsolete assumption.\n\n### 2. Single tests can become orphaned from product truth\n\nA single test that is not mapped to AC/TC, lane, evidence path, and release consumption can pass while the product contract remains incomplete. It can also fail without explaining whether the failure blocks release.\n\n### 3. Agent skill delivery can amplify ambiguity\n\nIf Beacon skills tell agents to “run tests” or “fix full-suite failures” without lane classification, agents can:\n\n- chase historical snapshot drift before current release blockers;\n- treat planning-line docs as runtime release claims;\n- claim progress without AC/TC/evidence truth;\n- skip the QA first-principles order;\n- ask humans to guess the resume path instead of using `beacon help`.\n\n## Goals\n\n### Primary Goals\n\n1. Establish a `Test Contract Index` that maps feature truth to test lanes and evidence.\n2. Classify Beacon tests into stable contract lanes.\n3. Ensure each release-facing single test is traceable to AC/TC and evidence.\n4. Let `doctor` build and verify test contract governance.\n5. Let `qa` execute lane-aware evidence capture in AC order.\n6. Let `release` consume lane status and block on relevant reason codes.\n7. Update skill delivery guidance so Codex, Claude, Cursor, and Windsurf agents use contract-lane test routing.\n8. Preserve global boundaries by avoiding new public lifecycle stages.\n\n### Non-Goals\n\n- This feature does not implement a new test runner.\n- This feature does not replace pytest.\n- This feature does not make deep mandatory for every feature.\n- This feature does not rewrite legacy tests automatically.\n- This feature does not change current runtime version from `v1.4.0`.\n\n## Product Model\n\n### Contract Chain\n\n```text\nMarkdown truth\n-> compiled feature contract\n-> test contract index\n-> lane-aware QA evidence\n-> release scorecard/gate\n-> skill delivery guidance\n```\n\n### Canonical Lanes\n\n| Lane | Responsibility | Release Blocking Rule |\n| --- | --- | --- |\n| `feature_release_facing` | Current feature AC/TC/pytest/evidence closure | Blocks current feature release |\n| `current_runtime_contract` | Current runtime version, docs default line, public surface, current docs claims | Blocks runtime/release readiness |\n| `generated_surface_sync` | Generated or projected surfaces such as `SKILL.md`, metadata, context files, command tables, agent surfaces | Blocks when drift affects routing, versioning, or delivery truth |\n| `compatibility_contract` | Explicitly supported legacy behavior | Blocks only when behavior remains an active support promise |\n| `legacy_snapshot` | Historical docs/evidence snapshots | Does not block current feature release by default |\n\n## Functional Requirements\n\n### FR-001: Test Contract Index\n\nBeacon must support a machine-readable index under:\n\n```text\ndocs/beacon/<version>/.machine/testing/test-contract-index.json\n```\n\nThe index must include feature identity, runtime/docs line, truth refs, lane membership, AC/TC/test/evidence mapping, status, and reason codes.\n\n### FR-002: Lane Verification\n\nBeacon must verify that release-facing tests are classified into a lane and that unclassified failures cannot be silently interpreted as release blockers or release passes.\n\n### FR-003: AC/TC/Test Mapping\n\nEvery release-facing test must map to at least one AC/TC item or declare an explicit generated-surface contract reason.\n\n### FR-004: Doctor Ownership\n\n`doctor` must own build/verify behavior for the test contract index so the capability remains support-surface governance rather than a new lifecycle stage.\n\n### FR-005: QA Consumption\n\n`qa` must preserve the first-principles order:\n\n```text\nuser story / AC order\n-> scenario divergence\n-> current-round execution\n-> evidence pack\n-> coverage_current / coverage_gap\n-> continue_decision\n-> severe blocker stop_for_repair\n-> repair handoff\n-> beacon help resume\n-> next QA round with test-case backfill\n-> release guidance\n```\n\n### FR-006: Release Consumption\n\n`release scorecard` and strict gate must consume test contract governance and expose reason codes when the feature release lane, current runtime lane, generated surface lane, or unclassified failure handling is unsafe.\n\n### FR-007: Skill Delivery Governance\n\nBeacon skill surfaces must instruct agents to classify and run tests by lane, use `beacon help` for resume, and avoid claiming release readiness from unclassified full-suite output.\n\n### FR-008: Deep Delta Adoption\n\nDeep-derived test deltas must route to `test-case` or supplemental `qa`. Deep must not execute QA, rewrite frozen truth, or directly mark release readiness.\n\n### FR-009: Planning Line Safety\n\n`v1.4.2` materials must not promote runtime version, package version, docs default line, or current runtime release line.\n\n## Acceptance Traceability\n\n| AC ID | Theme | Description |\n| --- | --- | --- |\n| AC-001 | index-contract | Beacon defines a Test Contract Index with feature identity, truth refs, runtime/docs line, lane membership, AC/TC/test/evidence mapping, status, and reason codes. |\n| AC-002 | lane-taxonomy | Beacon defines canonical lanes for feature release-facing tests, current runtime contracts, generated surface sync, compatibility contracts, and legacy snapshots. |\n| AC-003 | release-facing-mapping | Release-facing single tests must map to AC/TC and evidence or declare a generated-surface contract reason. |\n| AC-004 | doctor-ownership | Doctor support commands own building and verifying the test contract index; no new public lifecycle stage is introduced. |\n| AC-005 | qa-order | QA guidance and execution preserve AC order, evidence pack, coverage current/gap, continue decision, severe blocker stop, repair handoff, `beacon help` resume, and next-round backfill. |\n| AC-006 | release-gating | Release scorecard and strict gate consume lane status and block on missing, stale, failed, or unclassified release-facing evidence. |\n| AC-007 | generated-surface-sync | Generated skill, metadata, command, context, and agent surfaces are classified under `generated_surface_sync` and can block release when drift affects delivery truth. |\n| AC-008 | legacy-classification | Historical snapshot failures are routed to `legacy_snapshot` or test evolution backlog unless explicitly promoted to `compatibility_contract`. |\n| AC-009 | skill-delivery | Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims. |\n| AC-010 | deep-delta-adoption | Deep test deltas are adopted through `test-case` or supplemental `qa`; deep remains a support surface and does not execute QA. |\n| AC-011 | planning-line-safety | Freezing v1.4.2 requirements does not change current runtime release line, docs default line, or package version. |\n| AC-012 | recovery-routing | When test contract governance blocks delivery, Beacon provides reason codes and repair or resume routes through existing support surfaces. |\n\n## 8. 验收标准\n\n| AC ID | 验收主题 | 验收标准 |\n| --- | --- | --- |\n| AC-001 | index-contract | Test Contract Index 的身份、truth refs、runtime/docs line、lane、AC/TC/test/evidence、status、reason codes 可被机器校验。 |\n| AC-002 | lane-taxonomy | 五类 canonical lanes 被明确声明并用于测试分类。 |\n| AC-003 | release-facing-mapping | release-facing single tests 未映射 AC/TC/evidence 时必须阻断或声明 generated-surface contract reason。 |\n| AC-004 | doctor-ownership | doctor 表面负责 build/verify，不新增主生命周期阶段。 |\n| AC-005 | qa-order | QA 顺序保留 AC order、evidence pack、coverage current/gap、continue decision、repair handoff、help resume 和 backfill。 |\n| AC-006 | release-gating | release scorecard 和 strict gate 消费 lane status 并输出阻断 reason codes。 |\n| AC-007 | generated-surface-sync | generated surfaces 漂移被归入 `generated_surface_sync` 并可在影响交付 truth 时阻断。 |\n| AC-008 | legacy-classification | historical snapshot drift 默认不阻断当前 release，除非被提升为 compatibility contract。 |\n| AC-009 | skill-delivery | skills 指导 agent 使用 contract-lane verification，不从未分类 full-suite 输出宣称 ready。 |\n| AC-010 | deep-delta-adoption | deep delta 经 test-case 或 supplemental QA 采纳，deep 不执行 QA。 |\n| AC-011 | planning-line-safety | v1.4.2 freeze 不改变 v1.4.0 runtime/default/current release truth。 |\n| AC-012 | recovery-routing | 阻断时必须提供 reason code 和 repair/resume route。 |\n\n## Freeze Deliverables\n\n- `docs/beacon/v1.4.2/SUMMARY.md`\n- `docs/beacon/v1.4.2/execution/index.md`\n- `docs/beacon/v1.4.2/execution/architecture-blueprint.md`\n- `docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md`\n- `docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md`\n- `docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md`\n\n## Release-Facing Reason Codes\n\n- `test_contract_index_missing`\n- `test_contract_index_stale`\n- `ac_test_mapping_missing`\n- `feature_release_lane_missing`\n- `feature_release_lane_failed`\n- `generated_surface_sync_drift`\n- `planning_line_runtime_conflict`\n- `unclassified_test_failure`\n- `legacy_snapshot_misclassified_as_release_blocker`\n\n## Implementation Notes\n\nThe preferred first implementation should be small:\n\n1. Add a utility for test contract index build/verify.\n2. Add doctor command wrappers.\n3. Add release scorecard consumption.\n4. Update skill guidance and iteration governance skill text.\n5. Add v1.4.2 contract tests.\n\n## Diagram Truth Layer\n\n### Diagram Types\n\n- `branch-flow`\n- `state-machine`\n- `decision-priority`\n\n### State Axes\n\n- `contract_lane`\n- `truth_binding`\n- `evidence_status`\n- `surface_sync`\n- `release_blocking`\n\n### Branch-Flow\n\n```text\nfeature_change_detected\n-> affected_contract_layer_identified\n-> test_contract_index_built\n-> lane_status_verified\n-> qa_evidence_collected\n-> release_scorecard_consumes_lane_status\n```\n\n```text\nfull_suite_failure\n-> classify_failure\n-> feature_release_facing | current_runtime_contract | generated_surface_sync | compatibility_contract | legacy_snapshot\n-> block_release | route_to_repair | route_to_test_evolution_backlog\n```\n\n### State-Machine\n\n```text\nunindexed\n-> indexed\n-> lane_verified\n-> evidence_collected\n-> release_consumed\n-> closed\n```\n\n```text\nunclassified_failure\n-> classified_blocker\n-> repair_routed\n-> help_resume\n-> next_round_backfill\n```\n\n### Decision-Priority\n\n```text\nglobal_boundaries\n> frozen_requirement_truth\n> test_contract_index\n> lane_execution_evidence\n> release_scorecard\n> unclassified_full_suite_output\n```\n\n```text\nfeature_release_facing_failure\n> generated_surface_sync_drift\n> current_runtime_contract_drift\n> compatibility_contract_failure\n> legacy_snapshot_drift\n```\n\n## Completion Definition\n\nThe feature is ready for implementation when:\n\n- PRD, user-story, and test-case materials are frozen.\n- AC IDs in user-story and test-case match.\n- `v1.4.2` remains planning-only.\n- Beacon freeze writes revision baseline and machine requirement package.\n- The next implementation prompt can point to this frozen truth package without changing scope.\n",
+    "transaction": {
+      "transaction_id": "tx-prd-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-prd-66e9b11a965ea824",
+      "source_hash": "66e9b11a965ea82494ab1998714341da543e357c6e5bde5b6696250d58f62bc2",
+      "projection_seq": "prd-66e9b11a965ea824",
+      "committed_at": "2026-05-09T07:57:29.984702+00:00",
+      "sink_checksums": {
+        "human": "5fdebcf553ca0edec8335810c6f97a45f8d2972eaf221b9e2bcaf8039e9955d2",
+        "machine": "dd4ecb8a0366485ada50ded55524f943da4c995d786a28eecf6dc287f9aa1f86"
+      },
+      "status": "applied",
+      "supersedes_transaction_id": "",
+      "supersedes_projection_seq": "",
+      "supersedes_source_hash": ""
+    }
+  },
+  "sinks": [
+    {
+      "path": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "kind": "human"
+    },
+    {
+      "path": ".beacon/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+      "kind": "machine"
+    }
+  ],
+  "latest_transaction_id": "tx-prd-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-prd-66e9b11a965ea824",
+  "supersedes_transaction_id": ""
+}

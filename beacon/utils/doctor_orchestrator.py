@@ -9,6 +9,7 @@ from typing import Any
 from beacon.utils.doctor_diagnostics import collect_runtime_info
 from beacon.utils.doctor_setup import resolve_bin_dir
 from beacon.utils.doctor_registry import get_doctor_handler
+from beacon.utils.test_contract_governance import build_test_contract_gate_payload, build_test_contract_index
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.writeback import acceptance_projection_transaction_contract
@@ -501,6 +502,60 @@ def run_technical_review_contract_sync(
         "result": result,
     }
     return DoctorExecutionResult(payload=output, exit_code=0)
+
+
+def run_test_contract_index_build(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+) -> DoctorExecutionResult:
+    ctx = build_doctor_execution_context(project_root, version=version)
+    result = build_test_contract_index(ctx.project_root, version=version, feature=feature, write=True)
+    output = {
+        "schema_version": "2.0",
+        "action": "build-test-contract-index",
+        "status": "PASS" if not result.get("blocked") else "BLOCKED",
+        "result": result,
+    }
+    return DoctorExecutionResult(payload=output, exit_code=2 if result.get("blocked") else 0)
+
+
+def run_test_contract_index_verify(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    strict: bool,
+) -> DoctorExecutionResult:
+    ctx = build_doctor_execution_context(project_root, version=version, strict=strict)
+    result = build_test_contract_gate_payload(ctx.project_root, version=version, feature=feature)
+    status = str(result.get("status") or "blocked").lower()
+    blocked = status == "blocked" or status == "fail" or (strict and status == "warn")
+    output = {
+        "schema_version": "2.0",
+        "action": "verify-test-contract-index",
+        "status": "BLOCKED" if blocked else status.upper(),
+        "result": {
+            "schema_version": "1.0",
+            "action": "verify-test-contract-index",
+            "project_root": str(ctx.project_root),
+            "version": str(result.get("version") or version or ""),
+            "feature": feature,
+            "strict": strict,
+            "status": "fail" if blocked else status,
+            "ok": not blocked,
+            "checks": [
+                {
+                    "name": "test_contract_index",
+                    "status": "fail" if blocked else "pass",
+                    "details": result,
+                }
+            ],
+            "gate": result,
+        },
+    }
+    return DoctorExecutionResult(payload=output, exit_code=2 if blocked else 0)
 
 
 def run_subagent_runtime_verify(

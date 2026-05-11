@@ -32,7 +32,8 @@ from beacon.utils.qa_runtime import (
     write_qa_status,
 )
 from beacon.utils.evidence_manifest import merge_manifest_entries
-from beacon.utils.runtime import append_jsonl, now_iso, write_json
+from beacon.utils.runtime import append_jsonl, now_iso, read_json, write_json
+from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 from beacon.utils.v110_baseline import generate_spec_fingerprint, load_latest_spec_fingerprint
 
@@ -75,6 +76,25 @@ LAYER_NAMES = (
 DEFAULT_ALL_LAYERS = ("ui", "api-curl", "unit", "smoke")
 
 DEFAULT_REQUIRED_UI_ACTIONS = ("login", "register", "browse", "submit-form")
+PROTECTED_SURFACE_HOST_HINTS = ("vercel.app",)
+ATTACHED_BROWSER_RUNNER_TYPES = {
+    "web-access",
+    "agent-browser",
+    "playwright",
+    "playwright-cli",
+    "playwright-cdp",
+    "playwright-attach",
+    "attached-chrome",
+    "chrome-cdp",
+}
+PLACEHOLDER_BROWSER_RUNNER_STATUSES = {
+    "task-only",
+    "fallback-no-task",
+    "missing-task",
+    "browser-use-unavailable",
+    "fallback-browser-use-unavailable",
+    "fallback-executed",
+}
 
 
 def _semver_tuple(value: str | None) -> tuple[int, int, int]:
@@ -191,6 +211,159 @@ def _normalize_url(raw: str) -> str:
     if parts.fragment:
         out = f"{out}#{parts.fragment}" if out else f"#{parts.fragment}"
     return out or value
+
+
+def _normalize_browser_runner_type(value: str | None) -> str:
+    runner = str(value or "").strip().lower().replace("_", "-")
+    if runner in {"playwright-cli-cdp", "playwright-cli-attach", "playwright-cdp", "playwright-attach", "chrome-cdp"}:
+        return "playwright-cdp"
+    if runner in {"attached-browser", "attached-chrome"}:
+        return "attached-chrome"
+    return runner
+
+
+def _is_protected_browser_surface(target_url: str, session: dict[str, Any]) -> bool:
+    raw_target = str(target_url or "").strip()
+    raw_origin = str(session.get("origin") or "").strip() if isinstance(session, dict) else ""
+    for raw in (raw_target, raw_origin):
+        if not raw:
+            continue
+        try:
+            parts = urlsplit(raw if "://" in raw else f"https://{raw.lstrip('/')}")
+        except Exception:
+            continue
+        host = str(parts.netloc or "").strip().lower()
+        if any(host.endswith(suffix) for suffix in PROTECTED_SURFACE_HOST_HINTS):
+            return True
+    return False
+
+
+def _browser_session_bridge_present(session: dict[str, Any]) -> bool:
+    if not isinstance(session, dict) or not session:
+        return False
+    return any(
+        str(session.get(key) or "").strip()
+        for key in ("session_id", "manifest_ref", "profile_ref", "cookies_ref", "storage_state_ref")
+    )
+
+
+def resolve_browser_runtime_admission(
+    *,
+    item: dict[str, Any],
+    active_browser_session: dict[str, Any],
+) -> dict[str, Any]:
+    target_url = str(item.get("target_url") or item.get("url") or "").strip()
+    requested_runner = _normalize_browser_runner_type(str(item.get("exploratory_runner") or ""))
+    session_runner = _normalize_browser_runner_type(str(active_browser_session.get("runner_type") or ""))
+    protected_surface = _is_protected_browser_surface(target_url, active_browser_session)
+    session_bridge_present = _browser_session_bridge_present(active_browser_session)
+    attached_runner_available = session_bridge_present and (
+        session_runner in ATTACHED_BROWSER_RUNNER_TYPES or requested_runner in {"agent-browser", "web-access"}
+    )
+    preferred_runner = requested_runner or "browser-use"
+    if protected_surface:
+        if session_runner == "web-access":
+            preferred_runner = "web-access"
+        elif session_runner in {"agent-browser", "attached-chrome"}:
+            preferred_runner = "agent-browser"
+        elif session_runner == "playwright-cdp":
+            preferred_runner = "playwright-cdp"
+        elif not session_bridge_present:
+            preferred_runner = ""
+    if protected_surface and not session_bridge_present:
+        return {
+            "status": "blocked",
+            "reason_code": "protected_surface_session_bridge_missing",
+            "protected_surface": True,
+            "session_bridge_present": False,
+            "attached_runner_available": False,
+            "preferred_runner": "",
+            "requested_runner": requested_runner,
+            "session_runner": session_runner,
+            "target_url": target_url,
+        }
+    if protected_surface and not attached_runner_available:
+        return {
+            "status": "blocked",
+            "reason_code": "protected_surface_runner_priority_unavailable",
+            "protected_surface": True,
+            "session_bridge_present": session_bridge_present,
+            "attached_runner_available": False,
+            "preferred_runner": "",
+            "requested_runner": requested_runner,
+            "session_runner": session_runner,
+            "target_url": target_url,
+        }
+    return {
+        "status": "ready",
+        "reason_code": "",
+        "protected_surface": protected_surface,
+        "session_bridge_present": session_bridge_present,
+        "attached_runner_available": attached_runner_available,
+        "preferred_runner": preferred_runner,
+        "requested_runner": requested_runner,
+        "session_runner": session_runner,
+        "target_url": target_url,
+    }
+
+
+def _browser_evidence_authenticity(
+    *,
+    explore_bundle: dict[str, Any],
+    replay_bundle: dict[str, Any],
+    admission: dict[str, Any],
+) -> dict[str, Any]:
+    admission_status = str(admission.get("status") or "").strip().lower()
+    runner_statuses = {
+        str(bundle.get("status") or "").strip().lower()
+        for bundle in (explore_bundle, replay_bundle)
+        if isinstance(bundle, dict) and str(bundle.get("status") or "").strip()
+    }
+    placeholder_only = admission_status == "blocked" or (bool(runner_statuses) and runner_statuses.issubset(PLACEHOLDER_BROWSER_RUNNER_STATUSES))
+    authenticity = not placeholder_only
+    reason_code = "browser_evidence_placeholder_only" if placeholder_only else ""
+    if str(admission.get("status") or "") == "blocked" and not authenticity:
+        reason_code = str(admission.get("reason_code") or reason_code)
+    return {
+        "status": "authentic" if authenticity else "placeholder_only",
+        "authentic": authenticity,
+        "reason_code": reason_code,
+        "runner_statuses": sorted(runner_statuses),
+    }
+
+
+def _write_browser_runner_learning_note(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    tc_id: str,
+    admission: dict[str, Any],
+    authenticity: dict[str, Any],
+) -> str:
+    version_root = project_root / "docs" / "beacon" / resolve_target_version(project_root, version) / ".machine" / "learning" / "qa"
+    version_root.mkdir(parents=True, exist_ok=True)
+    note_path = version_root / f"{feature_slug(feature)}--{tc_id.lower()}.json"
+    payload = {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "tc_id": tc_id,
+        "discovered_at": now_iso(),
+        "runner_attempted": str(admission.get("preferred_runner") or admission.get("requested_runner") or ""),
+        "outcome": str(admission.get("status") or authenticity.get("status") or ""),
+        "reason_code": str(admission.get("reason_code") or authenticity.get("reason_code") or ""),
+        "fallback_runner": (
+            "web-access"
+            if str(admission.get("reason_code") or "") == "protected_surface_session_bridge_missing"
+            else "attached-session-required"
+        ),
+        "expires_after_n_days": 30,
+        "target_url": str(admission.get("target_url") or ""),
+        "protected_surface": bool(admission.get("protected_surface")),
+    }
+    write_json(note_path, payload)
+    return str(note_path.relative_to(project_root))
 
 
 def _extract_snapshot_text(snapshot_file: Optional[str], snapshot_text: Optional[str]) -> str:
@@ -951,6 +1124,7 @@ def _write_browser_evidence_pack(
     run_id: str,
     item: dict[str, Any],
     explore_payload: dict[str, Any],
+    admission: dict[str, Any] | None = None,
     replay_payload: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     pack_path = tc_dir / "browser-evidence-pack.json"
@@ -961,6 +1135,7 @@ def _write_browser_evidence_pack(
     network_path = tc_dir / "network-summary.json"
     explore_bundle = _load_runner_bundle(project_root, tc_dir / "explore")
     replay_bundle = _load_runner_bundle(project_root, tc_dir / "replay") if isinstance(replay_payload, dict) else {}
+    admission_payload = admission if isinstance(admission, dict) else {}
     session = explore_bundle.get("session") if isinstance(explore_bundle.get("session"), dict) else {}
     if not session and isinstance(replay_bundle.get("session"), dict):
         session = replay_bundle.get("session")
@@ -1047,6 +1222,11 @@ def _write_browser_evidence_pack(
     if isinstance(replay_payload, dict):
         refs = replay_payload.get("evidence_ref") if isinstance(replay_payload.get("evidence_ref"), list) else []
         replay_ref = str(refs[-1]).strip() if refs else ""
+    authenticity = _browser_evidence_authenticity(
+        explore_bundle=explore_bundle,
+        replay_bundle=replay_bundle,
+        admission=admission_payload,
+    )
     pack_payload = {
         "schema_version": "1.0",
         "run_id": run_id,
@@ -1059,6 +1239,8 @@ def _write_browser_evidence_pack(
         "deterministic_runner": str(item.get("deterministic_runner") or "playwright"),
         "replay_required": bool(item.get("replay_required")),
         "status": str((replay_payload or {}).get("status") or explore_payload.get("status") or ""),
+        "runtime_admission": admission_payload,
+        "evidence_authenticity": authenticity,
         "explore_ref": str((explore_payload.get("evidence_ref") or [""])[-1]) if isinstance(explore_payload.get("evidence_ref"), list) else "",
         "replay_ref": replay_ref,
         "dom_ref": dom_ref,
@@ -1166,6 +1348,8 @@ def _derive_round_stop_reasons(
         reasons.append("stop_on_fail_triggered")
     if bool(tc_payload.get("browser_required")) and bool(tc_payload.get("replay_required")) and not str(tc_payload.get("replay_ref") or "").strip():
         reasons.append("required_replay_missing")
+    if str(tc_payload.get("reason_code") or "").strip() == "browser_evidence_placeholder_only":
+        reasons.append("browser_evidence_placeholder_only")
     if (
         bool(active_browser_session)
         and bool(tc_payload.get("browser_required"))
@@ -1213,6 +1397,8 @@ def _execute_qa9_tc_entries(
 
     tc_map: dict[str, dict[str, Any]] = {}
     active_browser_session = _active_browser_session(project_root)
+    resolved_version = str(matrix_payload.get("version") or "").strip() or "auto"
+    feature_name = str(matrix_payload.get("feature") or matrix_payload.get("feature_slug") or "").strip()
     round_stop_active = False
     round_stop_reasons: list[str] = []
     round_stop_anchor = ""
@@ -1332,9 +1518,13 @@ def _execute_qa9_tc_entries(
                 }
             )
 
-        browser_pack_refs = {"pack_ref": "", "transcript_ref": "", "replay_ref": ""}
+        browser_pack_refs = {"pack_ref": "", "transcript_ref": "", "replay_ref": "", "learning_ref": ""}
         replay_payload: dict[str, Any] | None = None
         if _is_browser_required_entry(item):
+            admission = resolve_browser_runtime_admission(
+                item=item,
+                active_browser_session=active_browser_session,
+            )
             task_payload = build_browser_task(
                 item=item,
                 qa_type=qa_type,
@@ -1350,31 +1540,44 @@ def _execute_qa9_tc_entries(
                 }
             )
             extra_env.update(_browser_session_env(project_root, active_browser_session))
+            preferred_runner = str(admission.get("preferred_runner") or item.get("exploratory_runner") or "")
             compiled_runner = default_browser_runner_command(
-                str(item.get("exploratory_runner") or ""),
+                preferred_runner,
                 qa_type=qa_type,
             )
-            explore_command = str(
-                explicit_layer_overrides.get(qa_type)
-                or item.get("explore_command")
-                or compiled_runner
-                or command
-                or commands.get(qa_type)
-                or ""
-            ).strip()
-            explore_payload = _run_layer_command(
-                layer=qa_type,
-                command=explore_command,
-                project_root=project_root,
-                layer_dir=tc_dir / "explore",
-                retries=rerun_flaky,
-                run_id=run_id,
-                stage="verify",
-                extra_env=extra_env,
-                tc_id=tc_id,
-                ac_id=ac_id,
-            )
-            run_payload = dict(explore_payload)
+            if str(admission.get("status") or "") == "blocked":
+                run_payload = {
+                    "status": "blocked",
+                    "layer": qa_type,
+                    "command": "",
+                    "attempt_count": 0,
+                    "assertion_count": 0,
+                    "reason_code": str(admission.get("reason_code") or ""),
+                    "evidence_ref": [],
+                }
+                explore_payload = dict(run_payload)
+            else:
+                explore_command = str(
+                    explicit_layer_overrides.get(qa_type)
+                    or item.get("explore_command")
+                    or compiled_runner
+                    or command
+                    or commands.get(qa_type)
+                    or ""
+                ).strip()
+                explore_payload = _run_layer_command(
+                    layer=qa_type,
+                    command=explore_command,
+                    project_root=project_root,
+                    layer_dir=tc_dir / "explore",
+                    retries=rerun_flaky,
+                    run_id=run_id,
+                    stage="verify",
+                    extra_env=extra_env,
+                    tc_id=tc_id,
+                    ac_id=ac_id,
+                )
+                run_payload = dict(explore_payload)
             if bool(item.get("replay_required")) and str(run_payload.get("status") or "").strip().lower() == "passed":
                 replay_command = str(
                     explicit_layer_overrides.get(qa_type)
@@ -1437,9 +1640,24 @@ def _execute_qa9_tc_entries(
                 run_id=run_id,
                 item=item,
                 explore_payload=explore_payload,
+                admission=admission,
                 replay_payload=replay_payload,
             )
+            pack_payload = read_json(project_root / browser_pack_refs["pack_ref"], {})
+            authenticity = pack_payload.get("evidence_authenticity") if isinstance(pack_payload, dict) and isinstance(pack_payload.get("evidence_authenticity"), dict) else {}
+            if str(authenticity.get("reason_code") or "").strip():
+                run_payload["reason_code"] = str(authenticity.get("reason_code") or "").strip()
+            if str(authenticity.get("status") or "") == "placeholder_only" or str(admission.get("status") or "") == "blocked":
+                browser_pack_refs["learning_ref"] = _write_browser_runner_learning_note(
+                    project_root=project_root,
+                    version=resolved_version,
+                    feature=feature_name,
+                    tc_id=tc_id,
+                    admission=admission,
+                    authenticity=authenticity if isinstance(authenticity, dict) else {},
+                )
             extra_refs = [value for value in browser_pack_refs.values() if value]
+            run_payload["browser_evidence_authenticity_status"] = str(authenticity.get("status") or "")
             run_payload["evidence_ref"] = list(
                 dict.fromkeys(
                     [
@@ -1486,8 +1704,11 @@ def _execute_qa9_tc_entries(
             "junit_valid": bool(run_payload.get("junit_valid")),
             "browser_required": _is_browser_required_entry(item),
             "browser_evidence_pack_ref": browser_pack_refs["pack_ref"],
+            "browser_evidence_authenticity_status": str(run_payload.get("browser_evidence_authenticity_status") or ""),
+            "browser_runner_learning_ref": browser_pack_refs.get("learning_ref", ""),
             "replay_required": bool(item.get("replay_required")),
             "replay_ref": browser_pack_refs["replay_ref"],
+            "reason_code": str(run_payload.get("reason_code") or ""),
             "dependency_blockers": dependency_blockers,
             "stop_on_fail": bool(item.get("stop_on_fail")),
         }
@@ -1621,6 +1842,7 @@ def _build_qa9_tc_backfill(
                 "junit_valid": bool(tc_payload.get("junit_valid")),
                 "browser_required": bool(tc_payload.get("browser_required") or item.get("browser_required")),
                 "browser_evidence_pack_ref": str(tc_payload.get("browser_evidence_pack_ref") or ""),
+                "browser_runner_learning_ref": str(tc_payload.get("browser_runner_learning_ref") or ""),
                 "replay_required": bool(tc_payload.get("replay_required") or item.get("replay_required")),
                 "replay_ref": str(tc_payload.get("replay_ref") or ""),
                 "stop_on_fail": bool(tc_payload.get("stop_on_fail") or item.get("stop_on_fail")),

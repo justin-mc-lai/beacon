@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir
 from beacon.utils.delivery_kernel import load_delivery_read_model
+from beacon.utils.deep_loop import build_deep_release_supplement_gate, deep_loop_supported
 from beacon.utils.evidence_manifest import validate_evidence_manifest
 from beacon.utils.exhaustiveness import load_exhaustiveness_report
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
@@ -26,6 +27,7 @@ from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
+from beacon.utils.test_contract_governance import build_test_contract_gate_payload
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.prototype_support import prototype_status
 from beacon.utils.version_surface import (
@@ -42,6 +44,14 @@ from beacon.utils.versioning import (
     runtime_feature_supported,
 )
 from beacon.utils.writeback import acceptance_projection_transaction_contract
+
+BROWSER_RELEASE_BLOCKER_CODES = (
+    "protected_surface_session_bridge_missing",
+    "protected_surface_runner_priority_unavailable",
+    "browser_evidence_placeholder_only",
+    "browser_runtime_admission_missing",
+    "browser_runner_learning_missing",
+)
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -432,6 +442,38 @@ def _version_surface_governance(project_root: Path) -> dict[str, Any]:
     return dict(get_version_surface_governance_payload(project_root, strict=True))
 
 
+def _browser_release_reason_codes(
+    *,
+    qa_status: dict[str, Any],
+    feature_scorecard: dict[str, Any],
+    test_contract_release_gate: dict[str, Any],
+) -> list[str]:
+    codes: set[str] = set()
+
+    stop_reasons = feature_scorecard.get("stop_reasons") if isinstance(feature_scorecard.get("stop_reasons"), list) else []
+    for code in stop_reasons:
+        normalized = str(code or "").strip()
+        if normalized in BROWSER_RELEASE_BLOCKER_CODES:
+            codes.add(normalized)
+
+    qa9 = qa_status.get("qa9") if isinstance(qa_status.get("qa9"), dict) else {}
+    tc_results = qa9.get("tc_results") if isinstance(qa9.get("tc_results"), list) else []
+    for item in tc_results:
+        if not isinstance(item, dict):
+            continue
+        normalized = str(item.get("reason_code") or "").strip()
+        if normalized in BROWSER_RELEASE_BLOCKER_CODES:
+            codes.add(normalized)
+
+    if bool(test_contract_release_gate.get("blocked", False)):
+        for code in test_contract_release_gate.get("reason_codes", []):
+            normalized = str(code or "").strip()
+            if normalized in BROWSER_RELEASE_BLOCKER_CODES:
+                codes.add(normalized)
+
+    return sorted(codes)
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -484,6 +526,33 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         else {}
     )
     technical_review_state = load_technical_review_state(project_root, feature=feature) if feature else {}
+    deep_release_supplement = (
+        build_deep_release_supplement_gate(project_root, version=resolved_version, feature=feature)
+        if feature and deep_loop_supported(resolved_version)
+        else {}
+    )
+    deep_release_supplement_pass = not bool(deep_release_supplement.get("blocked", False))
+    test_contract_governance = (
+        build_test_contract_gate_payload(project_root, version=resolved_version, feature=feature)
+        if feature and project_runtime_feature_enabled(
+            project_root,
+            "v1.4.2",
+            docs_version=resolved_version,
+            runtime_version=resolved_runtime,
+        )
+        else {}
+    )
+    test_contract_release_gate = (
+        test_contract_governance.get("release_gate")
+        if isinstance(test_contract_governance.get("release_gate"), dict)
+        else {}
+    )
+    browser_release_reason_codes = _browser_release_reason_codes(
+        qa_status=qa_status,
+        feature_scorecard=feature_scorecard,
+        test_contract_release_gate=test_contract_release_gate,
+    )
+    test_contract_governance_pass = not bool(test_contract_release_gate.get("blocked", False))
     change_documents = _version_change_status(project_root, version=resolved_version, current_feature=feature)
     semantic = (
         evaluate_semantic_contract(project_root, version=resolved_version, feature=feature)
@@ -610,7 +679,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
     if feature and requirement_completeness_gate:
         release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
-    release_ready = release_ready and version_surface_governance_pass
+    release_ready = release_ready and version_surface_governance_pass and deep_release_supplement_pass and test_contract_governance_pass
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
@@ -632,6 +701,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             or str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
         )
         and version_surface_governance_pass
+        and deep_release_supplement_pass
+        and test_contract_governance_pass
     ):
         release_ready = True
     release_delivery_read_model = load_delivery_read_model(
@@ -655,6 +726,25 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                     if version_surface_governance.get("blocked")
                     else []
                 ),
+                *(
+                    [
+                        str(code or "").strip()
+                        for code in deep_release_supplement.get("reason_codes", [])
+                        if str(code or "").strip()
+                    ]
+                    if deep_release_supplement.get("blocked")
+                    else []
+                ),
+                *(
+                    [
+                        str(code or "").strip()
+                        for code in test_contract_release_gate.get("reason_codes", [])
+                        if str(code or "").strip()
+                    ]
+                    if test_contract_release_gate.get("blocked")
+                    else []
+                ),
+                *browser_release_reason_codes,
             ],
         },
     ) if feature else {
@@ -678,6 +768,25 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                 if version_surface_governance.get("blocked")
                 else []
             ),
+            *(
+                [
+                    str(code or "").strip()
+                    for code in deep_release_supplement.get("reason_codes", [])
+                    if str(code or "").strip()
+                ]
+                if deep_release_supplement.get("blocked")
+                else []
+            ),
+            *(
+                [
+                    str(code or "").strip()
+                    for code in test_contract_release_gate.get("reason_codes", [])
+                    if str(code or "").strip()
+                ]
+                if test_contract_release_gate.get("blocked")
+                else []
+            ),
+            *browser_release_reason_codes,
         ],
     }
     prompt_boundary = (
@@ -722,6 +831,23 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         host_native_reason_codes.append(
             str(version_surface_governance.get("reason_code") or VERSION_SURFACE_GOVERNANCE_REASON_CODE)
         )
+    if deep_release_supplement.get("blocked"):
+        host_native_reason_codes.extend(
+            [
+                str(code or "").strip()
+                for code in deep_release_supplement.get("reason_codes", [])
+                if str(code or "").strip()
+            ]
+        )
+    if test_contract_release_gate.get("blocked"):
+        host_native_reason_codes.extend(
+            [
+                str(code or "").strip()
+                for code in test_contract_release_gate.get("reason_codes", [])
+                if str(code or "").strip()
+            ]
+        )
+    host_native_reason_codes.extend(browser_release_reason_codes)
     host_native_delivery = {
         "schema_version": "1.0",
         "implement": (release_delivery_read_model.get("implement") or {}).get("delivery_contract", {}),
@@ -807,6 +933,9 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             "contract_json_path": str(technical_review_gate.get("contract_json_path") or ""),
             "contract_markdown_path": str(technical_review_gate.get("contract_markdown_path") or ""),
         },
+        "deep_release_supplement": deep_release_supplement,
+        "test_contract_governance": test_contract_governance,
+        "browser_release_reason_codes": browser_release_reason_codes,
         "prompt_boundary": prompt_boundary,
         "change_documents": change_documents,
         "learning_scorecard": {
@@ -837,6 +966,22 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
     requirement_completeness = payload.get("requirement_completeness") if isinstance(payload.get("requirement_completeness"), dict) else {}
     technical_review = payload.get("technical_review") if isinstance(payload.get("technical_review"), dict) else {}
+    deep_release_supplement = (
+        payload.get("deep_release_supplement")
+        if isinstance(payload.get("deep_release_supplement"), dict)
+        else {}
+    )
+    test_contract_governance = (
+        payload.get("test_contract_governance")
+        if isinstance(payload.get("test_contract_governance"), dict)
+        else {}
+    )
+    browser_release_reason_codes = [str(item).strip() for item in (payload.get("browser_release_reason_codes") or []) if str(item).strip()]
+    test_contract_release_gate = (
+        test_contract_governance.get("release_gate")
+        if isinstance(test_contract_governance.get("release_gate"), dict)
+        else {}
+    )
     prompt_boundary = payload.get("prompt_boundary") if isinstance(payload.get("prompt_boundary"), dict) else {}
     change_documents = payload.get("change_documents") if isinstance(payload.get("change_documents"), dict) else {}
     version_surface_governance = (
@@ -905,6 +1050,18 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "technical_review_status": str(technical_review.get("status") or ""),
         "technical_review_blocked": bool(technical_review.get("blocked", False)),
         "technical_review_review_status": str(technical_review.get("review_status") or ""),
+        "deep_release_supplement_status": str(deep_release_supplement.get("status") or ""),
+        "deep_release_supplement_blocked": bool(deep_release_supplement.get("blocked", False)),
+        "deep_release_supplement_reason_codes": list(deep_release_supplement.get("reason_codes") or []),
+        "deep_release_supplement_recommendation": str(deep_release_supplement.get("release_recommendation") or ""),
+        "deep_release_supplement_closure_verdict": str(deep_release_supplement.get("closure_verdict") or ""),
+        "test_contract_governance_status": str(test_contract_governance.get("status") or ""),
+        "test_contract_governance_blocked": bool(test_contract_governance.get("blocked", False)),
+        "test_contract_governance_reason_codes": list(test_contract_governance.get("reason_codes") or []),
+        "test_contract_release_status": str(test_contract_release_gate.get("status") or ""),
+        "test_contract_release_blocked": bool(test_contract_release_gate.get("blocked", False)),
+        "test_contract_release_reason_codes": list(test_contract_release_gate.get("reason_codes") or []),
+        "browser_release_reason_codes": browser_release_reason_codes,
         "prompt_boundary_required": bool(prompt_boundary.get("required", False)),
         "prompt_boundary_status": str(prompt_boundary.get("status") or ""),
         "prompt_boundary_blocked": bool(prompt_boundary.get("blocked", False)),

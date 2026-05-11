@@ -33,6 +33,7 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.evidence_manifest import merge_manifest_entries
 from beacon.utils.git_alignment import collect_git_alignment
+from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.implement_adapters import load_beacon_config_file, project_config_path
@@ -382,6 +383,61 @@ def _log_raw_command(
             "exit_code": exit_code,
         },
     )
+
+
+def _write_external_implementation_marker(
+    project_root: Path,
+    *,
+    run_id: str,
+    feature: str,
+    version: str,
+    command: str,
+    command_source: str,
+) -> None:
+    slug = _slug(feature)
+    source_root = f"docs/beacon/{version}"
+    requirement_refs = {
+        "source_of_truth_root": source_root,
+        "prd": f"{source_root}/prd/{slug}.md",
+        "user_story": f"{source_root}/user-story/{slug}.md",
+        "test_case": f"{source_root}/qa/test-cases/{slug}.md",
+    }
+    prompt = "\n".join(
+        [
+            "Implement the scoped Beacon feature.",
+            f"Read Beacon source of truth under {source_root}.",
+            "Implement only against the frozen PRD, user-story, and test-case truth above.",
+            f"External implementation command source: {command_source}.",
+            f"External implementation command: {command}",
+        ]
+    )
+    prompt_boundary = evaluate_implement_prompt_boundary(
+        project_root,
+        version=version,
+        feature=feature,
+        host_prompt=prompt,
+    )
+    prompt_boundary["surface"] = "workflow.implementation_command"
+    payload = {
+        "schema_version": "1.0",
+        "run_id": run_id,
+        "stage": "implement",
+        "feature": feature,
+        "feature_slug": slug,
+        "version": version,
+        "command": command,
+        "command_source": command_source,
+        "status": "completed",
+        "mode": "external-command",
+        "runner": "workflow-command",
+        "execution_surface": "workflow",
+        "prompt_boundary": prompt_boundary,
+        "requirement_traceability": requirement_refs,
+        "traceability_refs": [value for key, value in requirement_refs.items() if key != "source_of_truth_root"],
+        "generated_at": now_iso(),
+    }
+    write_json(project_root / ".beacon" / "state" / f"implementation-{slug}.json", payload)
+    write_json(project_root / ".beacon" / "implement" / run_id / "state.json", payload)
 
 
 def _update_evidence_manifest(
@@ -1762,20 +1818,13 @@ def _execute_stage(
                 exit_code=rc,
             )
             if rc == 0:
-                marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
-                write_json(
-                    marker,
-                    {
-                        "schema_version": "1.0",
-                        "run_id": run_id,
-                        "stage": "implement",
-                        "feature": feature,
-                        "version": version,
-                        "command": resolved_implementation_command,
-                        "command_source": command_source,
-                        "status": "completed",
-                        "generated_at": now_iso(),
-                    },
+                _write_external_implementation_marker(
+                    project_root,
+                    run_id=run_id,
+                    feature=feature,
+                    version=version,
+                    command=resolved_implementation_command,
+                    command_source=command_source,
                 )
         else:
             if not resolved_runner:
@@ -1839,20 +1888,13 @@ def _execute_stage(
                         exit_code=rc,
                     )
                     if rc == 0:
-                        marker = project_root / ".beacon" / "state" / f"implementation-{_slug(feature)}.json"
-                        write_json(
-                            marker,
-                            {
-                                "schema_version": "1.0",
-                                "run_id": run_id,
-                                "stage": "implement",
-                                "feature": feature,
-                                "version": version,
-                                "command": resolved_implementation_command,
-                                "command_source": command_source,
-                                "status": "completed",
-                                "generated_at": now_iso(),
-                            },
+                        _write_external_implementation_marker(
+                            project_root,
+                            run_id=run_id,
+                            feature=feature,
+                            version=version,
+                            command=resolved_implementation_command,
+                            command_source=command_source,
                         )
     elif stage in {"qa", "verify"}:
         attempted_strategy = f"qa:{(verify_scope or 'all').strip().lower()}"

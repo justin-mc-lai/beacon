@@ -1,0 +1,2052 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-r1",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "version": "v1.4.2",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:16349dc50c33a9342a9a8b292fa2db9ff48a6c8c260def944f6882c716c9ca84",
+  "plan_hash": "sha256:4ecf47f26ddb7841285aa4dc22a6702372b493dfe61a19575f1168eb7bdae337",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "prd": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "test_case": "docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "ac_matrix": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.2",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "contract_lane",
+      "truth_binding",
+      "evidence_status",
+      "surface_sync",
+      "release_blocking"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "ownership"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`",
+        "```text",
+        "feature_change_detected",
+        "-> affected_contract_layer_identified",
+        "-> test_contract_index_built",
+        "-> lane_status_verified",
+        "-> qa_evidence_collected",
+        "-> release_scorecard_consumes_lane_status"
+      ],
+      "state-machine": [
+        "- `state-machine`",
+        "```text",
+        "unindexed",
+        "-> indexed",
+        "-> lane_verified",
+        "-> evidence_collected",
+        "-> release_consumed",
+        "-> closed"
+      ],
+      "decision-priority": [
+        "- `decision-priority`",
+        "```text",
+        "global_boundaries",
+        "> frozen_requirement_truth",
+        "> test_contract_index",
+        "> lane_execution_evidence",
+        "> release_scorecard",
+        "> unclassified_full_suite_output"
+      ],
+      "state-axes": [
+        "- `contract_lane`",
+        "- `truth_binding`",
+        "- `evidence_status`",
+        "- `surface_sync`",
+        "- `release_blocking`"
+      ]
+    },
+    "generated_at": "2026-05-09T08:51:31.887704+00:00",
+    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "prd_ref": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "user_story_ref": "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 : Beacon must define a Test Contract Index containing identity, truth refs, runtime/docs line, lane membership, AC/TC/test/evidence mapping, status, and reason codes.",
+      "description": "Test Contract Index exposes identity, truth refs, runtime/docs lines, lane membership, AC/TC/test/evidence mapping, status, and reason codes.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-US001-001",
+        "TC-013",
+        "TC-014",
+        "TC-015",
+        "TC-016",
+        "TC-017",
+        "TC-018",
+        "TC-019",
+        "TC-020",
+        "TC-021"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US001-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342072+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 : Beacon must verify release-facing lane classification and block unsafe unclassified failures.",
+      "description": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, and legacy snapshot. / Release scorecard and strict gate consume lane status and block missing, stale, failed, or unclassified release-facing evidence.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-US002-001",
+        "TC-US006-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US002-001",
+        "TC-US006-001"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342112+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 : Beacon must require release-facing tests to map to AC/TC and evidence or declare an explicit generated-surface contract reason.",
+      "description": "Release-facing tests without AC/TC/evidence mapping are blocked unless classified as generated-surface contract checks.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-US003-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US003-001"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342122+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 : Doctor support commands must own build/verify behavior for the test contract index.",
+      "description": "Doctor support surface builds and verifies test contract index without adding a public lifecycle stage.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-US004-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US004-001"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342131+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 : QA must preserve AC order, evidence pack, coverage current/gap, continue decision, repair handoff, help resume, and next-round backfill.",
+      "description": "QA lane execution preserves AC order, evidence pack, coverage current/gap, continue decision, blocker stop, repair handoff, help resume, and backfill.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-US005-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US005-001"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342141+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 : Release scorecard and strict gate must consume lane status and expose reason codes.",
+      "description": "Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims. / Test contract governance blockers include reason codes and repair or resume routes through existing support surfaces. / Generated skill, metadata, command, context, and agent surfaces are lane-classified and block delivery when drift affects truth or routing.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009",
+        "AC-012",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-US009-001",
+        "TC-US012-001",
+        "TC-US007-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-009",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US007-001",
+        "TC-US009-001",
+        "TC-US012-001"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342156+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 : Beacon skill surfaces must guide agents to classify tests by lane.",
+      "description": "Historical snapshot failures route to legacy snapshot or test evolution backlog unless promoted to active compatibility contract.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-US008-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US008-001"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342165+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 : Deep-derived test deltas must route to test-case or supplemental QA.",
+      "description": "Deep test deltas route through test-case or supplemental QA; deep remains support-only and does not execute QA.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TC-US010-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US010-001"
+      ],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342174+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 : Planning-line safety must preserve runtime/package/docs-current version truth.",
+      "description": "## Overview Beacon now has a strong truth-to-delivery chain: ```text prd -> user-story -> test-case -> implement -> qa -> release ``` `v1.4.1` added a support surface for deep analysis and test deltas. That exposed a higher-level product governance gap: once Beacon features evolve, tests must also evolve as a contract-aligned system rather than as a flat pytest collection. The goal of `v1.4.2` is to make Beacon self-iteration and skill delivery capable of answering: ```text Which tests protect the current feature? Which tests protect the current runtime line? Which failures are generated-surface drift? Which failures are active compatibility blockers? Which failures are legacy snapshots or test evolution backlog? Which evidence is required before release readiness can be claimed? ``` ## Scope In scope: Define `Test Contract Index` as a machine-readable delivery governance projection. Define canonical test lanes for Beacon self-iteration. Define AC/TC/pytest/evidence mapping expectations. Define doctor build/verify ownership for test contract governance. Define QA and release consumption of lane status. Define skill delivery guidance so agent surfaces route test work by contract lane. Define release reason codes for missing, stale, failed, or unclassified test contract evidence. Define how `deep` test deltas are adopted without letting deep execute QA or rewrite frozen truth. Out of scope: Creating a new public lifecycle stage. Promoting `v1.4.2` to runtime release line. Rewriting all historical tests. Treating full-suite output as a single release gate without lane classification. Letting skill text define release truth independently from machine evidence. Letting `Test Contract Index` become a second requirement truth root. ## Problem ### 1. Feature evolution currently creates mixed test semantics Beacon's full test suite contains different kinds of obligations: current runtime contracts; current feature release-facing tests; generated surface sync checks; compatibility promises; historical snapshot checks; old assumptions that need test evolution. When these are run as a flat suite, failures become ambiguous. A single failure may mean a current release blocker, a generated surface drift, a legacy snapshot mismatch, or an obsolete assumption. ### 2. Single tests can become orphaned from product truth A single test that is not mapped to AC/TC, lane, evidence path, and release consumption can pass while the product contract remains incomplete. It can also fail without explaining whether the failure blocks release. ### 3. Agent skill delivery can amplify ambiguity If Beacon skills tell agents to “run tests” or “fix full-suite failures” without lane classification, agents can: chase historical snapshot drift before current release blockers; treat planning-line docs as runtime release claims; claim progress without AC/TC/evidence truth; skip the QA first-principles order; ask humans to guess the resume path instead of using `beacon help`. ## Goals ### Primary Goals 1. Establish a `Test Contract Index` that maps feature truth to test lanes and evidence. 2. Classify Beacon tests into stable contract lanes. 3. Ensure each release-facing single test is traceable to AC/TC and evidence. 4. Let `doctor` build and verify test contract governance. 5. Let `qa` execute lane-aware evidence capture in AC order. 6. Let `release` consume lane status and block on relevant reason codes. 7. Update skill delivery guidance so Codex, Claude, Cursor, and Windsurf agents use contract-lane test routing. 8. Preserve global boundaries by avoiding new public lifecycle stages.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TC-US011-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-US011-001"
+      ],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165326770601/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260509T165326770601",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260509T165719809655/summary.json",
+        "verify:run-20260509T165719809655",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260511T162841073859/summary.json",
+        "verify:run-20260511T162841073859"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-09T08:53:39.342183+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-001: Test Contract Index",
+      "description": "Beacon must support a machine-readable index under: ```text docs/beacon/<version>/.machine/testing/test-contract-index.json ``` The index must include feature identity, runtime/docs line, truth refs, lane membership, AC/TC/test/evidence mapping, status, and reason codes.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.773949+00:00",
+      "completed_at": "2026-05-09T08:56:33.774271+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-002: Lane Verification",
+      "description": "Beacon must verify that release-facing tests are classified into a lane and that unclassified failures cannot be silently interpreted as release blockers or release passes.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774284+00:00",
+      "completed_at": "2026-05-09T08:56:33.774286+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-003: AC/TC/Test Mapping",
+      "description": "Every release-facing test must map to at least one AC/TC item or declare an explicit generated-surface contract reason.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774294+00:00",
+      "completed_at": "2026-05-09T08:56:33.774296+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-004: Doctor Ownership",
+      "description": "`doctor` must own build/verify behavior for the test contract index so the capability remains support-surface governance rather than a new lifecycle stage.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774303+00:00",
+      "completed_at": "2026-05-09T08:56:33.774304+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-005: QA Consumption",
+      "description": "`qa` must preserve the first-principles order: ```text user story / AC order -> scenario divergence -> current-round execution -> evidence pack -> coverage_current / coverage_gap -> continue_decision -> severe blocker stop_for_repair -> repair handoff -> beacon help resume -> next QA round with test-case backfill -> release guidance ```",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774311+00:00",
+      "completed_at": "2026-05-09T08:56:33.774312+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-006: Release Consumption",
+      "description": "`release scorecard` and strict gate must consume test contract governance and expose reason codes when the feature release lane, current runtime lane, generated surface lane, or unclassified failure handling is unsafe.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774319+00:00",
+      "completed_at": "2026-05-09T08:56:33.774321+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-007: Skill Delivery Governance",
+      "description": "Beacon skill surfaces must instruct agents to classify and run tests by lane, use `beacon help` for resume, and avoid claiming release readiness from unclassified full-suite output.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774327+00:00",
+      "completed_at": "2026-05-09T08:56:33.774329+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "FR-008: Deep Delta Adoption",
+      "description": "Deep-derived test deltas must route to `test-case` or supplemental `qa`. Deep must not execute QA, rewrite frozen truth, or directly mark release readiness.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774336+00:00",
+      "completed_at": "2026-05-09T08:56:33.774337+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "FR-009: Planning Line Safety",
+      "description": "`v1.4.2` materials must not promote runtime version, package version, docs default line, or current runtime release line. ## Acceptance Traceability | AC ID | Theme | Description | | --- | --- | --- | | AC-001 | index-contract | Beacon defines a Test Contract Index with feature identity, truth refs, runtime/docs line, lane membership, AC/TC/test/evidence mapping, status, and reason codes. | | AC-002 | lane-taxonomy | Beacon defines canonical lanes for feature release-facing tests, current runtime contracts, generated surface sync, compatibility contracts, and legacy snapshots. | | AC-003 | release-facing-mapping | Release-facing single tests must map to AC/TC and evidence or declare a generated-surface contract reason. | | AC-004 | doctor-ownership | Doctor support commands own building and verifying the test contract index; no new public lifecycle stage is introduced. | | AC-005 | qa-order | QA guidance and execution preserve AC order, evidence pack, coverage current/gap, continue decision, severe blocker stop, repair handoff, `beacon help` resume, and next-round backfill. | | AC-006 | release-gating | Release scorecard and strict gate consume lane status and block on missing, stale, failed, or unclassified release-facing evidence. | | AC-007 | generated-surface-sync | Generated skill, metadata, command, context, and agent surfaces are classified under `generated_surface_sync` and can block release when drift affects delivery truth. | | AC-008 | legacy-classification | Historical snapshot failures are routed to `legacy_snapshot` or test evolution backlog unless explicitly promoted to `compatibility_contract`. | | AC-009 | skill-delivery | Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims. | | AC-010 | deep-delta-adoption | Deep test deltas are adopted through `test-case` or supplemental `qa`; deep remains a support surface and does not execute QA. | | AC-011 | planning-line-safety | Freezing v1.4.2 requirements does not change current runtime release line, docs default line, or package version. | | AC-012 | recovery-routing | When test contract governance blocks delivery, Beacon provides reason codes and repair or resume routes through existing support surfaces. | ## 8. 验收标准 | AC ID | 验收主题 | 验收标准 | | --- | --- | --- | | AC-001 | index-contract | Test Contract Index 的身份、truth refs、runtime/docs line、lane、AC/TC/test/evidence、status、reason codes 可被机器校验。 | | AC-002 | lane-taxonomy | 五类 canonical lanes 被明确声明并用于测试分类。 | | AC-003 | release-facing-mapping | release-facing single tests 未映射 AC/TC/evidence 时必须阻断或声明 generated-surface contract reason。 | | AC-004 | doctor-ownership | doctor 表面负责 build/verify，不新增主生命周期阶段。 | | AC-005 | qa-order | QA 顺序保留 AC order、evidence pack、coverage current/gap、continue decision、repair handoff、help resume 和 backfill。 | | AC-006 | release-gating | release scorecard 和 strict gate 消费 lane status 并输出阻断 reason codes。 | | AC-007 | generated-surface-sync | generated surfaces 漂移被归入 `generated_surface_sync` 并可在影响交付 truth 时阻断。 | | AC-008 | legacy-classification | historical snapshot drift 默认不阻断当前 release，除非被提升为 compatibility contract。 | | AC-009 | skill-delivery | skills 指导 agent 使用 contract-lane verification，不从未分类 full-suite 输出宣称 ready。 | | AC-010 | deep-delta-adoption | deep delta 经 test-case 或 supplemental QA 采纳，deep 不执行 QA。 | | AC-011 | planning-line-safety | v1.4.2 freeze 不改变 v1.4.0 runtime/default/current release truth。 | | AC-012 | recovery-routing | 阻断时必须提供 reason code 和 repair/resume route。 | ## Freeze Deliverables `docs/beacon/v1.4.2/SUMMARY.md` `docs/beacon/v1.4.2/execution/index.md` `docs/beacon/v1.4.2/execution/architecture-blueprint.md` `docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md` `docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md` `docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md` ## Release-Facing Reason Codes `test_contract_index_missing` `test_contract_index_stale` `ac_test_mapping_missing` `feature_release_lane_missing` `feature_release_lane_failed` `generated_surface_sync_drift` `planning_line_runtime_conflict` `unclassified_test_failure` `legacy_snapshot_misclassified_as_release_blocker` ## Implementation Notes The preferred first implementation should be small: 1. Add a utility for test contract index build/verify. 2. Add doctor command wrappers. 3. Add release scorecard consumption. 4. Update skill guidance and iteration governance skill text. 5. Add v1.4.2 contract tests. ## Diagram Truth Layer ### Diagram Types `branch-flow` `state-machine` `decision-priority` ### State Axes `contract_lane` `truth_binding` `evidence_status` `surface_sync` `release_blocking` ### Branch-Flow ```text feature_change_detected -> affected_contract_layer_identified -> test_contract_index_built -> lane_status_verified -> qa_evidence_collected -> release_scorecard_consumes_lane_status ``` ```text full_suite_failure -> classify_failure -> feature_release_facing | current_runtime_contract | generated_surface_sync | compatibility_contract | legacy_snapshot -> block_release | route_to_repair | route_to_test_evolution_backlog ``` ### State-Machine ```text unindexed -> indexed -> lane_verified -> evidence_collected -> release_consumed -> closed ``` ```text unclassified_failure -> classified_blocker -> repair_routed -> help_resume -> next_round_backfill ``` ### Decision-Priority ```text global_boundaries > frozen_requirement_truth > test_contract_index > lane_execution_evidence > release_scorecard > unclassified_full_suite_output ``` ```text feature_release_facing_failure > generated_surface_sync_drift > current_runtime_contract_drift > compatibility_contract_failure > legacy_snapshot_drift ``` ## Completion Definition The feature is ready for implementation when: PRD, user-story, and test-case materials are frozen. AC IDs in user-story and test-case match. `v1.4.2` remains planning-only. Beacon freeze writes revision baseline and machine requirement package. The next implementation prompt can point to this frozen truth package without changing scope.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+      ],
+      "diagram_state_axes": [
+        "contract_lane",
+        "truth_binding",
+        "evidence_status",
+        "surface_sync",
+        "release_blocking"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/state/implementation-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        ".beacon/implement/run-20260509T084048Z-a4d3/state.json",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/scorecard.json",
+        "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json",
+        "docs/beacon/v1.4.2/.machine/execution/qa-acceptance-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+        "docs/beacon/v1.4.2/.machine/deep/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/release-supplement.json",
+        "run:run-20260509T084048Z-a4d3"
+      ],
+      "changed_files": [
+        "beacon/utils/test_contract_governance.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/doctor.py",
+        "beacon/commands/gate.py",
+        "skills/beacon/SKILL.md",
+        "skills/beacon/references/usage-rules.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-09T08:56:33.774344+00:00",
+      "completed_at": "2026-05-09T08:56:33.774345+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project-root . --version v1.4.2",
+    "run_command": "beacon implement team-run \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project . --version v1.4.2",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project . --version v1.4.2",
+    "ralph_command": "beacon implement run \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project . --version v1.4.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance\" --project . --version v1.4.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+    "version": "v1.4.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-09T08:51:31.888960+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.2-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-R1",
+    "transaction_id": "tx-69c08fcf464205aa8",
+    "source_hash": "sha256:2b0aef1aa2d1afe9cc8ab7ead11c33af3070cf636a4aedbd8ce0fce833f4aae5",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.2/.machine/execution/implementation-delivery-baseline-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.2/.machine/execution/git-workflow-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.2/execution/git-workflow-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "user_story": "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "test_case": "docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.2-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-R1",
+    "transaction_id": "tx-69c08fcf464205aa8",
+    "source_hash": "sha256:2b0aef1aa2d1afe9cc8ab7ead11c33af3070cf636a4aedbd8ce0fce833f4aae5",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.2/.machine/execution/implementation-delivery-baseline-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.2/.machine/execution/implementation-delivery-baseline-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json",
+  "generated_at": "2026-05-09T08:51:32.008547+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.2-beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance-R1",
+  "transaction_id": "tx-69c08fcf464205aa8",
+  "source_hash": "sha256:2b0aef1aa2d1afe9cc8ab7ead11c33af3070cf636a4aedbd8ce0fce833f4aae5",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-11T08:28:55.068088+00:00",
+  "accepted_at": "2026-05-11T08:28:55.068070+00:00",
+  "accepted_by": "qa"
+}

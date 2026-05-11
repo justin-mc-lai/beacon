@@ -1,0 +1,650 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.4.2",
+  "runtime_line": "v1.4.2",
+  "docs_line": "v1.4.2",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_line_status": "current_runtime_release",
+  "truth_refs": {
+    "prd": "docs/beacon/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "user_story": "docs/beacon/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "test_case": "docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+    "ac_matrix": "docs/beacon/v1.4.2/.machine/qa/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.ac-test-matrix.json",
+    "story_state": "docs/beacon/v1.4.2/.machine/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.json"
+  },
+  "source_hashes": {
+    "prd": "sha256:e81f70f682f26abd6a509ae4689f633092cea074ce61d99a97a6a8917cf7a775",
+    "user_story": "sha256:4737abd53692f586b5ecb2134d87cd9d4b8a64a972dc1daecc72a0365f76c3bc",
+    "test_case": "sha256:7b4565d9879018da1575b16e82bf373dfd516386983905676489c0c0286cb7eb",
+    "ac_matrix": "sha256:c4f3ec7fc9c206d40e0ffc1f9c051ec77617e9a5f67ee1e04f4cf5eaf46571d7",
+    "story_state": "sha256:1d664e5322d811907f75d15b716e39168f5d124378e6544d4bdeaf3a9d1c6c08"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-US001-001",
+        "ac_id": "AC-001",
+        "ac_theme": "index-contract",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"index_shape\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Test Contract Index exposes identity, truth refs, runtime/docs lines, lane membership, AC/TC/test/evidence mapping, status, and reason codes",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US001-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US003-001",
+        "ac_id": "AC-003",
+        "ac_theme": "release-facing-mapping",
+        "lane": "feature_release_facing",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"release_facing_mapping_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Release-facing tests without AC/TC/evidence mapping are blocked unless classified as generated-surface contract checks",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US003-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US004-001",
+        "ac_id": "AC-004",
+        "ac_theme": "doctor-ownership",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_doctor_test_contract_governance.py -k \"doctor_build_and_verify\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Doctor support surface builds and verifies test contract index without adding a public lifecycle stage",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US004-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US005-001",
+        "ac_id": "AC-005",
+        "ac_theme": "qa-order",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_qa_lane_order.py -k \"qa_first_principles_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "QA lane execution preserves AC order, evidence pack, coverage current/gap, continue decision, blocker stop, repair handoff, help resume, and backfill",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US005-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US006-001",
+        "ac_id": "AC-006",
+        "ac_theme": "release-gating",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_release_test_contract_governance.py -k \"release_consumes_lane_status\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Release scorecard and strict gate consume lane status and block missing, stale, failed, or unclassified release-facing evidence",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US006-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US010-001",
+        "ac_id": "AC-010",
+        "ac_theme": "deep-delta-adoption",
+        "lane": "feature_release_facing",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_deep_delta_adoption.py -k \"deep_delta_routes_to_test_case_or_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Deep test deltas route through test-case or supplemental QA; deep remains support-only and does not execute QA",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US010-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US012-001",
+        "ac_id": "AC-012",
+        "ac_theme": "recovery-routing",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_test_contract_recovery.py -k \"blocked_governance_has_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Test contract governance blockers include reason codes and repair or resume routes through existing support surfaces",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US012-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [
+      {
+        "tc_id": "TC-US011-001",
+        "ac_id": "AC-011",
+        "ac_theme": "planning-line-safety",
+        "lane": "current_runtime_contract",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_planning_line_safety.py -k \"v142_does_not_promote_runtime\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Freezing v1.4.2 requirement materials does not change current runtime release line, docs default line, or package version",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US011-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "generated_surface_sync": [
+      {
+        "tc_id": "TC-US007-001",
+        "ac_id": "AC-007",
+        "ac_theme": "generated-surface-sync",
+        "lane": "generated_surface_sync",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_generated_surface_lane.py -k \"generated_surface_sync_blocks_drift\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Generated skill, metadata, command, context, and agent surfaces are lane-classified and block delivery when drift affects truth or routing",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US007-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US009-001",
+        "ac_id": "AC-009",
+        "ac_theme": "skill-delivery",
+        "lane": "generated_surface_sync",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_skill_delivery_guidance.py -k \"skill_guides_contract_lane_verification\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US009-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "compatibility_contract": [],
+    "legacy_snapshot": [
+      {
+        "tc_id": "TC-US002-001",
+        "ac_id": "AC-002",
+        "ac_theme": "lane-taxonomy",
+        "lane": "legacy_snapshot",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_test_contract_lanes.py -k \"canonical_lanes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US002-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US008-001",
+        "ac_id": "AC-008",
+        "ac_theme": "legacy-classification",
+        "lane": "legacy_snapshot",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_legacy_snapshot_classification.py -k \"legacy_snapshot_not_release_blocker_by_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Historical snapshot failures route to legacy snapshot or test evolution backlog unless promoted to active compatibility contract",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US008-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      }
+    ],
+    "browser_runtime_admission": [
+      {
+        "tc_id": "TC-US013-001",
+        "ac_id": "AC-013",
+        "ac_theme": "browser-admission",
+        "lane": "browser_runtime_admission",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"protected_surface_requires_session_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US013-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US014-001",
+        "ac_id": "AC-014",
+        "ac_theme": "browser-evidence-authenticity",
+        "lane": "browser_runtime_admission",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v142_browser_evidence_authenticity.py -k \"placeholder_transcript_is_not_browser_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US014-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US015-001",
+        "ac_id": "AC-015",
+        "ac_theme": "browser-runner-priority",
+        "lane": "browser_runtime_admission",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_browser_runner_priority.py -k \"protected_surface_runner_priority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US015-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US016-001",
+        "ac_id": "AC-016",
+        "ac_theme": "blocked-not-false-fail",
+        "lane": "browser_runtime_admission",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"missing_session_bridge_yields_blocked_or_skip\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US016-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US017-001",
+        "ac_id": "AC-017",
+        "ac_theme": "runner-learning",
+        "lane": "browser_runtime_admission",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v142_browser_runner_learning.py -k \"runner_learning_note_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US017-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-US018-001",
+        "ac_id": "AC-018",
+        "ac_theme": "browser-lane-traceability",
+        "lane": "browser_runtime_admission",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v142_browser_lane_traceability.py -k \"browser_admission_and_evidence_participate_in_lane_reasoning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US018-001.json",
+        "evidence_status": "missing",
+        "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ]
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 1,
+    "generated_surface_sync": 2,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 2,
+    "browser_runtime_admission": 6
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-US001-001",
+      "ac_id": "AC-001",
+      "ac_theme": "index-contract",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"index_shape\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Test Contract Index exposes identity, truth refs, runtime/docs lines, lane membership, AC/TC/test/evidence mapping, status, and reason codes",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US001-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US002-001",
+      "ac_id": "AC-002",
+      "ac_theme": "lane-taxonomy",
+      "lane": "legacy_snapshot",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_test_contract_lanes.py -k \"canonical_lanes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US002-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US003-001",
+      "ac_id": "AC-003",
+      "ac_theme": "release-facing-mapping",
+      "lane": "feature_release_facing",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py -k \"release_facing_mapping_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Release-facing tests without AC/TC/evidence mapping are blocked unless classified as generated-surface contract checks",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US003-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US004-001",
+      "ac_id": "AC-004",
+      "ac_theme": "doctor-ownership",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_doctor_test_contract_governance.py -k \"doctor_build_and_verify\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Doctor support surface builds and verifies test contract index without adding a public lifecycle stage",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US004-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US005-001",
+      "ac_id": "AC-005",
+      "ac_theme": "qa-order",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_qa_lane_order.py -k \"qa_first_principles_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA lane execution preserves AC order, evidence pack, coverage current/gap, continue decision, blocker stop, repair handoff, help resume, and backfill",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US005-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US006-001",
+      "ac_id": "AC-006",
+      "ac_theme": "release-gating",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_release_test_contract_governance.py -k \"release_consumes_lane_status\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Release scorecard and strict gate consume lane status and block missing, stale, failed, or unclassified release-facing evidence",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US006-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US007-001",
+      "ac_id": "AC-007",
+      "ac_theme": "generated-surface-sync",
+      "lane": "generated_surface_sync",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_generated_surface_lane.py -k \"generated_surface_sync_blocks_drift\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Generated skill, metadata, command, context, and agent surfaces are lane-classified and block delivery when drift affects truth or routing",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US007-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US008-001",
+      "ac_id": "AC-008",
+      "ac_theme": "legacy-classification",
+      "lane": "legacy_snapshot",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_legacy_snapshot_classification.py -k \"legacy_snapshot_not_release_blocker_by_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Historical snapshot failures route to legacy snapshot or test evolution backlog unless promoted to active compatibility contract",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US008-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US009-001",
+      "ac_id": "AC-009",
+      "ac_theme": "skill-delivery",
+      "lane": "generated_surface_sync",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_skill_delivery_guidance.py -k \"skill_guides_contract_lane_verification\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon skills instruct agents to use contract-lane verification and avoid unclassified full-suite release claims",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US009-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US010-001",
+      "ac_id": "AC-010",
+      "ac_theme": "deep-delta-adoption",
+      "lane": "feature_release_facing",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_deep_delta_adoption.py -k \"deep_delta_routes_to_test_case_or_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Deep test deltas route through test-case or supplemental QA; deep remains support-only and does not execute QA",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US010-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US011-001",
+      "ac_id": "AC-011",
+      "ac_theme": "planning-line-safety",
+      "lane": "current_runtime_contract",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_planning_line_safety.py -k \"v142_does_not_promote_runtime\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Freezing v1.4.2 requirement materials does not change current runtime release line, docs default line, or package version",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US011-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US012-001",
+      "ac_id": "AC-012",
+      "ac_theme": "recovery-routing",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_test_contract_recovery.py -k \"blocked_governance_has_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Test contract governance blockers include reason codes and repair or resume routes through existing support surfaces",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US012-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US013-001",
+      "ac_id": "AC-013",
+      "ac_theme": "browser-admission",
+      "lane": "browser_runtime_admission",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"protected_surface_requires_session_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US013-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US014-001",
+      "ac_id": "AC-014",
+      "ac_theme": "browser-evidence-authenticity",
+      "lane": "browser_runtime_admission",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_browser_evidence_authenticity.py -k \"placeholder_transcript_is_not_browser_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US014-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US015-001",
+      "ac_id": "AC-015",
+      "ac_theme": "browser-runner-priority",
+      "lane": "browser_runtime_admission",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runner_priority.py -k \"protected_surface_runner_priority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US015-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US016-001",
+      "ac_id": "AC-016",
+      "ac_theme": "blocked-not-false-fail",
+      "lane": "browser_runtime_admission",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"missing_session_bridge_yields_blocked_or_skip\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US016-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US017-001",
+      "ac_id": "AC-017",
+      "ac_theme": "runner-learning",
+      "lane": "browser_runtime_admission",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runner_learning.py -k \"runner_learning_note_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US017-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-US018-001",
+      "ac_id": "AC-018",
+      "ac_theme": "browser-lane-traceability",
+      "lane": "browser_runtime_admission",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_lane_traceability.py -k \"browser_admission_and_evidence_participate_in_lane_reasoning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US018-001.json",
+      "evidence_status": "missing",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-US001-001"
+    ],
+    "AC-002": [
+      "TC-US002-001"
+    ],
+    "AC-003": [
+      "TC-US003-001"
+    ],
+    "AC-004": [
+      "TC-US004-001"
+    ],
+    "AC-005": [
+      "TC-US005-001"
+    ],
+    "AC-006": [
+      "TC-US006-001"
+    ],
+    "AC-007": [
+      "TC-US007-001"
+    ],
+    "AC-008": [
+      "TC-US008-001"
+    ],
+    "AC-009": [
+      "TC-US009-001"
+    ],
+    "AC-010": [
+      "TC-US010-001"
+    ],
+    "AC-011": [
+      "TC-US011-001"
+    ],
+    "AC-012": [
+      "TC-US012-001"
+    ],
+    "AC-013": [
+      "TC-US013-001"
+    ],
+    "AC-014": [
+      "TC-US014-001"
+    ],
+    "AC-015": [
+      "TC-US015-001"
+    ],
+    "AC-016": [
+      "TC-US016-001"
+    ],
+    "AC-017": [
+      "TC-US017-001"
+    ],
+    "AC-018": [
+      "TC-US018-001"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.4.2",
+    "docs_default_line": "v1.4.2",
+    "current_runtime_release_line": "v1.4.2",
+    "feature_line_status": "current_runtime_release"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-05-11T08:31:53.535602+00:00",
+  "index_path": "docs/beacon/v1.4.2/.machine/testing/test-contract-index.json"
+}

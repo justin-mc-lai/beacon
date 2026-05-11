@@ -92,6 +92,7 @@ The public Codex / Claude surfaces are:
 - `beacon-status`
 - `beacon-doctor`
 - `beacon-archive`
+- `beacon-deep`
 
 Optional supplemental skills:
 
@@ -102,6 +103,7 @@ Optional supplemental skills:
 - `beacon-toolkit-metadata`: deterministic metadata toolkit for project/version topology, branch binding, CRUD, and verify
 - `beacon-toolkit-branch-governance`: deterministic git branch/worktree governance view with flow diagram and implement-facing contract checks
 - `beacon-friction-intake`: host-visible friction intake entry for scan/capture plus sqlite queue governance
+- `beacon-deep`: deep analysis support surface for complex business risk closure, test-delta derivation, cross-stage routing, and release supplement evidence
 - `beacon-real-project-validation`: prove Beacon works against a real target project
 
 ## Current v1.3.9 Additions
@@ -132,6 +134,25 @@ Optional supplemental skills:
 - `brainstorm` stays read-only but can emit gap-aware supplement routing instead of acting as an isolated divergent lane.
 - `help / status / board` surface the current gap, supplement target, and re-freeze transaction state.
 - `implement / qa / release` still only consume frozen requirement completeness.
+
+## Test Contract Lane Guidance
+
+Beacon self-iteration test work must be contract-lane aware before any release claim.
+
+Use these lanes:
+
+- `feature_release_facing`
+- `current_runtime_contract`
+- `generated_surface_sync`
+- `compatibility_contract`
+- `legacy_snapshot`
+
+Do not claim readiness from unclassified full-suite output. Build and verify the machine index through `doctor`:
+
+```bash
+beacon doctor build-test-contract-index "<feature>" --project-root . --version <version> --json
+beacon doctor verify-test-contract-index "<feature>" --project-root . --version <version> --strict --json
+```
 
 ## Quick Start
 

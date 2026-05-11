@@ -204,6 +204,11 @@ def _patch_release_ready_baseline(monkeypatch) -> None:
     monkeypatch.setattr(release_scorecard_module, "evaluate_semantic_contract", lambda *_args, **_kwargs: {})
     monkeypatch.setattr(
         release_scorecard_module,
+        "build_test_contract_gate_payload",
+        lambda *_args, **_kwargs: {"release_gate": {"status": "pass", "blocked": False, "reason_codes": []}},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
         "build_acceptance_kit_projection",
         lambda *_args, **_kwargs: {"summary": {"all_layers_passed": True}},
     )

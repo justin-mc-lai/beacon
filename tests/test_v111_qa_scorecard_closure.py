@@ -122,3 +122,51 @@ def test_feature_qa_precision_should_continue_for_pending_targeted_cases_without
     assert feature_scorecard["coverage_current"]["missing_test_case_ids"] == ["TC-DB001-01", "TC-DB001-08"]
     assert feature_scorecard["repair_handoff"]["action"] == "qa-repair"
     assert "test-case create" not in feature_scorecard["repair_handoff"]["command"]
+
+
+def test_feature_qa_precision_should_route_browser_session_blockers_to_qa_session(tmp_path: Path):
+    plan = {
+        "version": "v1.4.2",
+        "required_scenario_families": ["happy"],
+        "targeted_source_tc_ids": ["TC-BR-001"],
+        "story_scenarios": {"stories": []},
+    }
+    per_item_results = [
+        {
+            "ac_id": "AC-BR-001",
+            "tc_id": "TC-BR-001",
+            "source_tc_id": "TC-BR-001",
+            "scenario_id": "SC-BR-001",
+            "scenario_family": "happy",
+            "status": "blocked",
+            "qa_type": "functional",
+            "browser_required": True,
+            "replay_required": False,
+            "replay_ref": "",
+            "browser_evidence_pack_ref": "browser-pack.json",
+            "browser_evidence_authenticity_status": "",
+            "reason_code": "protected_surface_session_bridge_missing",
+            "evidence_ref": ["browser-pack.json"],
+        }
+    ]
+
+    _, _, feature_scorecard, _, _ = build_feature_qa_precision_artifacts(
+        tmp_path,
+        feature="qa-browser-session-feature",
+        run_id="run-qa-browser-session",
+        plan=plan,
+        per_item_results=per_item_results,
+        qa_status={"quality_issues": []},
+        exhaustiveness={
+            "status": "passed",
+            "scenario_count": 1,
+            "missing_axes": [],
+            "missing_replay_scenarios": [],
+            "missing_browser_evidence_scenarios": [],
+        },
+    )
+
+    assert feature_scorecard["continue_decision"] == "stop_for_repair"
+    assert "protected_surface_session_bridge_missing" in feature_scorecard["stop_reasons"]
+    assert feature_scorecard["repair_handoff"]["action"] == "qa-session"
+    assert "beacon qa session list" in feature_scorecard["repair_handoff"]["command"]

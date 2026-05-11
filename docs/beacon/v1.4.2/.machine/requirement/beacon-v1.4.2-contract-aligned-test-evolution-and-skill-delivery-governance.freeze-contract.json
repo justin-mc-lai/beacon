@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.2",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "revision_id": "R1",
+  "status": "freeze-ready",
+  "human_supplement_contract": {
+    "allowed_decisions": [
+      "accepted",
+      "rejected",
+      "deferred"
+    ],
+    "required_fields": [
+      "gap_id",
+      "source_truth_ref",
+      "candidate_kind",
+      "rationale",
+      "human_decision",
+      "decision_reason",
+      "writeback_target",
+      "revision_id"
+    ],
+    "writeback_flow": [
+      "decision_log",
+      "writeback_projection",
+      "truth_refreeze"
+    ]
+  },
+  "blocking_rules": [
+    "high_severity_unresolved_gap",
+    "critical_coverage_family_missing",
+    "host_downgrade_without_explicit_fallback_contract",
+    "truth_writeback_without_machine_decision_trail"
+  ],
+  "freeze_verdict": "pass",
+  "implementation_verdict": "pending",
+  "qa_execution_verdict": "pending",
+  "updated_at": "2026-05-11T08:31:16.669114+00:00"
+}

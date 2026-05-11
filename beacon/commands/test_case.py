@@ -1465,32 +1465,6 @@ def create(
                 }
             )
 
-    if deepening_payload:
-        synthetic_idx = len(entries)
-        coverage_candidates = list(deepening_payload.get("coverage_candidates") or [])
-        existing_assertions = {str(item.get("assertion") or "").strip() for item in entries if isinstance(item, dict)}
-        ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
-        for candidate in coverage_candidates:
-            family = str(candidate.get("family") or "").strip()
-            assertion = f"{family} coverage remains traceable to requirement truth"
-            if not family or assertion in existing_assertions:
-                continue
-            synthetic_idx += 1
-            tc_id = f"TC-{synthetic_idx:03d}"
-            entries.append(
-                {
-                    "tc_id": tc_id,
-                    "ac_id": ac_anchor,
-                    "layer": "contract" if family in {"permission", "stale-data-or-drift", "downgrade-or-fallback"} else "unit",
-                    "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-                    "assertion": assertion,
-                    "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
-                    "status": "pending",
-                    "source": f"requirement-deepening:{family}",
-                }
-            )
-            existing_assertions.add(assertion)
-
     matrix_payload = {
         "schema_version": "1.0",
         "feature": feature,

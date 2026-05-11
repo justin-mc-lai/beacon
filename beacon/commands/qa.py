@@ -11,6 +11,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.commands.auto_test import _update_evidence_manifest
+from beacon.commands.auto_test import _normalize_browser_runner_type
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
 from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.delivery_kernel import build_delivery_contract
@@ -183,6 +184,70 @@ LAYER_SPECIFIC_OPTION_MAP: dict[str, tuple[str, ...]] = {
 
 def _repo_root() -> Path:
     return Path(__file__).resolve().parents[2]
+
+
+def _default_feature_qa_ui_runner(project_root: Path) -> str:
+    current = load_current_qa_session(project_root)
+    session_id = str(current.get("session_id") or "").strip()
+    if not session_id:
+        return "browser-use"
+    session = load_qa_session(project_root, session_id)
+    runner_type = _normalize_browser_runner_type(str(session.get("runner_type") or current.get("runner_type") or ""))
+    if runner_type in {"web-access", "agent-browser", "attached-chrome"}:
+        return "agent-browser"
+    if runner_type in {"playwright", "playwright-cli", "playwright-cdp"}:
+        return "playwright"
+    return "browser-use"
+
+
+def _browser_blocker_lines(feature_scorecard: dict[str, Any]) -> list[str]:
+    if not isinstance(feature_scorecard, dict):
+        return []
+    if str(feature_scorecard.get("continue_decision") or "").strip() != "stop_for_repair":
+        return []
+    stop_reasons = [str(item).strip() for item in (feature_scorecard.get("stop_reasons") or []) if str(item).strip()]
+    repair_handoff = feature_scorecard.get("repair_handoff") if isinstance(feature_scorecard.get("repair_handoff"), dict) else {}
+    action = str(repair_handoff.get("action") or "").strip()
+    reason = str(repair_handoff.get("reason") or "").strip()
+    command = str(repair_handoff.get("command") or "").strip()
+    if action not in {"qa-session", "qa-browser-rerun"}:
+        return []
+
+    lines = [f"  browser_blockers: {', '.join(stop_reasons) or '-'}"]
+    if reason:
+        lines.append(f"  browser_repair: {reason}")
+    if command:
+        lines.append(f"  browser_command: {command}")
+    return lines
+
+
+def _plan_browser_prepare_lines(plan: dict[str, Any], project_root: Path) -> list[str]:
+    targeted_entries = plan.get("targeted_entries") if isinstance(plan.get("targeted_entries"), list) else []
+    browser_entries = [item for item in targeted_entries if isinstance(item, dict) and bool(item.get("browser_required"))]
+    if not browser_entries:
+        return []
+
+    current = load_current_qa_session(project_root)
+    session_id = str(current.get("session_id") or "").strip()
+    session = load_qa_session(project_root, session_id) if session_id else {}
+    runner_type = _normalize_browser_runner_type(str(session.get("runner_type") or current.get("runner_type") or ""))
+    exploratory_runners = sorted(
+        {
+            str(item.get("exploratory_runner") or "").strip()
+            for item in browser_entries
+            if str(item.get("exploratory_runner") or "").strip()
+        }
+    )
+
+    lines = [f"- browser_required_scenarios: {len(browser_entries)}"]
+    if exploratory_runners:
+        lines.append(f"- browser_runners: {', '.join(exploratory_runners)}")
+    if session_id:
+        lines.append(f"- browser_session_ready: {session_id} ({runner_type or 'unknown'})")
+    else:
+        lines.append("- browser_prepare: attach or select a reusable QA browser session before rerun on protected/live surfaces")
+        lines.append(f"- browser_prepare_command: beacon qa session list --project {project_root}")
+    return lines
 
 
 def _beacon_exec(args: list[str], *, cwd: Path | None = None) -> int:
@@ -1024,6 +1089,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         precision_status["feature"] = feature
         precision_status["feature_slug"] = str(plan.get("feature_slug") or "")
         precision_status["execution_mode"] = str(plan.get("execution_mode") or mode)
+        precision_status["reason_codes"] = list(plan.get("reason_codes") or [])
         precision_status["targeted_rerun"] = {
             "required": True,
             "reason_codes": plan.get("reason_codes", []),
@@ -1099,6 +1165,19 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             ],
             execution_surface="qa-team" if team_mode else "qa",
         )
+        _with_delivery_contract(
+            precision_status,
+            requirement_binding={
+                "source_of_truth_root": f"docs/beacon/{version}",
+                "feature_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+            },
+            traceability_refs=[
+                str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
+                str(handoff.get("summary_ref") or ""),
+                str(handoff.get("technical_archive_ref") or ""),
+            ],
+            execution_surface="qa-team" if team_mode else "qa",
+        )
         if team_mode:
             payload["team_execution"] = _materialize_qa_team_surface(
                 project_root,
@@ -1156,7 +1235,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "--qa-types",
         ",".join(plan.get("targeted_layers") or ["contract"]),
         "--ui-runner",
-        "browser-use",
+        _default_feature_qa_ui_runner(project_root),
         "--require-fresh-evidence",
     ]
     auto_args.extend(
@@ -1494,13 +1573,21 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                     str(acceptance_result.get("runtime_path") or ""),
                 ]
             )
+    final_reason_codes = list(plan.get("reason_codes") or [])
+    if bool(qa_status.get("evidence_done")) and str(qa_status.get("status") or "").strip().lower() == "passed":
+        final_reason_codes = []
     payload = {
         **plan,
         "run_id": str(qa_status.get("run_id") or ""),
         "status": str(qa_status.get("status") or "unknown"),
         "implementation_done": True,
         "evidence_done": bool(qa_status.get("evidence_done", False)),
+        "release_ready": bool(qa_status.get("release_ready", False)),
+        "reason_codes": final_reason_codes,
+        "current_spec_fingerprint_hash": str(qa_status.get("current_spec_fingerprint_hash") or plan.get("current_spec_fingerprint_hash") or ""),
+        "spec_fingerprint_hash": str(qa_status.get("spec_fingerprint_hash") or qa_status.get("current_spec_fingerprint_hash") or ""),
         "feature_matrix_path": feature_matrix_rel,
+        "canonical_matrix_path": str(qa_status.get("canonical_matrix_path") or ""),
         "blocking_artifact_updates": blocking_updates,
         "per_item_results": per_item_results,
         "verified_item_ids": verified_ids,
@@ -1597,6 +1684,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         if str(feature_scorecard.get("continue_decision") or "") == "stop_for_repair":
             typer.echo(f"  stop_reasons: {', '.join(feature_scorecard.get('stop_reasons', [])) or '-'}")
             typer.echo(f"  resume_command: {feature_scorecard.get('resume_command', '')}")
+            for line in _browser_blocker_lines(feature_scorecard):
+                typer.echo(line)
         if blocking_updates:
             typer.echo(f"  blocking_artifact_updates: {len(blocking_updates)}")
     return exit_code, payload
@@ -1719,6 +1808,8 @@ def evolve(
     typer.echo(f"- targeted_tc_ids: {', '.join(plan.get('targeted_tc_ids', [])) or '-'}")
     typer.echo(f"- targeted_scenario_ids: {', '.join(plan.get('targeted_scenario_ids', [])) or '-'}")
     typer.echo(f"- reason_codes: {', '.join(plan.get('reason_codes', [])) or '-'}")
+    for line in _plan_browser_prepare_lines(plan, project_root):
+        typer.echo(line)
 
 
 @app.command("team-plan")
@@ -1742,6 +1833,8 @@ def team_plan(
     typer.echo(f"Beacon QA team-plan: {feature}")
     typer.echo(f"- team_surface: qa-team")
     typer.echo(f"- run_command: {plan['team_contract'].get('run_command', '')}")
+    for line in _plan_browser_prepare_lines(plan, project_root):
+        typer.echo(line)
 
 
 @app.command("status")
@@ -1805,6 +1898,8 @@ def status(
         if str(feature_scorecard.get("continue_decision") or "") == "stop_for_repair":
             typer.echo(f"Stop reasons: {', '.join(feature_scorecard.get('stop_reasons', [])) or '-'}")
             typer.echo(f"Resume command: {feature_scorecard.get('resume_command', '')}")
+            for line in _browser_blocker_lines(feature_scorecard):
+                typer.echo(line.replace("  ", "", 1))
 
 
 @app.command(

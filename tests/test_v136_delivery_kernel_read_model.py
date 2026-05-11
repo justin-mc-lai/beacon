@@ -433,7 +433,12 @@ def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path
     monkeypatch.setattr(
         qa_command,
         "load_feature_qa_status",
-        lambda *_args, **_kwargs: {"status": "passed", "execution_mode": "feature-aware", "release_ready": True},
+        lambda *_args, **_kwargs: {
+            "status": "passed",
+            "execution_mode": "feature-aware",
+            "release_ready": True,
+            "reason_codes": ["previous_feature_qa_not_passed"],
+        },
     )
     monkeypatch.setattr(qa_command, "detect_host_runtime", lambda value=None: value or "codex")
     monkeypatch.setattr(
@@ -458,6 +463,7 @@ def test_v136_feature_aware_qa_up_to_date_should_emit_delivery_contract(tmp_path
     assert payload["delivery_contract"]["host_runtime"] == "codex"
     assert payload["host_native_delivery"]["execution_mode"] == "feature-aware"
     assert captured["payload"]["delivery_contract"]["runner"] == "browser-use"
+    assert captured["payload"]["reason_codes"] == []
     assert ".beacon/qa/features/beacon-feature/plan.json" in manifest_capture["refs"]
 
 

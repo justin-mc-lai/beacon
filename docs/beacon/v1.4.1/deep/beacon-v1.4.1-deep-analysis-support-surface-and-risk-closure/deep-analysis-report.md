@@ -1,0 +1,90 @@
+# Deep Analysis Report
+
+- schema_version: `1.0`
+- feature: `beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure`
+- feature_slug: `beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure`
+- version: `v1.4.1`
+- generated_at: `2026-05-09T03:52:13.567860+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/v1.4.1/prd/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+  "user_story": "docs/beacon/v1.4.1/user-story/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md",
+  "test_case": "docs/beacon/v1.4.1/qa/test-cases/beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- artifact_type: `deep_analysis_report`
+- intent_snapshot: `Implement v1.4.1 deep support surface and release risk closure`
+## trigger
+```json
+{
+  "status": "required",
+  "deep_requirement_state": "required",
+  "required": true,
+  "recommended": false,
+  "skipped": false,
+  "skip_reason": "",
+  "triggers": [
+    {
+      "token": "payment",
+      "category": "financial_or_payment_flow"
+    },
+    {
+      "token": "order",
+      "category": "order_or_transaction_flow"
+    },
+    {
+      "token": "ranking",
+      "category": "ranking_or_scoring_flow"
+    },
+    {
+      "token": "identity binding",
+      "category": "identity_or_attribution_binding"
+    },
+    {
+      "token": "invitation",
+      "category": "relationship_or_invitation_chain"
+    },
+    {
+      "token": "reporting",
+      "category": "reporting_or_derived_fact_flow"
+    },
+    {
+      "token": "migration",
+      "category": "migration_or_cutover_flow"
+    },
+    {
+      "token": "multi-role",
+      "category": "multi_role_workflow"
+    },
+    {
+      "token": "multi-state",
+      "category": "multi_state_workflow"
+    },
+    {
+      "token": "state machine",
+      "category": "state_machine_workflow"
+    },
+    {
+      "token": "fact source",
+      "category": "fact_source_consistency_chain"
+    },
+    {
+      "token": "consistency",
+      "category": "cross_surface_consistency_chain"
+    },
+    {
+      "token": "release-blocking",
+      "category": "release_blocking_risk"
+    }
+  ],
+  "reason_code": "deep_high_risk_trigger_detected",
+  "qa_structural_reopen": false
+}
+```
+
+- finding_count: `13`
+- test_delta_count: `5`
+- status: `closed`

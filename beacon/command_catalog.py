@@ -37,6 +37,7 @@ SUPPORT_COMMANDS = (
     "init",
     "test-progress",
     "debug",
+    "deep",
 )
 
 COMPAT_COMMANDS = (
@@ -90,6 +91,7 @@ SUPPORTED_SUBCOMMANDS = (
     "brainstorm",
     "data-dictionary",
     "debug",
+    "deep",
     "design",
     "doctor",
     "evolution-summary",

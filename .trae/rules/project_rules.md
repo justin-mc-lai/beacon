@@ -1,14 +1,37 @@
 <!-- BEACON:AGENT_SURFACE:START -->
-<!-- BEACON:VERSION:v1.4.0 -->
-<!-- BEACON:DOCS_VERSION:v1.4.0 -->
+<!-- BEACON:VERSION:v1.4.2 -->
+<!-- BEACON:DOCS_VERSION:v1.4.2 -->
 # Beacon Trae Project Rules
 
 - Prefer project-local Beacon skills under `.trae/skills/`.
 - Prefer `beacon <subcommand>` as the stable execution entry.
 - Treat `docs/beacon/global-boundaries.md` and `docs/beacon/<version>/` as canonical truth.
-- Follow "Single Truth, Multiple Projections" for versioning: all versions must be projected from `beacon/version-truth.json`.
 - If skill materialization drifts, run `beacon doctor setup-agent-surface --project-root . --agent trae`.
-- If version surfaces drift, run `beacon doctor sync-version-surfaces --project-root .`.
 - Verify Trae skill availability with `beacon doctor verify-agent-surface --project-root . --agent trae --strict`.
+
+## Installed Beacon Skills
+
+- `beacon-archive`
+- `beacon-brainstorm`
+- `beacon-change`
+- `beacon-deep`
+- `beacon-doctor`
+- `beacon-friction-intake`
+- `beacon-help`
+- `beacon-implement`
+- `beacon-prd`
+- `beacon-prd-bootstrap`
+- `beacon-prototype`
+- `beacon-qa`
+- `beacon-real-project-validation`
+- `beacon-release`
+- `beacon-status`
+- `beacon-test-case`
+- `beacon-toolkit-branch-governance`
+- `beacon-toolkit-lighthouse`
+- `beacon-toolkit-metadata`
+- `beacon-user-story`
+- `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
 

@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.commands.qa import _browser_blocker_lines
 from beacon.utils.qa_feature import writeback_feature_matrix_evidence
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
@@ -167,6 +168,65 @@ def test_v119_qa_run_help_should_expose_feature_aware_options():
     assert "--project" in result.stdout
     assert "--version" in result.stdout
     assert "--json" in result.stdout
+
+
+def test_v119_qa_status_should_print_browser_blocker_guidance(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    writeback_feature_matrix_evidence(
+        tmp_path,
+        plan={"feature": FEATURE, "feature_slug": SLUG, "version": VERSION, "targeted_tc_ids": [], "targeted_ac_ids": [], "targeted_layers": []},
+        per_item_results=[],
+        run_id="run-browser-status-001",
+    )
+    (tmp_path / ".beacon" / "qa").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "qa" / "status.json").write_text(
+        json.dumps(
+            {
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "version": VERSION,
+                "status": "blocked",
+                "evidence_done": False,
+                "execution_mode": "feature-aware",
+                "feature_scorecard": {
+                    "continue_decision": "stop_for_repair",
+                    "stop_reasons": ["protected_surface_session_bridge_missing"],
+                    "resume_command": f'beacon help --project-root {tmp_path} --version {VERSION} --feature "{FEATURE}"',
+                    "repair_handoff": {
+                        "action": "qa-session",
+                        "reason": "protected browser surface requires an attached session or runner before QA can continue",
+                        "command": f"beacon qa session list --project {tmp_path}",
+                    },
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["qa", "status", "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "browser_blockers: protected_surface_session_bridge_missing" in result.stdout
+    assert "browser_command: beacon qa session list" in result.stdout
+
+
+def test_v119_browser_blocker_lines_should_render_session_guidance() -> None:
+    lines = _browser_blocker_lines(
+        {
+            "continue_decision": "stop_for_repair",
+            "stop_reasons": ["protected_surface_runner_priority_unavailable"],
+            "repair_handoff": {
+                "action": "qa-session",
+                "reason": "browser QA is blocked on attached-session admission and needs a reusable QA session before rerun",
+                "command": "beacon qa session list --project /tmp/demo",
+            },
+        }
+    )
+
+    assert any("browser_blockers: protected_surface_runner_priority_unavailable" in line for line in lines)
+    assert any("browser_command: beacon qa session list --project /tmp/demo" in line for line in lines)
 
 
 def test_v119_qa_evolve_story_exhaustive_should_backfill_missing_scenarios_from_matrix_entries(tmp_path: Path):

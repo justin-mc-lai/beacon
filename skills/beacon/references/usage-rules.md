@@ -140,3 +140,29 @@ That means the skill prompt must not encourage:
 - continuing QA after severe blockers invalidate downstream evidence
 - claiming progress without coverage/evidence truth
 - asking humans to guess the resume path instead of using `beacon help`
+
+## Rule 8: Test evolution must be contract-lane aware
+
+When Beacon itself evolves, the skill must route test interpretation through contract-lane verification before making release claims.
+
+Use these lanes:
+
+- `feature_release_facing`
+- `current_runtime_contract`
+- `generated_surface_sync`
+- `compatibility_contract`
+- `legacy_snapshot`
+
+That means the skill prompt must not encourage:
+
+- treating unclassified full-suite output as a release pass
+- treating unclassified full-suite output as a release blocker
+- rewriting all legacy tests as part of a feature delta
+- letting skill text override machine evidence from `doctor`, `qa`, or `release`
+
+Preferred support commands:
+
+```bash
+beacon doctor build-test-contract-index "<feature>" --project-root . --version <version> --json
+beacon doctor verify-test-contract-index "<feature>" --project-root . --version <version> --strict --json
+```
