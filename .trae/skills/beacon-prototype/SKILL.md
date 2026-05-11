@@ -26,12 +26,13 @@ Prefer:
 - `beacon prototype ...`
 - or `beacon prototype ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh prototype ...`)
 
-Treat `prototype` as the formal stage between `test-case` and `implement`.
+Treat `prototype` as a conditional formal stage between `test-case` and `implement`.
 Keep `prototype` inside the requirement stage:
 
 - it remains `requirement-driven wireframe freeze`
 - it is not final visual approval
 - it is not production UI generation
+- it is only required when the feature has real UX/UI surface or route/state/interaction handoff needs
 
 For `v1.3.10+`, the expected freeze truth must include:
 

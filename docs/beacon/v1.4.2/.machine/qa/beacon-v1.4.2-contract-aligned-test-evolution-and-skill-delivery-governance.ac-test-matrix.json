@@ -3,7 +3,7 @@
   "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
   "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
   "version": "v1.4.2",
-  "generated_at": "2026-05-09T16:41:05.716206",
+  "generated_at": "2026-05-11T16:31:16.671739",
   "compiler": {
     "requested_mode": "auto",
     "effective_mode": "host",
@@ -46,7 +46,7 @@
       "ac_id": "AC-002",
       "layer": "contract",
       "command": "python3 -m pytest -q tests/test_v142_test_contract_lanes.py -k \"canonical_lanes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, and legacy snapshot",
+      "assertion": "Canonical lanes include feature release-facing, current runtime contract, generated surface sync, compatibility contract, legacy snapshot, and browser runtime admission",
       "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US002-001.json",
       "status": "pending",
       "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
@@ -152,94 +152,64 @@
       "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     },
     {
-      "tc_id": "TC-013",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "happy coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-013.json",
+      "tc_id": "TC-US013-001",
+      "ac_id": "AC-013",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"protected_surface_requires_session_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Protected browser surfaces require session/runner admission before execution and prefer attached-session paths before bare Playwright",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US013-001.json",
       "status": "pending",
-      "source": "requirement-deepening:happy"
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     },
     {
-      "tc_id": "TC-014",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "negative coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-014.json",
+      "tc_id": "TC-US014-001",
+      "ac_id": "AC-014",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v142_browser_evidence_authenticity.py -k \"placeholder_transcript_is_not_browser_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Browser-capable QA closure requires authentic browser evidence; transcript-only placeholder artifacts are insufficient",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US014-001.json",
       "status": "pending",
-      "source": "requirement-deepening:negative"
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     },
     {
-      "tc_id": "TC-015",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "boundary coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-015.json",
-      "status": "pending",
-      "source": "requirement-deepening:boundary"
-    },
-    {
-      "tc_id": "TC-016",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "exception coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-016.json",
-      "status": "pending",
-      "source": "requirement-deepening:exception"
-    },
-    {
-      "tc_id": "TC-017",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "recovery coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-017.json",
-      "status": "pending",
-      "source": "requirement-deepening:recovery"
-    },
-    {
-      "tc_id": "TC-018",
-      "ac_id": "AC-001",
-      "layer": "unit",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "compatibility coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-018.json",
-      "status": "pending",
-      "source": "requirement-deepening:compatibility"
-    },
-    {
-      "tc_id": "TC-019",
-      "ac_id": "AC-001",
+      "tc_id": "TC-US015-001",
+      "ac_id": "AC-015",
       "layer": "contract",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "permission coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-019.json",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runner_priority.py -k \"protected_surface_runner_priority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Protected-surface runner priority is represented as `web-access -> attached agent-browser -> playwright attach/CDP -> bare Playwright`",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US015-001.json",
       "status": "pending",
-      "source": "requirement-deepening:permission"
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     },
     {
-      "tc_id": "TC-020",
-      "ac_id": "AC-001",
-      "layer": "contract",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "stale-data-or-drift coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-020.json",
+      "tc_id": "TC-US016-001",
+      "ac_id": "AC-016",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runtime_admission.py -k \"missing_session_bridge_yields_blocked_or_skip\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing session bridge on protected live surfaces yields `skip` or `blocked` reasoned outcomes rather than false product failures",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US016-001.json",
       "status": "pending",
-      "source": "requirement-deepening:stale-data-or-drift"
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     },
     {
-      "tc_id": "TC-021",
-      "ac_id": "AC-001",
+      "tc_id": "TC-US017-001",
+      "ac_id": "AC-017",
       "layer": "contract",
-      "command": "python3 -c \"print('requirement-deepening-coverage-check')\"",
-      "assertion": "downgrade-or-fallback coverage remains traceable to requirement truth",
-      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-021.json",
+      "command": "python3 -m pytest -q tests/test_v142_browser_runner_learning.py -k \"runner_learning_note_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA writes reusable runner/admission learning notes with reason, fallback, next preferred runner, and expiry semantics",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US017-001.json",
       "status": "pending",
-      "source": "requirement-deepening:downgrade-or-fallback"
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+    },
+    {
+      "tc_id": "TC-US018-001",
+      "ac_id": "AC-018",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v142_browser_lane_traceability.py -k \"browser_admission_and_evidence_participate_in_lane_reasoning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Browser-runtime admission and browser evidence obligations participate in lane/status reasoning alongside AC/TC/evidence mapping",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance/TC-US018-001.json",
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
     }
   ],
   "requirement_deepening": {
@@ -337,7 +307,7 @@
       "refreeze_required": true,
       "revalidate_required": true,
       "decision_count": 15,
-      "generated_at": "2026-05-09T08:41:05.714287+00:00"
+      "generated_at": "2026-05-11T08:31:16.669167+00:00"
     }
   }
 }
