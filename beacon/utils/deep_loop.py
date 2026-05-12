@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import re
 from pathlib import Path
 from typing import Any
 
@@ -10,7 +9,7 @@ from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
-from beacon.utils.versioning import normalize_version, resolve_target_version
+from beacon.utils.versioning import resolve_runtime_version, resolve_target_version, runtime_feature_supported
 
 DEEP_LOOP_STATES = [
     "scan_truth",
@@ -88,13 +87,8 @@ STRUCTURAL_QA_KEYWORDS = {
 BLOCKING_SEVERITIES = {"P0", "P1", "P2"}
 
 
-def deep_loop_supported(version: str | None) -> bool:
-    normalized = normalize_version(version) or ""
-    match = re.match(r"^v(\d+)\.(\d+)\.(\d+)$", normalized)
-    if not match:
-        return False
-    major, minor, patch = [int(part) for part in match.groups()]
-    return (major, minor, patch) >= (1, 4, 1)
+def deep_loop_supported(version: str | None, *, runtime_version: str | None = None) -> bool:
+    return runtime_feature_supported("v1.4.1", runtime_version=runtime_version or version)
 
 
 def deep_artifact_paths(project_root: Path, version: str, feature: str) -> dict[str, dict[str, str]]:
@@ -327,8 +321,12 @@ def run_deep_loop(
     qa_severity: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    if not deep_loop_supported(resolved_version):
-        raise ValueError(f"deep loop is supported for v1.4.1+; got {resolved_version}")
+    resolved_runtime_version = resolve_runtime_version(project_root, "auto")
+    if not deep_loop_supported(resolved_version, runtime_version=resolved_runtime_version):
+        raise ValueError(
+            "deep loop is supported for Beacon runtime v1.4.1+; "
+            f"got runtime {resolved_runtime_version} for target docs {resolved_version}"
+        )
     slug = feature_slug(feature)
     truth_paths = _truth_paths(project_root, resolved_version, feature)
     truth = _truth_corpus(project_root, resolved_version, feature)
@@ -558,6 +556,7 @@ def build_deep_release_supplement(project_root: Path, *, version: str, feature: 
 
 
 def build_deep_release_supplement_gate(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
-    if not feature or not deep_loop_supported(version):
+    resolved_runtime_version = resolve_runtime_version(project_root, "auto")
+    if not feature or not deep_loop_supported(version, runtime_version=resolved_runtime_version):
         return {"schema_version": "1.0", "status": "not_required", "blocked": False, "reason_code": ""}
     return build_deep_release_supplement(project_root, version=version, feature=feature, write=False)

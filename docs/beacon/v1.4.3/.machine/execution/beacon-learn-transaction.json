@@ -1,17 +1,17 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-beacon-learn-v1.4.3-host-installation-matrix-20260511t134116z",
+  "transaction_id": "tx-beacon-learn-v1.4.3-runtime-capability-version-gating-20260512t023649z",
   "surface": "beacon-learn",
   "mode": "audit",
   "version": "v1.4.3",
-  "feature": "host-installation-matrix",
-  "feature_slug": "host-installation-matrix",
+  "feature": "runtime-capability-version-gating",
+  "feature_slug": "runtime-capability-version-gating",
   "status": "advisory",
   "decision": "audit",
   "reason_codes": [],
   "truth_refs": [],
   "evidence_refs": [
-    "['README.md', '~/.agents/skills/beacon', '~/.claude/skills/beacon', '.windsurf/skills', '.windsurf/workflows/beacon-agent-surface.md', '.beacon/state/agent-surfaces.json']"
+    "['beacon/utils/deep_loop.py', 'beacon/commands/report.py', 'tests/test_v141_deep_skill_surface.py', 'tests/test_real_project_validation_command.py']"
   ],
   "route_decision": {
     "route": "operator-guidance",
@@ -33,77 +33,63 @@
   "blocked": false,
   "blocked_reason": "",
   "operator_visible_summary": "Applied 1 learning entries; stale=0 conflicting=0 suppressed=0.",
-  "created_at": "2026-05-11T13:41:16.576639+00:00",
+  "created_at": "2026-05-12T02:36:49.135909+00:00",
   "learning_candidates": [
     {
-      "memory_id": "5d3f7315-5510-4134-aad4-b977a3cde975",
+      "memory_id": "3c11f6a2-db47-45d8-90f8-fed19beb8bb4",
       "type": "decision",
       "status": "active",
-      "content": "Beacon host installation stack should be governed by a single host matrix: Codex/agent uses ~/.agents/skills/beacon -> <repo>/skills/beacon, Claude uses ~/.claude/skills/beacon -> <repo>, and Trae/Cursor/Windsurf must be materialized as project-local agent surfaces via beacon doctor setup-agent-surface plus strict verify-agent-surface. Avoid ~/.codex/skills/beacon duplicate installs and treat Windsurf as a first-class project-local host, not a manual global copy target.",
-      "content_hash": "sha256:395beee32dc3ac85eb2ae3ae1a09a3867edca1ac974cd532dc59d7008505e0bd",
-      "source_session_id": "manual-install-host-matrix-v143",
+      "content": "Support surfaces must gate runtime capability against Beacon runtime version, not target project docs version. When a command writes into legacy docs lines like v1.3.5 from a v1.4.3 runtime, capability checks must resolve runtime_version separately from docs_version to avoid false unsupported failures.",
+      "content_hash": "sha256:8ad53d2a952d6f971a70058759286e3a3782b031a49e9a8a41485e7f43c7fc66",
+      "source_session_id": "friction:70acd13cba13",
       "source": "beacon-learn",
       "evidence_ref": [
-        "README.md",
-        "~/.agents/skills/beacon",
-        "~/.claude/skills/beacon",
-        ".windsurf/skills",
-        ".windsurf/workflows/beacon-agent-surface.md",
-        ".beacon/state/agent-surfaces.json"
+        "beacon/utils/deep_loop.py",
+        "beacon/commands/report.py",
+        "tests/test_v141_deep_skill_surface.py",
+        "tests/test_real_project_validation_command.py"
       ],
       "reason_codes": [
-        "host_installation_governance",
-        "installed_skill_copy_drift_prevention"
+        "runtime_docs_version_semantics_drift"
       ],
-      "confidence": 0.95,
+      "confidence": 0.8,
       "tags": [
-        "claude",
-        "codex",
-        "cursor",
-        "host-matrix",
-        "install",
-        "trae",
-        "windsurf"
+        "runtime-capability",
+        "support-surface",
+        "version-gating"
       ],
-      "created_at": "2026-05-11T13:41:05.909941+00:00",
-      "updated_at": "2026-05-11T13:41:05.909941+00:00",
-      "decision": "Beacon host installation stack should be governed by a single host matrix: Codex/agent uses ~/.agents/skills/beacon -> <repo>/skills/beacon, Claude uses ~/.claude/skills/beacon -> <repo>, and Trae/Cursor/Windsurf must be materialized as project-local agent surfaces via beacon doctor setup-agent-surface plus strict verify-agent-surface. Avoid ~/.codex/skills/beacon duplicate installs and treat Windsurf as a first-class project-local host, not a manual global copy target."
+      "created_at": "2026-05-12T02:36:49.074243+00:00",
+      "updated_at": "2026-05-12T02:36:49.074243+00:00",
+      "decision": "Support surfaces must gate runtime capability against Beacon runtime version, not target project docs version. When a command writes into legacy docs lines like v1.3.5 from a v1.4.3 runtime, capability checks must resolve runtime_version separately from docs_version to avoid false unsupported failures."
     }
   ],
   "applied_learning": [
     {
-      "memory_id": "5d3f7315-5510-4134-aad4-b977a3cde975",
+      "memory_id": "3c11f6a2-db47-45d8-90f8-fed19beb8bb4",
       "type": "decision",
       "status": "active",
-      "content": "Beacon host installation stack should be governed by a single host matrix: Codex/agent uses ~/.agents/skills/beacon -> <repo>/skills/beacon, Claude uses ~/.claude/skills/beacon -> <repo>, and Trae/Cursor/Windsurf must be materialized as project-local agent surfaces via beacon doctor setup-agent-surface plus strict verify-agent-surface. Avoid ~/.codex/skills/beacon duplicate installs and treat Windsurf as a first-class project-local host, not a manual global copy target.",
-      "content_hash": "sha256:395beee32dc3ac85eb2ae3ae1a09a3867edca1ac974cd532dc59d7008505e0bd",
-      "source_session_id": "manual-install-host-matrix-v143",
+      "content": "Support surfaces must gate runtime capability against Beacon runtime version, not target project docs version. When a command writes into legacy docs lines like v1.3.5 from a v1.4.3 runtime, capability checks must resolve runtime_version separately from docs_version to avoid false unsupported failures.",
+      "content_hash": "sha256:8ad53d2a952d6f971a70058759286e3a3782b031a49e9a8a41485e7f43c7fc66",
+      "source_session_id": "friction:70acd13cba13",
       "source": "beacon-learn",
       "evidence_ref": [
-        "README.md",
-        "~/.agents/skills/beacon",
-        "~/.claude/skills/beacon",
-        ".windsurf/skills",
-        ".windsurf/workflows/beacon-agent-surface.md",
-        ".beacon/state/agent-surfaces.json"
+        "beacon/utils/deep_loop.py",
+        "beacon/commands/report.py",
+        "tests/test_v141_deep_skill_surface.py",
+        "tests/test_real_project_validation_command.py"
       ],
       "reason_codes": [
-        "host_installation_governance",
-        "installed_skill_copy_drift_prevention"
+        "runtime_docs_version_semantics_drift"
       ],
-      "confidence": 0.95,
+      "confidence": 0.8,
       "tags": [
-        "claude",
-        "codex",
-        "cursor",
-        "host-matrix",
-        "install",
-        "trae",
-        "windsurf"
+        "runtime-capability",
+        "support-surface",
+        "version-gating"
       ],
-      "created_at": "2026-05-11T13:41:05.909941+00:00",
-      "updated_at": "2026-05-11T13:41:05.909941+00:00",
-      "decision": "Beacon host installation stack should be governed by a single host matrix: Codex/agent uses ~/.agents/skills/beacon -> <repo>/skills/beacon, Claude uses ~/.claude/skills/beacon -> <repo>, and Trae/Cursor/Windsurf must be materialized as project-local agent surfaces via beacon doctor setup-agent-surface plus strict verify-agent-surface. Avoid ~/.codex/skills/beacon duplicate installs and treat Windsurf as a first-class project-local host, not a manual global copy target."
+      "created_at": "2026-05-12T02:36:49.074243+00:00",
+      "updated_at": "2026-05-12T02:36:49.074243+00:00",
+      "decision": "Support surfaces must gate runtime capability against Beacon runtime version, not target project docs version. When a command writes into legacy docs lines like v1.3.5 from a v1.4.3 runtime, capability checks must resolve runtime_version separately from docs_version to avoid false unsupported failures."
     }
   ],
   "suppressed_learning": [],

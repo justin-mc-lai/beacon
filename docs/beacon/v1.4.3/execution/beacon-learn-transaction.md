@@ -1,6 +1,6 @@
 # beacon-learn Transaction
 
-- feature: `host-installation-matrix`
+- feature: `runtime-capability-version-gating`
 - version: `v1.4.3`
 - status: `advisory`
 - decision: `audit`

@@ -128,6 +128,31 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
     assert check_ids["canonical_delivery_baseline_convergence"] == "pass"
 
 
+def test_report_real_project_validation_should_use_runtime_capability_for_overlay_checks(monkeypatch, tmp_path: Path) -> None:
+    version = "v1.0.0"
+    feature = "Legacy Feature"
+    _seed_docs(tmp_path, version)
+
+    overlay = report_module._real_project_overlay(
+        version=version,
+        runtime_version="v1.4.3",
+        surface_results={
+            "archive_status": {"json": {"status": "pass"}, "exit_code": 0},
+            "archive_explain": {"json": {"status": "pass"}, "exit_code": 0},
+            "archive_plan": {"json": {"status": "pass"}, "exit_code": 0},
+            "gate_prototype": {"json": {"status": "pass", "issues": []}, "exit_code": 0},
+        },
+        release_scorecard={
+            "qa": {"acceptance_transaction_status": "pass"},
+        },
+        acceptance_kit={"summary": {"all_layers_passed": True}},
+    )
+
+    check_ids = {item["id"] for item in overlay["checks"]}
+    assert "archive_governance_support_surface" in check_ids
+    assert "acceptance_projection_transaction_dual_write" in check_ids
+
+
 def test_report_real_project_validation_should_classify_blockers_vs_defects(monkeypatch, tmp_path: Path) -> None:
     version = "v1.3.9"
     feature = "Feature"

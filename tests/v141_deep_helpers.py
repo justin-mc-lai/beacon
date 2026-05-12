@@ -9,8 +9,8 @@ FEATURE = "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure"
 SLUG = "beacon-v1.4.1-deep-analysis-support-surface-and-risk-closure"
 
 
-def seed_deep_project(root: Path, *, feature: str = FEATURE) -> Path:
-    version_root = root / "docs" / "beacon" / VERSION
+def seed_deep_project(root: Path, *, feature: str = FEATURE, docs_version: str = VERSION) -> Path:
+    version_root = root / "docs" / "beacon" / docs_version
     slug = feature.lower().replace(" ", "-")
     (version_root / "prd").mkdir(parents=True, exist_ok=True)
     (version_root / "user-story").mkdir(parents=True, exist_ok=True)
@@ -70,5 +70,5 @@ def seed_deep_project(root: Path, *, feature: str = FEATURE) -> Path:
         + "\n",
         encoding="utf-8",
     )
-    freeze_revision_state(root, version=VERSION, feature=feature)
+    freeze_revision_state(root, version=docs_version, feature=feature)
     return version_root

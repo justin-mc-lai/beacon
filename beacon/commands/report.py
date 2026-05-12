@@ -22,7 +22,7 @@ from beacon.utils.acceptance_audit import (
     run_regression_command,
     write_acceptance_audit,
 )
-from beacon.utils.versioning import resolve_target_version
+from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.qa_runtime import load_qa_status
@@ -604,6 +604,7 @@ def _surface_status_record(name: str, result: dict[str, Any]) -> dict[str, Any]:
 
 
 def _real_project_command_specs(project_root: Path, version: str, feature: str, *, extended: bool) -> list[tuple[str, list[str]]]:
+    runtime_version = resolve_runtime_version(project_root, "auto")
     specs: list[tuple[str, list[str]]] = [
         ("help", ["help", "--project-root", str(project_root), "--version", version, "--feature", feature, "--json"]),
         ("doctor", ["doctor", "--json", "--project-root", str(project_root)]),
@@ -628,7 +629,7 @@ def _real_project_command_specs(project_root: Path, version: str, feature: str, 
         ("gate_prototype", ["gate", "check", "prototype", "--project-root", str(project_root), "--version", version, "--json"]),
         ("gate_release", ["gate", "check", "release", "--project-root", str(project_root), "--version", version, "--json"]),
     ]
-    if extended and runtime_feature_supported("v1.3.0", runtime_version=version):
+    if extended and runtime_feature_supported("v1.3.0", runtime_version=runtime_version):
         specs.extend(
             [
                 ("doctor_verify_subagent_runtime_codex", ["doctor", "verify-subagent-runtime", "--project-root", str(project_root), "--host-runtime", "codex", "--json"]),
@@ -651,6 +652,7 @@ def _real_project_command_specs(project_root: Path, version: str, feature: str, 
 def _real_project_overlay(
     *,
     version: str,
+    runtime_version: str,
     surface_results: dict[str, dict[str, Any]],
     release_scorecard: dict[str, Any],
     acceptance_kit: dict[str, Any],
@@ -692,7 +694,7 @@ def _real_project_overlay(
                 "source": "doctor_verify_materials",
             }
         )
-    if runtime_feature_supported("v1.3.8", runtime_version=version):
+    if runtime_feature_supported("v1.3.8", runtime_version=runtime_version):
         archive_operational = all(
             _classify_validation_surface(surface_results.get(name, {})) == "operational"
             for name in ("archive_status", "archive_explain", "archive_plan")
@@ -734,7 +736,7 @@ def _real_project_overlay(
                 },
             ]
         )
-    if runtime_feature_supported("v1.3.9", runtime_version=version):
+    if runtime_feature_supported("v1.3.9", runtime_version=runtime_version):
         checks.extend(
             [
                 {
@@ -796,6 +798,7 @@ def real_project_validation(
     release_summary = summarize_release_scorecard(release_scorecard)
     overlay = _real_project_overlay(
         version=resolved_version,
+        runtime_version=resolve_runtime_version(root, "auto"),
         surface_results={key: {"json": value.get("json") or {}, "exit_code": (value.get("record") or {}).get("exit_code", 1)} for key, value in by_name.items()},
         release_scorecard=release_scorecard,
         acceptance_kit=acceptance_kit,

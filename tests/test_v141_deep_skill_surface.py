@@ -52,6 +52,33 @@ def test_deep_run_public_entry(tmp_path: Path) -> None:
     assert payload["artifact_refs"]["loop_trace"]["json"].endswith("deep-loop-trace.json")
 
 
+def test_deep_run_should_use_runtime_capability_not_target_docs_version(tmp_path: Path) -> None:
+    legacy_docs_version = "v1.3.5"
+    seed_deep_project(tmp_path, feature="Legacy Deep Feature", docs_version=legacy_docs_version)
+
+    result = runner.invoke(
+        app,
+        [
+            "deep",
+            "run",
+            "Legacy Deep Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            legacy_docs_version,
+            "--json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "closed"
+    assert payload["version"] == legacy_docs_version
+    assert payload["artifact_refs"]["loop_trace"]["json"].startswith(
+        f"docs/beacon/{legacy_docs_version}/.machine/deep/legacy-deep-feature/"
+    )
+
+
 def test_internal_toolkits_do_not_expand_lifecycle() -> None:
     internal_toolkits = {
         "beacon-toolkit-deep-loop",
