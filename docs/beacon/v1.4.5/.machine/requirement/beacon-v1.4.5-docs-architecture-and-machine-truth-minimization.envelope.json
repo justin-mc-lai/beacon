@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.5-docs-architecture-and-machine-truth-minimization",
+  "feature_slug": "beacon-v1.4.5-docs-architecture-and-machine-truth-minimization",
+  "version": "v1.4.5",
+  "generated_at": "2026-05-12T06:25:17.635816+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+    "user_story": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-docs-architecture-and-machine-truth-minimization.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.5-docs-architecture-and-machine-truth-minimization`",
+      "Version**: `v1.4.5`",
+      "Date**: `2026-05-12`",
+      "Status**: `freeze-ready`",
+      "Track**: `docs-governance + artifact-minimization`",
+      "Scenario**: `simpler-truth-structure-with-less-duplicate-projection`",
+      " Version summary: `docs/beacon/v1.4.5/SUMMARY.md`",
+      " Friction evidence:",
+      " `.beacon/analysis/friction-intake-fit-20260512T031031Z.md`",
+      " `.beacon/debug/friction-captures/fb4969c9d300.json`",
+      " Existing version layout examples:",
+      " `docs/beacon/v1.4.3/`",
+      " `docs/beacon/v1.4.4/`",
+      "当前 Beacon docs 结构缺少强规划："
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.5-docs-architecture-and-machine-truth-minimization`",
+      "Version**: `v1.4.5`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer or docs operator,",
+      "I want** Beacon to separate `truth`, `guidance`, `delivery`, `evidence`, and `.machine` more clearly while suppressing redundant paired projections,",
+      "So that** docs stay navigable and machine truth remains minimal without losing operator closure.",
+      " AC-001 `v1.4.5` freezes a clearer docs structure contract.",
+      " AC-002 existing software truth surfaces are explicitly mapped into `truth/`.",
+      " AC-003 guidance surfaces write into `guidance/` rather than mixing with truth by default."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.5-docs-architecture-and-machine-truth-minimization`",
+      "Version**: `v1.4.5`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-DOCS45-001 | contract | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"new_docs_structure_contract_exists\"` | `v1.4.5` freezes a new docs structure contract |",
+      "| AC-002 | TC-DOCS45-002 | docs | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"software_truth_maps_into_truth_layer\"` | software truth surfaces map into `truth/` semantics |",
+      "| AC-003 | TC-DOCS45-003 | docs | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"guidance_outputs_do_not_mix_with_truth\"` | guidance outputs are routed separately from truth |",
+      "| AC-004 | TC-DOCS45-004 | contract | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"delivery_and_evidence_are_separated\"` | delivery and evidence layers are separated |",
+      "| AC-005 | TC-DOCS45-005 | regression | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"paired_human_machine_projection_not_default\"` | paired human/machine artifacts are not defaulted when semantics are duplicated |",
+      "| AC-006 | TC-DOCS45-006 | contract | `python3 -m pytest -q tests/test_v145_docs_architecture.py -k \"machine_layer_is_projection_only\"` | `.machine` is treated as a projection layer with optional human companions |"
+    ]
+  }
+}

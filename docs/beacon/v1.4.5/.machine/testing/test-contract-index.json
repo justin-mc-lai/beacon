@@ -1,0 +1,336 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.4.5",
+  "runtime_line": "v1.4.3",
+  "docs_line": "v1.4.5",
+  "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "prd": "docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "user_story": "docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "test_case": "docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "ac_matrix": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.ac-test-matrix.json",
+    "story_state": "docs/beacon/v1.4.5/.machine/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json"
+  },
+  "source_hashes": {
+    "prd": "sha256:6d32d6026d2bbf2b67a4f75085d9f1d2b096c5189651eb02f67449dfcb92315e",
+    "user_story": "sha256:bb366521521c5c86f502a40f212c146cc53879bf26115b8f31440181ec4aaf68",
+    "test_case": "sha256:5191162e1ab15170a92d1e3089e44e2096b15b41967f4a5353c5f7b2918642e2",
+    "ac_matrix": "sha256:fd34d9f926f154eb467f6b55703d346c11854f0650d26c7a98741c7cc386f45c",
+    "story_state": "sha256:370c9f2384414d1dc8eea680bcb50923ceb9c185f7f599c742fec1fbe8c99182"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-GUIDE45-001",
+        "ac_id": "AC-001",
+        "ac_theme": "guidance surface family 被正式定义且成员固定",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_family_members_are_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "guidance surface family contains `ceo-review`, `brainstorm`, `design-review`, and `deep`",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-001.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-002",
+        "ac_id": "AC-002",
+        "ac_theme": "support surfaces 的 non-truth / non-gate 边界被正式冻结",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_surfaces_are_non_truth_non_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "guidance surfaces are explicitly non-truth and non-gate",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-002.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-003",
+        "ac_id": "AC-003",
+        "ac_theme": "Beacon docs/help 中能表达通用闭环",
+        "lane": "feature_release_facing",
+        "layer": "docs",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"shared_decision_loop_is_documented\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "shared loop `define -> challenge -> freeze -> execute -> verify -> learn` is documented",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-003.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-004",
+        "ac_id": "AC-004",
+        "ac_theme": "软件开发生命周期被定义为 domain materialization",
+        "lane": "feature_release_facing",
+        "layer": "docs",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"software_lifecycle_is_materialization\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "software lifecycle is documented as one materialization of the shared loop",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-004.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-005",
+        "ac_id": "AC-005",
+        "ac_theme": "非软件行业场景可以使用 guidance family 获得 routeable 分析",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"non_software_scenarios_route_through_guidance\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "non-software scenarios can route through guidance surfaces",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-005.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-006",
+        "ac_id": "AC-006",
+        "ac_theme": "route explainability 在 guidance family 中口径一致",
+        "lane": "feature_release_facing",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"route_explainability_is_consistent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "route explainability remains consistent across guidance surfaces",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-006.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-007",
+        "ac_id": "AC-007",
+        "ac_theme": "guidance family 的 skill philosophy 被定义为策略校准优先，而不是步骤脚本优先",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"skill_philosophy_is_strategy_tool_fact_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "guidance-family skills prioritize strategy philosophy, minimum complete tools, and necessary factual grounding",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-007.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-GUIDE45-008",
+        "ac_id": "AC-008",
+        "ac_theme": "support-surface requirement 默认映射到 deterministic non-browser QA layers，除非 requirement 明确声明 UI/browser 交互语义",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"route_explainability_ac_should_not_be_classified_as_ui or qa9_generation_should_not_widen_to_functional\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "support-surface requirement semantics stay in deterministic non-browser QA mapping unless UI/browser interaction is explicit",
+        "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-008.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 8,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-GUIDE45-001",
+      "ac_id": "AC-001",
+      "ac_theme": "guidance surface family 被正式定义且成员固定",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_family_members_are_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "guidance surface family contains `ceo-review`, `brainstorm`, `design-review`, and `deep`",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-001.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-002",
+      "ac_id": "AC-002",
+      "ac_theme": "support surfaces 的 non-truth / non-gate 边界被正式冻结",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_surfaces_are_non_truth_non_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "guidance surfaces are explicitly non-truth and non-gate",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-002.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-003",
+      "ac_id": "AC-003",
+      "ac_theme": "Beacon docs/help 中能表达通用闭环",
+      "lane": "feature_release_facing",
+      "layer": "docs",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"shared_decision_loop_is_documented\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "shared loop `define -> challenge -> freeze -> execute -> verify -> learn` is documented",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-003.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-004",
+      "ac_id": "AC-004",
+      "ac_theme": "软件开发生命周期被定义为 domain materialization",
+      "lane": "feature_release_facing",
+      "layer": "docs",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"software_lifecycle_is_materialization\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "software lifecycle is documented as one materialization of the shared loop",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-004.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-005",
+      "ac_id": "AC-005",
+      "ac_theme": "非软件行业场景可以使用 guidance family 获得 routeable 分析",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"non_software_scenarios_route_through_guidance\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "non-software scenarios can route through guidance surfaces",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-005.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-006",
+      "ac_id": "AC-006",
+      "ac_theme": "route explainability 在 guidance family 中口径一致",
+      "lane": "feature_release_facing",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"route_explainability_is_consistent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "route explainability remains consistent across guidance surfaces",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-006.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-007",
+      "ac_id": "AC-007",
+      "ac_theme": "guidance family 的 skill philosophy 被定义为策略校准优先，而不是步骤脚本优先",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"skill_philosophy_is_strategy_tool_fact_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "guidance-family skills prioritize strategy philosophy, minimum complete tools, and necessary factual grounding",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-007.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-GUIDE45-008",
+      "ac_id": "AC-008",
+      "ac_theme": "support-surface requirement 默认映射到 deterministic non-browser QA layers，除非 requirement 明确声明 UI/browser 交互语义",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py -k \"route_explainability_ac_should_not_be_classified_as_ui or qa9_generation_should_not_widen_to_functional\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "support-surface requirement semantics stay in deterministic non-browser QA mapping unless UI/browser interaction is explicit",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning/{run_id}/TC-GUIDE45-008.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-GUIDE45-001"
+    ],
+    "AC-002": [
+      "TC-GUIDE45-002"
+    ],
+    "AC-003": [
+      "TC-GUIDE45-003"
+    ],
+    "AC-004": [
+      "TC-GUIDE45-004"
+    ],
+    "AC-005": [
+      "TC-GUIDE45-005"
+    ],
+    "AC-006": [
+      "TC-GUIDE45-006"
+    ],
+    "AC-007": [
+      "TC-GUIDE45-007"
+    ],
+    "AC-008": [
+      "TC-GUIDE45-008"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.4.3",
+    "docs_default_line": "v1.4.3",
+    "current_runtime_release_line": "v1.4.3",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-05-13T01:35:10.281273+00:00",
+  "index_path": "docs/beacon/v1.4.5/.machine/testing/test-contract-index.json"
+}

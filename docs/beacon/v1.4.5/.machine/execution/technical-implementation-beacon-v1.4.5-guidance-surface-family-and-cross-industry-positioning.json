@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "version": "v1.4.5",
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "version": "v1.4.5",
+    "required": true,
+    "prompt": "Implement beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md"
+    ],
+    "surface": "recovered_release_backfill",
+    "recovered_from": "release-repair"
+  },
+  "run_id": "impl-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "runner": "codex-subagents",
+  "skill": "beacon:beacon-implement",
+  "summary": "v1.4.5 contract and runtime support surfaces implemented.",
+  "changed_files": [
+    "beacon/utils/guidance_family.py",
+    "beacon/utils/docs_structure_contract.py",
+    "beacon/utils/project_skills.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/ceo_review_surface.py",
+    "beacon/utils/brainstorm.py",
+    "beacon/utils/deep_loop.py",
+    "tests/test_v145_guidance_family.py",
+    "tests/test_v145_docs_architecture.py",
+    "tests/test_v145_external_skills.py"
+  ],
+  "services": [
+    {
+      "name": "beacon",
+      "role": "runtime",
+      "changed_files": [
+        "beacon/utils/guidance_family.py",
+        "beacon/utils/docs_structure_contract.py",
+        "beacon/utils/project_skills.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/ceo_review_surface.py",
+        "beacon/utils/brainstorm.py",
+        "beacon/utils/deep_loop.py",
+        "tests/test_v145_guidance_family.py",
+        "tests/test_v145_docs_architecture.py",
+        "tests/test_v145_external_skills.py"
+      ]
+    }
+  ],
+  "db_changes": {
+    "none": true
+  },
+  "api_changes": {
+    "none": true
+  },
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "assumptions": [],
+  "simplicity_notes": [
+    "Reused existing support and project-skill surfaces instead of adding a new lifecycle stage."
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "v1.4.5 support-surface and capability contract only",
+    "allowed_paths": [
+      "beacon/utils",
+      "tests",
+      "docs/beacon/v1.4.5"
+    ]
+  },
+  "verification_signals": {
+    "has_assumptions": false
+  },
+  "artifact_updates": {
+    "prd": {
+      "required": false
+    }
+  },
+  "verification": [
+    {
+      "command": "python3 -m pytest -q tests/test_v145_guidance_family.py tests/test_v145_docs_architecture.py tests/test_v145_external_skills.py",
+      "status": "passed"
+    }
+  ]
+}

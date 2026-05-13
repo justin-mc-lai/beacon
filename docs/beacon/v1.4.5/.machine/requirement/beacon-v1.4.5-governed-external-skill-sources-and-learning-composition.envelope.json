@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+  "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+  "version": "v1.4.5",
+  "generated_at": "2026-05-12T06:25:17.637884+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+    "user_story": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.5-governed-external-skill-sources-and-learning-composition`",
+      "Version**: `v1.4.5`",
+      "Date**: `2026-05-12`",
+      "Status**: `freeze-ready`",
+      "Track**: `external-capability-governance + learning-composition`",
+      "Scenario**: `non-software-domain-capability-orchestration`",
+      " Version summary: `docs/beacon/v1.4.5/SUMMARY.md`",
+      " Friction evidence:",
+      " `.beacon/analysis/friction-intake-fit-20260512T030800Z.md`",
+      " `.beacon/debug/friction-captures/2cbbfad443f2.json`",
+      " Canonical external sample:",
+      " `oss-sync` mirror `core-skills/baoyu-skills`",
+      " Product intent:",
+      " Beacon should guide users by business outcome and result shape, not force them to predeclare implementation chain."
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.5-governed-external-skill-sources-and-learning-composition`",
+      "Version**: `v1.4.5`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon operator working on content, operations, or cross-industry tasks,",
+      "I want** Beacon to treat governed external skill sources as first-class capability inputs and learn which compositions work,",
+      "So that** I can declare business goals and result shapes without hand-specifying every intermediate skill chain.",
+      " AC-001 Beacon freezes external skill sources as first-class capability sources.",
+      " AC-002 `core-skills/baoyu-skills` is formalized as the canonical sample source for this line.",
+      " AC-003 users can declare business goals and target outputs without predeclaring the full skill chain."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.5-governed-external-skill-sources-and-learning-composition`",
+      "Version**: `v1.4.5`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-EXT45-001 | contract | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"external_sources_are_first_class_capabilities\"` | external skill sources are modeled as first-class capability sources |",
+      "| AC-002 | TC-EXT45-002 | fixture | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"baoyu_skills_is_canonical_sample\"` | `core-skills/baoyu-skills` is registered as canonical sample |",
+      "| AC-003 | TC-EXT45-003 | integration | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"business_goal_without_explicit_chain_is_supported\"` | users can declare business goals without predeclaring full chains |",
+      "| AC-004 | TC-EXT45-004 | contract | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"capability_selection_and_composition_contract_exists\"` | capability selection and composition semantics exist |",
+      "| AC-005 | TC-EXT45-005 | learning | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"success_failure_and_adoption_are_written_back\"` | success, failure, fallback, and adoption outcomes are written back |",
+      "| AC-006 | TC-EXT45-006 | learning | `python3 -m pytest -q tests/test_v145_external_skills.py -k \"task_type_to_chain_to_output_mapping_is_reusable\"` | `task-type -> skill-chain -> output-shape` mapping is defined as reusable learning truth |"
+    ]
+  }
+}

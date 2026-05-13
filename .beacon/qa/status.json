@@ -1,32 +1,30 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-11T19:24:13.579608",
+  "timestamp": "2026-05-13T09:39:12.807937",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.4.3",
-  "run_id": "run-20260511T192413577986",
-  "spec_fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951",
+  "version": "v1.4.5",
+  "run_id": "run-20260513T093912807309",
+  "spec_fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6",
   "status": "passed",
   "selected_layers": [
-    "contract",
-    "integration",
-    "regression"
+    "unit"
   ],
   "execution": {
-    "run_id": "run-20260511T192413577986",
-    "version": "v1.4.3",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260511T192413577986",
+    "run_id": "run-20260513T093912807309",
+    "version": "v1.4.5",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260513T093912807309",
     "spec_fingerprint": {
-      "fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951",
-      "version": "v1.4.3",
-      "generated_at": "2026-05-11T11:24:22.599053+00:00"
+      "fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6",
+      "version": "v1.4.5",
+      "generated_at": "2026-05-13T01:39:57.694630+00:00"
     },
     "layers": [
       {
-        "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "unit",
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 1,
+        "assertion_count": 4,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -35,92 +33,38 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "cb6f2ed46d253e63b6bae89b66828f96b31840231213d4ec7ca8e136fd1bb929",
-        "started_at": "2026-05-11T19:24:13.585192",
-        "ended_at": "2026-05-11T19:24:14.107689",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/contract/junit.xml",
+        "execution_fingerprint": "e730f623fed2e0744c657d6256c3ebd53c148ab01c5e8227751dcb529245d1a8",
+        "started_at": "2026-05-13T09:39:12.808270",
+        "ended_at": "2026-05-13T09:39:17.983888",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/unit/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/contract/result.json"
-        ]
-      },
-      {
-        "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "1f60f8bb1220b6111f51078760fc5047532980005d31e1b6ccce3c41f010df96",
-        "started_at": "2026-05-11T19:24:14.119532",
-        "ended_at": "2026-05-11T19:24:14.445924",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/integration/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/integration/result.json"
-        ]
-      },
-      {
-        "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "66d73888c9bb9901547ddd69e0dfea3e68cac152a0be9adb0a60a07edf9e2432",
-        "started_at": "2026-05-11T19:24:14.450110",
-        "ended_at": "2026-05-11T19:24:15.087710",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/regression/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
-      "evidence_generated": 13,
-      "entry_count": 13,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+      "evidence_generated": 8,
+      "entry_count": 8,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260511T192413577986/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260511T192413577986/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260511T192413577986/summary.json",
+      ".beacon/evidence/auto-test/run-20260513T093912807309/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260513T093912807309/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260513T093912807309/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 3,
+      "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -129,11 +73,9 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "contract",
-      "integration",
-      "regression"
+      "unit"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -146,46 +88,46 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 13,
-      "passed": 13,
+      "cases_total": 8,
+      "passed": 8,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 13,
-      "auto_cases_executed": 13,
+      "auto_cases_total": 8,
+      "auto_cases_executed": 8,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-US001-001",
+        "tc_id": "TC-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-US001-001",
+        "source_tc_id": "TC-001",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us001-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
         ],
-        "execution_fingerprint": "a83141e6c64b5c7f4513ab6ea5c5f32f6d76e7eadb66bc8258db322cfb4e889b",
-        "started_at": "2026-05-11T19:24:15.091258",
-        "ended_at": "2026-05-11T19:24:15.606241",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
+        "execution_fingerprint": "ac27452e00453bfe3b39148fba52a19d2da41de6660f3f7fa27013a5bb36c671",
+        "started_at": "2026-05-13T09:39:17.987468",
+        "ended_at": "2026-05-13T09:39:22.712331",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -198,32 +140,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US002-001",
+        "tc_id": "TC-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-US002-001",
+        "source_tc_id": "TC-002",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"scope_judgment_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us002-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
         ],
-        "execution_fingerprint": "7bcb6db28194119f07e0da8362ca50d09268ff55dd0e8028c84afbbaec54db65",
-        "started_at": "2026-05-11T19:24:15.607293",
-        "ended_at": "2026-05-11T19:24:16.091498",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
+        "execution_fingerprint": "fb04d508376fe26746165b62c68fd2af2c02502d4884e8dbcb9409ad5c305472",
+        "started_at": "2026-05-13T09:39:22.713058",
+        "ended_at": "2026-05-13T09:39:27.319746",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -236,32 +178,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US003-001",
+        "tc_id": "TC-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-US003-001",
+        "source_tc_id": "TC-003",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_ceo_review_surface.py -k \"routes_back_to_truth_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us003-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
         ],
-        "execution_fingerprint": "e44a7dc2a304883c66e8cafbded460c23359a316d4b680cbeef47be9f18479b9",
-        "started_at": "2026-05-11T19:24:16.092786",
-        "ended_at": "2026-05-11T19:24:16.575047",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
+        "execution_fingerprint": "0f891f85f40eaa75c4b7095e06541e6e45737e8d0da5d36eca3345d5a04a4e7f",
+        "started_at": "2026-05-13T09:39:27.320617",
+        "ended_at": "2026-05-13T09:39:31.886227",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -274,32 +216,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US004-001",
+        "tc_id": "TC-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-US004-001",
+        "source_tc_id": "TC-004",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_design_review_surface.py -k \"surface_exists_and_is_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us004-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
         ],
-        "execution_fingerprint": "a8e9c2861c63eba4e6f37b4e0f3d0ace085de0537238190ad3c80ee99c11b17a",
-        "started_at": "2026-05-11T19:24:16.575991",
-        "ended_at": "2026-05-11T19:24:17.187141",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
+        "execution_fingerprint": "8565b263e1968d0d01f48de17d462a865fe9ddf08ead51254d49a72397d5b75a",
+        "started_at": "2026-05-13T09:39:31.887771",
+        "ended_at": "2026-05-13T09:39:36.718594",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -312,32 +254,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US005-001",
+        "tc_id": "TC-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-US005-001",
+        "source_tc_id": "TC-005",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us005-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
         ],
-        "execution_fingerprint": "c416dc9c54871645f2c844aca0d96da20d340578e54e62781b3e0ade30ae1974",
-        "started_at": "2026-05-11T19:24:17.188206",
-        "ended_at": "2026-05-11T19:24:17.476951",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
+        "execution_fingerprint": "ec108d6f2f70b76991acd99218062e4931c1246afc7b31045a023f9bf90ca3f3",
+        "started_at": "2026-05-13T09:39:36.719891",
+        "ended_at": "2026-05-13T09:39:41.695541",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -350,32 +292,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US006-001",
+        "tc_id": "TC-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-US006-001",
+        "source_tc_id": "TC-006",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"design_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us006-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
         ],
-        "execution_fingerprint": "f4f42cf6025b6d91d608363e1eefe5a53f2e03df47f1ef137a4a8f58ce513230",
-        "started_at": "2026-05-11T19:24:17.477994",
-        "ended_at": "2026-05-11T19:24:17.782464",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
+        "execution_fingerprint": "ceaad74ad48e99be6dbc712d1f9d5cbf3ffeeab0732fae281f6b3fcb0707f90b",
+        "started_at": "2026-05-13T09:39:41.696339",
+        "ended_at": "2026-05-13T09:39:46.362364",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -388,32 +330,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US007-001",
+        "tc_id": "TC-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-US007-001",
+        "source_tc_id": "TC-007",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"learn_surface_exists_and_is_visible\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us007-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
         ],
-        "execution_fingerprint": "8d619e7aeb5b8e334da03ec1fc879b265af024b88d53b12a8207e0ed7954356d",
-        "started_at": "2026-05-11T19:24:17.783276",
-        "ended_at": "2026-05-11T19:24:18.664618",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
+        "execution_fingerprint": "c794c3edcc178188722609dd02bc1508970f8c519e0de61e58dd184edf529da0",
+        "started_at": "2026-05-13T09:39:46.363241",
+        "ended_at": "2026-05-13T09:39:51.648650",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -426,222 +368,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-US008-001",
+        "tc_id": "TC-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-US008-001",
+        "source_tc_id": "TC-008",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "unit",
+        "layer": "unit",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us008-001/__RUN_ID__.json",
+        "assertion_count": 4,
+        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T093912807309",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
         ],
-        "execution_fingerprint": "216070130c00313cdf7f4f34fc7927001620a364323df38609cea7f2acb108fc",
-        "started_at": "2026-05-11T19:24:18.665605",
-        "ended_at": "2026-05-11T19:24:19.074248",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US009-001",
-        "ac_id": "AC-009",
-        "source_tc_id": "TC-US009-001",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"learn_subfeature_acceptance_passed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us009-001/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
-        ],
-        "execution_fingerprint": "55f2dc89c24e175b24ca74a420501897ee32b4e061679d3b3955e7eda492b457",
-        "started_at": "2026-05-11T19:24:19.075864",
-        "ended_at": "2026-05-11T19:24:19.504165",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US010-001",
-        "ac_id": "AC-010",
-        "source_tc_id": "TC-US010-001",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_learn_surface.py -k \"stale_and_conflicting_learning_downgraded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us010-001/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
-        ],
-        "execution_fingerprint": "a62f37ebd50d6064485d05b91bdc6e2369061accc8aa4efc18f8c1bbd1da963a",
-        "started_at": "2026-05-11T19:24:19.504966",
-        "ended_at": "2026-05-11T19:24:20.124567",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US011-001",
-        "ac_id": "AC-011",
-        "source_tc_id": "TC-US011-001",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_route_explainability.py -k \"support_surfaces_explain_route_and_learning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us011-001/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
-        ],
-        "execution_fingerprint": "795c19636374b1827700b4097508690d0beb73c6b2b0b73c6e24870e49b4d6b0",
-        "started_at": "2026-05-11T19:24:20.125925",
-        "ended_at": "2026-05-11T19:24:20.785559",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US012-001",
-        "ac_id": "AC-012",
-        "source_tc_id": "TC-US012-001",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"version_line_preserves_boundary_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us012-001/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
-        ],
-        "execution_fingerprint": "88698272f97c6effd2192994d8692a4d6d9c08d5075329874f81062a2c4fa90a",
-        "started_at": "2026-05-11T19:24:20.786372",
-        "ended_at": "2026-05-11T19:24:21.107531",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-US013-001",
-        "ac_id": "AC-013",
-        "source_tc_id": "TC-US013-001",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v143_umbrella_acceptance_contract.py -k \"umbrella_subfeatures_are_qa_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260511T192413577986",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/tc-us013-001/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
-        ],
-        "execution_fingerprint": "01c46f2e0ba928cef15a3dca78fef1e7a3550db335f75af4198b400f720235e2",
-        "started_at": "2026-05-11T19:24:21.111340",
-        "ended_at": "2026-05-11T19:24:21.541362",
-        "junit_path": ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
+        "execution_fingerprint": "84bff6eb574a57408371d2a9c56b338cd4c230e81d61b8678f321fabf2d6c73d",
+        "started_at": "2026-05-13T09:39:51.649707",
+        "ended_at": "2026-05-13T09:39:56.615444",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -657,165 +409,109 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-11T11:24:22.341780+00:00",
-  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "updated_at": "2026-05-13T01:39:57.408756+00:00",
+  "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+  "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "ceo-surface",
-      "text": "Beacon exposes `beacon-ceo-review` as a support/review surface for version-level or major-feature requirement challenge.",
+      "theme": "general",
+      "text": "Beacon freezes external skill sources as first-class capability sources.",
       "tc_ids": [
-        "TC-US001-001"
+        "TC-001"
       ],
       "qa_types": [
-        "contract"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-002",
-      "theme": "scope-judgment",
-      "text": "`beacon-ceo-review` can explicitly produce `expand / hold / reduce / reframe` outputs.",
+      "theme": "general",
+      "text": "`core-skills/baoyu-skills` is formalized as the canonical sample source for this line.",
       "tc_ids": [
-        "TC-US002-001"
+        "TC-002"
       ],
       "qa_types": [
-        "contract"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-003",
-      "theme": "truth-routing",
-      "text": "`ceo-review` cannot freeze truth directly and must route accepted changes through existing truth surfaces.",
+      "theme": "general",
+      "text": "users can declare business goals and target outputs without predeclaring the full skill chain.",
       "tc_ids": [
-        "TC-US003-001"
+        "TC-003"
       ],
       "qa_types": [
-        "regression"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-004",
-      "theme": "design-surface",
-      "text": "Beacon exposes `beacon-design-review` as a support/review surface for UI/UX decision challenge.",
+      "theme": "general",
+      "text": "Beacon defines capability selection and composition semantics.",
       "tc_ids": [
-        "TC-US004-001"
+        "TC-004"
       ],
       "qa_types": [
-        "contract"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-005",
-      "theme": "design-boundary",
-      "text": "`design-review` owns decision challenge while `prototype` remains formal freeze/handoff when triggered.",
+      "theme": "general",
+      "text": "success, failure, fallback, and human adoption outcomes are written back as learning evidence.",
       "tc_ids": [
-        "TC-US005-001"
+        "TC-005"
       ],
       "qa_types": [
-        "integration"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-006",
-      "theme": "prototype-de-overloading",
-      "text": "Beacon explicitly de-overloads `prototype` so it does not default into product strategy or design-final-approval semantics.",
+      "theme": "general",
+      "text": "Beacon defines `task-type -> skill-chain -> output-shape` as a reusable learning mapping.",
       "tc_ids": [
-        "TC-US006-001"
+        "TC-006"
       ],
       "qa_types": [
-        "regression"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-007",
-      "theme": "learn-surface",
-      "text": "Beacon exposes `beacon-learn` as a visible learning governance surface.",
+      "theme": "general",
+      "text": "external skill governance preserves existing truth, guidance, and runtime boundaries.",
       "tc_ids": [
-        "TC-US007-001"
+        "TC-007"
       ],
       "qa_types": [
-        "contract"
+        "unit"
       ]
     },
     {
       "ac_id": "AC-008",
-      "theme": "learning-injection",
-      "text": "Relevant learning can be injected by default into core decision surfaces using governed progressive disclosure.",
-      "tc_ids": [
-        "TC-US008-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "theme": "learning-visibility",
-      "text": "Operators can see which learning influenced the current decision, route, or warning and whether it is stale or conflicting.",
-      "tc_ids": [
-        "TC-US009-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-010",
-      "theme": "stale-conflict",
-      "text": "Stale or conflicting learning is downgraded, flagged, or pruned instead of silently reused.",
-      "tc_ids": [
-        "TC-US010-001"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "theme": "route-explainability",
-      "text": "`help / status / ask / deep` explain route recommendation, evidence gaps, and learning influence in human-readable form.",
-      "tc_ids": [
-        "TC-US011-001"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "theme": "boundary-safety",
-      "text": "`v1.4.3` preserves minimal public surface, truth-first, and gate-first discipline while adding the new review/learning surfaces.",
-      "tc_ids": [
-        "TC-US012-001"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
       "theme": "general",
-      "text": "`v1.4.3` splits the umbrella line into 3 freeze-ready subfeatures whose implementation is QA-accepted and can be aggregated as umbrella acceptance evidence.",
+      "text": "external skill admission preserves strategy philosophy, minimum complete tools, and necessary factual grounding instead of collapsing into rigid step scripts.",
       "tc_ids": [
-        "TC-US013-001"
+        "TC-008"
       ],
       "qa_types": [
-        "contract"
+        "unit"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "previous_feature_qa_not_passed"
+      "spec_fingerprint_changed",
+      "source_matrix_changed"
     ],
     "targeted_layers": [
-      "contract",
-      "integration",
-      "regression"
+      "unit"
     ],
     "targeted_ac_ids": [
       "AC-001",
@@ -825,27 +521,17 @@
       "AC-005",
       "AC-006",
       "AC-007",
-      "AC-008",
-      "AC-009",
-      "AC-010",
-      "AC-011",
-      "AC-012",
-      "AC-013"
+      "AC-008"
     ],
     "targeted_tc_ids": [
-      "TC-US001-001",
-      "TC-US002-001",
-      "TC-US003-001",
-      "TC-US004-001",
-      "TC-US005-001",
-      "TC-US006-001",
-      "TC-US007-001",
-      "TC-US008-001",
-      "TC-US009-001",
-      "TC-US010-001",
-      "TC-US011-001",
-      "TC-US012-001",
-      "TC-US013-001"
+      "TC-001",
+      "TC-002",
+      "TC-003",
+      "TC-004",
+      "TC-005",
+      "TC-006",
+      "TC-007",
+      "TC-008"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -855,308 +541,193 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 13
+    "verification_item_count": 8
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-US001-001",
-      "source_tc_id": "TC-US001-001",
+      "tc_id": "TC-001",
+      "source_tc_id": "TC-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-US002-001",
-      "source_tc_id": "TC-US002-001",
+      "tc_id": "TC-002",
+      "source_tc_id": "TC-002",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-002",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-US003-001",
-      "source_tc_id": "TC-US003-001",
+      "tc_id": "TC-003",
+      "source_tc_id": "TC-003",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-003",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-US004-001",
-      "source_tc_id": "TC-US004-001",
+      "tc_id": "TC-004",
+      "source_tc_id": "TC-004",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-004",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-US005-001",
-      "source_tc_id": "TC-US005-001",
+      "tc_id": "TC-005",
+      "source_tc_id": "TC-005",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-005",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-US006-001",
-      "source_tc_id": "TC-US006-001",
+      "tc_id": "TC-006",
+      "source_tc_id": "TC-006",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-006",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-US007-001",
-      "source_tc_id": "TC-US007-001",
+      "tc_id": "TC-007",
+      "source_tc_id": "TC-007",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-007",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-US008-001",
-      "source_tc_id": "TC-US008-001",
+      "tc_id": "TC-008",
+      "source_tc_id": "TC-008",
       "scenario_id": "",
       "scenario_family": "",
-      "test_item_id": "TEST-001",
+      "test_item_id": "TEST-008",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "unit",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "tc_id": "TC-US009-001",
-      "source_tc_id": "TC-US009-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-010",
-      "tc_id": "TC-US010-001",
-      "source_tc_id": "TC-US010-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "tc_id": "TC-US011-001",
-      "source_tc_id": "TC-US011-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "tc_id": "TC-US012-001",
-      "source_tc_id": "TC-US012-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
-      "tc_id": "TC-US013-001",
-      "source_tc_id": "TC-US013-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
       ]
     }
   ],
@@ -1172,6 +743,27 @@
   },
   "project_orchestration": {},
   "current_session_id": "",
+  "design_truth_verdict": {
+    "schema_version": "1.0",
+    "status": "passed",
+    "blocked": false,
+    "reason_codes": [],
+    "source_surface": "implement-to-qa-handoff",
+    "verification_surface": "qa",
+    "refs": {
+      "style_preset": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/style-preset.json",
+      "design_lint_rules": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/design-lint-rules.json"
+    },
+    "expected": {
+      "canonical_design_preset": "operator-console",
+      "preset_source": "vercel"
+    },
+    "actual": {
+      "canonical_design_preset": "operator-console",
+      "preset_source": "vercel"
+    },
+    "findings": []
+  },
   "requirement_completeness_gate": {
     "schema_version": "1.0",
     "enabled": true,
@@ -1179,17 +771,17 @@
     "blocked": false,
     "reason_code": "",
     "target_stage": "qa",
-    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "version": "v1.4.3",
+    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "version": "v1.4.5",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.re-freeze-transaction.json"
     },
     "unresolved_gap_count": 0,
     "high_risk_unresolved_categories": [],
@@ -1232,13 +824,13 @@
         "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.re-freeze-transaction.json"
           }
         }
       },
@@ -1320,9 +912,9 @@
     },
     "completeness": {
       "schema_version": "1.0",
-      "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "version": "v1.4.3",
+      "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "version": "v1.4.5",
       "revision_id": "R1",
       "completeness_verdict": "pass",
       "unresolved_gap_count": 0,
@@ -1354,12 +946,12 @@
         "implement_ready": true,
         "release_ready": true
       },
-      "generated_at": "2026-05-11T11:22:07.429412+00:00"
+      "generated_at": "2026-05-12T06:25:17.638798+00:00"
     },
     "freeze_contract": {
       "schema_version": "1.0",
-      "version": "v1.4.3",
-      "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "version": "v1.4.5",
+      "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "revision_id": "R1",
       "status": "freeze-ready",
       "human_supplement_contract": {
@@ -1393,20 +985,20 @@
       "freeze_verdict": "pass",
       "implementation_verdict": "pending",
       "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-11T11:22:07.430622+00:00"
+      "updated_at": "2026-05-12T06:25:17.638845+00:00"
     }
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.3/.machine/requirement/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "run_id": "run-20260511T192413577986",
-    "generated_at": "2026-05-11T11:24:22.591996+00:00",
+    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "run_id": "run-20260513T093912807309",
+    "generated_at": "2026-05-13T01:39:57.688085+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 13,
+    "scenario_count": 8,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1426,11 +1018,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-US001-001",
-      "tc_id": "TC-US001-001",
-      "source_tc_id": "TC-US001-001",
+      "scenario_id": "TC-001",
+      "tc_id": "TC-001",
+      "source_tc_id": "TC-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1454,19 +1046,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US001-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US002-001",
-      "tc_id": "TC-US002-001",
-      "source_tc_id": "TC-US002-001",
+      "scenario_id": "TC-002",
+      "tc_id": "TC-002",
+      "source_tc_id": "TC-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1490,19 +1082,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US002-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US003-001",
-      "tc_id": "TC-US003-001",
-      "source_tc_id": "TC-US003-001",
+      "scenario_id": "TC-003",
+      "tc_id": "TC-003",
+      "source_tc_id": "TC-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1526,19 +1118,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US003-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US004-001",
-      "tc_id": "TC-US004-001",
-      "source_tc_id": "TC-US004-001",
+      "scenario_id": "TC-004",
+      "tc_id": "TC-004",
+      "source_tc_id": "TC-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1562,19 +1154,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US004-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US005-001",
-      "tc_id": "TC-US005-001",
-      "source_tc_id": "TC-US005-001",
+      "scenario_id": "TC-005",
+      "tc_id": "TC-005",
+      "source_tc_id": "TC-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1598,19 +1190,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US005-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US006-001",
-      "tc_id": "TC-US006-001",
-      "source_tc_id": "TC-US006-001",
+      "scenario_id": "TC-006",
+      "tc_id": "TC-006",
+      "source_tc_id": "TC-006",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1634,19 +1226,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US006-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US007-001",
-      "tc_id": "TC-US007-001",
-      "source_tc_id": "TC-US007-001",
+      "scenario_id": "TC-007",
+      "tc_id": "TC-007",
+      "source_tc_id": "TC-007",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1670,19 +1262,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US007-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-US008-001",
-      "tc_id": "TC-US008-001",
-      "source_tc_id": "TC-US008-001",
+      "scenario_id": "TC-008",
+      "tc_id": "TC-008",
+      "source_tc_id": "TC-008",
       "ac_id": "AC-008",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1706,205 +1298,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US008-001/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-US009-001",
-      "tc_id": "TC-US009-001",
-      "source_tc_id": "TC-US009-001",
-      "ac_id": "AC-009",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US009-001/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-US010-001",
-      "tc_id": "TC-US010-001",
-      "source_tc_id": "TC-US010-001",
-      "ac_id": "AC-010",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US010-001/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-US011-001",
-      "tc_id": "TC-US011-001",
-      "source_tc_id": "TC-US011-001",
-      "ac_id": "AC-011",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US011-001/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-US012-001",
-      "tc_id": "TC-US012-001",
-      "source_tc_id": "TC-US012-001",
-      "ac_id": "AC-012",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US012-001/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-US013-001",
-      "tc_id": "TC-US013-001",
-      "source_tc_id": "TC-US013-001",
-      "ac_id": "AC-013",
-      "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260511T192413577986/qa9-tc/TC-US013-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "run_id": "run-20260511T192413577986",
-    "ac_total": 13,
-    "ac_accepted": 13,
-    "scenario_total": 13,
-    "scenario_passed": 13,
+    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "run_id": "run-20260513T093912807309",
+    "ac_total": 8,
+    "ac_accepted": 8,
+    "scenario_total": 8,
+    "scenario_passed": 8,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1914,8 +1326,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 13,
-      "executed_scenarios": 13,
+      "required_scenarios": 8,
+      "executed_scenarios": 8,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1942,25 +1354,46 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 13,
+      "verification_item_count": 8,
       "targeted_scope_only": true
+    },
+    "design_truth_verdict": {
+      "schema_version": "1.0",
+      "status": "passed",
+      "blocked": false,
+      "reason_codes": [],
+      "source_surface": "implement-to-qa-handoff",
+      "verification_surface": "qa",
+      "refs": {
+        "style_preset": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/style-preset.json",
+        "design_lint_rules": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/design-lint-rules.json"
+      },
+      "expected": {
+        "canonical_design_preset": "operator-console",
+        "preset_source": "vercel"
+      },
+      "actual": {
+        "canonical_design_preset": "operator-console",
+        "preset_source": "vercel"
+      },
+      "findings": []
     },
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.3 --feature \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.5 --feature \"beacon-v1.4.5-governed-external-skill-sources-and-learning-composition\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.3 --feature \"beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.5 --feature \"beacon-v1.4.5-governed-external-skill-sources-and-learning-composition\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "version": "v1.4.3",
+    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "version": "v1.4.5",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -1979,15 +1412,17 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.5",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
-      "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+      "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
+      "docs/beacon/v1.4.5/.machine/execution/implementation-summary-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json",
+      "docs/beacon/v1.4.5/.machine/execution/technical-implementation-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2000,8 +1435,8 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
-    "version": "v1.4.3",
+    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+    "version": "v1.4.5",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -2020,15 +1455,17 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.3",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.5",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/matrix.qa9.json",
-      "docs/beacon/v1.4.3/.machine/qa/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+      "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
+      "docs/beacon/v1.4.5/.machine/execution/implementation-summary-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json",
+      "docs/beacon/v1.4.5/.machine/execution/technical-implementation-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2039,5 +1476,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "568fa1dcbc37b056c4dcaf24cc2c52c085fe48d83416a1fc302590bc514d9951"
+  "current_spec_fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6"
 }

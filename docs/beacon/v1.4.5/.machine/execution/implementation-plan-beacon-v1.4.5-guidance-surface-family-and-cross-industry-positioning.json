@@ -1,0 +1,747 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning-r3",
+  "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "version": "v1.4.5",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:ceca681d5f40834c26ba68f7db28a0888641faae504332b7fa3b3b2e8a8a415e",
+  "plan_hash": "sha256:e248c9a43087c3145a46c0e6537b4a5952ee684bfe511474a6359db7e9babcb9",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "prd": "docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "test_case": "docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "revision_delta": "docs/beacon/v1.4.5/.machine/execution/revision-delta-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+    "ac_matrix": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.qa9-matrix.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.5/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.5",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-05-13T01:34:46.356624+00:00",
+    "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "prd_ref": "docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "user_story_ref": "docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Beacon 必须冻结 guidance surface family",
+      "description": "Beacon 必须把以下 surfaces 正式定义为 support/guidance family： `ceo-review` `brainstorm` `design-review` `deep`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-GUIDE45-001",
+        "TC-GUIDE45-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-GUIDE45-001",
+        "TC-GUIDE45-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223289+00:00",
+      "completed_at": "2026-05-13T01:37:36.223612+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Beacon 必须冻结 guidance surface family 的统一边界",
+      "description": "每个 guidance surface 必须统一遵守： not truth source not gate source not new lifecycle stage must route back to `change` / `prd` / `user-story` / `test-case` / `implement`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-005",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-GUIDE45-006",
+        "TC-GUIDE45-005",
+        "TC-GUIDE45-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-GUIDE45-005",
+        "TC-GUIDE45-006",
+        "TC-GUIDE45-007"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223623+00:00",
+      "completed_at": "2026-05-13T01:37:36.223625+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Beacon 必须表达通用闭环",
+      "description": "Beacon 必须在 docs/help 中正式表达通用闭环： `define -> challenge -> freeze -> execute -> verify -> learn`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-GUIDE45-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-GUIDE45-003"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223631+00:00",
+      "completed_at": "2026-05-13T01:37:36.223632+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 软件开发生命周期必须被定义为 domain materialization",
+      "description": "当前软件生命周期必须被解释为 Beacon 通用闭环的一种 domain-specific projection，而不是 Beacon 唯一有效形态。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-GUIDE45-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-GUIDE45-004"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223640+00:00",
+      "completed_at": "2026-05-13T01:37:36.223642+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Beacon 必须允许非软件行业场景使用 guidance surface",
+      "description": "Beacon 必须支持把内容生产、运营分析、行业策略等场景映射到 guidance family，而不要求用户先声明编码型中间实现。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-GUIDE45-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-GUIDE45-008"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223646+00:00",
+      "completed_at": "2026-05-13T01:37:36.223648+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 guidance surface 的 route explainability 必须统一",
+      "description": "`help / status / deep / brainstorm / ceo-review` 至少要能解释： 当前处于闭环哪一层 还缺什么证据 下一步应回到哪个 truth 或 delivery surface",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223652+00:00",
+      "completed_at": "2026-05-13T01:37:36.223653+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Beacon 必须冻结 guidance-oriented skill philosophy",
+      "description": "Beacon 必须明确 guidance family 的 skill 设计默认偏向： strategy philosophy calibration minimum complete toolset necessary factual grounding 并避免把 skill 写成对强模型的过度步骤约束。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223657+00:00",
+      "completed_at": "2026-05-13T01:37:36.223658+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 support-surface requirement 默认不得被自动抬升为 browser QA",
+      "description": "当 requirement 文本描述的是： guidance surface family support surface non-software routing route explainability 这类 support-surface / decision-surface 语义时，Beacon 的默认 QA9 自动映射必须优先落到 deterministic non-browser layers（如 `unit` / `contract`），而不是因为宽泛文本命中把它们自动抬升为 `functional` / browser execution。 只有当 requirement 明确声明了 UI、browser、page、form、click、screen 等交互语义时，才允许默认映射到 browser-oriented QA 类型。 ## 6. 验收标准 | AC ID | 说明 | | --- | --- | | AC-001 | guidance surface family 被正式定义且成员固定 | | AC-002 | support surfaces 的 non-truth / non-gate 边界被正式冻结 | | AC-003 | Beacon docs/help 中能表达通用闭环 | | AC-004 | 软件开发生命周期被定义为 domain materialization | | AC-005 | 非软件行业场景可以使用 guidance family 获得 routeable 分析 | | AC-006 | route explainability 在 guidance family 中口径一致 | | AC-007 | guidance family 的 skill philosophy 被定义为策略校准优先，而不是步骤脚本优先 | | AC-008 | support-surface requirement 默认映射到 deterministic non-browser QA layers，除非 requirement 明确声明 UI/browser 交互语义 |",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/evidence/auto-test/run-20260512T151700289759/summary.json",
+        "docs/beacon/v1.4.5/.machine/execution/implementation-plan-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+        "run:run-20260512T151700289759"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T01:37:36.223662+00:00",
+      "completed_at": "2026-05-13T01:37:36.223663+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "version": "v1.4.5",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Beacon docs/help 中能表达通用闭环",
+        "text": "Beacon expresses a shared loop: `define -> challenge -> freeze -> execute -> verify -> learn`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::beacon docs/help 中能表达通用闭环::beacon expresses a shared loop: `define -> challenge -> freeze -> execute -> verify -> learn`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "guidance family 的 skill philosophy 被定义为策略校准优先，而不是步骤脚本优先",
+        "text": "guidance-family skills prioritize strategy philosophy, minimum complete tools, and necessary factual grounding over over-specified step scripts.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::guidance family 的 skill philosophy 被定义为策略校准优先，而不是步骤脚本优先::guidance-family skills prioritize strategy philosophy, minimum complete tools, and necessary factual grounding over over-specified step scripts.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "guidance surface family 被正式定义且成员固定",
+        "text": "Beacon freezes a guidance surface family that includes `ceo-review`, `brainstorm`, `design-review`, and `deep`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::guidance surface family 被正式定义且成员固定::beacon freezes a guidance surface family that includes `ceo-review`, `brainstorm`, `design-review`, and `deep`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "route explainability 在 guidance family 中口径一致",
+        "text": "route explainability is consistent across guidance surfaces.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::route explainability 在 guidance family 中口径一致::route explainability is consistent across guidance surfaces.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "support surfaces 的 non-truth / non-gate 边界被正式冻结",
+        "text": "guidance surfaces are explicitly non-truth, non-gate, and non-stage surfaces.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::support surfaces 的 non-truth / non-gate 边界被正式冻结::guidance surfaces are explicitly non-truth, non-gate, and non-stage surfaces.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "support-surface requirement 默认映射到 deterministic non-browser QA layers，除非 requirement 明确声明 UI/browser 交互语义",
+        "text": "support-surface requirement semantics default to deterministic non-browser QA mapping unless UI/browser interaction is explicitly declared.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::support-surface requirement 默认映射到 deterministic non-browser qa layers，除非 requirement 明确声明 ui/browser 交互语义::support-surface requirement semantics default to deterministic non-browser qa mapping unless ui/browser interaction is explicitly declared.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "软件开发生命周期被定义为 domain materialization",
+        "text": "the existing software lifecycle is documented as one materialization of the shared loop.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::软件开发生命周期被定义为 domain materialization::the existing software lifecycle is documented as one materialization of the shared loop.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "非软件行业场景可以使用 guidance family 获得 routeable 分析",
+        "text": "non-software scenarios can be routed through guidance surfaces without requiring coding-first intermediate declarations.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "signature": "ac::::非软件行业场景可以使用 guidance family 获得 routeable 分析::non-software scenarios can be routed through guidance surfaces without requiring coding-first intermediate declarations.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:ceca681d5f40834c26ba68f7db28a0888641faae504332b7fa3b3b2e8a8a415e",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.4.5/.machine/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+    "generated_at": "2026-05-13T01:34:46.351940+00:00",
+    "json_ref": "docs/beacon/v1.4.5/.machine/execution/revision-delta-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+    "markdown_ref": "docs/beacon/v1.4.5/execution/revision-delta-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.5/.machine/execution/revision-delta-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.5/execution/revision-delta-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning\" --project-root . --version v1.4.5",
+    "run_command": "beacon implement team-run \"beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning\" --project . --version v1.4.5",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning\" --project . --version v1.4.5",
+    "ralph_command": "beacon implement run \"beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning\" --project . --version v1.4.5 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning\" --project . --version v1.4.5",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+    "version": "v1.4.5",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.5",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.5.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-13T01:34:46.356852+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.5-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning-R3",
+    "transaction_id": "tx-65ab8f4d6f0876e36",
+    "source_hash": "sha256:b696025b56db67837853f4afbe023b25bb66b95a4227c4c68047f17481f64168",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.5/.machine/execution/implementation-delivery-baseline-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.5/.machine/execution/git-workflow-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.5/execution/git-workflow-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.5",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "user_story": "docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+      "test_case": "docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.5-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning-R3",
+    "transaction_id": "tx-65ab8f4d6f0876e36",
+    "source_hash": "sha256:b696025b56db67837853f4afbe023b25bb66b95a4227c4c68047f17481f64168",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.5/.machine/execution/implementation-delivery-baseline-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.5/.machine/execution/implementation-delivery-baseline-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.json",
+  "generated_at": "2026-05-13T01:34:46.427208+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.5-beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning-R3",
+  "transaction_id": "tx-65ab8f4d6f0876e36",
+  "source_hash": "sha256:b696025b56db67837853f4afbe023b25bb66b95a4227c4c68047f17481f64168",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-13T01:37:36.223727+00:00"
+}

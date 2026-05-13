@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "feature_slug": "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning",
+  "version": "v1.4.5",
+  "generated_at": "2026-05-12T06:43:27.231738+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "user_story": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.5/qa/test-cases/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.5/user-story/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.5/prd/beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning`",
+      "Version**: `v1.4.5`",
+      "Date**: `2026-05-12`",
+      "Status**: `freeze-ready`",
+      "Track**: `support-surface-governance + product-positioning`",
+      "Scenario**: `cross-industry-guidance-without-mainline-expansion`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Prior version summaries:",
+      " `docs/beacon/v1.4.3/SUMMARY.md`",
+      " `docs/beacon/v1.4.4/SUMMARY.md`",
+      " Current public guidance surfaces:",
+      " `skills/beacon/beacon-brainstorm/SKILL.md`",
+      " `skills/beacon/beacon-ceo-review/SKILL.md`",
+      " `skills/beacon/beacon-design-review/SKILL.md`"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning`",
+      "Version**: `v1.4.5`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer, operator, or cross-domain project owner,",
+      "I want** Beacon to present `ceo-review`, `brainstorm`, `design-review`, and `deep` as one guidance surface family above a shared decision loop,",
+      "So that** Beacon can guide both software and non-software work without expanding the public main lifecycle.",
+      " AC-001 Beacon freezes a guidance surface family that includes `ceo-review`, `brainstorm`, `design-review`, and `deep`.",
+      " AC-002 guidance surfaces are explicitly non-truth, non-gate, and non-stage surfaces.",
+      " AC-003 Beacon expresses a shared loop: `define -> challenge -> freeze -> execute -> verify -> learn`."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning`",
+      "Version**: `v1.4.5`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-GUIDE45-001 | contract | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_family_members_are_frozen\"` | guidance surface family contains `ceo-review`, `brainstorm`, `design-review`, and `deep` |",
+      "| AC-002 | TC-GUIDE45-002 | contract | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"guidance_surfaces_are_non_truth_non_gate\"` | guidance surfaces are explicitly non-truth and non-gate |",
+      "| AC-003 | TC-GUIDE45-003 | docs | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"shared_decision_loop_is_documented\"` | shared loop `define -> challenge -> freeze -> execute -> verify -> learn` is documented |",
+      "| AC-004 | TC-GUIDE45-004 | docs | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"software_lifecycle_is_materialization\"` | software lifecycle is documented as one materialization of the shared loop |",
+      "| AC-005 | TC-GUIDE45-005 | integration | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"non_software_scenarios_route_through_guidance\"` | non-software scenarios can route through guidance surfaces |",
+      "| AC-006 | TC-GUIDE45-006 | regression | `python3 -m pytest -q tests/test_v145_guidance_family.py -k \"route_explainability_is_consistent\"` | route explainability remains consistent across guidance surfaces |"
+    ]
+  }
+}
