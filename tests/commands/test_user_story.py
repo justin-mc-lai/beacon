@@ -130,3 +130,50 @@ def test_user_story_missing_prd(temp_project):
 
     assert result.exit_code != 0
     assert "prd" in result.stdout.lower()
+
+
+def test_user_story_should_consume_research_closure_sections(temp_project):
+    docs_dir = temp_project / "docs" / "beacon" / "v1.3.6"
+    (docs_dir / "research").mkdir(parents=True, exist_ok=True)
+    (docs_dir / "research" / "test-feature.md").write_text(
+        "\n".join(
+            [
+                "# Research Closure",
+                "",
+                "## Business Flow",
+                "- 用户提交申请后，系统必须进入人工审核流程。",
+                "",
+                "## State Machine",
+                "- 状态必须支持 draft -> reviewing -> approved -> rejected。",
+                "",
+                "## Decision Priority",
+                "- 当审核失败时，必须提示错误并允许恢复重试。",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "create",
+            "test-feature",
+            "--version",
+            "v1.3.6",
+            "--project-root",
+            str(temp_project),
+        ],
+    )
+    assert result.exit_code == 0
+
+    story_json = temp_project / ".beacon" / "user-story" / "test-feature.json"
+    with open(story_json) as f:
+        data = json.load(f)
+    flat_values = []
+    for values in data["acceptance_criteria"].values():
+        if isinstance(values, list):
+            flat_values.extend(values)
+    assert any("人工审核流程" in item for item in flat_values)
+    assert any("draft -> reviewing -> approved -> rejected" in item for item in flat_values)
+    assert any("恢复重试" in item for item in flat_values)

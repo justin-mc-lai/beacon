@@ -170,3 +170,45 @@ def test_test_case_missing_user_story(temp_project):
 
     assert result.exit_code != 0
     assert "user story" in result.stdout.lower() or "user-story" in result.stdout.lower()
+
+
+def test_test_case_should_consume_research_closure_sections(temp_project):
+    docs_dir = temp_project / "docs" / "beacon" / "v1.3.6"
+    (docs_dir / "research").mkdir(parents=True, exist_ok=True)
+    (docs_dir / "research" / "test-feature.md").write_text(
+        "\n".join(
+            [
+                "# Research Closure",
+                "",
+                "## Business Flow",
+                "- 用户提交申请后，系统必须进入人工审核流程。",
+                "",
+                "## State Machine",
+                "- 状态必须支持 draft -> reviewing -> approved -> rejected。",
+                "",
+                "## Decision Priority",
+                "- 当审核失败时，必须提示错误并允许恢复重试。",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    result = runner.invoke(
+        app,
+        [
+            "create",
+            "test-feature",
+            "--version",
+            "v1.3.6",
+            "--project-root",
+            str(temp_project),
+        ],
+    )
+    assert result.exit_code == 0
+
+    matrix_json = temp_project / "docs" / "beacon" / "v1.3.6" / ".machine" / "qa" / "test-feature.ac-test-matrix.json"
+    with open(matrix_json) as f:
+        payload = json.load(f)
+    sources = [str(item.get("source") or "") for item in payload.get("entries", [])]
+    assert any("research:" in source for source in sources)

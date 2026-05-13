@@ -35,6 +35,33 @@ def _coerce_story_list(value) -> list[str]:
     return []
 
 
+def _merge_story_acceptance(base_story: dict, derived_story: dict) -> dict:
+    merged = dict(base_story)
+    merged_criteria = {
+        key: _coerce_story_list((base_story.get("acceptance_criteria") or {}).get(key))
+        for key in (base_story.get("acceptance_criteria") or {})
+    }
+    derived_criteria = derived_story.get("acceptance_criteria") if isinstance(derived_story.get("acceptance_criteria"), dict) else {}
+    for key, current in merged_criteria.items():
+        for item in _coerce_story_list(derived_criteria.get(key)):
+            if item not in current:
+                current.append(item)
+        merged_criteria[key] = current
+    merged["acceptance_criteria"] = merged_criteria
+    if not any(merged_criteria.values()):
+        merged["acceptance_criteria"] = dict(derived_criteria)
+    if merged.get("as_a") == "user" and derived_story.get("as_a"):
+        merged["as_a"] = derived_story.get("as_a")
+    if merged.get("i_want") == f"to {str(merged.get('title') or '').lower()}" and derived_story.get("i_want"):
+        merged["i_want"] = derived_story.get("i_want")
+    if merged.get("so_that") == "I can achieve my goal" and derived_story.get("so_that"):
+        merged["so_that"] = derived_story.get("so_that")
+    merged["story_points"] = max(int(merged.get("story_points") or 0), int(derived_story.get("story_points") or 0), 3)
+    if str(derived_story.get("priority") or "").strip().lower() == "high":
+        merged["priority"] = "high"
+    return merged
+
+
 def _extract_host_story_payload() -> dict:
     payload, _ = load_host_response_json("user-story")
     if not payload:
@@ -105,16 +132,18 @@ def host_bridge(
     typer.echo(json.dumps({"story": story, "model": "beacon-user-story-host-bridge"}, ensure_ascii=False))
 
 
-def _read_requirement_truth(project_root: Path, version: str, feature: str) -> tuple[str, str, str]:
+def _read_requirement_truth(project_root: Path, version: str, feature: str) -> tuple[str, str, str, str]:
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
     user_story_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
     test_case_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{slug}.md"
+    research_path = project_root / "docs" / "beacon" / resolved_version / "research" / f"{slug}.md"
     prd_text = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
     user_story_text = user_story_path.read_text(encoding="utf-8") if user_story_path.exists() else ""
     test_case_text = test_case_path.read_text(encoding="utf-8") if test_case_path.exists() else ""
-    return user_story_text, prd_text, test_case_text
+    research_text = research_path.read_text(encoding="utf-8") if research_path.exists() else ""
+    return user_story_text, prd_text, test_case_text, research_text
 
 
 def _keyword_bucket(text: str) -> str:
@@ -145,14 +174,17 @@ def _derive_story_actor(feature: str, prd_text: str, qa_text: str) -> str:
 
 def _generate_story_from_truth(feature: str, project_root: Path, *, version: str) -> dict:
     story = generate_user_story(feature, project_root)
-    user_story_text, prd_text, qa_text = _read_requirement_truth(project_root, version, feature)
+    user_story_text, prd_text, qa_text, research_text = _read_requirement_truth(project_root, version, feature)
+    slug = feature_slug(feature)
     ac_items = build_feature_ac_items(
         user_story_content=user_story_text,
         prd_content=prd_text,
         qa_content=qa_text,
+        research_content=research_text,
         user_story_source="user-story:host-bridge",
         prd_source="prd:host-bridge",
         qa_source="qa:test-cases:host-bridge",
+        research_source=f"research:docs/beacon/{resolve_target_version(project_root, version)}/research/{slug}.md",
     )
     qa_rows = extract_qa_case_rows(qa_text, "qa:test-cases:host-bridge")
     actor = _derive_story_actor(feature, prd_text, qa_text)
@@ -292,9 +324,10 @@ def create(
         if semantic and fallback_semantic_payload:
             semantic_payload = dict(fallback_semantic_payload)
 
+    user_story_text, prd_text, qa_text, _research_text = _read_requirement_truth(project_root, resolved_version, feature)
     story = generate_user_story(feature, project_root, semantic_payload=semantic_payload)
-
-    user_story_text, prd_text, qa_text = _read_requirement_truth(project_root, resolved_version, feature)
+    truth_story = _generate_story_from_truth(feature, project_root, version=resolved_version)
+    story = _merge_story_acceptance(story, truth_story)
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     compiler = build_mode_contract(
@@ -391,8 +424,15 @@ def create(
     save_story_state(project_root, version=resolved_version, feature=feature, state=active_story)
     load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
     machine_path = machine_story_path(project_root, resolved_version, feature)
-    write_json(
-        machine_path,
+    machine_payload = {}
+    if machine_path.exists():
+        try:
+            machine_payload = json.loads(machine_path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            machine_payload = {}
+    if not isinstance(machine_payload, dict):
+        machine_payload = {}
+    machine_payload.update(
         {
             "schema_version": "1.0",
             "feature": feature,
@@ -402,8 +442,9 @@ def create(
             "semantic_payload": semantic_payload or fallback_semantic_payload or {},
             "compiler": compiler,
             "output_path": str(output_path),
-        },
+        }
     )
+    write_json(machine_path, machine_payload)
 
     legacy_story_json = project_root / ".beacon" / "user-story" / f"{slug}.json"
     write_json(

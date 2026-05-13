@@ -777,6 +777,88 @@ def _normalize_host_matrix_entries(
     return normalized
 
 
+def _ensure_minimum_ac_coverage(
+    *,
+    feature: str,
+    feature_slug: str,
+    entries: list[dict[str, Any]],
+    ac_items: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    covered = {
+        str(item.get("ac_id") or "").strip()
+        for item in entries
+        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
+    }
+    next_index = len(entries)
+    for ac in ac_items:
+        ac_id = str(ac.get("ac_id") or "").strip()
+        if not ac_id or ac_id in covered:
+            continue
+        layer = _infer_layer_from_ac(str(ac.get("text") or ""))
+        next_index += 1
+        tc_id = f"TC-{next_index:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_id,
+                "layer": layer,
+                "command": _default_command_for_layer(layer),
+                "assertion": str(ac.get("text") or _default_assertion_for_layer(layer)).strip() or _default_assertion_for_layer(layer),
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": str(ac.get("source") or "ac-coverage"),
+            }
+        )
+        covered.add(ac_id)
+    return entries
+
+
+def _ensure_deepening_coverage_entries(
+    *,
+    feature_slug: str,
+    entries: list[dict[str, Any]],
+    ac_items: list[dict[str, Any]],
+    deepening_payload: dict[str, Any],
+) -> list[dict[str, Any]]:
+    coverage_candidates = [
+        item
+        for item in (deepening_payload.get("coverage_candidates") or [])
+        if isinstance(item, dict) and str(item.get("family") or "").strip()
+    ]
+    if not coverage_candidates:
+        return entries
+
+    existing_families = {
+        str(item.get("coverage_family") or "").strip()
+        for item in entries
+        if isinstance(item, dict) and str(item.get("coverage_family") or "").strip()
+    }
+    ac_anchor = str(ac_items[0].get("ac_id") or "AC-001") if ac_items else "AC-001"
+    next_index = len(entries)
+    for candidate in coverage_candidates:
+        family = str(candidate.get("family") or "").strip()
+        if not family or family in existing_families:
+            continue
+        layer = _infer_layer_from_ac(family)
+        next_index += 1
+        tc_id = f"TC-{next_index:03d}"
+        entries.append(
+            {
+                "tc_id": tc_id,
+                "ac_id": ac_anchor,
+                "layer": layer,
+                "command": _default_command_for_layer(layer),
+                "assertion": f"coverage family {family} remains executable",
+                "evidence_path": f".beacon/evidence/test-results/{feature_slug}/{tc_id}.json",
+                "status": "pending",
+                "source": "requirement-deepening:coverage-family",
+                "coverage_family": family,
+            }
+        )
+        existing_families.add(family)
+    return entries
+
+
 def _build_story_scenario_payload(
     *,
     project_root: Path,
@@ -796,13 +878,18 @@ def _build_story_scenario_payload(
     qa_path, qa_content = _read_first_existing(
         _candidate_doc_paths(project_root, version, "qa/test-cases", feature_slug)
     )
+    research_path, research_content = _read_first_existing(
+        _candidate_doc_paths(project_root, version, "research", feature_slug)
+    )
     ac_items = build_feature_ac_items(
         user_story_content=us_content,
         prd_content=prd_content,
         qa_content=qa_content,
+        research_content=research_content,
         user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
         prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
+        research_source=f"research:{research_path}" if research_path else "research:missing",
     )
     if not ac_items:
         ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
@@ -1148,6 +1235,9 @@ def create(
     qa_path, qa_content = _read_first_existing(
         _candidate_doc_paths(project_root, resolved_version, "qa/test-cases", feature_slug)
     )
+    research_path, research_content = _read_first_existing(
+        _candidate_doc_paths(project_root, resolved_version, "research", feature_slug)
+    )
     legacy_story_path = project_root / ".beacon" / "user-story" / f"{feature_slug}.json"
     docs_story_dir = project_root / "docs" / "beacon" / resolved_version / "user-story"
     legacy_story_dir = project_root / ".beacon" / "user-story"
@@ -1159,9 +1249,11 @@ def create(
         user_story_content=us_content,
         prd_content=prd_content,
         qa_content=qa_content,
+        research_content=research_content,
         user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
         prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
+        research_source=f"research:{research_path}" if research_path else "research:missing",
     )
     if not ac_items:
         if legacy_story_path.exists():
@@ -1487,6 +1579,19 @@ def create(
                     "source": "prototype:route-closure-contract",
                 }
             )
+
+    entries = _ensure_minimum_ac_coverage(
+        feature=feature,
+        feature_slug=feature_slug,
+        entries=entries,
+        ac_items=ac_items,
+    )
+    entries = _ensure_deepening_coverage_entries(
+        feature_slug=feature_slug,
+        entries=entries,
+        ac_items=ac_items,
+        deepening_payload=deepening_payload,
+    )
 
     matrix_payload = {
         "schema_version": "1.0",
