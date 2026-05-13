@@ -5,21 +5,67 @@ description: Use when the user wants Beacon's built-in thinking sidecar to conti
 
 # Beacon Brainstorm
 
-Use this skill as a read-only Beacon thinking sidecar.
+## Overview
 
-It is not a new main lifecycle stage. The default lifecycle remains:
+Use this skill as Beacon's read-only convergence surface.
 
-```text
-prd -> user-story -> test-case -> prototype -> implement -> qa -> release
-```
+It is not a new main lifecycle stage. Its job is to challenge framing, expose gaps, and route the work back to truth or execution surfaces without silently promoting its own output into formal truth.
 
-## Use for
+## When to Use
 
-- Continuing requirement brainstorming from `docs/beacon/<version>/`.
-- Finding missing questions before editing PRD, user-story, or test-case materials.
-- Exploring project evolution ideas before promoting them into a formal Beacon change.
-- Returning `brainstorm closed` when the gap is stable and no further supplement is needed.
-- Checking implementation prompts against frozen requirement evidence before `beacon-implement`.
+- continuing requirement brainstorming from `docs/beacon/<version>/`
+- finding missing questions before editing PRD, user-story, or test-case materials
+- exploring project evolution before promoting it into a formal Beacon change
+- checking implementation prompts against frozen requirement evidence before `beacon-implement`
+
+## Boundary
+
+- not a truth source
+- not a gate source
+- not a new lifecycle stage
+- does not rewrite `prd`, `user-story`, `qa/test-cases`, `prototype`, or `.machine/`
+- if accepted scope changes, route to `beacon-change`
+
+## Workflow / Decision Loop
+
+- reduce the prompt to user outcome, evidence, and closure constraints
+- challenge framing, assumptions, route, and evidence gaps
+- decide whether the result should go back to `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-change`, or `beacon-implement`
+- stop at convergence output; do not self-promote into frozen truth
+
+## Common Rationalizations
+
+- “头暴结论已经够清楚，可以直接当正式 requirement。” -> 不允许；要回 truth surface
+- “只是补几个 acceptance 点，不用走主链。” -> 不允许；如果改承诺面，就要回 `change` / `user-story` / `test-case`
+- “brainstorm 顺手写进 `.machine` 或正式 docs 就行。” -> 不允许；只写它自己的分析面
+
+## Red Flags
+
+- 把 brainstorm 输出当成 freeze verdict
+- 还在 challenge scope，却已经试图越级进入 `implement` 或 `release`
+- requirement gap 明显存在，但输出没有给出回路由
+
+## Verification
+
+- 输出明确指向 truth、execution 或 gate surface 的下一跳
+- 对复杂 feature，会帮助生成 research / business flow / state-machine 等人类可读闭环材料
+- 不会直接把 brainstorm 结果写成正式 requirement truth
+
+## Evidence Produced
+
+- convergence analysis
+- gap list and focus areas
+- recommended route and supplement direction
+
+## State Updated
+
+- brainstorm artifact only
+- optional guidance/read model projection
+
+## Gate Impact
+
+- no direct gate verdict
+- may block execution by routing back to `change`, `user-story`, or `test-case` when drift or gaps are found
 
 ## Thinking Protocol
 
@@ -71,13 +117,6 @@ Legacy aliases:
 - `frozen-truth-delta` -> `implementation-readiness`
 - `evolution-exploration` -> `project-evolution`
 - `redundancy-pruning` -> `scope-simplification`
-
-## Boundary
-
-- Do not rewrite `docs/beacon/<version>/prd/`, `user-story/`, `qa/test-cases/`, `prototype/`, or `.machine/`.
-- Do not execute implementation.
-- If brainstorm changes frozen scope, route to `beacon-change`.
-- If brainstorm only confirms frozen scope, route back to `beacon-implement`.
 
 ## Human Closure Contract
 

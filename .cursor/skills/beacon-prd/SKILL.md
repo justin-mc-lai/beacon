@@ -5,27 +5,66 @@ description: Use when the user wants to draft, refine, clarify, or review a prod
 
 # Beacon PRD
 
-This skill routes requirement work through Beacon's `prd` surface.
+## Overview
 
-The human-facing contract is aligned to the `v1.4.5` docs line (`docs/beacon/v1.4.5/`).
-CLI compatibility may still preserve older runtime aliases, but operators and hosts should read this skill as the current `v1.4.5` decision surface.
+This skill routes requirement-definition work through Beacon's `prd` surface.
 
-## Use for
+The human-facing contract is aligned to the `v1.4.5` docs line (`docs/beacon/v1.4.5/`). `prd` defines problem, scope, goals, boundaries, and promised surface before the requirement package moves downstream.
+
+## When to Use
 
 - PRD drafting
 - requirement clarification
-- missing points / open questions
+- open questions or ambiguous promised surface
 - business ambiguity closure
 - freeze-readiness before story generation
 
-## Operator rule
+## Boundary
 
-Prefer Beacon's PRD surface first:
+- `prd` does not silently rewrite unrelated frozen truth
+- `brainstorm` may help convergence, but it does not replace `prd`
+- `prd` does not make implementation or release decisions
 
-- `beacon prd ...`
-- or `beacon prd ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh prd ...`)
+## Workflow / Decision Loop
 
-Keep the human on the `prd -> user-story -> test-case` closure path. Use brainstorm only as a read-only gap sidecar when the PRD needs deeper convergence, and route frozen changes through `beacon-change`.
+- continue in `prd` when problem, scope, goals, boundaries, or promised surface are still open
+- route to `brainstorm` only for read-only convergence when truth is still open
+- route to `change` when the request modifies frozen truth
+- require richer research, business flow, state, or semantic modeling when the feature is complexity-triggered
+
+## Common Rationalizations
+
+- “先写个模板版 PRD，后面再补真实 scope。” -> 不允许；scope 需要先收敛
+- “brainstorm 已经够清楚了，可以直接当正式承诺。” -> 不允许；正式 truth 仍需回 `prd`
+- “先把实现想法写进 PRD，省得后面再补。” -> 不允许；`prd` 不预写实现剧本
+
+## Red Flags
+
+- feature 明显需要状态机/业务流/研究闭环，却只打算靠几段文字 freeze
+- 把临时 runtime notes、goal 清单或 checkboxes 当成 requirement truth
+- 在问题定义仍不稳定时，已经试图进入 `user-story` 或 `implement`
+
+## Verification
+
+- PRD 明确覆盖问题、目标、边界和 promised surface
+- 官方术语、状态和页面名优先复用，而不是新造第二层命名
+- 复杂需求缺失 research / flow / state truth 时会被显式补料，而不是假装 freeze-ready
+
+## Evidence Produced
+
+- requirement framing
+- scope and boundary definition
+- promised surface and freeze-readiness rationale
+
+## State Updated
+
+- PRD truth package
+- requirement readiness for `user-story`
+
+## Gate Impact
+
+- unlocks `user-story` only when problem/scope/promise are stable enough
+- blocks downstream stages when requirement framing is still ambiguous
 
 ## Inputs Contract
 

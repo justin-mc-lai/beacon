@@ -5,21 +5,13 @@ description: Use when the user wants to verify a Beacon feature, inspect new fin
 
 # Beacon QA
 
+## Overview
+
 This skill routes verification work through Beacon's `qa` surface.
 
-The public command stays on the **`v1.4.5`** runtime line; docs and contracts live under `docs/beacon/v1.4.5/` unless your project pins another version.
-Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.5` docs line.
+QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
 
-`Beacon Acceptance Kit v1` is the shared QA verdict base. QA should read and project:
-
-- `skill-contract`
-- `scenario-suite`
-- `trace-scorecard`
-- `real-project-proof`
-
-Use the layered verdicts as the release-facing truth, not a single score.
-
-## Use for
+## When to Use
 
 - feature verification
 - new findings and repair handoff review
@@ -27,14 +19,53 @@ Use the layered verdicts as the release-facing truth, not a single score.
 - release confidence and QA iteration
 - shared acceptance proof chain validation
 
-## Operator rule
+## Boundary
 
-Prefer:
+- `qa` is the only public verification entry, but it does not rewrite frozen truth
+- passing one proof layer does not imply release readiness
+- browser/live-environment blockers must be recorded, not masked
 
-- `beacon qa ...`
-- optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh qa ...`
+## Workflow / Decision Loop
 
-Keep `qa-team`, learning, and auto research hidden behind the public `qa` surface unless the user explicitly asks for internals.
+- continue in `qa` when implementation evidence exists and acceptance truth is frozen
+- route back to `implement` for execution gaps
+- route to `change` for truth drift
+- route to `test-case` when coverage truth is insufficient
+- evaluate layered verdicts before handing off to `release`
+
+## Common Rationalizations
+
+- “有一层绿了，应该就算过。” -> 不允许；QA 是分层 verdict
+- “环境挡住了，就当产品失败。” -> 不允许；需显式记录 runner/admission blocker
+- “发现 acceptance 不对，直接在 QA 里改掉。” -> 不允许；truth drift 要回 `change`
+
+## Red Flags
+
+- implementation evidence 不足，却已经想做 release-ready 结论
+- coverage truth 缺口被误当成 execution failure
+- protected live surface 的 runner admission 不成立，却被记成产品 bug
+
+## Verification
+
+- layered QA proof 明确覆盖 `skill-contract / scenario-suite / trace-scorecard / real-project-proof`
+- route explainability、learning visibility、guardrail behavior 在厚 human-facing decision surface 上可验证
+- blocked/skip 情况带有明确 reason code 和 runner/evidence 说明
+
+## Evidence Produced
+
+- layered QA verdicts
+- scenario results and findings
+- release-facing proof status and repair route
+
+## State Updated
+
+- QA status and session state
+- acceptance proof/read model projections
+
+## Gate Impact
+
+- can block `release`
+- can route back to `implement`, `test-case`, or `change` depending on the failure family
 
 ## Inputs Contract
 

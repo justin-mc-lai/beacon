@@ -5,11 +5,14 @@ description: Use when Beacon should run deep analysis as a support surface for c
 
 # Beacon Deep
 
+## Overview
+
 This skill routes deep analysis work through Beacon's `deep` support surface.
 
-`deep` is not a primary lifecycle stage. It analyzes frozen requirement truth, derives routeable findings and test deltas, and writes release-facing supplement evidence. Canonical requirement changes still go through existing Beacon surfaces.
+`deep` analyzes frozen requirement truth, derives routeable findings and test deltas, and writes support evidence. It does not become a parallel truth or QA stage.
+It is not a primary lifecycle stage.
 
-## Use for
+## When to Use
 
 - high-risk trigger and low-risk skip decisions
 - state-machine, fact-source, invariant, and consistency-chain analysis
@@ -17,38 +20,42 @@ This skill routes deep analysis work through Beacon's `deep` support surface.
 - structural QA feedback review when P0/P1/P2 defects expose modeling gaps
 - release supplement evidence for deep closure, waiver, backlog, or skip decisions
 
-## Operator rule
+## Boundary
 
-Prefer:
+- not a truth source
+- not a gate source
+- not a new lifecycle stage
+- does not rewrite frozen PRD, user-story, or test-case truth directly
 
-- `beacon deep run ...`
-- optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh deep run ...`
+## Workflow / Decision Loop
 
-Keep toolkit internals hidden behind `beacon-deep` unless the user explicitly asks for implementation details.
+- analyze frozen truth and structural evidence
+- derive findings, deltas, and route decisions
+- route requirement gaps to `change/refreeze`
+- route acceptance gaps to `test-case`
+- route implementation gaps to `implement`
+- route QA evidence gaps to supplemental `qa`
+- route release risks to closure, waiver, or backlog decision
 
-## Inputs Contract
+## Common Rationalizations
 
-- `project-root`
-- `version`
-- `feature`
-- frozen `prd / user-story / test-case`
-- optional user intent snapshot
-- optional explicit skip reason
-- optional QA feedback and severity for structural reopen decisions
+- “deep 发现的问题可以直接写回 truth。” -> 不允许；只能 route
+- “这已经相当于做完 QA 了。” -> 不允许；deep 不代替验证
+- “既然是高风险分析，deep 自己可以下最终 gate verdict。” -> 不允许；只能投影回 gate 影响
 
-## Decision Protocol
+## Red Flags
 
-- Continue in `deep` only as a support analysis loop.
-- Route requirement gaps to `change/refreeze`.
-- Route acceptance gaps to `test-case`.
-- Route implementation gaps to `implement`.
-- Route QA evidence gaps to supplemental `qa`.
-- Route release risks to closure, waiver, or accepted backlog decision.
-- Do not rewrite frozen PRD, user-story, or test-case truth directly.
+- findings 没有 route target
+- 结论只停在分析文字，没有 test delta / risk / closure impact
+- `deep` 被当成新 stage，而不是 support analysis surface
 
-## Artifact Contract
+## Verification
 
-`beacon deep run` writes:
+- findings are classifiable and routeable
+- test delta and release supplement outputs are auditable
+- accepted deep conclusions still need existing truth/execution/gate surfaces to close the loop
+
+## Evidence Produced
 
 - deep analysis report
 - state machine report
@@ -58,15 +65,23 @@ Keep toolkit internals hidden behind `beacon-deep` unless the user explicitly as
 - deep closure brief
 - optional skip evidence
 
-## Backstop CLI
+## State Updated
+
+- deep transaction/read model artifacts
+
+## Gate Impact
+
+- no direct gate verdict
+- can increase or reduce gate confidence by binding findings back to `test-case`, `qa`, or `release`
+
+## Operator rule
+
+Prefer:
 
 - `beacon deep run ...`
-- `beacon deep status ...`
-- `beacon deep report ...`
-- `beacon test-case ...` for accepted test deltas
-- `beacon change ...` when frozen truth must reopen
-- `beacon qa ...` after adopted deltas require execution evidence
-- `beacon release ...` after deep closure or skip evidence is ready
+- optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh deep run ...`
+
+Keep toolkit internals hidden behind `beacon-deep` unless the user explicitly asks for implementation details.
 
 ## Examples
 
