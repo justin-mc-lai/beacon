@@ -1,6 +1,6 @@
 <!-- BEACON:AGENT_SURFACE:START -->
-<!-- BEACON:VERSION:v1.4.5 -->
-<!-- BEACON:DOCS_VERSION:v1.4.5 -->
+<!-- BEACON:VERSION:v1.4.6 -->
+<!-- BEACON:DOCS_VERSION:v1.4.6 -->
 # Beacon Trae Project Rules
 
 - Prefer project-local Beacon skills under `.trae/skills/`.
@@ -36,6 +36,9 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
+
+
 
 
 

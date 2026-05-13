@@ -2,7 +2,7 @@
 
 **Version**: v1.4.6  
 **Created**: 2026-05-13 11:30  
-**Updated**: 2026-05-13 22:24  
+**Updated**: 2026-05-14 00:00  
 **Status**: Pass
 
 ---
@@ -14,7 +14,7 @@
 - [x] Targeted QA regression passing
 - [x] Wider release reviewer regression completed
 - [x] Candidate release verdict approved
-- [ ] Runtime/default docs promotion approved
+- [x] Runtime/default docs promotion approved
 
 ## Build
 
@@ -27,15 +27,15 @@
 
 - [x] Install/sync plan confirmed for agent surfaces
 - [x] Runtime release-line candidate cutover prepared
-- [ ] Active runtime/default docs line switched
+- [x] Active runtime/default docs line switched
 
 ## Release
 
 - [x] Formal release verdict written
 - [x] `beacon release check v1.4.6` fully passing
 - [x] Release scorecard ready
-- [ ] Version truth updated if runtime promotion is approved
-- [ ] Runtime/default docs line promoted
+- [x] Version truth updated after runtime promotion approval
+- [x] Runtime/default docs line promoted
 - [x] Rollback/readiness note confirmed
 
 ## Change Documents
@@ -49,10 +49,11 @@
 ## Promotion Decision
 
 - `v1.4.6` release candidate: approved
-- runtime/default docs promotion: deferred
-- active default line remains: `v1.4.5`
+- runtime/default docs promotion: completed
+- active default line: `v1.4.6`
 
 ## Notes
 
-- `v1.4.6` release closure is complete; the remaining open item is only whether to promote package/runtime/docs default surfaces.
-- local/global CLI can be refreshed to the current editable source without changing `version-truth`.
+- `v1.4.6` release closure and runtime promotion are both complete.
+- final release QA run: `run-20260514T002632744979`
+- local/global CLI and local agent surfaces should remain aligned to `v1.4.6` until the next accepted promotion.
