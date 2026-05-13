@@ -281,5 +281,9 @@ def test_v138_implement_plan_should_propagate_diagram_truth_into_tasks(tmp_path:
     plan_path = tmp_path / payload["plan_path"]
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
     assert plan["diagram_truth"]["state_axes"] == ["relation", "sale"]
+    assert plan["source_refs"]["research_projection"].endswith(f"{SLUG}.json")
+    assert plan["research_projection"]["present"] is True
+    assert "business_flow" in (plan["research_projection"]["sections"] or {})
+    assert plan["research_projection"]["source_artifact"].endswith(f".machine/user-story/{SLUG}.json")
     assert plan["review_gates"]
     assert all(task["diagram_review_gates"] for task in plan["tasks"])

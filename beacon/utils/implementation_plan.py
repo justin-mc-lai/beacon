@@ -25,6 +25,7 @@ from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.implementation_design import extract_prd_feature_sections
 from beacon.utils.project_metadata import resolve_project_metadata_view
+from beacon.utils.requirement_parsing import load_machine_research_projection
 from beacon.utils.revision_delta import (
     load_revision_delta,
     materialize_revision_delta,
@@ -1416,6 +1417,25 @@ def _render_plan_markdown(payload: dict[str, Any]) -> str:
                 f"- qa_coverage_hints: {', '.join(diagram_truth.get('qa_coverage_hints', [])) or '-'}",
             ]
         )
+    research_projection = payload.get("research_projection") if isinstance(payload.get("research_projection"), dict) else {}
+    if research_projection:
+        lines.extend(
+            [
+                "",
+                "## Research Projection",
+                f"- present: `{bool(research_projection.get('present', False))}`",
+                f"- source: `{research_projection.get('source', '')}`",
+                f"- source_artifact: `{research_projection.get('source_artifact', '')}`",
+                f"- section_count: `{research_projection.get('section_count', 0)}`",
+            ]
+        )
+        sections = research_projection.get("sections") if isinstance(research_projection.get("sections"), dict) else {}
+        if sections:
+            for key, values in sections.items():
+                if not isinstance(values, list):
+                    continue
+                preview = " / ".join(str(item).strip() for item in values[:3] if str(item).strip())
+                lines.append(f"- {key}: {preview or '-'}")
     revision_delta = payload.get("revision_delta") if isinstance(payload.get("revision_delta"), dict) else {}
     if revision_delta:
         lines.extend(
@@ -1713,6 +1733,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "prd": str((project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md").relative_to(project_root)),
         "test_case": str((project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug(feature)}.md").relative_to(project_root)),
     }
+    research_projection = load_machine_research_projection(project_root, version=resolved_version, feature=feature)
     existing_plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
     if revision_delta:
         source_refs["revision_delta"] = str(revision_delta.get("json_ref", "") or "")
@@ -1725,6 +1746,9 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
     qa9_matrix_candidate = next((path for path in qa_matrix_candidates(project_root, resolved_version, feature_slug(feature), "qa9-matrix") if path.exists()), None)
     if qa9_matrix_candidate is not None:
         source_refs["qa9_matrix"] = str(qa9_matrix_candidate.relative_to(project_root))
+    research_projection_ref = str(research_projection.get("source_artifact") or "").strip()
+    if research_projection_ref:
+        source_refs["research_projection"] = research_projection_ref
     missing_refs = [path for path in source_refs.values() if not (project_root / path).exists()]
     if missing_refs:
         payload = {
@@ -1975,6 +1999,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         ],
         "task_mapping_source": "prd-sections" if prd_candidates else "acceptance-criteria",
         "diagram_truth": diagram_truth,
+        "research_projection": research_projection,
         "review_gates": list(diagram_truth.get("review_gates", [])),
         "qa_coverage_hints": list(diagram_truth.get("qa_coverage_hints", [])),
         "tasks": tasks,

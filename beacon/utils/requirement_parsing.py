@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 from typing import Any
 
 _SECTION_RE = re.compile(
@@ -181,6 +183,71 @@ def build_research_projection(
             for item in closure_items
             if isinstance(item, dict)
         ],
+    }
+
+
+def _feature_slug(text: str) -> str:
+    return "-".join(str(text or "").strip().lower().split())
+
+
+def _read_json_object(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def load_machine_research_projection(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+) -> dict[str, Any]:
+    slug = _feature_slug(feature)
+    version_root = project_root / "docs" / "beacon" / version
+    candidates = [
+        version_root / ".machine" / "user-story" / f"{slug}.json",
+        version_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json",
+        version_root / ".machine" / "qa" / f"{slug}.story-scenario-map.json",
+        version_root / ".machine" / "requirement" / f"{slug}.envelope.json",
+    ]
+    for path in candidates:
+        payload = _read_json_object(path)
+        if not payload:
+            continue
+        if path.name.endswith(".json") and path.parent.name == "user-story":
+            current_revision_id = str(payload.get("current_revision_id") or "").strip()
+            stories = payload.get("stories") if isinstance(payload.get("stories"), list) else []
+            for story in stories:
+                if not isinstance(story, dict):
+                    continue
+                if current_revision_id and str(story.get("revision_id") or "").strip() != current_revision_id:
+                    continue
+                projection = story.get("research_projection") if isinstance(story.get("research_projection"), dict) else {}
+                if projection:
+                    return {
+                        **projection,
+                        "source_artifact": str(path.relative_to(project_root)),
+                    }
+        projection = payload.get("research_projection") if isinstance(payload.get("research_projection"), dict) else {}
+        if projection:
+            return {
+                **projection,
+                "source_artifact": str(path.relative_to(project_root)),
+            }
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "source": "research:missing",
+        "present": False,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": [],
+        "source_artifact": "",
     }
 
 
