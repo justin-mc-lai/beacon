@@ -79,6 +79,18 @@ Legacy aliases:
 - If brainstorm changes frozen scope, route to `beacon-change`.
 - If brainstorm only confirms frozen scope, route back to `beacon-implement`.
 
+## Human Closure Contract
+
+When the feature is materially complex, brainstorm must help produce a human-readable research closure package before freeze:
+
+- `docs/beacon/<version>/research/<feature-slug>.md`
+- architecture explanation
+- business flow explanation
+- state-machine explanation when states or transitions matter
+- decision-priority explanation when conflicting rules must be resolved
+
+Do not treat this as decoration. These materials are upstream inputs to `prd -> user-story -> test-case -> requirement_clarity -> freeze`.
+
 ## Examples
 
 - 适用例：

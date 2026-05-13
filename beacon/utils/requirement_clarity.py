@@ -40,6 +40,35 @@ _FREEZE_DELIVERABLE_SECTION_TITLES = {
     "freeze deliverables",
     "frozen deliverables",
 }
+_ARCHITECTURE_SECTION_TITLES = {
+    "architecture",
+    "architecture overview",
+    "system architecture",
+    "架构",
+    "系统架构",
+    "架构概览",
+}
+_BUSINESS_FLOW_SECTION_TITLES = {
+    "business flow",
+    "business workflow",
+    "flow",
+    "业务流程",
+    "流程",
+    "业务闭环",
+}
+_STATE_MACHINE_SECTION_TITLES = {
+    "state machine",
+    "state-machine",
+    "状态机",
+    "状态流转",
+}
+_DECISION_PRIORITY_SECTION_TITLES = {
+    "decision priority",
+    "decision-priority",
+    "priority rules",
+    "决策优先级",
+    "优先级规则",
+}
 _INLINE_MARKERS = (
     "TBD",
     "TODO",
@@ -69,10 +98,14 @@ def _version_root(project_root: Path, version: str, feature: str) -> list[Path]:
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
     base = project_root / "docs" / "beacon" / resolved_version
-    return [
+    paths = [
         base / "prd" / f"{slug}.md",
         base / "user-story" / f"{slug}.md",
     ]
+    research_path = base / "research" / f"{slug}.md"
+    if research_path.exists():
+        paths.append(research_path)
+    return paths
 
 
 def _scan_file(path: Path) -> list[dict[str, Any]]:
@@ -195,6 +228,86 @@ def _extract_required_artifacts(path: Path) -> list[dict[str, Any]]:
     return deduped
 
 
+def _extract_heading_titles(path: Path) -> set[str]:
+    titles: set[str] = set()
+    if not path.exists():
+        return titles
+    lines = path.read_text(encoding="utf-8").splitlines()
+    in_code_fence = False
+    for raw in lines:
+        stripped = raw.strip()
+        if stripped.startswith("```"):
+            in_code_fence = not in_code_fence
+            continue
+        if in_code_fence:
+            continue
+        heading = _SECTION_HEADING_RE.match(stripped)
+        if not heading:
+            continue
+        titles.add(_normalize_heading_title(str(heading.group(2) or "")))
+    return titles
+
+
+def _feature_research_path(project_root: Path, version: str, feature: str) -> Path:
+    return project_root / "docs" / "beacon" / resolve_target_version(project_root, version) / "research" / f"{feature_slug(feature)}.md"
+
+
+def _feature_source_architecture_paths(project_root: Path, version: str, feature: str) -> list[Path]:
+    base = project_root / "docs" / "beacon" / resolve_target_version(project_root, version) / "source-architecture"
+    return [
+        base / f"{feature_slug(feature)}.md",
+        base / "index.md",
+    ]
+
+
+def _build_human_closure_contract(project_root: Path, *, version: str, feature: str, diagram_truth: dict[str, Any]) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    research_path = _feature_research_path(project_root, resolved_version, feature)
+    architecture_candidates = _feature_source_architecture_paths(project_root, resolved_version, feature)
+    architecture_path = next((path for path in architecture_candidates if path.exists()), architecture_candidates[0])
+    diagram_types = [
+        str(item).strip()
+        for item in (diagram_truth.get("diagram_types") or [])
+        if str(item).strip()
+    ] if isinstance(diagram_truth, dict) else []
+    complexity_signals = [
+        str(item).strip()
+        for item in (diagram_truth.get("complexity_signals") or [])
+        if str(item).strip()
+    ] if isinstance(diagram_truth, dict) else []
+    required = bool(diagram_truth.get("required")) or bool(complexity_signals)
+    required_sections = ["architecture", "business-flow"]
+    if "state-machine" in diagram_types or required:
+        required_sections.append("state-machine")
+    if "decision-priority" in diagram_types:
+        required_sections.append("decision-priority")
+
+    research_headings = _extract_heading_titles(research_path)
+    missing_sections: list[str] = []
+    section_title_map = {
+        "architecture": _ARCHITECTURE_SECTION_TITLES,
+        "business-flow": _BUSINESS_FLOW_SECTION_TITLES,
+        "state-machine": _STATE_MACHINE_SECTION_TITLES,
+        "decision-priority": _DECISION_PRIORITY_SECTION_TITLES,
+    }
+    for key in required_sections:
+        aliases = section_title_map.get(key, set())
+        if not any(alias in research_headings for alias in aliases):
+            missing_sections.append(key)
+
+    return {
+        "required": required,
+        "research_path": str(research_path.relative_to(project_root)),
+        "research_exists": research_path.exists(),
+        "source_architecture_path": str(architecture_path.relative_to(project_root)),
+        "source_architecture_exists": architecture_path.exists(),
+        "required_sections": required_sections,
+        "missing_sections": missing_sections if research_path.exists() else required_sections,
+        "diagram_types": diagram_types,
+        "complexity_signals": complexity_signals,
+    }
+
+
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md"
@@ -232,6 +345,44 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature)
     payload["diagram_truth"] = diagram_truth
     findings.extend(diagram_truth_findings(project_root, version=resolved_version, feature=feature))
+    human_closure_contract = _build_human_closure_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        diagram_truth=diagram_truth,
+    )
+    payload["human_closure_contract"] = human_closure_contract
+    if bool(human_closure_contract.get("required")):
+        if not bool(human_closure_contract.get("research_exists")):
+            findings.append(
+                {
+                    "file": str(prd_path),
+                    "line": 1,
+                    "kind": "research_artifact_missing",
+                    "text": f"complex feature requires research closure document: {human_closure_contract.get('research_path')}",
+                    "path": str(human_closure_contract.get("research_path") or ""),
+                }
+            )
+        if not bool(human_closure_contract.get("source_architecture_exists")):
+            findings.append(
+                {
+                    "file": str(prd_path),
+                    "line": 1,
+                    "kind": "source_architecture_missing",
+                    "text": f"complex feature requires source architecture reference: {human_closure_contract.get('source_architecture_path')}",
+                    "path": str(human_closure_contract.get("source_architecture_path") or ""),
+                }
+            )
+        for section in human_closure_contract.get("missing_sections", []) if isinstance(human_closure_contract.get("missing_sections"), list) else []:
+            findings.append(
+                {
+                    "file": str(_feature_research_path(project_root, resolved_version, feature)),
+                    "line": 1,
+                    "kind": "human_closure_section_missing",
+                    "text": f"research closure missing required section: {section}",
+                    "section": section,
+                }
+            )
 
     required_artifacts = _extract_required_artifacts(prd_path)
     payload["required_artifacts"] = [str(item.get("path") or "") for item in required_artifacts]
@@ -281,6 +432,7 @@ def load_requirement_clarity_state(project_root: Path, *, feature: str) -> dict[
 
 def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
     findings = payload.get("findings") if isinstance(payload.get("findings"), list) else []
+    human_closure = payload.get("human_closure_contract") if isinstance(payload.get("human_closure_contract"), dict) else {}
     lines = [
         "# Requirement Clarity Report",
         "",
@@ -289,6 +441,15 @@ def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
         f"- required: `{bool(payload.get('required', False))}`",
         f"- status: `{payload.get('status', '')}`",
         f"- reason_code: `{payload.get('reason_code', '')}`",
+        "",
+        "## Human Closure Contract",
+        f"- required: `{bool(human_closure.get('required', False))}`",
+        f"- research_path: `{human_closure.get('research_path', '')}`",
+        f"- research_exists: `{bool(human_closure.get('research_exists', False))}`",
+        f"- source_architecture_path: `{human_closure.get('source_architecture_path', '')}`",
+        f"- source_architecture_exists: `{bool(human_closure.get('source_architecture_exists', False))}`",
+        f"- required_sections: {', '.join(human_closure.get('required_sections', [])) if isinstance(human_closure.get('required_sections'), list) else 'none' }",
+        f"- missing_sections: {', '.join(human_closure.get('missing_sections', [])) if isinstance(human_closure.get('missing_sections'), list) else 'none' }",
         "",
         "## Scanned Files",
     ]

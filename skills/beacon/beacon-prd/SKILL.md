@@ -43,6 +43,7 @@ Keep the human on the `prd -> user-story -> test-case` closure path. Use brainst
 - Route to `change` when the request modifies already frozen truth.
 - Block shallow template fill when the feature clearly needs state, transition, route, or semantic modeling.
 - Prefer reusing official wording from current version truth over inventing parallel terms.
+- For complexity-triggered features, require a human-readable closure package that covers research, architecture, business flow, and the relevant diagram truth before freeze.
 
 ## Anti-Inertia Notes
 
@@ -79,3 +80,4 @@ Keep the human on the `prd -> user-story -> test-case` closure path. Use brainst
 - `prd` 解决的是问题定义、目标、边界和 promised surface。
 - `brainstorm` 可以帮忙 challenge 和收敛，但不能代替 `prd` 冻结正式 truth。
 - 不要在 `prd` 里提前做实现、视觉或 release 层判断。
+- 复杂需求不能只靠文字段落冻结；缺少 research / business flow / state-machine / decision-priority 闭环时，应回补而不是假装 freeze-ready。

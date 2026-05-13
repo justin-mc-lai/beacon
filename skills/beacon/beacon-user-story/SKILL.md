@@ -45,6 +45,7 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - Route to `change` when the request modifies frozen acceptance truth.
 - Require explicit state/transition reasoning when diagram truth is relevant.
 - Prefer official states, actions, modules, and page names from semantic trace when available.
+- For complexity-triggered features, acceptance criteria should stay aligned with research/business-flow/state-machine truth instead of inventing a second simplified narrative.
 
 ## Anti-Inertia Notes
 

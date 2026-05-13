@@ -41,10 +41,13 @@ def _seed_base(root: Path) -> None:
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
     (base / "execution").mkdir(parents=True, exist_ok=True)
     (base / "release").mkdir(parents=True, exist_ok=True)
+    (base / "research").mkdir(parents=True, exist_ok=True)
+    (base / "source-architecture").mkdir(parents=True, exist_ok=True)
     (base / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
     (base / "SUMMARY.md").write_text("# Summary\n", encoding="utf-8")
     (base / "execution" / "index.md").write_text("# Execution\n", encoding="utf-8")
     (base / "execution" / "architecture-blueprint.md").write_text("# Architecture\n", encoding="utf-8")
+    (base / "source-architecture" / "index.md").write_text("# Source Architecture\n", encoding="utf-8")
     (base / "release" / f"{VERSION}.md").write_text("# Release\n", encoding="utf-8")
 
 
@@ -92,6 +95,33 @@ def _write_contract(root: Path) -> None:
     )
 
 
+def _write_research_closure(root: Path, *, include_decision_priority: bool = True) -> None:
+    base = root / "docs" / "beacon" / VERSION / "research"
+    sections = [
+        "# Research Closure",
+        "",
+        "## Architecture",
+        "- explain service/module boundaries",
+        "",
+        "## Business Flow",
+        "- explain the end-to-end business flow",
+        "",
+        "## State Machine",
+        "- relation: draft -> active -> revoked",
+        "- sale: pending -> confirmed -> canceled",
+        "",
+    ]
+    if include_decision_priority:
+        sections.extend(
+            [
+                "## Decision Priority",
+                "- eligibility override beats stale local cache",
+                "",
+            ]
+        )
+    (base / f"{SLUG}.md").write_text("\n".join(sections), encoding="utf-8")
+
+
 def test_v138_requirement_clarity_should_block_complex_feature_without_diagram_truth(tmp_path: Path):
     _seed_base(tmp_path)
     _write_requirement_docs(
@@ -114,6 +144,67 @@ def test_v138_requirement_clarity_should_block_complex_feature_without_diagram_t
     assert payload["reason_code"] == "requirement_clarity_open"
     kinds = {item["kind"] for item in payload["findings"]}
     assert "diagram_truth_missing" in kinds or "state_axis_missing" in kinds
+
+
+def test_v138_requirement_clarity_should_block_complex_feature_without_human_closure_package(tmp_path: Path):
+    _seed_base(tmp_path)
+    _write_requirement_docs(
+        tmp_path,
+        prd_text=(
+            "# PRD\n\n"
+            "## 功能需求\n\n"
+            "- FR-001 Complex branch handling across relation and sale.\n\n"
+            "## 11. Diagram Truth Layer\n\n"
+            "### 11.1 Diagram Types\n"
+            "- `branch-flow`\n"
+            "- `state-machine`\n"
+            "- `decision-priority`\n\n"
+            "### 11.2 State Axes\n"
+            "- `relation`\n"
+            "- `sale`\n"
+        ),
+        user_story_text=(
+            "# User Story\n\n"
+            "| AC ID | Theme | Description |\n| --- | --- | --- |\n"
+            "| AC-001 | Branch | preserve branch flow and state transitions |\n"
+        ),
+    )
+
+    payload = build_requirement_clarity_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert payload["blocked"] is True
+    kinds = {item["kind"] for item in payload["findings"]}
+    assert "research_artifact_missing" in kinds
+
+
+def test_v138_freeze_should_pass_when_human_closure_package_is_complete(tmp_path: Path):
+    _seed_base(tmp_path)
+    _write_requirement_docs(
+        tmp_path,
+        prd_text=(
+            "# PRD\n\n"
+            "## 功能需求\n\n"
+            "- FR-001 Complex branch handling\n"
+            "- FR-002 Preserve transition safety\n\n"
+            "## 11. Diagram Truth Layer\n\n"
+            "### 11.1 Diagram Types\n"
+            "- `branch-flow`\n"
+            "- `state-machine`\n"
+            "- `decision-priority`\n\n"
+            "### 11.2 State Axes\n"
+            "- `relation`\n"
+            "- `sale`\n"
+        ),
+        user_story_text=(
+            "# User Story\n\n"
+            "| AC ID | Theme | Description |\n| --- | --- | --- |\n"
+            "| AC-001 | Branch | Preserve branch-flow decisions |\n"
+            "| AC-002 | State | Preserve state transitions across relation and sale |\n"
+        ),
+    )
+    _write_research_closure(tmp_path)
+
+    result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
+    assert result.exit_code == 0, result.stdout
 
 
 def test_v138_prd_create_should_append_diagram_truth_section(tmp_path: Path):
@@ -179,6 +270,7 @@ def test_v138_implement_plan_should_propagate_diagram_truth_into_tasks(tmp_path:
             "| AC-002 | State | Preserve state transitions across relation and sale |\n"
         ),
     )
+    _write_research_closure(tmp_path)
     assert _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION]).exit_code == 0
     _write_contract(tmp_path)
 

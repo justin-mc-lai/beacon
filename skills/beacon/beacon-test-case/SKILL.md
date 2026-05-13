@@ -45,6 +45,7 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - Route to `change` when frozen acceptance coverage must materially change.
 - Require negative, boundary, recovery, and fallback coverage when the feature introduces blocked paths or guardrail behavior.
 - If the feature has real UX/UI handoff, determine whether `prototype` should be conditionally triggered before implementation.
+- When complexity-triggered human closure artifacts exist, compile coverage directly from business flow, state-machine, and decision-priority truth instead of only from happy-path acceptance bullets.
 
 ## Anti-Inertia Notes
 
