@@ -1,168 +1,130 @@
 ---
 title: Beacon Skill Usage Rules
 impact: HIGH
-impactDescription: Keeps Beacon aligned with the local standard skill layout while preserving CLI/runtime compatibility.
-tags: beacon, skill, workflow, implement, cli
+impactDescription: Keeps Beacon skill packaging aligned with the current human-facing wrapper model while preserving CLI compatibility and version-line discipline.
+tags: beacon, skill, workflow, cli, packaging
 ---
 
 # Beacon Skill Usage Rules
 
-## Rule 1: Packaging path vs content role
+## Rule 1: `skills/beacon/SKILL.md` is the primary packaged wrapper
 
-Beacon now maintains a canonical standard skill package at:
+Beacon's canonical packaged skill entry is:
 
 - `skills/beacon/SKILL.md`
 
-This satisfies the `skills/<name>/SKILL.md` convention from `docs/skill-development-standards.md`.
+That file is the primary human-facing wrapper for Beacon inside the packaged skill layout.
 
-At the same time, Beacon uses:
+It should:
 
-- root `SKILL.md` as the **main product document**
-- `skills/beacon/SKILL.md` as the **supplementary package document**
+- define Beacon's stable identity
+- define the default human-facing surface
+- route users into the correct child skill
+- preserve a small set of stable boundaries
 
-So the distinction is:
+It should not try to be the full runtime manual, release note, or operator runbook.
 
-- **package canonical path** = `skills/beacon/`
-- **content primary document** = root `SKILL.md`
+## Rule 2: Root `SKILL.md` is compatibility material, not product authority
 
-## Rule 2: Compatibility root skill remains
+Beacon may still keep a root-level `SKILL.md` for compatibility with older readers, tests, or mirrored installs.
 
-Beacon still keeps the root-level:
+If it exists:
 
-- `SKILL.md`
+- it is a compatibility mirror or auxiliary entry
+- it must not redefine the product contract independently
+- it should stay aligned with `skills/beacon/SKILL.md`
 
-Reason:
+Product authority for the packaged skill surface now belongs to:
 
-- existing diagnostics/tests/readers already consume root `SKILL.md`
-- installed skill copies under `~/.agents`, `~/.codex`, `~/.claude` also use `SKILL.md`
+- `skills/beacon/SKILL.md`
 
-So the model is:
+## Rule 3: Main wrapper and child skills do not need a legacy fixed outline
 
-- `skills/beacon/` = canonical standard package
-- root `SKILL.md` = main product entry + compatibility mirror
+Beacon no longer requires every top-level skill document to share one historical section template.
 
-## Rule 3: Main/supplementary docs must share a fixed structure
+What must stay consistent is not a rigid outline, but a stable decision shape:
 
-To avoid drift, both skill docs must keep the same semantic section slots:
+- identity or purpose
+- boundary
+- minimum entry surface
+- routing logic when relevant
+- examples
+- cold-start anchors when the surface is likely to be misread
 
-1. current release line
-2. product positioning
-3. target user / anti-fit
-4. quick start
-5. workflow model
-6. current product surfaces
-7. why the skill matters
-8. recommended reading order
-9. common usage modes
-10. command / wrapper surface
-11. lifecycle navigation rules
-12. docs / troubleshooting / examples / references
+The main wrapper may be broader than child skills, but it should still follow this lighter packaging philosophy.
 
-The packaged document may be shorter or may merge adjacent sections, but it must not invent a separate product structure.
+## Rule 4: CLI-first remains the default operator contract
 
-## Rule 4: CLI-first trigger (wrapper optional)
+Prefer the installed CLI in any project directory:
 
-**Prefer the installed CLI** in any project directory:
+- `beacon ...`
 
-- `beacon ...` (same as `python3 -m beacon.main ...`)
+Repo-local wrappers may exist for vendored skill packs, but they are compatibility details rather than the default human contract.
 
-The optional repo-local wrapper script remains for vendored skill packs:
+Bridge commands, wrapper exports, and host injection details may exist, but they should live in implementation/runtime references rather than in the primary packaged wrapper.
 
-- `skills/beacon/scripts/run_beacon.sh` → delegates to `python3 -m beacon.main "$@"` after `cd` to the repo root that contains `skills/`.
+## Rule 5: Delivery truth remains under `docs/beacon/<version>/`
 
-For host-native requirement execution, the wrapper (when used) also exports:
+Skill packaging does not change Beacon's truth model:
 
-- `BEACON_HOST_RUNTIME`
-- `BEACON_HOST_PRD_BRIDGE_CMD`
-- `BEACON_HOST_USER_STORY_BRIDGE_CMD`
-- `BEACON_HOST_TEST_CASE_BRIDGE_CMD`
-- `BEACON_HOST_PROTOTYPE_BRIDGE_CMD`
+- `docs/beacon/<version>/` remains versioned delivery truth
+- `.beacon/` remains runtime state, evidence, or derived machine material unless a specific surface says otherwise
 
-Default requirement bridge targets (CLI form; works whenever `beacon` is on `PATH`):
+Skill docs may summarize where truth lives, but they must not redefine it.
 
-```bash
-beacon prd host-bridge
-beacon user-story host-bridge
-beacon test-case host-bridge
-beacon prototype host-bridge
-```
+## Rule 6: Distinguish default public line from active development lines
 
-## Rule 5: Source of truth is still docs/beacon
+Beacon may be actively developing a newer version line before promoting it to the default public/runtime line.
 
-Skill packaging does not change Beacon's delivery truth:
+That means:
 
-- `docs/beacon/<version>/` remains source of truth
-- `.beacon/` remains runtime state only
+- a newer line such as `v1.4.5` may have active PRD, user-story, execution, or QA materials
+- the primary packaged skill may still point to an older default line such as `v1.4.3`
+- skill text must not silently collapse these two states into one
 
-Current line:
+When describing versions, be explicit about whether you mean:
 
-- `v1.3.8` = current runtime release line and host-native runtime docs line
+- current packaged/public default line
+- current active development line
+- project-pinned local line
 
-Package docs may still reference historical lines, but they must not describe them as current.
+If those diverge, the wrapper should acknowledge the distinction instead of pretending there is only one active version fact.
 
-## Rule 6: Implement / skill remain CLI surfaces
+## Rule 7: Runtime internals should be pushed down
 
-The skill package wraps these CLI commands instead of replacing them:
+The main packaged wrapper should not carry:
 
-- `beacon skill`
-- `beacon implement`
-- `beacon workflow`
-- `beacon review`
+- detailed runtime evolution history
+- long command matrices
+- release proof checklists
+- HUD/debug procedures
+- metadata/branch governance operator walkthroughs
+- full QA runbooks
 
-For the `v1.3.8` runtime line, the CLI should be described as:
+Those belong in one of these places instead:
 
-- host-native orchestration layer first
-- structured execution kernel
-- freeze/review/status/doctor/read-model support layer
-- external provider fallback only when host-native runtime is unavailable
+- versioned docs under `docs/beacon/<version>/`
+- focused examples
+- child skills
+- runtime/reference documents
 
-## Rule 7: QA guidance in the skill must obey first-principles order
+## Rule 8: QA and release claims must stay evidence-first
 
-When the skill routes a user into Beacon QA, it must preserve this order:
+Skill text must not encourage:
 
-```text
-user story / AC order
-→ scenario divergence
-→ current-round execution
-→ evidence pack
-→ coverage_current / coverage_gap
-→ continue_decision
-→ severe blocker? stop_for_repair
-→ repair handoff
-→ beacon help resume
-→ next QA round with test-case backfill
-→ release guidance
-```
-
-That means the skill prompt must not encourage:
-
-- skipping story/AC order
-- continuing QA after severe blockers invalidate downstream evidence
-- claiming progress without coverage/evidence truth
-- asking humans to guess the resume path instead of using `beacon help`
-
-## Rule 8: Test evolution must be contract-lane aware
-
-When Beacon itself evolves, the skill must route test interpretation through contract-lane verification before making release claims.
-
-Use these lanes:
-
-- `feature_release_facing`
-- `current_runtime_contract`
-- `generated_surface_sync`
-- `compatibility_contract`
-- `legacy_snapshot`
-
-That means the skill prompt must not encourage:
-
+- claiming progress without evidence truth
 - treating unclassified full-suite output as a release pass
 - treating unclassified full-suite output as a release blocker
-- rewriting all legacy tests as part of a feature delta
 - letting skill text override machine evidence from `doctor`, `qa`, or `release`
 
-Preferred support commands:
+When Beacon itself evolves, test interpretation and release claims should stay tied to machine-readable evidence and explicit contract lanes.
 
-```bash
-beacon doctor build-test-contract-index "<feature>" --project-root . --version <version> --json
-beacon doctor verify-test-contract-index "<feature>" --project-root . --version <version> --strict --json
-```
+## Rule 9: Examples should teach routing, not replace judgment
+
+Examples inside skill docs should primarily help with:
+
+- identifying the correct surface
+- distinguishing similar surfaces
+- clarifying common misroutes
+
+Examples should not regrow into long procedural scripts unless the file is explicitly an example or runbook document.

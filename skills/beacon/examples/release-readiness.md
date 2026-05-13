@@ -1,16 +1,16 @@
 # Beacon Skill Example: Release Readiness
 
-This example focuses on **v1.4.0 CLI release evidence and gate consistency** (`beacon --version` → `Beacon CLI v1.4.0`).
+This example focuses on **v1.4.3 CLI release evidence and gate consistency** (`beacon --version` → `Beacon CLI v1.4.3`).
 
 Read first:
 
-- [`../../../docs/beacon/v1.4.0/SUMMARY.md`](../../../docs/beacon/v1.4.0/SUMMARY.md)
-- [`../../../docs/beacon/v1.4.0/execution/index.md`](../../../docs/beacon/v1.4.0/execution/index.md)
-- [`../../../docs/beacon/v1.4.0/release/v1.4.0.md`](../../../docs/beacon/v1.4.0/release/v1.4.0.md)
+- [`../../../docs/beacon/v1.4.3/SUMMARY.md`](../../../docs/beacon/v1.4.3/SUMMARY.md)
+- [`../../../docs/beacon/v1.4.3/execution/index.md`](../../../docs/beacon/v1.4.3/execution/index.md)
+- [`../../../docs/beacon/v1.4.3/release/v1.4.3.md`](../../../docs/beacon/v1.4.3/release/v1.4.3.md)
 
 ```bash
 # 1) Inspect current package state
-beacon status --board --project-root . --version v1.4.0
+beacon status --board --project-root . --version v1.4.3
 
 # 2) Verify context and sync machine materials after runtime upgrades
 beacon doctor verify-context \
@@ -19,34 +19,34 @@ beacon doctor verify-context \
   --json
 beacon doctor verify-materials \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --json
 beacon doctor repair-package \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --dry-run \
   --json
 beacon doctor sync-materials \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --all-features \
   --json
 
 # 3) Ensure current feature has implementation-plan truth before release gate
 beacon implement plan \
-  "Beacon v1.4.0 release line" \
+  "Beacon v1.4.3 release line" \
   --project . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --json
 
 # 4) Run release gate and release readiness checks
 beacon gate check release \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --json
-beacon release check v1.4.0 --project .
+beacon release check v1.4.3 --project .
 
 # 5) Confirm the fixed HUD hook can inject context into Codex
-printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续 Beacon v1.4.0 release"}' \
-  | beacon debug codex-fixed-hud --project-root . --version v1.4.0 --json
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续 Beacon v1.4.3 release"}' \
+  | beacon debug codex-fixed-hud --project-root . --version v1.4.3 --json
 ```

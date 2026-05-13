@@ -1,14 +1,14 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.0 runtime surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.3 runtime surface.
 ---
 
 # Beacon QA
 
 This skill routes verification work through Beacon's `qa` surface.
 
-The public command stays on the **`v1.4.0`** runtime line; docs and contracts live under `docs/beacon/v1.4.0/` unless your project pins another version.
-Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.0` docs line.
+The public command stays on the **`v1.4.3`** runtime line; docs and contracts live under `docs/beacon/v1.4.3/` unless your project pins another version.
+Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.3` docs line.
 
 `Beacon Acceptance Kit v1` is the shared QA verdict base. QA should read and project:
 
@@ -84,16 +84,13 @@ Treat the target as a **protected surface** when any of the following hold:
 - First navigation lands on an **identity / login interstitial** (Vercel login, access gate, or SSO provider) instead of the app shell.
 - The scenario requires a **human session** (logged-in dashboard, tenant data) but no **session bridge** is configured for automation.
 
-### Runner priority (prefer higher rows first)
+### Runner admission principle
 
-When verifying a protected live surface in an environment where **multiple runners** may exist, prefer this order until one is **actually available and wired** on the host:
+When verifying a protected live surface, prefer runners that can reuse a real authenticated browser session over clean-context runners.
 
-1. **`web-access`** — best fit for **reusing an existing local Chrome profile / logged-in session** when that integration is installed and healthy.
-2. **`agent-browser`** (or equivalent **attached real browser** runner) — same family: **reuse real browser session** with agent-driven steps.
-3. **`playwright-cli` with attach / CDP** — deterministic selectors + **connected browser** (session carried by the attached target).
-4. **Bare `playwright test` / default Playwright runner** — acceptable for **anonymous** or **token-unlocked** staging; **last choice** for protected live URLs.
-
-If **`browser-use`** (or similar) is only a **thin / placeholder adapter** in the current Beacon wiring, do **not** treat it as first-tier until it is proven end-to-end on the host.
+- Attached-session or connected-browser paths rank above bare Playwright.
+- Bare Playwright is acceptable for anonymous or token-unlocked staging, but it is a last choice for protected live URLs.
+- Placeholder or thin adapters should not be treated as first-tier admission paths until proven end to end on the host.
 
 ### Default behavior: avoid idle failure loops
 
@@ -103,12 +100,22 @@ If **`browser-use`** (or similar) is only a **thin / placeholder adapter** in th
   - Record a **short reason** (for example: `vercel_sso_redirect_no_session_bridge`).
 - Prefer fixing **QA admission / runner selection** at the **`beacon qa` skill + runtime entry** so individual project specs do not each reimplement SSO detection and retries.
 
-### Operator checklist (before long browser QA)
-
-1. Confirm **URL class**: staging with public access vs **protected live**.
-2. Confirm **session bridge**: attached Chrome, exported `storage_state`, or CI secret path — not “my laptop browser works” unless automation shares that session.
-3. If protected and **no bridge**, **skip with reason** rather than running to timeout.
-
 ### Evidence expectation
 
 When skipping or switching runners for protection, leave **machine-readable** notes (runner attempted, redirect observed, skip reason) so release-facing verdicts stay **evidence-first**, not ambiguous flakes.
+
+## Examples
+
+- 适用例：
+  - “实现已经完成，现在要判断 acceptance proof 是否足够进入 release。”
+  - “发现新问题了，想知道这是 execution gap、truth drift，还是 coverage gap。”
+  - “这个 feature 的 verification 已经有一部分证据，但我不确定 layered verdict 是否真的够。”
+- 不适用例：
+  - “需求本身要重写，acceptance criteria 已经不成立。” -> 应回 `change` 或 requirement surfaces
+  - “我只是想继续 challenge scope，还没到验证阶段。” -> 应优先去 guidance/support surface
+
+## Cold-start anchors
+
+- `qa` 判断的是证据是否足够，不是用来改写 frozen truth。
+- 一层通过不代表整体 release-ready。
+- 对 protected live surface，要先判断 runner admission 是否成立，再判断产品是否失败。

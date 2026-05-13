@@ -1,63 +1,38 @@
 ---
 name: beacon
-description: Use when you need Beacon's evidence-first product workflow through the current v1.4.0 runtime line and its host-native orchestration kernel.
+description: Use when you need Beacon's evidence-first product workflow through its current human-facing surface. Beacon should act as the primary router for requirement truth, implementation, QA evidence, release decisions, and support guidance.
 metadata:
   author: Beacon CLI
   version: "1.4.0"
   organization: Beacon
   date: April 2026
-  abstract: Standard skill package wrapper for Beacon CLI workflow, lightweight HUD, host-native orchestration runtime, PRD bootstrap, implementation, QA, and release operations.
+  abstract: Stable wrapper for Beacon's human-facing workflow surface, routing users into the right requirement, execution, verification, and support skills without exposing internal runtime detail by default.
 ---
 
 # Beacon Skill
 
-Beacon is an **evidence-first product workflow kernel** for keeping requirements, implementation, QA evidence, and release decisions in one versioned system.
+Beacon is an evidence-first product workflow for keeping requirement truth, implementation, QA evidence, and release decisions inside one versioned system.
 
-This package is the canonical `skills/beacon/` wrapper for Codex and Claude. **Prefer the installed `beacon` CLI** (`beacon --version` → e.g. `Beacon CLI v1.4.0`). Same entrypoints also work via `python3 -m beacon.main`. The optional repo-local wrapper `skills/beacon/scripts/run_beacon.sh` only exists when this skill pack is vendored; it is **not** created by `pip install` in arbitrary target repos.
+This file is the stable human-facing wrapper for `skills/beacon/`. Its job is to define Beacon's default entry surface, route to the right skill, and hold the minimum boundaries that should remain stable even when runtime internals evolve.
 
-## Current Release Line
+Prefer the installed `beacon` CLI. Repo-local wrappers may exist in vendored setups, but they are compatibility detail, not the default human contract.
 
-- **Current release line**: `v1.4.0` (`beacon --version`)
-- **Current package version**: `1.4.0`
-- **Latest accepted docs line**: `docs/beacon/v1.4.0/` (follow project `docs/beacon/VERSION` when pinned differently)
-- **Release status**: follow `release check v1.4.0` / pinned docs version for your repo
-- **Core theme**: truth lifecycle governance
-- **Wireframe predecessor line**: `v1.3.5` froze `prototype` as the formal wireframe-freeze stage
-- **Current runtime architecture**: `v1.3.9` promotes the host-native kernel with canonical delivery baseline enforcement, prompt-boundary gating, and archive governance
+## What Beacon Is
 
-## Latest Requirement Closure Line
+Beacon's core promise is simple:
 
-- **Requirement deepening line**: `v1.3.12`
-- **Current requirement theme**: `host-llm requirement deepening and human-loop closure`
-- **Closed-loop additions**:
-  - `requirement_gap_digest`
-  - `brainstorm_hint`
-  - `supplement_task`
-  - `re_freeze_transaction`
-  - board jump links to story/test-case supplement entries
+- keep requirement truth explicit
+- keep execution routed through one public implementation surface
+- keep QA and release evidence layered and auditable
+- keep support surfaces available without turning them into parallel main stages
 
-`v1.3.9` keeps Beacon lightweight:
-
-```text
-human minimal surface
--> host-native implement / qa
--> compatibility plane for external skills and adapters
-```
-
-`v1.3.9` defines the current host-native runtime target:
-
-```text
-host-native llm
--> semantic envelope
--> beacon delivery kernel
--> release/read-model convergence
-```
+Beacon is not just a command catalog. It is a routing and evidence discipline.
 
 ## Human Surface
 
 Humans should primarily remember the 7+3 surface.
 
-Primary commands:
+Primary workflow:
 
 - `prd`
 - `user-story`
@@ -67,238 +42,103 @@ Primary commands:
 - `qa`
 - `release`
 
-Support commands:
+Support and guidance:
 
 - `help`
 - `status`
 - `doctor`
 - `archive`
 
-Compatibility surfaces such as external adapters, legacy bridges, project-specific runners, and deep runtime orchestration must stay opt-in and non-default.
+Optional support surfaces stay opt-in:
 
-## Host-Visible Skills
+- `brainstorm`
+- `deep`
+- `learn`
+- `ceo-review`
+- `design-review`
+- `prd-bootstrap`
+- `toolkit-lighthouse`
+- `toolkit-metadata`
+- `toolkit-branch-governance`
+- `friction-intake`
+- `real-project-validation`
 
-The public Codex / Claude surfaces are:
+## Host and Dependency Defaults
 
-- `using-beacon`
-- `beacon-prd`
-- `beacon-user-story`
-- `beacon-test-case`
-- `beacon-implement`
-- `beacon-qa`
-- `beacon-release`
-- `beacon-prototype`
-- `beacon-help`
-- `beacon-status`
-- `beacon-doctor`
-- `beacon-archive`
-- `beacon-deep`
+Beacon should be judged inside the current host context only.
 
-Optional supplemental skills:
+- Do not turn host/runtime selection into a default human decision.
+- Do not require external skill repos, external plugins, or external runtimes as Beacon's default prerequisite.
+- External capabilities may exist, but they are compatibility planes, not Beacon's default dependency plane.
+- Do not expose internal team/subagent/runtime lanes unless the user explicitly asks for internals.
 
-- `beacon-prd-bootstrap`: one-click PRD + user-story + test-case bootstrap with safe defaults
-- `beacon-brainstorm`: read-only first-principles / Socratic / Occam sidecar for requirement convergence and project evolution thinking
-- `beacon-archive`: formal archive governance for isolating active truth from historical truth
-- `beacon-toolkit-lighthouse`: fast single-file, diagram-first analysis without entering the main workflow
-- `beacon-toolkit-metadata`: deterministic metadata toolkit for project/version topology, branch binding, CRUD, and verify
-- `beacon-toolkit-branch-governance`: deterministic git branch/worktree governance view with flow diagram and implement-facing contract checks
-- `beacon-friction-intake`: host-visible friction intake entry for scan/capture plus sqlite queue governance
-- `beacon-deep`: deep analysis support surface for complex business risk closure, test-delta derivation, cross-stage routing, and release supplement evidence
-- `beacon-real-project-validation`: prove Beacon works against a real target project
+## Human vs Machine Output
 
-## Current v1.3.9 Additions
+Human-facing output should stay concise and action-oriented:
 
-- **Diagram truth admission**: PRD state-machine / branch-flow / decision-priority truth now enters planning and review surfaces.
-- **Prompt-boundary closure**: implement prompt-boundary verdict is persisted once and enforced through gate, release scorecard, and release check.
-- **Archive governance**: `beacon archive plan/apply/status/explain` is now part of the public support surface with `beacon-archive` routing.
-- **Canonical delivery baseline**: implementation-plan, deterministic implementation contract, and git workflow still project from one canonical baseline envelope.
-- **Built-in brainstorm sidecar**: `beacon-brainstorm` remains read-only and feeds change/refreeze instead of mutating frozen truth.
-- **Toolkit Lighthouse**: single-page, Mermaid-first analysis surface with strict fact/inference separation.
-- **Minimal HUD and host traceability**: Codex HUD hook and host prompt trace keep current runtime execution auditable.
+- current status
+- blocking reason
+- recommended next step
+- fallback or repair route when relevant
 
-## Current v1.3.9 Runtime Line
+Machine-facing and audit-facing output should remain complete:
 
-- **Host-native requirement compile**: `prd / user-story / test-case / prototype` 默认优先复用宿主原生语义能力。
-- **Requirement bridge family**: host bridge 默认指向 `beacon prd|user-story|test-case|prototype host-bridge`（由 CLI/`run_beacon.sh` 注入 `BEACON_HOST_*_BRIDGE_CMD`），requirement surface 先走 command bridge，再退回兼容注入面。
-- **Truth-projected story and QA compile**: `user-story / test-case` 不再只走最小模板占位；bridge 现在会回读目标项目的 requirement truth，生成更贴近冻结材料的 story payload 与 test entries。
-- **Delivery kernel convergence**: `implement / qa / release` 统一落到共享 delivery contract。
-- **Canonical projection governance**: implementation projections are single-source and gate-verifiable against the canonical delivery baseline.
-- **Prompt-boundary enforcement**: release readiness now consumes the same auditable prompt-boundary verdict as gate.
-- **Brainstorm sidecar boundary**: brainstorm 读取版本真相、输出独立 markdown，并在需求需要变动时路由回 change/refreeze，而不是直接改写 truth。
-- **Support/read model convergence**: `help / status / doctor / archive` 读取同一 delivery read model 与 surface explanation。
-- **Provider fallback demotion**: `BEACON_LLM_API_KEY` 仅保留给纯 CLI / provider fallback，不再作为 requirement surface 默认主路径。
+- reason codes
+- evidence refs
+- diagnostics
+- artifact paths
+- runtime or transaction metadata
 
-## Current v1.3.12 Requirement Closure Line
+Beacon should absorb complexity into machine-readable surfaces first, then project only the minimum useful action layer to humans.
 
-- `prd / user-story / test-case` now share a unified convergence contract for deepening, supplement, refreeze, and revalidate.
-- `brainstorm` stays read-only but can emit gap-aware supplement routing instead of acting as an isolated divergent lane.
-- `help / status / board` surface the current gap, supplement target, and re-freeze transaction state.
-- `implement / qa / release` still only consume frozen requirement completeness.
+## Public Skill Routing
 
-## Test Contract Lane Guidance
+Route by decision surface, not by internal mechanism.
 
-Beacon self-iteration test work must be contract-lane aware before any release claim.
+- Requirement definition, ambiguity, or promised surface: `beacon-prd`
+- Story compilation and acceptance truth: `beacon-user-story`
+- Coverage truth and verifiable scenarios: `beacon-test-case`
+- Conditional UX/UI handoff before implementation: `beacon-prototype`
+- Frozen truth revision or supplement after freeze: `beacon-change`
+- Implementation execution: `beacon-implement`
+- Verification and evidence closure: `beacon-qa`
+- Release go/no-go judgment: `beacon-release`
+- Blocked or unsure next step: `beacon-help` or `beacon-status`
+- Context drift, package drift, or environment repair: `beacon-doctor`
+- Historical truth isolation: `beacon-archive`
 
-Use these lanes:
+Use support surfaces when the user needs challenge, convergence, analysis, or governance without silently entering the main workflow.
 
-- `feature_release_facing`
-- `current_runtime_contract`
-- `generated_surface_sync`
-- `compatibility_contract`
-- `legacy_snapshot`
+## Current Version Anchors
 
-Do not claim readiness from unclassified full-suite output. Build and verify the machine index through `doctor`:
+Keep only the minimum current anchors here:
 
-```bash
-beacon doctor build-test-contract-index "<feature>" --project-root . --version <version> --json
-beacon doctor verify-test-contract-index "<feature>" --project-root . --version <version> --strict --json
-```
+- current package version: `1.4.3`
+- current release/docs line: `docs/beacon/v1.4.3/`
+- if a project pins `docs/beacon/VERSION`, follow that pinned docs line for local truth
 
-## Quick Start
+More detailed runtime architecture, release-note history, and migration context belong in versioned docs, not in this wrapper.
 
-Start with the minimal workflow:
+## Deep References
 
-```bash
-beacon prd create "My Feature" --project . --version v1.4.0
-beacon user-story create "My Feature" --project . --version v1.3.12
-beacon test-case create "My Feature" --project . --version v1.3.12
-beacon brainstorm run "补齐 PRD 缺口" --project-root . --version auto --mode requirement-convergence --json
-beacon implement plan "My Feature" --project . --version v1.4.0 --json
-beacon qa run "My Feature" --project . --version v1.4.0 --json
-beacon release check v1.4.0 --project .
-```
+When deeper context is needed, start here:
 
-Ask Beacon what to do next:
+1. [`docs/beacon/v1.4.3/SUMMARY.md`](../../docs/beacon/v1.4.3/SUMMARY.md)
+2. [`docs/beacon/v1.4.3/execution/index.md`](../../docs/beacon/v1.4.3/execution/index.md)
+3. [`docs/beacon/v1.4.3/release/v1.4.3.md`](../../docs/beacon/v1.4.3/release/v1.4.3.md)
 
-```bash
-beacon status --board --project-root . --version v1.4.0
-beacon help --project-root . --version v1.4.0 --feature "My Feature" --json
-```
-
-Bootstrap requirement materials safely:
-
-```bash
-beacon prd-bootstrap run "My Feature" \
-  --desc "补齐 PRD / user-story / test-case 闭环材料" \
-  --project-root . \
-  --version v1.4.0 \
-  --dry-run \
-  --json
-```
-
-Inject Codex fixed HUD context:
-
-```bash
-printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.4.0"}' \
-  | beacon debug codex-fixed-hud --project-root . --version v1.4.0 --json
-```
-
-Run final release checks:
-
-```bash
-beacon gate check release --project-root . --version v1.4.0 --json
-beacon release check v1.4.0 --project .
-```
-
-Optional analysis surface:
-
-```bash
-beacon friction-intake run \
-  --project-root . \
-  --version v1.4.0 \
-  --mode scan \
-  --json
-```
-
-```bash
-beacon doctor metadata show \
-  --project-root . \
-  --version v1.4.0 \
-  --json
-```
-
-```bash
-beacon doctor branch-governance show \
-  --project-root . \
-  --version v1.4.0 \
-  --json
-```
-
-## Workflow Model
-
-Beacon's current human-facing lifecycle target is:
-
-```text
-prd
--> user-story
--> test-case
--> prototype
--> implement
--> qa
--> release
-```
-
-`prototype` is defined as `requirement-driven wireframe freeze orchestrator`, not HTML high-fidelity output.
-
-For human routing, prefer the minimal 7+3 surface. Do not expose team/subagent/Ralph internals unless the user explicitly asks for them or a Beacon command recommends them.
-
-## Lifecycle Navigation Rules
-
-- Use `beacon help --project-root . --json` when the next step is unclear.
-- Run `status` before guessing the current stage.
-- QA prompt contract must follow first principles.
-- If requirement evidence is incomplete or drifted, return `stop_for_repair`.
-- `browser-use` is optional evidence tooling, not the default workflow surface.
-
-## Reading Order
-
-Read current v1.4.0 materials in this order:
-
-1. [`docs/beacon/v1.4.0/SUMMARY.md`](../../docs/beacon/v1.4.0/SUMMARY.md)
-2. [`docs/beacon/v1.4.0/execution/index.md`](../../docs/beacon/v1.4.0/execution/index.md)
-3. [`docs/beacon/v1.4.0/execution/architecture-blueprint.md`](../../docs/beacon/v1.4.0/execution/architecture-blueprint.md)
-4. [`docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md)
-5. [`docs/beacon/v1.4.0/execution/boundaries.md`](../../docs/beacon/v1.4.0/execution/boundaries.md)
-6. [`docs/beacon/v1.4.0/release/v1.4.0.md`](../../docs/beacon/v1.4.0/release/v1.4.0.md)
-
-For host-native runtime architecture detail, then read:
-
-1. [`docs/beacon/v1.4.0/execution/architecture-blueprint.md`](../../docs/beacon/v1.4.0/execution/architecture-blueprint.md)
-2. [`docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md`](../../docs/beacon/v1.4.0/execution/project-skill-qa-evolution-blueprint.md)
-3. [`docs/beacon/v1.4.0/release/v1.4.0.md`](../../docs/beacon/v1.4.0/release/v1.4.0.md)
-
-Feature package roots:
-
-- [`docs/beacon/v1.4.0/prd/`](../../docs/beacon/v1.4.0/prd/)
-- [`docs/beacon/v1.4.0/user-story/`](../../docs/beacon/v1.4.0/user-story/)
-- [`docs/beacon/v1.4.0/qa/test-cases/`](../../docs/beacon/v1.4.0/qa/test-cases/)
-
-## Routing Rules
-
-- If the user asks for requirements, route to `beacon-prd`, `beacon-user-story`, `beacon-test-case`, or `beacon-prd-bootstrap`.
-- If the user asks to implement, route to `beacon-implement`.
-- If the user asks to verify, inspect coverage, or close evidence, route to `beacon-qa`.
-- If the user asks to release, run `beacon-release`.
-- If the user is blocked or unsure, run `beacon-help` or `beacon-status` before guessing.
-- If context, version, or evidence consistency is broken, route to `beacon-doctor`.
-- If the user needs formal historical requirement isolation, route to `beacon-archive`.
-
-## Compatibility Rule
-
-`v1.3.9` demotes external runners, external skill adapters, and legacy bridge behavior to a compatibility plane. They may still exist for advanced projects, but they must not appear as the default onboarding or main workflow path.
-
-## Troubleshooting
-
-- Materials inconsistent: `beacon doctor verify-context --project-root . --strict --json`
-- Runtime upgraded: `beacon doctor sync-materials --project-root . --version v1.4.0 --all-features --json`
-- Need current next step: `beacon help --project-root . --version v1.4.0 --feature "<feature>" --json`
-- Release confusion: `beacon gate check release --project-root . --version v1.4.0 --json`
-- Skill drift: `python3 scripts/check_skill_drift.py --project-root . --json`
-- QA prompt contract must follow first principles before doing browser-use or test-case backfill.
+Do not treat this wrapper as the full runtime manual or release note.
 
 ## Examples
 
-- [Basic workflow example](./examples/basic-workflow.md)
-- [Release readiness example](./examples/release-readiness.md)
-- [Implementation compatibility example](./examples/implementation-with-omx.md)
-- [Toolkit Lighthouse analysis example](./examples/beacon-toolkit-lighthouse-analysis.md)
+- 适用例：
+  - “我想用 Beacon 作为主工作流入口，但还不知道应该先进哪条 surface。”
+  - “我需要一个稳定的总入口，把 requirement、implementation、qa、release 和 support surface 路由清楚。”
+- 不适用例：
+  - “我现在已经明确知道要去哪条具体 skill，而且只想看那条 skill 的边界。” -> 应直接进入对应子 skill
+
+## Cold-start anchors
+
+- Beacon 的主 skill 主要卖一个 promise: 帮宿主进入正确 surface，而不是解释全部 runtime 历史。
+- 主 `beacon` skill 不是总 runbook、总 release note，也不是完整 operator manual。
+- 当主 skill 开始承载过多版本叙事、命令矩阵或内部运行细节时，应把这些内容下沉到版本化 docs 或具体子 skill。

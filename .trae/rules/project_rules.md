@@ -13,12 +13,15 @@
 
 - `beacon-archive`
 - `beacon-brainstorm`
+- `beacon-ceo-review`
 - `beacon-change`
 - `beacon-deep`
+- `beacon-design-review`
 - `beacon-doctor`
 - `beacon-friction-intake`
 - `beacon-help`
 - `beacon-implement`
+- `beacon-learn`
 - `beacon-prd`
 - `beacon-prd-bootstrap`
 - `beacon-prototype`
@@ -33,6 +36,7 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
 
 
 

@@ -1,14 +1,14 @@
 ---
 name: beacon-implement
-description: Use when the user wants to plan or run implementation through Beacon's current v1.4.0 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
+description: Use when the user wants to plan or run implementation through Beacon's current v1.4.3 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
 ---
 
 # Beacon Implement
 
 This skill routes execution work through Beacon's `implement` surface.
 
-The execution contract is aligned to the `v1.4.0` docs line and shared delivery kernel.
-Compatibility wrappers may preserve older runtime aliases, but `implement` should read current truth from `docs/beacon/v1.4.0/`.
+The execution contract is aligned to the `v1.4.3` docs line and shared delivery kernel.
+Compatibility wrappers may preserve older runtime aliases, but `implement` should read current truth from `docs/beacon/v1.4.3/`.
 
 ## Use for
 
@@ -63,3 +63,19 @@ Do not expose `implement-team`, planner/implementer/tester roles, or lane-level 
 - `beacon implement ...`
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
+
+## Examples
+
+- 适用例：
+  - “需求已经冻结，准备开始实现这条 feature。”
+  - “我想确认这条 feature 现在能不能正式进入执行。”
+  - “代码已经动了，想看 implementation handoff 或 readiness 有没有被阻断。”
+- 不适用例：
+  - “PRD 还没收口，scope 还在变。” -> 应先回 requirement surfaces
+  - “我现在是在判断证据够不够 release。” -> 应优先去 `beacon-qa` 或 `beacon-release`
+
+## Cold-start anchors
+
+- `implement` 是执行入口，不是改 truth 的地方。
+- 进入 `implement` 的前提是 requirement truth 已经足够稳定。
+- 如果真实存在 UX/UI handoff，而 `prototype` 尚未补齐，不应直接跳过进入 coding。

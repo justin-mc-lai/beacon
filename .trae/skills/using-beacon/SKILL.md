@@ -21,6 +21,9 @@ The `v1.3.12` requirement closure line defines the active host-native requiremen
 - `beacon-implement`
 - `beacon-qa`
 - `beacon-release`
+- `beacon-ceo-review`
+- `beacon-design-review`
+- `beacon-learn`
 - `beacon-help`
 - `beacon-status`
 - `beacon-doctor`
@@ -46,16 +49,22 @@ The `v1.3.12` requirement closure line defines the active host-native requiremen
    use `beacon-implement`
 8. Verification, acceptance, new findings, or release confidence:
    use `beacon-qa` or `beacon-release`
-9. Historical requirement isolation, archive planning, or archive state explanation:
+9. Version-level problem reframing, promise challenge, or scope judgment before changing frozen truth:
+   use `beacon-ceo-review`
+10. UI/UX direction challenge or prototype-entry judgment:
+   use `beacon-design-review`
+11. Learning recall, audit, or prune as a governed decision input:
+   use `beacon-learn`
+12. Historical requirement isolation, archive planning, or archive state explanation:
    use `beacon-archive`
-10. Project/version metadata inspection, CRUD, or contract verification:
+13. Project/version metadata inspection, CRUD, or contract verification:
    use `beacon-toolkit-metadata`
-11. Human-readable branch flow, worktree lane, or implement git governance checks:
+14. Human-readable branch flow, worktree lane, or implement git governance checks:
    use `beacon-toolkit-branch-governance`
-12. Blocked / lost / next-step questions:
+15. Blocked / lost / next-step questions:
    use `beacon-help`, `beacon-status`, or `beacon-doctor`
 
-13. Need a human-readable supplement jump or re-freeze visibility:
+16. Need a human-readable supplement jump or re-freeze visibility:
    use `beacon-help` or `beacon-status`
 
 ## Development pairing
@@ -78,4 +87,4 @@ Do not treat these as public human entrypoints unless the user explicitly asks f
 - `team`
 - `implement-team`
 - `qa-team`
-- learning / auto research lanes
+- auto research lanes beyond `beacon-learn`
