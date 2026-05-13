@@ -1,14 +1,14 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.3 runtime surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.5 runtime surface.
 ---
 
 # Beacon QA
 
 This skill routes verification work through Beacon's `qa` surface.
 
-The public command stays on the **`v1.4.3`** runtime line; docs and contracts live under `docs/beacon/v1.4.3/` unless your project pins another version.
-Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.3` docs line.
+The public command stays on the **`v1.4.5`** runtime line; docs and contracts live under `docs/beacon/v1.4.5/` unless your project pins another version.
+Compatibility wrappers may preserve older runtime aliases, but QA truth and verdict interpretation should follow the `v1.4.5` docs line.
 
 `Beacon Acceptance Kit v1` is the shared QA verdict base. QA should read and project:
 

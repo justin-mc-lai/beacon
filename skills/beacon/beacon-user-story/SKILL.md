@@ -1,14 +1,14 @@
 ---
 name: beacon-user-story
-description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from a Beacon PRD through Beacon's current v1.4.3 runtime surface.
+description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from a Beacon PRD through Beacon's current v1.4.5 runtime surface.
 ---
 
 # Beacon User Story
 
 This skill routes story work through Beacon's `user-story` surface.
 
-The host-readable contract is aligned to the current `v1.4.3` docs line.
-Compatibility bridges may still exist, but the active requirement truth and acceptance framing should be read from `docs/beacon/v1.4.3/`.
+The host-readable contract is aligned to the current `v1.4.5` docs line.
+Compatibility bridges may still exist, but the active requirement truth and acceptance framing should be read from `docs/beacon/v1.4.5/`.
 
 ## Use for
 

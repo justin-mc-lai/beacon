@@ -3,9 +3,9 @@
 ## 版本状态
 
 - `v1.4.5` 当前主题是：`guidance-first docs architecture and governed external capability plane`
-- 当前版本状态：`planning_only`
-- 当前版本不是 runtime release line；当前 runtime/default docs 仍保持 `v1.4.3`
-- 当前版本承接 `v1.4.3` 已建立的 `ceo-review / design-review / learn / deep` support surfaces 与 `v1.4.4` 的 restrained planning line，但继续补齐一个更底层的产品结构缺口：Beacon 还没有一套面向跨行业分析、外部 skill 治理与 machine-truth 最小化的清晰 docs architecture。
+- 当前版本状态：`current_runtime_release`
+- 当前版本已经成为 runtime release line；当前 runtime/default docs 为 `v1.4.5`
+- 当前版本承接 `v1.4.3` 已建立的 `ceo-review / design-review / learn / deep` support surfaces 与 `v1.4.4` 的 restrained planning line，并把跨行业 guidance、外部 skill 治理与 machine-truth 最小化正式收敛到当前发布线。
 
 ## 版本目标
 
@@ -72,7 +72,7 @@ support surfaces already exist
 ## 关键验收锚点
 
 - `docs/beacon/global-boundaries.md`
-- `docs/beacon/v1.4.3/SUMMARY.md`
+- `docs/beacon/v1.4.5/SUMMARY.md`
 - `docs/beacon/v1.4.4/SUMMARY.md`
 - `skills/beacon/beacon-brainstorm/SKILL.md`
 - `skills/beacon/beacon-ceo-review/SKILL.md`

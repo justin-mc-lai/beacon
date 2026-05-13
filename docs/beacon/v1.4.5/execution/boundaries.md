@@ -3,9 +3,9 @@
 ## Status
 
 - version: `v1.4.5`
-- status: `planning_only`
-- runtime line: `v1.4.3` remains current runtime/default docs line
-- implementation line: `planning line may contain execution artifacts without promoting the line`
+- status: `current_runtime_release`
+- runtime line: `v1.4.5` is the current runtime/default docs line
+- implementation line: `this line is promoted and release-governed`
 
 ## Main Lifecycle Boundary
 
@@ -74,4 +74,4 @@ The frozen implementation-facing subfeatures are:
 - `beacon-v1.4.5-docs-architecture-and-machine-truth-minimization`
 - `beacon-v1.4.5-governed-external-skill-sources-and-learning-composition`
 
-These subfeatures may carry implementation and QA artifacts inside the `v1.4.5` planning line, but that does not by itself promote `v1.4.5` to the current runtime release line.
+These subfeatures now ship inside the promoted `v1.4.5` release line and remain governed by Beacon's shared runtime and release gates.

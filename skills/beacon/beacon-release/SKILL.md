@@ -1,14 +1,14 @@
 ---
 name: beacon-release
-description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.4.3 runtime surface.
+description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.4.5 runtime surface.
 ---
 
 # Beacon Release
 
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
-The public command stays on the current **`v1.4.3`** runtime line and uses the shared delivery kernel and release-scorecard behavior defined by the **`v1.4.3`** docs tree (`docs/beacon/v1.4.3/`), unless your project explicitly pins another docs version.
-Compatibility wrappers may preserve older runtime aliases, but release truth, scorecards, and gate language should follow the `v1.4.3` docs line.
+The public command stays on the current **`v1.4.5`** runtime line and uses the shared delivery kernel and release-scorecard behavior defined by the **`v1.4.5`** docs tree (`docs/beacon/v1.4.5/`), unless your project explicitly pins another docs version.
+Compatibility wrappers may preserve older runtime aliases, but release truth, scorecards, and gate language should follow the `v1.4.5` docs line.
 
 `Beacon Acceptance Kit v1` is the release-facing proof base. Release should treat these as required proof layers:
 

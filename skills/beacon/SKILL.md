@@ -113,8 +113,8 @@ Use support surfaces when the user needs challenge, convergence, analysis, or go
 
 Keep only the minimum current anchors here:
 
-- current package version: `1.4.3`
-- current release/docs line: `docs/beacon/v1.4.3/`
+- current package version: `1.4.5`
+- current release/docs line: `docs/beacon/v1.4.5/`
 - if a project pins `docs/beacon/VERSION`, follow that pinned docs line for local truth
 
 More detailed runtime architecture, release-note history, and migration context belong in versioned docs, not in this wrapper.
@@ -123,9 +123,9 @@ More detailed runtime architecture, release-note history, and migration context 
 
 When deeper context is needed, start here:
 
-1. [`docs/beacon/v1.4.3/SUMMARY.md`](../../docs/beacon/v1.4.3/SUMMARY.md)
-2. [`docs/beacon/v1.4.3/execution/index.md`](../../docs/beacon/v1.4.3/execution/index.md)
-3. [`docs/beacon/v1.4.3/release/v1.4.3.md`](../../docs/beacon/v1.4.3/release/v1.4.3.md)
+1. [`docs/beacon/v1.4.5/SUMMARY.md`](../../docs/beacon/v1.4.5/SUMMARY.md)
+2. [`docs/beacon/v1.4.5/execution/index.md`](../../docs/beacon/v1.4.5/execution/index.md)
+3. [`docs/beacon/v1.4.5/release/v1.4.5.md`](../../docs/beacon/v1.4.5/release/v1.4.5.md)
 
 Do not treat this wrapper as the full runtime manual or release note.
 
