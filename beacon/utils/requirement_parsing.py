@@ -149,6 +149,41 @@ def extract_research_closure_items(content: str, source: str) -> list[dict[str, 
     return items
 
 
+def build_research_projection(
+    *,
+    research_content: str,
+    research_source: str,
+    feature: str = "",
+    version: str = "",
+) -> dict[str, Any]:
+    sections = _extract_research_sections(research_content)
+    closure_items = extract_research_closure_items(research_content, research_source)
+    nonempty_sections = {
+        key: [str(item).strip() for item in values if str(item).strip()]
+        for key, values in sections.items()
+        if any(str(item).strip() for item in values)
+    }
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "source": research_source,
+        "present": bool(str(research_content or "").strip()),
+        "section_count": len(nonempty_sections),
+        "sections": nonempty_sections,
+        "derived_items": [
+            {
+                "theme": str(item.get("theme") or ""),
+                "text": str(item.get("text") or ""),
+                "details": [str(detail).strip() for detail in (item.get("details") or []) if str(detail).strip()],
+                "source": str(item.get("source") or research_source),
+            }
+            for item in closure_items
+            if isinstance(item, dict)
+        ],
+    }
+
+
 def _merge_research_closure_items(
     items: list[dict[str, Any]],
     *,

@@ -24,7 +24,7 @@ from beacon.utils.qa9 import (
     to_legacy_layer,
 )
 from beacon.utils.runtime import write_json
-from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
+from beacon.utils.requirement_parsing import build_feature_ac_items, build_research_projection, extract_qa_case_rows
 from beacon.utils.requirement_deepening import (
     requirement_deepening_supported,
     sync_requirement_deepening_artifacts,
@@ -44,6 +44,16 @@ app = typer.Typer(name="test-case", help="Generate test cases")
 
 def _slug(text: str) -> str:
     return (text or "").strip().lower().replace(" ", "-")
+
+
+def _research_truth_enabled(version: str) -> bool:
+    normalized = normalize_version(version) or "v0.0.0"
+    raw = normalized.lstrip("v")
+    try:
+        major, minor, patch = [int(part) for part in raw.split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 3, 6)
 
 
 def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: str) -> list[Path]:
@@ -869,6 +879,7 @@ def _build_story_scenario_payload(
     ui_runner: str,
 ) -> tuple[dict, str]:
     feature_slug = _slug(feature)
+    research_enabled = _research_truth_enabled(version)
     us_path, us_content = _read_first_existing(
         _candidate_doc_paths(project_root, version, "user-story", feature_slug)
     )
@@ -885,11 +896,17 @@ def _build_story_scenario_payload(
         user_story_content=us_content,
         prd_content=prd_content,
         qa_content=qa_content,
-        research_content=research_content,
+        research_content=research_content if research_enabled else "",
         user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
         prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
+        research_source=f"research:{research_path}" if research_path and research_enabled else "research:missing",
+    )
+    research_projection = build_research_projection(
+        research_content=research_content,
         research_source=f"research:{research_path}" if research_path else "research:missing",
+        feature=feature,
+        version=version,
     )
     if not ac_items:
         ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
@@ -974,6 +991,7 @@ def _build_story_scenario_payload(
         ui_runner=resolved_ui_runner or "browser-use",
     )
     scenario_payload["feature"] = display_feature
+    scenario_payload["research_projection"] = research_projection
     return scenario_payload, (resolved_ui_runner or "browser-use")
 
 
@@ -1195,6 +1213,7 @@ def create(
         typer.echo(str(exc), err=True)
         raise typer.Exit(2)
     feature_slug = _slug(feature)
+    research_enabled = _research_truth_enabled(resolved_version)
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     try:
         requested_mode = normalize_requested_mode(mode)
@@ -1249,11 +1268,11 @@ def create(
         user_story_content=us_content,
         prd_content=prd_content,
         qa_content=qa_content,
-        research_content=research_content,
+        research_content=research_content if research_enabled else "",
         user_story_source=f"user-story:{us_path}" if us_path else "user-story:missing",
         prd_source=f"prd:{prd_path}" if prd_path else "prd:missing",
         qa_source=f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing",
-        research_source=f"research:{research_path}" if research_path else "research:missing",
+        research_source=f"research:{research_path}" if research_path and research_enabled else "research:missing",
     )
     if not ac_items:
         if legacy_story_path.exists():
@@ -1278,6 +1297,12 @@ def create(
                 raise typer.Exit(2)
             ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
     qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
+    research_projection = build_research_projection(
+        research_content=research_content,
+        research_source=f"research:{research_path}" if research_path else "research:missing",
+        feature=feature,
+        version=resolved_version,
+    )
 
     if host_requested:
         host_payload = _extract_host_test_case_payload_with_bridge(
@@ -1306,9 +1331,11 @@ def create(
             prd_content=prd_content,
             user_story_content=us_content,
             qa_content=qa_content,
+            research_content=research_content,
             prd_source=f"prd:docs/beacon/{resolved_version}/prd/{feature_slug}.md",
             user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{feature_slug}.md",
             qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{feature_slug}.md",
+            research_source=f"research:docs/beacon/{resolved_version}/research/{feature_slug}.md",
             compiler=compiler,
             target_artifact="test-case",
         )
@@ -1604,6 +1631,7 @@ def create(
             "model": model,
         },
         "entries": entries,
+        "research_projection": research_projection,
     }
     if deepening_payload:
         matrix_payload["requirement_deepening"] = {
@@ -1732,6 +1760,7 @@ def create(
             ],
         },
         "generated_at": datetime.now().isoformat(),
+        "research_projection": research_projection,
     }
     if deepening_payload:
         handoff = deepening_payload.get("human_loop_handoff") if isinstance(deepening_payload.get("human_loop_handoff"), dict) else {}
@@ -1776,6 +1805,7 @@ def create(
         scenario_payload["supplement_recommended_command"] = str(handoff.get("recommended_command") or "")
         scenario_payload["supplement_task"] = deepening_payload.get("supplement_task", {})
         scenario_payload["re_freeze_transaction"] = deepening_payload.get("re_freeze_transaction", {})
+    scenario_payload["research_projection"] = research_projection
 
     output_path = (
         Path(output)

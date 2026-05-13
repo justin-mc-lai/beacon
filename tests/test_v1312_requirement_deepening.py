@@ -26,6 +26,7 @@ def _seed_docs(root: Path) -> None:
     (base / "prd").mkdir(parents=True, exist_ok=True)
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "research").mkdir(parents=True, exist_ok=True)
     (base / "execution").mkdir(parents=True, exist_ok=True)
     (base / "release").mkdir(parents=True, exist_ok=True)
     (base / "source-architecture").mkdir(parents=True, exist_ok=True)
@@ -61,6 +62,25 @@ def _seed_docs(root: Path) -> None:
                 "## 4. Open Questions",
                 "- 如何保留 rejected 与 deferred 决策？",
                 "- 状态机是否需要覆盖 blocked / downgrade / recovery？",
+                "",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (base / "research" / f"{SLUG}.md").write_text(
+        "\n".join(
+            [
+                "# Research",
+                "",
+                "## Business Flow",
+                "- operator 审核后 user 才能继续下一步。",
+                "",
+                "## State Machine",
+                "- draft -> reviewing -> approved -> rejected",
+                "",
+                "## Decision Priority",
+                "- fallback 必须被显式记录并带恢复动作。",
                 "",
             ]
         )
@@ -164,6 +184,8 @@ def test_v1312_user_story_should_generate_requirement_deepening_artifacts(tmp_pa
             "state_machine",
         ]
     )
+    assert (envelope.get("research_projection") or {}).get("present") is True
+    assert "business_flow" in ((envelope.get("research_projection") or {}).get("sections") or {})
     assert ledger["entries"]
     assert {item["human_decision"] for item in decision_log["entries"]} <= {"accepted", "deferred"}
 

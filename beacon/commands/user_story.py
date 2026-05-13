@@ -7,9 +7,9 @@ from pathlib import Path
 from datetime import datetime
 import os
 
-from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
+from beacon.utils.versioning import normalize_version, resolve_operational_docs_version, resolve_target_version
 from beacon.utils.revision_state import load_revision_state
-from beacon.utils.requirement_parsing import build_feature_ac_items, extract_qa_case_rows
+from beacon.utils.requirement_parsing import build_feature_ac_items, build_research_projection, extract_qa_case_rows
 from beacon.utils.requirement_deepening import (
     requirement_deepening_supported,
     sync_requirement_deepening_artifacts,
@@ -25,6 +25,16 @@ from beacon.utils.runtime import write_json
 from beacon.utils.story_state import feature_slug, load_story_state, machine_story_path, save_story_state, sync_story_state_from_docs
 
 app = typer.Typer(name="user-story", help="Generate user stories")
+
+
+def _research_truth_enabled(version: str) -> bool:
+    normalized = normalize_version(version) or "v0.0.0"
+    raw = normalized.lstrip("v")
+    try:
+        major, minor, patch = [int(part) for part in raw.split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 3, 6)
 
 
 def _coerce_story_list(value) -> list[str]:
@@ -176,15 +186,16 @@ def _generate_story_from_truth(feature: str, project_root: Path, *, version: str
     story = generate_user_story(feature, project_root)
     user_story_text, prd_text, qa_text, research_text = _read_requirement_truth(project_root, version, feature)
     slug = feature_slug(feature)
+    research_enabled = _research_truth_enabled(resolve_target_version(project_root, version))
     ac_items = build_feature_ac_items(
         user_story_content=user_story_text,
         prd_content=prd_text,
         qa_content=qa_text,
-        research_content=research_text,
+        research_content=research_text if research_enabled else "",
         user_story_source="user-story:host-bridge",
         prd_source="prd:host-bridge",
         qa_source="qa:test-cases:host-bridge",
-        research_source=f"research:docs/beacon/{resolve_target_version(project_root, version)}/research/{slug}.md",
+        research_source=f"research:docs/beacon/{resolve_target_version(project_root, version)}/research/{slug}.md" if research_enabled else "research:missing",
     )
     qa_rows = extract_qa_case_rows(qa_text, "qa:test-cases:host-bridge")
     actor = _derive_story_actor(feature, prd_text, qa_text)
@@ -324,10 +335,16 @@ def create(
         if semantic and fallback_semantic_payload:
             semantic_payload = dict(fallback_semantic_payload)
 
-    user_story_text, prd_text, qa_text, _research_text = _read_requirement_truth(project_root, resolved_version, feature)
+    user_story_text, prd_text, qa_text, research_text = _read_requirement_truth(project_root, resolved_version, feature)
     story = generate_user_story(feature, project_root, semantic_payload=semantic_payload)
     truth_story = _generate_story_from_truth(feature, project_root, version=resolved_version)
     story = _merge_story_acceptance(story, truth_story)
+    research_projection = build_research_projection(
+        research_content=research_text,
+        research_source=f"research:docs/beacon/{resolved_version}/research/{slug}.md",
+        feature=feature,
+        version=resolved_version,
+    )
 
     memory_context_path = os.environ.get("BEACON_STAGE_CONTEXT_PATH", "").strip()
     compiler = build_mode_contract(
@@ -345,9 +362,11 @@ def create(
             prd_content=prd_text,
             user_story_content=user_story_text,
             qa_content=qa_text,
+            research_content=research_text,
             prd_source=f"prd:docs/beacon/{resolved_version}/prd/{slug}.md",
             user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{slug}.md",
             qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
+            research_source=f"research:docs/beacon/{resolved_version}/research/{slug}.md",
             compiler=compiler,
             target_artifact="user-story",
         )
@@ -421,6 +440,7 @@ def create(
         active_story["supplement_next_action"] = str(handoff.get("action") or "")
         active_story["supplement_task"] = dict(deepening_payload.get("supplement_task") or {})
         active_story["re_freeze_transaction"] = dict(deepening_payload.get("re_freeze_transaction") or {})
+    active_story["research_projection"] = research_projection
     save_story_state(project_root, version=resolved_version, feature=feature, state=active_story)
     load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
     machine_path = machine_story_path(project_root, resolved_version, feature)
@@ -442,6 +462,7 @@ def create(
             "semantic_payload": semantic_payload or fallback_semantic_payload or {},
             "compiler": compiler,
             "output_path": str(output_path),
+            "research_projection": research_projection,
         }
     )
     write_json(machine_path, machine_payload)
@@ -458,6 +479,7 @@ def create(
             "semantic_payload": semantic_payload or fallback_semantic_payload or {},
             "compiler": compiler,
             "output_path": str(output_path),
+            "research_projection": research_projection,
         },
     )
 

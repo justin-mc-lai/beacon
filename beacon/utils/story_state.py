@@ -7,7 +7,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.requirement_parsing import build_feature_ac_items
+from beacon.utils.requirement_parsing import build_feature_ac_items, build_research_projection
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -44,6 +44,10 @@ def _prd_markdown_path(project_root: Path, version: str, feature: str) -> Path:
 
 def _test_case_markdown_path(project_root: Path, version: str, feature: str) -> Path:
     return _version_root(project_root, version) / "qa" / "test-cases" / f"{feature_slug(feature)}.md"
+
+
+def _research_markdown_path(project_root: Path, version: str, feature: str) -> Path:
+    return _version_root(project_root, version) / "research" / f"{feature_slug(feature)}.md"
 
 
 def _read_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
@@ -348,6 +352,8 @@ def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -
     prd_content = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
     qa_path = _test_case_markdown_path(project_root, resolved_version, feature)
     qa_content = qa_path.read_text(encoding="utf-8") if qa_path.exists() else ""
+    research_path = _research_markdown_path(project_root, resolved_version, feature)
+    research_content = research_path.read_text(encoding="utf-8") if research_path.exists() else ""
     ac_seed = build_feature_ac_items(
         user_story_content=user_story_content,
         prd_content=prd_content,
@@ -421,6 +427,12 @@ def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -
     active_story["revision_id"] = current_revision_id
     active_story["priority"] = active_story.get("priority") or "medium"
     active_story["items"] = new_items
+    active_story["research_projection"] = build_research_projection(
+        research_content=research_content,
+        research_source=f"research:{research_path}",
+        feature=feature,
+        version=resolved_version,
+    )
     active_story["status"] = "frozen" if str(get_active_revision(root_state).get("doc_status", "draft") if get_active_revision(root_state) else "draft") == "frozen" else str(active_story.get("status") or "draft")
 
     stories = root_state.get("stories") if isinstance(root_state.get("stories"), list) else []

@@ -177,3 +177,6 @@ def test_user_story_should_consume_research_closure_sections(temp_project):
     assert any("人工审核流程" in item for item in flat_values)
     assert any("draft -> reviewing -> approved -> rejected" in item for item in flat_values)
     assert any("恢复重试" in item for item in flat_values)
+    research_projection = data.get("research_projection") or {}
+    assert research_projection.get("present") is True
+    assert "state_machine" in (research_projection.get("sections") or {})

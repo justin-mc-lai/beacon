@@ -20,6 +20,7 @@ def _seed_friend_match_docs(root: Path, version: str = "v1.0.0") -> None:
     base = root / "docs" / "beacon" / version
     (base / "user-story").mkdir(parents=True, exist_ok=True)
     (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "research").mkdir(parents=True, exist_ok=True)
     (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
     (base / "execution").mkdir(parents=True, exist_ok=True)
     (base / "release").mkdir(parents=True, exist_ok=True)
@@ -56,6 +57,25 @@ def _seed_friend_match_docs(root: Path, version: str = "v1.0.0") -> None:
         encoding="utf-8",
     )
     (base / "prd" / "friend-match.md").write_text("# PRD\n", encoding="utf-8")
+    (base / "research" / "friend-match.md").write_text(
+        "\n".join(
+            [
+                "# Research",
+                "",
+                "## Business Flow",
+                "- 创建比赛后必须可以邀请朋友加入。",
+                "",
+                "## State Machine",
+                "- match state: draft -> open -> active -> completed",
+                "",
+                "## Decision Priority",
+                "- 当邀请码无效时，优先提示错误而不是继续进入房间。",
+                "",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
     (base / "qa" / "test-cases" / "friend-match.md").write_text(
         "\n".join(
             [
@@ -103,14 +123,18 @@ def test_doctor_sync_materials_should_rebuild_machine_story_and_qa_from_section_
     test_items = [item for item in active_story["items"] if item["kind"] == "test"]
     assert [item["story_id"] for item in ac_items] == ["US-001", "US-002", "CR-DB-001", "RG-010"]
     assert len(test_items) == 4
+    assert (active_story.get("research_projection") or {}).get("present") is True
+    assert "business_flow" in ((active_story.get("research_projection") or {}).get("sections") or {})
 
     matrix = json.loads((tmp_path / "docs" / "beacon" / "v1.0.0" / ".machine" / "qa" / "friend-match.ac-test-matrix.json").read_text(encoding="utf-8"))
     assert [item["tc_id"] for item in matrix["entries"]] == ["TC-US001-01", "TC-US002-01", "TC-DB001-01", "TC-RG010-01"]
     assert [item["ac_id"] for item in matrix["entries"]] == ["AC-001", "AC-002", "AC-003", "AC-004"]
+    assert (matrix.get("research_projection") or {}).get("present") is True
 
     scenario_map = json.loads((tmp_path / "docs" / "beacon" / "v1.0.0" / ".machine" / "qa" / "friend-match.story-scenario-map.json").read_text(encoding="utf-8"))
     scenario_source_tc_ids = {item["source_tc_id"] for item in scenario_map["scenarios"]}
     assert {"TC-US001-01", "TC-US002-01", "TC-DB001-01", "TC-RG010-01"} <= scenario_source_tc_ids
+    assert (scenario_map.get("research_projection") or {}).get("present") is True
 
 
 def test_sync_feature_requirement_materials_should_pass_explicit_defaults_to_test_case_create(tmp_path: Path):

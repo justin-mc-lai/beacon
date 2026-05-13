@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.requirement_parsing import build_research_projection
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import normalize_version, resolve_target_version
@@ -105,14 +106,22 @@ def build_requirement_envelope(
     prd_content: str,
     user_story_content: str,
     qa_content: str,
+    research_content: str,
     prd_source: str,
     user_story_source: str,
     qa_source: str,
+    research_source: str,
 ) -> dict[str, Any]:
     prd_lines = _snippet_lines(prd_content, limit=14)
     us_lines = _snippet_lines(user_story_content, limit=10)
     qa_lines = _snippet_lines(qa_content, limit=10)
     corpus = "\n".join([feature, prd_content, user_story_content, qa_content])
+    research_projection = build_research_projection(
+        research_content=research_content,
+        research_source=research_source,
+        feature=feature,
+        version=version,
+    )
 
     actor_seed = []
     if _contains_any(corpus, ("owner", "operator", "admin", "运营", "管理")):
@@ -213,6 +222,7 @@ def build_requirement_envelope(
             "prd": prd_source,
             "user_story": user_story_source,
             "qa": qa_source,
+            "research": research_source,
         },
         "dimensions": dimensions,
         "source_excerpt": {
@@ -220,6 +230,7 @@ def build_requirement_envelope(
             "user_story": us_lines,
             "qa": qa_lines,
         },
+        "research_projection": research_projection,
     }
 
 
@@ -831,9 +842,11 @@ def sync_requirement_deepening_artifacts(
     prd_content: str,
     user_story_content: str,
     qa_content: str,
+    research_content: str = "",
     prd_source: str,
     user_story_source: str,
     qa_source: str,
+    research_source: str = "research:missing",
     compiler: dict[str, Any],
     revision_id: str = "R1",
     target_artifact: str = "",
@@ -849,9 +862,11 @@ def sync_requirement_deepening_artifacts(
         prd_content=prd_content,
         user_story_content=user_story_content,
         qa_content=qa_content,
+        research_content=research_content,
         prd_source=prd_source,
         user_story_source=user_story_source,
         qa_source=qa_source,
+        research_source=research_source,
     )
     existing_ac_items = []
     try:
@@ -861,9 +876,11 @@ def sync_requirement_deepening_artifacts(
             user_story_content=user_story_content,
             prd_content=prd_content,
             qa_content=qa_content,
+            research_content=research_content,
             user_story_source=user_story_source,
             prd_source=prd_source,
             qa_source=qa_source,
+            research_source=research_source,
         )
     except Exception:  # noqa: BLE001
         existing_ac_items = []

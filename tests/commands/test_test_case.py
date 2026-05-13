@@ -210,5 +210,11 @@ def test_test_case_should_consume_research_closure_sections(temp_project):
     matrix_json = temp_project / "docs" / "beacon" / "v1.3.6" / ".machine" / "qa" / "test-feature.ac-test-matrix.json"
     with open(matrix_json) as f:
         payload = json.load(f)
-    sources = [str(item.get("source") or "") for item in payload.get("entries", [])]
-    assert any("research:" in source for source in sources)
+    research_projection = payload.get("research_projection") or {}
+    assert research_projection.get("present") is True
+    assert "business_flow" in (research_projection.get("sections") or {})
+
+    scenario_json = temp_project / "docs" / "beacon" / "v1.3.6" / ".machine" / "qa" / "test-feature.story-scenario-map.json"
+    with open(scenario_json) as f:
+        scenario_payload = json.load(f)
+    assert (scenario_payload.get("research_projection") or {}).get("present") is True
