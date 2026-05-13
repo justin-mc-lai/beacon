@@ -117,7 +117,16 @@ Skill text must not encourage:
 - treating unclassified full-suite output as a release blocker
 - letting skill text override machine evidence from `doctor`, `qa`, or `release`
 
-When Beacon itself evolves, test interpretation and release claims should stay tied to machine-readable evidence and explicit contract lanes.
+When Beacon itself evolves, test interpretation and release claims should stay tied to machine-readable evidence and explicit contract-lane semantics.
+
+Beacon's canonical contract-lane names include:
+
+- `feature_release_facing`
+- `current_runtime_contract`
+- `generated_surface_sync`
+- `compatibility_contract`
+- `legacy_snapshot`
+- `browser_runtime_admission`
 
 ## Rule 9: Examples should teach routing, not replace judgment
 
