@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import machine_qa_dir, qa_docs_dir, uses_machine_surface
+from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -298,6 +299,35 @@ def _implementation_slugs(project_root: Path, version: str, feature: str | None 
     return combined
 
 
+def _accepted_revision_slugs(project_root: Path, version: str, feature: str | None = None) -> set[str]:
+    machine_exec_dir = project_root / "docs" / "beacon" / version / ".machine" / "execution"
+    if not machine_exec_dir.exists():
+        return set()
+
+    accepted: set[str] = set()
+    for path in machine_exec_dir.glob("*.revision.json"):
+        payload = _read_json(path)
+        if not payload:
+            continue
+        payload_version = str(payload.get("version") or "").strip()
+        if payload_version and payload_version != version:
+            continue
+        delivery_status = str(payload.get("delivery_status") or "").strip().lower()
+        lifecycle_status = str(payload.get("lifecycle_status") or "").strip().lower()
+        doc_status = str(payload.get("doc_status") or "").strip().lower()
+        if delivery_status not in {"accepted", "implemented"} and lifecycle_status not in {"accepted", "implemented"}:
+            continue
+        if doc_status not in {"frozen", "accepted", "implemented"}:
+            continue
+        slug = str(payload.get("feature_slug") or "").strip()
+        if slug:
+            accepted.add(slug)
+
+    if feature:
+        accepted = {slug for slug in accepted if slug == feature}
+    return accepted
+
+
 def compute_coverage_metrics(
     project_root: Path,
     *,
@@ -314,7 +344,15 @@ def compute_coverage_metrics(
     story_slugs = {p.stem for p in story_files}
 
     impl_slugs = _implementation_slugs(project_root, ver, feature=feature_filter or None)
-    implemented_story = len(story_slugs & impl_slugs) if story_slugs else 0
+    accepted_revision_slugs = _accepted_revision_slugs(project_root, ver, feature=feature_filter or None)
+    implemented_story_slugs = story_slugs & (impl_slugs | accepted_revision_slugs) if story_slugs else set()
+    if feature_filter and not implemented_story_slugs and planned_story == 1:
+        only_story = next(iter(story_slugs), "")
+        if only_story == feature_slug(feature_filter):
+            feature_scorecard = _read_json(project_root / ".beacon" / "qa" / "features" / feature_filter / "scorecard.json")
+            if bool(feature_scorecard.get("release_ready", False)) and str(feature_scorecard.get("continue_decision") or "").strip() == "ready_for_release":
+                implemented_story_slugs = {only_story}
+    implemented_story = len(implemented_story_slugs)
 
     feature_scorecard_metrics = _feature_scorecard_coverage_metrics(
         project_root,

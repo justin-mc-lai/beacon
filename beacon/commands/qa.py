@@ -25,6 +25,7 @@ from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
 from beacon.utils.prototype_utils import prototype_files
+from beacon.utils.prototype_support import feature_requires_prototype
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
     resolve_profile_for_feature,
@@ -306,15 +307,31 @@ def _qa_design_truth_verdict(
 ) -> dict[str, Any]:
     if _semver_tuple(version) < (1, 4, 4):
         return {"schema_version": "1.0", "status": "not_applicable", "blocked": False, "reason_codes": []}
+    files = prototype_files(project_root, version, feature)
+    style_path = files["design_artifacts_dir"] / "style-preset.json"
+    lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
     handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
+    design_truth_required = (
+        feature_requires_prototype(project_root, version, feature)
+        or bool(handoff_design_truth)
+        or style_path.exists()
+        or lint_path.exists()
+    )
+    if not design_truth_required:
+        return {
+            "schema_version": "1.0",
+            "status": "not_applicable",
+            "blocked": False,
+            "reason_codes": [],
+            "source_surface": "implement-to-qa-handoff",
+            "verification_surface": "qa",
+            "findings": [],
+        }
     reason_codes: list[str] = []
     findings: list[dict[str, Any]] = []
     if not handoff_design_truth:
         reason_codes.append("design_truth_handoff_missing")
         findings.append({"reason_code": "design_truth_handoff_missing", "message": "implement-to-qa handoff did not include design truth"})
-    files = prototype_files(project_root, version, feature)
-    style_path = files["design_artifacts_dir"] / "style-preset.json"
-    lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
     missing_refs = [
         str(path.relative_to(project_root))
         for path in (style_path, lint_path)

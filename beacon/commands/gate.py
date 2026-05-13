@@ -3937,7 +3937,7 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
         return issues
 
     executed_layers = {
-        normalize_qa_type(str(item.get("layer")))
+        normalize_qa_type(str(item.get("qa_type") or item.get("layer")))
         for item in layers
         if str(item.get("status")) == "passed"
     }
@@ -3986,7 +3986,7 @@ def check_test_execution_integrity(project_root: Path, mode: GateMode, stage: st
     execution_run_id = str(execution.get("run_id", "")).strip() if isinstance(execution, dict) else ""
     chain_broken = []
     for item in entries:
-        layer = normalize_qa_type(str(item.get("layer")))
+        layer = normalize_qa_type(str(item.get("qa_type") or item.get("layer")))
         if layer not in executed_layers:
             chain_broken.append(item.get("tc_id"))
             continue

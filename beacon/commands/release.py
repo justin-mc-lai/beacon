@@ -121,6 +121,22 @@ def _load_json(path: Path) -> dict:
     return payload if isinstance(payload, dict) else {}
 
 
+def _select_gate_report_path(project_root: Path, *, version: str) -> Path:
+    release_gate = release_gate_report_file(project_root)
+    generic_gate = project_root / ".beacon" / "gate-report.json"
+    for candidate in (release_gate, generic_gate):
+        payload = _load_json(candidate)
+        if not payload:
+            continue
+        artifact_version = _extract_version(payload)
+        stage = str(payload.get("stage") or "").strip().lower()
+        if artifact_version == version and stage in {"", "release"}:
+            return candidate
+    if release_gate.exists():
+        return release_gate
+    return generic_gate
+
+
 def _dedupe_strings(values: list) -> list[str]:
     out: list[str] = []
     seen: set[str] = set()
@@ -771,8 +787,7 @@ def check(
     )
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
-    release_gate_report_path = release_gate_report_file(project_root)
-    gate_report_path = release_gate_report_path if release_gate_report_path.exists() else project_root / ".beacon" / "gate-report.json"
+    gate_report_path = _select_gate_report_path(project_root, version=resolved_version)
     manifest_path = project_root / ".beacon" / "evidence-manifest.json"
     coverage_summary_path = project_root / ".beacon" / "coverage-summary.json"
 

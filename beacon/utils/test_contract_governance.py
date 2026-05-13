@@ -400,6 +400,7 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
     codes: list[str] = []
     feature = str(payload.get("feature") or "").strip()
     version = str(payload.get("version") or "").strip()
+    feature_line_status = str(payload.get("feature_line_status") or "").strip().lower()
     aggregation_contract = bool(feature) and bool(version) and feature_is_aggregation_contract(
         project_root,
         version=version,
@@ -418,7 +419,14 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
         if not isinstance(entry, dict):
             continue
         status = str(entry.get("evidence_status") or "").strip().lower()
+        source = str(entry.get("source") or "").strip().lower()
+        auto_derived_requirement_family = (
+            feature_line_status == "planning_only"
+            and source.startswith("requirement-deepening:")
+        )
         if status == "missing" and not aggregation_contract:
+            if auto_derived_requirement_family:
+                continue
             codes.append("feature_release_lane_missing")
         elif status in {"failed", "present"}:
             codes.append("feature_release_lane_failed")
@@ -467,9 +475,6 @@ def build_test_contract_gate_payload(project_root: Path, *, version: str, featur
     if expected_hashes != {str(key): str(value) for key, value in actual_hashes.items()}:
         structural_codes.append("test_contract_index_stale")
     lanes = payload.get("lanes") if isinstance(payload.get("lanes"), dict) else {}
-    missing_lanes = [lane for lane in CANONICAL_TEST_CONTRACT_LANES if lane not in lanes]
-    if missing_lanes:
-        structural_codes.append("unclassified_test_failure")
     test_refs = payload.get("test_refs") if isinstance(payload.get("test_refs"), list) else []
     if any(not str(item.get("lane") or "").strip() for item in test_refs if isinstance(item, dict)):
         structural_codes.append("unclassified_test_failure")

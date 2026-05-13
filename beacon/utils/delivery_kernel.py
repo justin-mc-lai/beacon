@@ -6,6 +6,8 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates
+from beacon.utils.host_prompt_trace import load_host_prompt_trace
+from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.implement_prompt_boundary import implement_prompt_boundary_supported
 from beacon.utils.qa_feature import load_feature_qa_status
 from beacon.utils.runtime import read_json
@@ -311,10 +313,43 @@ def _normalize_prompt_boundary(payload: dict[str, Any] | None, *, version: str) 
     return normalized
 
 
+def _resolve_prompt_boundary(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    implement_state: dict[str, Any],
+) -> dict[str, Any]:
+    prompt_boundary = _normalize_prompt_boundary(implement_state.get("prompt_boundary"), version=version)
+    if not bool(prompt_boundary.get("required", False)):
+        return prompt_boundary
+    prompt = _clean_str(prompt_boundary.get("prompt"))
+    if prompt:
+        return prompt_boundary
+
+    host_trace = load_host_prompt_trace(project_root, version=version, feature=feature)
+    latest_event = host_trace.get("latest_event") if isinstance(host_trace.get("latest_event"), dict) else {}
+    host_prompt = _clean_str(latest_event.get("original_host_prompt"))
+    if not host_prompt:
+        return prompt_boundary
+
+    reevaluated = evaluate_implement_prompt_boundary(
+        project_root,
+        version=version,
+        feature=feature,
+        host_prompt=host_prompt,
+    )
+    if not isinstance(reevaluated, dict) or not reevaluated:
+        return prompt_boundary
+    reevaluated["surface"] = _clean_str(latest_event.get("surface")) or _clean_str(prompt_boundary.get("surface")) or "host_prompt_trace"
+    return _normalize_prompt_boundary(reevaluated, version=version)
+
+
 def build_delivery_read_model(
     *,
     feature: str,
     version: str,
+    project_root: Path | None = None,
     implement_payload: dict[str, Any] | None = None,
     qa_payload: dict[str, Any] | None = None,
     release_payload: dict[str, Any] | None = None,
@@ -373,7 +408,16 @@ def build_delivery_read_model(
     qa_release = _clean_dict(release_state.get("qa"))
     semantic = _clean_dict(release_state.get("semantic"))
     revision_binding = _clean_dict(release_state.get("revision_binding"))
-    prompt_boundary = _normalize_prompt_boundary(implement_state.get("prompt_boundary"), version=resolved_version)
+    prompt_boundary = (
+        _resolve_prompt_boundary(
+            project_root,
+            version=resolved_version,
+            feature=feature_name,
+            implement_state=implement_state,
+        )
+        if project_root is not None
+        else _normalize_prompt_boundary(implement_state.get("prompt_boundary"), version=resolved_version)
+    )
     risk_flags = _clean_list(authoritative_contract.get("risk_flags"))
     risk_flags.extend(_clean_list(release_state.get("risk_flags")))
     if qa_state and _clean_str(qa_state.get("status")).lower() not in {"", "passed"}:
@@ -451,6 +495,7 @@ def load_delivery_read_model(
     return build_delivery_read_model(
         feature=feature,
         version=resolved_version,
+        project_root=project_root,
         implement_payload=implement_state,
         qa_payload=qa_state,
         release_payload=release_payload,

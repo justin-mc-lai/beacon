@@ -65,6 +65,22 @@ def _load_json(path: Path) -> dict[str, Any]:
     return payload if isinstance(payload, dict) else {}
 
 
+def _resolve_release_gate_report(project_root: Path, *, version: str) -> dict[str, Any]:
+    release_gate_report = _load_json(release_gate_report_file(project_root))
+    if release_gate_report:
+        artifact_version = str(release_gate_report.get("version") or "").strip()
+        stage = str(release_gate_report.get("stage") or "").strip().lower()
+        if artifact_version == version and stage in {"", "release"}:
+            return release_gate_report
+    gate_report = _load_json(project_root / ".beacon" / "gate-report.json")
+    if gate_report:
+        artifact_version = str(gate_report.get("version") or "").strip()
+        stage = str(gate_report.get("stage") or "").strip().lower()
+        if artifact_version == version and stage in {"", "release"}:
+            return gate_report
+    return release_gate_report or gate_report
+
+
 def _normalize_prompt_boundary(
     project_root: Path,
     *,
@@ -478,8 +494,7 @@ def _browser_release_reason_codes(
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
-    release_gate_report = _load_json(release_gate_report_file(project_root))
-    gate_report = release_gate_report or _load_json(project_root / ".beacon" / "gate-report.json")
+    gate_report = _resolve_release_gate_report(project_root, version=resolved_version)
     evidence_manifest = validate_evidence_manifest(project_root)
     qa_status = load_qa_status(project_root)
     gate_version = str(gate_report.get("version") or "").strip()

@@ -379,6 +379,7 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
         if first.startswith("TC-"):
             tc_id = first
             story_id = story_id_from_tc_id(tc_id)
+            execution = cells[5] if len(cells) > 5 else ""
             rows.append(
                 {
                     "tc_id": tc_id,
@@ -387,7 +388,7 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
                     "scenario": cells[2],
                     "steps": cells[3],
                     "expected_result": cells[4],
-                    "execution": cells[5],
+                    "execution": execution,
                     "source": source,
                 }
             )
