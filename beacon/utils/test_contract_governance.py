@@ -146,6 +146,11 @@ def _classify_lane(entry: dict[str, Any], ac_item: dict[str, Any]) -> str:
     return "feature_release_facing"
 
 
+def _is_requirement_deepening_entry(entry: dict[str, Any]) -> bool:
+    source = str(entry.get("source") or "").strip().lower()
+    return source.startswith("requirement-deepening:")
+
+
 def _entry_release_blocking(lane: str) -> bool:
     return lane in {"feature_release_facing", "current_runtime_contract", "generated_surface_sync", "compatibility_contract", "browser_runtime_admission"}
 
@@ -336,6 +341,7 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
         mapping_status = "pass" if ac_id and tc_id and (evidence_path or lane == "generated_surface_sync") else "missing"
         if _entry_release_blocking(lane) and mapping_status != "pass":
             mapping_gaps.append(tc_id or ac_id or "unknown")
+        release_blocking = _entry_release_blocking(lane) and not _is_requirement_deepening_entry(entry)
         normalized = {
             "tc_id": tc_id,
             "ac_id": ac_id,
@@ -347,7 +353,7 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
             "evidence_path": evidence_path,
             "evidence_status": evidence_status,
             "source": str(entry.get("source") or ""),
-            "release_blocking": _entry_release_blocking(lane),
+            "release_blocking": release_blocking,
             "mapping_status": mapping_status,
         }
         test_refs.append(normalized)
@@ -418,15 +424,10 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
     for entry in feature_lane:
         if not isinstance(entry, dict):
             continue
+        if not bool(entry.get("release_blocking", False)):
+            continue
         status = str(entry.get("evidence_status") or "").strip().lower()
-        source = str(entry.get("source") or "").strip().lower()
-        auto_derived_requirement_family = (
-            feature_line_status == "planning_only"
-            and source.startswith("requirement-deepening:")
-        )
         if status == "missing" and not aggregation_contract:
-            if auto_derived_requirement_family:
-                continue
             codes.append("feature_release_lane_missing")
         elif status in {"failed", "present"}:
             codes.append("feature_release_lane_failed")

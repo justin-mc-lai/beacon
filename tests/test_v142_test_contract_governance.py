@@ -232,6 +232,102 @@ def test_release_passes_test_contract_gate_after_index_build(tmp_path: Path) -> 
     assert summary["test_contract_release_blocked"] is False
 
 
+def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_release(tmp_path: Path) -> None:
+    version = "v1.4.6"
+    feature = "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"
+    slug = feature
+    _write_json(
+        tmp_path / "beacon" / "version-truth.json",
+        {
+            "schema_version": "1.0",
+            "runtime_version": version,
+            "package_version": "1.4.6",
+            "docs_default_line": version,
+            "current_runtime_release_line": version,
+            "planning_lines": [],
+            "partial_runtime_supplement_lines": [],
+            "lines": {
+                version: {"status": "current_runtime_release"},
+            },
+        },
+    )
+    (tmp_path / "beacon" / "__init__.py").write_text(
+        '__version__ = "1.4.6"\n__toolkit_version__ = "v1.4.6"\n',
+        encoding="utf-8",
+    )
+    version_root = tmp_path / "docs" / "beacon" / version
+    for rel in [
+        f"prd/{slug}.md",
+        f"user-story/{slug}.md",
+        f"qa/test-cases/{slug}.md",
+    ]:
+        path = version_root / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(f"# {rel}\n", encoding="utf-8")
+    _write_json(
+        version_root / ".machine" / "user-story" / f"{slug}.json",
+        {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "current_revision_id": "R1",
+            "stories": [
+                {
+                    "story_id": "US-001",
+                    "items": [
+                        {"id": "AC-001", "kind": "ac", "theme": "index-contract", "text": "Index contract"},
+                    ],
+                }
+            ],
+        },
+    )
+    _write_json(
+        version_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json",
+        {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "entries": [
+                {
+                    "tc_id": "TC-ADRIFT46-001",
+                    "ac_id": "AC-001",
+                    "layer": "contract",
+                    "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k contract",
+                    "assertion": "key host-visible skills freeze contract",
+                    "evidence_path": f".beacon/evidence/test-results/{slug}/TC-ADRIFT46-001.json",
+                    "status": "pending",
+                    "source": f"qa:test-cases:docs/beacon/{version}/qa/test-cases/{slug}.md",
+                },
+                {
+                    "tc_id": "TC-011",
+                    "ac_id": "AC-001",
+                    "layer": "unit",
+                    "command": "python3 -m pytest -q -k unit",
+                    "assertion": "coverage family happy remains executable",
+                    "evidence_path": f".beacon/evidence/test-results/{slug}/TC-011.json",
+                    "status": "pending",
+                    "source": "requirement-deepening:coverage-family",
+                    "coverage_family": "happy",
+                },
+            ],
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "evidence" / "test-results" / slug / "TC-ADRIFT46-001.json",
+        {"status": "passed", "tc_id": "TC-ADRIFT46-001"},
+    )
+
+    payload = build_test_contract_index(tmp_path, version=version, feature=feature, write=True)
+    gate = build_test_contract_gate_payload(tmp_path, version=version, feature=feature)
+
+    coverage_entry = next(item for item in payload["test_refs"] if item["tc_id"] == "TC-011")
+    assert coverage_entry["release_blocking"] is False
+    assert gate["release_gate"]["blocked"] is False
+    assert "feature_release_lane_missing" not in gate["release_gate"]["reason_codes"]
+
+
 def test_feature_qa_placeholder_evidence_paths_resolve_to_feature_qa_artifacts(tmp_path: Path) -> None:
     _seed_project(tmp_path, include_evidence=False)
     feature_matrix_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json"
