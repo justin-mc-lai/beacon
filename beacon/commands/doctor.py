@@ -171,6 +171,13 @@ def _print_advise_result(payload: dict[str, Any]) -> None:
     typer.echo(f"blocked         : {bool(payload.get('blocked'))}")
     projection = payload.get("support_surface_projection") if isinstance(payload.get("support_surface_projection"), dict) else {}
     typer.echo(f"operator_doc    : {projection.get('primary_operator_doc_ref') or 'N/A'}")
+    release_research = payload.get("release_research") if isinstance(payload.get("release_research"), dict) else {}
+    if release_research:
+        typer.echo(
+            f"release_research: present={bool(release_research.get('present'))} "
+            f"sections={','.join(release_research.get('sections', [])) if isinstance(release_research.get('sections'), list) else ''} "
+            f"count={release_research.get('section_count', 0)}"
+        )
 
     scores = payload.get('scores') if isinstance(payload.get('scores'), dict) else {}
     typer.echo("\nScores")
