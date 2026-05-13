@@ -7,19 +7,33 @@
   "source_revision_id": "",
   "reason": "freeze",
   "doc_status": "frozen",
-  "delivery_status": "accepted",
-  "lifecycle_status": "accepted",
-  "baseline_hash": "sha256:a944da2b086fa92c257cbcf6b43291cad1a7766048cb80ff9bb1381dfb6141fa",
+  "delivery_status": "implemented",
+  "lifecycle_status": "implemented",
+  "baseline_hash": "sha256:ea2b377cfba803c97b63c0156e9c399ad0bec00483c43f909fa6fd33d0c35292",
   "superseded_by": "",
   "created_at": "2026-05-13T00:00:00+08:00",
-  "frozen_at": "2026-05-13T00:00:00+08:00",
-  "accepted_at": "2026-05-13T09:39:12.807309+08:00",
-  "last_verification_run_id": "run-20260513T093912807309",
+  "frozen_at": "2026-05-13T15:05:32.194885+00:00",
+  "accepted_at": "2026-05-13T14:24:18.695238+00:00",
+  "last_verification_run_id": "run-20260513T222411136137",
   "verification_evidence": [
     ".beacon/auto-test-status.json",
     ".beacon/qa/status.json",
+    "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
     ".beacon/coverage-summary.json",
-    "tests/test_v146_anti_drift_skill_contracts.py"
+    ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
+    ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json"
   ],
-  "accepted_by": "qa"
+  "accepted_by": "qa",
+  "last_implementation_run_id": "run-20260513T222411136137",
+  "changed_files": [
+    "beacon/commands/gate.py",
+    "beacon/commands/release.py",
+    "beacon/commands/qa.py",
+    "beacon/utils/coverage.py",
+    "beacon/utils/delivery_kernel.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/utils/requirement_parsing.py",
+    "beacon/utils/test_contract_governance.py",
+    "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+  ]
 }

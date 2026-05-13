@@ -46,6 +46,13 @@ and connect them to Beacon's existing strengths:
 
 The result should be a Beacon line where host-visible skills are harder to misuse, support surfaces are harder to overreach, and the path from judgment to evidence to gate becomes more checkable.
 
+## Scope
+
+- Freeze `Skill Anatomy v2` for the core host-visible surface set: `using-beacon / brainstorm / change / implement / qa / release`, and keep the rest of the surface family aligned by the same contract philosophy without requiring one-shot full rewrite of every historical skill.
+- Freeze `high-risk decision challenge` as a governed sub-contract that must bind back into `implement / qa / release` evidence, state, or gate impact, not as a new top-level public lifecycle surface in v1.4.6.
+- Land machine enforcement first on release-facing and QA-facing trace checks, while also freezing the lint/check design so later docs-lint expansion stays consistent with the same contract.
+- Keep v1.4.6 as a host-visible contract and governance upgrade only; do not add a new lifecycle stage, do not introduce an external runtime dependency, and do not reopen Beacon's lightweight philosophy into script-first operation playbooks.
+
 ## 1. 问题
 
 ### 1.1 Beacon 的治理骨架已经很强，但部分 public skill contract 仍然不够锋利
@@ -368,8 +375,8 @@ Beacon 必须能表达：
 
 Beacon 需要的是蒸馏方法，不是引入新的公开主叙事或运行前提。
 
-## 10. Open Questions
+## 10. 冻结决策
 
-1. `high-risk decision challenge` 应作为独立 public surface 冻结，还是先作为 `beacon-implement / beacon-qa / beacon-release` 的受治理子合同存在？
-2. `Skill Anatomy v2` 应先覆盖全部 public surfaces，还是先覆盖最核心的 `using-beacon / brainstorm / change / implement / qa / release`？
-3. machine enforcement 应先落在 docs lint，还是先落在 release/qa-facing trace checks？
+1. `high-risk decision challenge` 在 `v1.4.6` 冻结为受治理子合同，不单独升格为新的 public lifecycle surface；它必须作为 `implement / qa / release` 的 challenge capability 落地，并把结果绑定回 evidence / state / gate。
+2. `Skill Anatomy v2` 在 `v1.4.6` 先强制覆盖最核心的 `using-beacon / brainstorm / change / implement / qa / release`，其余 public/support surfaces 按同一哲学对齐，但不把“全量一次性改写全部 surfaces”作为本版本前提。
+3. machine enforcement 在 `v1.4.6` 先落到 release-facing / QA-facing trace checks 与现有 guardrails，确保 contract 缺口能真实阻断交付；docs lint 作为后续扩展面沿同一 contract 继续补齐，而不是本版本唯一落点。

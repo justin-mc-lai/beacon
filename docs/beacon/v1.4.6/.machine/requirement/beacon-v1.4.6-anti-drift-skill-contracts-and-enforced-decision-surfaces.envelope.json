@@ -3,104 +3,140 @@
   "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
   "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
   "version": "v1.4.6",
-  "generated_at": "2026-05-13T00:00:00+08:00",
+  "generated_at": "2026-05-13T15:05:28.812995+00:00",
   "sources": {
     "prd": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
     "user_story": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-    "qa": "qa:test-cases:docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+    "qa": "qa:test-cases:docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "research": "research:docs/beacon/v1.4.6/research/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
   },
   "dimensions": {
     "actors": [
       {
-        "name": "Beacon maintainer",
-        "source_truth_ref": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "primary owner of public skill contract evolution"
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+        "rationale": "derived from PRD and current requirement package"
       },
       {
-        "name": "Beacon operator",
-        "source_truth_ref": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "consumes route, explainability, and challenge semantics"
-      },
-      {
-        "name": "workflow governance owner",
-        "source_truth_ref": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "owns freeze, enforcement, and cross-surface consistency"
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+        "rationale": "derived from PRD and current requirement package"
       }
     ],
     "capability_differences": [
       {
-        "name": "support surface vs truth surface authority",
+        "name": "role-specific capability differences",
         "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "v1.4.6 depends on explicit authority boundaries"
+        "rationale": "v1.3.12 requires role and capability variance discovery"
       }
     ],
     "state_machine": [
       {
-        "name": "draft -> clarified -> frozen -> implemented -> verified",
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
         "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "anti-drift contracts must bind into the existing Beacon lifecycle rather than creating a new stage"
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
       }
     ],
     "happy_paths": [
       {
-        "name": "public skill contract is tightened and machine-checkable before implementation",
-        "source_truth_ref": "qa:test-cases:docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
         "rationale": "main requirement closure path"
       }
     ],
     "negative_paths": [
       {
-        "name": "support surface overreaches into truth or gate authority",
+        "name": "host deepening unavailable and rule fallback used",
         "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "must be blocked by contract and lint checks"
+        "rationale": "downgrade path must stay auditable"
       }
     ],
     "boundary_conditions": [
       {
-        "name": "no new lifecycle stage and no external runtime dependency",
+        "name": "no new public lifecycle stage or command",
         "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "version boundary and lightweight requirement"
+        "rationale": "global boundary constraint"
       }
     ],
     "exceptions": [
       {
-        "name": "challenge verdict produced without route/evidence/state/gate binding",
+        "name": "manual markdown patch without decision trail",
         "source_truth_ref": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "must fail closed as free-form commentary"
+        "rationale": "must fail closed for silent truth mutation"
       }
     ],
     "recovery_paths": [
       {
-        "name": "clarify -> update contract surface -> re-freeze -> run anti-drift checks",
-        "source_truth_ref": "qa:test-cases:docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "formal recovery path when contract drift is detected"
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+        "rationale": "formal recovery/writeback contract"
       }
     ],
     "risks": [
       {
-        "name": "public skill docs stay descriptive instead of executable",
+        "name": "scope creep from uncontrolled LLM expansion",
         "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
-        "rationale": "core risk v1.4.6 is meant to close"
+        "rationale": "accepted/rejected/deferred decisions required"
       }
     ],
-    "open_questions": []
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
   },
   "source_excerpt": {
     "prd": [
       "Feature**: `beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces`",
+      "Version**: `v1.4.6`",
+      "Date**: `2026-05-13`",
       "Status**: `freeze-ready`",
-      "Beacon v1.4.6 should freeze a stronger anti-drift skill contract layer.",
-      "The goal is not to copy external skill packs or reduce Beacon into a prompt library."
+      "Track**: `skill-governance + anti-drift-enforcement`",
+      "Scenario**: `philosophy-contracts-connected-to-state-evidence-and-gate`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Brainstorm closure:",
+      " `docs/brainstorms/2026-05-13-beacon-brainstorm-beacon-v1.4.6-evolution-brainstorm-absorb-addyosmani-agent-skills-engineering-ph.md`",
+      " Relevant current surfaces:",
+      " `skills/beacon/using-beacon/SKILL.md`",
+      " `skills/beacon/beacon-brainstorm/SKILL.md`",
+      " `skills/beacon/beacon-change/SKILL.md`",
+      " `skills/beacon/beacon-implement/SKILL.md`"
     ],
     "user_story": [
+      "Feature**: `beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces`",
+      "Version**: `v1.4.6`",
+      "Revision**: `R1`",
       "Status**: `frozen`",
-      "I want Beacon's public skills and support surfaces to carry stronger anti-drift contracts connected to evidence, state, and gate semantics,",
-      "So that host-visible behavior becomes harder to misuse before machine governance must intervene."
+      "As a** Beacon maintainer, operator, or workflow governance owner,",
+      "I want** Beacon's public skills and support surfaces to carry stronger anti-drift contracts connected to evidence, state, and gate semantics,",
+      "So that** host-visible behavior becomes harder to misuse before machine governance must intervene.",
+      " AC-001 Beacon freezes a `Skill Anatomy v2` baseline for key host-visible skills with explicit sections for usage boundary, workflow or decision loop, rationalization risk, verification, evidence, state, and gate semantics.",
+      " AC-002 `using-beacon`, `beacon-prd`, `beacon-change`, `beacon-brainstorm`, `beacon-implement`, `beacon-qa`, and `beacon-release` all include explicit anti-rationalization guidance instead of relying on implied operator discipline.",
+      " AC-003 Beacon defines one unified support-surface constitution for `brainstorm`, `deep`, `ceo-review`, `design-review`, `help`, `status`, and `doctor`, and that constitution preserves `not truth source`, `not gate source`, and `not new lifecycle stage`."
     ],
     "qa": [
+      "Feature**: `beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces`",
+      "Version**: `v1.4.6`",
       "Status**: `freeze-ready`",
-      "high-risk challenge outputs bind back to evidence, state, or gate",
-      "the anti-drift upgrade does not create a new lifecycle stage"
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-ADRIFT46-001 | contract | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"skill_anatomy_v2_is_frozen_for_key_surfaces\"` | key host-visible skills freeze `Skill Anatomy v2` with boundary, workflow, rationalization, verification, evidence, state, and gate sections |",
+      "| AC-002 | TC-ADRIFT46-002 | contract | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"key_execution_and_entry_skills_require_anti_rationalization\"` | `using-beacon`, `beacon-prd`, `beacon-change`, `beacon-brainstorm`, `beacon-implement`, `beacon-qa`, and `beacon-release` all declare anti-rationalization guidance |",
+      "| AC-003 | TC-ADRIFT46-003 | contract | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"support_surface_constitution_is_unified_and_bounded\"` | `brainstorm`, `deep`, `ceo-review`, `design-review`, `help`, `status`, and `doctor` share one bounded constitution and remain non-truth, non-gate, and non-stage surfaces |",
+      "| AC-004 | TC-ADRIFT46-004 | integration | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"high_risk_challenge_outputs_bind_back_to_evidence_state_or_gate\"` | challenge-style outputs cannot terminate as free-form commentary and must bind back to route, evidence, state, or gate impact |",
+      "| AC-005 | TC-ADRIFT46-005 | docs | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"public_surface_family_has_clear_handoff_boundaries\"` | Beacon documents distinct truth, execution, support, and gate surface families with explicit escalation and handoff semantics |",
+      "| AC-006 | TC-ADRIFT46-006 | regression | `python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_contracts_are_machine_checkable\"` | missing required contract sections, support-surface overreach, and unbound challenge outputs can be detected automatically |"
     ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
+    "source": "research:docs/beacon/v1.4.6/research/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
   }
 }

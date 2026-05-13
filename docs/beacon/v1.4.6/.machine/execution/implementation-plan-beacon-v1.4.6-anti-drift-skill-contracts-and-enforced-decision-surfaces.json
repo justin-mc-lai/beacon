@@ -1,0 +1,827 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces-r1",
+  "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+  "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+  "version": "v1.4.6",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:ea2b377cfba803c97b63c0156e9c399ad0bec00483c43f909fa6fd33d0c35292",
+  "plan_hash": "sha256:6d301c1d6f9db0cfb33c6e92ccb0f054a30eeef6b65a35c6d607c76adf705084",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "test_case": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "ac_matrix": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.6/.machine/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.6",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-05-13T15:06:12.377906+00:00",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "prd_ref": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "user_story_ref": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
+    "source": "research:docs/beacon/v1.4.6/research/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.4.6/.machine/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Beacon 必须冻结 `Skill Anatomy v2`",
+      "description": "Beacon 必须为关键 host-visible skills 冻结统一 contract anatomy。 该 anatomy 至少包括： Overview When to Use Boundary Workflow / Decision Loop Common Rationalizations Red Flags Verification Evidence Produced State Updated Gate Impact",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-001",
+        "TC-011",
+        "TC-012",
+        "TC-013",
+        "TC-014",
+        "TC-015",
+        "TC-016",
+        "TC-017",
+        "TC-018",
+        "TC-019"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933536+00:00",
+      "completed_at": "2026-05-13T15:10:27.933539+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Beacon 必须把 anti-rationalization 提升为关键 skill 的强制内容",
+      "description": "至少以下 surfaces 必须具备显式 anti-rationalization section： `using-beacon` `beacon-prd` `beacon-change` `beacon-brainstorm` `beacon-implement` `beacon-qa` `beacon-release`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-002",
+        "TC-ADRIFT46-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-002",
+        "TC-ADRIFT46-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933578+00:00",
+      "completed_at": "2026-05-13T15:10:27.933583+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Beacon 必须冻结 support surface 的统一 contract boundary",
+      "description": "Beacon 必须让 guidance/support family 统一表达： not truth source not gate source not new lifecycle stage must route back to canonical truth or delivery surfaces 并且该边界不能只散落在 docs 中，而要进入 host-visible contract。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-010",
+        "TC-ADRIFT46-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-004",
+        "TC-ADRIFT46-010"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933594+00:00",
+      "completed_at": "2026-05-13T15:10:27.933596+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Beacon 必须引入受治理的 high-risk decision challenge contract",
+      "description": "Beacon 必须正式定义一个 high-risk challenge capability，用于： challenge non-trivial claims expose contradictory evidence force explicit reconcile 它的最小输出合同至少包括： claim artifact under challenge contract / expected boundary findings reconcile result stop condition route outcome",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-006",
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-005",
+        "TC-ADRIFT46-006",
+        "TC-ADRIFT46-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-005",
+        "TC-ADRIFT46-006",
+        "TC-ADRIFT46-008"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933604+00:00",
+      "completed_at": "2026-05-13T15:10:27.933605+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Beacon 必须把 decision challenge 与 evidence/state/gate 面连接起来",
+      "description": "当 challenge 发生时，Beacon 必须能表达： 产生了哪些 evidence 更新了哪些 state 对哪些 gate 或 route 有影响 challenge 不得停留在孤立 markdown 结论层。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-007"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933612+00:00",
+      "completed_at": "2026-05-13T15:10:27.933613+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Beacon 必须冻结 orchestration constitution",
+      "description": "Beacon 必须正式说明： 哪些 surface 是 truth surfaces 哪些 surface 是 support/guidance surfaces 哪些 surface 是 execution surfaces 哪些 surface 是 gate surfaces 哪些能力只能由 main session / main router 调用 哪些能力只能做 explain / diagnose / challenge，不能 give verdict",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-ADRIFT46-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-ADRIFT46-009"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933619+00:00",
+      "completed_at": "2026-05-13T15:10:27.933621+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Beacon 必须把关键 anti-drift contract 提升为 machine-checkable checks",
+      "description": "Beacon 至少需要设计并支持以下 checks： skill anatomy lint anti-rationalization coverage check evidence contract check state/gate trace check",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933627+00:00",
+      "completed_at": "2026-05-13T15:10:27.933628+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Beacon 必须保持 philosophy-first，而不是滑向 script-first",
+      "description": "即使 skill contract 更强，Beacon 也必须保持： decision boundary first minimum complete tools second necessary factual grounding third 不得把 public skill 普遍退化成针对强模型的逐步动作剧本。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933634+00:00",
+      "completed_at": "2026-05-13T15:10:27.933636+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 Beacon 必须允许把外部开源方法蒸馏为内部 contract，而不是 runtime dependency",
+      "description": "Beacon 必须能表达： external source as research input internalized principle as frozen Beacon truth no default dependency on external repo presence",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933641+00:00",
+      "completed_at": "2026-05-13T15:10:27.933643+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 Beacon 必须让 `brainstorm -> change/prd` promotion 边界更明确",
+      "description": "对于类似本次 `v1.4.6` evolution 头暴，Beacon 必须能清楚区分： 哪些内容只停留在 brainstorm / research 哪些内容应 promotion 到正式 PRD / change 避免 support-surface 研究结论长期悬空。 ## 7. 验收标准 | AC ID | 说明 | | --- | --- | | AC-001 | Beacon v1.4.6 冻结统一的 `Skill Anatomy v2` | | AC-002 | 关键 host-visible skills 具备显式 anti-rationalization sections | | AC-003 | support surface 的 non-truth / non-gate boundary 被统一写入 public contract | | AC-004 | high-risk decision challenge 的最小输出合同被正式定义 | | AC-005 | challenge 结果能映射回 evidence / state / gate impact | | AC-006 | Beacon 的 orchestration constitution 正式表达 public/support/truth/gate 分层 | | AC-007 | anti-drift contract 至少具备 lint/check 级 machine enforcement 设计 | | AC-008 | v1.4.6 没有把 Beacon 退化成 script-first skill pack | | AC-009 | 外部开源方法被蒸馏为内部 contract，而不是默认 runtime dependency | | AC-010 | `brainstorm` 到 `change/prd` 的 promotion boundary 更清楚且可执行 | ## 8. 约束与边界 仍遵守 `docs/beacon/global-boundaries.md` `brainstorm` 仍然是 read-only convergence surface `change` 仍然是 frozen truth 的正式补料/重开路由 `implement / qa / release` 不得反向重写 requirement truth learning 仍只能辅助判断，不能直接定义 truth 或 gate verdict ## 9. 风险 ### 9.1 把 skill 写得更重，可能误伤 Beacon 的轻量哲学 如果 v1.4.6 只是让 skill 变长，而不是让 contract 变清楚，结果会变成： 文档更重 用户更难读 模型仍然可能漂 ### 9.2 只写 prompt contract，不做 machine enforcement，会停留在半完成状态 如果只新增 sections，而不补 lint/check： contract 可能在新 skill 中逐步退化 维护者无法稳定检查覆盖度 ### 9.3 把外部开源“整体搬进来”会破坏 Beacon 边界 Beacon 需要的是蒸馏方法，不是引入新的公开主叙事或运行前提。 ## 10. 冻结决策 1. `high-risk decision challenge` 在 `v1.4.6` 冻结为受治理子合同，不单独升格为新的 public lifecycle surface；它必须作为 `implement / qa / release` 的 challenge capability 落地，并把结果绑定回 evidence / state / gate。 2. `Skill Anatomy v2` 在 `v1.4.6` 先强制覆盖最核心的 `using-beacon / brainstorm / change / implement / qa / release`，其余 public/support surfaces 按同一哲学对齐，但不把“全量一次性改写全部 surfaces”作为本版本前提。 3. machine enforcement 在 `v1.4.6` 先落到 release-facing / QA-facing trace checks 与现有 guardrails，确保 contract 缺口能真实阻断交付；docs lint 作为后续扩展面沿同一 contract 继续补齐，而不是本版本唯一落点。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260513T222411136137"
+      ],
+      "changed_files": [
+        "beacon/commands/gate.py",
+        "beacon/commands/release.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/coverage.py",
+        "beacon/utils/delivery_kernel.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/requirement_parsing.py",
+        "beacon/utils/test_contract_governance.py",
+        "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-13T15:10:27.933649+00:00",
+      "completed_at": "2026-05-13T15:10:27.933650+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\" --project-root . --version v1.4.6",
+    "run_command": "beacon implement team-run \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\" --project . --version v1.4.6",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\" --project . --version v1.4.6",
+    "ralph_command": "beacon implement run \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\" --project . --version v1.4.6 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\" --project . --version v1.4.6",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.6",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.6.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-13T15:06:12.378067+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces-R1",
+    "transaction_id": "tx-7ffa3435b4ea79cc6",
+    "source_hash": "sha256:e33ff59e0ed6ca40796f0a2feb2c5e9164738fafb584975b8899fc7ae2f5c64f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.6/.machine/execution/git-workflow-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.6/execution/git-workflow-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.6",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+      "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+      "test_case": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces-R1",
+    "transaction_id": "tx-7ffa3435b4ea79cc6",
+    "source_hash": "sha256:e33ff59e0ed6ca40796f0a2feb2c5e9164738fafb584975b8899fc7ae2f5c64f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+  "generated_at": "2026-05-13T15:06:12.425132+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces-R1",
+  "transaction_id": "tx-7ffa3435b4ea79cc6",
+  "source_hash": "sha256:e33ff59e0ed6ca40796f0a2feb2c5e9164738fafb584975b8899fc7ae2f5c64f",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-13T15:10:27.933671+00:00"
+}
