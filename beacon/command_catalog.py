@@ -13,6 +13,7 @@ CORE_COMMANDS = (
 )
 
 SUPPORT_COMMANDS = (
+    "automation",
     "board",
     "help",
     "status",
@@ -81,6 +82,7 @@ ADVANCED_SURFACE = LABS_COMMANDS + BRIDGE_COMMANDS + DEPRECATED_COMMANDS + COMPA
 
 # Keep the canonical ordering stable for auto-generated docs/tests.
 SUPPORTED_SUBCOMMANDS = (
+    "automation",
     "ask",
     "analyze",
     "archive",

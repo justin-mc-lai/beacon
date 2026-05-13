@@ -240,6 +240,24 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 - `skills/beacon/`
 - `.claude-plugin/plugin.json`
 - `.codex/INSTALL.md`
+- `docs/analysis/codex-automations-and-beacon-capability-guide.md`
+
+## Codex Automations
+
+Beacon supports Codex Automations as a host-scheduled capability plane, but does not treat scheduling as a Beacon core lifecycle stage.
+
+Canonical references:
+
+- `automation/README.md`
+- `automation/codex/`
+- `docs/analysis/codex-automations-and-beacon-capability-guide.md`
+
+Support report surface:
+
+```bash
+beacon automation capabilities --project-root .
+beacon automation capabilities --project-root . --json
+```
 
 ---
 

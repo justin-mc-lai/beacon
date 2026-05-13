@@ -78,3 +78,25 @@ support surfaces already exist
 - `skills/beacon/beacon-ceo-review/SKILL.md`
 - `.beacon/analysis/friction-intake-fit-20260512T031031Z.md`
 - `.beacon/analysis/friction-intake-fit-20260512T030800Z.md`
+
+## Codex Automations 能力面
+
+`v1.4.5` 接受 Beacon 对 Codex Automations 的 host-scheduled capability plane 说明，但不把 scheduler 吸收到 Beacon core lifecycle。
+
+边界约束：
+
+- 定时器、触发器、`launchd` 生命周期属于 host scheduler
+- requirement truth、gate、QA verdict、release readiness 属于 Beacon
+- 通知与 webhook 传输属于 host wrapper，不属于 Beacon truth
+
+当前入口：
+
+- `docs/analysis/codex-automations-and-beacon-capability-guide.md`
+- `automation/README.md`
+- `beacon automation capabilities --project-root .`
+
+当前支持的 job pattern：
+
+- `morning-status`
+- `nightly-qa`
+- `gated-implement`

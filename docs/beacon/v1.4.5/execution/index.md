@@ -13,3 +13,10 @@
 
 - `execution/` stays Markdown-first for humans.
 - `.beacon/` remains runtime internal state only.
+
+## Host-Scheduled Automation
+
+- Codex Automations is supported as a host-scheduled capability plane, not a Beacon primary lifecycle stage.
+- Capability guide: `docs/analysis/codex-automations-and-beacon-capability-guide.md`
+- Scheduler assets: `automation/README.md`
+- CLI reporting surface: `beacon automation capabilities --project-root .`

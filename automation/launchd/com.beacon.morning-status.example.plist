@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.beacon.morning-status</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/zsh</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/automation/jobs/beacon-status-job.sh</string>
+      <string>--project-root</string>
+      <string>/Users/apple/Developer/Personal/products/beacon</string>
+      <string>--queue</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/automation/beacon-automation-queue.json</string>
+      <string>--output-dir</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/status</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/apple/Developer/Personal/products/beacon</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>9</integer>
+      <key>Minute</key>
+      <integer>0</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/status/launchd.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/status/launchd.err</string>
+  </dict>
+</plist>
