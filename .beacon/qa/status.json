@@ -1,30 +1,33 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-13T09:39:12.807937",
+  "timestamp": "2026-05-13T22:24:11.137050",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.4.5",
-  "run_id": "run-20260513T093912807309",
-  "spec_fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6",
+  "version": "v1.4.6",
+  "run_id": "run-20260513T222411136137",
+  "spec_fingerprint_hash": "2a197a4604ada8a70e24895f0d30fe5689846980b3753d7d3a22ce1e0abd599b",
   "status": "passed",
   "selected_layers": [
-    "unit"
+    "contract",
+    "exception",
+    "integration",
+    "regression"
   ],
   "execution": {
-    "run_id": "run-20260513T093912807309",
-    "version": "v1.4.5",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260513T093912807309",
+    "run_id": "run-20260513T222411136137",
+    "version": "v1.4.6",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260513T222411136137",
     "spec_fingerprint": {
-      "fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6",
-      "version": "v1.4.5",
-      "generated_at": "2026-05-13T01:39:57.694630+00:00"
+      "fingerprint_hash": "2a197a4604ada8a70e24895f0d30fe5689846980b3753d7d3a22ce1e0abd599b",
+      "version": "v1.4.6",
+      "generated_at": "2026-05-13T14:24:18.687661+00:00"
     },
     "layers": [
       {
-        "layer": "unit",
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"skill_anatomy_v2_is_frozen_for_key_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 4,
+        "assertion_count": 1,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -33,38 +36,119 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "e730f623fed2e0744c657d6256c3ebd53c148ab01c5e8227751dcb529245d1a8",
-        "started_at": "2026-05-13T09:39:12.808270",
-        "ended_at": "2026-05-13T09:39:17.983888",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/unit/junit.xml",
+        "execution_fingerprint": "50944414f010b02732359f37c6005d20355c1922b2d6b2c8f0b9d3e02fe559e9",
+        "started_at": "2026-05-13T22:24:11.137349",
+        "ended_at": "2026-05-13T22:24:11.581467",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/unit/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/contract/result.json"
+        ]
+      },
+      {
+        "layer": "exception",
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"philosophy_first_contract_does_not_regress_to_step_scripts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "9245aac00699fcdf94675de91c5a1b09ab40060aa07c0a3e5eb1a6bbd3ad9e92",
+        "started_at": "2026-05-13T22:24:11.582626",
+        "ended_at": "2026-05-13T22:24:12.023589",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/exception/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260513T222411136137/exception/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/exception/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/exception/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/exception/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/exception/result.json"
+        ]
+      },
+      {
+        "layer": "integration",
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"high_risk_challenge_outputs_bind_back_to_evidence_state_or_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "d998ea019f7aa2745a7a598fe8d4302189739ee8e6c0397cef9d456c68cb3815",
+        "started_at": "2026-05-13T22:24:12.024289",
+        "ended_at": "2026-05-13T22:24:12.459230",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/integration/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260513T222411136137/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/integration/result.json"
+        ]
+      },
+      {
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_contracts_are_machine_checkable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "dd2fcd72145cd0d3f6fef925acda2ee7d756eb22a31a6c1ba3eb234e1c1875eb",
+        "started_at": "2026-05-13T22:24:12.460439",
+        "ended_at": "2026-05-13T22:24:12.964787",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/regression/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260513T222411136137/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
-      "evidence_generated": 8,
-      "entry_count": 8,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+      "evidence_generated": 10,
+      "entry_count": 10,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260513T093912807309/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260513T093912807309/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260513T093912807309/summary.json",
+      ".beacon/evidence/auto-test/run-20260513T222411136137/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260513T222411136137/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260513T222411136137/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 1,
+      "pass_count": 4,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -73,9 +157,12 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "unit"
+      "contract",
+      "exception",
+      "integration",
+      "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -88,46 +175,46 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 8,
-      "passed": 8,
+      "cases_total": 10,
+      "passed": 10,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 8,
-      "auto_cases_executed": 8,
+      "auto_cases_total": 10,
+      "auto_cases_executed": 10,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-001",
+        "tc_id": "TC-ADRIFT46-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-001",
+        "source_tc_id": "TC-ADRIFT46-001",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-001/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"skill_anatomy_v2_is_frozen_for_key_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/result.json"
         ],
-        "execution_fingerprint": "ac27452e00453bfe3b39148fba52a19d2da41de6660f3f7fa27013a5bb36c671",
-        "started_at": "2026-05-13T09:39:17.987468",
-        "ended_at": "2026-05-13T09:39:22.712331",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
+        "execution_fingerprint": "ec00a3804f29e3cea48783b4ac4d9cc7376fc45047dc6a3197412b9716278ab3",
+        "started_at": "2026-05-13T22:24:12.967912",
+        "ended_at": "2026-05-13T22:24:13.580599",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -140,32 +227,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-002",
+        "tc_id": "TC-ADRIFT46-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-002",
+        "source_tc_id": "TC-ADRIFT46-002",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-002/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"key_execution_and_entry_skills_require_anti_rationalization\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/result.json"
         ],
-        "execution_fingerprint": "fb04d508376fe26746165b62c68fd2af2c02502d4884e8dbcb9409ad5c305472",
-        "started_at": "2026-05-13T09:39:22.713058",
-        "ended_at": "2026-05-13T09:39:27.319746",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
+        "execution_fingerprint": "4c4c93f3c2e05756c74a07ee24802533f04937376bc868ade2bbe689b619b370",
+        "started_at": "2026-05-13T22:24:13.581376",
+        "ended_at": "2026-05-13T22:24:13.998973",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -178,32 +265,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-003",
+        "tc_id": "TC-ADRIFT46-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-003",
+        "source_tc_id": "TC-ADRIFT46-003",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-003/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"support_surface_constitution_is_unified_and_bounded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/result.json"
         ],
-        "execution_fingerprint": "0f891f85f40eaa75c4b7095e06541e6e45737e8d0da5d36eca3345d5a04a4e7f",
-        "started_at": "2026-05-13T09:39:27.320617",
-        "ended_at": "2026-05-13T09:39:31.886227",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
+        "execution_fingerprint": "638d95c7ca29b424e5144a67b46ae067e027d1011a3cf93828a9d8875034a49a",
+        "started_at": "2026-05-13T22:24:13.999733",
+        "ended_at": "2026-05-13T22:24:14.430480",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -216,32 +303,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-004",
+        "tc_id": "TC-ADRIFT46-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-004",
+        "source_tc_id": "TC-ADRIFT46-004",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "integration",
+        "layer": "integration",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-004/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"high_risk_challenge_outputs_bind_back_to_evidence_state_or_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/result.json"
         ],
-        "execution_fingerprint": "8565b263e1968d0d01f48de17d462a865fe9ddf08ead51254d49a72397d5b75a",
-        "started_at": "2026-05-13T09:39:31.887771",
-        "ended_at": "2026-05-13T09:39:36.718594",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
+        "execution_fingerprint": "1e5d55c82e137f2a6172522cbeedb21c8a4ce25d096bafd062be5d7a30d8120c",
+        "started_at": "2026-05-13T22:24:14.431265",
+        "ended_at": "2026-05-13T22:24:14.883447",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -254,32 +341,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-005",
+        "tc_id": "TC-ADRIFT46-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-005",
+        "source_tc_id": "TC-ADRIFT46-005",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-005/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"public_surface_family_has_clear_handoff_boundaries\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/result.json"
         ],
-        "execution_fingerprint": "ec108d6f2f70b76991acd99218062e4931c1246afc7b31045a023f9bf90ca3f3",
-        "started_at": "2026-05-13T09:39:36.719891",
-        "ended_at": "2026-05-13T09:39:41.695541",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
+        "execution_fingerprint": "2d90a1f4bad7f5e93c5847bd7b783186ba6ba5d704c4a9e2e81bde97d455ef2d",
+        "started_at": "2026-05-13T22:24:14.884335",
+        "ended_at": "2026-05-13T22:24:15.325272",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -292,32 +379,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-006",
+        "tc_id": "TC-ADRIFT46-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-006",
+        "source_tc_id": "TC-ADRIFT46-006",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "regression",
+        "layer": "regression",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-006/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_contracts_are_machine_checkable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/result.json"
         ],
-        "execution_fingerprint": "ceaad74ad48e99be6dbc712d1f9d5cbf3ffeeab0732fae281f6b3fcb0707f90b",
-        "started_at": "2026-05-13T09:39:41.696339",
-        "ended_at": "2026-05-13T09:39:46.362364",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
+        "execution_fingerprint": "31f5231ba847d34e5a1656ea32b607e64632f6f3f74d8e3f6b1c6ebd1fac426f",
+        "started_at": "2026-05-13T22:24:15.326041",
+        "ended_at": "2026-05-13T22:24:15.749296",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -330,32 +417,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-007",
+        "tc_id": "TC-ADRIFT46-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-007",
+        "source_tc_id": "TC-ADRIFT46-007",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "exception",
+        "layer": "exception",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-007/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"philosophy_first_contract_does_not_regress_to_step_scripts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/result.json"
         ],
-        "execution_fingerprint": "c794c3edcc178188722609dd02bc1508970f8c519e0de61e58dd184edf529da0",
-        "started_at": "2026-05-13T09:39:46.363241",
-        "ended_at": "2026-05-13T09:39:51.648650",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
+        "execution_fingerprint": "268f472b340a1253e499bb601628b4834c569e0afab63f85b2aa654095097188",
+        "started_at": "2026-05-13T22:24:15.750028",
+        "ended_at": "2026-05-13T22:24:16.169983",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -368,32 +455,108 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-008",
+        "tc_id": "TC-ADRIFT46-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-008",
+        "source_tc_id": "TC-ADRIFT46-008",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "unit",
-        "layer": "unit",
+        "qa_type": "exception",
+        "layer": "exception",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 4,
-        "command": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260513T093912807309",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/tc-008/__RUN_ID__.json",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"external_skill_methods_are_absorbed_without_runtime_dependency\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/result.json"
         ],
-        "execution_fingerprint": "84bff6eb574a57408371d2a9c56b338cd4c230e81d61b8678f321fabf2d6c73d",
-        "started_at": "2026-05-13T09:39:51.649707",
-        "ended_at": "2026-05-13T09:39:56.615444",
-        "junit_path": ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
+        "execution_fingerprint": "b8c80b94389a7417f3691626eeb204ece82b9d13354331dbc042bb9073290d5f",
+        "started_at": "2026-05-13T22:24:16.170856",
+        "ended_at": "2026-05-13T22:24:16.590347",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ADRIFT46-009",
+        "ac_id": "AC-009",
+        "source_tc_id": "TC-ADRIFT46-009",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"brainstorm_and_change_promotion_boundary_remains_explicit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-009/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/result.json"
+        ],
+        "execution_fingerprint": "a8ef8321f108865c2e38e555abe6e49be877d0258891b35c544a168696ff156b",
+        "started_at": "2026-05-13T22:24:16.591111",
+        "ended_at": "2026-05-13T22:24:17.013790",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ADRIFT46-010",
+        "ac_id": "AC-010",
+        "source_tc_id": "TC-ADRIFT46-010",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_upgrade_does_not_create_a_new_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260513T222411136137",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-010/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/result.json"
+        ],
+        "execution_fingerprint": "44dca5827210fdddfea835989080fa8eed99aecf0b5947b1b5608ef48a43b601",
+        "started_at": "2026-05-13T22:24:17.014666",
+        "ended_at": "2026-05-13T22:24:17.679730",
+        "junit_path": ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -409,109 +572,134 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-13T01:39:57.408756+00:00",
-  "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-  "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+  "updated_at": "2026-05-13T14:24:18.414221+00:00",
+  "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+  "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
       "theme": "general",
-      "text": "Beacon freezes external skill sources as first-class capability sources.",
+      "text": "Beacon freezes a `Skill Anatomy v2` baseline for key host-visible skills with explicit sections for usage boundary, workflow or decision loop, rationalization risk, verification, evidence, state, and gate semantics.",
       "tc_ids": [
-        "TC-001"
+        "TC-ADRIFT46-001"
       ],
       "qa_types": [
-        "unit"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-002",
       "theme": "general",
-      "text": "`core-skills/baoyu-skills` is formalized as the canonical sample source for this line.",
+      "text": "`using-beacon`, `beacon-prd`, `beacon-change`, `beacon-brainstorm`, `beacon-implement`, `beacon-qa`, and `beacon-release` all include explicit anti-rationalization guidance instead of relying on implied operator discipline.",
       "tc_ids": [
-        "TC-002"
+        "TC-ADRIFT46-002"
       ],
       "qa_types": [
-        "unit"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-003",
       "theme": "general",
-      "text": "users can declare business goals and target outputs without predeclaring the full skill chain.",
+      "text": "Beacon defines one unified support-surface constitution for `brainstorm`, `deep`, `ceo-review`, `design-review`, `help`, `status`, and `doctor`, and that constitution preserves `not truth source`, `not gate source`, and `not new lifecycle stage`.",
       "tc_ids": [
-        "TC-003"
+        "TC-ADRIFT46-003"
       ],
       "qa_types": [
-        "unit"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-004",
       "theme": "general",
-      "text": "Beacon defines capability selection and composition semantics.",
+      "text": "high-risk challenge output is formalized so review-style surfaces can challenge decisions, but the result must map back to route, evidence, state, or gate impact instead of ending as free-form commentary.",
       "tc_ids": [
-        "TC-004"
+        "TC-ADRIFT46-004"
       ],
       "qa_types": [
-        "unit"
+        "integration"
       ]
     },
     {
       "ac_id": "AC-005",
       "theme": "general",
-      "text": "success, failure, fallback, and human adoption outcomes are written back as learning evidence.",
+      "text": "Beacon formalizes a public surface family model that distinguishes truth surfaces, execution surfaces, support surfaces, and gate surfaces with clear escalation and handoff boundaries.",
       "tc_ids": [
-        "TC-005"
+        "TC-ADRIFT46-005"
       ],
       "qa_types": [
-        "unit"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-006",
       "theme": "general",
-      "text": "Beacon defines `task-type -> skill-chain -> output-shape` as a reusable learning mapping.",
+      "text": "machine-checkable anti-drift enforcement is defined for the new contract baseline so missing sections, overreaching support surfaces, or unbound challenge outputs can be detected automatically.",
       "tc_ids": [
-        "TC-006"
+        "TC-ADRIFT46-006"
       ],
       "qa_types": [
-        "unit"
+        "regression"
       ]
     },
     {
       "ac_id": "AC-007",
       "theme": "general",
-      "text": "external skill governance preserves existing truth, guidance, and runtime boundaries.",
+      "text": "the v1.4.6 contract preserves Beacon's philosophy-first skill design and does not regress into step-by-step operation scripts for strong models.",
       "tc_ids": [
-        "TC-007"
+        "TC-ADRIFT46-007"
       ],
       "qa_types": [
-        "unit"
+        "exception"
       ]
     },
     {
       "ac_id": "AC-008",
       "theme": "general",
-      "text": "external skill admission preserves strategy philosophy, minimum complete tools, and necessary factual grounding instead of collapsing into rigid step scripts.",
+      "text": "Beacon absorbs external workflow-skill methods as internal contract design, anti-rationalization, and orchestration patterns without creating a runtime dependency on external skill packs.",
       "tc_ids": [
-        "TC-008"
+        "TC-ADRIFT46-008"
       ],
       "qa_types": [
-        "unit"
+        "exception"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "general",
+      "text": "`brainstorm` and `change` remain distinct: `brainstorm` can sharpen options and framing, but only `change` can promote requirement truth intended for downstream implementation and QA.",
+      "tc_ids": [
+        "TC-ADRIFT46-009"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "general",
+      "text": "the new anti-drift contract is documented as a host-visible behavior upgrade for Beacon rather than a new lifecycle stage or a replacement for existing truth, evidence, and gate governance.",
+      "tc_ids": [
+        "TC-ADRIFT46-010"
+      ],
+      "qa_types": [
+        "regression"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "spec_fingerprint_changed",
+      "previous_feature_qa_not_passed",
       "source_matrix_changed"
     ],
     "targeted_layers": [
-      "unit"
+      "contract",
+      "exception",
+      "integration",
+      "regression"
     ],
     "targeted_ac_ids": [
       "AC-001",
@@ -521,17 +709,21 @@
       "AC-005",
       "AC-006",
       "AC-007",
-      "AC-008"
+      "AC-008",
+      "AC-009",
+      "AC-010"
     ],
     "targeted_tc_ids": [
-      "TC-001",
-      "TC-002",
-      "TC-003",
-      "TC-004",
-      "TC-005",
-      "TC-006",
-      "TC-007",
-      "TC-008"
+      "TC-ADRIFT46-001",
+      "TC-ADRIFT46-002",
+      "TC-ADRIFT46-003",
+      "TC-ADRIFT46-004",
+      "TC-ADRIFT46-005",
+      "TC-ADRIFT46-006",
+      "TC-ADRIFT46-007",
+      "TC-ADRIFT46-008",
+      "TC-ADRIFT46-009",
+      "TC-ADRIFT46-010"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -541,193 +733,239 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 8
+    "verification_item_count": 10
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-001",
-      "source_tc_id": "TC-001",
+      "tc_id": "TC-ADRIFT46-001",
+      "source_tc_id": "TC-ADRIFT46-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-002",
-      "source_tc_id": "TC-002",
+      "tc_id": "TC-ADRIFT46-002",
+      "source_tc_id": "TC-ADRIFT46-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-003",
-      "source_tc_id": "TC-003",
+      "tc_id": "TC-ADRIFT46-003",
+      "source_tc_id": "TC-ADRIFT46-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-004",
-      "source_tc_id": "TC-004",
+      "tc_id": "TC-ADRIFT46-004",
+      "source_tc_id": "TC-ADRIFT46-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "integration",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-005",
-      "source_tc_id": "TC-005",
+      "tc_id": "TC-ADRIFT46-005",
+      "source_tc_id": "TC-ADRIFT46-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-006",
-      "source_tc_id": "TC-006",
+      "tc_id": "TC-ADRIFT46-006",
+      "source_tc_id": "TC-ADRIFT46-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "regression",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-007",
-      "source_tc_id": "TC-007",
+      "tc_id": "TC-ADRIFT46-007",
+      "source_tc_id": "TC-ADRIFT46-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "exception",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-008",
-      "source_tc_id": "TC-008",
+      "tc_id": "TC-ADRIFT46-008",
+      "source_tc_id": "TC-ADRIFT46-008",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-008",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "unit",
+      "qa_type": "exception",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-ADRIFT46-009",
+      "source_tc_id": "TC-ADRIFT46-009",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-009",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-ADRIFT46-010",
+      "source_tc_id": "TC-ADRIFT46-010",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-010",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/result.json"
       ]
     }
   ],
@@ -745,23 +983,11 @@
   "current_session_id": "",
   "design_truth_verdict": {
     "schema_version": "1.0",
-    "status": "passed",
+    "status": "not_applicable",
     "blocked": false,
     "reason_codes": [],
     "source_surface": "implement-to-qa-handoff",
     "verification_surface": "qa",
-    "refs": {
-      "style_preset": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/style-preset.json",
-      "design_lint_rules": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/design-lint-rules.json"
-    },
-    "expected": {
-      "canonical_design_preset": "operator-console",
-      "preset_source": "vercel"
-    },
-    "actual": {
-      "canonical_design_preset": "operator-console",
-      "preset_source": "vercel"
-    },
     "findings": []
   },
   "requirement_completeness_gate": {
@@ -771,17 +997,17 @@
     "blocked": false,
     "reason_code": "",
     "target_stage": "qa",
-    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "version": "v1.4.5",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.re-freeze-transaction.json"
     },
     "unresolved_gap_count": 0,
     "high_risk_unresolved_categories": [],
@@ -824,13 +1050,13 @@
         "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.re-freeze-transaction.json"
           }
         }
       },
@@ -912,9 +1138,9 @@
     },
     "completeness": {
       "schema_version": "1.0",
-      "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-      "version": "v1.4.5",
+      "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "version": "v1.4.6",
       "revision_id": "R1",
       "completeness_verdict": "pass",
       "unresolved_gap_count": 0,
@@ -946,12 +1172,12 @@
         "implement_ready": true,
         "release_ready": true
       },
-      "generated_at": "2026-05-12T06:25:17.638798+00:00"
+      "generated_at": "2026-05-13T14:19:53.748066+00:00"
     },
     "freeze_contract": {
       "schema_version": "1.0",
-      "version": "v1.4.5",
-      "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "version": "v1.4.6",
+      "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "revision_id": "R1",
       "status": "freeze-ready",
       "human_supplement_contract": {
@@ -978,27 +1204,27 @@
       },
       "blocking_rules": [
         "high_severity_unresolved_gap",
-        "critical_coverage_family_missing",
-        "host_downgrade_without_explicit_fallback_contract",
-        "truth_writeback_without_machine_decision_trail"
+        "support_surface_authority_overreach",
+        "high_risk_challenge_without_evidence_state_or_gate_binding",
+        "public_skill_contract_missing_required_anatomy"
       ],
       "freeze_verdict": "pass",
       "implementation_verdict": "pending",
       "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-12T06:25:17.638845+00:00"
+      "updated_at": "2026-05-13T14:19:53.749720+00:00"
     }
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.5/.machine/requirement/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "run_id": "run-20260513T093912807309",
-    "generated_at": "2026-05-13T01:39:57.688085+00:00",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "run_id": "run-20260513T222411136137",
+    "generated_at": "2026-05-13T14:24:18.683938+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 8,
+    "scenario_count": 10,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1018,11 +1244,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-001",
-      "tc_id": "TC-001",
-      "source_tc_id": "TC-001",
+      "scenario_id": "TC-ADRIFT46-001",
+      "tc_id": "TC-ADRIFT46-001",
+      "source_tc_id": "TC-ADRIFT46-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1046,19 +1272,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-001/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-002",
-      "tc_id": "TC-002",
-      "source_tc_id": "TC-002",
+      "scenario_id": "TC-ADRIFT46-002",
+      "tc_id": "TC-ADRIFT46-002",
+      "source_tc_id": "TC-ADRIFT46-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1082,19 +1308,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-002/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-003",
-      "tc_id": "TC-003",
-      "source_tc_id": "TC-003",
+      "scenario_id": "TC-ADRIFT46-003",
+      "tc_id": "TC-ADRIFT46-003",
+      "source_tc_id": "TC-ADRIFT46-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1118,19 +1344,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-003/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-004",
-      "tc_id": "TC-004",
-      "source_tc_id": "TC-004",
+      "scenario_id": "TC-ADRIFT46-004",
+      "tc_id": "TC-ADRIFT46-004",
+      "source_tc_id": "TC-ADRIFT46-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1154,19 +1380,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-004/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-005",
-      "tc_id": "TC-005",
-      "source_tc_id": "TC-005",
+      "scenario_id": "TC-ADRIFT46-005",
+      "tc_id": "TC-ADRIFT46-005",
+      "source_tc_id": "TC-ADRIFT46-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1190,19 +1416,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-005/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-006",
-      "tc_id": "TC-006",
-      "source_tc_id": "TC-006",
+      "scenario_id": "TC-ADRIFT46-006",
+      "tc_id": "TC-ADRIFT46-006",
+      "source_tc_id": "TC-ADRIFT46-006",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1226,19 +1452,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-006/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-007",
-      "tc_id": "TC-007",
-      "source_tc_id": "TC-007",
+      "scenario_id": "TC-ADRIFT46-007",
+      "tc_id": "TC-ADRIFT46-007",
+      "source_tc_id": "TC-ADRIFT46-007",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1262,19 +1488,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-007/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-008",
-      "tc_id": "TC-008",
-      "source_tc_id": "TC-008",
+      "scenario_id": "TC-ADRIFT46-008",
+      "tc_id": "TC-ADRIFT46-008",
+      "source_tc_id": "TC-ADRIFT46-008",
       "ac_id": "AC-008",
-      "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1298,25 +1524,97 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260513T093912807309/qa9-tc/TC-008/result.json"
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-008/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-ADRIFT46-009",
+      "tc_id": "TC-ADRIFT46-009",
+      "source_tc_id": "TC-ADRIFT46-009",
+      "ac_id": "AC-009",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-009/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-ADRIFT46-010",
+      "tc_id": "TC-ADRIFT46-010",
+      "source_tc_id": "TC-ADRIFT46-010",
+      "ac_id": "AC-010",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260513T222411136137/qa9-tc/TC-ADRIFT46-010/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "feature_slug": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "run_id": "run-20260513T093912807309",
-    "ac_total": 8,
-    "ac_accepted": 8,
-    "scenario_total": 8,
-    "scenario_passed": 8,
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "run_id": "run-20260513T222411136137",
+    "ac_total": 10,
+    "ac_accepted": 10,
+    "scenario_total": 10,
+    "scenario_passed": 10,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1326,8 +1624,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 8,
-      "executed_scenarios": 8,
+      "required_scenarios": 10,
+      "executed_scenarios": 10,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1354,46 +1652,34 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 8,
+      "verification_item_count": 10,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
       "schema_version": "1.0",
-      "status": "passed",
+      "status": "not_applicable",
       "blocked": false,
       "reason_codes": [],
       "source_surface": "implement-to-qa-handoff",
       "verification_surface": "qa",
-      "refs": {
-        "style_preset": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/style-preset.json",
-        "design_lint_rules": "docs/beacon/v1.4.5/prototype/beacon-v1-4-5-governed-external-skill-sources-and-learning-composition/design-artifacts/design-lint-rules.json"
-      },
-      "expected": {
-        "canonical_design_preset": "operator-console",
-        "preset_source": "vercel"
-      },
-      "actual": {
-        "canonical_design_preset": "operator-console",
-        "preset_source": "vercel"
-      },
       "findings": []
     },
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.5 --feature \"beacon-v1.4.5-governed-external-skill-sources-and-learning-composition\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.5 --feature \"beacon-v1.4.5-governed-external-skill-sources-and-learning-composition\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "version": "v1.4.5",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -1412,17 +1698,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.5",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.6",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
-      "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
-      "docs/beacon/v1.4.5/.machine/execution/implementation-summary-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json",
-      "docs/beacon/v1.4.5/.machine/execution/technical-implementation-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json"
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1435,8 +1719,8 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.5-governed-external-skill-sources-and-learning-composition",
-    "version": "v1.4.5",
+    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "version": "v1.4.6",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -1455,17 +1739,15 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.5",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.6",
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/matrix.qa9.json",
-      "docs/beacon/v1.4.5/.machine/qa/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.5-governed-external-skill-sources-and-learning-composition/scorecard.json",
-      "docs/beacon/v1.4.5/.machine/execution/implementation-summary-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json",
-      "docs/beacon/v1.4.5/.machine/execution/technical-implementation-beacon-v1.4.5-governed-external-skill-sources-and-learning-composition.json"
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1476,5 +1758,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "fb9b2f241545b53e3b875a23cde2e52cf1c6fb74a49e73d94dea7515f3fea6c6"
+  "current_spec_fingerprint_hash": "2a197a4604ada8a70e24895f0d30fe5689846980b3753d7d3a22ce1e0abd599b"
 }

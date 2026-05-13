@@ -1,8 +1,9 @@
 # Release Checklist: v1.4.6
 
-**Version**: v1.4.6
-**Created**: 2026-05-13 11:30
-**Status**: Blocked
+**Version**: v1.4.6  
+**Created**: 2026-05-13 11:30  
+**Updated**: 2026-05-13 22:24  
+**Status**: Pass
 
 ---
 
@@ -12,27 +13,30 @@
 - [x] Feature implementation completed
 - [x] Targeted QA regression passing
 - [x] Wider release reviewer regression completed
-- [ ] Version-surface promotion approved
+- [x] Candidate release verdict approved
+- [ ] Runtime/default docs promotion approved
 
 ## Build
 
 - [x] Skill contract validation passing
 - [x] Support-surface regression passing
 - [x] Release governance regression passing
-- [ ] Release-facing evidence artifacts regenerated on `v1.4.6`
+- [x] Release-facing evidence artifacts regenerated on `v1.4.6`
 
 ## Deployment
 
-- [ ] Install/sync plan confirmed for agent surfaces
-- [ ] Runtime release-line cutover prepared
+- [x] Install/sync plan confirmed for agent surfaces
+- [x] Runtime release-line candidate cutover prepared
+- [ ] Active runtime/default docs line switched
 
 ## Release
 
 - [x] Formal release verdict written
-- [ ] `beacon release check v1.4.6` fully passing
-- [ ] Version truth updated if release is approved
+- [x] `beacon release check v1.4.6` fully passing
+- [x] Release scorecard ready
+- [ ] Version truth updated if runtime promotion is approved
 - [ ] Runtime/default docs line promoted
-- [ ] Rollback/readiness note confirmed
+- [x] Rollback/readiness note confirmed
 
 ## Change Documents
 
@@ -42,13 +46,13 @@
 
 ---
 
-## Active Blockers
+## Promotion Decision
 
-- Release evidence artifacts still point at `v1.4.5`
-- Acceptance projection transaction contract missing
-- Release scorecard not yet ready for the `v1.4.6` feature line
-- Implement prompt boundary verdict artifact missing
+- `v1.4.6` release candidate: approved
+- runtime/default docs promotion: deferred
+- active default line remains: `v1.4.5`
 
 ## Notes
 
-- `v1.4.6` remains a release-candidate line until release-facing evidence is regenerated and version truth is explicitly promoted.
+- `v1.4.6` release closure is complete; the remaining open item is only whether to promote package/runtime/docs default surfaces.
+- local/global CLI can be refreshed to the current editable source without changing `version-truth`.
