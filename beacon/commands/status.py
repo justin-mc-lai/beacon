@@ -467,6 +467,10 @@ def _status_impl(
             )
         if release_summary.get("continue_decision"):
             typer.echo(f"- release.continue_decision: {release_summary.get('continue_decision')}")
+        if release_summary.get("research_projection_present"):
+            typer.echo(
+                f"- release.research: present sections={','.join(release_summary.get('research_projection_sections') or [])} count={release_summary.get('research_projection_section_count')}"
+            )
         if release_summary.get("change_documents_status"):
             typer.echo(
                 f"- release.change_documents: {release_summary.get('change_documents_status')} "

@@ -75,6 +75,9 @@ def _human_summary(machine: dict[str, Any]) -> str:
         f"- requirement_clarity_blocked: `{release_summary.get('requirement_clarity_blocked')}`",
         f"- technical_review_status: `{release_summary.get('technical_review_status')}`",
         f"- technical_review_review_status: `{release_summary.get('technical_review_review_status')}`",
+        f"- research_projection_present: `{release_summary.get('research_projection_present')}`",
+        f"- research_projection_section_count: `{release_summary.get('research_projection_section_count')}`",
+        f"- research_projection_sections: `{', '.join(release_summary.get('research_projection_sections') or [])}`",
         f"- change_documents_status: `{release_summary.get('change_documents_status')}`",
         f"- change_documents_feature_count: `{release_summary.get('change_documents_feature_count')}`",
         f"- change_documents_includes_current_feature: `{release_summary.get('change_documents_includes_current_feature')}`",
@@ -228,6 +231,8 @@ def _human_summary(machine: dict[str, Any]) -> str:
                 f"- technical_review_status: `{release_summary.get('technical_review_status')}`",
                 f"- technical_review_blocked: `{release_summary.get('technical_review_blocked')}`",
                 f"- technical_review_review_status: `{release_summary.get('technical_review_review_status')}`",
+                f"- research_projection_present: `{release_summary.get('research_projection_present')}`",
+                f"- research_projection_sections: `{', '.join(release_summary.get('research_projection_sections') or [])}`",
             ]
         )
     if isinstance(release_scorecard, dict) and release_scorecard and release_summary.get("exhaustiveness_status"):

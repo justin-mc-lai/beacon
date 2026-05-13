@@ -550,6 +550,12 @@ def build_operator_workbench_payload(
                 "next_task_id": str(implementation_plan_progress.get("next_task_id") or ""),
                 "blocked_task_ids": list(implementation_plan_progress.get("blocked_task_ids") or []),
                 "counts": implementation_plan_progress.get("counts", {}),
+                "research_projection_present": bool(((release_scorecard.get("research_projection") or {}).get("present")) if isinstance(release_scorecard.get("research_projection"), dict) else False),
+                "research_projection_sections": sorted(
+                    str(key).strip()
+                    for key, values in (((release_scorecard.get("research_projection") or {}).get("sections")) or {}).items()
+                    if str(key).strip() and isinstance(values, list) and any(str(item).strip() for item in values)
+                ) if isinstance(release_scorecard.get("research_projection"), dict) else [],
             },
             "operator_actions": operator_actions,
         },
@@ -596,6 +602,12 @@ def build_operator_workbench_payload(
                 "delivery_type": str(((release_scorecard.get("delivery") or {}).get("type")) if isinstance(release_scorecard.get("delivery"), dict) else ""),
                 "acceptance_status": str(((release_scorecard.get("acceptance") or {}).get("status")) if isinstance(release_scorecard.get("acceptance"), dict) else ""),
                 "revision_id": str(((release_scorecard.get("revision_binding") or {}).get("revision_id")) if isinstance(release_scorecard.get("revision_binding"), dict) else ""),
+                "research_projection_present": bool(((release_scorecard.get("research_projection") or {}).get("present")) if isinstance(release_scorecard.get("research_projection"), dict) else False),
+                "research_projection_sections": sorted(
+                    str(key).strip()
+                    for key, values in (((release_scorecard.get("research_projection") or {}).get("sections")) or {}).items()
+                    if str(key).strip() and isinstance(values, list) and any(str(item).strip() for item in values)
+                ) if isinstance(release_scorecard.get("research_projection"), dict) else [],
             },
             "artifact_refs": selected_run_artifacts[:10],
             "review_hints": _review_hints(release_scorecard, selected_run_state),
@@ -1038,7 +1050,7 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
     <section class="panel" id="execution-board">
       <h2>执行看板</h2>
       <div class="grid-2">
-        <div>{_render_kv_list([("执行计划", _cn_status(execution.get("wave_grouping", {}).get("implementation_plan_status"))), ("下一任务", execution.get("wave_grouping", {}).get("next_task_id") or "待生成"), ("阻塞任务", ", ".join(execution.get("wave_grouping", {}).get("blocked_task_ids", [])) or "无")])}</div>
+        <div>{_render_kv_list([("执行计划", _cn_status(execution.get("wave_grouping", {}).get("implementation_plan_status"))), ("下一任务", execution.get("wave_grouping", {}).get("next_task_id") or "待生成"), ("阻塞任务", ", ".join(execution.get("wave_grouping", {}).get("blocked_task_ids", [])) or "无"), ("Research Projection", "已接入" if execution.get("wave_grouping", {}).get("research_projection_present") else "未接入"), ("Research Sections", ", ".join(execution.get("wave_grouping", {}).get("research_projection_sections", [])) or "无")])}</div>
         <div>{_render_kv_list([("Baseline 宿主", _cn_status(execution.get("baseline_host_health", {}).get("health_status"))), ("运行佐证", _cn_status(execution.get("baseline_host_health", {}).get("runtime_corroboration"))), ("Git 范围", len(execution.get("baseline_host_health", {}).get("git_scopes", [])))])}</div>
       </div>
       <div class="metric-grid">{''.join(group_summary_cards)}</div>
@@ -1103,7 +1115,7 @@ def render_operator_workbench_html(payload: dict[str, Any]) -> str:
     <section class="panel" id="review-surface">
       <h2>评审界面</h2>
       <div class="grid-2">
-        <div>{_render_kv_list([("修订", review_summary.get("revision_id") or "无"), ("验收", _cn_status(review_summary.get("acceptance_status"))), ("交付类型", _cn_text(review_summary.get("delivery_type"), "未声明"))])}</div>
+        <div>{_render_kv_list([("修订", review_summary.get("revision_id") or "无"), ("验收", _cn_status(review_summary.get("acceptance_status"))), ("交付类型", _cn_text(review_summary.get("delivery_type"), "未声明")), ("Research Projection", "已接入" if review_summary.get("research_projection_present") else "未接入"), ("Research Sections", ", ".join(review_summary.get("research_projection_sections", [])) or "无")])}</div>
         <div>
           <h3>评审提示</h3>
           {"<ul>" + review_hints + "</ul>" if review_hints else '<div class="empty">当前没有显式评审提示。</div>'}
