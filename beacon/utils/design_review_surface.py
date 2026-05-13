@@ -83,6 +83,8 @@ def write_design_review_transaction(
         route_decision=route_decision,
         next_route=next_route,
         writeback_targets=writebacks,
+        state_impact={"writes_transaction_state": True, "prototype_entry_impacted": design_verdict == "ready_for_prototype"},
+        gate_impact={"blocks_execution": blocked or bool(writebacks), "gate_owner": "support-route-only"},
         blocked=blocked,
         blocked_reason=blocked_reason,
         operator_visible_summary=(

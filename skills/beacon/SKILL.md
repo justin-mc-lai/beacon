@@ -53,6 +53,7 @@ Optional support surfaces stay opt-in:
 
 - `brainstorm`
 - `deep`
+- `beacon-deep`
 - `learn`
 - `ceo-review`
 - `design-review`
@@ -62,6 +63,15 @@ Optional support surfaces stay opt-in:
 - `toolkit-branch-governance`
 - `friction-intake`
 - `real-project-validation`
+
+`beacon-deep` remains the deep analysis support surface for high-risk structural review and test-delta derivation.
+
+## Lifecycle Navigation Rules
+
+- `beacon help --project-root . --json` is the default recovery route when the next surface is unclear.
+- QA prompt contract must follow first principles and bind claims back to evidence before release-facing judgment.
+- If a surface exposes `stop_for_repair`, route to repair or truth recovery before continuing the mainline.
+- Browser-admitted or compatibility-only paths such as `browser-use` stay optional support capability, not default mainline requirement.
 
 ## Host and Dependency Defaults
 

@@ -5,27 +5,66 @@ description: Use when the user wants to plan or run implementation through Beaco
 
 # Beacon Implement
 
+## Overview
+
 This skill routes execution work through Beacon's `implement` surface.
 
-The execution contract is aligned to the `v1.4.5` docs line and shared delivery kernel.
-Compatibility wrappers may preserve older runtime aliases, but `implement` should read current truth from `docs/beacon/v1.4.5/`.
+`implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
 
-## Use for
+## When to Use
 
 - implementation planning
 - implementation execution
-- implementation progress / handoff checks
+- implementation progress or handoff checks
 - implementation readiness after freeze and technical review
 - requirement completeness checks before execution
 
-## Operator rule
+## Boundary
 
-Prefer:
+- `implement` is not permission to rewrite requirement truth
+- it does not replace `change`
+- team/runtime internals stay internal unless explicitly requested
 
-- `beacon implement ...`
-- or `beacon implement ...` (optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh implement ...`)
+## Workflow / Decision Loop
 
-Do not expose `implement-team`, planner/implementer/tester roles, or lane-level runtime details unless the user explicitly asks for internals.
+- enter only after requirement truth is frozen enough for execution
+- block when truth must reopen, cutover guardrails fail, or conditionally required prototype is missing
+- execute against the frozen package and current delivery governance
+- hand off to `qa` once implementation evidence is ready
+
+## Common Rationalizations
+
+- “代码先做，后面再补 truth。” -> 不允许；truth 漂移要先回 `change`
+- “只是顺手改旁边一点逻辑，不用看冻结范围。” -> 不允许；实现必须受冻结边界约束
+- “prototype 还没补齐，但先写代码问题不大。” -> 不允许；真实 UX/UI handoff 不能跳过
+
+## Red Flags
+
+- requirement package 仍不稳定，却已经试图进入 execution
+- 双读/兼容窗口存在，但准备忽略 fail-closed guardrail
+- implementation progress 被当成 completion truth
+
+## Verification
+
+- execution 入口明确绑定 frozen `prd / user-story / test-case`
+- blocked reason、gate context、branch/execution governance 可解释
+- prototype 条件触发时，不会被静默跳过
+
+## Evidence Produced
+
+- implementation plan or execution summary
+- implementation evidence and handoff context
+- blocked reason or repair route when execution cannot start
+
+## State Updated
+
+- implementation progress state
+- execution governance/read model state
+
+## Gate Impact
+
+- unlocks `qa` only when implementation evidence is sufficient
+- blocks execution when truth drift, prototype gate, or delivery guardrails fail
 
 ## Inputs Contract
 

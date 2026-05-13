@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.6",
+  "status": "generated",
+  "feature_count": 1,
+  "features": [
+    {
+      "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "summary": "Host-visible skill contracts, support-surface bindings, and machine-checkable anti-drift enforcement implemented.",
+      "status": "completed"
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 1,
+    "ordered_feature_slugs": [
+      "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+            "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "skills/beacon",
+              "beacon/utils",
+              "tests"
+            ],
+            "writable_services": [
+              "skills/beacon",
+              "beacon/utils",
+              "tests"
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_skill_contract_surface"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [
+    "beacon/utils/skill_contracts.py",
+    "tests/test_v146_anti_drift_skill_contracts.py",
+    "docs/beacon/v1.4.6/"
+  ],
+  "removed": [],
+  "fixed": [
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated public and support `SKILL.md` contracts under `skills/beacon/`",
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/support_surface_projection.py`",
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/support_surface_transactions.py`",
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/ceo_review_surface.py`",
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/design_review_surface.py`",
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated Beacon skill examples to current release-line anchors"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.6/change/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
+    "docs/beacon/v1.4.6/.machine/change/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+    "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
+    "tests/test_v146_anti_drift_skill_contracts.py"
+  ],
+  "generated_at": "2026-05-13 11:30"
+}

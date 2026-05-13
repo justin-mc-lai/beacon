@@ -5,21 +5,13 @@ description: Use when the user wants Beacon to judge release readiness, inspect 
 
 # Beacon Release
 
+## Overview
+
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
-The public command stays on the current **`v1.4.5`** runtime line and uses the shared delivery kernel and release-scorecard behavior defined by the **`v1.4.5`** docs tree (`docs/beacon/v1.4.5/`), unless your project explicitly pins another docs version.
-Compatibility wrappers may preserve older runtime aliases, but release truth, scorecards, and gate language should follow the `v1.4.5` docs line.
+Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
 
-`Beacon Acceptance Kit v1` is the release-facing proof base. Release should treat these as required proof layers:
-
-- `skill-contract`
-- `scenario-suite`
-- `trace-scorecard`
-- `real-project-proof`
-
-`real-project-validation` is the highest proof layer, but not the only one.
-
-## Use for
+## When to Use
 
 - release readiness
 - final go / no-go checks
@@ -27,14 +19,51 @@ Compatibility wrappers may preserve older runtime aliases, but release truth, sc
 - checking whether implementation and QA are sufficient to ship
 - release proof chain validation
 
-## Operator rule
+## Boundary
 
-Prefer:
+- `release` is not a place to finish implementation
+- it does not rewrite frozen truth
+- it does not bypass version-surface governance
 
-- `beacon release ...`
-- optional vendored wrapper: `bash skills/beacon/scripts/run_beacon.sh release ...`
+## Workflow / Decision Loop
 
-If the user is still missing core evidence or next-step clarity, route to `beacon-help` or `beacon-qa` before pretending the work is in the release stage.
+- continue in `release` only when implementation and QA have already produced enough evidence
+- block on missing QA layers, unresolved truth drift, version-surface drift, or unresolved release blockers
+- prefer explicit no-go over soft optimism when evidence is incomplete
+- route backward when the missing condition belongs to `qa`, `implement`, or `change`
+
+## Common Rationalizations
+
+- “dashboard 看着都绿了，应该能发。” -> 不允许；要看证据链
+- “real-project-validation 过了，其他层可以省。” -> 不允许；它是高权重层，不是唯一层
+- “版本号差一点没关系，先发再说。” -> 不允许；version drift 必须阻断
+
+## Red Flags
+
+- QA 证据链未闭合，却已经寻求 go verdict
+- docs/package/runtime version surfaces 不一致
+- release 试图替 requirement truth 或 implementation gap 收尾
+
+## Verification
+
+- `skill-contract / scenario-suite / trace-scorecard / real-project-proof` 四层证明可追溯
+- no-go blocker 和 reason code 明确
+- docs/package/runtime version surfaces 一致
+
+## Evidence Produced
+
+- release readiness verdict
+- final blocker list
+- release-facing proof summary
+
+## State Updated
+
+- release scorecard / release-facing gate state
+
+## Gate Impact
+
+- direct go / no-go gate
+- may block ship and route back to `qa`, `implement`, or `change`
 
 ## Inputs Contract
 

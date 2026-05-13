@@ -113,6 +113,8 @@ def run_ceo_review(
                 "prerequisites": [],
             },
             writeback_targets=[],
+            state_impact={"writes_transaction_state": True, "reopens_requirement_truth": False},
+            gate_impact={"blocks_execution": True, "gate_owner": "support-route-only"},
             blocked=True,
             blocked_reason="truth_refs_missing",
             operator_visible_summary="CEO review is blocked because no bound PRD/user-story/test-case package was found.",
@@ -166,6 +168,8 @@ def run_ceo_review(
         route_decision={"route": "change/refreeze" if writebacks else "implement", "target_surface": route["target_surface"]},
         next_route=route,
         writeback_targets=writebacks,
+        state_impact={"writes_transaction_state": True, "reopens_requirement_truth": bool(writebacks)},
+        gate_impact={"blocks_execution": bool(writebacks), "gate_owner": "support-route-only"},
         operator_visible_summary=(
             f"CEO review decision is `{resolved_decision}` for focus `{focus or 'full'}`."
             if writebacks

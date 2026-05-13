@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.skill_contracts import public_surface_family_contract, support_surface_constitution
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 
@@ -79,6 +80,8 @@ def build_support_surface_projection(project_root: Path, *, version: str, featur
         "version": resolved_version,
         "feature": feature_name,
         "support_mode": "explanation-layer",
+        "support_surface_constitution": support_surface_constitution(),
+        "public_surface_families": public_surface_family_contract(),
         "primary_operator_doc_ref": _rel(project_root, execution_root / "index.md"),
         "artifact_taxonomy": {
             "canonical_envelope": {

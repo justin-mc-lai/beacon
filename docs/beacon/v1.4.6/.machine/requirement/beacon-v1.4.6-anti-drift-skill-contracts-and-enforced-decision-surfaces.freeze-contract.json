@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.6",
+  "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+  "revision_id": "R1",
+  "status": "freeze-ready",
+  "human_supplement_contract": {
+    "allowed_decisions": [
+      "accepted",
+      "rejected",
+      "deferred"
+    ],
+    "required_fields": [
+      "gap_id",
+      "source_truth_ref",
+      "candidate_kind",
+      "rationale",
+      "human_decision",
+      "decision_reason",
+      "writeback_target",
+      "revision_id"
+    ],
+    "writeback_flow": [
+      "decision_log",
+      "writeback_projection",
+      "truth_refreeze"
+    ]
+  },
+  "blocking_rules": [
+    "high_severity_unresolved_gap",
+    "support_surface_authority_overreach",
+    "high_risk_challenge_without_evidence_state_or_gate_binding",
+    "public_skill_contract_missing_required_anatomy"
+  ],
+  "freeze_verdict": "pass",
+  "implementation_verdict": "pending",
+  "qa_execution_verdict": "pending",
+  "updated_at": "2026-05-13T00:00:00+08:00"
+}

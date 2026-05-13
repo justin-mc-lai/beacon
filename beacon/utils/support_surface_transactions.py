@@ -104,6 +104,8 @@ def build_support_surface_transaction(
     truth_refs: list[str] | None = None,
     evidence_refs: list[str] | None = None,
     reason_codes: list[str] | None = None,
+    state_impact: dict[str, Any] | None = None,
+    gate_impact: dict[str, Any] | None = None,
     blocked: bool = False,
     blocked_reason: str = "",
 ) -> dict[str, Any]:
@@ -123,6 +125,8 @@ def build_support_surface_transaction(
         "route_decision": route_decision if isinstance(route_decision, dict) else {},
         "next_route": next_route if isinstance(next_route, dict) else {},
         "writeback_targets": [str(item).strip() for item in (writeback_targets or []) if str(item).strip()],
+        "state_impact": state_impact if isinstance(state_impact, dict) else {},
+        "gate_impact": gate_impact if isinstance(gate_impact, dict) else {},
         "blocked": bool(blocked),
         "blocked_reason": str(blocked_reason or "").strip(),
         "operator_visible_summary": str(operator_visible_summary or "").strip(),
