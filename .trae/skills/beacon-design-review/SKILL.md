@@ -32,3 +32,11 @@ If the result exposes design or requirement mismatch, route to `beacon change ru
 - does not replace `beacon-prototype`
 - does not act as final UI authority
 - does not rewrite requirement truth directly
+
+## Examples
+
+- 适用例：
+  - “这个 UI/UX 方向是不是足够清楚，可以进入 prototype freeze。”
+  - “我想先 challenge 一下层级、状态和交互一致性。”
+- 不适用例：
+  - “我要正式生成 prototype bundle。” -> 应去 `beacon-prototype`

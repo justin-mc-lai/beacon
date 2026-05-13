@@ -17,7 +17,7 @@ It is diagram-first and one-page by default.
 - feature slice breakdown
 - single-file system maps similar to `system-architecture-map`
 
-## Operator Rule
+## Operator rule
 
 Keep Toolkit Lighthouse outside the main workflow by default.
 
@@ -80,3 +80,17 @@ unless the user explicitly asks to continue into the main Beacon workflow.
 - State the main conclusion early.
 - If the analysis expands toward PRD, user-story, test-case, or implementation work, stop and hand off conceptually instead of widening the report.
 - For Beacon source iterations, always include the versioned artifact path in the final output.
+
+## Examples
+
+- 适用例：
+  - “先给我一页图，把这个 repo / 包 / 基础设施链路讲清楚。”
+  - “我现在不要 PRD，只要一个单页结构图和关键入口说明。”
+- 不适用例：
+  - “我要正式进入 requirement freeze 或 implementation plan。” -> 应转入主工作流 surface
+
+## Cold-start anchors
+
+- `Toolkit Lighthouse` 是单页分析面，不是 requirement 或 execution surface。
+- 目标是快速建立结构理解，而不是产出完整方案包。
+- 一旦问题开始要求正式 truth、测试闭环或执行计划，就应停止扩写并路由回主链。

@@ -7,8 +7,6 @@ description: Use when the user wants to adjust a frozen Beacon feature, reopen i
 
 This skill is the host-visible router for post-freeze requirement change loops.
 
-It preserves the current `v1.3.9` public runtime surface while aligning change refresh work to the `v1.3.9` host-native runtime line.
-
 It does not create a new Beacon primary stage.
 It routes the user back into the existing requirement truth and delivery chain.
 
@@ -22,18 +20,17 @@ It routes the user back into the existing requirement truth and delivery chain.
 
 ## Operator rule
 
-Prefer this flow:
+Prefer:
 
-- `beacon-change`
-- `reopen`
-- `prd revise`
-- `user-story refresh`
-- `test-case refresh`
-- `prototype refresh`
-- `freeze`
-- `implement fix`
-- `qa delta-run`
-- `release recheck`
+- `beacon change ...`
 
 Treat `beacon-change` as a router, not a new public Beacon stage.
 Do not introduce a new Beacon primary command such as `change`, `revision`, or `hotfix`.
+
+## Examples
+
+- 适用例：
+  - “这条 feature 已经 freeze 了，但 scope 现在必须改。”
+  - “这是 hotfix，但在动实现前必须先更新 requirement truth。”
+- 不适用例：
+  - “我还没冻结，只是在继续澄清需求。” -> 应先去 requirement surfaces

@@ -40,3 +40,17 @@ Do not automatically route into:
 - `release`
 
 unless the user explicitly asks to carry the governance result into the main Beacon workflow.
+
+## Examples
+
+- 适用例：
+  - “我想知道当前 branch/worktree 治理位置和下一步 git 动作建议。”
+  - “进入 implement 前，先确认 branch governance 有没有阻断。”
+- 不适用例：
+  - “我现在已经明确要开始实现功能本身。” -> branch 检查结束后应回 `beacon-implement`
+
+## Cold-start anchors
+
+- `branch-governance` 解决的是 git/worktree 治理可见性，不是 feature 执行本身。
+- 它应和 `implement` 共享同一投影契约，而不是维护第二套真相。
+- 这个 surface 可以阻断进入执行，但不能替代执行入口。

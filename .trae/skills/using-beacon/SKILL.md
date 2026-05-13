@@ -1,14 +1,13 @@
 ---
 name: using-beacon
-description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current v1.3.9 runtime surface instead of exposing the full CLI catalog.
+description: Use when Beacon should become the primary workflow router in Codex or Claude for requirements, implementation, QA, release readiness, or next-step guidance. Route the user through Beacon's current human-facing surface instead of exposing the full CLI catalog.
 ---
 
 # Using Beacon
 
 Use Beacon as a host-native human-facing workflow pack.
 
-The public surface follows the current `v1.3.9` runtime line.
-The `v1.3.12` requirement closure line defines the active host-native requirement deepening contract, supplement routing, and human-loop re-freeze behavior.
+The public surface follows Beacon's current human-facing runtime line.
 
 ## Public routing targets
 
@@ -31,59 +30,47 @@ The `v1.3.12` requirement closure line defines the active host-native requiremen
 - `beacon-toolkit-metadata`
 - `beacon-toolkit-branch-governance`
 
-## Routing rules
+## Routing philosophy
 
-1. Requirement clarification, spec writing, missing points, or ambiguous scope:
-   use `beacon-prd`
-2. User stories, acceptance criteria, or story-level scope:
-   use `beacon-user-story`
-3. Test and acceptance coverage design:
-   use `beacon-test-case`
-4. Requirement-driven wireframe freeze or screen-level handoff before implementation:
-   use `beacon-prototype`
-5. Frozen feature scope change, requirement supplement after freeze, or re-freeze loops:
-   use `beacon-change`
-6. Continue brainstorming, converge a requirement gap, challenge assumptions, or explore project evolution without changing truth:
-   use `beacon-brainstorm`
-7. Implementation handoff or execution:
-   use `beacon-implement`
-8. Verification, acceptance, new findings, or release confidence:
-   use `beacon-qa` or `beacon-release`
-9. Version-level problem reframing, promise challenge, or scope judgment before changing frozen truth:
-   use `beacon-ceo-review`
-10. UI/UX direction challenge or prototype-entry judgment:
-   use `beacon-design-review`
-11. Learning recall, audit, or prune as a governed decision input:
-   use `beacon-learn`
-12. Historical requirement isolation, archive planning, or archive state explanation:
-   use `beacon-archive`
-13. Project/version metadata inspection, CRUD, or contract verification:
-   use `beacon-toolkit-metadata`
-14. Human-readable branch flow, worktree lane, or implement git governance checks:
-   use `beacon-toolkit-branch-governance`
-15. Blocked / lost / next-step questions:
-   use `beacon-help`, `beacon-status`, or `beacon-doctor`
+Route by decision surface, not by internal mechanism.
 
-16. Need a human-readable supplement jump or re-freeze visibility:
-   use `beacon-help` or `beacon-status`
+- Requirement definition, ambiguity, or missing promise: `beacon-prd`
+- Story and acceptance compilation: `beacon-user-story`
+- Test and acceptance coverage: `beacon-test-case`
+- Conditional UX/UI handoff before implementation: `beacon-prototype`
+- Frozen truth reopening or supplement: `beacon-change`
+- Read-only convergence, challenge, or evolution thinking: `beacon-brainstorm`
+- Implementation execution: `beacon-implement`
+- Verification and release confidence: `beacon-qa` or `beacon-release`
+- Version-level scope or promise challenge: `beacon-ceo-review`
+- UI/UX direction challenge: `beacon-design-review`
+- Governed learning recall or audit: `beacon-learn`
+- Blocked, lost, or next-step questions: `beacon-help`, `beacon-status`, or `beacon-doctor`
+- Historical isolation or archive state: `beacon-archive`
+- Project/version metadata or branch governance: toolkit support surfaces
 
-## Development pairing
+Keep Beacon as the human-facing router even when project-local helpers exist inside implementation or QA loops.
 
-When Beacon is routing implementation or QA for web products, it may be paired with project-local development helpers.
+## Examples
 
-- For page-level UI work on sites that have development-only `page-agent` wiring, keep Beacon as the human-facing router:
-  - requirements still route through `beacon-prd`
-  - execution still routes through `beacon-implement`
-  - verification still routes through `beacon-qa`
-- `page-agent` is a development helper inside the implementation/QA loop, not a new public Beacon surface.
-- For Codex/OpenAI-backed `page-agent` custom mode, prefer browser-local or preview-local credential injection over storing provider secrets in public runtime config.
-- Prefer development-only or preview-only `page-agent` usage unless the user explicitly wants a broader rollout.
+- “这个 feature 的承诺面还不清楚，PRD 需要先收口” -> `beacon-prd`
+- “PRD 已经有了，但 acceptance criteria 还不够可执行” -> `beacon-user-story`
+- “故事线没问题，但测试覆盖和 release proof 还不完整” -> `beacon-test-case` 或 `beacon-qa`
+- “我不想改 frozen truth，只想继续 challenge 假设或收敛 gap” -> `beacon-brainstorm`
+- “scope 要变，或者 freeze 后要补正式 truth” -> `beacon-change`
+- “代码准备动了，直接进入执行” -> `beacon-implement`
+- “我不知道现在下一步该去哪” -> `beacon-help` 或 `beacon-status`
+
+## Cold-start anchors
+
+- 优先先判断这是 truth、execution、verification，还是 support/guidance 问题。
+- 相似请求默认按“当前决策面”路由，不按内部实现机制或工具名路由。
+- 如果只是 challenge、explain、converge，就不要误送进 `implement` 或 `release`。
 
 ## Boundary
 
 Do not treat these as public human entrypoints unless the user explicitly asks for internals:
 
-- `brainstorm`
 - `team`
 - `implement-team`
 - `qa-team`

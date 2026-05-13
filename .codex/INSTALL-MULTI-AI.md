@@ -21,13 +21,14 @@ Use the automated installation script:
 
 ```bash
 cd ~/Developer/Personal/products/beacon
-./scripts/install_claude_skills.sh
+./scripts/install_all_agents.sh
 ```
 
 This script will:
-1. Install the main `beacon` skill for both Codex and Claude Code
-2. Create flat symlinks for all beacon sub-skills in `~/.claude/skills/`
-3. Keep exactly one Codex symlink in `~/.agents/skills/`
+1. Install the latest editable Beacon CLI from the repo
+2. Install the main `beacon` skill for both Codex and Claude Code
+3. Create flat symlinks for all beacon sub-skills in `~/.claude/skills/`
+4. Refresh project-local agent surfaces for `codex`, `claude`, `trae`, `cursor`, and `windsurf`
 
 ### Manual Installation
 
@@ -115,7 +116,7 @@ ls -la ~/.claude/skills/beacon-prd
 ls -la ~/.claude/skills/beacon-implement
 ```
 
-You should see 15 beacon skills in Claude Code (flat symlinks):
+You should see the umbrella root plus 24 host-visible beacon sub-skills in Claude Code:
 - `beacon` (umbrella skill)
 - `using-beacon`
 - `beacon-prd`
@@ -140,7 +141,7 @@ beacon --help
 
 Expected:
 
-- Beacon reports `v1.3.6`
+- Beacon reports `v1.4.5`
 - CLI has `reopen`
 - CLI does not have `change`
 
@@ -163,9 +164,9 @@ After installation, you can invoke beacon skills using:
 
 Or use the CLI directly:
 ```bash
-beacon prd create "Feature Name" --version v1.3.6
-beacon implement plan "Feature Name" --version v1.3.6
-beacon qa run "Feature Name" --version v1.3.6
+beacon prd create "Feature Name" --version v1.4.5
+beacon implement plan "Feature Name" --version v1.4.5
+beacon qa run "Feature Name" --version v1.4.5
 ```
 
 ## Updating Beacon
@@ -173,7 +174,7 @@ beacon qa run "Feature Name" --version v1.3.6
 ```bash
 cd ~/Developer/Personal/products/beacon
 git pull
-pip install -e . --upgrade
+python3 -m pip install -e ".[dev]" --upgrade
 ```
 
 Skills update instantly through the symlinks - no need to restart AI assistants unless skill metadata changes.
@@ -268,6 +269,6 @@ This is similar to how superpowers handles multi-AI compatibility.
 
 ## Current Release
 
-- **Version**: v1.3.6
+- **Version**: v1.4.5
 - **Theme**: Host-native orchestration, delivery kernel convergence, minimal HUD
 - **Human surface**: host-visible workflow pack with minimal primary CLI surface

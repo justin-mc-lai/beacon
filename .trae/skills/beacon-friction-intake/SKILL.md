@@ -49,7 +49,7 @@ unless the user explicitly accepts the item for requirement/change routing.
 ```bash
 beacon friction-intake run \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --mode scan \
   --json
 ```
@@ -57,8 +57,22 @@ beacon friction-intake run \
 ```bash
 beacon friction-intake run \
   --project-root . \
-  --version v1.4.0 \
+  --version v1.4.3 \
   --mode capture \
   --note "QA run is blocked because acceptance dual-write did not materialize" \
   --json
 ```
+
+## Examples
+
+- 适用例：
+  - “先把这个阻塞记成 friction，不要立刻升级成需求或变更。”
+  - “我想扫描 Beacon 源码仓最近有哪些摩擦点值得进治理队列。”
+- 不适用例：
+  - “我已经决定把这个问题正式纳入 requirement/change。” -> 应显式路由进相应主链 surface
+
+## Cold-start anchors
+
+- `friction-intake` 先做 capture 和 queue governance，不默认升级成正式 truth。
+- 它的价值是让摩擦显性化、可排队、可筛选，而不是立即进入主工作流。
+- 只有当用户明确接受 requirement/change routing 时，才应继续进入主链。

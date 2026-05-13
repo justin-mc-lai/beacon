@@ -47,3 +47,17 @@ Do not automatically route into:
 - `release`
 
 unless the user explicitly asks to carry the metadata result into the main Beacon workflow.
+
+## Examples
+
+- 适用例：
+  - “我想先看当前项目/版本元信息到底被解析成什么。”
+  - “我要修 metadata contract，但不想直接进入 implement/qa/release。”
+- 不适用例：
+  - “我现在要推进 feature 实现或验收。” -> 元信息检查结束后应回主链 surface
+
+## Cold-start anchors
+
+- `doctor metadata` 是确定性元信息治理面，不是 delivery 主链。
+- 元信息写入必须走 canonical transaction path，不应单点手改某个 sink。
+- metadata 结果可以影响主链判断，但不自动等于进入主链。

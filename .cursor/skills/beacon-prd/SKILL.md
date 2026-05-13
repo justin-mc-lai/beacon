@@ -1,14 +1,14 @@
 ---
 name: beacon-prd
-description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.4.0 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
+description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.4.5 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
 ---
 
 # Beacon PRD
 
 This skill routes requirement work through Beacon's `prd` surface.
 
-The human-facing contract is aligned to the `v1.4.0` docs line (`docs/beacon/v1.4.0/`).
-CLI compatibility may still preserve older runtime aliases, but operators and hosts should read this skill as the current `v1.4.0` decision surface.
+The human-facing contract is aligned to the `v1.4.5` docs line (`docs/beacon/v1.4.5/`).
+CLI compatibility may still preserve older runtime aliases, but operators and hosts should read this skill as the current `v1.4.5` decision surface.
 
 ## Use for
 
@@ -43,6 +43,7 @@ Keep the human on the `prd -> user-story -> test-case` closure path. Use brainst
 - Route to `change` when the request modifies already frozen truth.
 - Block shallow template fill when the feature clearly needs state, transition, route, or semantic modeling.
 - Prefer reusing official wording from current version truth over inventing parallel terms.
+- For complexity-triggered features, require a human-readable closure package that covers research, architecture, business flow, and the relevant diagram truth before freeze.
 
 ## Anti-Inertia Notes
 
@@ -64,3 +65,19 @@ Keep the human on the `prd -> user-story -> test-case` closure path. Use brainst
 - `beacon prd ...`
 - `beacon brainstorm ...` for read-only convergence
 - `beacon change ...` for frozen-truth revision
+
+## Examples
+
+- 适用例：
+  - “我还在定义这个 feature 到底解决什么问题、边界是什么、承诺面是什么。”
+  - “需求里还有很多模糊点，需要先把问题 framing 和 scope 收口。”
+- 不适用例：
+  - “PRD 已经很清楚了，现在要把 acceptance criteria 编译出来。” -> 应去 `beacon-user-story`
+  - “需求已经冻结，我要正式改写它。” -> 应去 `beacon-change`
+
+## Cold-start anchors
+
+- `prd` 解决的是问题定义、目标、边界和 promised surface。
+- `brainstorm` 可以帮忙 challenge 和收敛，但不能代替 `prd` 冻结正式 truth。
+- 不要在 `prd` 里提前做实现、视觉或 release 层判断。
+- 复杂需求不能只靠文字段落冻结；缺少 research / business flow / state-machine / decision-priority 闭环时，应回补而不是假装 freeze-ready。

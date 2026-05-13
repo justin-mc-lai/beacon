@@ -33,3 +33,11 @@ If the result is `expand`, `reduce`, or `reframe`, route to `beacon change run .
 - does not freeze truth directly
 - does not replace `beacon-change`
 - does not replace `beacon-prd`
+
+## Examples
+
+- 适用例：
+  - “这个版本承诺是不是太大了，需要先从 CEO/产品视角挑战一下范围和 promise。”
+  - “我不确定该扩、该收，还是该重构问题定义。”
+- 不适用例：
+  - “我已经确定要正式修改冻结 truth。” -> 应去 `beacon-change`

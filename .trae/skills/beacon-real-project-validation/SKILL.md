@@ -7,19 +7,13 @@ description: Validate Beacon's current-version human-facing CLI surfaces against
 
 Use this skill to validate Beacon on a live project before rollout, after runtime upgrades, or when a user reports that Beacon works in-repo but not on a real repository.
 
-Default to:
-
-- `current-version real-project release proof`
+Default to `current-version real-project release proof`.
 
 Preferred public shortcut:
 
 - `beacon real-project-validation --project-root <root> --version <version> --feature "<feature>" --json`
 
-Only switch to:
-
-- `specialized multi-project board acceptance`
-
-when the target capability itself is a cross-project board / projection feature.
+Only switch to specialized board acceptance when the capability itself is a cross-project board or projection surface.
 
 ## Required Inputs
 
@@ -36,107 +30,26 @@ If the user only gives a versioned docs path such as `docs/beacon/v1.0.0`, infer
 - Do not run `prd create`, `user-story create`, `test-case create`, `implement plan`, or `implement run` on the live repo unless the user explicitly asks for write-path validation.
 - If write-path validation is required, use an isolated copy or worktree instead of the user's main working tree.
 - Treat `blocked`, `release_ready=false`, or failed release checks as valid command execution results until you confirm the CLI itself is wrong.
-- For latest Beacon lines, validate the public human surface first:
-  - `help`
-  - `status`
-  - `doctor`
-  - `prd`
-  - `user-story`
-  - `test-case`
-  - `prototype`
-  - `implement`
-  - `qa`
-  - `release`
-  - `archive`
-  - `gate`
 - Do not treat internal `.beacon/` artifacts as the primary operator surface.
-- Distinguish clearly:
-  - current-feature closure readiness
-  - version-line package closure / change-doc closure
-  These can diverge without indicating a CLI defect.
-- Distinguish clearly:
-  - default single-project current-version release proof
-  - specialized multi-project board acceptance
-  The board path cannot replace current-version release proof.
 
-## Workflow
+Distinguish clearly:
 
-### 1. Resolve Project Context
+- current-feature closure readiness
+- version-line package closure / change-doc closure
+- single-project release proof
+- specialized board acceptance
 
-- Confirm the project root exists.
-- Confirm `docs/beacon/<version>/` exists.
-- Read:
-  - `AGENTS.md`
-  - `docs/beacon/<version>/SUMMARY.md`
-  - `docs/beacon/<version>/execution/index.md`
-  - `docs/beacon/<version>/release/<version>.md` when present
-  - `skills/beacon/SKILL.md`
-- Pick a primary feature from the existing PRD / user-story / QA set.
+## Validation protocol
 
-Before running commands, derive a version-specific acceptance overlay from those sources. Do not assume an older fixed command matrix fully proves the current Beacon line.
+Validate Beacon from the public human-facing surface inward.
 
-### 2. Preflight The Real Repo
+- Resolve project root, docs line, and one primary feature.
+- Preflight with `doctor` and current context health.
+- Prefer the read-only public surface before any write-path validation.
+- Treat version-aware blocked/not-ready results as meaningful outcomes until proven to be CLI defects.
+- Use isolated worktrees for write-path or browser/session-heavy validation.
 
-- Check whether the real project worktree is dirty.
-- Run `beacon doctor --json --project-root <root>` first.
-- Record whether Beacon sees:
-  - the intended docs version
-  - the active runtime version
-  - healthy context files
-
-Use the exact command matrix in `references/command-matrix.md`.
-
-### 3. Run The Read-Only Minimal Surface
-
-Run the public minimal commands against the real project:
-
-- `help`
-- `doctor`
-- `status`
-- `prd list`
-- `user-story list`
-- `test-case list`
-- `test-case gate`
-- `prototype list`
-- `prototype status`
-- `implement status`
-- `qa status`
-- `qa evolve --no-write-matrix`
-- `release check`
-- `release scorecard`
-- `archive status`
-- `archive explain`
-- `archive plan`
-- `gate check prototype`
-- `gate check release`
-
-Prefer JSON output when the surface supports it.
-
-For Beacon versions with team / Ralph support, also validate:
-
-- `implement run FEATURE --mode team --dry-run --json`
-- `implement run FEATURE --mode ralph --dry-run --json`
-- `implement ralph-status FEATURE --json`
-- `doctor verify-subagent-runtime --host-runtime codex|claude --json`
-- `doctor verify-subagent-delegation FEATURE --version VERSION --json`
-
-For Beacon versions with browser QA/session support, also validate:
-
-- `qa session list --json`
-- `qa run FEATURE --json`
-- `qa team-run FEATURE --host-runtime codex|claude --json`
-
-If browser QA is in scope, verify whether the target feature's formal QA bundle actually declares browser-capable layers rather than assuming browser automation should run.
-
-For Beacon `v1.3.8`, the version overlay must also explicitly classify whether real-project proof exists for:
-
-- diagram truth admission
-- post-freeze host prompt trace
-- prompt-boundary gate / release convergence
-- archive governance support surface
-- canonical delivery baseline convergence
-
-### 4. Classify What Failed
+## Failure classification
 
 Treat the result as a **project-state blocker**, not a Beacon defect, when:
 
@@ -161,7 +74,7 @@ Treat the result as a **Beacon CLI defect** when:
 - the current version's published release note / summary / skill surface says a feature shipped, but the real-project validation path has no way to prove it on the public surface
 - specialized board acceptance is presented as if it were sufficient proof of current-version release readiness
 
-### 5. Fix Beacon If The CLI Is Wrong
+## Repair rule
 
 When a real CLI defect is found:
 
@@ -174,37 +87,20 @@ When a real CLI defect is found:
 
 Do not claim success until the same real-project command returns the corrected result.
 
-### 6. Optional Write-Path Validation
+## Optional write-path validation
 
 Only if the user explicitly wants full write-path validation:
 
 - create an isolated copy or worktree of the target project
-- run the write-heavy minimal chain there:
-  - `beacon prd create`
-  - `beacon user-story create`
-  - `beacon test-case create`
-  - `beacon implement plan`
-- confirm the generated artifacts land under the intended `docs/beacon/<version>/` line
-
-For modern Beacon lines, this write-path validation may also include:
-
-- `beacon doctor setup-context --project-root <isolated-root>`
-- `beacon freeze FEATURE --project-root <isolated-root> --version VERSION`
-- `beacon doctor sync-technical-review-contract FEATURE --project-root <isolated-root> --version VERSION ...`
-- `beacon implement run FEATURE --mode team|ralph --dry-run --json`
-- `beacon qa session save/use ...`
-- `beacon qa team-run FEATURE --json`
-- `beacon release scorecard VERSION --json`
+- validate the minimal write path there
+- confirm generated artifacts land under the intended `docs/beacon/<version>/` line
 
 When browser QA/session/profile validation is required:
 
 - prefer isolated worktree execution
-- start the target app locally in that isolated worktree
-- save a canonical QA session
-- bind a minimal project profile if needed
-- verify that browser-capable QA layers really produce browser-task / evidence-pack artifacts
+- verify that browser-capable QA layers actually have a usable session or runner admission path
 
-### 7. Report Results
+## Report results
 
 Always report:
 
@@ -234,37 +130,8 @@ It is not:
 Use the assets under this skill directory:
 
 - `references/command-matrix.md`
-  - base command matrix for preflight and read-only CLI validation
 - `references/board-acceptance-record-template.md`
-  - markdown record template for multi-project board acceptance
 - `scripts/run_real_project_board_validation.sh`
-  - read-only capture script for specialized multi-project board validation packs
-
-For Beacon `v1.3.4` board acceptance, prefer this sequence:
-
-1. Freeze the acceptance checklist in version docs.
-2. Run the multi-project validation capture script against the intended project set.
-3. Use the generated `portfolio-board.txt` / `portfolio-board.json` as the canonical homepage evidence.
-4. Use the generated `acceptance-record.md` as the prefilled review record, then complete the remaining verdict sections.
-5. For deterministic projection checks, review each target folder `projection-determinism.json`.
-6. For degradation / rebuild checks, compare per-project `status.json` truth snapshots against the isolated ledger outputs under the capture pack.
-7. Fill the record template with:
-   - homepage summary result
-   - project detail result
-   - deterministic projection result
-   - debug tri-state result
-   - degradation / rebuild result
-8. Classify outcomes into:
-   - Beacon defect
-   - project-state blocker
-   - not-yet-implemented acceptance gap
-
-The default `v1.3.4` target set should include:
-
-- `/Users/apple/Developer/Company/rolo`
-- `/Users/apple/Developer/Personal/products/slow_uni_bmtop`
-- `/Users/apple/Developer/Personal/products/shopxo_canada`
-- `/Users/apple/Developer/Personal/products/beacon`
 
 This board-acceptance path is still read-only unless the user explicitly asks for write-path validation in an isolated worktree.
 
@@ -286,3 +153,11 @@ Conclude with a compact validation summary:
   - `safe to use on this project`
   - `safe for read-only use only`
   - `blocked until Beacon defect is fixed`
+
+## Examples
+
+- 适用例：
+  - “Beacon 在自己仓里能跑，但我想证明它在真实项目里也成立。”
+  - “我需要区分这是 CLI 缺陷，还是目标项目状态本来就没 ready。”
+- 不适用例：
+  - “我现在只是想推进单条 feature 的正常主链工作。” -> 应优先回对应主链或 support surface

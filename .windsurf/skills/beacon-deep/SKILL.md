@@ -67,3 +67,19 @@ Keep toolkit internals hidden behind `beacon-deep` unless the user explicitly as
 - `beacon change ...` when frozen truth must reopen
 - `beacon qa ...` after adopted deltas require execution evidence
 - `beacon release ...` after deep closure or skip evidence is ready
+
+## Examples
+
+- 适用例：
+  - “这条 feature 风险很高，我想先做更深的状态机、约束链和测试增量分析。”
+  - “QA 暴露了结构性问题，我想知道这到底该回 `change`、`test-case`，还是 `implement`。”
+  - “release 前需要补一层深分析证据，但不想新增主 stage。”
+- 不适用例：
+  - “我已经明确要改 frozen truth。” -> 应回 `beacon-change`
+  - “我现在只是要正式执行验证。” -> 应优先去 `beacon-qa`
+
+## Cold-start anchors
+
+- `deep` 是 support analysis surface，不是新的主流程阶段。
+- 它的价值是产出可路由的发现、delta 和 closure evidence，不是直接改 truth 或代替 QA。
+- deep 结论只有在被现有 truth/execution/release surface 吸收后，才真正进入主闭环。

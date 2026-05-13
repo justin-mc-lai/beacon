@@ -30,3 +30,11 @@ Use `beacon-help` or `beacon-status` after recall when the operator needs route 
 - does not directly modify requirement truth
 - does not define QA or release verdict
 - stale/conflicting learning must be surfaced, not silently trusted
+
+## Examples
+
+- 适用例：
+  - “我想知道之前哪些 learning 正在影响这次 route 判断。”
+  - “这批 learning 可能过时了，先帮我 audit 或 prune。”
+- 不适用例：
+  - “我想直接靠 learning 判 release pass/fail。” -> 这不属于 `beacon-learn`
