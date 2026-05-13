@@ -232,6 +232,38 @@ def test_release_passes_test_contract_gate_after_index_build(tmp_path: Path) -> 
     assert summary["test_contract_release_blocked"] is False
 
 
+def test_feature_qa_placeholder_evidence_paths_resolve_to_feature_qa_artifacts(tmp_path: Path) -> None:
+    _seed_project(tmp_path, include_evidence=False)
+    feature_matrix_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json"
+    feature_matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    feature_matrix_path.write_text(
+        json.dumps(
+            {
+                "entries": [
+                    {
+                        "tc_id": "TC-US003-001",
+                        "evidence_path": f".beacon/evidence/qa-feature/{SLUG}/tc-us003-001/__RUN_ID__.json",
+                        "last_run_id": "run-qa-001",
+                        "last_evidence_ref": ".beacon/evidence/auto-test/run-qa-001/qa9-tc/TC-US003-001/command.txt",
+                    }
+                ]
+            },
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    qa_evidence_path = tmp_path / ".beacon" / "evidence" / "qa-feature" / SLUG / "tc-us003-001" / "run-qa-001.json"
+    _write_json(qa_evidence_path, {"status": "passed", "tc_id": "TC-US003-001"})
+
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    release_lane = payload["lanes"]["feature_release_facing"]
+    tc_entry = next(item for item in release_lane if item["tc_id"] == "TC-US003-001")
+
+    assert tc_entry["evidence_status"] == "passed"
+
+
 def test_release_surfaces_browser_blockers_in_host_native_delivery(tmp_path: Path) -> None:
     _seed_project(tmp_path)
     build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)

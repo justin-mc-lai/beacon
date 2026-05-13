@@ -91,6 +91,25 @@ def _synthetic_run_id(*, version: str) -> str:
     return f"repair-{version}-{stamp}"
 
 
+def _preferred_governance_run_id(project_root: Path, *, version: str, feature: str) -> str:
+    auto_test_payload = _read_json(project_root / ".beacon" / "auto-test-status.json")
+    auto_test_run_id = str(auto_test_payload.get("run_id") or "").strip()
+    auto_test_version = str(auto_test_payload.get("version") or "").strip()
+    if auto_test_run_id and auto_test_version == version:
+        return auto_test_run_id
+
+    source_payload = next(
+        (_read_json(path) for path in execution_file_candidates(project_root, version, "source.json") if path.exists()),
+        {},
+    )
+    source_feature = str(source_payload.get("feature") or "").strip()
+    source_run_id = str(source_payload.get("run_id") or "").strip()
+    if source_feature == feature and source_run_id:
+        return source_run_id
+
+    return _synthetic_run_id(version=version)
+
+
 def _synthesize_execution_governance(
     project_root: Path,
     *,
@@ -126,15 +145,12 @@ def _synthesize_execution_governance(
         {},
     )
     source_feature = str(source_payload.get("feature") or "").strip()
+    source_run_id = str(source_payload.get("run_id") or "").strip()
+    run_id = _preferred_governance_run_id(project_root, version=version, feature=feature)
     stale_feature = bool(source_feature and source_feature != feature)
-    if not missing and not stale_feature:
+    stale_run_id = bool(source_feature == feature and source_run_id and source_run_id != run_id)
+    if not missing and not stale_feature and not stale_run_id:
         return []
-
-    run_id = (
-        str(source_payload.get("run_id") or "").strip()
-        if source_feature == feature
-        else ""
-    ) or _synthetic_run_id(version=version)
     planned_paths = [
         str((human_execution_dir(project_root, version) / "boundaries.md").relative_to(project_root)),
         str((machine_execution_dir(project_root, version) / "config.json").relative_to(project_root)),
@@ -171,9 +187,9 @@ def _synthesize_execution_governance(
 
     action = (
         "rewritten"
-        if apply and stale_feature
+        if apply and (stale_feature or stale_run_id)
         else "planned_rewrite"
-        if stale_feature
+        if (stale_feature or stale_run_id)
         else "synthesized"
         if apply
         else "planned"
@@ -308,6 +324,7 @@ def ensure_human_primary_indexes(project_root: Path, *, version: str, apply: boo
     docs_root = project_root / "docs" / "beacon" / resolved_version
     execution_index = docs_root / "execution" / "index.md"
     qa_index = docs_root / "qa" / "test-cases" / "index.md"
+    qa_root = qa_docs_dir(project_root, resolved_version)
 
     execution_content = "\n".join(
         [
@@ -330,7 +347,7 @@ def ensure_human_primary_indexes(project_root: Path, *, version: str, apply: boo
         ]
     )
     qa_files = sorted(
-        p.name for p in qa_docs_dir(project_root, resolved_version).glob("*.md") if p.is_file() and p.name != "index.md"
+        p.name for p in qa_root.glob("*.md") if p.is_file() and p.name != "index.md"
     )
     qa_content = "\n".join(
         [
@@ -347,17 +364,30 @@ def ensure_human_primary_indexes(project_root: Path, *, version: str, apply: boo
         ]
     )
 
-    for path, content in ((execution_index, execution_content), (qa_index, qa_content)):
-        changed = (not path.exists()) or path.read_text(encoding="utf-8") != content
-        if apply and changed:
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_text(content, encoding="utf-8")
-        actions.append(
-            {
-                "path": str(path.relative_to(project_root)),
-                "action": "written" if changed and apply else ("planned" if changed else "unchanged"),
-            }
-        )
+    changed = (not execution_index.exists()) or execution_index.read_text(encoding="utf-8") != execution_content
+    if apply and changed:
+        execution_index.parent.mkdir(parents=True, exist_ok=True)
+        execution_index.write_text(execution_content, encoding="utf-8")
+    actions.append(
+        {
+            "path": str(execution_index.relative_to(project_root)),
+            "action": "written" if changed and apply else ("planned" if changed else "unchanged"),
+        }
+    )
+
+    if not qa_root.exists() and not qa_files:
+        return actions
+
+    changed = (not qa_index.exists()) or qa_index.read_text(encoding="utf-8") != qa_content
+    if apply and changed:
+        qa_index.parent.mkdir(parents=True, exist_ok=True)
+        qa_index.write_text(qa_content, encoding="utf-8")
+    actions.append(
+        {
+            "path": str(qa_index.relative_to(project_root)),
+            "action": "written" if changed and apply else ("planned" if changed else "unchanged"),
+        }
+    )
     return actions
 
 

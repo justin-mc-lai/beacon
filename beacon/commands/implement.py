@@ -69,6 +69,7 @@ from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
 from beacon.utils.project_metadata import resolve_project_metadata_view
+from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.requirement_deepening import load_requirement_completeness, requirement_paths
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
@@ -91,6 +92,13 @@ from beacon.utils.subagent_readiness import (
 from beacon.utils.team_surface import write_implement_to_qa_handoff
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
+from beacon.utils.workflow_memory import (
+    append_lifecycle_event,
+    load_lifecycle_events,
+    record_stage_writeback,
+    resolve_workflow_run_id,
+    write_stage_context,
+)
 from beacon.utils.writeback import record_implementation_writeback
 
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
@@ -179,6 +187,68 @@ def _trace_artifacts_from_payload(payload: dict[str, Any]) -> list[str]:
             if text and text not in refs:
                 refs.append(text)
     return refs
+
+
+def _sync_direct_implement_lifecycle_completion(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    evidence_ref: list[str],
+) -> dict[str, Any]:
+    workflow_run_id = str(os.environ.get("BEACON_WORKFLOW_RUN_ID", "") or "").strip()
+    if workflow_run_id:
+        return {"synced": False, "reason": "workflow_driver_owns_stage_events", "run_id": workflow_run_id}
+
+    resolved_run_id = resolve_workflow_run_id(project_root, version=version, feature=feature) or ""
+    if not resolved_run_id:
+        return {"synced": False, "reason": "workflow_run_missing", "run_id": ""}
+
+    stage = "implement"
+    stage_events = load_lifecycle_events(project_root, run_id=resolved_run_id, stage=stage)
+    event_names = {str(item.get("event", "") or "") for item in stage_events if isinstance(item, dict)}
+    created_events: list[str] = []
+
+    if "stage_started" not in event_names:
+        append_lifecycle_event(
+            project_root,
+            run_id=resolved_run_id,
+            stage=stage,
+            event="stage_started",
+            source="implement.run.sync",
+            evidence_ref=evidence_ref,
+            details={"feature": feature, "version": version, "sync_source": "implement.run"},
+        )
+        created_events.append("stage_started")
+
+    if "stage_context_injected" not in event_names:
+        write_stage_context(
+            project_root,
+            run_id=resolved_run_id,
+            stage=stage,
+            feature=feature,
+        )
+        created_events.append("stage_context_injected")
+
+    append_lifecycle_event(
+        project_root,
+        run_id=resolved_run_id,
+        stage=stage,
+        event="stage_finished",
+        source="implement.run.sync",
+        evidence_ref=evidence_ref,
+        details={"feature": feature, "version": version, "status": "completed", "sync_source": "implement.run"},
+    )
+    record_stage_writeback(
+        project_root,
+        run_id=resolved_run_id,
+        stage=stage,
+        feature=feature,
+        evidence_ref=evidence_ref,
+        status="completed",
+    )
+    created_events.extend(["stage_finished", "memory_writeback"])
+    return {"synced": True, "reason": "workflow_run_backfilled", "run_id": resolved_run_id, "events": created_events}
 
 
 def _capture_host_prompt_trace(
@@ -1209,6 +1279,93 @@ def _dedupe_strings(values: list[Any]) -> list[str]:
     return out
 
 
+def _relative_ref(project_root: Path, path: Path) -> str:
+    try:
+        return str(path.relative_to(project_root))
+    except ValueError:
+        return str(path)
+
+
+def _read_json_dict(path: Path) -> dict[str, Any]:
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _implementation_design_truth(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    files = prototype_files(project_root, version, feature)
+    implementation_index = _read_json_dict(files["implementation_index"])
+    implementation_map = _read_json_dict(files["implementation_map"])
+    style_path = files["design_artifacts_dir"] / "style-preset.json"
+    lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
+    style_preset = _read_json_dict(style_path)
+    lint_rules = _read_json_dict(lint_path)
+    style_payload = style_preset.get("payload") if isinstance(style_preset.get("payload"), dict) else {}
+    lint_payload = lint_rules.get("payload") if isinstance(lint_rules.get("payload"), dict) else {}
+    default_consumption_entry = (
+        implementation_map.get("default_consumption_entry", {})
+        if isinstance(implementation_map.get("default_consumption_entry"), dict)
+        else {}
+    )
+    anti_ai_contract = style_payload.get("anti_ai_ui_contract") if isinstance(style_payload.get("anti_ai_ui_contract"), dict) else {}
+    if not anti_ai_contract and isinstance(lint_payload.get("anti_ai_ui_contract"), dict):
+        anti_ai_contract = lint_payload.get("anti_ai_ui_contract", {})
+    allowed_inputs = [str(item).strip() for item in implementation_index.get("allowed_inputs", []) if str(item).strip()] if isinstance(implementation_index.get("allowed_inputs"), list) else []
+    required_refs = {
+        "implementation_index": files["implementation_index"],
+        "implementation_map": files["implementation_map"],
+        "style_preset": style_path,
+        "design_lint_rules": lint_path,
+    }
+    refs = {
+        key: _relative_ref(project_root, path)
+        for key, path in required_refs.items()
+        if path.exists()
+    }
+    missing_refs = [
+        key
+        for key, path in required_refs.items()
+        if not path.exists()
+    ]
+    return {
+        "schema_version": "1.0",
+        "status": "ready" if not missing_refs else "missing",
+        "feature": feature,
+        "feature_slug": _slug(feature),
+        "version": version,
+        "source_surface": "prototype",
+        "consumption_surface": "implement",
+        "mode": str(implementation_index.get("mode", "") or default_consumption_entry.get("mode", "") or ""),
+        "allowed_inputs": allowed_inputs,
+        "blocked_human_inputs": [str(item).strip() for item in implementation_index.get("blocked_human_inputs", []) if str(item).strip()] if isinstance(implementation_index.get("blocked_human_inputs"), list) else [],
+        "refs": refs,
+        "missing_refs": missing_refs,
+        "design_preset": str(style_payload.get("design_preset") or ""),
+        "canonical_design_preset": str(style_payload.get("canonical_design_preset") or lint_payload.get("canonical_design_preset") or ""),
+        "preset_source": str(style_payload.get("preset_source") or lint_payload.get("preset_source") or ""),
+        "preset_family": str(style_payload.get("preset_family") or ""),
+        "template_catalog_count": int(style_payload.get("template_catalog_count") or lint_payload.get("template_catalog_count") or 0),
+        "anti_ai_ui_contract": anti_ai_contract,
+        "template_layout_rules": [
+            str(item).strip()
+            for item in (style_payload.get("template_layout_rules") or lint_payload.get("template_layout_rules") or [])
+            if str(item).strip()
+        ],
+        "interaction_discipline_rules": [
+            str(item).strip()
+            for item in (
+                style_payload.get("interaction_discipline_rules")
+                or anti_ai_contract.get("interaction_quality_rules")
+                or lint_payload.get("interaction_quality_rules")
+                or []
+            )
+            if str(item).strip()
+        ],
+    }
+
+
 def _revision_cleanup_payload(*, result_payload: dict[str, Any], revision_delta: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(revision_delta, dict) or not revision_delta:
         return {}
@@ -2185,6 +2342,10 @@ def run_implement_stage(  # noqa: PLR0913
         if isinstance(semantic_layer.get("default_design_bridge"), dict)
         else {}
     )
+    design_truth = _implementation_design_truth(project_root, version=resolved_version, feature=feature)
+    design_truth_refs = design_truth.get("refs") if isinstance(design_truth.get("refs"), dict) else {}
+    if design_truth_refs:
+        artifacts = {**artifacts, **{f"design_truth_{key}": str(value) for key, value in design_truth_refs.items() if str(value).strip()}}
     request_path = Path(f".beacon/implement/{run_id}/request.json")
     request_md_path = Path(
         format_template(
@@ -2223,6 +2384,10 @@ def run_implement_stage(  # noqa: PLR0913
         "semantic_usage_guidelines": str(semantic_artifacts.get("semantic_usage_guidelines", "")),
         "semantic_review": str(semantic_artifacts.get("semantic_review", "")),
         "default_design_bridge_skill": str(default_design_bridge.get("skill_id", "")),
+        "design_preset": str(design_truth.get("design_preset", "")),
+        "canonical_design_preset": str(design_truth.get("canonical_design_preset", "")),
+        "design_style_preset": str(design_truth_refs.get("style_preset", "")),
+        "design_lint_rules": str(design_truth_refs.get("design_lint_rules", "")),
     }
     implementation_plan_file = (
         str(implementation_plan_json_path(project_root, resolved_version, feature).relative_to(project_root))
@@ -2243,6 +2408,7 @@ def run_implement_stage(  # noqa: PLR0913
         implementation_plan_file=implementation_plan_file,
         semantic_artifact_refs=semantic_artifacts,
         default_design_bridge=default_design_bridge,
+        design_truth=design_truth,
         revision_cleanup=revision_delta,
         operator_prompt=str(prompt_boundary_payload.get("prompt", "") or ""),
         prompt_boundary=prompt_boundary_payload,
@@ -2288,6 +2454,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["ac_matrix"],
             str(revision_delta.get("json_ref", "") or ""),
             *[value for value in semantic_artifacts.values() if value],
+            *[value for value in design_truth_refs.values() if value],
             str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
             str(request_path),
             str(result_path),
@@ -2340,6 +2507,7 @@ def run_implement_stage(  # noqa: PLR0913
             "artifacts": semantic_artifacts,
             "default_design_bridge": default_design_bridge,
         },
+        "design_truth": design_truth,
         "skill_admission": skill_admission,
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
@@ -2372,6 +2540,7 @@ def run_implement_stage(  # noqa: PLR0913
             "artifacts": semantic_artifacts,
             "default_design_bridge": default_design_bridge,
         },
+        "design_truth": design_truth,
         "skill_admission": skill_admission,
         "delivery_contract": request_delivery_contract,
         "host_native_delivery": request_delivery_contract,
@@ -2506,6 +2675,7 @@ def run_implement_stage(  # noqa: PLR0913
                 artifacts["ac_matrix"],
                 str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
                 str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
+                *[value for value in design_truth_refs.values() if value],
                 str(request_path),
                 str(result_path),
             ]
@@ -2543,6 +2713,7 @@ def run_implement_stage(  # noqa: PLR0913
             "delivery_surfaces": delivery_surfaces,
             "revision_cleanup": revision_cleanup_summary,
             "skill_admission": skill_admission,
+            "design_truth": design_truth,
             "traceability_refs": summary_traceability_refs,
             "generated_at": now_iso(),
         }
@@ -2645,6 +2816,7 @@ def run_implement_stage(  # noqa: PLR0913
             evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
             changed_files=result_payload.get("changed_files", []),
             implementation_plan_ref=implementation_plan_file,
+            design_truth=design_truth,
         )
         summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
         summary_payload["auto_qa"] = {
@@ -2719,6 +2891,16 @@ def run_implement_stage(  # noqa: PLR0913
                 str(summary_paths["md"].relative_to(project_root)),
             ],
             version=resolved_version,
+        )
+        summary_payload["workflow_lifecycle_sync"] = _sync_direct_implement_lifecycle_completion(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            evidence_ref=[
+                str(summary_paths["json"].relative_to(project_root)),
+                str(summary_paths["md"].relative_to(project_root)),
+                str(marker.relative_to(project_root)),
+            ],
         )
         write_json(state_path, summary_payload)
         return auto_qa_exit, summary_payload
@@ -3005,6 +3187,7 @@ def run_implement_stage(  # noqa: PLR0913
             artifacts["ac_matrix"],
             str(revision_cleanup_summary.get("revision_delta_ref", "") or ""),
             str((skill_admission.get("artifacts") or {}).get("machine_path", "") or ""),
+            *[value for value in design_truth_refs.values() if value],
             str(request_path),
             str(result_path),
             str(stdout_path),
@@ -3043,6 +3226,7 @@ def run_implement_stage(  # noqa: PLR0913
         "delivery_surfaces": delivery_surfaces,
         "revision_cleanup": revision_cleanup_summary,
         "skill_admission": skill_admission,
+        "design_truth": design_truth,
         "traceability_refs": summary_traceability_refs,
         "implementation_marker": str(marker.relative_to(project_root)),
         "technical_archive": {
@@ -3160,6 +3344,7 @@ def run_implement_stage(  # noqa: PLR0913
         evidence_refs=[str(summary_paths["json"].relative_to(project_root)), str(archive_paths["json"].relative_to(project_root))],
         changed_files=result_payload.get("changed_files", []),
         implementation_plan_ref=implementation_plan_file,
+        design_truth=design_truth,
     )
     summary_payload["implement_to_qa_handoff"] = str(handoff_path.relative_to(project_root))
     write_json(change_paths["json"], change_payload)
@@ -3267,6 +3452,16 @@ def run_implement_stage(  # noqa: PLR0913
         version=resolved_version,
     )
 
+    summary_payload["workflow_lifecycle_sync"] = _sync_direct_implement_lifecycle_completion(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        evidence_ref=[
+            str(summary_paths["json"].relative_to(project_root)),
+            str(summary_paths["md"].relative_to(project_root)),
+            str(marker.relative_to(project_root)),
+        ],
+    )
     payload = {**base_state, **summary_payload}
     write_json(state_path, payload)
     return auto_qa_exit, payload

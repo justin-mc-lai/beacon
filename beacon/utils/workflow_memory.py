@@ -15,7 +15,8 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.memory import append_memory_entry, load_memory_entries, memory_dir, memory_v1_path
-from beacon.utils.runtime import load_run_state, now_iso, runs_dir
+from beacon.utils.runtime import load_run_state, now_iso, runs_dir, save_run_state
+from beacon.utils.story_state import feature_slug
 
 LIFECYCLE_FILE = "workflow-lifecycle.json"
 LIFECYCLE_INDEX_FILE = "workflow-lifecycle.index.json"
@@ -740,6 +741,170 @@ def record_stage_writeback(
     }
     _record_workflow_transaction(project_root, run_id=run_id, record=record)
     return entry
+
+
+def _existing_rel_refs(project_root: Path, candidates: list[Path]) -> list[str]:
+    refs: list[str] = []
+    for path in candidates:
+        if path.exists():
+            try:
+                refs.append(str(path.relative_to(project_root)))
+            except ValueError:
+                refs.append(str(path))
+    return sorted(set(refs))
+
+
+def _workflow_memory_evidence_refs(project_root: Path, *, version: str, feature: str, run_id: str) -> dict[str, list[str]]:
+    slug = feature_slug(feature)
+    docs_root = project_root / "docs" / "beacon" / version
+    feature_root = project_root / ".beacon" / "qa" / "features" / slug
+    run_state_path = runs_dir(project_root) / run_id / "state.json"
+    stage_refs = {
+        "prd": _existing_rel_refs(project_root, [
+            docs_root / "prd" / f"{slug}.md",
+            docs_root / "user-story" / f"{slug}.md",
+        ]),
+        "user-story": _existing_rel_refs(project_root, [
+            docs_root / "user-story" / f"{slug}.md",
+            docs_root / "prd" / f"{slug}.md",
+        ]),
+        "test-case": _existing_rel_refs(project_root, [
+            docs_root / "qa" / "test-cases" / f"{slug}.md",
+            docs_root / ".machine" / "qa" / f"{slug}.qa9-matrix.json",
+            docs_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json",
+        ]),
+        "implement": _existing_rel_refs(project_root, [
+            project_root / ".beacon" / "state" / f"implementation-{slug}.json",
+            docs_root / ".machine" / "execution" / f"implementation-plan-{slug}.json",
+            docs_root / "user-story" / f"{slug}.md",
+        ]),
+        "qa": _existing_rel_refs(project_root, [
+            project_root / ".beacon" / "auto-test-status.json",
+            project_root / ".beacon" / "qa" / "status.json",
+            project_root / ".beacon" / "coverage-summary.json",
+            feature_root / "scorecard.json",
+            feature_root / "ac-closure.json",
+        ]),
+        "release": _existing_rel_refs(project_root, [
+            run_state_path,
+            project_root / ".beacon" / "gate-report.json",
+            project_root / ".beacon" / "coverage-summary.json",
+            project_root / ".beacon" / "evidence-manifest.json",
+            docs_root / "change" / f"{version}.md",
+            docs_root / ".machine" / "change" / f"{version}.json",
+            docs_root / "execution" / "boundaries.md",
+        ]),
+    }
+    return stage_refs
+
+
+def backfill_workflow_memory(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    run_id: str,
+) -> dict[str, Any]:
+    """Backfill workflow-memory surfaces for an already-completed feature run."""
+    state = load_run_state(project_root, run_id) or {}
+    started_at = str(
+        state.get("started_at")
+        or _read_json(project_root / ".beacon" / "auto-test-status.json", {}).get("timestamp")
+        or _read_json(project_root / ".beacon" / "qa" / "status.json", {}).get("timestamp")
+        or now_iso()
+    )
+    ended_at = str(
+        state.get("ended_at")
+        or _read_json(project_root / ".beacon" / "coverage-summary.json", {}).get("updated_at")
+        or now_iso()
+    )
+    run_state_payload = {
+        **state,
+        "run_id": run_id,
+        "workflow": str(state.get("workflow") or "workflow.start"),
+        "mode": str(state.get("mode") or "recovered_release_backfill"),
+        "feature": feature,
+        "version": version,
+        "status": str(state.get("status") or "completed"),
+        "started_at": started_at,
+        "ended_at": ended_at,
+    }
+    save_run_state(project_root, run_id, run_state_payload)
+
+    stage_refs = _workflow_memory_evidence_refs(project_root, version=version, feature=feature, run_id=run_id)
+    created: list[dict[str, str]] = []
+    workflow_stages = ("prd", "user-story", "test-case", "implement", "qa", "release")
+    for stage in workflow_stages:
+        refs = stage_refs.get(stage, [])
+        if not refs:
+            continue
+        stage_events = load_lifecycle_events(project_root, run_id=run_id, stage=stage)
+        event_names = {str(item.get("event", "") or "") for item in stage_events if isinstance(item, dict)}
+        details = {"feature": feature, "version": version, "sync_source": "doctor.workflow-memory.sync"}
+        if "stage_started" not in event_names:
+            append_lifecycle_event(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                event="stage_started",
+                source="doctor.workflow-memory.sync",
+                evidence_ref=refs,
+                details=details,
+            )
+            created.append({"stage": stage, "event": "stage_started"})
+        if "stage_context_injected" not in event_names:
+            write_stage_context(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                feature=feature,
+            )
+            created.append({"stage": stage, "event": "stage_context_injected"})
+        if "stage_finished" not in event_names:
+            append_lifecycle_event(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                event="stage_finished",
+                source="doctor.workflow-memory.sync",
+                evidence_ref=refs,
+                details={**details, "status": "completed"},
+            )
+            created.append({"stage": stage, "event": "stage_finished"})
+        if "memory_writeback" not in event_names:
+            record_stage_writeback(
+                project_root,
+                run_id=run_id,
+                stage=stage,
+                feature=feature,
+                evidence_ref=refs,
+                status="completed",
+            )
+            created.append({"stage": stage, "event": "memory_writeback"})
+
+    release_event_exists = bool(load_lifecycle_events(project_root, run_id=run_id, stage="release", event="release_decision_recorded"))
+    release_refs = stage_refs.get("release", [])
+    if release_refs and not release_event_exists:
+        append_lifecycle_event(
+            project_root,
+            run_id=run_id,
+            stage="release",
+            event="release_decision_recorded",
+            source="doctor.workflow-memory.sync",
+            evidence_ref=release_refs,
+            details={"action": "backfill", "version": version, "feature": feature},
+        )
+        created.append({"stage": "release", "event": "release_decision_recorded"})
+
+    return {
+        "schema_version": "1.0",
+        "run_id": run_id,
+        "version": version,
+        "feature": feature,
+        "state_path": str((runs_dir(project_root) / run_id / "state.json").relative_to(project_root)),
+        "created": created,
+        "stage_evidence_refs": stage_refs,
+    }
 
 
 def _latest_run_id_from_events(events: list[dict[str, Any]]) -> str | None:

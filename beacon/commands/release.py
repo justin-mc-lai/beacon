@@ -6,7 +6,13 @@ from datetime import datetime
 import json
 import re
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_change_dir, release_checklist_file
+from beacon.utils.artifact_paths import (
+    change_docs_file,
+    change_file_output,
+    machine_change_dir,
+    release_checklist_file,
+    release_gate_report_file,
+)
 from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.material_audit import build_requirement_package_gate
@@ -765,7 +771,8 @@ def check(
     )
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
-    gate_report_path = project_root / ".beacon" / "gate-report.json"
+    release_gate_report_path = release_gate_report_file(project_root)
+    gate_report_path = release_gate_report_path if release_gate_report_path.exists() else project_root / ".beacon" / "gate-report.json"
     manifest_path = project_root / ".beacon" / "evidence-manifest.json"
     coverage_summary_path = project_root / ".beacon" / "coverage-summary.json"
 

@@ -11,7 +11,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.runtime import save_run_state
-from beacon.utils.workflow_memory import append_lifecycle_event
+from beacon.utils.workflow_memory import append_lifecycle_event, backfill_workflow_memory, compute_memory_metrics
 
 
 runner = CliRunner()
@@ -685,3 +685,68 @@ def test_gate_release_should_fallback_to_latest_closed_workflow_run_when_verify_
     payload = _gate_release_payload(tmp_path)
     reason_codes = {item["reason_code"] for item in payload["issues"]}
     assert "memory_lifecycle_missing" not in reason_codes
+
+
+def test_backfill_workflow_memory_should_close_release_memory_surface(tmp_path: Path):
+    version = "v1.4.5"
+    feature = "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning"
+    run_id = "run-20260512T151700289759"
+    slug = feature
+
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "prd").mkdir(parents=True, exist_ok=True)
+    (docs_root / "user-story").mkdir(parents=True, exist_ok=True)
+    (docs_root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "qa").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / "prd" / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
+    (docs_root / "user-story" / f"{slug}.md").write_text("# Story\n", encoding="utf-8")
+    (docs_root / "qa" / "test-cases" / f"{slug}.md").write_text("# Cases\n", encoding="utf-8")
+    (docs_root / "execution" / "boundaries.md").write_text("# Boundaries\n", encoding="utf-8")
+    (docs_root / "change" / f"{version}.md").write_text("# Change\n", encoding="utf-8")
+    (docs_root / ".machine" / "change" / f"{version}.json").write_text("{}", encoding="utf-8")
+    (docs_root / ".machine" / "qa" / f"{slug}.qa9-matrix.json").write_text('{"entries":[]}', encoding="utf-8")
+
+    beacon_root = tmp_path / ".beacon"
+    (beacon_root / "qa" / "features" / slug).mkdir(parents=True, exist_ok=True)
+    (beacon_root / "state").mkdir(parents=True, exist_ok=True)
+    (beacon_root / "state" / f"implementation-{slug}.json").write_text("{}", encoding="utf-8")
+    (beacon_root / "auto-test-status.json").write_text(
+        json.dumps({"version": version, "run_id": run_id, "feature": feature, "timestamp": "2026-05-12T07:17:00Z"}),
+        encoding="utf-8",
+    )
+    (beacon_root / "qa" / "status.json").write_text(
+        json.dumps({"version": version, "run_id": run_id, "feature": feature, "timestamp": "2026-05-12T07:17:01Z"}),
+        encoding="utf-8",
+    )
+    (beacon_root / "coverage-summary.json").write_text(
+        json.dumps({"version": version, "run_id": run_id, "updated_at": "2026-05-12T07:17:02Z"}),
+        encoding="utf-8",
+    )
+    (beacon_root / "gate-report.json").write_text(
+        json.dumps({"stage": "release", "mode": "strict", "status": "Pass", "run_id": run_id, "version": version}),
+        encoding="utf-8",
+    )
+    (beacon_root / "evidence-manifest.json").write_text(
+        json.dumps({"version": version, "run_id": run_id, "entries": []}),
+        encoding="utf-8",
+    )
+    (beacon_root / "qa" / "features" / slug / "scorecard.json").write_text(
+        json.dumps({"feature": feature, "run_id": run_id}),
+        encoding="utf-8",
+    )
+    (beacon_root / "qa" / "features" / slug / "ac-closure.json").write_text(
+        json.dumps({"feature": feature, "run_id": run_id, "reports": []}),
+        encoding="utf-8",
+    )
+
+    result = backfill_workflow_memory(tmp_path, version=version, feature=feature, run_id=run_id)
+
+    assert result["created"]
+    assert (tmp_path / ".beacon" / "runs" / run_id / "state.json").exists()
+    metrics = compute_memory_metrics(tmp_path, run_id=run_id, version=version)
+    assert metrics["closure_complete"] is True
+    issues = gate_module.check_release_memory_profile(tmp_path, gate_module.GateMode.STRICT, "release", version)
+    assert issues == []

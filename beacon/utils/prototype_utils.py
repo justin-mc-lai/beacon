@@ -51,6 +51,143 @@ PAGE_ORDER_DEFAULT = (
     "material-viewer",
 )
 
+DESIGN_TEMPLATE_CATALOG = {
+    "restrained-product": {
+        "source": "apple",
+        "family": "product",
+        "label": "Restrained Product",
+        "description": "quiet neutral product baseline for general application surfaces",
+    },
+    "operator-console": {
+        "source": "vercel",
+        "family": "console",
+        "label": "Operator Console",
+        "description": "precise operational hierarchy for workbench and admin surfaces",
+    },
+    "editorial-calm": {
+        "source": "apple+vercel hybrid",
+        "family": "editorial",
+        "label": "Editorial Calm",
+        "description": "content-first summary and documentation baseline with restrained density",
+    },
+}
+DESIGN_PRESET_ALIASES = {
+    "apple-inspired-design-md": "restrained-product",
+    "vercel-inspired-design-md": "operator-console",
+}
+ANTI_AI_UI_CONTRACT = {
+    "forbidden_visual_patterns": [
+        "gradient text",
+        "purple-to-blue ai gradient",
+        "card inside card",
+        "accent side stripe",
+        "glassmorphism used as decoration",
+        "bounce_or_elastic_easing",
+    ],
+    "interaction_quality_rules": [
+        "focus-visible must exist for keyboard users",
+        "primary interactive targets should be at least 44x44",
+        "button hierarchy must distinguish primary from secondary actions",
+        "empty/loading/error/success states must be intentional and explicit",
+    ],
+    "required_state_coverage": ["empty", "loading", "error", "success"],
+    "minimum_touch_target": "44x44",
+    "focus_visibility_policy": "required",
+    "layout_noise_threshold": "restrained",
+    "external_reference_runtime_dependency": False,
+}
+
+
+def build_design_template_catalog(version: str) -> dict[str, Any]:
+    return {
+        "version": version,
+        "catalog_mode": "fixed-three-templates",
+        "template_count": len(DESIGN_TEMPLATE_CATALOG),
+        "templates": {key: dict(value) for key, value in DESIGN_TEMPLATE_CATALOG.items()},
+    }
+
+
+def build_anti_ai_ui_contract(version: str) -> dict[str, Any]:
+    return {
+        "version": version,
+        "contract_mode": "baseline",
+        **ANTI_AI_UI_CONTRACT,
+    }
+
+
+def normalize_design_preset_choice(version: str, requested_preset: str, override_reason: str = "") -> dict[str, Any]:
+    requested = str(requested_preset or "").strip()
+    override = str(override_reason or "").strip()
+    default_preset = "restrained-product" if _semver_tuple(version) >= (1, 4, 4) else "apple-inspired-design-md"
+    effective_requested = requested or default_preset
+    canonical = DESIGN_PRESET_ALIASES.get(effective_requested, effective_requested)
+    catalog = build_design_template_catalog(version)
+    anti_ai_contract = build_anti_ai_ui_contract(version)
+    entry = catalog["templates"].get(canonical)
+    if entry:
+        return {
+            "requested_design_preset": effective_requested,
+            "design_preset": effective_requested,
+            "canonical_design_preset": canonical,
+            "preset_source": str(entry.get("source") or ""),
+            "preset_family": str(entry.get("family") or ""),
+            "preset_label": str(entry.get("label") or canonical),
+            "template_catalog": catalog,
+            "template_catalog_count": int(catalog.get("template_count") or 0),
+            "anti_ai_ui_contract": anti_ai_contract,
+            "design_preset_overridden": bool(override) or effective_requested != default_preset,
+            "design_preset_override_reason": override,
+            "design_preset_valid": True,
+            "reference_runtime_dependency": False,
+            "normalized_reference_mode": "beacon-owned-canonical-preset",
+        }
+    if override and effective_requested:
+        return {
+            "requested_design_preset": effective_requested,
+            "design_preset": effective_requested,
+            "canonical_design_preset": "",
+            "preset_source": "override",
+            "preset_family": "custom",
+            "preset_label": effective_requested.replace("-", " ").title(),
+            "template_catalog": catalog,
+            "template_catalog_count": int(catalog.get("template_count") or 0),
+            "anti_ai_ui_contract": anti_ai_contract,
+            "design_preset_overridden": True,
+            "design_preset_override_reason": override,
+            "design_preset_valid": False,
+            "reference_runtime_dependency": False,
+            "normalized_reference_mode": "beacon-owned-canonical-preset",
+        }
+    fallback_key = DESIGN_PRESET_ALIASES.get(default_preset, default_preset)
+    fallback_entry = catalog["templates"][fallback_key]
+    return {
+        "requested_design_preset": effective_requested,
+        "design_preset": default_preset,
+        "canonical_design_preset": fallback_key,
+        "preset_source": str(fallback_entry.get("source") or ""),
+        "preset_family": str(fallback_entry.get("family") or ""),
+        "preset_label": str(fallback_entry.get("label") or default_preset),
+        "template_catalog": catalog,
+        "template_catalog_count": int(catalog.get("template_count") or 0),
+        "anti_ai_ui_contract": anti_ai_contract,
+        "design_preset_overridden": False,
+        "design_preset_override_reason": override,
+        "design_preset_valid": False,
+        "reference_runtime_dependency": False,
+        "normalized_reference_mode": "beacon-owned-canonical-preset",
+    }
+
+
+def _theme_has_supported_design_preset(theme: dict[str, Any], version: str) -> bool:
+    design_preset = str(theme.get("design_preset") or "").strip()
+    canonical_design_preset = str(theme.get("canonical_design_preset") or "").strip()
+    override_reason = str(theme.get("design_preset_override_reason") or "").strip()
+    if override_reason:
+        return True
+    if _semver_tuple(version) >= (1, 4, 4):
+        return canonical_design_preset in DESIGN_TEMPLATE_CATALOG or design_preset in DESIGN_TEMPLATE_CATALOG
+    return design_preset == "apple-inspired-design-md" or canonical_design_preset == "restrained-product"
+
 
 def _semver_tuple(value: str | None) -> tuple[int, int, int]:
     text = str(value or "").strip().lower()
@@ -104,6 +241,7 @@ def _prototype_auto_fallback_accepted(
         and files["preview_dark_html"].exists()
         and bool(semantic_contract_path)
     )
+
 
 PAGE_CATALOG: dict[str, dict[str, Any]] = {
     "home": {
@@ -907,9 +1045,9 @@ def _load_prototype_canonical_truth(
     merged["theme"] = merged_theme
     merged["source_payload"] = truth_payload
     version_source = str(
-        (plan_payload.get("version") if isinstance(plan_payload, dict) else "")
-        or (manifest_payload.get("version") if isinstance(manifest_payload, dict) else "")
-        or (canonical_payload.get("version") if isinstance(canonical_payload, dict) else "")
+        (plan_payload.get("version") or "")
+        or (manifest_payload.get("version") or "")
+        or (canonical_payload.get("version") or "")
         or ""
     ).strip()
     if version_source and _semver_tuple(version_source) >= (1, 3, 12):
@@ -1263,6 +1401,7 @@ def load_source_documents(project_root: Path, version: str, feature: str) -> lis
                 "type": doc_type,
                 "path": path,
                 "relative_path": str(path.relative_to(project_root)),
+                "version": version,
                 "text": text,
                 "fingerprint": sha256_text(text),
             }
@@ -1275,6 +1414,7 @@ def load_source_documents(project_root: Path, version: str, feature: str) -> lis
                 "type": "prototype-source",
                 "path": prototype_source,
                 "relative_path": str(prototype_source.relative_to(project_root)),
+                "version": version,
                 "text": text,
                 "fingerprint": sha256_text(text),
             }
@@ -1569,6 +1709,89 @@ def _default_custom_page_meta(page_id: str, label: str) -> dict[str, Any]:
     }
 
 
+def _overlay_explicit_page_meta(docs: list[dict[str, Any]], page_meta: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    rows = _iter_doc_lines(docs)
+    current_page_id = ""
+    in_actions_block = False
+    in_states_block = False
+    for row in rows:
+        stripped = str(row.get("line") or "").strip()
+        if not stripped:
+            continue
+        heading = re.match(r"^#{3,6}\s+(.+)$", stripped)
+        if heading:
+            current_page_id = _resolve_page_id_from_label(heading.group(1), page_meta)
+            in_actions_block = False
+            in_states_block = False
+            continue
+        if not current_page_id:
+            continue
+        meta = page_meta.get(current_page_id)
+        if not isinstance(meta, dict):
+            continue
+        normalized = re.sub(r"^[-*]\s+", "", stripped)
+        lower = normalized.lower()
+        if lower.startswith("responsibility:"):
+            meta["responsibility"] = normalized.split(":", 1)[1].strip()
+            continue
+        if lower.startswith("decision_supported:"):
+            meta["decision_supported"] = normalized.split(":", 1)[1].strip()
+            continue
+        if lower.startswith("sections:"):
+            raw_sections = normalized.split(":", 1)[1].strip().replace("|", ",")
+            meta["sections"] = [item.strip() for item in raw_sections.split(",") if item.strip()][:6]
+            continue
+        if lower.startswith("priority:"):
+            meta["priority"] = normalized.split(":", 1)[1].strip() or meta.get("priority", "P1")
+            continue
+        if lower.startswith("platforms:"):
+            raw_platforms = normalized.split(":", 1)[1].strip().replace("|", ",").replace("/", ",")
+            meta["platforms"] = [item.strip() for item in raw_platforms.split(",") if item.strip()][:4]
+            continue
+        if lower.startswith("actions:"):
+            parsed = _parse_action_specs(normalized.split(":", 1)[1].strip(), page_meta)
+            if parsed:
+                meta["actions"] = parsed
+            in_actions_block = True
+            in_states_block = False
+            continue
+        if lower.startswith("states:"):
+            parsed = _parse_state_specs(normalized.split(":", 1)[1].strip())
+            if parsed:
+                meta["states"] = parsed
+            in_actions_block = False
+            in_states_block = True
+            continue
+        if in_actions_block and re.match(r"^[-*]\s+", stripped):
+            parsed = _parse_action_specs(normalized, page_meta)
+            if parsed:
+                meta["actions"] = list(meta.get("actions") or []) + parsed
+                continue
+        if in_states_block and re.match(r"^[-*]\s+", stripped):
+            parsed = _parse_state_specs(normalized)
+            if parsed:
+                meta["states"] = list(meta.get("states") or []) + parsed
+                continue
+        in_actions_block = False
+        in_states_block = False
+    return page_meta
+
+
+def _line_page_mentions(line: str, page_ids: list[str], page_meta: dict[str, dict[str, Any]]) -> list[str]:
+    lowered = str(line or "").lower()
+    matched: list[str] = []
+    for page_id in page_ids:
+        meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or {}
+        tokens = [page_id, str(meta.get("name") or "")]
+        tokens.extend(str(keyword) for keyword in (meta.get("keywords") or []) if str(keyword).strip())
+        for token in tokens:
+            tk = str(token).strip().lower()
+            if tk and tk in lowered:
+                matched.append(page_id)
+                break
+    return matched
+
+
 def _detect_pages_with_meta(docs: list[dict[str, Any]]) -> tuple[list[str], bool, dict[str, dict[str, Any]]]:
     rows = _iter_doc_lines(docs)
     discovered: list[tuple[int, str, str, bool]] = []
@@ -1775,89 +1998,6 @@ def _parse_state_specs(raw: str) -> list[dict[str, str]]:
     return states[:8]
 
 
-def _overlay_explicit_page_meta(docs: list[dict[str, Any]], page_meta: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
-    rows = _iter_doc_lines(docs)
-    current_page_id = ""
-    in_actions_block = False
-    in_states_block = False
-    for row in rows:
-        stripped = str(row.get("line") or "").strip()
-        if not stripped:
-            continue
-        heading = re.match(r"^#{3,6}\s+(.+)$", stripped)
-        if heading:
-            current_page_id = _resolve_page_id_from_label(heading.group(1), page_meta)
-            in_actions_block = False
-            in_states_block = False
-            continue
-        if not current_page_id:
-            continue
-        meta = page_meta.get(current_page_id)
-        if not isinstance(meta, dict):
-            continue
-        normalized = re.sub(r"^[-*]\s+", "", stripped)
-        lower = normalized.lower()
-        if lower.startswith("responsibility:"):
-            meta["responsibility"] = normalized.split(":", 1)[1].strip()
-            continue
-        if lower.startswith("decision_supported:"):
-            meta["decision_supported"] = normalized.split(":", 1)[1].strip()
-            continue
-        if lower.startswith("sections:"):
-            raw_sections = normalized.split(":", 1)[1].strip().replace("|", ",")
-            meta["sections"] = [item.strip() for item in raw_sections.split(",") if item.strip()][:6]
-            continue
-        if lower.startswith("priority:"):
-            meta["priority"] = normalized.split(":", 1)[1].strip() or meta.get("priority", "P1")
-            continue
-        if lower.startswith("platforms:"):
-            raw_platforms = normalized.split(":", 1)[1].strip().replace("|", ",").replace("/", ",")
-            meta["platforms"] = [item.strip() for item in raw_platforms.split(",") if item.strip()][:4]
-            continue
-        if lower.startswith("actions:"):
-            parsed = _parse_action_specs(normalized.split(":", 1)[1].strip(), page_meta)
-            if parsed:
-                meta["actions"] = parsed
-            in_actions_block = True
-            in_states_block = False
-            continue
-        if lower.startswith("states:"):
-            parsed = _parse_state_specs(normalized.split(":", 1)[1].strip())
-            if parsed:
-                meta["states"] = parsed
-            in_actions_block = False
-            in_states_block = True
-            continue
-        if in_actions_block and re.match(r"^[-*]\s+", stripped):
-            parsed = _parse_action_specs(normalized, page_meta)
-            if parsed:
-                meta["actions"] = list(meta.get("actions") or []) + parsed
-                continue
-        if in_states_block and re.match(r"^[-*]\s+", stripped):
-            parsed = _parse_state_specs(normalized)
-            if parsed:
-                meta["states"] = list(meta.get("states") or []) + parsed
-                continue
-        in_actions_block = False
-        in_states_block = False
-    return page_meta
-
-
-def _line_page_mentions(line: str, page_ids: list[str], page_meta: dict[str, dict[str, Any]]) -> list[str]:
-    lowered = str(line or "").lower()
-    matched: list[str] = []
-    for page_id in page_ids:
-        meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or {}
-        tokens = [page_id, str(meta.get("name") or "")]
-        tokens.extend(str(keyword) for keyword in (meta.get("keywords") or []) if str(keyword).strip())
-        for token in tokens:
-            tk = str(token).strip().lower()
-            if tk and tk in lowered:
-                matched.append(page_id)
-                break
-    return matched
-
-
 def _build_transition_inventory(page_ids: list[str], docs: list[dict[str, Any]], page_meta: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
     allowed = set(page_ids)
     static_candidates = [item for item in TRANSITION_LIBRARY if item["from"] in allowed and item["to"] in allowed]
@@ -1965,7 +2105,7 @@ def _build_page_specs(
     for page_id in page_ids:
         meta = page_meta.get(page_id) or PAGE_CATALOG.get(page_id) or _default_custom_page_meta(page_id, page_id)
         actions = list(meta.get("actions") or [])
-        filtered_actions = [action for action in actions if str(action.get("target") or "") in set(page_ids)]
+        filtered_actions = [action for action in actions if str(action.get("target") or "").strip() in set(page_ids)]
         if not filtered_actions:
             filtered_actions = [
                 {
@@ -2084,7 +2224,7 @@ def _build_component_catalog(
                     feedback = f"{section} must preserve primary content hierarchy and next-step clarity."
                 elif state_id in {"loading"}:
                     feedback = f"{section} must keep visible loading feedback without collapsing layout."
-                elif state_id in {"error", "blocked", "stale", "source-missing"}:
+                elif state_id in {"error", "blocked", "stale", "failed", "rebuild-suggested", "doctor-suggested"}:
                     feedback = f"{section} must show recovery guidance and explicit fallback action."
                 elif state_id in {"empty", "idle"}:
                     feedback = f"{section} must explain why content is empty and where to continue."
@@ -2472,19 +2612,32 @@ def _build_theme_payload(docs: list[dict[str, Any]]) -> dict[str, Any]:
     primary = _extract_field(docs, "theme_primary", "#0071E3")
     secondary = _extract_field(docs, "theme_secondary", "#F5F5F7")
     archetype = _extract_field(docs, "prototype_archetype", DEFAULT_PROTOTYPE_ARCHETYPE)
-    design_preset = _extract_field(docs, "design_preset", "apple-inspired-design-md")
+    design_preset = _extract_field(docs, "design_preset", "")
     product_surface_type = _extract_field(docs, "product_surface_type", "")
     override_reason = _extract_field(docs, "design_preset_override_reason", "")
+    version = str((docs[0].get("version") if docs else "") or "")
+    preset = normalize_design_preset_choice(version, design_preset, override_reason)
     return {
         "ui_kit": PROTOTYPE_UI_KIT,
-        "design_preset": design_preset,
+        "design_preset": preset["design_preset"],
+        "requested_design_preset": preset["requested_design_preset"],
+        "canonical_design_preset": preset["canonical_design_preset"],
+        "preset_source": preset["preset_source"],
+        "preset_family": preset["preset_family"],
+        "preset_label": preset["preset_label"],
+        "template_catalog": preset["template_catalog"],
+        "template_catalog_count": preset["template_catalog_count"],
+        "anti_ai_ui_contract": preset["anti_ai_ui_contract"],
+        "reference_runtime_dependency": preset["reference_runtime_dependency"],
+        "normalized_reference_mode": preset["normalized_reference_mode"],
         "product_surface_type": product_surface_type,
-        "design_preset_override_reason": override_reason,
-        "design_preset_overridden": bool(override_reason) or design_preset != "apple-inspired-design-md",
+        "design_preset_override_reason": preset["design_preset_override_reason"],
+        "design_preset_overridden": preset["design_preset_overridden"],
+        "design_preset_valid": preset["design_preset_valid"],
         "prototype_archetype": archetype,
         "primary": primary,
         "secondary": secondary,
-        "surface_note": "Wireframe freeze uses Apple-inspired quiet neutrals and restrained accent metadata, not high-fidelity HTML surfaces.",
+        "surface_note": "Wireframe freeze uses Beacon-owned normalized preset metadata with restrained hierarchy and anti-AI UI guardrails, not high-fidelity HTML surfaces.",
     }
 
 
@@ -2533,6 +2686,8 @@ def _build_design_context(
         "brand_tone": brand_tone,
         "density_preference": density_preference,
         "design_preset": str(theme.get("design_preset") or "apple-inspired-design-md"),
+        "canonical_design_preset": str(theme.get("canonical_design_preset") or ""),
+        "preset_source": str(theme.get("preset_source") or ""),
         "design_preset_override_reason": str(theme.get("design_preset_override_reason") or ""),
         "explicit_context_fields": explicit_fields,
         "explicit_context_complete": len(explicit_fields) == 6,
@@ -2688,7 +2843,7 @@ def _build_production_ui_copy_profile(page: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def _build_design_lint_rules(semantic_profile: dict[str, Any]) -> dict[str, Any]:
+def _build_design_lint_rules(semantic_profile: dict[str, Any], theme: dict[str, Any]) -> dict[str, Any]:
     return {
         "banned_terms": list(semantic_profile.get("banned_terms") or []),
         "production_banned_copy": list(semantic_profile.get("production_banned_copy") or []),
@@ -2696,6 +2851,10 @@ def _build_design_lint_rules(semantic_profile: dict[str, Any]) -> dict[str, Any]
         "state_rule": str(semantic_profile.get("state_rule") or "").strip(),
         "action_rule": str(semantic_profile.get("action_rule") or "").strip(),
         "exception_rule": str(semantic_profile.get("exception_rule") or "").strip(),
+        "canonical_design_preset": str(theme.get("canonical_design_preset") or ""),
+        "preset_source": str(theme.get("preset_source") or ""),
+        "template_catalog_count": int(theme.get("template_catalog_count") or 0),
+        "anti_ai_ui_contract": dict(theme.get("anti_ai_ui_contract") or {}),
     }
 
 
@@ -2788,7 +2947,7 @@ def _build_design_artifacts(plan: dict[str, Any]) -> dict[str, Any]:
             "source_feature": str(plan.get("feature_slug") or "").strip(),
             "source_requirement_refs": source_refs,
             "projection_role": "governance-lint",
-            "payload": _build_design_lint_rules(semantic_profile),
+            "payload": _build_design_lint_rules(semantic_profile, dict(plan.get("theme") or {})),
         },
     }
 
@@ -5976,10 +6135,9 @@ def review_prototype_bundle(project_root: Path, version: str, feature: str) -> d
                 _review_check(
                     "default_design_preset_stable",
                     "pass"
-                    if str((plan.get("theme") or {}).get("design_preset") or "") == "apple-inspired-design-md"
-                    or bool((plan.get("theme") or {}).get("design_preset_override_reason"))
+                    if _theme_has_supported_design_preset(dict(plan.get("theme") or {}), version)
                     else "fail",
-                    "design preset must default to apple-inspired-design-md or record an explicit override reason",
+                    "design preset must bind to the supported catalog or record an explicit override reason",
                 ),
                 _review_check(
                     "semantic_profile_complete",

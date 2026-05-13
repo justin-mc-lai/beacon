@@ -25,7 +25,11 @@ def _invoke(args: list[str]):
 
 def test_ensure_output_dirs_creates_canonical_docs_root_only(tmp_path: Path):
     ensure_output_dirs(tmp_path, "v1.0.0")
-    assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story").exists()
+    assert (tmp_path / "docs" / "beacon" / "v1.0.0").exists()
+    assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "execution").exists()
+    assert not (tmp_path / "docs" / "beacon" / "v1.0.0" / "user-story").exists()
+    assert not (tmp_path / "docs" / "beacon" / "v1.0.0" / "prd").exists()
+    assert not (tmp_path / "docs" / "beacon" / "v1.0.0" / "qa" / "test-cases").exists()
     assert not (tmp_path / "docs" / "product").exists()
     assert (tmp_path / ".beacon" / "state").exists()
 
@@ -57,7 +61,7 @@ def test_workflow_auto_should_materialize_stage_outputs(tmp_path: Path):
         [
             "workflow",
             "start",
-            "登录功能",
+            "login-feature",
             "--auto",
             "--project",
             str(tmp_path),

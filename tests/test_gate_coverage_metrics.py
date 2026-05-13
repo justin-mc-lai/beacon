@@ -278,6 +278,98 @@ def test_gate_should_prefer_qa9_matrix_when_feature_aware_qa_writes_back_evidenc
     assert issues == []
 
 
+def test_release_gate_should_treat_docs_layer_as_contract_for_evidence_chain(tmp_path: Path, monkeypatch):
+    version = "v1.4.5"
+    feature = "feature-a"
+    story_dir = tmp_path / "docs" / "beacon" / version / "user-story"
+    qa_dir = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases"
+    machine_exec = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    beacon_dir = tmp_path / ".beacon"
+    evidence_path = beacon_dir / "evidence" / "qa-feature" / feature / "tc-001" / "run-xyz.json"
+
+    story_dir.mkdir(parents=True, exist_ok=True)
+    qa_dir.mkdir(parents=True, exist_ok=True)
+    machine_exec.mkdir(parents=True, exist_ok=True)
+    evidence_path.parent.mkdir(parents=True, exist_ok=True)
+    (story_dir / f"{feature}.md").write_text("# story\n", encoding="utf-8")
+    evidence_path.write_text(
+        json.dumps({"run_id": "run-xyz", "ac_id": "AC-001", "tc_id": "TC-001", "layer": "contract", "status": "passed"}),
+        encoding="utf-8",
+    )
+    (qa_dir / f"{feature}.ac-test-matrix.json").write_text(
+        json.dumps({"entries": [{"ac_id": "AC-001", "tc_id": "TC-001", "layer": "docs", "evidence_path": str(evidence_path.relative_to(tmp_path))}]}),
+        encoding="utf-8",
+    )
+    (machine_exec / "terminal.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-xyz", "feature": feature, "traceability": {"evidence_refs": []}}),
+        encoding="utf-8",
+    )
+    (beacon_dir / "auto-test-status.json").write_text(
+        json.dumps({"version": version, "run_id": "run-xyz", "execution": {"run_id": "run-xyz", "layers": [{"layer": "contract", "status": "passed"}]}}),
+        encoding="utf-8",
+    )
+    (beacon_dir / "coverage-summary.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-xyz",
+                "version": version,
+                "coverage_rate": 1.0,
+                "full_coverage": True,
+                "details": {
+                    "version": version,
+                    "feature": "",
+                    "planned_story": 1,
+                    "implemented_story": 1,
+                    "story_coverage": 1.0,
+                    "total_ac": 1,
+                    "tested_ac": 1,
+                    "ac_coverage": 1.0,
+                    "total_tc": 1,
+                    "executed_tc": 1,
+                    "tc_coverage": 1.0,
+                    "full_coverage": True,
+                    "matrix_errors": [],
+                },
+            }
+        ),
+        encoding="utf-8",
+    )
+    (beacon_dir / "gate-report.json").write_text(
+        json.dumps({"stage": "verify", "status": "Pass", "version": version, "run_id": "run-xyz", "issues": []}),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-manifest.json").write_text(
+        json.dumps(
+            {
+                "version": version,
+                "run_id": "run-xyz",
+                "entries": [
+                    {"path": ".beacon/auto-test-status.json"},
+                    {"path": ".beacon/gate-report.json"},
+                    {"path": ".beacon/coverage-summary.json"},
+                    {"path": str(evidence_path.relative_to(tmp_path))},
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    (beacon_dir / "qa").mkdir(parents=True, exist_ok=True)
+    (beacon_dir / "qa" / "status.json").write_text(
+        json.dumps({"version": version, "feature": feature, "feature_slug": feature, "status": "passed", "evidence_done": True}),
+        encoding="utf-8",
+    )
+    (beacon_dir / "evidence-signature-chain.json").write_text(
+        json.dumps([{"run_id": "run-xyz", "summary_path": ".beacon/coverage-summary.json", "summary_sha256": ""}]),
+        encoding="utf-8",
+    )
+
+    issues = gate_module.check_test_execution_integrity(tmp_path, GateMode.STRICT, "release")
+
+    assert not any(item.get("reason_code") == "ac_tc_evidence_chain_broken" for item in issues)
+
+
 def test_write_coverage_summary_should_recompute_from_live_qa9_evidence(tmp_path: Path, monkeypatch):
     version = "v1.3.6"
     monkeypatch.setenv("BEACON_VERSION", version)

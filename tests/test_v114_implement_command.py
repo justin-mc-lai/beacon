@@ -13,6 +13,7 @@ from beacon.utils.artifact_paths import change_docs_file, change_file_output, ex
 from beacon.utils.implement_adapters import build_default_task_prompt
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
+from beacon.utils.workflow_memory import compute_workflow_progress, load_lifecycle_events
 
 
 runner = CliRunner()
@@ -21,6 +22,13 @@ implement_cmd = importlib.import_module("beacon.commands.implement")
 
 def _invoke(args: list[str]):
     return runner.invoke(app, args)
+
+
+def _latest_run_id(project_root: Path) -> str:
+    runs_dir = project_root / ".beacon" / "runs"
+    runs = sorted([p.name for p in runs_dir.iterdir() if p.is_dir() and (p / "state.json").exists()])
+    assert runs
+    return runs[-1]
 
 
 def _init_git_repo(root: Path, *, version: str) -> None:
@@ -660,6 +668,57 @@ def test_implement_run_should_fail_when_result_missing(tmp_path: Path):
     assert result.exit_code == 2
     payload = json.loads(result.stdout)
     assert payload["reason_code"] == "runner_result_missing"
+
+
+def test_implement_run_should_backfill_existing_workflow_lifecycle_when_invoked_directly(tmp_path: Path):
+    _seed_feature_docs(tmp_path, feature="My Feature")
+    planned = _invoke(["workflow", "start", "My Feature", "--project", str(tmp_path), "--version", "v1.1.4"])
+    assert planned.exit_code == 0, planned.stdout
+    run_id = _latest_run_id(tmp_path)
+
+    script = tmp_path / "runner.py"
+    _write_runner_script(script)
+    (tmp_path / "beacon.config.yaml").write_text(
+        (
+            "skill:\n"
+            "  adapters:\n"
+            "    fake:\n"
+            "      adapter_type: command\n"
+            "      runtime_family: fake\n"
+            "      command: python3\n"
+            "      args:\n"
+            "        - \"{project_root}/runner.py\"\n"
+            "        - \"{request_file}\"\n"
+            "        - \"{result_file}\"\n"
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "implement",
+            "run",
+            "My Feature",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.1.4",
+            "--runner",
+            "fake",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "completed"
+    assert payload["workflow_lifecycle_sync"]["synced"] is True
+    assert payload["workflow_lifecycle_sync"]["run_id"] == run_id
+
+    progress = compute_workflow_progress(tmp_path, run_id=run_id)
+    assert progress["stages"]["implement"]["status"] == "completed"
+
+    names = {item["event"] for item in load_lifecycle_events(tmp_path, run_id=run_id, stage="implement")}
+    assert {"stage_started", "stage_context_injected", "stage_finished", "memory_writeback"} <= names
 
 
 def test_implement_run_should_fail_when_result_json_is_unparseable(tmp_path: Path):

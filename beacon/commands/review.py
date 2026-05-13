@@ -23,7 +23,13 @@ from beacon.utils.learning_loop import requirement_rewrite_input_path
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.project_skills import evaluate_project_profile_gate
 from beacon.utils.prototype_support import feature_requires_prototype
-from beacon.utils.prototype_utils import evaluate_prototype_status, review_prototype_bundle
+from beacon.utils.prototype_utils import (
+    build_anti_ai_ui_contract,
+    build_design_template_catalog,
+    evaluate_prototype_status,
+    normalize_design_preset_choice,
+    review_prototype_bundle,
+)
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_closure import build_requirement_closure
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
@@ -120,6 +126,7 @@ def _render_markdown(title: str, payload: dict[str, Any]) -> str:
         f"- feature: `{payload.get('feature')}`",
         f"- version: `{payload.get('version')}`",
         f"- status: `{payload.get('status')}`",
+        f"- gate_ready: `{payload.get('gate_ready')}`",
     ]
     if "gate_ready" in payload:
         lines.append(f"- gate_ready: `{payload.get('gate_ready')}`")
@@ -368,6 +375,79 @@ def _design_requirement_review(paths: dict[str, Path]) -> dict[str, Any]:
         "hierarchy_signal": has_hierarchy_signal,
         "state_signal": has_state_signal,
         "interaction_signal": has_interaction_signal,
+    }
+
+
+def _recommended_design_preset(text: str) -> str:
+    lowered = str(text or "").lower()
+    if any(token in lowered for token in ("admin", "console", "dashboard", "operator", "workbench", "management", "管理")):
+        return "operator-console"
+    if any(token in lowered for token in ("docs", "document", "summary", "report", "reader", "editorial", "material", "文档", "总结", "报告")):
+        return "editorial-calm"
+    return "restrained-product"
+
+
+def _design_baseline_review(paths: dict[str, Path], version: str) -> dict[str, Any]:
+    texts: list[str] = []
+    for key in ("user_story", "prd", "test_case"):
+        path = paths[key]
+        if path.exists():
+            texts.append(path.read_text(encoding="utf-8", errors="ignore"))
+    joined = "\n".join(texts)
+    lowered = joined.lower()
+    template_catalog = build_design_template_catalog(version)
+    anti_ai_contract = build_anti_ai_ui_contract(version)
+    import re
+    preset_match = re.search(r"design_preset\s*[:=]\s*([A-Za-z0-9_-]+)", joined, re.IGNORECASE)
+    override_match = re.search(r"design_preset_override_reason\s*[:=]\s*(.+)", joined, re.IGNORECASE)
+    requested_preset = str(preset_match.group(1)).strip() if preset_match else ""
+    override_reason = str(override_match.group(1)).strip() if override_match else ""
+    normalized = normalize_design_preset_choice(version, requested_preset, override_reason)
+    recommended = _recommended_design_preset(joined)
+    findings: list[dict[str, Any]] = []
+
+    def add_finding(*, reason_code: str, severity: str, message: str) -> None:
+        findings.append({"reason_code": reason_code, "severity": severity, "message": message})
+
+    for token, reason_code in (
+        ("gradient text", "anti_ai_gradient_text_requested"),
+        ("purple gradient", "anti_ai_purple_gradient_requested"),
+        ("glassmorphism", "anti_ai_glassmorphism_requested"),
+        ("card inside card", "anti_ai_nested_card_requested"),
+        ("accent side stripe", "anti_ai_accent_stripe_requested"),
+        ("bounce", "anti_ai_bounce_motion_requested"),
+        ("elastic", "anti_ai_elastic_motion_requested"),
+    ):
+        if token in lowered:
+            add_finding(reason_code=reason_code, severity="medium", message=f"requirement materials reference discouraged anti-AI pattern: {token}")
+    if requested_preset and not normalized.get("design_preset_valid") and not override_reason:
+        add_finding(
+            reason_code="design_preset_not_in_fixed_catalog",
+            severity="medium",
+            message="design preset is outside the fixed template catalog and does not record an explicit override reason",
+        )
+    selected_canonical = str(normalized.get("canonical_design_preset") or normalized.get("design_preset") or "").strip()
+    if requested_preset and not override_reason and selected_canonical and selected_canonical != recommended:
+        add_finding(
+            reason_code="design_template_fit_mismatch",
+            severity="medium",
+            message=f"selected template `{selected_canonical}` does not match the inferred surface baseline `{recommended}`",
+        )
+    status = "pass"
+    if findings:
+        status = "warn"
+    return {
+        "mode": "anti-ai-template-baseline-review",
+        "status": status,
+        "template_catalog_count": int(template_catalog.get("template_count") or 0),
+        "template_catalog": template_catalog,
+        "anti_ai_ui_contract": anti_ai_contract,
+        "requested_design_preset": requested_preset,
+        "selected_design_preset": str(normalized.get("design_preset") or ""),
+        "canonical_design_preset": str(normalized.get("canonical_design_preset") or ""),
+        "recommended_design_preset": recommended,
+        "override_reason": override_reason,
+        "findings": findings,
     }
 
 
@@ -831,6 +911,7 @@ def review_design(
     prototype_required = feature_requires_prototype(project_root, resolved_version, feature)
     prototype_exists = paths["prototype_dir"].exists()
     requirement_design_review = _design_requirement_review(paths)
+    design_baseline_review = _design_baseline_review(paths, resolved_version)
 
     prototype_payload: dict[str, Any] = {}
     prototype_review_status = "not_required"
@@ -892,6 +973,18 @@ def review_design(
             }
         )
 
+    for finding in design_baseline_review.get("findings", []):
+        if not isinstance(finding, dict):
+            continue
+        severity = str(finding.get("severity", "medium") or "medium")
+        issues.append(
+            {
+                "reason_code": str(finding.get("reason_code", "design_baseline_missing") or "design_baseline_missing"),
+                "severity": "critical" if severity == "high" else "warn",
+                "message": str(finding.get("message", "") or ""),
+            }
+        )
+
     security_design_review = _design_security_review(paths)
     for finding in security_design_review.get("findings", []):
         if not isinstance(finding, dict):
@@ -910,6 +1003,8 @@ def review_design(
         recommendations.append("Backfill auditability, trust-boundary, and evidence-trace rules before release gate.")
     if requirement_design_review.get("findings"):
         recommendations.append("Backfill page hierarchy, state model, and interaction contract details into PRD/user-story/test-case before prototype freeze.")
+    if design_baseline_review.get("findings"):
+        recommendations.append("Align the feature to the fixed template catalog and remove discouraged anti-AI visual patterns unless an explicit override is justified.")
     if design_review_outcome == "blocked":
         recommendations.append("Fix critical design guideline findings before design/governance freeze.")
     elif design_review_outcome == "revise":
@@ -939,6 +1034,7 @@ def review_design(
             "iteration_writeback_path": prototype_payload.get("iteration_writeback_path", ""),
         },
         "requirement_design_review": requirement_design_review,
+        "design_baseline_review": design_baseline_review,
         "security_design_review": security_design_review,
         "issues": issues,
         "recommendations": recommendations,

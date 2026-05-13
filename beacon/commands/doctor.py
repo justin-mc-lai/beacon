@@ -37,6 +37,7 @@ from beacon.utils.doctor_orchestrator import (
     run_runtime_ledger_verify,
     run_subagent_delegation_verify,
     run_subagent_runtime_verify,
+    run_workflow_memory_sync,
     run_technical_review_contract_sync,
     run_test_contract_index_build,
     run_test_contract_index_verify,
@@ -1135,6 +1136,31 @@ def repair_package(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
     else:
         _print_action_result("Beacon Doctor Repair Package", {"installed": [], "removed": [], "skipped": [], "warnings": []})
+        typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("sync-workflow-memory")
+def sync_workflow_memory(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("", "--version", "-v", help="Target docs version"),
+    feature: str = typer.Option("", "--feature", help="Feature name"),
+    run_id: str = typer.Option("", "--run-id", help="Workflow run id"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Backfill workflow-memory surfaces for an already-completed feature run."""
+    execution = run_workflow_memory_sync(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        run_id=run_id,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        _print_action_result("Beacon Doctor Sync Workflow Memory", {"installed": [], "removed": [], "skipped": [], "warnings": []})
         typer.echo(json.dumps(result, ensure_ascii=False, indent=2))
     raise typer.Exit(code=execution.exit_code)
 

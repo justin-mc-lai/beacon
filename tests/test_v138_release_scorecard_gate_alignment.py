@@ -755,3 +755,225 @@ def test_v138_gate_precision_contract_should_report_version_surface_governance_d
 
     reason_codes = {item["reason_code"] for item in issues}
     assert "version_surface_governance_drift" in reason_codes
+
+
+def test_v138_release_scorecard_should_fail_closed_when_gate_report_stage_is_verify(tmp_path, monkeypatch):
+    version = "v1.4.5"
+    feature = "feature-a"
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change" / f"{version}.json").write_text(
+        json.dumps({"version": version, "features": [{"feature_slug": feature}]}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (docs_root / "change" / f"{version}.md").write_text("# change\n", encoding="utf-8")
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps(
+            {"stage": "verify", "status": "Pass", "version": version, "run_id": "run-123", "issues": []},
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(release_scorecard_module, "resolve_target_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(release_scorecard_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.4.3")
+    monkeypatch.setattr(release_scorecard_module, "runtime_feature_supported", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "project_runtime_feature_enabled", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "version_requires_prototype", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(release_scorecard_module, "implementation_plan_supported", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "validate_evidence_manifest",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "issues": [], "blocked_count": 0},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_qa_status",
+        lambda *_args, **_kwargs: {
+            "feature": feature,
+            "version": version,
+            "status": "passed",
+            "evidence_done": True,
+            "release_ready": True,
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_exhaustiveness_report", lambda *_args, **_kwargs: {"status": "passed"})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_feature_qa_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "continue_decision": "ready_for_release",
+            "unresolved_closure_outcomes": [],
+            "project_profile_gate_status": "not_configured",
+            "coverage_current": {
+                "required_scenarios": 1,
+                "executed_scenarios": 1,
+                "coverage_rate": 1.0,
+            },
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_implementation_plan_progress", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "load_latest_evo_experiment", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "list_implementation_git_workflow_contracts", lambda *_args, **_kwargs: [])
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_revision_state",
+        lambda *_args, **_kwargs: {
+            "revision_id": "R1",
+            "source_revision_id": "",
+            "doc_status": "frozen",
+            "delivery_status": "verified",
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "build_requirement_clarity_gate_payload", lambda *_args, **_kwargs: {"blocked": False})
+    monkeypatch.setattr(release_scorecard_module, "load_requirement_clarity_state", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "build_technical_review_gate_payload", lambda *_args, **_kwargs: {"blocked": False, "required": False})
+    monkeypatch.setattr(release_scorecard_module, "load_technical_review_state", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "evaluate_semantic_contract", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "build_requirement_completeness_gate", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "acceptance_projection_transaction_contract", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "build_acceptance_kit_projection",
+        lambda *_args, **_kwargs: {"summary": {"all_layers_passed": True}},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "get_version_surface_governance_payload",
+        lambda *_args, **_kwargs: {"configured": False, "blocked": False, "status": "pass"},
+    )
+    monkeypatch.setattr(release_scorecard_module, "build_deep_release_supplement_gate", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "deep_loop_supported", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "build_test_contract_gate_payload",
+        lambda *_args, **_kwargs: {"release_gate": {"blocked": False, "reason_codes": []}},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_delivery_read_model",
+        lambda *_args, **_kwargs: {
+            "implement": {"prompt_boundary": {"required": False, "status": "not_required", "blocked": False}, "delivery_contract": {}},
+            "qa": {"delivery_contract": {}},
+            "release": {"release_ready": True},
+            "traceability": {},
+            "risk_flags": [],
+        },
+    )
+
+    payload = release_scorecard_module.build_release_scorecard(tmp_path, version=version)
+
+    assert payload["gate"]["stage"] == "verify"
+    assert payload["gate"]["status"] == "Blocked"
+    assert "gate_consistency_report_mismatch" in payload["gate"]["reason_codes"]
+    assert payload["release_ready"] is False
+
+
+def test_v138_release_scorecard_should_prefer_release_gate_report_over_verify_gate_report(tmp_path, monkeypatch):
+    version = "v1.4.5"
+    feature = "feature-a"
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "execution").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / "change").mkdir(parents=True, exist_ok=True)
+    (docs_root / ".machine" / "change" / f"{version}.json").write_text(
+        json.dumps({"version": version, "features": [{"feature_slug": feature}]}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (docs_root / "change" / f"{version}.md").write_text("# change\n", encoding="utf-8")
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps(
+            {"stage": "verify", "status": "Pass", "version": version, "run_id": "run-verify", "issues": []},
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "release-gate-report.json").write_text(
+        json.dumps(
+            {"stage": "release", "status": "Pass", "version": version, "run_id": "run-release", "issues": [], "blocked_count": 0},
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(release_scorecard_module, "resolve_target_version", lambda *_args, **_kwargs: version)
+    monkeypatch.setattr(release_scorecard_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.4.3")
+    monkeypatch.setattr(release_scorecard_module, "runtime_feature_supported", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "project_runtime_feature_enabled", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(release_scorecard_module, "version_requires_prototype", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(release_scorecard_module, "implementation_plan_supported", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "validate_evidence_manifest",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "issues": [], "blocked_count": 0},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_qa_status",
+        lambda *_args, **_kwargs: {"feature": feature, "version": version, "status": "passed", "evidence_done": True, "release_ready": True},
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_exhaustiveness_report", lambda *_args, **_kwargs: {"status": "passed"})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_feature_qa_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "continue_decision": "ready_for_release",
+            "unresolved_closure_outcomes": [],
+            "project_profile_gate_status": "not_configured",
+            "coverage_current": {"required_scenarios": 1, "executed_scenarios": 1, "coverage_rate": 1.0},
+        },
+    )
+    monkeypatch.setattr(release_scorecard_module, "load_implementation_plan_progress", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "load_latest_evo_experiment", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "list_implementation_git_workflow_contracts", lambda *_args, **_kwargs: [])
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_revision_state",
+        lambda *_args, **_kwargs: {"revision_id": "R1", "source_revision_id": "", "doc_status": "frozen", "delivery_status": "verified"},
+    )
+    monkeypatch.setattr(release_scorecard_module, "build_requirement_clarity_gate_payload", lambda *_args, **_kwargs: {"blocked": False})
+    monkeypatch.setattr(release_scorecard_module, "load_requirement_clarity_state", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "build_technical_review_gate_payload", lambda *_args, **_kwargs: {"blocked": False, "required": False})
+    monkeypatch.setattr(release_scorecard_module, "load_technical_review_state", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "evaluate_semantic_contract", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "build_requirement_completeness_gate", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "acceptance_projection_transaction_contract", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr(release_scorecard_module, "build_acceptance_kit_projection", lambda *_args, **_kwargs: {"summary": {"all_layers_passed": True}})
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "get_version_surface_governance_payload",
+        lambda *_args, **_kwargs: {"configured": False, "blocked": False, "status": "pass"},
+    )
+    monkeypatch.setattr(release_scorecard_module, "build_deep_release_supplement_gate", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(release_scorecard_module, "deep_loop_supported", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "build_test_contract_gate_payload",
+        lambda *_args, **_kwargs: {"release_gate": {"blocked": False, "reason_codes": []}},
+    )
+    monkeypatch.setattr(
+        release_scorecard_module,
+        "load_delivery_read_model",
+        lambda *_args, **_kwargs: {
+            "implement": {"prompt_boundary": {"required": False, "status": "not_required", "blocked": False}, "delivery_contract": {}},
+            "qa": {"delivery_contract": {}},
+            "release": {"release_ready": True},
+            "traceability": {},
+            "risk_flags": [],
+        },
+    )
+
+    payload = release_scorecard_module.build_release_scorecard(tmp_path, version=version)
+
+    assert payload["gate"]["stage"] == "release"
+    assert payload["gate"]["status"] == "Pass"
+    assert payload["gate"]["run_id"] == "run-release"

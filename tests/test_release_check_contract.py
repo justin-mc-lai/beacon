@@ -127,6 +127,46 @@ def test_release_check_should_support_project_root_alias_and_json_output(tmp_pat
     assert any(item["name"] == "coverage summary version matches release version" for item in payload["checks"])
 
 
+def test_release_check_should_prefer_release_gate_report_over_verify_gate_report(tmp_path: Path, monkeypatch):
+    version = "v1.4.5"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"blocked": False},
+    )
+
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"stage": "verify", "status": "Pass", "version": version, "run_id": "run-verify"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "release-gate-report.json").write_text(
+        json.dumps({"stage": "release", "status": "Blocked", "version": version, "run_id": "run-release", "issues": [{"reason_code": "x", "blocked": True}]}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["release", "check", version, "--project-root", str(tmp_path), "--json"])
+
+    assert result.exit_code == 1, result.stdout
+    payload = json.loads(result.stdout)
+    gate_check = next(item for item in payload["checks"] if item["name"] == "gate report pass")
+    assert gate_check["passed"] is False
+    assert gate_check["detail"] == "status=Blocked"
+
+
+def test_gate_check_release_should_persist_release_gate_report_with_version_and_run_id(tmp_path: Path):
+    version = "v1.4.5"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    result = _invoke(["gate", "check", "release", "--project-root", str(tmp_path), "--version", version, "--json"])
+
+    assert result.exit_code in {0, 2}, result.stdout
+    payload = json.loads((tmp_path / ".beacon" / "release-gate-report.json").read_text(encoding="utf-8"))
+    assert payload["stage"] == "release"
+    assert payload["version"] == version
+    assert payload["run_id"] == "run-123"
+
+
 def test_release_check_should_fail_when_v136_scorecard_is_not_release_ready(tmp_path: Path, monkeypatch):
     version = "v1.3.6"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)

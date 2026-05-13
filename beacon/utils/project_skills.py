@@ -20,6 +20,14 @@ def project_skill_config_path(project_root: Path) -> Path:
     return project_root / "beacon.config.yaml"
 
 
+def capability_learning_events_path(project_root: Path) -> Path:
+    return project_root / ".beacon" / "state" / "learning" / "capability-composition-events.jsonl"
+
+
+def capability_learning_map_path(project_root: Path) -> Path:
+    return project_root / ".beacon" / "state" / "learning" / "capability-composition-map.json"
+
+
 def _load_config(project_root: Path) -> dict[str, Any]:
     path = project_skill_config_path(project_root)
     if not path.exists():
@@ -176,6 +184,270 @@ def builtin_skill_registry() -> dict[str, dict[str, Any]]:
             "evidence_contract": ["semantic_dictionary", "semantic_usage_guidelines", "design_review_notes"],
         },
     }
+
+
+def builtin_capability_sources() -> dict[str, dict[str, Any]]:
+    return {
+        "baoyu-skills": {
+            "source_id": "baoyu-skills",
+            "kind": "external-governed-source",
+            "governance_status": "canonical-sample",
+            "compatibility": {
+                "admission_mode": "philosophy-first",
+                "host_runtime": ["codex", "claude-code", "cursor", "trae"],
+                "runtime_dependency_policy": "no_ungoverned_download",
+            },
+            "source_identity": {
+                "label": "core-skills/baoyu-skills",
+                "sample_origin": "oss-sync mirror core-skills/baoyu-skills",
+            },
+            "intended_domains": ["content", "operations", "cross-industry-analysis", "travel", "publishing"],
+            "skill_philosophy": {
+                "strategy_philosophy": [
+                    "optimize for business outcome and result shape before choosing a skill chain",
+                    "preserve domain strategy instead of collapsing everything into procedural scripts",
+                ],
+                "minimum_complete_tools": ["markdown", "image-generation", "formatting", "distribution"],
+                "necessary_factual_grounding": [
+                    "target audience",
+                    "delivery channel",
+                    "source material or policy facts",
+                ],
+            },
+            "task_contracts": [
+                {
+                    "task_type": "content-outline",
+                    "output_shape": "markdown-outline",
+                    "skill_chain": ["baoyu-article-illustrator", "baoyu-format-markdown"],
+                },
+                {
+                    "task_type": "travel-notice",
+                    "output_shape": "wechat-post",
+                    "skill_chain": ["baoyu-translate", "baoyu-post-to-wechat"],
+                },
+                {
+                    "task_type": "industry-analysis",
+                    "output_shape": "longform-markdown",
+                    "skill_chain": ["baoyu-url-to-markdown", "baoyu-format-markdown"],
+                },
+            ],
+            "boundary_contract": {
+                "truth_boundary_preserved": True,
+                "guidance_boundary_preserved": True,
+                "runtime_boundary_preserved": True,
+            },
+        }
+    }
+
+
+def load_capability_sources(project_root: Path) -> dict[str, dict[str, Any]]:
+    config = _load_config(project_root)
+    section = _project_skills_section(config)
+    registry = dict(builtin_capability_sources())
+    external = section.get("capability_sources")
+    if isinstance(external, dict):
+        for source_id, payload in external.items():
+            if not isinstance(payload, dict):
+                continue
+            merged = dict(payload)
+            merged.setdefault("source_id", str(source_id))
+            merged.setdefault("kind", "external-governed-source")
+            merged.setdefault("governance_status", "project-local")
+            merged.setdefault("compatibility", {})
+            merged.setdefault("source_identity", {"label": str(source_id)})
+            merged.setdefault("intended_domains", [])
+            merged.setdefault("skill_philosophy", {})
+            merged.setdefault("task_contracts", [])
+            merged.setdefault(
+                "boundary_contract",
+                {
+                    "truth_boundary_preserved": True,
+                    "guidance_boundary_preserved": True,
+                    "runtime_boundary_preserved": True,
+                },
+            )
+            registry[str(source_id)] = merged
+    return registry
+
+
+def list_capability_sources(project_root: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for source_id, payload in sorted(load_capability_sources(project_root).items()):
+        rows.append(
+            {
+                "source_id": source_id,
+                "kind": str(payload.get("kind", "") or ""),
+                "governance_status": str(payload.get("governance_status", "") or ""),
+                "source_identity": dict(payload.get("source_identity", {})) if isinstance(payload.get("source_identity"), dict) else {},
+                "compatibility": dict(payload.get("compatibility", {})) if isinstance(payload.get("compatibility"), dict) else {},
+                "intended_domains": [str(item) for item in payload.get("intended_domains", []) if str(item).strip()],
+                "task_contracts": list(payload.get("task_contracts", [])),
+                "skill_philosophy": dict(payload.get("skill_philosophy", {})) if isinstance(payload.get("skill_philosophy"), dict) else {},
+                "boundary_contract": dict(payload.get("boundary_contract", {})) if isinstance(payload.get("boundary_contract"), dict) else {},
+            }
+        )
+    return rows
+
+
+def _infer_task_type(goal: str, output_shape: str = "", explicit_task_type: str = "") -> str:
+    if str(explicit_task_type or "").strip():
+        return str(explicit_task_type).strip()
+    text = " ".join([str(goal or ""), str(output_shape or "")]).lower()
+    if any(token in text for token in ("travel", "airline", "ticket", "reminder", "notice", "航空", "出行")):
+        return "travel-notice"
+    if any(token in text for token in ("wechat", "weibo", "xhs", "post", "article", "outline", "blog")):
+        return "content-outline"
+    if any(token in text for token in ("strategy", "industry", "market", "analysis", "positioning")):
+        return "industry-analysis"
+    return "cross-domain-goal"
+
+
+def select_capability_composition(
+    project_root: Path,
+    *,
+    goal: str,
+    output_shape: str = "",
+    task_type: str = "",
+) -> dict[str, Any]:
+    inferred_task_type = _infer_task_type(goal, output_shape, explicit_task_type=task_type)
+    registry = load_capability_sources(project_root)
+    preferred = registry.get("baoyu-skills", {})
+    selected_contract = next(
+        (
+            item
+            for item in preferred.get("task_contracts", [])
+            if isinstance(item, dict) and str(item.get("task_type", "") or "") == inferred_task_type
+        ),
+        None,
+    )
+    if not isinstance(selected_contract, dict):
+        selected_contract = {
+            "task_type": inferred_task_type,
+            "output_shape": output_shape or "markdown",
+            "skill_chain": ["baoyu-format-markdown"],
+        }
+    return {
+        "schema_version": "1.0",
+        "goal": str(goal or "").strip(),
+        "task_type": inferred_task_type,
+        "output_shape": str(selected_contract.get("output_shape") or output_shape or "markdown").strip(),
+        "selected_source_id": "baoyu-skills",
+        "candidate_skill_chain": list(selected_contract.get("skill_chain", [])),
+        "source_governance_status": str(preferred.get("governance_status", "") or ""),
+        "boundary_checks": dict(preferred.get("boundary_contract", {})) if isinstance(preferred.get("boundary_contract"), dict) else {},
+        "selection_contract": {
+            "user_declares_business_goal_not_chain": True,
+            "source_identity": dict(preferred.get("source_identity", {})) if isinstance(preferred.get("source_identity"), dict) else {},
+            "compatibility": dict(preferred.get("compatibility", {})) if isinstance(preferred.get("compatibility"), dict) else {},
+        },
+        "skill_philosophy": dict(preferred.get("skill_philosophy", {})) if isinstance(preferred.get("skill_philosophy"), dict) else {},
+    }
+
+
+def _append_jsonl(path: Path, payload: dict[str, Any]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(payload, ensure_ascii=False) + "\n")
+
+
+def _read_capability_learning_events(project_root: Path) -> list[dict[str, Any]]:
+    path = capability_learning_events_path(project_root)
+    if not path.exists():
+        return []
+    rows: list[dict[str, Any]] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        text = line.strip()
+        if not text:
+            continue
+        try:
+            payload = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+        if isinstance(payload, dict):
+            rows.append(payload)
+    return rows
+
+
+def refresh_capability_learning_map(project_root: Path) -> dict[str, Any]:
+    events = _read_capability_learning_events(project_root)
+    mappings: dict[tuple[str, str, str], dict[str, Any]] = {}
+    for event in events:
+        task_type = str(event.get("task_type", "") or "").strip()
+        output_shape = str(event.get("output_shape", "") or "").strip()
+        source_id = str(event.get("source_id", "") or "").strip()
+        if not task_type or not output_shape or not source_id:
+            continue
+        chain = [str(item).strip() for item in event.get("skill_chain", []) if str(item).strip()]
+        key = (task_type, ",".join(chain), output_shape)
+        row = mappings.setdefault(
+            key,
+            {
+                "task_type": task_type,
+                "skill_chain": chain,
+                "output_shape": output_shape,
+                "source_id": source_id,
+                "success_count": 0,
+                "failure_count": 0,
+                "fallback_count": 0,
+                "adopted_count": 0,
+                "rejected_count": 0,
+                "event_refs": [],
+            },
+        )
+        outcome = str(event.get("outcome", "") or "").strip()
+        if outcome == "success":
+            row["success_count"] += 1
+        elif outcome == "failure":
+            row["failure_count"] += 1
+        elif outcome == "fallback":
+            row["fallback_count"] += 1
+        elif outcome == "adopted":
+            row["adopted_count"] += 1
+        elif outcome == "rejected":
+            row["rejected_count"] += 1
+        row["event_refs"].append(str(event.get("event_id", "") or ""))
+    payload = {
+        "schema_version": "1.0",
+        "generated_at": now_iso(),
+        "mappings": sorted(mappings.values(), key=lambda item: (item["task_type"], item["output_shape"], item["source_id"])),
+    }
+    write_json(capability_learning_map_path(project_root), payload)
+    return payload
+
+
+def write_capability_learning_event(
+    project_root: Path,
+    *,
+    task_type: str,
+    source_id: str,
+    skill_chain: list[str],
+    output_shape: str,
+    outcome: str,
+    fallback_path: str = "",
+    human_adoption: str = "",
+) -> dict[str, Any]:
+    event = {
+        "schema_version": "1.0",
+        "event_id": generate_run_id("capability"),
+        "generated_at": now_iso(),
+        "task_type": str(task_type or "").strip(),
+        "source_id": str(source_id or "").strip(),
+        "skill_chain": [str(item).strip() for item in skill_chain if str(item).strip()],
+        "output_shape": str(output_shape or "").strip(),
+        "outcome": str(outcome or "").strip(),
+        "fallback_path": str(fallback_path or "").strip(),
+        "human_adoption": str(human_adoption or "").strip(),
+    }
+    _append_jsonl(capability_learning_events_path(project_root), event)
+    refresh_capability_learning_map(project_root)
+    return event
+
+
+def load_capability_learning_map(project_root: Path) -> dict[str, Any]:
+    payload = read_json(capability_learning_map_path(project_root), {})
+    if isinstance(payload, dict) and payload:
+        return payload
+    return refresh_capability_learning_map(project_root)
 
 
 def load_skill_registry(project_root: Path) -> dict[str, dict[str, Any]]:

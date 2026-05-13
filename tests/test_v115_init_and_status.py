@@ -29,15 +29,15 @@ def _seed_release_repo(root: Path) -> None:
         (base / "release" / f"{version}.md").write_text(f"# Release {version}\n", encoding="utf-8")
 
 
-def test_init_should_create_v115_machine_dirs_indexes_and_eval_lab(tmp_path: Path):
+def test_init_should_create_v115_machine_execution_index_and_eval_lab(tmp_path: Path):
     _seed_release_repo(tmp_path)
     result = _invoke(["init", "--project-root", str(tmp_path), "--version", "v1.1.5", "--apply"])
     assert result.exit_code == 0, result.stdout
     docs_root = tmp_path / "docs" / "beacon" / "v1.1.5"
     assert (docs_root / ".machine" / "execution").is_dir()
-    assert (docs_root / ".machine" / "qa").is_dir()
     assert (docs_root / "execution" / "index.md").exists()
-    assert (docs_root / "qa" / "test-cases" / "index.md").exists()
+    assert not (docs_root / ".machine" / "qa").exists()
+    assert not (docs_root / "qa" / "test-cases" / "index.md").exists()
     assert execution_file_output(tmp_path, "v1.1.5", "init-report.json").exists()
     assert (docs_root / "execution" / "init-report.md").exists()
     assert (tmp_path / ".beacon" / "state" / "eval-lab" / "keep-discard-log.jsonl").exists()

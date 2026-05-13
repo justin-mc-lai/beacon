@@ -34,6 +34,7 @@ from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.acceptance_kit import build_acceptance_kit_projection
+from beacon.utils.guidance_family import build_guidance_family_contract, build_guidance_surface_projection
 from beacon.utils.ralph_runtime import load_ralph_state
 from beacon.utils.requirement_deepening import (
     build_requirement_completeness_gate,
@@ -1666,6 +1667,19 @@ def build_help_payload(
         version=resolved_version,
         feature=feature_name,
     )
+    guidance_family = build_guidance_family_contract()
+    guidance_projection = build_guidance_surface_projection(
+        "brainstorm",
+        current_loop_layer="challenge",
+        missing_evidence=list(requirement_gap_digest.get("focus_areas", [])) if isinstance(requirement_gap_digest, dict) else [],
+        target_surface=str(
+            next_step.get("action")
+            or requirement_gap_digest.get("recommended_route")
+            or brainstorm_hint.get("recommended_route")
+            or ""
+        ),
+        recommended_route=str(brainstorm_hint.get("recommended_route", "") or ""),
+    )
     decision_trace = [
         {
             "step": "version_truth",
@@ -1841,6 +1855,8 @@ def build_help_payload(
         "execution_surface": execution_surface,
         "delivery_read_model": delivery_read_model,
         "support_surface_projection": support_surface_projection,
+        "guidance_family": guidance_family,
+        "guidance_projection": guidance_projection,
         "archive": archive_boundary,
         "host_prompt_trace": host_prompt_trace,
         "surface_explanation": surface_explanation,

@@ -103,6 +103,9 @@ def test_machine_surface_should_follow_toolkit_version_not_delivery_version():
 
 def test_user_story_without_version_should_use_current_runtime_release(tmp_path: Path):
     _seed_release_repo(tmp_path)
+    base = tmp_path / "docs" / "beacon" / "v1.1.4"
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "prd" / "runtime-default-feature.md").write_text("# PRD\n", encoding="utf-8")
     result = _invoke(["user-story", "create", "Runtime Default Feature", "--project", str(tmp_path)])
     assert result.exit_code == 0, result.stdout
     assert (tmp_path / "docs" / "beacon" / "v1.1.4" / "user-story" / "runtime-default-feature.md").exists()
@@ -125,11 +128,12 @@ def test_project_release_v001_should_still_write_machine_surface_artifacts(tmp_p
     init_result = _invoke(["init", "--project-root", str(tmp_path), "--version", "v0.0.1", "--apply"])
     assert init_result.exit_code == 0, init_result.stdout
     assert (base / ".machine" / "execution").exists()
-    assert (base / ".machine" / "qa").exists()
+    assert not (base / ".machine" / "qa").exists()
 
     case_result = _invoke(["test-case", "create", feature, "--project", str(tmp_path), "--version", "v0.0.1"])
     assert case_result.exit_code == 0, case_result.stdout
     assert (base / "qa" / "test-cases" / f"{slug}.md").exists()
+    assert (base / "qa" / "test-cases" / "index.md").exists()
     assert (base / ".machine" / "qa" / f"{slug}.ac-test-matrix.json").exists()
     assert (base / ".machine" / "qa" / f"{slug}.qa9-matrix.json").exists()
 

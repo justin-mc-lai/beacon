@@ -82,3 +82,26 @@ def test_doctor_fix_should_apply_v115_package_repair_for_latest_docs(tmp_path: P
     result = _invoke(["doctor", "--fix", "--project-root", str(tmp_path), "--json"])
     assert result.exit_code == 0, result.stdout
     assert (tmp_path / "docs" / "beacon" / "v1.1.5" / ".machine" / "execution" / "config.json").exists()
+
+
+def test_doctor_repair_package_should_prefer_auto_test_run_id_for_synthesized_governance(tmp_path: Path):
+    version = "v1.4.5"
+    feature = "beacon-v1.4.5-guidance-surface-family-and-cross-industry-positioning"
+    base = tmp_path / "docs" / "beacon" / version
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "execution").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "user-story" / f"{feature}.md").write_text("# Story\n", encoding="utf-8")
+    (tmp_path / ".beacon").mkdir(parents=True, exist_ok=True)
+    (tmp_path / ".beacon" / "auto-test-status.json").write_text(
+        json.dumps({"version": version, "run_id": "run-xyz", "execution": {"run_id": "run-xyz", "layers": []}}),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["doctor", "repair-package", "--project-root", str(tmp_path), "--version", version, "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    source_payload = json.loads((base / ".machine" / "execution" / "source.json").read_text(encoding="utf-8"))
+    terminal_payload = json.loads((base / ".machine" / "execution" / "terminal.json").read_text(encoding="utf-8"))
+    assert source_payload["run_id"] == "run-xyz"
+    assert terminal_payload["run_id"] == "run-xyz"

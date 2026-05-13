@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from pathlib import Path
 from typing import Any
@@ -192,6 +194,11 @@ def _derive_entries(feature: str, entries: list[dict[str, Any]]) -> list[dict[st
             }
         )
     return derived
+
+
+def _entries_fingerprint(entries: list[dict[str, Any]]) -> str:
+    canonical = json.dumps(entries, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def _active_story_items(story: dict[str, Any]) -> list[dict[str, Any]]:
@@ -455,6 +462,7 @@ def _previous_evidence_done(
     spec_hash: str,
     implementation_run_id: str,
     source_matrix_path: str,
+    source_matrix_hash: str = "",
 ) -> bool:
     if not isinstance(previous, dict) or not previous:
         return False
@@ -465,6 +473,8 @@ def _previous_evidence_done(
     if str(previous.get("implementation_run_id") or "") != implementation_run_id:
         return False
     if str(previous.get("source_matrix_path") or "") != source_matrix_path:
+        return False
+    if str(previous.get("source_matrix_hash") or "") != source_matrix_hash:
         return False
     feature_scorecard = previous.get("feature_scorecard")
     if not isinstance(feature_scorecard, dict) or not feature_scorecard:
@@ -484,6 +494,7 @@ def _targeted_entries(
     spec_hash: str,
     implementation_run_id: str,
     source_matrix_path: str,
+    source_matrix_hash: str,
     technical_archive: dict[str, Any],
     blocking_updates: list[dict[str, Any]],
 ) -> tuple[str, list[str], list[dict[str, Any]]]:
@@ -501,6 +512,8 @@ def _targeted_entries(
         reason_codes.append("implementation_run_changed")
     if previous_status and str(previous_status.get("source_matrix_path") or "") != source_matrix_path:
         reason_codes.append("source_matrix_changed")
+    if previous_status and str(previous_status.get("source_matrix_hash") or "") != source_matrix_hash:
+        reason_codes.append("source_matrix_changed")
     if not previous_status:
         impacted = list(derived_entries)
         return "rerun_required", reason_codes or ["no_prior_feature_qa"], impacted
@@ -510,6 +523,7 @@ def _targeted_entries(
         spec_hash=spec_hash,
         implementation_run_id=implementation_run_id,
         source_matrix_path=source_matrix_path,
+        source_matrix_hash=source_matrix_hash,
     ):
         return "up_to_date", [], []
 
@@ -532,6 +546,7 @@ def build_feature_qa_plan(
     source_matrix_path, source_matrix = _load_source_matrix(project_root, version=resolved_version, feature=feature, story=story)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
     derived_entries = _derive_entries(feature, [item for item in source_entries if isinstance(item, dict)])
+    source_matrix_hash = _entries_fingerprint(derived_entries)
     marker = _implementation_marker(project_root, feature=feature)
     archive_path, archive_payload = _technical_archive(project_root, version=resolved_version, feature=feature)
     obligations = load_artifact_update_obligations(project_root, feature=feature)
@@ -547,6 +562,7 @@ def build_feature_qa_plan(
         spec_hash=spec_hash,
         implementation_run_id=implementation_run_id,
         source_matrix_path=source_matrix_rel,
+        source_matrix_hash=source_matrix_hash,
         technical_archive=archive_payload,
         blocking_updates=blocking_updates,
     )
@@ -628,6 +644,7 @@ def build_feature_qa_plan(
         "current_baseline_hash": str(revision.get("baseline_hash") or "").strip(),
         "implementation_run_id": implementation_run_id,
         "source_matrix_path": source_matrix_rel,
+        "source_matrix_hash": source_matrix_hash,
         "derived_matrix_path": str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
         "story_scenario_map_path": str(feature_qa_scenario_map_path(project_root, feature=feature).relative_to(project_root)),
         "docs_story_scenario_map_path": str(docs_story_scenario_map_path(project_root, version=resolved_version, feature=feature).relative_to(project_root)),
@@ -942,6 +959,7 @@ def build_feature_qa_precision_artifacts(
     project_profile_gate: dict[str, Any] | None = None,
     qa_status: dict[str, Any] | None = None,
     exhaustiveness: dict[str, Any] | None = None,
+    design_truth_verdict: dict[str, Any] | None = None,
 ) -> tuple[list[dict[str, Any]], dict[str, Any], dict[str, Any], Path, Path]:
     calibration_model = load_qa_calibration_model(project_root)
     risk_bands = calibration_model.get("risk_bands") if isinstance(calibration_model.get("risk_bands"), dict) else {}
@@ -1161,6 +1179,13 @@ def build_feature_qa_precision_artifacts(
     project_gate_status = str(project_profile_gate.get("status") or "not_configured")
     qa_status = qa_status if isinstance(qa_status, dict) else {}
     exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
+    design_truth_verdict = design_truth_verdict if isinstance(design_truth_verdict, dict) else {}
+    design_truth_blocked = bool(design_truth_verdict.get("blocked")) or str(design_truth_verdict.get("status") or "").strip().lower() in {"blocked", "fail", "failed"}
+    design_truth_reason_codes = [
+        str(item).strip()
+        for item in (design_truth_verdict.get("reason_codes") if isinstance(design_truth_verdict.get("reason_codes"), list) else [])
+        if str(item).strip()
+    ]
     quality_issues = qa_status.get("quality_issues") if isinstance(qa_status.get("quality_issues"), list) else []
     quality_reason_codes = sorted(
         {
@@ -1248,6 +1273,8 @@ def build_feature_qa_precision_artifacts(
             "browser_runner_learning_missing",
         }
     )
+    if design_truth_blocked:
+        stop_reasons.extend(design_truth_reason_codes or ["design_truth_verdict_failed"])
     stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
     required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
     executed_scenarios = len(
@@ -1332,6 +1359,7 @@ def build_feature_qa_precision_artifacts(
         and needs_replay_count == 0
         and release_confidence_min >= auto_accept_threshold
         and project_gate_status in {"pass", "not_configured"}
+        and not design_truth_blocked
     )
     continue_decision = "ready_for_release"
     if stop_reasons:
@@ -1416,6 +1444,7 @@ def build_feature_qa_precision_artifacts(
             "verification_item_count": len(per_item_results),
             "targeted_scope_only": bool(plan.get("targeted_tc_ids") or plan.get("targeted_ac_ids")),
         },
+        "design_truth_verdict": design_truth_verdict,
         "continue_decision": continue_decision,
         "stop_reasons": stop_reasons,
         "test_case_backfill_required": test_case_backfill_required,

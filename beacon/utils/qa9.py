@@ -35,6 +35,7 @@ QA_PROFILE_TYPES: dict[str, tuple[str, ...]] = {
 LEGACY_TO_QA_TYPE: dict[str, str] = {
     "ui": "functional",
     "api-curl": "interface",
+    "docs": "contract",
 }
 
 QA_TO_LEGACY_LAYER: dict[str, str] = {

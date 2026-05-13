@@ -135,6 +135,10 @@ def release_checklist_file(project_root: Path, version: str) -> Path:
     return release_docs_dir(project_root, version) / f"checklist-{version}.md"
 
 
+def release_gate_report_file(project_root: Path) -> Path:
+    return project_root / ".beacon" / "release-gate-report.json"
+
+
 def qa_matrix_candidates(project_root: Path, version: str, feature_slug: str, kind: str) -> list[Path]:
     filename = f"{feature_slug}.{kind}.json"
     if not uses_machine_surface(version):

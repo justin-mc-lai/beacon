@@ -1165,12 +1165,8 @@ def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
     """Ensure canonical Beacon docs roots exist."""
     base = project_root / "docs" / "beacon" / version
     dirs = [
-        base / "user-story",
-        base / "prd",
-        base / "prototype",
-        base / "qa" / "test-cases",
+        base,
         base / "execution",
-        base / "release",
         project_root / ".beacon" / "state",
     ]
     for d in dirs:
@@ -1178,8 +1174,12 @@ def ensure_output_dirs(project_root: Path, version: str = "v1.0.0"):
     summary = base / "SUMMARY.md"
     if not summary.exists():
         summary.write_text(f"# Beacon {version} Summary\n", encoding="utf-8")
+    execution_index = base / "execution" / "index.md"
+    if not execution_index.exists():
+        execution_index.write_text("# Execution Index\n", encoding="utf-8")
     release_stub = base / "release" / f"{version}.md"
     if not release_stub.exists():
+        release_stub.parent.mkdir(parents=True, exist_ok=True)
         release_stub.write_text(f"# Release: {version}\n", encoding="utf-8")
 
 

@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.archive_governance import load_archive_read_model
 from beacon.utils.diagram_truth import load_feature_diagram_truth
+from beacon.utils.guidance_family import build_guidance_surface_projection
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso
@@ -411,6 +412,21 @@ def run_beacon_brainstorm(
         "brainstorm_hint": contract_brainstorm_hint,
         "supplement_task": contract_supplement_task,
         "convergence_contract": convergence_contract,
+        "guidance_family": build_guidance_surface_projection(
+            "brainstorm",
+            current_loop_layer="challenge",
+            missing_evidence=materials["missing_refs"],
+            target_surface=str(
+                contract_supplement_task.get("target_artifact")
+                or contract_gap_digest.get("recommended_route")
+                or ""
+            ),
+            recommended_route=str(
+                contract_supplement_task.get("recommended_route")
+                or contract_gap_digest.get("recommended_route")
+                or next_route
+            ),
+        ),
         "converged_recommendation": recommendation,
         "next_route": "brainstorm closed" if not contract_supplement_task.get("target_artifact") and not contract_gap_digest.get("human_followup_needed") else next_route,
         "recommended_route": str(

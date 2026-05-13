@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.guidance_family import build_guidance_surface_projection
 from beacon.utils.story_state import feature_slug
 from beacon.utils.support_surface_transactions import build_support_surface_transaction, write_support_surface_transaction
 from beacon.utils.versioning import resolve_target_version
@@ -14,6 +16,56 @@ from beacon.utils.versioning import resolve_target_version
 
 def _doc_path(project_root: Path, version: str, feature: str, folder: str) -> Path:
     return project_root / "docs" / "beacon" / version / folder / f"{feature_slug(feature)}.md"
+
+
+def _feature_truth_refs(project_root: Path, version: str, feature: str) -> list[Path]:
+    prd = _doc_path(project_root, version, feature, "prd")
+    story = _doc_path(project_root, version, feature, "user-story")
+    test_case = _doc_path(project_root, version, feature, "qa/test-cases")
+    return [path for path in (prd, story, test_case) if path.exists()]
+
+
+def _version_package_features(project_root: Path, version: str) -> list[str]:
+    change_doc = project_root / "docs" / "beacon" / version / "change" / f"{version}.md"
+    if not change_doc.exists():
+        return []
+    try:
+        text = change_doc.read_text(encoding="utf-8")
+    except OSError:
+        return []
+    lines = text.splitlines()
+    in_section = False
+    features: list[str] = []
+    for raw_line in lines:
+        line = raw_line.rstrip()
+        if re.match(r"^##\s+Feature Packages\s*$", line):
+            in_section = True
+            continue
+        if in_section and line.startswith("## "):
+            break
+        if not in_section:
+            continue
+        match = re.match(r"^\s*-\s+`([^`]+)`\s*$", line)
+        if match:
+            features.append(match.group(1).strip())
+    return features
+
+
+def _resolve_truth_refs(project_root: Path, version: str, feature: str) -> tuple[list[Path], list[str]]:
+    direct_refs = _feature_truth_refs(project_root, version, feature)
+    if direct_refs:
+        return direct_refs, []
+    package_features = [item for item in _version_package_features(project_root, version) if item and item != feature]
+    if not package_features:
+        return [], []
+    package_refs: list[Path] = []
+    bound_features: list[str] = []
+    for package_feature in package_features:
+        refs = _feature_truth_refs(project_root, version, package_feature)
+        if len(refs) == 3:
+            package_refs.extend(refs)
+            bound_features.append(package_feature)
+    return package_refs, bound_features
 
 
 def _decision_from_inputs(*, decision: str, focus: str, change_intent: str) -> str:
@@ -40,10 +92,7 @@ def run_ceo_review(
     change_intent: str = "",
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    prd = _doc_path(project_root, resolved_version, feature, "prd")
-    story = _doc_path(project_root, resolved_version, feature, "user-story")
-    test_case = _doc_path(project_root, resolved_version, feature, "qa/test-cases")
-    truth_refs = [path for path in (prd, story, test_case) if path.exists()]
+    truth_refs, package_features = _resolve_truth_refs(project_root, resolved_version, feature)
     if not truth_refs:
         payload = build_support_surface_transaction(
             surface="beacon-ceo-review",
@@ -70,6 +119,13 @@ def run_ceo_review(
         )
         receipts = write_support_surface_transaction(project_root, version=resolved_version, payload=payload)
         payload["artifacts"] = receipts
+        payload["guidance_family"] = build_guidance_surface_projection(
+            "ceo-review",
+            current_loop_layer="challenge",
+            missing_evidence=["prd", "user-story", "test-case"],
+            target_surface="beacon-help",
+            recommended_route="beacon help",
+        )
         return payload
 
     resolved_decision = _decision_from_inputs(decision=decision, focus=focus, change_intent=change_intent)
@@ -113,9 +169,20 @@ def run_ceo_review(
         operator_visible_summary=(
             f"CEO review decision is `{resolved_decision}` for focus `{focus or 'full'}`."
             if writebacks
-            else "CEO review did not find a version-level reframing blocker."
+            else (
+                f"CEO review did not find a version-level reframing blocker. Bound version package features: {', '.join(package_features)}."
+                if package_features
+                else "CEO review did not find a version-level reframing blocker."
+            )
         ),
     )
     receipts = write_support_surface_transaction(project_root, version=resolved_version, payload=payload)
     payload["artifacts"] = receipts
+    payload["guidance_family"] = build_guidance_surface_projection(
+        "ceo-review",
+        current_loop_layer="challenge",
+        missing_evidence=[],
+        target_surface=str(route.get("target_surface", "") or ""),
+        recommended_route=str(route.get("command", "") or ""),
+    )
     return payload

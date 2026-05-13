@@ -151,7 +151,7 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
     for raw_line in str(content or "").splitlines():
         stripped = raw_line.strip()
         cells = [cell.strip() for cell in stripped.strip("|").split("|")]
-        if len(cells) < 6:
+        if len(cells) < 5:
             continue
         first = cells[0].upper()
         second = cells[1].upper()
@@ -176,6 +176,7 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
         if first.startswith("AC-") and second.startswith("TC-"):
             tc_id = second
             story_id = story_id_from_tc_id(tc_id)
+            explicit_evidence_path = cells[5] if len(cells) > 5 else ""
             rows.append(
                 {
                     "ac_id": first,
@@ -189,7 +190,7 @@ def extract_qa_case_rows(content: str, source: str) -> list[dict[str, Any]]:
                     "explicit_layer": cells[2],
                     "explicit_command": cells[3],
                     "explicit_assertion": cells[4],
-                    "explicit_evidence_path": cells[5],
+                    "explicit_evidence_path": explicit_evidence_path,
                     "source": source,
                 }
             )

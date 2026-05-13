@@ -104,16 +104,30 @@ def implement_to_qa_handoff_path(project_root: Path, *, feature: str, run_id: st
 
 def write_implement_to_qa_handoff(
     project_root: Path,
+    legacy_payload: dict[str, Any] | None = None,
     *,
-    version: str,
-    feature: str,
-    run_id: str,
-    summary_ref: str,
-    technical_archive_ref: str,
-    evidence_refs: list[str],
-    changed_files: list[str],
-    implementation_plan_ref: str,
+    version: str = "",
+    feature: str = "",
+    run_id: str = "",
+    summary_ref: str = "",
+    technical_archive_ref: str = "",
+    evidence_refs: list[str] | None = None,
+    changed_files: list[str] | None = None,
+    implementation_plan_ref: str = "",
+    design_truth: dict[str, Any] | None = None,
 ) -> Path:
+    if isinstance(legacy_payload, dict):
+        version = str(legacy_payload.get("version", "") or version)
+        feature = str(legacy_payload.get("feature", "") or feature)
+        run_id = str(legacy_payload.get("run_id", "") or legacy_payload.get("team_id", "") or run_id)
+        summary_ref = str(legacy_payload.get("summary_ref", "") or summary_ref)
+        technical_archive_ref = str(legacy_payload.get("technical_archive_ref", "") or technical_archive_ref)
+        evidence_refs = [str(item) for item in legacy_payload.get("evidence_refs", []) if str(item).strip()] if isinstance(legacy_payload.get("evidence_refs"), list) else evidence_refs
+        changed_files = [str(item) for item in legacy_payload.get("changed_files", []) if str(item).strip()] if isinstance(legacy_payload.get("changed_files"), list) else changed_files
+        implementation_plan_ref = str(legacy_payload.get("implementation_plan_ref", "") or implementation_plan_ref)
+        design_truth = legacy_payload.get("design_truth") if isinstance(legacy_payload.get("design_truth"), dict) else design_truth
+    evidence_refs = [str(item) for item in (evidence_refs or []) if str(item).strip()]
+    changed_files = [str(item) for item in (changed_files or []) if str(item).strip()]
     path = implement_to_qa_handoff_path(project_root, feature=feature, run_id=run_id)
     payload = {
         "schema_version": "1.0",
@@ -130,6 +144,7 @@ def write_implement_to_qa_handoff(
         "implementation_plan_ref": implementation_plan_ref,
         "changed_files": changed_files,
         "evidence_refs": evidence_refs,
+        "design_truth": design_truth if isinstance(design_truth, dict) else {},
         "context_rule": "qa_must_not_inherit_implement_private_context",
     }
     write_json(path, payload)

@@ -170,8 +170,51 @@ def _resolve_evidence_path(project_root: Path, relative_path: str) -> Path | Non
     return None
 
 
-def _evidence_status(project_root: Path, relative_path: str) -> str:
+def _qa_feature_entry(project_root: Path, *, feature: str, tc_id: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    matrix_path = project_root / ".beacon" / "qa" / "features" / slug / "matrix.qa9.json"
+    payload = read_json(matrix_path, {})
+    entries = payload.get("entries") if isinstance(payload.get("entries"), list) else []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        if str(entry.get("tc_id") or "").strip() == tc_id:
+            return entry
+    return {}
+
+
+def _resolve_feature_qa_evidence_path(project_root: Path, *, feature: str, tc_id: str) -> Path | None:
+    entry = _qa_feature_entry(project_root, feature=feature, tc_id=tc_id)
+    if not entry:
+        return None
+    evidence_path = str(entry.get("evidence_path") or "").strip()
+    last_run_id = str(entry.get("last_run_id") or "").strip()
+    if evidence_path and last_run_id:
+        for token in ("{run_id}", "__RUN_ID__", "$RUN_ID"):
+            evidence_path = evidence_path.replace(token, last_run_id)
+        candidate = project_root / evidence_path
+        if candidate.exists():
+            return candidate
+    last_evidence_ref = str(entry.get("last_evidence_ref") or "").strip()
+    if last_evidence_ref:
+        last_evidence_path = project_root / last_evidence_ref
+        if last_evidence_path.exists():
+            result_candidate = last_evidence_path.with_name("result.json")
+            if result_candidate.exists():
+                return result_candidate
+    tc_slug = tc_id.strip().lower()
+    evidence_dir = project_root / ".beacon" / "evidence" / "qa-feature" / feature_slug(feature) / tc_slug
+    if evidence_dir.exists():
+        latest = sorted(evidence_dir.glob("run-*.json"))
+        if latest:
+            return latest[-1]
+    return None
+
+
+def _evidence_status(project_root: Path, relative_path: str, *, feature: str = "", tc_id: str = "") -> str:
     path = _resolve_evidence_path(project_root, relative_path)
+    if path is None and feature and tc_id:
+        path = _resolve_feature_qa_evidence_path(project_root, feature=feature, tc_id=tc_id)
     if path is None:
         return "missing"
     payload = read_json(path, {})
@@ -202,6 +245,40 @@ def _truth_refs(project_root: Path, paths: dict[str, Path | None]) -> dict[str, 
 
 def _source_hashes(paths: dict[str, Path | None]) -> dict[str, str]:
     return {key: _sha256(path) if path is not None else "" for key, path in paths.items()}
+
+
+def _browser_lane_required(ac_items: dict[str, dict[str, Any]], entries: list[dict[str, Any]]) -> bool:
+    browser_theme_tokens = (
+        "browser-admission",
+        "browser-evidence-authenticity",
+        "browser-runner-priority",
+        "blocked-not-false-fail",
+        "runner-learning",
+        "browser-lane-traceability",
+    )
+    browser_execution_tokens = (
+        "protected surface",
+        "session bridge",
+        "runner priority",
+        "playwright",
+        "cdp",
+        "web-access",
+        "browser evidence",
+        "placeholder transcript",
+    )
+    for item in ac_items.values():
+        theme = str(item.get("theme") or "").lower()
+        if any(token in theme for token in browser_theme_tokens):
+            return True
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        text = " ".join(
+            [str(entry.get("layer") or ""), str(entry.get("command") or ""), str(entry.get("assertion") or "")]
+        ).lower()
+        if any(token in text for token in browser_execution_tokens):
+            return True
+    return False
 
 
 def _planning_line_safety(project_root: Path, version: str) -> dict[str, Any]:
@@ -255,6 +332,7 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
             unclassified.append(tc_id or ac_id or "unknown")
             continue
         evidence_path = str(entry.get("evidence_path") or "").strip()
+        evidence_status = _evidence_status(project_root, evidence_path, feature=feature, tc_id=tc_id)
         mapping_status = "pass" if ac_id and tc_id and (evidence_path or lane == "generated_surface_sync") else "missing"
         if _entry_release_blocking(lane) and mapping_status != "pass":
             mapping_gaps.append(tc_id or ac_id or "unknown")
@@ -267,7 +345,7 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
             "command": str(entry.get("command") or ""),
             "assertion": str(entry.get("assertion") or ""),
             "evidence_path": evidence_path,
-            "evidence_status": _evidence_status(project_root, evidence_path),
+            "evidence_status": evidence_status,
             "source": str(entry.get("source") or ""),
             "release_blocking": _entry_release_blocking(lane),
             "mapping_status": mapping_status,
@@ -327,6 +405,11 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
         feature=feature,
     )
     lanes = payload.get("lanes") if isinstance(payload.get("lanes"), dict) else {}
+    story_payload = _read_dict(_source_paths(project_root, version, feature_slug(feature)).get("story_state"))
+    browser_lane_needed = _browser_lane_required(
+        _ac_items(story_payload),
+        payload.get("test_refs") if isinstance(payload.get("test_refs"), list) else [],
+    )
     feature_lane = lanes.get("feature_release_facing") if isinstance(lanes.get("feature_release_facing"), list) else []
     if not feature_lane and not aggregation_contract:
         codes.append("feature_release_lane_missing")
@@ -342,13 +425,13 @@ def _release_reason_codes(project_root: Path, payload: dict[str, Any]) -> list[s
     if any(str(item.get("evidence_status") or "") == "failed" for item in generated_lane if isinstance(item, dict)):
         codes.append("generated_surface_sync_drift")
     browser_lane = lanes.get("browser_runtime_admission") if isinstance(lanes.get("browser_runtime_admission"), list) else []
-    if not browser_lane and not aggregation_contract:
+    if browser_lane_needed and not browser_lane and not aggregation_contract:
         codes.append("browser_runtime_admission_missing")
     for entry in browser_lane:
         if not isinstance(entry, dict):
             continue
         status = str(entry.get("evidence_status") or "").strip().lower()
-        if status == "missing" and not aggregation_contract:
+        if status == "missing" and browser_lane_needed and not aggregation_contract:
             codes.append("browser_runtime_admission_missing")
     if bool((payload.get("planning_line_safety") or {}).get("blocked", False)):
         codes.append("planning_line_runtime_conflict")

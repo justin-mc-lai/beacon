@@ -6,6 +6,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import machine_root, version_root
 from beacon.utils.diagram_truth import load_feature_diagram_truth
+from beacon.utils.guidance_family import build_guidance_surface_projection
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
@@ -465,6 +466,13 @@ def run_deep_loop(
         "verdict": verdict,
         "artifact_refs": artifact_refs,
         "release_supplement": supplement,
+        "guidance_family": build_guidance_surface_projection(
+            "deep",
+            current_loop_layer="challenge",
+            missing_evidence=[],
+            target_surface="qa" if test_deltas else "release" if supplement.get("blocked") else "qa",
+            recommended_route=supplement.get("recommended_command", ""),
+        ),
         "generated_at": generated_at,
     }
 

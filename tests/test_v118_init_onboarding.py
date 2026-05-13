@@ -104,3 +104,27 @@ def test_init_context_guidance_should_include_progressive_disclosure(tmp_path: P
     assert "execution/architecture-blueprint.md" in agents
     assert "For greenfield projects" in agents
     assert "For takeover projects" in agents
+
+
+def test_init_should_create_only_minimal_docs_scaffold_by_default(tmp_path: Path):
+    result = runner.invoke(
+        app,
+        [
+            "init",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.1.8",
+            "--apply",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+
+    version_root = tmp_path / "docs" / "beacon" / "v1.1.8"
+    assert version_root.exists()
+    assert (version_root / "SUMMARY.md").exists()
+    assert (version_root / "execution" / "index.md").exists()
+    assert (version_root / "execution" / "architecture-blueprint.md").exists()
+    assert not (version_root / "prd").exists()
+    assert not (version_root / "user-story").exists()
+    assert not (version_root / "qa" / "test-cases").exists()

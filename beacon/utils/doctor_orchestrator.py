@@ -13,6 +13,7 @@ from beacon.utils.test_contract_governance import build_test_contract_gate_paylo
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.writeback import acceptance_projection_transaction_contract
+from beacon.utils.workflow_memory import backfill_workflow_memory
 
 
 @dataclass(frozen=True)
@@ -852,6 +853,30 @@ def run_package_upgrade(
         "status": "PASS",
         "result": result,
         "source_architecture_status": source_arch_status,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=0)
+
+
+def run_workflow_memory_sync(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    run_id: str,
+) -> DoctorExecutionResult:
+    """Backfill workflow-memory surfaces for a completed run."""
+    ctx = build_doctor_execution_context(project_root, version=version, include_version_context=False)
+    result = backfill_workflow_memory(
+        ctx.project_root,
+        version=version,
+        feature=feature,
+        run_id=run_id,
+    )
+    payload = {
+        "schema_version": "2.0",
+        "action": "sync-workflow-memory",
+        "status": "PASS",
+        "result": result,
     }
     return DoctorExecutionResult(payload=payload, exit_code=0)
 

@@ -24,6 +24,7 @@ from beacon.utils.project_metadata import metadata_machine_path, verify_project_
 from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
+from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
     resolve_profile_for_feature,
@@ -266,6 +267,133 @@ def _beacon_exec_silent(args: list[str], *, cwd: Path | None = None) -> int:
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def _semver_tuple(value: str | None) -> tuple[int, int, int]:
+    text = str(value or "").strip().lstrip("v")
+    try:
+        major, minor, patch = text.split(".")[:3]
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
+def _read_json_dict(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def _artifact_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    nested = payload.get("payload") if isinstance(payload.get("payload"), dict) else {}
+    return nested if nested else payload
+
+
+def _string_list(value: Any) -> list[str]:
+    return [str(item).strip() for item in value if str(item).strip()] if isinstance(value, list) else []
+
+
+def _qa_design_truth_verdict(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    handoff: dict[str, Any],
+) -> dict[str, Any]:
+    if _semver_tuple(version) < (1, 4, 4):
+        return {"schema_version": "1.0", "status": "not_applicable", "blocked": False, "reason_codes": []}
+    handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
+    reason_codes: list[str] = []
+    findings: list[dict[str, Any]] = []
+    if not handoff_design_truth:
+        reason_codes.append("design_truth_handoff_missing")
+        findings.append({"reason_code": "design_truth_handoff_missing", "message": "implement-to-qa handoff did not include design truth"})
+    files = prototype_files(project_root, version, feature)
+    style_path = files["design_artifacts_dir"] / "style-preset.json"
+    lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
+    missing_refs = [
+        str(path.relative_to(project_root))
+        for path in (style_path, lint_path)
+        if not path.exists()
+    ]
+    if missing_refs:
+        reason_codes.append("design_truth_artifact_missing")
+        findings.append({"reason_code": "design_truth_artifact_missing", "missing_refs": missing_refs})
+    style_payload = _artifact_payload(_read_json_dict(style_path))
+    lint_payload = _artifact_payload(_read_json_dict(lint_path))
+    current_contract = style_payload.get("anti_ai_ui_contract") if isinstance(style_payload.get("anti_ai_ui_contract"), dict) else {}
+    if not current_contract and isinstance(lint_payload.get("anti_ai_ui_contract"), dict):
+        current_contract = lint_payload.get("anti_ai_ui_contract", {})
+    expected_contract = handoff_design_truth.get("anti_ai_ui_contract") if isinstance(handoff_design_truth.get("anti_ai_ui_contract"), dict) else {}
+    expected_preset = str(handoff_design_truth.get("canonical_design_preset") or handoff_design_truth.get("design_preset") or "").strip()
+    current_preset = str(style_payload.get("canonical_design_preset") or lint_payload.get("canonical_design_preset") or style_payload.get("design_preset") or "").strip()
+    if expected_preset and current_preset and expected_preset != current_preset:
+        reason_codes.append("design_truth_preset_drift")
+        findings.append({"reason_code": "design_truth_preset_drift", "expected": expected_preset, "actual": current_preset})
+    expected_source = str(handoff_design_truth.get("preset_source") or "").strip()
+    current_source = str(style_payload.get("preset_source") or lint_payload.get("preset_source") or "").strip()
+    if expected_source and current_source and expected_source != current_source:
+        reason_codes.append("design_truth_preset_drift")
+        findings.append({"reason_code": "design_truth_preset_source_drift", "expected": expected_source, "actual": current_source})
+    required_contract_values = {
+        "minimum_touch_target": "44x44",
+        "focus_visibility_policy": "required",
+        "external_reference_runtime_dependency": False,
+    }
+    for key, expected_value in required_contract_values.items():
+        actual_value = current_contract.get(key) if isinstance(current_contract, dict) else None
+        if actual_value != expected_value:
+            reason_codes.append("anti_ai_baseline_violation")
+            findings.append({"reason_code": "anti_ai_baseline_violation", "field": key, "expected": expected_value, "actual": actual_value})
+    if expected_contract:
+        expected_forbidden = set(_string_list(expected_contract.get("forbidden_visual_patterns")))
+        current_forbidden = set(_string_list(current_contract.get("forbidden_visual_patterns") if isinstance(current_contract, dict) else []))
+        missing_forbidden = sorted(expected_forbidden - current_forbidden)
+        if missing_forbidden:
+            reason_codes.append("anti_ai_baseline_violation")
+            findings.append({"reason_code": "anti_ai_forbidden_pattern_drift", "missing": missing_forbidden})
+        expected_states = set(_string_list(expected_contract.get("required_state_coverage")))
+        current_states = set(_string_list(current_contract.get("required_state_coverage") if isinstance(current_contract, dict) else []))
+        missing_states = sorted(expected_states - current_states)
+        if missing_states:
+            reason_codes.append("anti_ai_baseline_violation")
+            findings.append({"reason_code": "anti_ai_required_state_drift", "missing": missing_states})
+    # Only check interaction discipline rules if both handoff and current have explicit rules
+    handoff_interaction = handoff_design_truth.get("interaction_discipline_rules")
+    current_interaction = lint_payload.get("interaction_discipline_rules")
+    if isinstance(handoff_interaction, list) and handoff_interaction and isinstance(current_interaction, list) and current_interaction:
+        expected_interaction_rules = set(_string_list(handoff_interaction))
+        current_interaction_rules = set(_string_list(current_interaction))
+        missing_interaction_rules = sorted(expected_interaction_rules - current_interaction_rules)
+        if missing_interaction_rules:
+            reason_codes.append("design_truth_interaction_baseline_drift")
+            findings.append({"reason_code": "design_truth_interaction_baseline_drift", "missing": missing_interaction_rules})
+    reason_codes = sorted(set(reason_codes))
+    return {
+        "schema_version": "1.0",
+        "status": "blocked" if reason_codes else "passed",
+        "blocked": bool(reason_codes),
+        "reason_codes": reason_codes,
+        "source_surface": "implement-to-qa-handoff",
+        "verification_surface": "qa",
+        "refs": {
+            "style_preset": str(style_path.relative_to(project_root)),
+            "design_lint_rules": str(lint_path.relative_to(project_root)),
+        },
+        "expected": {
+            "canonical_design_preset": expected_preset,
+            "preset_source": expected_source,
+        },
+        "actual": {
+            "canonical_design_preset": current_preset,
+            "preset_source": current_source,
+        },
+        "findings": findings,
+    }
 
 
 def _render_qa_team_role_markdown(role: str, payload: dict[str, Any]) -> str:
@@ -999,6 +1127,12 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         feature=feature,
         run_id=str(plan.get("implementation_run_id") or ""),
     ) if str(plan.get("implementation_run_id") or "").strip() else {}
+    design_truth_verdict = _qa_design_truth_verdict(
+        project_root,
+        version=version,
+        feature=feature,
+        handoff=handoff,
+    )
     if not bool(plan.get("implementation_done", False)):
         if json_output:
             typer.echo(json.dumps(plan, ensure_ascii=False, indent=2))
@@ -1029,7 +1163,12 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "subagent_prechecks": subagent_prechecks,
                 "team_contract": team_contract,
                 "implement_to_qa_handoff": handoff,
+                "design_truth_verdict": design_truth_verdict,
             }
+            if bool(design_truth_verdict.get("blocked")):
+                payload["status"] = "blocked"
+                payload["evidence_done"] = False
+                payload["release_ready"] = False
             _with_delivery_contract(
                 payload,
                 requirement_binding={
@@ -1078,7 +1217,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             else:
                 typer.echo(f"✓ Feature QA reused existing pass: {feature}")
                 typer.echo(f"  Reason: {payload['message']}")
-            return 0, payload
+            return (2 if bool(design_truth_verdict.get("blocked")) else 0), payload
 
     if str(plan.get("status") or "") == "up_to_date":
         existing_status = load_feature_qa_status(project_root, feature=feature)
@@ -1099,6 +1238,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
+            "design_truth_verdict": design_truth_verdict,
         }
         precision_status = dict(existing_status)
         precision_status["status"] = "passed"
@@ -1107,6 +1247,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         precision_status["feature_slug"] = str(plan.get("feature_slug") or "")
         precision_status["execution_mode"] = str(plan.get("execution_mode") or mode)
         precision_status["reason_codes"] = list(plan.get("reason_codes") or [])
+        precision_status["design_truth_verdict"] = design_truth_verdict
         precision_status["targeted_rerun"] = {
             "required": True,
             "reason_codes": plan.get("reason_codes", []),
@@ -1147,12 +1288,17 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             project_profile_gate={},
             qa_status=precision_status,
             exhaustiveness=exhaustiveness,
+            design_truth_verdict=design_truth_verdict,
         )
         precision_status["scenario_results_v2"] = scenario_results_v2
         precision_status["ac_closure_path"] = str(ac_closure_path.relative_to(project_root))
         precision_status["feature_scorecard_path"] = str(feature_scorecard_path.relative_to(project_root))
         precision_status["feature_scorecard"] = feature_scorecard
         precision_status["release_ready"] = bool(feature_scorecard.get("release_ready", False))
+        if bool(design_truth_verdict.get("blocked")):
+            precision_status["status"] = "blocked"
+            precision_status["evidence_done"] = False
+            precision_status["reason_codes"] = sorted({*list(precision_status.get("reason_codes") or []), *list(design_truth_verdict.get("reason_codes") or [])})
         precision_status["verified_item_ids"] = verified_ids
         precision_status["failed_item_ids"] = failed_ids
         payload.update(
@@ -1163,6 +1309,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
                 "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
                 "release_ready": bool(feature_scorecard.get("release_ready", False)),
+                "design_truth_verdict": design_truth_verdict,
                 "verified_item_ids": verified_ids,
                 "failed_item_ids": failed_ids,
                 "exhaustiveness": exhaustiveness,
@@ -1234,7 +1381,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         else:
             typer.echo(f"✓ Feature QA up to date: {feature}")
             typer.echo(f"  Reason: {payload['message']}")
-        return 0, payload
+        return (2 if bool(design_truth_verdict.get("blocked")) else 0), payload
 
     matrix_path = materialize_feature_qa_matrix(project_root, plan=plan)
     passthrough_args = _sanitize_auto_test_passthrough_args(args)
@@ -1292,6 +1439,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
+            "design_truth_verdict": design_truth_verdict,
         }, blocked=True)
         _with_delivery_contract(
             blocked_payload,
@@ -1341,6 +1489,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             "subagent_prechecks": subagent_prechecks,
             "team_contract": team_contract,
             "implement_to_qa_handoff": handoff,
+            "design_truth_verdict": design_truth_verdict,
         }, blocked=True)
         _with_delivery_contract(
             blocked_payload,
@@ -1418,6 +1567,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     qa_status["project_profile_gate"] = project_profile_gate if isinstance(project_profile_gate, dict) else {}
     qa_status["project_orchestration"] = project_orchestration if isinstance(project_orchestration, dict) else {}
     qa_status["current_session_id"] = str(current_session.get("session_id") or "")
+    qa_status["design_truth_verdict"] = design_truth_verdict
     qa_status["requirement_completeness_gate"] = requirement_completeness_gate
     qa_status["requirement_completeness_verdict"] = str(requirement_completeness_gate.get("status") or "")
     qa_status["requirement_completeness_ref"] = str(
@@ -1449,12 +1599,17 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         project_profile_gate=project_profile_gate,
         qa_status=qa_status,
         exhaustiveness=exhaustiveness,
+        design_truth_verdict=design_truth_verdict,
     )
     qa_status["scenario_results_v2"] = scenario_results_v2
     qa_status["ac_closure_path"] = str(ac_closure_path.relative_to(project_root))
     qa_status["feature_scorecard_path"] = str(feature_scorecard_path.relative_to(project_root))
     qa_status["feature_scorecard"] = feature_scorecard
     qa_status["release_ready"] = bool(feature_scorecard.get("release_ready", False))
+    if bool(design_truth_verdict.get("blocked")):
+        qa_status["status"] = "blocked"
+        qa_status["evidence_done"] = False
+        qa_status["release_ready"] = False
     if qa_status["release_ready"]:
         qa_status["status"] = "passed"
         qa_status["evidence_done"] = True
@@ -1591,6 +1746,8 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 ]
             )
     final_reason_codes = list(plan.get("reason_codes") or [])
+    if bool(design_truth_verdict.get("blocked")):
+        final_reason_codes = sorted({*final_reason_codes, *list(design_truth_verdict.get("reason_codes") or [])})
     if bool(qa_status.get("evidence_done")) and str(qa_status.get("status") or "").strip().lower() == "passed":
         final_reason_codes = []
     payload = {
@@ -1620,6 +1777,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "scenario_results_v2": scenario_results_v2,
         "ac_closure": ac_closure,
         "feature_scorecard": feature_scorecard,
+        "design_truth_verdict": design_truth_verdict,
         "ac_closure_path": str(ac_closure_path.relative_to(project_root)),
         "feature_scorecard_path": str(feature_scorecard_path.relative_to(project_root)),
         "team_mode": bool(team_mode),

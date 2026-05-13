@@ -9,7 +9,12 @@ import hashlib
 import os
 
 from beacon.utils.artifact_update_obligations import load_artifact_update_obligations
-from beacon.utils.artifact_paths import execution_file_candidates, human_execution_dir, machine_execution_dir
+from beacon.utils.artifact_paths import (
+    execution_file_candidates,
+    human_execution_dir,
+    machine_execution_dir,
+    release_gate_report_file,
+)
 from beacon.utils.archive_governance import load_feature_archive_boundary
 from beacon.utils.control_plane import build_resume_contract
 from beacon.utils.coverage import compute_coverage_metrics
@@ -4562,6 +4567,22 @@ def _run_check_command(
     except ValueError as exc:
         typer.echo(f"Error: {exc}")
         return 1
+
+    if stage == "release":
+        persisted_result = dict(result)
+        resolved_version = _resolved_gate_version(root, version)
+        persisted_result["version"] = resolved_version
+        persisted_run_id = _resolve_release_contract_run_id(root, version=resolved_version)
+        if not persisted_run_id:
+            status_payload, status_code = _load_json_file(root / ".beacon" / "auto-test-status.json")
+            if status_code == "ok" and isinstance(status_payload, dict):
+                persisted_run_id = str(status_payload.get("run_id") or "").strip()
+        persisted_result["run_id"] = persisted_run_id
+        persisted_result["updated_at"] = datetime.now(timezone.utc).isoformat()
+        report_path = release_gate_report_file(root)
+        report_path.parent.mkdir(parents=True, exist_ok=True)
+        report_path.write_text(json.dumps(persisted_result, ensure_ascii=False, indent=2), encoding="utf-8")
+
     if json_output:
         typer.echo(json.dumps(result, indent=2, ensure_ascii=False))
     else:

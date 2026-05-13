@@ -61,19 +61,8 @@ def _init_impl(
 
     docs_paths = [
         root / "docs" / "beacon" / docs_version,
-        root / "docs" / "beacon" / docs_version / "prd",
-        root / "docs" / "beacon" / docs_version / "user-story",
-        root / "docs" / "beacon" / docs_version / "qa" / "test-cases",
-        root / "docs" / "beacon" / docs_version / "release",
         root / "docs" / "beacon" / docs_version / "execution",
     ]
-    if uses_machine_surface(docs_version, runtime_version=effective_runtime_version):
-        docs_paths.extend(
-            [
-                machine_execution_dir(root, docs_version),
-                machine_qa_dir(root, docs_version),
-            ]
-        )
     for p in docs_paths:
         if apply:
             p.mkdir(parents=True, exist_ok=True)
@@ -147,6 +136,11 @@ def _init_impl(
     boundaries_status = _write_if_apply(boundaries_path, boundaries_content, apply, force=False)
     actions.append({"scope": "docs", "action": boundaries_status, "path": str(boundaries_path.relative_to(root))})
 
+    execution_index_path = root / "docs" / "beacon" / docs_version / "execution" / "index.md"
+    execution_index_content = "# Execution Index\n\n- status: draft\n"
+    execution_index_status = _write_if_apply(execution_index_path, execution_index_content, apply, force=False)
+    actions.append({"scope": "docs", "action": execution_index_status, "path": str(execution_index_path.relative_to(root))})
+
     architecture_path = root / "docs" / "beacon" / docs_version / "execution" / "architecture-blueprint.md"
     architecture_content = (
         "# Architecture Blueprint\n\n"
@@ -212,14 +206,6 @@ def _init_impl(
     actions.append({"scope": "docs", "action": release_status, "path": str(release_path.relative_to(root))})
 
     if uses_machine_surface(docs_version, runtime_version=effective_runtime_version):
-        actions.extend(
-            {
-                "scope": "docs",
-                "action": item["action"],
-                "path": item["path"],
-            }
-            for item in ensure_human_primary_indexes(root, version=docs_version, apply=apply)
-        )
         actions.extend(
             {
                 "scope": "state",

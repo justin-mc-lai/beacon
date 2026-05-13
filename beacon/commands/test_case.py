@@ -95,6 +95,30 @@ def _infer_layer_from_ac(text: str) -> str:
     t = (text or "").lower()
     if "prototype" in t and any(token in t for token in ("映射", "orphan", "anchor", "ui 模块", "状态")):
         return "unit"
+    # Guidance/support-surface semantics should stay in deterministic non-browser layers
+    # unless they explicitly mention UI/browser interaction.
+    support_surface_patterns = (
+        r"\broute explainability\b",
+        r"\bguidance surface\b",
+        r"\bguidance surfaces\b",
+        r"\bsupport-surface\b",
+        r"\bsupport-surfaces\b",
+        r"\bsupport surface\b",
+        r"\bsupport surfaces\b",
+        r"\bnon-software\b",
+    )
+    if any(re.search(pattern, t, flags=re.I) for pattern in support_surface_patterns):
+        if any(
+            phrase in t
+            for phrase in (
+                "unless ui/browser interaction is explicitly declared",
+                "unless ui interaction is explicitly declared",
+                "unless browser interaction is explicitly declared",
+                "default to deterministic non-browser qa mapping",
+            )
+        ):
+            return "unit"
+        return "unit"
     ui_patterns = (
         "登录",
         "注册",
@@ -109,7 +133,6 @@ def _infer_layer_from_ac(text: str) -> str:
         r"\bclick\b",
         r"\bbrowser\b",
         r"\bscreen\b",
-        r"\broute\b",
     )
     if any(re.search(pattern, t, flags=re.I) for pattern in ui_patterns):
         return "ui"

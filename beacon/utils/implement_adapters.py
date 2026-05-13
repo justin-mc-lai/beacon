@@ -361,6 +361,7 @@ def build_default_task_prompt(
     implementation_plan_file: str = "",
     semantic_artifact_refs: dict[str, str] | None = None,
     default_design_bridge: dict[str, Any] | None = None,
+    design_truth: dict[str, Any] | None = None,
     revision_cleanup: dict[str, Any] | None = None,
     operator_prompt: str = "",
     prompt_boundary: dict[str, Any] | None = None,
@@ -419,6 +420,18 @@ def build_default_task_prompt(
         lines.append(
             "Default design bridge (augmentation only): "
             f"{bridge.get('skill_id', '')} @ {bridge.get('repo', '')}"
+        )
+    design_payload = design_truth if isinstance(design_truth, dict) else {}
+    design_refs = design_payload.get("refs") if isinstance(design_payload.get("refs"), dict) else {}
+    if str(design_payload.get("status", "") or "") == "ready":
+        lines.extend(
+            [
+                "Reuse Beacon prototype design truth:",
+                f"- design_preset: {str(design_payload.get('design_preset', '') or '').strip()}",
+                f"- canonical_design_preset: {str(design_payload.get('canonical_design_preset', '') or '').strip()}",
+                f"- style_preset: {str(design_refs.get('style_preset', '') or '').strip()}",
+                f"- design_lint_rules: {str(design_refs.get('design_lint_rules', '') or '').strip()}",
+            ]
         )
     lines.extend(
         [

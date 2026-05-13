@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir
+from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir, release_gate_report_file
 from beacon.utils.delivery_kernel import load_delivery_read_model
 from beacon.utils.deep_loop import build_deep_release_supplement_gate, deep_loop_supported
 from beacon.utils.evidence_manifest import validate_evidence_manifest
@@ -477,10 +477,12 @@ def _browser_release_reason_codes(
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
-    gate_report = _load_json(project_root / ".beacon" / "gate-report.json")
+    release_gate_report = _load_json(release_gate_report_file(project_root))
+    gate_report = release_gate_report or _load_json(project_root / ".beacon" / "gate-report.json")
     evidence_manifest = validate_evidence_manifest(project_root)
     qa_status = load_qa_status(project_root)
     gate_version = str(gate_report.get("version") or "").strip()
+    gate_stage = str(gate_report.get("stage") or "").strip().lower()
     gate_version_match = not gate_version or gate_version == resolved_version
     qa_version = str(qa_status.get("version") or "").strip()
     qa_version_match = not qa_version or qa_version == resolved_version
@@ -571,6 +573,10 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
         }
     )
+    if gate_report and gate_stage not in {"", "release"}:
+        gate_status = "Blocked"
+        blocked_count = max(blocked_count, 1)
+        gate_reason_codes = sorted({*gate_reason_codes, "gate_consistency_report_mismatch"})
     if bool(evidence_manifest.get("blocked")) and project_runtime_feature_enabled(
         project_root,
         "v1.3.8",
@@ -875,6 +881,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "release_ready": release_ready,
         "gate": {
             "status": gate_status,
+            "stage": gate_stage,
             "blocked_count": blocked_count,
             "run_id": str(gate_report.get("run_id") or ""),
             "artifact_version": gate_version,
