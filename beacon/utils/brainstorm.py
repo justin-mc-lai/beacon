@@ -383,6 +383,13 @@ def run_beacon_brainstorm(
     )
     output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, feature=feature, output=output)
     assert_not_requirement_truth_path(output_path, project_root=project_root, version=resolved_version)
+    human_closure_scaffold = _materialize_human_closure_scaffold(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        canonical_mode=canonical_mode,
+        diagram_truth=diagram_truth,
+    )
     payload = {
         "schema_version": "1.0",
         "artifact": "beacon_brainstorm",
@@ -412,6 +419,7 @@ def run_beacon_brainstorm(
         "brainstorm_hint": contract_brainstorm_hint,
         "supplement_task": contract_supplement_task,
         "convergence_contract": convergence_contract,
+        "human_closure_scaffold": human_closure_scaffold,
         "guidance_family": build_guidance_surface_projection(
             "brainstorm",
             current_loop_layer="challenge",
@@ -460,6 +468,118 @@ def _extract_version_from_feature(feature: str) -> str:
 def _extract_version_from_prompt(prompt: str) -> str:
     match = re.search(r"v\d+\.\d+\.\d+", prompt or "")
     return match.group(0) if match else ""
+
+
+def _feature_research_path(project_root: Path, *, version: str, feature: str) -> Path:
+    return project_root / "docs" / "beacon" / version / "research" / f"{feature_slug(feature)}.md"
+
+
+def _feature_source_architecture_path(project_root: Path, *, version: str, feature: str) -> Path:
+    return project_root / "docs" / "beacon" / version / "source-architecture" / f"{feature_slug(feature)}.md"
+
+
+def _render_research_closure_scaffold(*, version: str, feature: str, diagram_truth: dict[str, Any]) -> str:
+    diagram_types = [str(item).strip() for item in (diagram_truth.get("diagram_types") or []) if str(item).strip()]
+    state_axes = [str(item).strip() for item in (diagram_truth.get("state_axes") or []) if str(item).strip()]
+    lines = [
+        f"# Research Closure: {feature}",
+        "",
+        f"- version: `{version}`",
+        f"- feature: `{feature}`",
+        f"- diagram_types: {', '.join(diagram_types) or 'none'}",
+        f"- state_axes: {', '.join(state_axes) or 'none'}",
+        "",
+        "## Architecture",
+        "- Describe the participating modules, services, or bounded contexts for this feature.",
+        "- State which layer owns the canonical write path and which surfaces are read-only projections.",
+        "",
+        "## Business Flow",
+        "- Describe the trigger, major steps, branch points, and terminal outcomes for the business workflow.",
+        "- Include the actor handoff or system handoff when responsibility changes.",
+        "",
+        "## State Machine",
+        "- List the stable states, legal transitions, blocked transitions, and recovery transitions for this feature.",
+        "- Explain how each declared state axis affects the permitted transitions.",
+        "",
+        "## Decision Priority",
+        "- Explain which rule wins when eligibility, ownership, stale data, or guardrail conditions conflict.",
+        "- Note the order in which the implementation and QA layers must evaluate the rules.",
+        "",
+        "## Open Questions",
+        "- Confirm the exact branch conditions that separate the main business path from blocked paths.",
+        "- Confirm the states and transitions that QA must treat as non-negotiable coverage targets.",
+        "",
+        "## Promotion Notes",
+        "- Promote accepted decisions into PRD, user-story, test-case, and requirement_clarity inputs before freeze.",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def _render_source_architecture_scaffold(*, version: str, feature: str) -> str:
+    return "\n".join(
+        [
+            f"# Source Architecture: {feature}",
+            "",
+            f"- version: `{version}`",
+            f"- feature: `{feature}`",
+            "",
+            "## Runtime Placement",
+            "- Describe where this feature enters the command/runtime surface and which modules own the long-lived behavior.",
+            "",
+            "## Write Path",
+            "- Describe the canonical write path and the persistence or state updates that define the feature result.",
+            "",
+            "## Read Models And Projections",
+            "- Describe the read-side surfaces, derived projections, or evidence artifacts that the feature updates.",
+            "",
+            "## Contract Boundaries",
+            "- Describe the modules, services, or external systems that are in scope and the boundaries that remain out of scope.",
+            "",
+        ]
+    ) + "\n"
+
+
+def _materialize_human_closure_scaffold(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    canonical_mode: str,
+    diagram_truth: dict[str, Any],
+) -> dict[str, Any]:
+    if not feature or canonical_mode != "requirement-convergence":
+        return {"enabled": False, "created": [], "existing": []}
+
+    created: list[str] = []
+    existing: list[str] = []
+    research_path = _feature_research_path(project_root, version=version, feature=feature)
+    source_arch_path = _feature_source_architecture_path(project_root, version=version, feature=feature)
+
+    if research_path.exists():
+        existing.append(_rel(project_root, research_path))
+    else:
+        research_path.parent.mkdir(parents=True, exist_ok=True)
+        research_path.write_text(
+            _render_research_closure_scaffold(version=version, feature=feature, diagram_truth=diagram_truth),
+            encoding="utf-8",
+        )
+        created.append(_rel(project_root, research_path))
+
+    if source_arch_path.exists():
+        existing.append(_rel(project_root, source_arch_path))
+    else:
+        source_arch_path.parent.mkdir(parents=True, exist_ok=True)
+        source_arch_path.write_text(_render_source_architecture_scaffold(version=version, feature=feature), encoding="utf-8")
+        created.append(_rel(project_root, source_arch_path))
+
+    return {
+        "enabled": True,
+        "created": created,
+        "existing": existing,
+        "research_path": _rel(project_root, research_path),
+        "source_architecture_path": _rel(project_root, source_arch_path),
+    }
 
 
 def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
@@ -538,6 +658,21 @@ def render_brainstorm_markdown(payload: dict[str, Any]) -> str:
                 "",
             ]
         )
+    human_closure_scaffold = payload.get("human_closure_scaffold") if isinstance(payload.get("human_closure_scaffold"), dict) else {}
+    if human_closure_scaffold:
+        lines.extend(
+            [
+                "## human_closure_scaffold",
+                f"- enabled: `{bool(human_closure_scaffold.get('enabled', False))}`",
+                f"- research_path: `{human_closure_scaffold.get('research_path', '')}`",
+                f"- source_architecture_path: `{human_closure_scaffold.get('source_architecture_path', '')}`",
+                "",
+            ]
+        )
+        if isinstance(human_closure_scaffold.get("created"), list):
+            lines.extend(list_block("human_closure_created", human_closure_scaffold.get("created", [])))
+        if isinstance(human_closure_scaffold.get("existing"), list):
+            lines.extend(list_block("human_closure_existing", human_closure_scaffold.get("existing", [])))
     metadata_view = payload.get("resolved_metadata_view") if isinstance(payload.get("resolved_metadata_view"), dict) else {}
     metadata_ref = str(payload.get("metadata_ref", "") or "").strip()
     if metadata_ref or metadata_view:

@@ -130,6 +130,7 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
     payload = json.loads(result.stdout)
     assert payload["mode"] == "requirement-convergence"
     assert payload["missing_refs"] == []
+    assert payload["human_closure_scaffold"]["enabled"] is True
     refs = [item["path"] for item in payload["version_material_refs"]]
     assert "docs/beacon/v1.3.7/execution/architecture-blueprint.md" in refs
     assert any(path.endswith("/prd/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md") for path in refs)
@@ -149,8 +150,61 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
         "## convergence_contract",
         "## converged_recommendation",
         "## next_route",
+        "## human_closure_scaffold",
     ):
         assert section in text
+    research_path = tmp_path / payload["human_closure_scaffold"]["research_path"]
+    source_arch_path = tmp_path / payload["human_closure_scaffold"]["source_architecture_path"]
+    assert research_path.exists()
+    assert source_arch_path.exists()
+    research_text = research_path.read_text(encoding="utf-8")
+    assert "## Architecture" in research_text
+    assert "## Business Flow" in research_text
+    assert "## State Machine" in research_text
+    assert "## Decision Priority" in research_text
+    assert "## Open Questions" in research_text
+
+
+def test_v137_brainstorm_should_reuse_existing_human_closure_scaffold(tmp_path: Path) -> None:
+    _seed_v137_docs(tmp_path)
+    feature = "Beacon v1.3.7 beacon-brainstorm built-in convergence and evolution thinking"
+    first = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "补齐头暴子 skill 的边界",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--feature",
+            feature,
+            "--mode",
+            "requirement-convergence",
+            "--json",
+        ]
+    )
+    assert first.exit_code == 0, first.stdout
+    second = _invoke(
+        [
+            "brainstorm",
+            "run",
+            "再次检查 requirement closure",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.7",
+            "--feature",
+            feature,
+            "--mode",
+            "requirement-convergence",
+            "--json",
+        ]
+    )
+    assert second.exit_code == 0, second.stdout
+    payload = json.loads(second.stdout)
+    assert payload["human_closure_scaffold"]["created"] == []
+    assert payload["human_closure_scaffold"]["existing"]
 
 
 def test_v137_brainstorm_modes_should_run(tmp_path: Path) -> None:
