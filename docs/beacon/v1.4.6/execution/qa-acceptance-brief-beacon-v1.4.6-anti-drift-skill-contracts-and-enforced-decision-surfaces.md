@@ -4,7 +4,7 @@
 - feature: `beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces`
 - revision_id: `R1`
 - verdict: `passed`
-- accepted_at: `2026-05-13T14:24:18.695238+00:00`
+- accepted_at: `2026-05-13T16:26:39.585421+00:00`
 - accepted_by: `qa`
 
 ## Summary

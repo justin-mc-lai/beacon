@@ -3,8 +3,8 @@
 ## 版本状态
 
 - `v1.4.6` 当前主题是：`anti-drift skill contracts and enforced decision surfaces`
-- 当前版本状态：`planning_line`
-- 当前 runtime/default docs 仍为 `v1.4.5`
+- 当前版本状态：`current_runtime_release`
+- 当前 runtime/default docs 现为 `v1.4.6`
 - `v1.4.6` 是在 `v1.4.5` guidance-first 与 lightweight contract 基线之上，继续把 host-visible skill 行为面收紧成更强的 anti-drift requirement package
 
 ## 版本目标
@@ -37,7 +37,7 @@
 ## 关键验收锚点
 
 - `docs/beacon/global-boundaries.md`
-- `docs/beacon/v1.4.5/SUMMARY.md`
+- `docs/beacon/v1.4.6/release/runtime-promotion-changelog.md`
 - `docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md`
 - `docs/beacon/v1.4.6/user-story/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md`
 - `docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md`

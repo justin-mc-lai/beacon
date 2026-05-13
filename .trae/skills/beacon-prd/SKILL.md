@@ -1,6 +1,6 @@
 ---
 name: beacon-prd
-description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.4.5 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
+description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.4.6 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
 ---
 
 # Beacon PRD
@@ -9,7 +9,7 @@ description: Use when the user wants to draft, refine, clarify, or review a prod
 
 This skill routes requirement-definition work through Beacon's `prd` surface.
 
-The human-facing contract is aligned to the `v1.4.5` docs line (`docs/beacon/v1.4.5/`). `prd` defines problem, scope, goals, boundaries, and promised surface before the requirement package moves downstream.
+The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.4.6/`). `prd` defines problem, scope, goals, boundaries, and promised surface before the requirement package moves downstream.
 
 ## When to Use
 

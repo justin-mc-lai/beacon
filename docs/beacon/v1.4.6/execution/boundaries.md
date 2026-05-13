@@ -3,9 +3,9 @@
 ## Status
 
 - version: `v1.4.6`
-- status: `release_candidate`
-- runtime line: `v1.4.5` remains the current runtime/default docs line
-- implementation line: `v1.4.6` is complete and under formal release review
+- status: `current_runtime_release`
+- runtime line: `v1.4.6` is the current runtime/default docs line
+- implementation line: `v1.4.6` is complete and promoted
 
 ## Main Lifecycle Boundary
 

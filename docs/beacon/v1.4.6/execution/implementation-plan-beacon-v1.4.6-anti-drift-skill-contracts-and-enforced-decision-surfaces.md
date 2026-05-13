@@ -7,7 +7,7 @@
 - baseline_hash: `sha256:ea2b377cfba803c97b63c0156e9c399ad0bec00483c43f909fa6fd33d0c35292`
 - delivery_baseline_id: `impl-delivery-baseline-v1.4.6-beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces-R1`
 - delivery_baseline_source_hash: `sha256:e33ff59e0ed6ca40796f0a2feb2c5e9164738fafb584975b8899fc7ae2f5c64f`
-- plan_hash: `sha256:6d301c1d6f9db0cfb33c6e92ccb0f054a30eeef6b65a35c6d607c76adf705084`
+- plan_hash: `sha256:ebc9de11d8bdf666c3c173cf30317b129817af808220649f4cd40a63c116f934`
 - status: `completed`
 
 ## Source Refs
