@@ -15,6 +15,7 @@ from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_bou
 from beacon.utils.implementation_plan import (
     implementation_plan_supported,
     list_implementation_git_workflow_contracts,
+    load_implementation_plan,
     load_implementation_plan_progress,
 )
 from beacon.utils.learning_loop import load_latest_evo_experiment
@@ -493,11 +494,24 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature) if feature else {}
     acceptance_envelope = _acceptance_envelope_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     prototype_projection = _json_safe(prototype_status(project_root, resolved_version, feature)) if feature else {}
-    implementation_plan = (
+    implementation_plan_progress = (
         load_implementation_plan_progress(project_root, version=resolved_version, feature=feature)
         if feature and implementation_plan_supported(resolved_version)
         else {}
     )
+    implementation_plan_payload = (
+        load_implementation_plan(project_root, version=resolved_version, feature=feature)
+        if feature and implementation_plan_supported(resolved_version)
+        else {}
+    )
+    implementation_research_projection = (
+        implementation_plan_payload.get("research_projection")
+        if isinstance(implementation_plan_payload.get("research_projection"), dict)
+        else {}
+    )
+    implementation_plan = dict(implementation_plan_progress) if isinstance(implementation_plan_progress, dict) else {}
+    if implementation_research_projection:
+        implementation_plan["research_projection"] = implementation_research_projection
     scorecard_state = _load_json(project_root / ".beacon" / "state" / "evo" / "scorecards" / "latest.json")
     latest_experiment = load_latest_evo_experiment(project_root)
     if isinstance(latest_experiment, dict):
@@ -919,6 +933,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
         "version_surface_governance": version_surface_governance,
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
+        "research_projection": implementation_research_projection if isinstance(implementation_research_projection, dict) else {},
         "git_workflow": {
             "count": len(git_workflow_contracts),
             "modes": sorted({str(item.get("mode", "") or "") for item in git_workflow_contracts if str(item.get("mode", "") or "")}),
@@ -974,6 +989,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     prototype_projection = payload.get("prototype_projection") if isinstance(payload.get("prototype_projection"), dict) else {}
     learning = payload.get("learning_scorecard") if isinstance(payload.get("learning_scorecard"), dict) else {}
     implementation_plan = payload.get("implementation_plan") if isinstance(payload.get("implementation_plan"), dict) else {}
+    research_projection = payload.get("research_projection") if isinstance(payload.get("research_projection"), dict) else {}
     git_workflow = payload.get("git_workflow") if isinstance(payload.get("git_workflow"), dict) else {}
     requirement_clarity = payload.get("requirement_clarity") if isinstance(payload.get("requirement_clarity"), dict) else {}
     requirement_completeness = payload.get("requirement_completeness") if isinstance(payload.get("requirement_completeness"), dict) else {}
@@ -1050,6 +1066,13 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "implementation_plan_status": str(implementation_plan.get("status") or ""),
         "implementation_plan_next_task_id": str(implementation_plan.get("next_task_id") or ""),
         "implementation_plan_blocked_task_ids": list(implementation_plan.get("blocked_task_ids") or []),
+        "research_projection_present": bool(research_projection.get("present", False)),
+        "research_projection_section_count": int(research_projection.get("section_count") or 0),
+        "research_projection_sections": sorted(
+            str(key).strip()
+            for key, values in (research_projection.get("sections") or {}).items()
+            if str(key).strip() and isinstance(values, list) and any(str(item).strip() for item in values)
+        ),
         "git_workflow_count": int(git_workflow.get("count") or 0),
         "git_workflow_modes": list(git_workflow.get("modes") or []),
         "git_workflow_expected_branches": list(git_workflow.get("expected_branches") or []),

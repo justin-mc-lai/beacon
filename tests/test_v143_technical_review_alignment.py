@@ -163,6 +163,67 @@ def test_v143_release_scorecard_does_not_require_technical_review_state_for_umbr
     assert payload["release_ready"] is True
 
 
+def test_v143_release_scorecard_should_surface_research_projection_from_implementation_plan(tmp_path: Path, monkeypatch) -> None:
+    _seed_umbrella_repo(tmp_path)
+    docs = tmp_path / "docs" / "beacon" / VERSION
+    _write_json(
+        docs / ".machine" / "execution" / f"implementation-plan-{UMBRELLA_SLUG}.json",
+        {
+            "schema_version": "1.0",
+            "feature": UMBRELLA,
+            "feature_slug": UMBRELLA_SLUG,
+            "version": VERSION,
+            "status": "completed",
+            "research_projection": {
+                "schema_version": "1.0",
+                "feature": UMBRELLA,
+                "version": VERSION,
+                "source": f"research:docs/beacon/{VERSION}/research/{UMBRELLA_SLUG}.md",
+                "present": True,
+                "section_count": 2,
+                "sections": {
+                    "business_flow": ["aggregation closure stays explicit"],
+                    "state_machine": ["accepted -> aggregated -> released"],
+                },
+                "derived_items": [],
+                "source_artifact": f"docs/beacon/{VERSION}/.machine/user-story/{UMBRELLA_SLUG}.json",
+            },
+        },
+    )
+
+    monkeypatch.setattr("beacon.utils.release_scorecard.resolve_target_version", lambda *_args, **_kwargs: VERSION)
+    monkeypatch.setattr("beacon.utils.release_scorecard.resolve_runtime_version", lambda *_args, **_kwargs: "v1.4.2")
+    monkeypatch.setattr("beacon.utils.release_scorecard.runtime_feature_supported", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr("beacon.utils.release_scorecard.project_runtime_feature_enabled", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr("beacon.utils.release_scorecard.version_requires_prototype", lambda *_args, **_kwargs: False)
+    monkeypatch.setattr("beacon.utils.release_scorecard.implementation_plan_supported", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr("beacon.utils.release_scorecard.validate_evidence_manifest", lambda *_args, **_kwargs: {"status": "pass", "blocked": False, "issues": [], "blocked_count": 0})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_qa_status", lambda *_args, **_kwargs: {"feature": UMBRELLA, "version": VERSION, "status": "passed", "evidence_done": True, "release_ready": True, "project_profile_gate": {"status": "pass"}})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_exhaustiveness_report", lambda *_args, **_kwargs: {"status": "passed"})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_feature_qa_scorecard", lambda *_args, **_kwargs: {"release_ready": True, "continue_decision": "ready_for_release", "unresolved_closure_outcomes": [], "project_profile_gate_status": "pass", "coverage_current": {"required_scenarios": 1, "executed_scenarios": 1, "coverage_rate": 1.0}})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_implementation_plan_progress", lambda *_args, **_kwargs: {"status": "completed", "next_task_id": "", "blocked_task_ids": []})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_latest_evo_experiment", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr("beacon.utils.release_scorecard.list_implementation_git_workflow_contracts", lambda *_args, **_kwargs: [])
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_revision_state", lambda *_args, **_kwargs: {"revision_id": "R1", "source_revision_id": "", "doc_status": "frozen", "delivery_status": "verified"})
+    monkeypatch.setattr("beacon.utils.release_scorecard.build_requirement_completeness_gate", lambda *_args, **_kwargs: {"status": "pass"})
+    monkeypatch.setattr("beacon.utils.release_scorecard.build_requirement_clarity_gate_payload", lambda *_args, **_kwargs: {"blocked": False})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_requirement_clarity_state", lambda *_args, **_kwargs: {"status": "pass", "finding_count": 0})
+    monkeypatch.setattr("beacon.utils.release_scorecard.build_technical_review_gate_payload", lambda *_args, **_kwargs: {"required": False, "blocked": False, "status": "not_required"})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_technical_review_state", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr("beacon.utils.release_scorecard.evaluate_semantic_contract", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr("beacon.utils.release_scorecard.build_test_contract_gate_payload", lambda *_args, **_kwargs: {"release_gate": {"status": "pass", "blocked": False, "reason_codes": []}})
+    monkeypatch.setattr("beacon.utils.release_scorecard.build_acceptance_kit_projection", lambda *_args, **_kwargs: {"summary": {"all_layers_passed": True}})
+    monkeypatch.setattr("beacon.utils.release_scorecard.acceptance_projection_transaction_contract", lambda *_args, **_kwargs: {"status": "pass", "reason_code": ""})
+    monkeypatch.setattr("beacon.utils.release_scorecard.evaluate_implement_prompt_boundary", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr("beacon.utils.release_scorecard.load_delivery_read_model", lambda *_args, **_kwargs: {"implement": {"prompt_boundary": {"required": False, "status": "not_required", "blocked": False}, "delivery_contract": {}}, "qa": {"delivery_contract": {}}, "release": {"release_ready": True}, "traceability": {}, "risk_flags": []})
+
+    payload = build_release_scorecard(tmp_path, version=VERSION)
+
+    assert payload["research_projection"]["present"] is True
+    assert "business_flow" in (payload["research_projection"]["sections"] or {})
+    assert payload["implementation_plan"]["research_projection"]["source_artifact"].endswith(f".machine/user-story/{UMBRELLA_SLUG}.json")
+
+
 def test_v143_umbrella_feature_does_not_require_implementation_plan(tmp_path: Path) -> None:
     _seed_umbrella_repo(tmp_path)
     payload = build_implementation_plan_gate_payload(tmp_path, version=VERSION, feature=UMBRELLA)
