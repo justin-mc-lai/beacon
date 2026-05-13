@@ -144,6 +144,16 @@ def test_v138_help_should_not_block_release_ready_feature_when_feature_arg_is_sl
             "gate": {"status": "Pass", "blocked_count": 0, "reason_codes": []},
             "qa": {"status": "passed", "release_ready": True, "evidence_done": True},
             "acceptance": {"status": "pass", "release_ready": True, "continue_decision": "ready_for_release"},
+            "research_projection": {
+                "present": True,
+                "section_count": 2,
+                "sections": {
+                    "business_flow": ["closure remains explicit"],
+                    "state_machine": ["freeze -> implement -> release"],
+                },
+                "source": f"research:docs/beacon/{VERSION}/research/{SLUG}.md",
+                "source_artifact": f"docs/beacon/{VERSION}/.machine/user-story/{SLUG}.json",
+            },
         },
     )
 
@@ -153,6 +163,10 @@ def test_v138_help_should_not_block_release_ready_feature_when_feature_arg_is_sl
     assert payload["blocked"] is False
     assert "technical_review_contract_invalid" not in payload["blocking_reasons_raw"]
     assert payload["next_step"]["action"] == "release-check"
+    assert payload["release_research"]["present"] is True
+    assert payload["release_research"]["section_count"] == 2
+    assert payload["release_research"]["sections"] == ["business_flow", "state_machine"]
+    assert payload["release_research"]["source_artifact"].endswith(f".machine/user-story/{SLUG}.json")
 
 
 def test_v138_help_should_route_browser_session_blocker_to_qa_session(monkeypatch, tmp_path: Path) -> None:

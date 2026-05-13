@@ -1290,6 +1290,18 @@ def build_help_payload(
     feature_scorecard = load_feature_qa_scorecard(project_root, feature=feature_name) if feature_name else {}
     release_scorecard = build_release_scorecard(project_root, version=resolved_version) if feature_name else {}
     release_summary = summarize_release_scorecard(release_scorecard) if release_scorecard else {}
+    release_research_projection = (
+        release_scorecard.get("research_projection")
+        if isinstance(release_scorecard.get("research_projection"), dict)
+        else {}
+    )
+    release_research = {
+        "present": bool(release_summary.get("research_projection_present", False)),
+        "section_count": int(release_summary.get("research_projection_section_count") or 0),
+        "sections": list(release_summary.get("research_projection_sections") or []),
+        "source": str(release_research_projection.get("source") or ""),
+        "source_artifact": str(release_research_projection.get("source_artifact") or ""),
+    }
     acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature_name) if feature_name else {}
     discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
     discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
@@ -1836,6 +1848,7 @@ def build_help_payload(
         "scores": {k: v.get("score") if isinstance(v, dict) else v for k, v in scores.items()},
         "score_details": scores,
         "release_summary": release_summary,
+        "release_research": release_research,
         "acceptance_kit": acceptance_kit,
         "control_plane": control_plane,
         "coverage": coverage,
