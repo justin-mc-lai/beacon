@@ -278,6 +278,9 @@ def test_v136_help_status_and_doctor_advise_should_share_surface_explanation(tmp
     assert status_payload["delivery_read_model"]["contract"]["host_runtime"] == "codex"
     assert advise_payload["support_surface_projection"] == help_payload["support_surface_projection"]
     assert status_payload["support_surface_projection"] == help_payload["support_surface_projection"]
+    assert help_payload["surface_explanation"]["release_research"] == help_payload["release_research"]
+    assert advise_payload["surface_explanation"]["release_research"] == help_payload["release_research"]
+    assert status_payload["surface_explanation"]["release_research"] == help_payload["release_research"]
     taxonomy = help_payload["support_surface_projection"]["artifact_taxonomy"]
     assert help_payload["support_surface_projection"]["support_mode"] == "explanation-layer"
     assert help_payload["support_surface_projection"]["primary_operator_doc_ref"] == f"docs/beacon/{VERSION}/execution/index.md"

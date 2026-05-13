@@ -1661,6 +1661,7 @@ def build_help_payload(
         },
         "next_action": str(next_step.get("action", "") or ""),
         "hud_refs": hud_refs,
+        "release_research": release_research,
     }
     minimal_hud = build_minimal_hud(minimal_hud_payload)
     surface_explanation = build_surface_explanation(
@@ -1674,6 +1675,10 @@ def build_help_payload(
         fallback_allowed=bool(execution_surface.get("native_fallback_allowed", False)),
         fallback_reason_code=str(delivery_contract.get("fallback_reason") or ""),
     )
+    if isinstance(minimal_hud, dict):
+        minimal_hud["release_research"] = release_research
+    if isinstance(surface_explanation, dict):
+        surface_explanation["release_research"] = release_research
     support_surface_projection = build_support_surface_projection(
         project_root,
         version=resolved_version,

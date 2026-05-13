@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from beacon.utils import help_support as help_support_module
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.runtime import write_json
@@ -77,3 +78,46 @@ def test_v133_help_payload_should_include_minimal_hud_and_hud_refs(tmp_path: Pat
     assert hud.get("team_hud_json") == ".beacon/state/team-hud/impl-team.json"
     assert hud.get("team_hud_html")
     assert hud.get("ralph_state_json", "") in {"", f".beacon/ralph/{SLUG}.json"}
+
+
+def test_v133_help_payload_should_project_release_research_into_minimal_hud(monkeypatch, tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    write_json(
+        tmp_path / ".beacon" / "qa" / "status.json",
+        {
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "passed",
+            "evidence_done": True,
+            "execution_mode": "feature-aware",
+        },
+    )
+    monkeypatch.setattr(
+        help_support_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "gate": {"status": "Pass", "blocked_count": 0, "reason_codes": []},
+            "research_projection": {
+                "present": True,
+                "section_count": 2,
+                "sections": {
+                    "business_flow": ["explicit release path"],
+                    "state_machine": ["freeze -> qa -> release"],
+                },
+                "source": f"research:docs/beacon/{VERSION}/research/{SLUG}.md",
+                "source_artifact": f"docs/beacon/{VERSION}/.machine/user-story/{SLUG}.json",
+            },
+        },
+    )
+
+    payload = build_help_payload(tmp_path, version=VERSION, feature=FEATURE)
+    minimal_hud = payload.get("minimal_hud", {})
+
+    assert minimal_hud.get("release_research", {}).get("present") is True
+    assert minimal_hud.get("release_research", {}).get("sections") == ["business_flow", "state_machine"]
+    assert minimal_hud.get("payload", {}).get("release_research", {}).get("source_artifact", "").endswith(
+        f".machine/user-story/{SLUG}.json"
+    )
