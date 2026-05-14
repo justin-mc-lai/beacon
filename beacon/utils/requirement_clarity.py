@@ -101,6 +101,7 @@ def _version_root(project_root: Path, version: str, feature: str) -> list[Path]:
     paths = [
         base / "prd" / f"{slug}.md",
         base / "user-story" / f"{slug}.md",
+        base / "qa" / "test-cases" / f"{slug}.md",
     ]
     research_path = base / "research" / f"{slug}.md"
     if research_path.exists():
@@ -260,11 +261,28 @@ def _feature_source_architecture_paths(project_root: Path, version: str, feature
     ]
 
 
-def _build_human_closure_contract(project_root: Path, *, version: str, feature: str, diagram_truth: dict[str, Any]) -> dict[str, Any]:
+def _feature_requirement_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     resolved_version = resolve_target_version(project_root, version)
-    research_path = _feature_research_path(project_root, resolved_version, feature)
-    architecture_candidates = _feature_source_architecture_paths(project_root, resolved_version, feature)
-    architecture_path = next((path for path in architecture_candidates if path.exists()), architecture_candidates[0])
+    slug = feature_slug(feature)
+    base = project_root / "docs" / "beacon" / resolved_version
+    return {
+        "prd": base / "prd" / f"{slug}.md",
+        "user_story": base / "user-story" / f"{slug}.md",
+        "test_case": base / "qa" / "test-cases" / f"{slug}.md",
+        "research": base / "research" / f"{slug}.md",
+    }
+
+
+def _research_requirement_clarity_aliases() -> dict[str, set[str]]:
+    return {
+        "architecture": _ARCHITECTURE_SECTION_TITLES,
+        "business_flow": _BUSINESS_FLOW_SECTION_TITLES,
+        "state_machine": _STATE_MACHINE_SECTION_TITLES,
+        "decision_priority": _DECISION_PRIORITY_SECTION_TITLES,
+    }
+
+
+def _resolve_required_research_sections(diagram_truth: dict[str, Any]) -> list[str]:
     diagram_types = [
         str(item).strip()
         for item in (diagram_truth.get("diagram_types") or [])
@@ -276,20 +294,108 @@ def _build_human_closure_contract(project_root: Path, *, version: str, feature: 
         if str(item).strip()
     ] if isinstance(diagram_truth, dict) else []
     required = bool(diagram_truth.get("required")) or bool(complexity_signals)
-    required_sections = ["architecture", "business-flow"]
+    sections = ["architecture", "business_flow"]
     if "state-machine" in diagram_types or required:
-        required_sections.append("state-machine")
+        sections.append("state_machine")
     if "decision-priority" in diagram_types:
-        required_sections.append("decision-priority")
+        sections.append("decision_priority")
+    return sections
+
+
+def _extract_explicit_ac_ids(content: str) -> set[str]:
+    ac_ids: set[str] = set()
+    for line in str(content or "").splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if "|" in stripped:
+            match = re.search(r"\b(AC-\d{3,})\b", stripped, flags=re.IGNORECASE)
+            if match:
+                ac_ids.add(str(match.group(1)).upper())
+        for match in re.finditer(r"\b(AC-\d{3,})\b", stripped, flags=re.IGNORECASE):
+            ac_ids.add(str(match.group(1)).upper())
+    return ac_ids
+
+
+def _build_requirement_closure_contract(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    diagram_truth: dict[str, Any],
+) -> dict[str, Any]:
+    paths = _feature_requirement_paths(project_root, version, feature)
+    prd_text = paths["prd"].read_text(encoding="utf-8") if paths["prd"].exists() else ""
+    user_story_text = paths["user_story"].read_text(encoding="utf-8") if paths["user_story"].exists() else ""
+    test_case_text = paths["test_case"].read_text(encoding="utf-8") if paths["test_case"].exists() else ""
+    research_headings = _extract_heading_titles(paths["research"])
+    human_closure_required = bool(diagram_truth.get("required")) or bool(
+        [
+            str(item).strip()
+            for item in (diagram_truth.get("complexity_signals") or [])
+            if str(item).strip()
+        ]
+    )
+    required_research_sections = _resolve_required_research_sections(diagram_truth) if human_closure_required else []
+    alias_map = _research_requirement_clarity_aliases()
+    missing_research_sections = [
+        section
+        for section in required_research_sections
+        if not any(alias in research_headings for alias in alias_map.get(section, set()))
+    ]
+
+    prd_ac_ids = _extract_explicit_ac_ids(prd_text)
+    user_story_ac_ids = _extract_explicit_ac_ids(user_story_text)
+    test_case_ac_ids = _extract_explicit_ac_ids(test_case_text)
+    upstream_ac_ids = sorted(prd_ac_ids | user_story_ac_ids)
+    missing_test_case_ac_ids = [ac_id for ac_id in upstream_ac_ids if ac_id not in test_case_ac_ids]
+
+    chain_paths = {
+        "research": str(paths["research"].relative_to(project_root)),
+        "prd": str(paths["prd"].relative_to(project_root)),
+        "user_story": str(paths["user_story"].relative_to(project_root)),
+        "test_case": str(paths["test_case"].relative_to(project_root)),
+    }
+
+    return {
+        "required": True,
+        "chain_order": ["research", "prd", "user_story", "test_case", "requirement_clarity", "freeze"],
+        "human_closure_required": human_closure_required,
+        "paths": chain_paths,
+        "exists": {
+            "research": paths["research"].exists(),
+            "prd": paths["prd"].exists(),
+            "user_story": paths["user_story"].exists(),
+            "test_case": paths["test_case"].exists(),
+        },
+        "required_research_sections": required_research_sections,
+        "missing_research_sections": missing_research_sections if paths["research"].exists() else required_research_sections,
+        "ac_projection": {
+            "prd_ac_ids": sorted(prd_ac_ids),
+            "user_story_ac_ids": sorted(user_story_ac_ids),
+            "test_case_ac_ids": sorted(test_case_ac_ids),
+            "upstream_ac_ids": upstream_ac_ids,
+            "missing_test_case_ac_ids": missing_test_case_ac_ids,
+        },
+    }
+
+
+def _build_human_closure_contract(project_root: Path, *, version: str, feature: str, diagram_truth: dict[str, Any]) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    research_path = _feature_research_path(project_root, resolved_version, feature)
+    architecture_candidates = _feature_source_architecture_paths(project_root, resolved_version, feature)
+    architecture_path = next((path for path in architecture_candidates if path.exists()), architecture_candidates[0])
+    complexity_signals = [
+        str(item).strip()
+        for item in (diagram_truth.get("complexity_signals") or [])
+        if str(item).strip()
+    ] if isinstance(diagram_truth, dict) else []
+    required = bool(diagram_truth.get("required")) or bool(complexity_signals)
+    required_sections = _resolve_required_research_sections(diagram_truth)
 
     research_headings = _extract_heading_titles(research_path)
     missing_sections: list[str] = []
-    section_title_map = {
-        "architecture": _ARCHITECTURE_SECTION_TITLES,
-        "business-flow": _BUSINESS_FLOW_SECTION_TITLES,
-        "state-machine": _STATE_MACHINE_SECTION_TITLES,
-        "decision-priority": _DECISION_PRIORITY_SECTION_TITLES,
-    }
+    section_title_map = _research_requirement_clarity_aliases()
     for key in required_sections:
         aliases = section_title_map.get(key, set())
         if not any(alias in research_headings for alias in aliases):
@@ -303,7 +409,11 @@ def _build_human_closure_contract(project_root: Path, *, version: str, feature: 
         "source_architecture_exists": architecture_path.exists(),
         "required_sections": required_sections,
         "missing_sections": missing_sections if research_path.exists() else required_sections,
-        "diagram_types": diagram_types,
+        "diagram_types": [
+            str(item).strip()
+            for item in (diagram_truth.get("diagram_types") or [])
+            if str(item).strip()
+        ] if isinstance(diagram_truth, dict) else [],
         "complexity_signals": complexity_signals,
     }
 
@@ -351,7 +461,14 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
         feature=feature,
         diagram_truth=diagram_truth,
     )
+    requirement_closure_contract = _build_requirement_closure_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        diagram_truth=diagram_truth,
+    )
     payload["human_closure_contract"] = human_closure_contract
+    payload["requirement_closure_contract"] = requirement_closure_contract
     if bool(human_closure_contract.get("required")):
         if not bool(human_closure_contract.get("research_exists")):
             findings.append(
@@ -383,6 +500,33 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
                     "section": section,
                 }
             )
+    chain_exists = requirement_closure_contract.get("exists") if isinstance(requirement_closure_contract.get("exists"), dict) else {}
+    human_closure_required = bool(requirement_closure_contract.get("human_closure_required"))
+    for stage in ("research", "prd", "user_story", "test_case"):
+        if stage == "research" and not human_closure_required:
+            continue
+        if not bool(chain_exists.get(stage)):
+            findings.append(
+                {
+                    "file": str(prd_path),
+                    "line": 1,
+                    "kind": "requirement_chain_artifact_missing",
+                    "text": f"requirement chain missing required artifact: {stage}",
+                    "stage": stage,
+                    "path": str((requirement_closure_contract.get("paths") or {}).get(stage, "")),
+                }
+            )
+    ac_projection = requirement_closure_contract.get("ac_projection") if isinstance(requirement_closure_contract.get("ac_projection"), dict) else {}
+    for ac_id in ac_projection.get("missing_test_case_ac_ids", []) if isinstance(ac_projection.get("missing_test_case_ac_ids"), list) else []:
+        findings.append(
+            {
+                "file": str(project_root / str((requirement_closure_contract.get("paths") or {}).get("test_case", ""))),
+                "line": 1,
+                "kind": "test_case_ac_missing",
+                "text": f"test-case truth is missing acceptance coverage row: {ac_id}",
+                "ac_id": ac_id,
+            }
+        )
 
     required_artifacts = _extract_required_artifacts(prd_path)
     payload["required_artifacts"] = [str(item.get("path") or "") for item in required_artifacts]
@@ -451,8 +595,27 @@ def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
         f"- required_sections: {', '.join(human_closure.get('required_sections', [])) if isinstance(human_closure.get('required_sections'), list) else 'none' }",
         f"- missing_sections: {', '.join(human_closure.get('missing_sections', [])) if isinstance(human_closure.get('missing_sections'), list) else 'none' }",
         "",
-        "## Scanned Files",
+        "## Requirement Closure Contract",
     ]
+    requirement_closure = payload.get("requirement_closure_contract") if isinstance(payload.get("requirement_closure_contract"), dict) else {}
+    chain_order = requirement_closure.get("chain_order") if isinstance(requirement_closure.get("chain_order"), list) else []
+    chain_paths = requirement_closure.get("paths") if isinstance(requirement_closure.get("paths"), dict) else {}
+    chain_exists = requirement_closure.get("exists") if isinstance(requirement_closure.get("exists"), dict) else {}
+    ac_projection = requirement_closure.get("ac_projection") if isinstance(requirement_closure.get("ac_projection"), dict) else {}
+    lines.extend(
+        [
+            f"- chain_order: {' -> '.join(chain_order) if chain_order else 'none'}",
+            f"- human_closure_required: `{bool(requirement_closure.get('human_closure_required', False))}`",
+            f"- research_path: `{chain_paths.get('research', '')}` exists=`{bool(chain_exists.get('research', False))}`",
+            f"- prd_path: `{chain_paths.get('prd', '')}` exists=`{bool(chain_exists.get('prd', False))}`",
+            f"- user_story_path: `{chain_paths.get('user_story', '')}` exists=`{bool(chain_exists.get('user_story', False))}`",
+            f"- test_case_path: `{chain_paths.get('test_case', '')}` exists=`{bool(chain_exists.get('test_case', False))}`",
+            f"- upstream_ac_ids: {', '.join(ac_projection.get('upstream_ac_ids', [])) if isinstance(ac_projection.get('upstream_ac_ids'), list) else 'none'}",
+            f"- missing_test_case_ac_ids: {', '.join(ac_projection.get('missing_test_case_ac_ids', [])) if isinstance(ac_projection.get('missing_test_case_ac_ids'), list) else 'none'}",
+            "",
+            "## Scanned Files",
+        ]
+    )
     for item in payload.get("scanned_files", []) if isinstance(payload.get("scanned_files"), list) else []:
         lines.append(f"- `{item}`")
     lines.append("")

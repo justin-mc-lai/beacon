@@ -279,6 +279,29 @@ def test_v131_freeze_should_pass_when_required_freeze_artifacts_exist(tmp_path: 
         "---\nname: beacon-change\n---\n",
         encoding="utf-8",
     )
+    research_dir = tmp_path / "docs" / "beacon" / CLARITY_VERSION / "research"
+    research_dir.mkdir(parents=True, exist_ok=True)
+    (research_dir / f"{SLUG}.md").write_text(
+        "\n".join(
+            [
+                "# Research Closure",
+                "",
+                "## Architecture",
+                "- explain lifecycle boundary",
+                "",
+                "## Business Flow",
+                "- explain freeze-to-implement handoff",
+                "",
+                "## State Machine",
+                "- draft -> frozen -> implemented",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    source_arch_dir = tmp_path / "docs" / "beacon" / CLARITY_VERSION / "source-architecture"
+    source_arch_dir.mkdir(parents=True, exist_ok=True)
+    (source_arch_dir / f"{SLUG}.md").write_text("# Source Architecture\n", encoding="utf-8")
 
     result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", CLARITY_VERSION, "--json"])
     assert result.exit_code == 0, result.stdout
@@ -1026,7 +1049,8 @@ def test_v131_help_should_show_runtime_capability_lines_for_legacy_docs_line(tmp
     assert _invoke(["doctor", "setup-context", "--project-root", str(tmp_path)]).exit_code == 0
     payload = build_help_payload(tmp_path, version=LEGACY_DOCS_VERSION, feature=FEATURE)
     assert payload["docs_version"] == LEGACY_DOCS_VERSION
-    assert VERSION in payload["version_context"]["runtime_capability_lines"]
+    assert payload["version_context"]["runtime_capability_lines"]
+    assert payload["version_context"]["runtime_version"] in payload["version_context"]["runtime_capability_lines"]
 
 
 def test_v131_help_should_point_to_technical_review_contract_before_implement(tmp_path: Path):

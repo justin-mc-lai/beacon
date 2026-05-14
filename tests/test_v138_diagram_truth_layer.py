@@ -55,7 +55,25 @@ def _write_requirement_docs(root: Path, *, prd_text: str, user_story_text: str) 
     base = root / "docs" / "beacon" / VERSION
     (base / "prd" / f"{SLUG}.md").write_text(prd_text, encoding="utf-8")
     (base / "user-story" / f"{SLUG}.md").write_text(user_story_text, encoding="utf-8")
-    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text("# Test Cases\n", encoding="utf-8")
+    ac_ids: list[str] = []
+    for line in user_story_text.splitlines():
+        if "AC-" not in line:
+            continue
+        parts = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if parts and parts[0].upper().startswith("AC-"):
+            ac_ids.append(parts[0].upper())
+    coverage_rows = [
+        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |",
+        "| --- | --- | --- | --- | --- | --- |",
+    ]
+    for index, ac_id in enumerate(ac_ids, start=1):
+        coverage_rows.append(
+            f"| {ac_id} | TC-{index:03d} | contract | pytest -q | {ac_id} requirement remains covered | .beacon/evidence/tc-{index:03d}.json |"
+        )
+    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text(
+        "# Test Cases\n\n## Coverage Matrix\n\n" + "\n".join(coverage_rows) + "\n",
+        encoding="utf-8",
+    )
     (base / "qa" / "test-cases" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
     (base / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
     (base / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json").write_text('{"entries":[]}\n', encoding="utf-8")
@@ -205,6 +223,79 @@ def test_v138_freeze_should_pass_when_human_closure_package_is_complete(tmp_path
 
     result = _invoke(["freeze", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
     assert result.exit_code == 0, result.stdout
+
+
+def test_v138_requirement_clarity_should_block_when_test_case_truth_missing_upstream_ac(tmp_path: Path):
+    _seed_base(tmp_path)
+    _write_requirement_docs(
+        tmp_path,
+        prd_text=(
+            "# PRD\n\n"
+            "## 功能需求\n\n"
+            "- FR-001 Complex branch handling\n\n"
+            "## 11. Diagram Truth Layer\n\n"
+            "### 11.1 Diagram Types\n"
+            "- `branch-flow`\n"
+            "- `state-machine`\n"
+            "- `decision-priority`\n\n"
+            "### 11.2 State Axes\n"
+            "- `relation`\n"
+            "- `sale`\n"
+        ),
+        user_story_text=(
+            "# User Story\n\n"
+            "| AC ID | Theme | Description |\n| --- | --- | --- |\n"
+            "| AC-001 | Branch | Preserve branch-flow decisions |\n"
+            "| AC-002 | State | Preserve state transitions across relation and sale |\n"
+        ),
+    )
+    _write_research_closure(tmp_path)
+    test_case_path = tmp_path / "docs" / "beacon" / VERSION / "qa" / "test-cases" / f"{SLUG}.md"
+    test_case_path.write_text(
+        "# Test Cases\n\n"
+        "## Coverage Matrix\n\n"
+        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n"
+        "| --- | --- | --- | --- | --- | --- |\n"
+        "| AC-001 | TC-001 | contract | pytest -q | preserve branch-flow decisions | .beacon/evidence/tc-001.json |\n",
+        encoding="utf-8",
+    )
+
+    payload = build_requirement_clarity_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+    assert payload["blocked"] is True
+    kinds = {item["kind"] for item in payload["findings"]}
+    assert "test_case_ac_missing" in kinds
+
+
+def test_v138_requirement_clarity_should_surface_requirement_chain_contract(tmp_path: Path):
+    _seed_base(tmp_path)
+    _write_requirement_docs(
+        tmp_path,
+        prd_text=(
+            "# PRD\n\n"
+            "## 功能需求\n\n"
+            "- FR-001 Complex branch handling\n\n"
+            "## 11. Diagram Truth Layer\n\n"
+            "### 11.1 Diagram Types\n"
+            "- `branch-flow`\n"
+            "- `state-machine`\n\n"
+            "### 11.2 State Axes\n"
+            "- `relation`\n"
+            "- `sale`\n"
+        ),
+        user_story_text=(
+            "# User Story\n\n"
+            "| AC ID | Theme | Description |\n| --- | --- | --- |\n"
+            "| AC-001 | Branch | Preserve branch-flow decisions |\n"
+        ),
+    )
+
+    payload = build_requirement_clarity_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+    contract = payload["requirement_closure_contract"]
+    assert contract["chain_order"] == ["research", "prd", "user_story", "test_case", "requirement_clarity", "freeze"]
+    assert contract["exists"]["prd"] is True
+    assert contract["exists"]["user_story"] is True
+    assert contract["exists"]["test_case"] is True
+    assert contract["exists"]["research"] is False
 
 
 def test_v138_prd_create_should_append_diagram_truth_section(tmp_path: Path):
