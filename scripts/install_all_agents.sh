@@ -4,7 +4,18 @@
 set -euo pipefail
 
 BEACON_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CLI_VERSION="${1:-v1.4.5}"
+DEFAULT_CLI_VERSION="$(
+BEACON_ROOT="${BEACON_ROOT}" python3 - <<'PY'
+import json
+import os
+from pathlib import Path
+
+truth_path = Path(os.environ["BEACON_ROOT"]) / "beacon" / "version-truth.json"
+truth = json.loads(truth_path.read_text())
+print(truth["current_runtime_release_line"])
+PY
+)"
+CLI_VERSION="${1:-${DEFAULT_CLI_VERSION}}"
 
 echo "=== Beacon Unified Installer ==="
 echo "Beacon root: ${BEACON_ROOT}"
