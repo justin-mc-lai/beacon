@@ -32,3 +32,4 @@ def test_alongside_existing_toolkits() -> None:
     assert (ROOT / "skills" / "beacon" / "beacon-toolkit-metadata" / "SKILL.md").exists()
     assert (ROOT / "skills" / "beacon" / "beacon-toolkit-lighthouse" / "SKILL.md").exists()
     assert (ROOT / "skills" / "beacon" / "beacon-toolkit-branch-governance" / "SKILL.md").exists()
+    assert (ROOT / "skills" / "beacon" / "beacon-toolkit-automation" / "SKILL.md").exists()

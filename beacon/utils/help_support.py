@@ -42,6 +42,7 @@ from beacon.utils.requirement_deepening import (
     requirement_paths,
 )
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
+from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import load_run_state
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
@@ -741,6 +742,7 @@ def _blocking_reasons(
     requirement_clarity_gate: dict[str, Any] | None = None,
     requirement_package_gate: dict[str, Any] | None = None,
     semantic_contract: dict[str, Any] | None = None,
+    reconciliation_gate: dict[str, Any] | None = None,
 ) -> list[str]:
     reasons: list[str] = []
     feature_scorecard = feature_scorecard if isinstance(feature_scorecard, dict) else {}
@@ -830,6 +832,10 @@ def _blocking_reasons(
         code = str(semantic_contract.get("reason_code", "") or "").strip()
         if status not in {"", "pass"} and code:
             reasons.append(code)
+    if isinstance(reconciliation_gate, dict) and bool(reconciliation_gate.get("required")):
+        code = str(reconciliation_gate.get("reason_code", "") or "").strip()
+        if code:
+            reasons.append(code)
     return _unique_reasons_in_order(reasons)
 
 
@@ -855,6 +861,7 @@ def _next_step(
     discovery_hint: dict[str, Any] | None = None,
     change_loop: dict[str, Any] | None = None,
     semantic_contract: dict[str, Any] | None = None,
+    reconciliation_gate: dict[str, Any] | None = None,
 ) -> dict[str, str]:
     quoted_feature = json.dumps(feature, ensure_ascii=False)
     base = f'--project-root {project_root} --version {version}'
@@ -866,6 +873,7 @@ def _next_step(
     change_loop = change_loop if isinstance(change_loop, dict) else {}
     semantic_contract = semantic_contract if isinstance(semantic_contract, dict) else {}
     requirement_package_gate = requirement_package_gate if isinstance(requirement_package_gate, dict) else {}
+    reconciliation_gate = reconciliation_gate if isinstance(reconciliation_gate, dict) else {}
 
     if any(
         reason in {
@@ -888,6 +896,26 @@ def _next_step(
             "action": "prototype-review",
             "reason": "semantic review is not ready; re-run prototype review before implementation or release",
             "command": f"beacon prototype review {quoted_feature} --project {project_root} --version {version} --json",
+        }
+    if bool(reconciliation_gate.get("required")):
+        artifact = reconciliation_gate.get("artifact") if isinstance(reconciliation_gate.get("artifact"), dict) else {}
+        change_route = artifact.get("change_route") if isinstance(artifact.get("change_route"), dict) else {}
+        return {
+            "action": "beacon-change",
+            "reason": str(
+                artifact.get("recovery_reason")
+                or reconciliation_gate.get("reason_code")
+                or "implementation-first truth drift requires formal reconciliation through beacon-change"
+            ),
+            "command": str(
+                change_route.get("command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=version,
+                    reason="implementation-first-reconciliation",
+                )
+            ),
         }
 
     if bool(change_loop.get("recommended", False)):
@@ -1330,6 +1358,16 @@ def build_help_payload(
         if _semantic_gate_required(project_root, version=resolved_version, feature=feature_name)
         else {}
     )
+    reconciliation_gate = (
+        detect_implementation_first_reconciliation_needed(
+            project_root,
+            version=resolved_version,
+            feature=feature_name,
+            revision_state=revision_state,
+        )
+        if feature_name
+        else {}
+    )
     if isinstance(requirement_clarity_gate, dict) and feature_name:
         requirement_clarity_gate["report_json_path"] = f"docs/beacon/{resolved_version}/.machine/execution/requirement-clarity-{feature_slug(feature_name)}.json"
     stage_binding = _stage_local_execution_binding(
@@ -1360,6 +1398,7 @@ def build_help_payload(
         requirement_clarity_gate=requirement_clarity_gate,
         requirement_package_gate=requirement_package_gate,
         semantic_contract=semantic_contract,
+        reconciliation_gate=reconciliation_gate,
     )
     scorecard_release_ready = bool(feature_scorecard.get("release_ready", False))
     scorecard_continue_decision = str(feature_scorecard.get("continue_decision", "") or "").strip()
@@ -1519,6 +1558,7 @@ def build_help_payload(
         discovery_hint=discovery_hint,
         change_loop=change_loop,
         semantic_contract=semantic_contract,
+        reconciliation_gate=reconciliation_gate,
     )
     if (
         isinstance(ralph_state, dict)
@@ -1597,7 +1637,7 @@ def build_help_payload(
         requirement_completeness=requirement_completeness,
         change_loop=change_loop,
     )
-    if bool(requirement_completeness_gate.get("blocked")):
+    if bool(requirement_completeness_gate.get("blocked")) and not bool(reconciliation_gate.get("required")):
         blocking = _unique_reasons_in_order(
             [str(requirement_completeness_gate.get("reason_code") or "").strip(), *blocking]
         )
@@ -1843,6 +1883,7 @@ def build_help_payload(
             "resolved_metadata_view": resolve_project_metadata_view(project_root, version=resolved_version),
         },
         "change_loop": change_loop,
+        "reconciliation": reconciliation_gate,
         "revision_lineage": {
             "revision_id": str(revision_state.get("revision_id", "") or ""),
             "source_revision_id": str(revision_state.get("source_revision_id", "") or ""),

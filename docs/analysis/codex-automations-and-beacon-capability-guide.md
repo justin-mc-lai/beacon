@@ -2,11 +2,11 @@
 
 ## Purpose
 
-This note explains how Codex Automations should be used with Beacon without expanding Beacon core into a scheduler.
+This note explains how host-scheduled automation should be used with Beacon without expanding Beacon core into a scheduler.
 
 The boundary is deliberate:
 
-- Codex Automations is the host scheduler and execution trigger.
+- Codex Automations is one host scheduler and execution trigger.
 - Beacon is the truth-aware workflow kernel and gate surface.
 - Host scheduling should stay outside Beacon core commands.
 
@@ -69,11 +69,10 @@ That queue should declare:
 
 Use a dedicated Codex automation prompt spec per job family.
 
-Current examples:
+Current examples may be executor-specific:
 
-- `automation/codex/morning-status.md`
-- `automation/codex/nightly-qa.md`
-- `automation/codex/gated-implement.md`
+- `automation/codex/*.md`
+- `automation/generic/*.md`
 
 These prompt specs should stay host-facing, not become Beacon requirement truth.
 
@@ -168,6 +167,10 @@ Beacon already contains the right level of support material:
 - host wrappers: `automation/jobs/`
 - example launch agents: `automation/launchd/`
 
+Recommended bootstrap entrypoint for real projects:
+
+- `beacon automation init --project-root .`
+
 That means the next useful step is not a new public lifecycle stage.
 
 The next useful step is:
@@ -192,3 +195,159 @@ This keeps Beacon compatible with:
 - Cursor / Windsurf / Trae project-local host loops
 
 without making Beacon itself depend on one scheduler product.
+
+## Queue Contract
+
+The canonical automation intent surface is:
+
+- `automation/beacon-automation-queue.json`
+
+Current queue model is intentionally small:
+
+- `version`
+- `project_root`
+- `default_workspace_mode`
+- `jobs[]`
+
+Each job must declare:
+
+- `job_id`
+- `job_kind`
+- `target_agent`
+- `enabled`
+- `feature_selector`
+- `preconditions`
+- `workspace_mode`
+- `risk_level`
+- `on_blocked`
+- `on_success`
+- `notes`
+
+Current allowed values:
+
+- `job_kind`: `status`, `qa`, `implement`
+- `target_agent`: `codex`, `claude`, `cursor`, `windsurf`, `trae`
+- `workspace_mode`: `worktree`, `local`
+- `feature_selector.mode`: `all_active`, `explicit_list`
+
+Boundary rules:
+
+- `status` jobs may use `all_active`
+- `qa` and `implement` should use explicit candidate lists
+- `implement` jobs must be high risk and must hand off into QA on success
+- queue selection belongs to the host plane; execution eligibility belongs to Beacon
+
+Validation and bootstrap entrypoints:
+
+```bash
+beacon automation init --project-root .
+beacon automation validate-queue --project-root .
+beacon automation validate-queue --project-root . --json
+```
+
+## Executor Capability Tiers
+
+Beacon should not claim that every agent host has the same native execution plane.
+
+Frozen tier model for `v1.4.6`:
+
+- `codex`
+  - tier: `native`
+  - Beacon `implement/qa` runtime: supported
+- `claude`
+  - tier: `native`
+  - Beacon `implement/qa` runtime: supported
+- `cursor`
+  - tier: `supported-via-adapter`
+  - official CLI/API exists, but Beacon `implement/qa` host runtime is not yet cursor-native
+- `windsurf`
+  - tier: `assisted`
+  - project-local skills/workflows plus external scheduler only
+- `trae`
+  - tier: `experimental`
+  - scaffold/rules guidance only until stronger public execution surface is proven
+
+## Wrapper Contract
+
+Wrappers under `automation/jobs/` are deliberately thin. They should:
+
+1. read queue intent
+2. select only enabled matching jobs
+3. call Beacon public CLI only
+4. write timestamped run artifacts
+5. exit non-zero on malformed queue or unsupported local execution shape
+
+Wrappers should not:
+
+- rewrite queue state during execution
+- bypass Beacon gate or truth checks
+- publish release readiness by themselves
+- treat notification delivery as Beacon truth
+
+Current wrapper expectations:
+
+- `beacon-status-job.sh`
+  - read-only status pass
+  - single artifact output
+- `beacon-qa-job.sh`
+  - explicit feature iteration
+  - one artifact per feature
+- `beacon-gated-implement-job.sh`
+  - explicit candidate iteration only
+  - never opportunistic selection
+  - must preserve gate refusal as refusal
+
+## QA Feedback Loop
+
+For scheduled Beacon QA to become a durable project workflow, one run must leave machine-readable state that the next run can consume.
+
+The minimum loop is:
+
+1. run queued QA
+2. write feature QA status and scorecards
+3. summarize those results into an automation feedback ledger
+4. update the automation queue from that ledger
+5. let the next scheduler window consume the updated queue
+
+Current Beacon entrypoints:
+
+```bash
+beacon automation summarize-qa --project-root .
+beacon automation update-queue --project-root .
+```
+
+Current ledger path:
+
+- `.beacon/automation/qa-feedback-ledger.json`
+
+Current queue update semantics:
+
+- remove passed features from QA queue
+- add repair-needed features into gated implement queue
+- preserve explicit queue governance; never let QA invent opportunistic new work beyond the formal queue update rule
+
+This is enough for:
+
+- nightly QA -> next nightly QA reuse
+- nightly QA -> next gated implement handoff
+- environment blocker vs product failure separation in later runs
+
+## Why This Matters For Other Agents
+
+The queue and wrapper contract is intentionally host-neutral.
+
+That means the same Beacon automation plane can be used by:
+
+- Codex Automations
+- Claude scheduled shell wrappers
+- Cursor project tasks
+- Windsurf task runners
+- Trae local scheduler hooks
+
+The only thing that should vary by agent is:
+
+- trigger runtime
+- notification transport
+- worktree/session setup
+
+The Beacon truth boundary should not vary by agent.

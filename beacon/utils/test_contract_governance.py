@@ -188,25 +188,66 @@ def _qa_feature_entry(project_root: Path, *, feature: str, tc_id: str) -> dict[s
     return {}
 
 
+def _canonical_qa_matrix_entry(project_root: Path, *, version: str, feature: str, tc_id: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    matrix_path = _first_existing(qa_matrix_candidates(project_root, version, slug, "qa9-matrix"))
+    payload = _read_dict(matrix_path)
+    entries = payload.get("entries") if isinstance(payload.get("entries"), list) else []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        if str(entry.get("tc_id") or "").strip() == tc_id:
+            return entry
+    return {}
+
+
 def _resolve_feature_qa_evidence_path(project_root: Path, *, feature: str, tc_id: str) -> Path | None:
     entry = _qa_feature_entry(project_root, feature=feature, tc_id=tc_id)
-    if not entry:
-        return None
-    evidence_path = str(entry.get("evidence_path") or "").strip()
-    last_run_id = str(entry.get("last_run_id") or "").strip()
-    if evidence_path and last_run_id:
-        for token in ("{run_id}", "__RUN_ID__", "$RUN_ID"):
-            evidence_path = evidence_path.replace(token, last_run_id)
-        candidate = project_root / evidence_path
-        if candidate.exists():
-            return candidate
-    last_evidence_ref = str(entry.get("last_evidence_ref") or "").strip()
-    if last_evidence_ref:
-        last_evidence_path = project_root / last_evidence_ref
-        if last_evidence_path.exists():
-            result_candidate = last_evidence_path.with_name("result.json")
-            if result_candidate.exists():
-                return result_candidate
+    feature_entry_candidates = [entry] if entry else []
+    for item in feature_entry_candidates:
+        evidence_path = str(item.get("evidence_path") or "").strip()
+        last_run_id = str(item.get("last_run_id") or "").strip()
+        if evidence_path and last_run_id:
+            for token in ("{run_id}", "__RUN_ID__", "$RUN_ID"):
+                evidence_path = evidence_path.replace(token, last_run_id)
+            candidate = project_root / evidence_path
+            if candidate.exists():
+                return candidate
+        last_evidence_ref = str(item.get("last_evidence_ref") or "").strip()
+        if last_evidence_ref:
+            last_evidence_path = project_root / last_evidence_ref
+            if last_evidence_path.exists():
+                result_candidate = last_evidence_path.with_name("result.json")
+                if result_candidate.exists():
+                    return result_candidate
+
+    feature_version = ""
+    if feature:
+        match = re.match(r"^(beacon-v\d+\.\d+\.\d+)-", feature.strip())
+        if match:
+            feature_version = match.group(1).replace("beacon-", "")
+    if feature_version:
+        canonical_entry = _canonical_qa_matrix_entry(
+            project_root,
+            version=feature_version,
+            feature=feature,
+            tc_id=tc_id,
+        )
+        evidence_path = str(canonical_entry.get("evidence_path") or "").strip()
+        last_run_id = str(canonical_entry.get("last_run_id") or "").strip()
+        if evidence_path and last_run_id:
+            for token in ("{run_id}", "__RUN_ID__", "$RUN_ID", "{run-id}"):
+                evidence_path = evidence_path.replace(token, last_run_id)
+            candidate = project_root / evidence_path
+            if candidate.exists():
+                return candidate
+        last_evidence_ref = str(canonical_entry.get("last_evidence_ref") or "").strip()
+        if last_evidence_ref:
+            last_evidence_path = project_root / last_evidence_ref
+            if last_evidence_path.exists():
+                result_candidate = last_evidence_path.with_name("result.json")
+                if result_candidate.exists():
+                    return result_candidate
     tc_slug = tc_id.strip().lower()
     evidence_dir = project_root / ".beacon" / "evidence" / "qa-feature" / feature_slug(feature) / tc_slug
     if evidence_dir.exists():

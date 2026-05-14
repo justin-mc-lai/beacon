@@ -94,6 +94,7 @@ support surfaces already exist
 - `docs/analysis/codex-automations-and-beacon-capability-guide.md`
 - `automation/README.md`
 - `beacon automation capabilities --project-root .`
+- `beacon automation validate-queue --project-root .`
 
 当前支持的 job pattern：
 

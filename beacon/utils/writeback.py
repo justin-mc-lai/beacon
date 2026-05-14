@@ -10,6 +10,7 @@ from typing import Any, Iterable
 from beacon.utils.artifact_paths import human_execution_file, machine_execution_dir, machine_trace_dir
 from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.prototype_utils import prototype_files
+from beacon.utils.reconciliation import append_implementation_writeback_event
 from beacon.utils.acceptance_kit import write_acceptance_kit_projection
 from beacon.utils.implementation_plan import (
     mark_implementation_plan_accepted,
@@ -469,6 +470,15 @@ def record_implementation_writeback(
     if changed_files is not None:
         revision["changed_files"] = [str(x) for x in changed_files if str(x).strip()]
     save_revision_state(project_root, version=resolved_version, feature=feature, state=revision)
+    append_implementation_writeback_event(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        revision_id=str(revision.get("revision_id", "R1") or "R1"),
+        run_id=run_id,
+        implemented_item_ids=target_ids,
+        changed_files=changed_files,
+    )
     plan = update_plan_progress_for_implementation(
         project_root,
         version=resolved_version,

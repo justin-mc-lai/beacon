@@ -35,12 +35,14 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-release`
 - `beacon-status`
 - `beacon-test-case`
+- `beacon-toolkit-automation`
 - `beacon-toolkit-branch-governance`
 - `beacon-toolkit-lighthouse`
 - `beacon-toolkit-metadata`
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
 
 
 

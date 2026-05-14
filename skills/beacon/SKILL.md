@@ -61,6 +61,7 @@ Optional support surfaces stay opt-in:
 - `toolkit-lighthouse`
 - `toolkit-metadata`
 - `toolkit-branch-governance`
+- `toolkit-automation`
 - `friction-intake`
 - `real-project-validation`
 

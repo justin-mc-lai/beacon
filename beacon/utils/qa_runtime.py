@@ -21,6 +21,29 @@ def legacy_auto_test_status_path(project_root: Path) -> Path:
     return project_root / ".beacon" / "auto-test-status.json"
 
 
+def _qa_summary(payload: dict[str, Any]) -> dict[str, Any]:
+    feature_scorecard = payload.get("feature_scorecard") if isinstance(payload.get("feature_scorecard"), dict) else {}
+    reconciliation = payload.get("reconciliation") if isinstance(payload.get("reconciliation"), dict) else (
+        feature_scorecard.get("reconciliation") if isinstance(feature_scorecard.get("reconciliation"), dict) else {}
+    )
+    repair_handoff = feature_scorecard.get("repair_handoff") if isinstance(feature_scorecard.get("repair_handoff"), dict) else {}
+    stop_reasons = [str(item).strip() for item in (feature_scorecard.get("stop_reasons") or payload.get("reason_codes") or []) if str(item).strip()]
+    return {
+        "feature": str(payload.get("feature") or ""),
+        "version": str(payload.get("version") or ""),
+        "status": str(payload.get("status") or "unknown"),
+        "release_ready": bool(payload.get("release_ready", False)),
+        "continue_decision": str(feature_scorecard.get("continue_decision") or ""),
+        "stop_reasons": stop_reasons,
+        "reconciliation_required": bool(reconciliation.get("required", False)),
+        "reconciliation_reason_code": str(reconciliation.get("reason_code") or ""),
+        "reconciliation_artifact_path": str(reconciliation.get("artifact_path") or ""),
+        "reconciliation_reprojection_targets": list(((reconciliation.get("artifact") or {}).get("reprojection_targets")) or []),
+        "repair_action": str(repair_handoff.get("action") or ""),
+        "repair_command": str(repair_handoff.get("command") or ""),
+    }
+
+
 def write_qa_status(project_root: Path, payload: dict[str, Any]) -> dict[str, str]:
     """Write canonical QA status and legacy auto-test mirror."""
     canonical = qa_status_path(project_root)
@@ -28,6 +51,7 @@ def write_qa_status(project_root: Path, payload: dict[str, Any]) -> dict[str, st
     payload = dict(payload)
     payload.setdefault("schema_version", "1.0")
     payload.setdefault("updated_at", now_iso())
+    payload["summary"] = _qa_summary(payload)
     write_json(canonical, payload)
     write_json(legacy, payload)
     return {

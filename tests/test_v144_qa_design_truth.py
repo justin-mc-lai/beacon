@@ -25,8 +25,14 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
-def _seed_sources(root: Path, *, design_preset: str = "") -> None:
+def _seed_sources(root: Path, *, design_preset: str = "", prototype_required: bool = False) -> None:
     preset_line = f"design_preset: {design_preset}\n" if design_preset else ""
+    prototype_lines = (
+        "prototype_freeze_required: true\n"
+        "ui_visualization_required: true\n"
+        if prototype_required
+        else ""
+    )
     prd = (
         f"# PRD: {FEATURE}\n\n"
         "## 1. Overview\n\n"
@@ -34,6 +40,7 @@ def _seed_sources(root: Path, *, design_preset: str = "") -> None:
         f"- feature: `{FEATURE}`\n"
         "- status: `frozen`\n"
         f"{preset_line}"
+        f"{prototype_lines}"
         "- target_audience: Product owner and QA operator\n"
         "- primary_use_cases: verify design truth blocking in QA\n"
         "- operator_mental_state: needs confident release decisions\n"
@@ -131,9 +138,9 @@ def _setup_git(root: Path) -> None:
     subprocess.run(["git", "checkout", "-b", "beacon/v1.4.4"], cwd=root, capture_output=True)
 
 
-def _seed_implement_ready_package(root: Path) -> None:
+def _seed_implement_ready_package(root: Path, *, prototype_required: bool = False) -> None:
     from beacon.utils.revision_state import freeze_revision_state
-    _seed_sources(root)
+    _seed_sources(root, prototype_required=prototype_required)
     _seed_prd_machine_mirrors(root)
     _setup_git(root)
     # Sync and freeze story state directly from complete docs
@@ -211,7 +218,7 @@ def _write_fake_runner_config(root: Path) -> None:
 
 def test_v144_qa_should_block_when_design_truth_preset_drift(tmp_path: Path) -> None:
     """AC-007: QA detects design preset drift between implement handoff and current prototype."""
-    _seed_implement_ready_package(tmp_path)
+    _seed_implement_ready_package(tmp_path, prototype_required=True)
 
     # Write fake runner before implement commands
     _write_fake_runner_script(tmp_path / "runner.py")
@@ -271,7 +278,7 @@ def test_v144_qa_should_block_when_design_truth_preset_drift(tmp_path: Path) -> 
 
 def test_v144_qa_should_pass_when_design_truth_aligned(tmp_path: Path) -> None:
     """AC-007: QA passes when design truth remains aligned with handoff."""
-    _seed_implement_ready_package(tmp_path)
+    _seed_implement_ready_package(tmp_path, prototype_required=True)
 
     # Write fake runner before implement commands
     _write_fake_runner_script(tmp_path / "runner.py")
@@ -312,3 +319,53 @@ def test_v144_qa_should_pass_when_design_truth_aligned(tmp_path: Path) -> None:
     # Should not be blocked by design truth
     assert verdict.get("blocked") is not True
     assert "design_truth_preset_drift" not in (verdict.get("reason_codes") or [])
+
+
+def test_v144_qa_should_skip_design_truth_when_feature_has_no_prototype_requirement(tmp_path: Path) -> None:
+    """Non-UI features should not be blocked by design truth when prototype truth is not required."""
+    _seed_implement_ready_package(tmp_path)
+
+    _write_fake_runner_script(tmp_path / "runner.py")
+    _write_fake_runner_config(tmp_path)
+
+    plan = _invoke(["implement", "plan", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--json"])
+    assert plan.exit_code == 0, plan.stdout
+
+    run = _invoke(["implement", "run", FEATURE, "--project-root", str(tmp_path), "--version", VERSION, "--runner", "fake", "--json"])
+    assert run.exit_code == 0, run.stdout
+    run_payload = json.loads(run.stdout)
+    assert run_payload["design_truth"]["status"] == "not_applicable"
+
+    summary_path = tmp_path / f"docs/beacon/{VERSION}/.machine/execution/implementation-summary-{SLUG}.json"
+    summary_payload = json.loads(summary_path.read_text(encoding="utf-8"))
+    handoff_path = tmp_path / summary_payload["implement_to_qa_handoff"]
+    handoff_payload = json.loads(handoff_path.read_text(encoding="utf-8"))
+    assert handoff_payload["design_truth"]["status"] == "not_applicable"
+
+    pass_layer = tmp_path / "pass.sh"
+    pass_layer.write_text("#!/bin/sh\necho 'ok'", encoding="utf-8")
+
+    qa = _invoke(
+        [
+            "qa",
+            "run",
+            FEATURE,
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--layer-command",
+            f"contract=sh {pass_layer}",
+            "--layer-command",
+            f"unit=sh {pass_layer}",
+            "--json",
+        ]
+    )
+
+    payload = json.loads(qa.stdout)
+    verdict = payload.get("design_truth_verdict") or {}
+
+    assert verdict.get("status") == "not_applicable"
+    assert verdict.get("blocked") is False
+    assert "design_truth_artifact_missing" not in (payload.get("feature_scorecard", {}).get("stop_reasons") or [])
+    assert "anti_ai_baseline_violation" not in (payload.get("feature_scorecard", {}).get("stop_reasons") or [])

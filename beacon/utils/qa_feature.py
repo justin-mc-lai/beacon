@@ -19,6 +19,7 @@ from beacon.utils.qa_precision import (
     write_feature_qa_ac_closure,
     write_feature_qa_scorecard,
 )
+from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_scenarios import expand_story_scenarios, scenario_map_path as docs_story_scenario_map_path
@@ -1180,6 +1181,23 @@ def build_feature_qa_precision_artifacts(
     qa_status = qa_status if isinstance(qa_status, dict) else {}
     exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
     design_truth_verdict = design_truth_verdict if isinstance(design_truth_verdict, dict) else {}
+    resolved_version = resolve_target_version(project_root, str(plan.get("version") or "auto"))
+    revision_state = load_revision_state(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        create_if_missing=False,
+    )
+    reconciliation_gate = (
+        detect_implementation_first_reconciliation_needed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_state=revision_state,
+        )
+        if revision_state
+        else {}
+    )
     design_truth_blocked = bool(design_truth_verdict.get("blocked")) or str(design_truth_verdict.get("status") or "").strip().lower() in {"blocked", "fail", "failed"}
     design_truth_reason_codes = [
         str(item).strip()
@@ -1275,6 +1293,8 @@ def build_feature_qa_precision_artifacts(
     )
     if design_truth_blocked:
         stop_reasons.extend(design_truth_reason_codes or ["design_truth_verdict_failed"])
+    if bool(reconciliation_gate.get("required")):
+        stop_reasons.append(str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required"))
     stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
     required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
     executed_scenarios = len(
@@ -1375,43 +1395,58 @@ def build_feature_qa_precision_artifacts(
     browser_placeholder_only = "browser_evidence_placeholder_only" in stop_reasons
     repair_handoff = {
         "action": (
-            "implement"
-            if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
+            "beacon-change"
+            if bool(reconciliation_gate.get("required"))
             else (
-                "qa-session"
-                if browser_session_reason
+                "implement"
+                if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
                 else (
-                    "qa-browser-rerun"
-                    if browser_placeholder_only
-                    else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair"))
+                    "qa-session"
+                    if browser_session_reason
+                    else (
+                        "qa-browser-rerun"
+                        if browser_placeholder_only
+                        else ("verify-run" if project_gate_status == "blocked" else ("test-case-create" if test_case_backfill_required else "qa-repair"))
+                    )
                 )
             )
         ),
         "reason": (
-            "protected browser surface requires an attached session or runner before QA can continue"
-            if browser_session_reason
+            str(
+                ((reconciliation_gate.get("artifact") or {}).get("recovery_reason"))
+                or "implementation-first reconciliation is required before QA proof can be trusted"
+            )
+            if bool(reconciliation_gate.get("required"))
             else (
-                "browser evidence is placeholder-only and must be rerun with a real attached browser path"
-                if browser_placeholder_only
-                else (", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"))
+                "protected browser surface requires an attached session or runner before QA can continue"
+                if browser_session_reason
+                else (
+                    "browser evidence is placeholder-only and must be rerun with a real attached browser path"
+                    if browser_placeholder_only
+                    else (", ".join(stop_reasons[:3]) if stop_reasons else ("coverage_gap_remaining" if coverage_gap_remaining else "qa_round_incomplete"))
+                )
             )
         ),
         "command": (
-            f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
-            if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
+            str((((reconciliation_gate.get("artifact") or {}).get("change_route") or {}).get("command")) or resume_command)
+            if bool(reconciliation_gate.get("required"))
             else (
-                f"beacon qa session list --project {project_root}"
-                if browser_session_reason
+                f'beacon implement run "{feature}" --project {project_root} --version {str(plan.get("version") or "")} --runner native-single'
+                if any(reason in {"implementation_reopened", "bug_filed"} for reason in stop_reasons)
                 else (
-                    f'beacon qa run "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
-                    if browser_placeholder_only
+                    f"beacon qa session list --project {project_root}"
+                    if browser_session_reason
                     else (
-                        f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
-                        if project_gate_status == "blocked"
+                        f'beacon qa run "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
+                        if browser_placeholder_only
                         else (
-                            f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
-                            if test_case_backfill_required
-                            else (resume_command if coverage_gap_remaining else resume_command)
+                            f'beacon verify run "{feature}" --project-root {project_root} --version {str(plan.get("version") or "")}'
+                            if project_gate_status == "blocked"
+                            else (
+                                f'beacon test-case create "{feature}" --project {project_root} --version {str(plan.get("version") or "")}'
+                                if test_case_backfill_required
+                                else (resume_command if coverage_gap_remaining else resume_command)
+                            )
                         )
                     )
                 )
@@ -1445,12 +1480,13 @@ def build_feature_qa_precision_artifacts(
             "targeted_scope_only": bool(plan.get("targeted_tc_ids") or plan.get("targeted_ac_ids")),
         },
         "design_truth_verdict": design_truth_verdict,
+        "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
         "continue_decision": continue_decision,
         "stop_reasons": stop_reasons,
         "test_case_backfill_required": test_case_backfill_required,
         "resume_command": resume_command,
         "repair_handoff": repair_handoff,
-        "release_ready": release_ready,
+        "release_ready": release_ready and not bool(reconciliation_gate.get("required")),
     }
     feature_scorecard_path = write_feature_qa_scorecard(project_root, feature=feature, payload=feature_scorecard_payload)
     return scenario_results, ac_closure_payload, feature_scorecard_payload, ac_closure_path, feature_scorecard_path

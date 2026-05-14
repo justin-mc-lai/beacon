@@ -392,11 +392,14 @@ def test_v139_sqlite_failure_should_preserve_local_truth_and_allow_replay(tmp_pa
     )
     assert failed.exit_code == 0, failed.stdout
     failed_payload = json.loads(failed.stdout)
-    assert failed_payload["governance"]["status"] == "error"
+    assert failed_payload["governance"]["status"] == "manual_dual_write_local_only"
+    assert failed_payload["governance"]["global_sqlite_written"] is False
     failed_item = failed_payload["items"][0]
     local_ref = failed_item["evidence_refs"][0]
     assert (tmp_path / local_ref).exists()
     assert (tmp_path / failed_payload["paths"]["json"]).exists()
+    manual_record = failed_payload["governance"]["manual_dual_write_record"]
+    assert (tmp_path / manual_record).exists()
 
     monkeypatch.delenv("BEACON_RUNTIME_LEDGER_DISABLE_SQLITE", raising=False)
     replayed = runner.invoke(
@@ -444,9 +447,35 @@ def test_v139_sqlite_failure_should_preserve_local_truth_and_allow_replay(tmp_pa
             "SELECT occurrence_count, summary FROM friction_items WHERE item_id = ?",
             (item_id,),
         ).fetchone()
-        assert row is not None
-        assert row[0] >= 2
-        assert "QA recovery path" in row[1]
+    assert row is not None
+    assert row[0] >= 2
+    assert "QA recovery path" in row[1]
+
+
+def test_v139_friction_intake_human_report_should_mark_manual_dual_write_substitute(tmp_path: Path, monkeypatch) -> None:
+    runtime_root = tmp_path / ".runtime-ledger"
+    monkeypatch.setenv("BEACON_RUNTIME_LEDGER_ROOT", str(runtime_root))
+    monkeypatch.setenv("BEACON_RUNTIME_LEDGER_DISABLE_SQLITE", "1")
+    _seed_docs(tmp_path)
+
+    result = runner.invoke(
+        app,
+        [
+            "friction-intake",
+            "run",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.3.9",
+            "--mode",
+            "capture",
+            "--note",
+            "Runner admission failed before sqlite write; keep local substitute evidence.",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+    assert "global_sqlite    : False" in result.stdout
+    assert "manual_dual_write:" in result.stdout
 
 
 def test_v139_scan_and_capture_should_share_queue_with_distinct_source_types(tmp_path: Path, monkeypatch) -> None:

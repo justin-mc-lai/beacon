@@ -147,6 +147,41 @@ def _capture_candidates(project_root: Path, note: str) -> tuple[list[dict[str, A
     return [candidate], [rel]
 
 
+def _manual_dual_write_fallback(
+    project_root: Path,
+    *,
+    docs_version: str,
+    run_id: str,
+    source_type: str,
+    items: list[dict[str, Any]],
+) -> dict[str, Any]:
+    fallback_dir = project_root / ".beacon" / "debug" / "friction-intake-manual-dual-write"
+    fallback_dir.mkdir(parents=True, exist_ok=True)
+    fallback_payload = {
+        "schema_version": "1.0",
+        "mode": "manual_dual_write_substitute",
+        "run_id": run_id,
+        "docs_version": docs_version,
+        "project_root": str(project_root),
+        "source_type": source_type,
+        "global_sqlite_written": False,
+        "status": "manual_dual_write_local_only",
+        "items": items,
+        "recorded_at": now_iso(),
+        "note": "Runner admission/tooling failure prevented global sqlite write; project-local substitute record only.",
+    }
+    record_path = fallback_dir / f"{run_id}.json"
+    write_json(record_path, fallback_payload)
+    return {
+        "status": "manual_dual_write_local_only",
+        "db_path": str((project_root / ".beacon" / "runtime-ledger" / "runtime-ledger.sqlite3").resolve()),
+        "global_sqlite_written": False,
+        "manual_dual_write_record": str(record_path.relative_to(project_root)),
+        "manual_dual_write_record_abs": str(record_path.resolve()),
+        "note": "Global sqlite not written. Project-local manual dual-write substitute recorded instead.",
+    }
+
+
 def _render_markdown(payload: dict[str, Any]) -> str:
     items = payload.get("items") if isinstance(payload.get("items"), list) else []
     governance = payload.get("governance") if isinstance(payload.get("governance"), dict) else {}
@@ -162,7 +197,9 @@ def _render_markdown(payload: dict[str, Any]) -> str:
         "## Inputs",
         f"- evidence_refs: `{len(payload.get('evidence_refs', []))}`",
         f"- sqlite_status: `{governance.get('status', '')}`",
+        f"- global_sqlite_written: `{governance.get('global_sqlite_written', True)}`",
         f"- sqlite_db: `{governance.get('db_path', '')}`",
+        f"- manual_dual_write_record: `{governance.get('manual_dual_write_record', '')}`",
         f"- json_abs_path: `{payload.get('paths', {}).get('json_abs', '')}`",
         f"- markdown_abs_path: `{payload.get('paths', {}).get('markdown_abs', '')}`",
         "",
@@ -213,14 +250,26 @@ def run_friction_intake(
     else:
         items, evidence_refs = _capture_candidates(root, note)
     final_items = items[: max(1, int(limit))]
+    source_type = "scan" if normalized_mode == "scan" else "manual_capture"
     governance = write_friction_queue_batch(
         project_root=root,
         docs_version=resolved_version,
         tool_name=FRICTION_INTAKE_TOOL,
         run_id=run_id,
-        source_type="scan" if normalized_mode == "scan" else "manual_capture",
+        source_type=source_type,
         items=final_items,
     )
+    if str(governance.get("status") or "").strip().lower() == "error":
+        governance = {
+            **governance,
+            **_manual_dual_write_fallback(
+                root,
+                docs_version=resolved_version,
+                run_id=run_id,
+                source_type=source_type,
+                items=final_items,
+            ),
+        }
 
     payload = {
         "schema_version": "1.0",
@@ -300,6 +349,7 @@ def render_friction_intake_human(payload: dict[str, Any]) -> str:
         f"project_root     : {payload.get('project_root', '')}",
         f"items            : {len(items)}",
         f"sqlite_status    : {governance.get('status', '')}",
+        f"global_sqlite    : {governance.get('global_sqlite_written', True)}",
     ]
     if items:
         lines.extend(["", "Items"])
@@ -323,6 +373,9 @@ def render_friction_intake_human(payload: dict[str, Any]) -> str:
                 f"markdown report  : {paths.get('markdown_abs', paths.get('markdown', ''))}",
             ]
         )
+        manual_record = str(governance.get("manual_dual_write_record_abs") or governance.get("manual_dual_write_record") or "").strip()
+        if manual_record:
+            lines.append(f"manual_dual_write: {manual_record}")
         evidence_abs = paths.get("evidence_abs") if isinstance(paths.get("evidence_abs"), list) else []
         for idx, ref in enumerate(evidence_abs, start=1):
             lines.append(f"evidence[{idx}]    : {ref}")

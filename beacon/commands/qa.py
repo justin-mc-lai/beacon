@@ -311,9 +311,10 @@ def _qa_design_truth_verdict(
     style_path = files["design_artifacts_dir"] / "style-preset.json"
     lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
     handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
+    handoff_design_truth_status = str(handoff_design_truth.get("status") or "").strip().lower()
     design_truth_required = (
         feature_requires_prototype(project_root, version, feature)
-        or bool(handoff_design_truth)
+        or (bool(handoff_design_truth) and handoff_design_truth_status != "not_applicable")
         or style_path.exists()
         or lint_path.exists()
     )

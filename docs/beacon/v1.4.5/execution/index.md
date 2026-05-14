@@ -20,3 +20,4 @@
 - Capability guide: `docs/analysis/codex-automations-and-beacon-capability-guide.md`
 - Scheduler assets: `automation/README.md`
 - CLI reporting surface: `beacon automation capabilities --project-root .`
+- Queue validation surface: `beacon automation validate-queue --project-root .`

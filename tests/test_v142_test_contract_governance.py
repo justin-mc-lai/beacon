@@ -232,6 +232,50 @@ def test_release_passes_test_contract_gate_after_index_build(tmp_path: Path) -> 
     assert summary["test_contract_release_blocked"] is False
 
 
+def test_canonical_qa_matrix_evidence_should_satisfy_release_lane_when_feature_qa_matrix_is_missing(tmp_path: Path) -> None:
+    _seed_project(tmp_path, include_evidence=False)
+    canonical_matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.qa9-matrix.json"
+    result_dir = tmp_path / ".beacon" / "evidence" / "auto-test" / "run-20260514T144852438487" / "qa9-tc" / "TC-US003-001"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    (result_dir / "command.txt").write_text("pytest ...\n", encoding="utf-8")
+    _write_json(result_dir / "result.json", {"status": "passed", "tc_id": "TC-US003-001"})
+    _write_json(
+        canonical_matrix_path,
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "entries": [
+                {
+                    "tc_id": "TC-US003-001",
+                    "last_run_id": "run-20260514T144852438487",
+                    "last_evidence_ref": ".beacon/evidence/auto-test/run-20260514T144852438487/qa9-tc/TC-US003-001/command.txt",
+                    "evidence_path": ".beacon/evidence/test-results/"
+                    + f"{SLUG}"
+                    + "/{run_id}/TC-US003-001.json",
+                    "status": "passed",
+                }
+            ],
+        },
+    )
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"] = [
+        entry for entry in matrix["entries"] if str(entry.get("tc_id")) == "TC-US003-001"
+    ]
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    gate = build_test_contract_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    feature_lane = payload["lanes"]["feature_release_facing"]
+    assert len(feature_lane) == 1
+    assert feature_lane[0]["tc_id"] == "TC-US003-001"
+    assert feature_lane[0]["evidence_status"] == "passed"
+    assert "feature_release_lane_missing" not in gate["release_gate"]["reason_codes"]
+
+
 def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_release(tmp_path: Path) -> None:
     version = "v1.4.6"
     feature = "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"

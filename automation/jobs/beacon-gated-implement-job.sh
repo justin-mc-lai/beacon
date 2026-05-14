@@ -101,3 +101,8 @@ for feature in "${FEATURES[@]}"; do
       --auto-review-spec
   } | tee "${OUT_FILE}"
 done
+
+"${BEACON_BIN}" automation update-queue \
+  --project-root "${PROJECT_ROOT}" \
+  --queue "${QUEUE_PATH}" \
+  --json > "${OUTPUT_DIR}/queue-update-${TIMESTAMP}.json"

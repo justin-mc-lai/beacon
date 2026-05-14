@@ -186,6 +186,23 @@ beacon gate check release --project-root . --version v1.4.5 --json
 beacon release check v1.4.5 --project .
 ```
 
+### Automation Scaffold
+
+如果你要把 Beacon automation/jobs 接到真实项目，先生成项目本地 scaffold：
+
+```bash
+beacon automation init --project-root .
+beacon automation validate-queue --project-root .
+```
+
+生成内容包括：
+
+- `automation/beacon-automation-queue.json`
+- `automation/jobs/`
+- `automation/codex/`
+- `automation/launchd/`
+- `automation/README.md`
+
 ### Compatibility Entry Points
 
 以下入口仍保留给兼容性与文档示例使用：
@@ -257,6 +274,9 @@ Support report surface:
 ```bash
 beacon automation capabilities --project-root .
 beacon automation capabilities --project-root . --json
+beacon automation validate-queue --project-root .
+beacon automation summarize-qa --project-root .
+beacon automation update-queue --project-root .
 ```
 
 ---
