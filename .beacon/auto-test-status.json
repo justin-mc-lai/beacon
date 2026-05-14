@@ -1,30 +1,29 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-14T00:26:32.745881",
+  "timestamp": "2026-05-14T15:00:53.459548",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.6",
-  "run_id": "run-20260514T002632744979",
-  "spec_fingerprint_hash": "f32e89accf4bce23a457b00a75dc62a7a7dfcc037a2d7f8d8b502d2fb82710e6",
+  "run_id": "run-20260514T150053458785",
+  "spec_fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79",
   "status": "passed",
   "selected_layers": [
     "contract",
-    "exception",
     "integration",
     "regression"
   ],
   "execution": {
-    "run_id": "run-20260514T002632744979",
+    "run_id": "run-20260514T150053458785",
     "version": "v1.4.6",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260514T002632744979",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260514T150053458785",
     "spec_fingerprint": {
-      "fingerprint_hash": "f32e89accf4bce23a457b00a75dc62a7a7dfcc037a2d7f8d8b502d2fb82710e6",
+      "fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79",
       "version": "v1.4.6",
-      "generated_at": "2026-05-13T16:26:39.574186+00:00"
+      "generated_at": "2026-05-14T07:01:04.186888+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"skill_anatomy_v2_is_frozen_for_key_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"qa_feedback_ledger_contract_is_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -36,49 +35,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "a4fdc9f50382f9b17d5cbeba94ac6a7ee9c54d96510e9b81fa2eb9d73a6d505d",
-        "started_at": "2026-05-14T00:26:32.746198",
-        "ended_at": "2026-05-14T00:26:33.217258",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/contract/junit.xml",
+        "execution_fingerprint": "479dfcc3c360758f7bc89e7b2841067dcb394121b81c3ce2797e97a15611b4e4",
+        "started_at": "2026-05-14T15:00:53.460017",
+        "ended_at": "2026-05-14T15:00:54.111619",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/contract/result.json"
-        ]
-      },
-      {
-        "layer": "exception",
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"philosophy_first_contract_does_not_regress_to_step_scripts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "ceb69ab1d180f0991671054dc520415c74a6ad758ec0c7621597b2605bb7bfbc",
-        "started_at": "2026-05-14T00:26:33.218265",
-        "ended_at": "2026-05-14T00:26:33.604705",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/exception/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/exception/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/exception/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/exception/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/exception/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/exception/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/result.json"
         ]
       },
       {
         "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"high_risk_challenge_outputs_bind_back_to_evidence_state_or_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_summarize_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -90,22 +62,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "cf3d3780fbcf3dd4084d8107f3aabcfd4cf32d88bd0eb960a3ade73c326761d3",
-        "started_at": "2026-05-14T00:26:33.605377",
-        "ended_at": "2026-05-14T00:26:34.034497",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/integration/junit.xml",
+        "execution_fingerprint": "d6271fcce8164e470817b8e470bdc06297e6b75c307582c41d293fb42519d5e5",
+        "started_at": "2026-05-14T15:00:54.112594",
+        "ended_at": "2026-05-14T15:00:54.865298",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/integration/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/integration/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/result.json"
         ]
       },
       {
         "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_contracts_are_machine_checkable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"queue_update_is_explicit_and_governed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -117,38 +89,38 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "0e580d20915a32393c2019614d3f12f644a88b213cf47390f5d1fa840e434367",
-        "started_at": "2026-05-14T00:26:34.035180",
-        "ended_at": "2026-05-14T00:26:34.442311",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/regression/junit.xml",
+        "execution_fingerprint": "f32b35cfad93d28366129b797eb5ee57fd6318bbaa948ae68e8b4482ae8617b6",
+        "started_at": "2026-05-14T15:00:54.866053",
+        "ended_at": "2026-05-14T15:00:55.362457",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-      "evidence_generated": 10,
-      "entry_count": 10,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+      "evidence_generated": 16,
+      "entry_count": 16,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260514T002632744979/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260514T002632744979/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260514T002632744979/summary.json",
+      ".beacon/evidence/auto-test/run-20260514T150053458785/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260514T150053458785/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260514T150053458785/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 4,
+      "pass_count": 3,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -158,11 +130,10 @@
     "qa_profile": "web-full",
     "qa_types": [
       "contract",
-      "exception",
       "integration",
       "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
     "ui_runner": "browser-use",
     "quality_requirements": {
       "require_junit": true,
@@ -175,23 +146,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 10,
-      "passed": 10,
+      "cases_total": 16,
+      "passed": 16,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 10,
-      "auto_cases_executed": 10,
+      "auto_cases_total": 16,
+      "auto_cases_executed": 16,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-ADRIFT46-001",
+        "tc_id": "TC-AUTO46-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-ADRIFT46-001",
+        "source_tc_id": "TC-AUTO46-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -201,20 +172,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"skill_anatomy_v2_is_frozen_for_key_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"qa_feedback_ledger_contract_is_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
         ],
-        "execution_fingerprint": "0b046fb493cac134770164ff6e3577971bfd860cab84dca6870daa4597304376",
-        "started_at": "2026-05-14T00:26:34.445913",
-        "ended_at": "2026-05-14T00:26:34.865113",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/junit.xml",
+        "execution_fingerprint": "5f5078fdeb1cf2f01c39eeadec95fecce22522e6a9c4a6523e01951504326fff",
+        "started_at": "2026-05-14T15:00:55.366544",
+        "ended_at": "2026-05-14T15:00:55.885329",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -227,85 +198,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-ADRIFT46-002",
+        "tc_id": "TC-AUTO46-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-ADRIFT46-002",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"key_execution_and_entry_skills_require_anti_rationalization\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-002/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/result.json"
-        ],
-        "execution_fingerprint": "18a69434829e82f75a6007fe8cea03f4036cfe8f347f023e4b06e044688a5a3f",
-        "started_at": "2026-05-14T00:26:34.865865",
-        "ended_at": "2026-05-14T00:26:35.288236",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-ADRIFT46-003",
-        "ac_id": "AC-003",
-        "source_tc_id": "TC-ADRIFT46-003",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"support_surface_constitution_is_unified_and_bounded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-003/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/result.json"
-        ],
-        "execution_fingerprint": "f3588ad5349e9c1fd2bff044790e4e3d1bf9ad4c89515e278aeb73cc4f3f544d",
-        "started_at": "2026-05-14T00:26:35.289471",
-        "ended_at": "2026-05-14T00:26:35.700762",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-ADRIFT46-004",
-        "ac_id": "AC-004",
-        "source_tc_id": "TC-ADRIFT46-004",
+        "source_tc_id": "TC-AUTO46-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "integration",
@@ -315,20 +210,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"high_risk_challenge_outputs_bind_back_to_evidence_state_or_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_summarize_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
         ],
-        "execution_fingerprint": "90d86752d1d4b46ccb6e833120488a22f1056ba88cdd4e1c7f0c1aa27d4ce93a",
-        "started_at": "2026-05-14T00:26:35.701502",
-        "ended_at": "2026-05-14T00:26:36.098526",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/junit.xml",
+        "execution_fingerprint": "29b29b29f4a0ed12bcbe062d2a6b19d5bf4f5032c7a185045f347d78ef066ae7",
+        "started_at": "2026-05-14T15:00:55.886385",
+        "ended_at": "2026-05-14T15:00:56.482868",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -341,9 +236,85 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-ADRIFT46-005",
+        "tc_id": "TC-AUTO46-003",
+        "ac_id": "AC-003",
+        "source_tc_id": "TC-AUTO46-003",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_update_queue\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-003/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
+        ],
+        "execution_fingerprint": "2b8cfe4a104651469f2132c1318a548c152e0ad0bd0b91f2a89a1ad0b37a4dac",
+        "started_at": "2026-05-14T15:00:56.484114",
+        "ended_at": "2026-05-14T15:00:57.060817",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-004",
+        "ac_id": "AC-004",
+        "source_tc_id": "TC-AUTO46-004",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"queue_update_is_explicit_and_governed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-004/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
+        ],
+        "execution_fingerprint": "6deeefe399d03a5fa73d273b614ec7a22e53715cdfcb85249f87d407ac8fdea5",
+        "started_at": "2026-05-14T15:00:57.061717",
+        "ended_at": "2026-05-14T15:00:57.544574",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-ADRIFT46-005",
+        "source_tc_id": "TC-AUTO46-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -353,20 +324,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"public_surface_family_has_clear_handoff_boundaries\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"nightly_qa_wrapper_refreshes_feedback_loop\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
         ],
-        "execution_fingerprint": "7e04456ff866e58d9fec7a93ee9438f170bad6878f52e37642a79c435550fcb2",
-        "started_at": "2026-05-14T00:26:36.099390",
-        "ended_at": "2026-05-14T00:26:36.560337",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/junit.xml",
+        "execution_fingerprint": "cb5c19efb211228d5fb8fe61c29bdaaf2d898e5761ef94868a2bf373d18dc42d",
+        "started_at": "2026-05-14T15:00:57.545432",
+        "ended_at": "2026-05-14T15:00:58.014008",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -379,123 +350,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-ADRIFT46-006",
+        "tc_id": "TC-AUTO46-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-ADRIFT46-006",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_contracts_are_machine_checkable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-006/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/result.json"
-        ],
-        "execution_fingerprint": "a8c1fec0615819411bbd6c956a1c7d14bd3c9ef695c356d2e5af0383ad5ff001",
-        "started_at": "2026-05-14T00:26:36.561075",
-        "ended_at": "2026-05-14T00:26:36.983534",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-ADRIFT46-007",
-        "ac_id": "AC-007",
-        "source_tc_id": "TC-ADRIFT46-007",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "exception",
-        "layer": "exception",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"philosophy_first_contract_does_not_regress_to_step_scripts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-007/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/result.json"
-        ],
-        "execution_fingerprint": "92751d3cef6fddf0cbbdb1f989ec853bf02df888a327bbe3551968274d5e249d",
-        "started_at": "2026-05-14T00:26:36.984276",
-        "ended_at": "2026-05-14T00:26:37.399454",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-ADRIFT46-008",
-        "ac_id": "AC-008",
-        "source_tc_id": "TC-ADRIFT46-008",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "exception",
-        "layer": "exception",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"external_skill_methods_are_absorbed_without_runtime_dependency\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-008/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/result.json"
-        ],
-        "execution_fingerprint": "73ccb2ff78e8749943115e1f330267b024e0e1d8b0f7bdafd97bf8ee5f89beaf",
-        "started_at": "2026-05-14T00:26:37.400198",
-        "ended_at": "2026-05-14T00:26:37.793564",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-ADRIFT46-009",
-        "ac_id": "AC-009",
-        "source_tc_id": "TC-ADRIFT46-009",
+        "source_tc_id": "TC-AUTO46-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -505,20 +362,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"brainstorm_and_change_promotion_boundary_remains_explicit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-009/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"gated_implement_wrapper_refreshes_queue\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
         ],
-        "execution_fingerprint": "6afb03991470f8e9b59373c12f1110fa3625c771de049b0afb57262ccedfc4bf",
-        "started_at": "2026-05-14T00:26:37.794303",
-        "ended_at": "2026-05-14T00:26:38.198048",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/junit.xml",
+        "execution_fingerprint": "a8e7e2b823cdb76b8f9b69dad1d2710859f034be386158ae96ccc03b18a86da3",
+        "started_at": "2026-05-14T15:00:58.014946",
+        "ended_at": "2026-05-14T15:00:58.496322",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -531,9 +388,85 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-ADRIFT46-010",
+        "tc_id": "TC-AUTO46-007",
+        "ac_id": "AC-007",
+        "source_tc_id": "TC-AUTO46-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_capabilities_report_feedback_loop_surface\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
+        ],
+        "execution_fingerprint": "fdac5089cf1897fd86df6e47d4d2f89db55cd681a206b865d0c862d45ee26c8c",
+        "started_at": "2026-05-14T15:00:58.497358",
+        "ended_at": "2026-05-14T15:00:59.019756",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-009",
+        "ac_id": "AC-009",
+        "source_tc_id": "TC-AUTO46-009",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_cli_should_support_json_output\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-009/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
+        ],
+        "execution_fingerprint": "9cabd4db97ccdb8860355dfae9cef3e52af25ea7f506e446bfc954021616941a",
+        "started_at": "2026-05-14T15:00:59.020682",
+        "ended_at": "2026-05-14T15:00:59.594083",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-010",
         "ac_id": "AC-010",
-        "source_tc_id": "TC-ADRIFT46-010",
+        "source_tc_id": "TC-AUTO46-010",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "regression",
@@ -543,20 +476,286 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_anti_drift_skill_contracts.py -k \"anti_drift_upgrade_does_not_create_a_new_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T002632744979",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/tc-adrift46-010/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_scaffold_should_generate_project_local_assets\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/result.json"
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
         ],
-        "execution_fingerprint": "d3591ac5daede05f84cfd91ad16ab956b1ea45b13efca2e1eb8b3e41d8afa7d5",
-        "started_at": "2026-05-14T00:26:38.198846",
-        "ended_at": "2026-05-14T00:26:38.644656",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/junit.xml",
+        "execution_fingerprint": "fb90790fe12f5afd02675bea77ff31cf3c9568ba788b96116620effe163fc605",
+        "started_at": "2026-05-14T15:00:59.595009",
+        "ended_at": "2026-05-14T15:01:00.059278",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-011",
+        "ac_id": "AC-011",
+        "source_tc_id": "TC-AUTO46-011",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_should_not_overwrite_existing_files_without_force or automation_init_should_refresh_existing_files_with_force\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-011/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
+        ],
+        "execution_fingerprint": "e5bc5de2134a7289f454a6429e96ae5a41e348a7e15c860597705ef522a8e575",
+        "started_at": "2026-05-14T15:01:00.060137",
+        "ended_at": "2026-05-14T15:01:00.521704",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-012",
+        "ac_id": "AC-012",
+        "source_tc_id": "TC-AUTO46-012",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_automation_executors.py -k \"executor_capability_matrix_should_reflect_tiered_support\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-012/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
+        ],
+        "execution_fingerprint": "92006393cad7f214207b32df60ebff6092644474250d3fae39624a8b2e73716e",
+        "started_at": "2026-05-14T15:01:00.522623",
+        "ended_at": "2026-05-14T15:01:00.962106",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-013",
+        "ac_id": "AC-013",
+        "source_tc_id": "TC-AUTO46-013",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_should_support_non_codex_executor_profiles\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-013/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
+        ],
+        "execution_fingerprint": "56d93cd576263b7985176a46ac5dc3e2973319fe1ca879d2c858af070d360012",
+        "started_at": "2026-05-14T15:01:00.963477",
+        "ended_at": "2026-05-14T15:01:01.406776",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-015",
+        "ac_id": "AC-015",
+        "source_tc_id": "TC-AUTO46-015",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_automation_capabilities.py -k \"automation_build_summary_cli_should_emit_shared_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-015/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
+        ],
+        "execution_fingerprint": "2db9b0e1562236acbc615ed51b41d83532f953874e8ad4e3cc683a6811f13cc9",
+        "started_at": "2026-05-14T15:01:01.407596",
+        "ended_at": "2026-05-14T15:01:01.937396",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-016",
+        "ac_id": "AC-016",
+        "source_tc_id": "TC-AUTO46-016",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "integration",
+        "layer": "integration",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_automation_capabilities.py -k \"automation_build_summary_cli_should_emit_shared_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-016/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
+        ],
+        "execution_fingerprint": "a5808e69568c4a0a6fc1edf4ac365df0e20a61a65f75421c8672d6d9532a4fc3",
+        "started_at": "2026-05-14T15:01:01.938586",
+        "ended_at": "2026-05-14T15:01:02.462301",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-017",
+        "ac_id": "AC-017",
+        "source_tc_id": "TC-AUTO46-017",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "regression",
+        "layer": "regression",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 2,
+        "command": "python3 -m pytest -q tests/test_automation_scaffold.py tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_init_scaffold_should_generate_project_local_assets or nightly_qa_wrapper_refreshes_feedback_loop\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-017/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
+        ],
+        "execution_fingerprint": "1c1360d22064739ac2c7a603f4b6be123cdf66aa9d72f2f6bba7ce1f8ccf8dc8",
+        "started_at": "2026-05-14T15:01:02.463239",
+        "ended_at": "2026-05-14T15:01:02.946883",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AUTO46-018",
+        "ac_id": "AC-018",
+        "source_tc_id": "TC-AUTO46-018",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v140_branch_governance_surface.py -k \"alongside_existing_toolkits\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260514T150053458785",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-018/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
+          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
+        ],
+        "execution_fingerprint": "9c11542b36605244c214aad32f00eb9980168fb27a9c9054a6b6b915a2c565ad",
+        "started_at": "2026-05-14T15:01:02.947727",
+        "ended_at": "2026-05-14T15:01:03.388368",
+        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -572,18 +771,32 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-13T16:26:39.316692+00:00",
-  "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-  "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+  "updated_at": "2026-05-14T07:01:03.940913+00:00",
+  "summary": {
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+    "version": "v1.4.6",
+    "status": "passed",
+    "release_ready": true,
+    "continue_decision": "ready_for_release",
+    "stop_reasons": [],
+    "reconciliation_required": false,
+    "reconciliation_reason_code": "",
+    "reconciliation_artifact_path": "",
+    "reconciliation_reprojection_targets": [],
+    "repair_action": "qa-repair",
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\""
+  },
+  "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "Beacon v1.4.6 冻结统一的 `Skill Anatomy v2`",
-      "text": "Beacon freezes a `Skill Anatomy v2` baseline for key host-visible skills with explicit sections for usage boundary, workflow or decision loop, rationalization risk, verification, evidence, state, and gate semantics.",
+      "theme": "Beacon freezes a project-local QA feedback ledger contract",
+      "text": "Beacon freezes a project-local QA feedback ledger for automation/jobs.",
       "tc_ids": [
-        "TC-ADRIFT46-001"
+        "TC-AUTO46-001"
       ],
       "qa_types": [
         "contract"
@@ -591,43 +804,43 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "关键 host-visible skills 具备显式 anti-rationalization sections",
-      "text": "`using-beacon`, `beacon-prd`, `beacon-change`, `beacon-brainstorm`, `beacon-implement`, `beacon-qa`, and `beacon-release` all include explicit anti-rationalization guidance instead of relying on implied operator discipline.",
+      "theme": "Beacon exposes `beacon automation summarize-qa` as public CLI",
+      "text": "Beacon exposes `beacon automation summarize-qa` as a public automation surface.",
       "tc_ids": [
-        "TC-ADRIFT46-002"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-003",
-      "theme": "support surface 的 non-truth / non-gate boundary 被统一写入 public contract",
-      "text": "Beacon defines one unified support-surface constitution for `brainstorm`, `deep`, `ceo-review`, `design-review`, `help`, `status`, and `doctor`, and that constitution preserves `not truth source`, `not gate source`, and `not new lifecycle stage`.",
-      "tc_ids": [
-        "TC-ADRIFT46-003"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-004",
-      "theme": "high-risk decision challenge 的最小输出合同被正式定义",
-      "text": "high-risk challenge output is formalized so review-style surfaces can challenge decisions, but the result must map back to route, evidence, state, or gate impact instead of ending as free-form commentary.",
-      "tc_ids": [
-        "TC-ADRIFT46-004"
+        "TC-AUTO46-002"
       ],
       "qa_types": [
         "integration"
       ]
     },
     {
-      "ac_id": "AC-005",
-      "theme": "challenge 结果能映射回 evidence / state / gate impact",
-      "text": "Beacon formalizes a public surface family model that distinguishes truth surfaces, execution surfaces, support surfaces, and gate surfaces with clear escalation and handoff boundaries.",
+      "ac_id": "AC-003",
+      "theme": "Beacon exposes `beacon automation update-queue` as public CLI",
+      "text": "Beacon exposes `beacon automation update-queue` as a public automation surface.",
       "tc_ids": [
-        "TC-ADRIFT46-005"
+        "TC-AUTO46-003"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "queue update uses explicit pass/repair rules and does not create opportunistic work",
+      "text": "queue update remains explicit and governed: passed QA candidates leave the QA queue, repair-needed candidates may enter the implement queue, and wrappers do not invent opportunistic work.",
+      "tc_ids": [
+        "TC-AUTO46-004"
+      ],
+      "qa_types": [
+        "regression"
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "nightly QA wrapper refreshes ledger and queue after QA execution",
+      "text": "the nightly QA wrapper refreshes feedback ledger and queue after QA execution.",
+      "tc_ids": [
+        "TC-AUTO46-005"
       ],
       "qa_types": [
         "contract"
@@ -635,32 +848,32 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "Beacon 的 orchestration constitution 正式表达 public/support/truth/gate 分层",
-      "text": "machine-checkable anti-drift enforcement is defined for the new contract baseline so missing sections, overreaching support surfaces, or unbound challenge outputs can be detected automatically.",
+      "theme": "gated implement wrapper refreshes queue after implement execution",
+      "text": "the gated implement wrapper refreshes queue state after implement execution.",
       "tc_ids": [
-        "TC-ADRIFT46-006"
+        "TC-AUTO46-006"
       ],
       "qa_types": [
-        "regression"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-007",
-      "theme": "anti-drift contract 至少具备 lint/check 级 machine enforcement 设计",
-      "text": "the v1.4.6 contract preserves Beacon's philosophy-first skill design and does not regress into step-by-step operation scripts for strong models.",
+      "theme": "automation capability reporting exposes feedback loop surfaces",
+      "text": "`beacon automation capabilities` reports the feedback loop entrypoints and ledger path.",
       "tc_ids": [
-        "TC-ADRIFT46-007"
+        "TC-AUTO46-007"
       ],
       "qa_types": [
-        "exception"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-008",
-      "theme": "v1.4.6 没有把 Beacon 退化成 script-first skill pack",
-      "text": "Beacon absorbs external workflow-skill methods as internal contract design, anti-rationalization, and orchestration patterns without creating a runtime dependency on external skill packs.",
+      "theme": "the automation/jobs supplement preserves Beacon core lifecycle boundaries",
+      "text": "the supplement remains host-scheduled capability governance and does not create a new Beacon lifecycle stage or absorb scheduler runtime into Beacon core.",
       "tc_ids": [
-        "TC-ADRIFT46-008"
+        "TC-AUTO46-008"
       ],
       "qa_types": [
         "exception"
@@ -668,35 +881,124 @@
     },
     {
       "ac_id": "AC-009",
-      "theme": "外部开源方法被蒸馏为内部 contract，而不是默认 runtime dependency",
-      "text": "`brainstorm` and `change` remain distinct: `brainstorm` can sharpen options and framing, but only `change` can promote requirement truth intended for downstream implementation and QA.",
+      "theme": "Beacon exposes `beacon automation init --project-root .` as a public scaffold bootstrap surface",
+      "text": "Beacon exposes `beacon automation init --project-root .` as a public scaffold bootstrap surface.",
       "tc_ids": [
-        "TC-ADRIFT46-009"
+        "TC-AUTO46-009"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "scaffold output is project-local and rewrites paths/labels for the target repo",
+      "text": "scaffold output is project-local and rewrites paths/labels for the target repo.",
+      "tc_ids": [
+        "TC-AUTO46-010"
+      ],
+      "qa_types": [
+        "regression"
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "scaffold generation is conservative by default and refreshes only with explicit force",
+      "text": "scaffold generation is conservative by default and refreshes only with explicit force.",
+      "tc_ids": [
+        "TC-AUTO46-011"
+      ],
+      "qa_types": [
+        "regression"
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "Beacon freezes a tiered executor capability matrix instead of claiming uniform native automation across all agents",
+      "text": "Beacon freezes a tiered executor capability matrix instead of claiming uniform native automation across all agents.",
+      "tc_ids": [
+        "TC-AUTO46-012"
       ],
       "qa_types": [
         "contract"
       ]
     },
     {
-      "ac_id": "AC-010",
-      "theme": "`brainstorm` 到 `change/prd` 的 promotion boundary 更清楚且可执行",
-      "text": "the new anti-drift contract is documented as a host-visible behavior upgrade for Beacon rather than a new lifecycle stage or a replacement for existing truth, evidence, and gate governance.",
+      "ac_id": "AC-013",
+      "theme": "scaffold generation supports executor profiles and reflects them in queue/spec outputs",
+      "text": "scaffold generation supports executor profiles and reflects them in queue/spec outputs.",
       "tc_ids": [
-        "TC-ADRIFT46-010"
+        "TC-AUTO46-013"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "unsupported executors are not represented as current Beacon-native implement/qa runtimes",
+      "text": "unsupported executors are not represented as current Beacon-native implement/qa runtimes.",
+      "tc_ids": [
+        "TC-AUTO46-014"
+      ],
+      "qa_types": [
+        "exception"
+      ]
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "Beacon freezes a shared automation summary schema that multiple QA layers and notification adapters can consume",
+      "text": "Beacon freezes a shared automation summary schema that multiple QA layers and notification adapters can consume.",
+      "tc_ids": [
+        "TC-AUTO46-015"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "Beacon exposes `beacon automation build-summary` as a public automation surface",
+      "text": "Beacon exposes `beacon automation build-summary` as a public automation surface.",
+      "tc_ids": [
+        "TC-AUTO46-016"
+      ],
+      "qa_types": [
+        "integration"
+      ]
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "scaffolded wrappers and notification helpers consume the same summary schema instead of project-specific summary formats",
+      "text": "scaffolded wrappers and notification helpers consume the same summary schema instead of project-specific summary formats.",
+      "tc_ids": [
+        "TC-AUTO46-017"
       ],
       "qa_types": [
         "regression"
+      ]
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "Beacon exposes a human-facing `beacon-toolkit-automation` support surface for project-local scheduled automation bootstrap and maintenance",
+      "text": "Beacon exposes a human-facing `beacon-toolkit-automation` support surface for project-local scheduled automation bootstrap and maintenance.",
+      "tc_ids": [
+        "TC-AUTO46-018"
+      ],
+      "qa_types": [
+        "contract"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "source_matrix_changed"
+      "implementation_run_changed",
+      "source_matrix_changed",
+      "artifact_updates_pending"
     ],
     "targeted_layers": [
       "contract",
-      "exception",
       "integration",
       "regression"
     ],
@@ -708,21 +1010,33 @@
       "AC-005",
       "AC-006",
       "AC-007",
-      "AC-008",
       "AC-009",
-      "AC-010"
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018"
     ],
     "targeted_tc_ids": [
-      "TC-ADRIFT46-001",
-      "TC-ADRIFT46-002",
-      "TC-ADRIFT46-003",
-      "TC-ADRIFT46-004",
-      "TC-ADRIFT46-005",
-      "TC-ADRIFT46-006",
-      "TC-ADRIFT46-007",
-      "TC-ADRIFT46-008",
-      "TC-ADRIFT46-009",
-      "TC-ADRIFT46-010"
+      "TC-AUTO46-001",
+      "TC-AUTO46-002",
+      "TC-AUTO46-003",
+      "TC-AUTO46-004",
+      "TC-AUTO46-005",
+      "TC-AUTO46-006",
+      "TC-AUTO46-007",
+      "TC-AUTO46-009",
+      "TC-AUTO46-010",
+      "TC-AUTO46-011",
+      "TC-AUTO46-012",
+      "TC-AUTO46-013",
+      "TC-AUTO46-015",
+      "TC-AUTO46-016",
+      "TC-AUTO46-017",
+      "TC-AUTO46-018"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -732,15 +1046,23 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 10
+    "verification_item_count": 16
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-  "blocking_artifact_updates": [],
+  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+  "blocking_artifact_updates": [
+    {
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
+    }
+  ],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-ADRIFT46-001",
-      "source_tc_id": "TC-ADRIFT46-001",
+      "tc_id": "TC-AUTO46-001",
+      "source_tc_id": "TC-AUTO46-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -753,66 +1075,20 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-ADRIFT46-002",
-      "source_tc_id": "TC-ADRIFT46-002",
+      "tc_id": "TC-AUTO46-002",
+      "source_tc_id": "TC-AUTO46-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-ADRIFT46-003",
-      "source_tc_id": "TC-ADRIFT46-003",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-003",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-004",
-      "tc_id": "TC-ADRIFT46-004",
-      "source_tc_id": "TC-ADRIFT46-004",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-004",
       "status": "passed",
       "reason_code": "",
       "qa_type": "integration",
@@ -822,17 +1098,63 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-AUTO46-003",
+      "source_tc_id": "TC-AUTO46-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-AUTO46-004",
+      "source_tc_id": "TC-AUTO46-004",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-004",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-ADRIFT46-005",
-      "source_tc_id": "TC-ADRIFT46-005",
+      "tc_id": "TC-AUTO46-005",
+      "source_tc_id": "TC-AUTO46-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -845,89 +1167,20 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-ADRIFT46-006",
-      "source_tc_id": "TC-ADRIFT46-006",
+      "tc_id": "TC-AUTO46-006",
+      "source_tc_id": "TC-AUTO46-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "tc_id": "TC-ADRIFT46-007",
-      "source_tc_id": "TC-ADRIFT46-007",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-007",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "exception",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-008",
-      "tc_id": "TC-ADRIFT46-008",
-      "source_tc_id": "TC-ADRIFT46-008",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-008",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "exception",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "tc_id": "TC-ADRIFT46-009",
-      "source_tc_id": "TC-ADRIFT46-009",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-009",
       "status": "passed",
       "reason_code": "",
       "qa_type": "contract",
@@ -937,17 +1190,63 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-AUTO46-007",
+      "source_tc_id": "TC-AUTO46-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-AUTO46-009",
+      "source_tc_id": "TC-AUTO46-009",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-009",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
       ]
     },
     {
       "ac_id": "AC-010",
-      "tc_id": "TC-ADRIFT46-010",
-      "source_tc_id": "TC-ADRIFT46-010",
+      "tc_id": "TC-AUTO46-010",
+      "source_tc_id": "TC-AUTO46-010",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-010",
@@ -960,11 +1259,172 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-AUTO46-011",
+      "source_tc_id": "TC-AUTO46-011",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-011",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-AUTO46-012",
+      "source_tc_id": "TC-AUTO46-012",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-012",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-AUTO46-013",
+      "source_tc_id": "TC-AUTO46-013",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-013",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-AUTO46-015",
+      "source_tc_id": "TC-AUTO46-015",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-015",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-AUTO46-016",
+      "source_tc_id": "TC-AUTO46-016",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-016",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "integration",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-AUTO46-017",
+      "source_tc_id": "TC-AUTO46-017",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-017",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-AUTO46-018",
+      "source_tc_id": "TC-AUTO46-018",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-018",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
       ]
     }
   ],
@@ -996,17 +1456,17 @@
     "blocked": false,
     "reason_code": "",
     "target_stage": "qa",
-    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
     "version": "v1.4.6",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.re-freeze-transaction.json"
     },
     "unresolved_gap_count": 0,
     "high_risk_unresolved_categories": [],
@@ -1049,13 +1509,13 @@
         "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.re-freeze-transaction.json"
           }
         }
       },
@@ -1137,8 +1597,8 @@
     },
     "completeness": {
       "schema_version": "1.0",
-      "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "version": "v1.4.6",
       "revision_id": "R1",
       "completeness_verdict": "pass",
@@ -1171,12 +1631,12 @@
         "implement_ready": true,
         "release_ready": true
       },
-      "generated_at": "2026-05-13T16:14:54.198989+00:00"
+      "generated_at": "2026-05-14T06:47:33.956681+00:00"
     },
     "freeze_contract": {
       "schema_version": "1.0",
       "version": "v1.4.6",
-      "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "revision_id": "R1",
       "status": "freeze-ready",
       "human_supplement_contract": {
@@ -1203,27 +1663,27 @@
       },
       "blocking_rules": [
         "high_severity_unresolved_gap",
-        "support_surface_authority_overreach",
-        "high_risk_challenge_without_evidence_state_or_gate_binding",
-        "public_skill_contract_missing_required_anatomy"
+        "critical_coverage_family_missing",
+        "host_downgrade_without_explicit_fallback_contract",
+        "truth_writeback_without_machine_decision_trail"
       ],
       "freeze_verdict": "pass",
       "implementation_verdict": "pending",
       "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-13T16:14:54.199706+00:00"
+      "updated_at": "2026-05-14T06:47:33.957376+00:00"
     }
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-    "run_id": "run-20260514T002632744979",
-    "generated_at": "2026-05-13T16:26:39.571154+00:00",
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+    "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+    "run_id": "run-20260514T150053458785",
+    "generated_at": "2026-05-14T07:01:04.181940+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 10,
+    "scenario_count": 16,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1243,11 +1703,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-ADRIFT46-001",
-      "tc_id": "TC-ADRIFT46-001",
-      "source_tc_id": "TC-ADRIFT46-001",
+      "scenario_id": "TC-AUTO46-001",
+      "tc_id": "TC-AUTO46-001",
+      "source_tc_id": "TC-AUTO46-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1271,19 +1731,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-001/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-002",
-      "tc_id": "TC-ADRIFT46-002",
-      "source_tc_id": "TC-ADRIFT46-002",
+      "scenario_id": "TC-AUTO46-002",
+      "tc_id": "TC-AUTO46-002",
+      "source_tc_id": "TC-AUTO46-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1307,19 +1767,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-002/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-003",
-      "tc_id": "TC-ADRIFT46-003",
-      "source_tc_id": "TC-ADRIFT46-003",
+      "scenario_id": "TC-AUTO46-003",
+      "tc_id": "TC-AUTO46-003",
+      "source_tc_id": "TC-AUTO46-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1343,19 +1803,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-003/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-004",
-      "tc_id": "TC-ADRIFT46-004",
-      "source_tc_id": "TC-ADRIFT46-004",
+      "scenario_id": "TC-AUTO46-004",
+      "tc_id": "TC-AUTO46-004",
+      "source_tc_id": "TC-AUTO46-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1379,19 +1839,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-004/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-005",
-      "tc_id": "TC-ADRIFT46-005",
-      "source_tc_id": "TC-ADRIFT46-005",
+      "scenario_id": "TC-AUTO46-005",
+      "tc_id": "TC-AUTO46-005",
+      "source_tc_id": "TC-AUTO46-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1415,19 +1875,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-005/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-006",
-      "tc_id": "TC-ADRIFT46-006",
-      "source_tc_id": "TC-ADRIFT46-006",
+      "scenario_id": "TC-AUTO46-006",
+      "tc_id": "TC-AUTO46-006",
+      "source_tc_id": "TC-AUTO46-006",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1451,19 +1911,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-006/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-007",
-      "tc_id": "TC-ADRIFT46-007",
-      "source_tc_id": "TC-ADRIFT46-007",
+      "scenario_id": "TC-AUTO46-007",
+      "tc_id": "TC-AUTO46-007",
+      "source_tc_id": "TC-AUTO46-007",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1487,55 +1947,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-007/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-008",
-      "tc_id": "TC-ADRIFT46-008",
-      "source_tc_id": "TC-ADRIFT46-008",
-      "ac_id": "AC-008",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-008/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-ADRIFT46-009",
-      "tc_id": "TC-ADRIFT46-009",
-      "source_tc_id": "TC-ADRIFT46-009",
+      "scenario_id": "TC-AUTO46-009",
+      "tc_id": "TC-AUTO46-009",
+      "source_tc_id": "TC-AUTO46-009",
       "ac_id": "AC-009",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1559,19 +1983,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-009/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
       ]
     },
     {
-      "scenario_id": "TC-ADRIFT46-010",
-      "tc_id": "TC-ADRIFT46-010",
-      "source_tc_id": "TC-ADRIFT46-010",
+      "scenario_id": "TC-AUTO46-010",
+      "tc_id": "TC-AUTO46-010",
+      "source_tc_id": "TC-AUTO46-010",
       "ac_id": "AC-010",
-      "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1595,25 +2019,277 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T002632744979/qa9-tc/TC-ADRIFT46-010/result.json"
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-011",
+      "tc_id": "TC-AUTO46-011",
+      "source_tc_id": "TC-AUTO46-011",
+      "ac_id": "AC-011",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-012",
+      "tc_id": "TC-AUTO46-012",
+      "source_tc_id": "TC-AUTO46-012",
+      "ac_id": "AC-012",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-013",
+      "tc_id": "TC-AUTO46-013",
+      "source_tc_id": "TC-AUTO46-013",
+      "ac_id": "AC-013",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-015",
+      "tc_id": "TC-AUTO46-015",
+      "source_tc_id": "TC-AUTO46-015",
+      "ac_id": "AC-015",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-016",
+      "tc_id": "TC-AUTO46-016",
+      "source_tc_id": "TC-AUTO46-016",
+      "ac_id": "AC-016",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-017",
+      "tc_id": "TC-AUTO46-017",
+      "source_tc_id": "TC-AUTO46-017",
+      "ac_id": "AC-017",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-AUTO46-018",
+      "tc_id": "TC-AUTO46-018",
+      "source_tc_id": "TC-AUTO46-018",
+      "ac_id": "AC-018",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
+        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-    "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
-    "run_id": "run-20260514T002632744979",
-    "ac_total": 10,
-    "ac_accepted": 10,
-    "scenario_total": 10,
-    "scenario_passed": 10,
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+    "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+    "run_id": "run-20260514T150053458785",
+    "ac_total": 16,
+    "ac_accepted": 16,
+    "scenario_total": 16,
+    "scenario_passed": 16,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1623,8 +2299,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 10,
-      "executed_scenarios": 10,
+      "required_scenarios": 16,
+      "executed_scenarios": 16,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1651,7 +2327,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 10,
+      "verification_item_count": 16,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1663,21 +2339,27 @@
       "verification_surface": "qa",
       "findings": []
     },
+    "reconciliation": {
+      "required": false,
+      "reason_code": "",
+      "artifact_path": "",
+      "artifact": {}
+    },
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
     "version": "v1.4.6",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1698,14 +2380,16 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.6",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
+      "docs/beacon/v1.4.6/.machine/execution/implementation-summary-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
+      "docs/beacon/v1.4.6/.machine/execution/technical-implementation-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1718,7 +2402,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
     "version": "v1.4.6",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1739,14 +2423,16 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.6",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/matrix.qa9.json",
-      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces/scorecard.json"
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
+      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
+      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
+      "docs/beacon/v1.4.6/.machine/execution/implementation-summary-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
+      "docs/beacon/v1.4.6/.machine/execution/technical-implementation-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1757,5 +2443,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "f32e89accf4bce23a457b00a75dc62a7a7dfcc037a2d7f8d8b502d2fb82710e6"
+  "current_spec_fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79"
 }

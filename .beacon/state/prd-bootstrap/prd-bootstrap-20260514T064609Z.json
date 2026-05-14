@@ -1,0 +1,166 @@
+{
+  "schema_version": "1.0",
+  "run_id": "prd-bootstrap-20260514T064609Z",
+  "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "description": "补齐 requirement closure",
+  "version": "v1.4.6",
+  "generated_at": "2026-05-14T06:46:09.050730+00:00",
+  "mode": "dry-run",
+  "dry_run": true,
+  "no_overwrite": true,
+  "strict_context_verify": true,
+  "targets": {
+    "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "test_case": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md"
+  },
+  "package_state": "full_consistent",
+  "missing_layers": [],
+  "generated_layers": [],
+  "derived_layers": [],
+  "reverse_derived_layers": [],
+  "drift_digest": [],
+  "closure_verdict": "supplement_required",
+  "readiness_verdict": "supplement_required",
+  "closure_analysis": {
+    "ok": false,
+    "checks": {
+      "goal_defined": false,
+      "main_flow_defined": true,
+      "scope_defined": false,
+      "acceptance_coverage_sufficient": true,
+      "blocking_unknowns": false
+    },
+    "missing_evidence": [
+      "goal_defined",
+      "scope_defined"
+    ],
+    "blocking_items": []
+  },
+  "supplement_tasks": [],
+  "gap_digest": [],
+  "quality": {
+    "max_placeholders": 0,
+    "total_placeholders": 0,
+    "per_doc": {
+      "prd": 0,
+      "user_story": 0,
+      "test_case": 0
+    },
+    "ok": true
+  },
+  "consistency": {
+    "story_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018"
+    ],
+    "test_case_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016",
+      "AC-017",
+      "AC-018"
+    ],
+    "missing_in_test_case": [],
+    "ok": true
+  },
+  "context_verify": {
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "runtime_version": "v1.4.6",
+    "strict": true,
+    "status": "pass",
+    "ok": true,
+    "checks": [
+      {
+        "name": "context_files_presence",
+        "status": "pass",
+        "details": {
+          "missing": []
+        }
+      },
+      {
+        "name": "managed_block_integrity",
+        "status": "pass",
+        "details": {
+          "issues": []
+        }
+      },
+      {
+        "name": "managed_block_version_drift",
+        "status": "pass",
+        "details": {
+          "drifted": [],
+          "unknown": []
+        }
+      },
+      {
+        "name": "global_boundaries_presence",
+        "status": "pass",
+        "details": {
+          "path": "/Users/apple/Developer/Personal/products/beacon/docs/beacon/global-boundaries.md",
+          "exists": true
+        }
+      },
+      {
+        "name": "global_boundaries_inheritance",
+        "status": "pass",
+        "details": {
+          "missing_references": []
+        }
+      }
+    ],
+    "files": {
+      "CLAUDE.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/CLAUDE.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.6",
+        "managed_docs_version": "v1.4.6",
+        "version_drift": false
+      },
+      "AGENTS.md": {
+        "path": "/Users/apple/Developer/Personal/products/beacon/AGENTS.md",
+        "exists": true,
+        "marker_integrity": "ok",
+        "managed_version": "v1.4.6",
+        "managed_docs_version": "v1.4.6",
+        "version_drift": false
+      }
+    }
+  },
+  "status": "planned",
+  "reason_code": "supplement_required",
+  "recommended_command": "beacon prd-bootstrap run \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\" --desc \"补齐 requirement closure\" --version v1.4.6 --dry-run",
+  "write_actions": [],
+  "rollback_plan": []
+}
