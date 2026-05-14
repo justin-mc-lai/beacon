@@ -11,6 +11,7 @@ Use it when a feature depends on actors, steps, handoffs, or multi-stage outcome
 - major branches or exceptions are visible
 - side effects and external dependencies are named
 - the flow is readable enough to compile into `user-story` and `test-case`
+- if the feature is freeze-bound, the flow should live in the research closure package rather than only in ad hoc chat prose
 - if the flow implies a different promised behavior, route to `beacon-change`
 
 ## Route Hint

@@ -11,6 +11,7 @@ Use it when a feature depends on state transitions, visibility rules, or lifecyc
 - invalid or blocked transitions are visible
 - side effects on transition are visible
 - the state model is clear enough for implementation and QA
+- if the feature is freeze-bound, the state model should be present in research closure truth before `requirement_clarity`
 - if the state model changes promised behavior or acceptance, route to `beacon-change`
 
 ## Route Hint

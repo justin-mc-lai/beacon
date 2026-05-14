@@ -165,6 +165,10 @@ When the user needs fast human-readable judgment support, start with:
 
 These references are non-canonical support material. They help humans scan and decide faster, but they do not replace versioned truth.
 
+For complex features, the minimum freeze-facing requirement chain remains:
+
+`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`
+
 ## Deep References
 
 When versioned delivery context is needed, read progressively:

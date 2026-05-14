@@ -8,6 +8,9 @@ Use it when a feature still needs research support, but you want to know whether
 
 - the problem framing is explicit
 - source inputs and their relevance are explicit
+- architecture explanation is explicit
+- business flow explanation is explicit when actors/handoffs matter
+- state-machine explanation is explicit when states/transitions matter
 - the key tradeoffs are visible
 - the research produces route implications, not only observations
 - open questions are named and bounded

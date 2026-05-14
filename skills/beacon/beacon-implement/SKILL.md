@@ -10,6 +10,8 @@ description: Use when the user wants to plan or run implementation through Beaco
 This skill routes execution work through Beacon's `implement` surface.
 
 `implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
+The active human-facing contract is aligned to the current `v1.4.6` docs line (`docs/beacon/v1.4.6/`).
+Compatibility bridges may still exist for older entrypoints or wrappers, but they must not override the current requirement package.
 
 ## When to Use
 

@@ -10,6 +10,8 @@ description: Use when the user wants Beacon to judge release readiness, inspect 
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
 Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
+The active human-facing contract is aligned to the current `v1.4.6` docs line (`docs/beacon/v1.4.6/`).
+Compatibility bridges may still exist for older entrypoints or wrappers, but release judgment must bind to the current docs/runtime truth line.
 
 ## When to Use
 

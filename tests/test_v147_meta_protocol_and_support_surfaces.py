@@ -121,6 +121,21 @@ def test_second_wave_lightweight_references_are_present_and_non_canonical() -> N
     assert "research-closure-checklist.md" in main_skill
     assert "business-flow-checklist.md" in main_skill
     assert "state-machine-checklist.md" in main_skill
+    assert "research -> prd -> user-story -> test-case -> requirement_clarity -> freeze" in main_skill
+
+
+def test_requirement_surfaces_align_to_minimal_freeze_contract() -> None:
+    prd = _skill_text("beacon-prd")
+    user_story = _skill_text("beacon-user-story")
+    test_case = _skill_text("beacon-test-case")
+    brainstorm = _skill_text("beacon-brainstorm")
+    bootstrap = _skill_text("beacon-prd-bootstrap")
+
+    assert "research -> prd -> user-story -> test-case -> requirement_clarity -> freeze" in prd
+    assert "test-case -> requirement_clarity -> freeze" in user_story
+    assert "research -> prd -> user-story -> test-case -> requirement_clarity -> freeze" in test_case
+    assert "prd -> user-story -> test-case -> requirement_clarity -> freeze" in brainstorm
+    assert "requirement_clarity" in bootstrap
 
 
 def test_external_lifecycle_mapping_is_documented_without_mainline_expansion() -> None:

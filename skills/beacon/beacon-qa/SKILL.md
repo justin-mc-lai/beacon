@@ -10,6 +10,8 @@ description: Use when the user wants to verify a Beacon feature, inspect new fin
 This skill routes verification work through Beacon's `qa` surface.
 
 QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
+The active human-facing contract is aligned to the current `v1.4.6` docs line (`docs/beacon/v1.4.6/`).
+Compatibility bridges may still exist for older entrypoints or wrappers, but current QA judgment should bind to the `v1.4.6` requirement package.
 
 ## When to Use
 

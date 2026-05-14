@@ -46,6 +46,7 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - Require explicit state/transition reasoning when diagram truth is relevant.
 - Prefer official states, actions, modules, and page names from semantic trace when available.
 - For complexity-triggered features, acceptance criteria should stay aligned with research/business-flow/state-machine truth instead of inventing a second simplified narrative.
+- `user-story` must compile into ACs that can be fully projected into `test-case`; if that projection is still impossible, freeze is not ready.
 
 ## Anti-Inertia Notes
 
@@ -81,3 +82,4 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - `user-story` 不是 PRD 摘抄，而是把承诺面编译成可执行 acceptance truth。
 - 如果上游 PRD 不稳定，story 不能假装已经完成。
 - 如果官方术语、状态或页面名已经存在，应优先复用，而不是再造第二套命名。
+- `user-story` 的下游目标不是“看起来合理”，而是能继续进入 `test-case -> requirement_clarity -> freeze`。
