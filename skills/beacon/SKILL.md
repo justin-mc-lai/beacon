@@ -1,155 +1,200 @@
 ---
 name: beacon
-description: Use when you need Beacon's evidence-first product workflow through its current human-facing surface. Beacon should act as the primary router for requirement truth, implementation, QA evidence, release decisions, and support guidance.
+description: Use when you need Beacon's evidence-first workflow as the host-level meta-protocol for deciding which truth, execution, gate, or support surface should run next.
 metadata:
   author: Beacon CLI
   version: "1.4.0"
   organization: Beacon
-  date: April 2026
-  abstract: Stable wrapper for Beacon's human-facing workflow surface, routing users into the right requirement, execution, verification, and support skills without exposing internal runtime detail by default.
+  date: May 2026
+  abstract: Compact meta-protocol for Beacon's human-facing workflow surface. It classifies the current decision surface, preserves hard boundaries, and routes to the right child skill without exposing runtime internals by default.
 ---
 
 # Beacon Skill
 
-Beacon is an evidence-first product workflow for keeping requirement truth, implementation, QA evidence, and release decisions inside one versioned system.
+This package is the canonical `skills/beacon/` wrapper for Codex and Claude.
 
-This file is the stable human-facing wrapper for `skills/beacon/`. Its job is to define Beacon's default entry surface, route to the right skill, and hold the minimum boundaries that should remain stable even when runtime internals evolve.
+Beacon is not just a command catalog. It is a truth-and-delivery meta-protocol:
 
-Prefer the installed `beacon` CLI. Repo-local wrappers may exist in vendored setups, but they are compatibility detail, not the default human contract.
+- classify the current decision surface
+- preserve stable boundaries that must not drift
+- route to the right truth, execution, gate, or support skill
+- keep support capability wide without expanding the public mainline
 
-## What Beacon Is
+## Meta-Protocol
 
-Beacon's core promise is simple:
+Always start with one question:
 
-- keep requirement truth explicit
-- keep execution routed through one public implementation surface
-- keep QA and release evidence layered and auditable
-- keep support surfaces available without turning them into parallel main stages
+> 当前问题属于哪个决策面: truth、execution、verification/gate，还是 support?
 
-Beacon is not just a command catalog. It is a routing and evidence discipline.
+Route by decision surface, not by tool familiarity, internal runtime mechanics, or which command name looks closest.
 
-## Human Surface
+The public Codex / Claude surfaces are:
 
-Humans should primarily remember the 7+3 surface.
+- host entry:
+  - `using-beacon`
+- truth:
+  - `beacon-prd`
+  - `beacon-user-story`
+  - `beacon-test-case`
+  - `beacon-change`
+- execution:
+  - `beacon-prototype`
+  - `beacon-implement`
+- gate:
+  - `beacon-qa`
+  - `beacon-release`
+- support:
+  - `beacon-brainstorm`
+  - `beacon-deep`
+  - `beacon-ceo-review`
+  - `beacon-design-review`
+  - `beacon-context-engineering`
+  - `beacon-source-driven`
+  - `beacon-doubt-review`
+  - `beacon-security-review`
+  - `beacon-performance-review`
+  - `beacon-documentation-adr`
+  - `beacon-debug-recovery`
+  - `beacon-help`
+  - `beacon-status`
+  - `beacon-doctor`
+  - `beacon-learn`
+  - `beacon-archive`
+  - `beacon-real-project-validation`
+  - `beacon-friction-intake`
 
-Primary workflow:
+## Current v1.3.9 Additions
 
-- `prd`
-- `user-story`
-- `test-case`
-- `prototype`
-- `implement`
-- `qa`
-- `release`
+Legacy compatibility anchors that should remain discoverable from the packaged host skill:
 
-Support and guidance:
+- `beacon-deep` remains a deep analysis support surface
+- `beacon-friction-intake` remains available through `beacon friction-intake run ...`
+- historical host-pack tests may still look for named support surfaces from earlier packaged lines
 
-- `help`
-- `status`
-- `doctor`
-- `archive`
+## Stable Rules
 
-Optional support surfaces stay opt-in:
+These rules should remain true even when runtime details evolve:
 
-- `brainstorm`
-- `deep`
-- `beacon-deep`
-- `learn`
-- `ceo-review`
-- `design-review`
-- `prd-bootstrap`
-- `toolkit-lighthouse`
-- `toolkit-metadata`
-- `toolkit-branch-governance`
-- `toolkit-automation`
-- `friction-intake`
-- `real-project-validation`
+- main chain stays compact: `prd -> user-story -> test-case -> implement -> qa -> release`
+- `prototype` is conditional, not a mandatory new stage for every feature
+- support surfaces stay advisory and do not become truth sources
+- support surfaces are not gate sources
+- support surfaces are not new lifecycle stages
+- canonical truth remains versioned under `docs/beacon/<version>/`
+- QA prompt contract must follow first principles and bind claims back to evidence
+- if a scorecard or gate path says `stop_for_repair`, route to repair or truth recovery before continuing
+- browser-admitted or compatibility paths such as `browser-use` remain optional capability planes, not default lifecycle requirements
+
+## Route-Back Rules
+
+Use these defaults:
+
+- promise, scope, ambiguity, or acceptance still open -> `beacon-prd`, `beacon-user-story`, or `beacon-test-case`
+- frozen truth must change -> `beacon-change`
+- coding or implementation execution against frozen truth -> `beacon-implement`
+- evidence closure, verification depth, or acceptance proof -> `beacon-qa`
+- release readiness, blocker judgment, or go/no-go -> `beacon-release`
+- blocked, unsure next step, or resume guidance -> `beacon-help` or `beacon-status`
+- package drift, docs drift, environment drift, or context corruption -> `beacon-doctor`
+
+If any support surface changes accepted scope or promise, it must route back through `beacon-change`.
+
+## Support Surface Constitution
+
+Support surfaces exist to widen judgment, not to replace the mainline.
+
+They may:
+
+- challenge framing
+- expose uncertainty or drift
+- improve evidence quality
+- strengthen implementation method
+- explain route and fallback
+
+They may not:
+
+- freeze canonical truth by default
+- claim implementation completion
+- issue release verdicts by default
+- silently replace `change`, `implement`, `qa`, or `release`
 
 `beacon-deep` remains the deep analysis support surface for high-risk structural review and test-delta derivation.
 
-## Lifecycle Navigation Rules
+## Human vs Machine Readout
 
-- `beacon help --project-root . --json` is the default recovery route when the next surface is unclear.
-- QA prompt contract must follow first principles and bind claims back to evidence before release-facing judgment.
-- If a surface exposes `stop_for_repair`, route to repair or truth recovery before continuing the mainline.
-- Browser-admitted or compatibility-only paths such as `browser-use` stay optional support capability, not default mainline requirement.
-
-## Host and Dependency Defaults
-
-Beacon should be judged inside the current host context only.
-
-- Do not turn host/runtime selection into a default human decision.
-- Do not require external skill repos, external plugins, or external runtimes as Beacon's default prerequisite.
-- External capabilities may exist, but they are compatibility planes, not Beacon's default dependency plane.
-- Do not expose internal team/subagent/runtime lanes unless the user explicitly asks for internals.
-
-## Human vs Machine Output
-
-Human-facing output should stay concise and action-oriented:
+Human-facing output should stay concise:
 
 - current status
-- blocking reason
-- recommended next step
-- fallback or repair route when relevant
+- blocker if any
+- recommended next surface
+- fallback or repair route
 
-Machine-facing and audit-facing output should remain complete:
+Machine-facing output should stay complete:
 
 - reason codes
 - evidence refs
-- diagnostics
 - artifact paths
+- diagnostics
 - runtime or transaction metadata
 
 Beacon should absorb complexity into machine-readable surfaces first, then project only the minimum useful action layer to humans.
 
-## Public Skill Routing
-
-Route by decision surface, not by internal mechanism.
-
-- Requirement definition, ambiguity, or promised surface: `beacon-prd`
-- Story compilation and acceptance truth: `beacon-user-story`
-- Coverage truth and verifiable scenarios: `beacon-test-case`
-- Conditional UX/UI handoff before implementation: `beacon-prototype`
-- Frozen truth revision or supplement after freeze: `beacon-change`
-- Implementation execution: `beacon-implement`
-- Verification and evidence closure: `beacon-qa`
-- Release go/no-go judgment: `beacon-release`
-- Blocked or unsure next step: `beacon-help` or `beacon-status`
-- Context drift, package drift, or environment repair: `beacon-doctor`
-- Historical truth isolation: `beacon-archive`
-
-Use support surfaces when the user needs challenge, convergence, analysis, or governance without silently entering the main workflow.
-
-## Current Version Anchors
+## Current Anchors
 
 Keep only the minimum current anchors here:
 
 - current package version: `1.4.6`
-- current release/docs line: `docs/beacon/v1.4.6/`
-- if a project pins `docs/beacon/VERSION`, follow that pinned docs line for local truth
+- current public runtime/docs line: `docs/beacon/v1.4.6/`
+- current planning line for this evolution theme: `docs/beacon/v1.4.7/`
+- if a target project pins another docs line, follow the pinned local truth instead of silently overriding it
 
-More detailed runtime architecture, release-note history, and migration context belong in versioned docs, not in this wrapper.
+## Lightweight References
+
+When the user needs fast human-readable judgment support, start with:
+
+- [`references/usage-rules.md`](./references/usage-rules.md)
+- [`references/support-surface-routing-cheatsheet.md`](./references/support-surface-routing-cheatsheet.md)
+- [`references/requirement-closure-checklist.md`](./references/requirement-closure-checklist.md)
+- [`references/freeze-readiness-checklist.md`](./references/freeze-readiness-checklist.md)
+- [`references/qa-layer-checklist.md`](./references/qa-layer-checklist.md)
+- [`references/release-blocker-taxonomy.md`](./references/release-blocker-taxonomy.md)
+- [`references/external-lifecycle-mapping.md`](./references/external-lifecycle-mapping.md)
+- [`references/research-closure-checklist.md`](./references/research-closure-checklist.md)
+- [`references/business-flow-checklist.md`](./references/business-flow-checklist.md)
+- [`references/state-machine-checklist.md`](./references/state-machine-checklist.md)
+
+These references are non-canonical support material. They help humans scan and decide faster, but they do not replace versioned truth.
 
 ## Deep References
 
-When deeper context is needed, start here:
+When versioned delivery context is needed, read progressively:
 
-1. [`docs/beacon/v1.4.6/SUMMARY.md`](../../docs/beacon/v1.4.6/SUMMARY.md)
-2. [`docs/beacon/v1.4.6/execution/index.md`](../../docs/beacon/v1.4.6/execution/index.md)
-3. [`docs/beacon/v1.4.6/release/v1.4.6.md`](../../docs/beacon/v1.4.6/release/v1.4.6.md)
+1. [`../../docs/beacon/v1.4.6/SUMMARY.md`](../../docs/beacon/v1.4.6/SUMMARY.md)
+2. [`../../docs/beacon/v1.4.6/execution/index.md`](../../docs/beacon/v1.4.6/execution/index.md)
+3. [`../../docs/beacon/v1.4.6/release/v1.4.6.md`](../../docs/beacon/v1.4.6/release/v1.4.6.md)
+4. [`../../docs/beacon/v1.4.7/SUMMARY.md`](../../docs/beacon/v1.4.7/SUMMARY.md)
 
 Do not treat this wrapper as the full runtime manual or release note.
+
+## Lifecycle Navigation Rules
+
+- `beacon help --project-root . --json` is the default recovery route when the next surface is unclear.
+- If frozen truth is stale, do not push through execution. Reopen through `beacon-change`.
+- If verification reveals drift or weak evidence, return to the right truth or execution surface instead of hand-waving through gate.
+- If support output is only advisory, say so explicitly and route back.
+- Support surfaces such as `beacon-friction-intake` may run host-visible commands like `beacon friction-intake run ...`, but they still do not become truth or gate stages.
 
 ## Examples
 
 - 适用例：
-  - “我想用 Beacon 作为主工作流入口，但还不知道应该先进哪条 surface。”
-  - “我需要一个稳定的总入口，把 requirement、implementation、qa、release 和 support surface 路由清楚。”
+  - “我想用 Beacon 作为总入口，但先要判断现在属于哪种决策面。”
+  - “我需要一个稳定的元协议，把 truth、execution、qa、release 和 support surface 路由清楚。”
+  - “我知道 Beacon 很严谨，但这轮到底该先走主链还是先走 support？”
 - 不适用例：
-  - “我现在已经明确知道要去哪条具体 skill，而且只想看那条 skill 的边界。” -> 应直接进入对应子 skill
+  - “我已经明确知道要进哪条具体子 skill，而且只想看那条 skill 的边界。” -> 直接进入对应子 skill
 
 ## Cold-start anchors
 
-- Beacon 的主 skill 主要卖一个 promise: 帮宿主进入正确 surface，而不是解释全部 runtime 历史。
-- 主 `beacon` skill 不是总 runbook、总 release note，也不是完整 operator manual。
-- 当主 skill 开始承载过多版本叙事、命令矩阵或内部运行细节时，应把这些内容下沉到版本化 docs 或具体子 skill。
+- 主 `beacon` skill 的职责是路由和边界，不是总 runbook。
+- 好的入口不是把所有命令都摊开，而是先判断当前问题属于哪个决策面。
+- Beacon 的 support 面可以更强，但主链不应因此继续膨胀。

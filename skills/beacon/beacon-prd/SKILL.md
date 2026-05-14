@@ -105,6 +105,18 @@ The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.
 - `beacon brainstorm ...` for read-only convergence
 - `beacon change ...` for frozen-truth revision
 
+## Supporting References
+
+Use these lightweight references when they reduce ambiguity faster than free-form prompting:
+
+- `../references/requirement-closure-checklist.md`
+- `../references/research-closure-checklist.md`
+- `../references/business-flow-checklist.md`
+- `../references/state-machine-checklist.md`
+- `../references/freeze-readiness-checklist.md`
+
+These are support material only. They help close requirement reasoning, but they do not replace canonical truth under `docs/beacon/<version>/`.
+
 ## Examples
 
 - 适用例：

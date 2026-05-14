@@ -103,6 +103,16 @@ This skill routes execution work through Beacon's `implement` surface.
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
 
+## Supporting References
+
+Use these lightweight references when implementation needs a tighter support frame before coding or repair:
+
+- `../references/business-flow-checklist.md`
+- `../references/state-machine-checklist.md`
+- `../references/support-surface-routing-cheatsheet.md`
+
+When execution confusion is really context, source, performance, security, or blocker diagnosis, route through the matching support surface first, then come back to `implement`.
+
 ## Examples
 
 - 适用例：

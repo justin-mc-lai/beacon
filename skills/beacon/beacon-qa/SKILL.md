@@ -103,6 +103,17 @@ QA reads frozen requirement truth and implementation evidence, then evaluates la
 - `beacon implement ...` for repair handoff
 - `beacon release ...` only after layered evidence is sufficient
 
+## Supporting References
+
+Use these lightweight references when verification needs a faster human-readable closure frame:
+
+- `../references/qa-layer-checklist.md`
+- `../references/release-blocker-taxonomy.md`
+- `../references/state-machine-checklist.md`
+- `../references/support-surface-routing-cheatsheet.md`
+
+These references support layered judgment. They do not replace formal QA evidence.
+
 ## Protected live surfaces & browser runner admission
 
 Bare Playwright (clean context) against **live URLs** behind **Vercel Deployment Protection / SSO** often redirects to **“Log in to Vercel”**. That is usually an **environment + auth model** signal, not an automatic product regression. Route browser QA so operators **do not burn time on predictable SSO redirects** and **do not record false failures**.

@@ -100,6 +100,16 @@ Release consumes layered QA proof and version-surface governance, then makes the
 - `beacon qa ...` when proof is incomplete
 - `beacon doctor verify-version-surfaces --project-root . --strict`
 
+## Supporting References
+
+Use these lightweight references when the release conversation is blocked by human-readable ambiguity rather than missing commands:
+
+- `../references/release-blocker-taxonomy.md`
+- `../references/qa-layer-checklist.md`
+- `../references/support-surface-routing-cheatsheet.md`
+
+These references help classify blockers and route fallback correctly, but they do not replace release evidence or version-surface governance.
+
 ## Examples
 
 - 适用例：
