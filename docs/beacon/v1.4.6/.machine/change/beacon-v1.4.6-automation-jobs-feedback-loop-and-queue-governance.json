@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.6",
+  "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "status": "completed",
+  "summary": "Project-local automation/jobs now persists QA feedback ledger state, updates queue intent through explicit Beacon-governed rules, scaffolds project-local automation assets, freezes tiered executor capability boundaries, and emits one shared automation summary schema for wrappers and notification adapters.",
+  "change_type": "supplement",
+  "reason_code": "project_local_automation_feedback_loop",
+  "host_boundary": {
+    "scheduler_owner": "codex_automations_or_host_scheduler",
+    "truth_owner": "beacon",
+    "queue_execution_owner": "host_wrapper",
+    "gate_owner": "beacon",
+    "notification_owner": "host_wrapper"
+  },
+  "artifacts": {
+    "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "test_cases": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "change_doc": "docs/beacon/v1.4.6/change/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "feedback_ledger": ".beacon/automation/qa-feedback-ledger.json",
+    "summary_schema": ".beacon/automation-runs/<layer>/qa-summary-*.json"
+  },
+  "implementation_surface": {
+    "commands": [
+      "beacon automation init --project-root .",
+      "beacon automation summarize-qa --project-root .",
+      "beacon automation build-summary --project-root . --job <job> --layer <layer>",
+      "beacon automation update-queue --project-root .",
+      "beacon automation validate-queue --project-root ."
+    ],
+    "wrappers": [
+      "automation/jobs/beacon-qa-job.sh",
+      "automation/jobs/beacon-gated-implement-job.sh"
+    ],
+    "python_modules": [
+      "beacon/utils/automation_feedback.py",
+      "beacon/utils/automation_summary.py",
+      "beacon/utils/automation_queue.py",
+      "beacon/utils/automation_capabilities.py",
+      "beacon/utils/automation_executors.py",
+      "beacon/utils/automation_scaffold.py",
+      "beacon/commands/automation.py"
+    ]
+  },
+  "guardrails": [
+    "does_not_create_new_lifecycle_stage",
+    "does_not_rewrite_requirement_truth",
+    "queue_update_is_explicit_not_opportunistic",
+    "scheduler_runtime_remains_host_side",
+    "unsupported_executors_are_not_claimed_as_beacon_native_runtime_hosts",
+    "shared_summary_schema_is_transport_agnostic"
+  ],
+  "traceability_refs": [
+    "docs/analysis/codex-automations-and-beacon-capability-guide.md",
+    "automation/README.md",
+    "tests/test_automation_capabilities.py",
+    "tests/test_automation_executors.py",
+    "tests/test_automation_scaffold.py",
+    "tests/test_v146_automation_jobs_feedback_loop.py"
+  ],
+  "generated_at": "2026-05-14 07:05"
+}

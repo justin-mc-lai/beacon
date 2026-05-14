@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "version": "v1.4.6",
+  "revision_id": "",
+  "run_id": "run-20260514T070049Z-6424",
+  "implemented_at": "2026-05-14T07:00:51.158533+00:00",
+  "runner": "codex-subagents",
+  "skill": "",
+  "profile_id": "",
+  "git_commit": "999c312d578e50648e4c3851f25c0168c6d29053",
+  "services": [],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "codex-subagents implementation completed via implement-team flow",
+  "business_goal_summary": "codex-subagents implementation completed via implement-team flow",
+  "acceptance_scope": [],
+  "assumptions": [],
+  "simplicity_notes": [],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "",
+    "allowed_paths": []
+  },
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    "README.md",
+    "automation/README.md",
+    "automation/beacon-automation-queue.json",
+    "automation/jobs/beacon-gated-implement-job.sh",
+    "automation/jobs/beacon-qa-job.sh",
+    "beacon/commands/automation.py",
+    "beacon/commands/implement.py",
+    "beacon/commands/qa.py",
+    "beacon/commands/review.py",
+    "beacon/utils/automation_capabilities.py",
+    "beacon/utils/friction_intake.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/qa_feature.py",
+    "beacon/utils/qa_runtime.py",
+    "beacon/utils/ralph_runtime.py",
+    "beacon/utils/release_scorecard.py",
+    "beacon/utils/writeback.py",
+    "docs/analysis/codex-automations-and-beacon-capability-guide.md",
+    "docs/beacon/v1.4.5/SUMMARY.md",
+    "docs/beacon/v1.4.5/execution/index.md",
+    "docs/beacon/v1.4.6/.machine/change/v1.4.6.json",
+    "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-host.json",
+    "docs/beacon/v1.4.6/SUMMARY.md",
+    "docs/beacon/v1.4.6/change/v1.4.6.md",
+    "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
+    "docs/beacon/v1.4.6/execution/index.md",
+    "docs/beacon/v1.4.6/qa/test-cases/index.md",
+    "docs/beacon/v1.4.6/release/checklist-v1.4.6.md",
+    "docs/beacon/v1.4.6/release/v1.4.6.md",
+    "skills/beacon/SKILL.md",
+    "tests/test_automation_capabilities.py",
+    "tests/test_v110_runtime_closure.py",
+    "tests/test_v111_qa_scorecard_closure.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v133_ralph_resume_state_refresh.py",
+    "tests/test_v138_release_scorecard_gate_alignment.py",
+    "tests/test_v139_friction_intake.py",
+    "tests/test_v140_branch_governance_surface.py",
+    "tests/test_v144_qa_design_truth.py"
+  ],
+  "modules_touched": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa",
+    "README.md",
+    "automation/README.md",
+    "automation/beacon-automation-queue.json",
+    "automation/jobs",
+    "beacon/commands",
+    "beacon/utils",
+    "docs/analysis",
+    "docs/beacon",
+    "skills/beacon",
+    "tests/test_automation_capabilities.py",
+    "tests/test_v110_runtime_closure.py",
+    "tests/test_v111_qa_scorecard_closure.py",
+    "tests/test_v114_implement_command.py",
+    "tests/test_v133_ralph_resume_state_refresh.py",
+    "tests/test_v138_release_scorecard_gate_alignment.py",
+    "tests/test_v139_friction_intake.py",
+    "tests/test_v140_branch_governance_surface.py",
+    "tests/test_v144_qa_design_truth.py"
+  ],
+  "additions": [],
+  "modifications": [],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "beacon implement run --runner codex-subagents",
+      "status": "passed"
+    },
+    {
+      "command": "auto-test-status",
+      "status": "passed",
+      "evidence": ".beacon/auto-test-status.json"
+    }
+  ],
+  "verification_signals": {
+    "count": 2,
+    "has_acceptance_scope": false,
+    "has_assumptions": false
+  },
+  "known_risks": [],
+  "rollback_notes": [],
+  "compatibility_notes": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R1",
+    "source_revision_id": "",
+    "revision_delta_ref": "docs/beacon/v1.4.6/.machine/execution/revision-delta-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.6/execution/revision-delta-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability": {
+    "request_path": ".beacon/implement/run-20260514T070049Z-6424/request.json",
+    "result_path": ".beacon/implement/run-20260514T070049Z-6424/result.json",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

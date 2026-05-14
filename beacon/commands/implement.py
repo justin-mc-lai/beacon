@@ -69,8 +69,10 @@ from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
 from beacon.utils.project_metadata import resolve_project_metadata_view
+from beacon.utils.prototype_support import feature_requires_prototype
 from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.requirement_deepening import load_requirement_completeness, requirement_paths
+from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.ralph_runtime import (
     append_ralph_round,
     finalize_ralph_state,
@@ -486,6 +488,66 @@ def _refresh_ralph_state_after_resume(
 
     if updated:
         save_ralph_state(project_root, feature=feature, payload=state)
+
+
+def _reconcile_ralph_state_with_release_truth(project_root: Path, *, feature: str, state: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(state, dict) or not state:
+        return state
+    version = str(state.get("version", "") or "").strip()
+    if not version:
+        return state
+    stop_state = str(state.get("stop_state", "") or "").strip()
+    current_blocker = str(state.get("current_blocker", "") or "").strip()
+    if stop_state != "human_blocked" or current_blocker not in {"gate_release_blocked", "deep_loop_unclosed"}:
+        return state
+
+    release_scorecard = build_release_scorecard(project_root, version=version)
+    release_ready = bool(release_scorecard.get("release_ready", False))
+    gate = release_scorecard.get("gate") if isinstance(release_scorecard.get("gate"), dict) else {}
+    gate_status = str(gate.get("status") or "").strip().lower()
+    if release_ready:
+        state.update(
+            {
+                "stop_state": "release_ready",
+                "current_blocker": "",
+                "next_action": "release",
+                "recommended_command": f"beacon release check {version} --project {project_root}",
+                "gate_release_status": "pass",
+                "updated_at": now_iso(),
+            }
+        )
+        save_ralph_state(project_root, feature=feature, payload=state)
+        return state
+
+    if gate_status == "pass":
+        reason_codes = list(gate.get("reason_codes") or [])
+        deep_release_supplement = (
+            release_scorecard.get("deep_release_supplement")
+            if isinstance(release_scorecard.get("deep_release_supplement"), dict)
+            else {}
+        )
+        if bool(deep_release_supplement.get("blocked", False)):
+            state.update(
+                {
+                    "current_blocker": str(deep_release_supplement.get("reason_code") or "deep_loop_unclosed"),
+                    "next_action": "release",
+                    "recommended_command": str(deep_release_supplement.get("recommended_command") or f'beacon deep run "{feature}" --project-root {project_root} --version {version} --json'),
+                    "gate_release_status": "pass",
+                    "updated_at": now_iso(),
+                }
+            )
+            save_ralph_state(project_root, feature=feature, payload=state)
+            return state
+        if reason_codes:
+            state.update(
+                {
+                    "current_blocker": str(reason_codes[0] or "release_not_ready"),
+                    "gate_release_status": "pass",
+                    "updated_at": now_iso(),
+                }
+            )
+            save_ralph_state(project_root, feature=feature, payload=state)
+    return state
 
 
 def _technical_archive_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
@@ -1295,6 +1357,29 @@ def _read_json_dict(path: Path) -> dict[str, Any]:
 
 
 def _implementation_design_truth(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    if not feature_requires_prototype(project_root, version, feature):
+        return {
+            "schema_version": "1.0",
+            "status": "not_applicable",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": version,
+            "source_surface": "prototype",
+            "consumption_surface": "implement",
+            "mode": "",
+            "allowed_inputs": [],
+            "blocked_human_inputs": [],
+            "refs": {},
+            "missing_refs": [],
+            "design_preset": "",
+            "canonical_design_preset": "",
+            "preset_source": "",
+            "preset_family": "",
+            "template_catalog_count": 0,
+            "anti_ai_ui_contract": {},
+            "template_layout_rules": [],
+            "interaction_discipline_rules": [],
+        }
     files = prototype_files(project_root, version, feature)
     implementation_index = _read_json_dict(files["implementation_index"])
     implementation_map = _read_json_dict(files["implementation_map"])
@@ -4352,6 +4437,7 @@ def ralph_status(
     if not payload:
         typer.echo("Ralph state not found", err=True)
         raise typer.Exit(2)
+    payload = _reconcile_ralph_state_with_release_truth(project_root, feature=feature, state=payload)
     payload = _with_implement_surface(payload)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

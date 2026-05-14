@@ -489,3 +489,26 @@ def test_gate_should_accept_authoritative_release_scorecard_for_legacy_docs_vers
 
     issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release", version=version)
     assert issues == []
+
+
+def test_gate_should_accept_authoritative_acceptance_coverage_even_when_release_ready_is_false(tmp_path: Path, monkeypatch):
+    version = "v1.4.6"
+    monkeypatch.setenv("BEACON_VERSION", version)
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "acceptance": {
+                "source": "qa_acceptance_envelope",
+                "coverage_current": {
+                    "required_scenarios": 16,
+                    "executed_scenarios": 16,
+                    "coverage_rate": 1.0,
+                },
+            },
+        },
+    )
+
+    issues = check_coverage_metrics(tmp_path, GateMode.STRICT, "release", version=version)
+    assert issues == []

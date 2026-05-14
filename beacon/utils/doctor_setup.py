@@ -165,17 +165,13 @@ def _build_launcher_script(
     source_exec = shlex.quote(str(source_path))
     if launcher_name == "beacon" and beacon_cli_source is not None:
         beacon_cli_exec = shlex.quote(str(beacon_cli_source))
-        source_exec = (
-            f"python3 -m beacon.main \"$@\"\n"
-            f"# fallback-cli: {beacon_cli_exec}"
-        )
         return (
             "#!/usr/bin/env bash\n"
             f"{DOCTOR_MANAGED_MARKER}\n"
             f"{DOCTOR_NAME_MARKER}{launcher_name}\n"
             f"{DOCTOR_SOURCE_MARKER}{source_path}\n"
             "set -euo pipefail\n"
-            f"exec {source_exec}\n"
+            f"exec {beacon_cli_exec} \"$@\"\n"
         )
     return (
         "#!/usr/bin/env bash\n"

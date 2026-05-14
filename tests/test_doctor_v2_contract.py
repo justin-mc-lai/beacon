@@ -318,7 +318,8 @@ def test_doctor_setup_should_install_beacon_launchers(tmp_path: Path):
     beacon_text = (bin_dir / "beacon").read_text(encoding="utf-8")
     beacon_cli_text = (bin_dir / "beacon-cli").read_text(encoding="utf-8")
     assert "# beacon-doctor-name: beacon\n" in beacon_text
-    assert "python3 -m beacon.main \"$@\"" in beacon_text
+    assert "beacon-cli" in beacon_text
+    assert "python3 -m beacon.main \"$@\"" not in beacon_text
     assert "# beacon-doctor-name: beacon-cli\n" in beacon_cli_text
     assert "beacon-cli \"$@\"" in beacon_cli_text or "beacon-cli" in beacon_cli_text
 

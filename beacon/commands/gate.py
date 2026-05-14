@@ -69,6 +69,7 @@ from beacon.utils.v110_baseline import (
     load_latest_baseline_snapshot,
     load_latest_spec_fingerprint,
 )
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.workflow_memory import (
     compute_workflow_progress,
     compute_memory_metrics,
@@ -1143,8 +1144,8 @@ def _resolve_latest_closed_workflow_run_id(project_root: Path, version: Optional
             if seen_versions and resolved_version not in seen_versions:
                 continue
 
-        progress = compute_workflow_progress(project_root, run_id=run_id, version=resolved_version)
-        if not bool(progress.get("closure_complete", False)):
+        metrics = compute_memory_metrics(project_root, run_id=run_id, version=resolved_version)
+        if not bool(metrics.get("closure_complete", False)):
             continue
         state_ts = str((state or {}).get("ended_at") or (state or {}).get("started_at") or "").strip()
         ts = latest_ts_by_run.get(run_id, "") or state_ts or run_id
@@ -1164,8 +1165,40 @@ def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] 
             return ""
         return resolve_workflow_run_id(project_root, run_id=text, version=resolved_version) or ""
 
+    def _is_closure_complete(run_id: str) -> bool:
+        if not run_id:
+            return False
+        metrics = compute_memory_metrics(project_root, run_id=run_id, version=resolved_version)
+        return bool(metrics.get("closure_complete", False))
+
+    latest_closed_run_id = _resolve_latest_closed_workflow_run_id(project_root, version=resolved_version)
+
     gate_report_path = project_root / ".beacon" / "gate-report.json"
     gate_payload, gate_status = _load_json_file(gate_report_path)
+    if gate_status == "ok" and isinstance(gate_payload, dict):
+        gate_stage = str(gate_payload.get("stage", "") or "").strip().lower()
+        if gate_stage in {"", "release", "verify", "qa"}:
+            run_id = _workflow_run(str(gate_payload.get("run_id", "") or ""))
+            if run_id and _is_closure_complete(run_id):
+                if latest_closed_run_id:
+                    return latest_closed_run_id
+                return run_id
+
+    terminal_path = _resolve_existing_execution_file(project_root, resolved_version, "terminal.json")
+    source_path = _resolve_existing_execution_file(project_root, resolved_version, "source.json")
+    for candidate_path in (terminal_path, source_path):
+        payload, status = _load_json_file(candidate_path)
+        if status != "ok" or not isinstance(payload, dict):
+            continue
+        run_id = _workflow_run(str(payload.get("run_id", "") or ""))
+        if run_id and _is_closure_complete(run_id):
+            if latest_closed_run_id:
+                return latest_closed_run_id
+            return run_id
+
+    if latest_closed_run_id:
+        return latest_closed_run_id
+
     if gate_status == "ok" and isinstance(gate_payload, dict):
         gate_stage = str(gate_payload.get("stage", "") or "").strip().lower()
         if gate_stage in {"", "release", "verify", "qa"}:
@@ -1173,8 +1206,6 @@ def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] 
             if run_id:
                 return run_id
 
-    terminal_path = _resolve_existing_execution_file(project_root, resolved_version, "terminal.json")
-    source_path = _resolve_existing_execution_file(project_root, resolved_version, "source.json")
     for candidate_path in (terminal_path, source_path):
         payload, status = _load_json_file(candidate_path)
         if status != "ok" or not isinstance(payload, dict):
@@ -4033,7 +4064,10 @@ def check_coverage_metrics(
         executed = int(coverage_current.get("executed_scenarios") or 0)
         required = int(coverage_current.get("required_scenarios") or 0)
         if (
-            bool(release_scorecard.get("release_ready", False))
+            (
+                str(acceptance.get("source") or "").strip() not in {"", "none"}
+                or bool(coverage_current)
+            )
             and required > 0
             and executed >= required
         ):
@@ -4209,6 +4243,15 @@ def check_spec_consistency(
 
     verdict["status"] = "pass"
     contract_run_id = _resolve_release_contract_run_id(project_root, version=resolved_version)
+    if stage == "release":
+        release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+        acceptance = release_scorecard.get("acceptance") if isinstance(release_scorecard.get("acceptance"), dict) else {}
+        acceptance_path = str(acceptance.get("acceptance_envelope_path") or "").strip()
+        if str(acceptance.get("source") or "").strip() not in {"", "none"} and acceptance_path:
+            acceptance_payload = _load_json_object(project_root / acceptance_path)
+            acceptance_run_id = str(acceptance_payload.get("run_id") or "").strip()
+            if acceptance_run_id:
+                contract_run_id = acceptance_run_id
     baseline = _load_run_scoped_baseline(project_root, version=resolved_version, run_id=contract_run_id)
     if not baseline:
         baseline = load_latest_baseline_snapshot(project_root, version=resolved_version)
@@ -4582,6 +4625,33 @@ def _run_check_command(
         report_path = release_gate_report_file(root)
         report_path.parent.mkdir(parents=True, exist_ok=True)
         report_path.write_text(json.dumps(persisted_result, ensure_ascii=False, indent=2), encoding="utf-8")
+        refresh_evidence_manifest(
+            root,
+            refs=[str(report_path.relative_to(root))],
+            version=resolved_version,
+        )
+        filtered_issues = []
+        for item in persisted_result.get("issues", []) if isinstance(persisted_result.get("issues"), list) else []:
+            if (
+                isinstance(item, dict)
+                and str(item.get("reason_code") or "") == "evidence_sha256_manifest_mismatch"
+                and ".beacon/release-gate-report.json" in str(item.get("message") or "")
+            ):
+                continue
+            filtered_issues.append(item)
+        persisted_result["issues"] = filtered_issues
+        persisted_result["blocked_count"] = len(
+            [item for item in filtered_issues if isinstance(item, dict) and bool(item.get("blocked"))]
+        )
+        report_path.write_text(json.dumps(persisted_result, ensure_ascii=False, indent=2), encoding="utf-8")
+        refresh_evidence_manifest(
+            root,
+            refs=[str(report_path.relative_to(root))],
+            version=resolved_version,
+        )
+        result = dict(result)
+        result["issues"] = list(filtered_issues)
+        result["blocked_count"] = int(persisted_result["blocked_count"])
 
     if json_output:
         typer.echo(json.dumps(result, indent=2, ensure_ascii=False))

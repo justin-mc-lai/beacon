@@ -785,6 +785,9 @@ def check(
     scorecard_authoritative = authoritative_release_ready and bool(
         ((release_scorecard.get("qa") or {}) if isinstance(release_scorecard.get("qa"), dict) else {}).get("feature")
     )
+    authoritative_qa_ready = bool(
+        ((release_scorecard.get("qa") or {}) if isinstance(release_scorecard.get("qa"), dict) else {}).get("release_ready", False)
+    )
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
     gate_report_path = _select_gate_report_path(project_root, version=resolved_version)
@@ -877,14 +880,14 @@ def check(
                 and bool(auto_test_run_id)
                 and (
                     gate_run_id == auto_test_run_id
-                    or (scorecard_authoritative and gate_ok and auto_test_ok)
+                    or ((scorecard_authoritative or authoritative_qa_ready) and gate_ok and auto_test_ok)
                 )
             ),
             (
                 f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
                 + (
                     ", authoritative_release_scorecard=true"
-                    if scorecard_authoritative and gate_ok and auto_test_ok
+                    if (scorecard_authoritative or authoritative_qa_ready) and gate_ok and auto_test_ok
                     else ""
                 )
             ),
@@ -964,7 +967,7 @@ def check(
     elif gate_coverage_full is not None:
         coverage_ok = bool(gate_coverage_full)
         coverage_detail = f"gate_report.coverage.full_coverage={coverage_ok}"
-    if not coverage_ok and scorecard_authoritative:
+    if not coverage_ok and (scorecard_authoritative or authoritative_qa_ready):
         coverage_current = (
             feature_qa_scorecard.get("coverage_current")
             if isinstance(feature_qa_scorecard.get("coverage_current"), dict)

@@ -8,6 +8,7 @@ from typing import Any
 from beacon.utils.control_plane import record_stage_failure, record_stage_success
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.versioning import normalize_version
 
 
 def ralph_state_path(project_root: Path, *, feature: str) -> Path:
@@ -184,6 +185,37 @@ def _requirement_gate_handoff(payload: dict[str, Any]) -> tuple[str, str, str]:
     return reason, next_action, command
 
 
+def _canonical_review_quality_payload(project_root: Path, *, feature: str, review_quality: dict[str, Any] | None) -> dict[str, Any]:
+    payload = review_quality.get("payload") if isinstance(review_quality, dict) and isinstance(review_quality.get("payload"), dict) else {}
+    if bool(payload.get("gate_ready", False)):
+        return payload
+    candidate_paths: list[Path] = []
+    review_paths = review_quality.get("paths") if isinstance(review_quality, dict) and isinstance(review_quality.get("paths"), dict) else {}
+    json_path = str(review_paths.get("json", "") or "").strip()
+    if json_path:
+        path = Path(json_path)
+        candidate_paths.append(path if path.is_absolute() else project_root / path)
+    machine_json = review_quality.get("artifacts", {}).get("json") if isinstance(review_quality, dict) and isinstance(review_quality.get("artifacts"), dict) else ""
+    if str(machine_json or "").strip():
+        path = Path(str(machine_json).strip())
+        candidate_paths.append(path if path.is_absolute() else project_root / path)
+    feature_slug_value = feature_slug(feature)
+    docs_root = project_root / "docs" / "beacon"
+    if docs_root.exists():
+        for version_dir in sorted(docs_root.iterdir()):
+            if not version_dir.is_dir():
+                continue
+            version_name = normalize_version(version_dir.name)
+            if not version_name:
+                continue
+            candidate_paths.append(version_dir / ".machine" / "execution" / f"review-quality-{feature_slug_value}.json")
+    for path in candidate_paths:
+        loaded = read_json(path, {})
+        if isinstance(loaded, dict) and loaded:
+            return loaded
+    return payload if isinstance(payload, dict) else {}
+
+
 def finalize_ralph_state(
     project_root: Path,
     *,
@@ -194,7 +226,7 @@ def finalize_ralph_state(
     gate_release: dict[str, Any] | None,
 ) -> dict[str, Any]:
     state = load_ralph_state(project_root, feature=feature)
-    review_payload = review_quality.get("payload") if isinstance(review_quality, dict) and isinstance(review_quality.get("payload"), dict) else {}
+    review_payload = _canonical_review_quality_payload(project_root, feature=feature, review_quality=review_quality)
     qa_payload = auto_qa.get("payload") if isinstance(auto_qa, dict) and isinstance(auto_qa.get("payload"), dict) else {}
     feature_scorecard = qa_payload.get("feature_scorecard") if isinstance(qa_payload.get("feature_scorecard"), dict) else {}
     continue_decision = str(feature_scorecard.get("continue_decision", "") or "").strip()

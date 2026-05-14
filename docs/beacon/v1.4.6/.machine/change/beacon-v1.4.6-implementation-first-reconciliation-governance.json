@@ -1,0 +1,43 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.6",
+  "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "status": "implemented",
+  "summary": "When execution outruns frozen truth, Beacon must recover through beacon-change, preserve drift provenance, and require reprojection of affected proof instead of pretending post-hoc writeback was truth-first delivery.",
+  "change_type": "supplement",
+  "reason_code": "truth_recovery_governance",
+  "artifacts": {
+    "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "test_cases": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "change_doc": "docs/beacon/v1.4.6/change/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "reconciliation_artifact": "docs/beacon/<version>/.machine/change/<feature>-reconciliation.json"
+  },
+  "implementation_surface": {
+    "routes": [
+      "beacon-change",
+      "beacon-implement",
+      "beacon-qa",
+      "beacon-release"
+    ],
+    "skills": [
+      "skills/beacon/beacon-change/SKILL.md",
+      "skills/beacon/beacon-implement/SKILL.md",
+      "skills/beacon/beacon-qa/SKILL.md"
+    ]
+  },
+  "guardrails": [
+    "does_not_create_new_lifecycle_stage",
+    "reconciliation_routes_through_change",
+    "support_surfaces_do_not_become_truth_sources",
+    "post_hoc_writeback_must_not_erase_provenance",
+    "affected_proof_requires_reprojection"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.6/change/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
+    "skills/beacon/beacon-change/SKILL.md",
+    "skills/beacon/beacon-implement/SKILL.md"
+  ]
+}

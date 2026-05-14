@@ -1,0 +1,499 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-v1.4.6-implementation-first-reconciliation-governance-r1",
+  "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "version": "v1.4.6",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:c46b59d8d50fcab62b3c69401e28cd1695dc0fe1121c66c0fb6ea34f0fa8fd56",
+  "plan_hash": "sha256:b30fe645f71c72a845dc606e223477857c2bf7c0f22410c0127be32982dbf780",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "test_case": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "ac_matrix": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-implementation-first-reconciliation-governance.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-implementation-first-reconciliation-governance.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-implementation-first-reconciliation-governance.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.6/.machine/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.6",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-05-14T06:48:42.052483+00:00",
+    "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "prd_ref": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "user_story_ref": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "version": "v1.4.6",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.6/research/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.4.6/.machine/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Beacon 必须定义 implementation-first reconciliation 为异常恢复语义",
+      "description": "该语义必须明确表示： truth drift 已经发生 当前动作是恢复，不是普通 writeback 后续需要 re-freeze",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-RECON46-001",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-013",
+        "TC-014"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RECON46-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Reconciliation 必须通过 `beacon-change` 路由",
+      "description": "Beacon 不得新增并鼓励使用新的一级 public stage 处理该问题。 正式 route 必须仍为： `beacon-change`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-RECON46-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RECON46-002"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Beacon 必须冻结 reconciliation artifact contract",
+      "description": "至少包含： feature / version drift_detected_at 或 equivalent recovery timestamp implementation_artifacts missing_truth_surfaces recovery_reason truth_surfaces_backfilled re_freeze_status reprojection_targets",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-RECON46-003",
+        "TC-RECON46-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RECON46-003",
+        "TC-RECON46-004"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 补 truth 后必须重新收口受影响 proof",
+      "description": "若 reconciliation 影响 acceptance、coverage、scope、promise、release claim，则 Beacon 必须要求重新投影或重跑相关 proof。 至少显式列出： `user-story` `qa/test-cases` QA proof release-facing proof",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-RECON46-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RECON46-005"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Beacon 不得把 reconciliation 伪装成正常 truth-first 交付",
+      "description": "在 human-facing 和 machine-facing contract 中，都必须能看出： this feature required recovery post-hoc writeback did occur the final state should not erase the drift history ## 6. 验收标准 | AC ID | 说明 | | --- | --- | | AC-001 | Beacon defines implementation-first reconciliation as recovery semantics rather than a normal delivery mode | | AC-002 | implementation-first reconciliation routes through `beacon-change` instead of a new public stage | | AC-003 | Beacon freezes a minimal reconciliation artifact contract | | AC-004 | affected truth and proof surfaces must be reprojected or revalidated after reconciliation | | AC-005 | Beacon preserves drift provenance instead of treating post-hoc writeback as if it were pre-implementation truth |",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-v1.4.6-implementation-first-reconciliation-governance\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6",
+    "run_command": "beacon implement team-run \"beacon-v1.4.6-implementation-first-reconciliation-governance\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.6",
+    "dev_run_command": "beacon implement dev-run \"beacon-v1.4.6-implementation-first-reconciliation-governance\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.6",
+    "ralph_command": "beacon implement run \"beacon-v1.4.6-implementation-first-reconciliation-governance\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-v1.4.6-implementation-first-reconciliation-governance\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.6",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "version": "v1.4.6",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.6",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.6.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-14T06:48:42.052642+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-implementation-first-reconciliation-governance-R1",
+    "transaction_id": "tx-f5d460a9460199081",
+    "source_hash": "sha256:df9ea8e093c41b533bdcc06401f65b07ff5330ff38c558452b61e1c94e102bf1",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-implementation-first-reconciliation-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.6/.machine/execution/git-workflow-beacon-v1.4.6-implementation-first-reconciliation-governance.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.6/execution/git-workflow-beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.6",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+      "user_story": "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+      "test_case": "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-implementation-first-reconciliation-governance.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-implementation-first-reconciliation-governance-R1",
+    "transaction_id": "tx-f5d460a9460199081",
+    "source_hash": "sha256:df9ea8e093c41b533bdcc06401f65b07ff5330ff38c558452b61e1c94e102bf1",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-implementation-first-reconciliation-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.6/.machine/execution/implementation-delivery-baseline-beacon-v1.4.6-implementation-first-reconciliation-governance.json",
+  "generated_at": "2026-05-14T06:48:42.092901+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.6-beacon-v1.4.6-implementation-first-reconciliation-governance-R1",
+  "transaction_id": "tx-f5d460a9460199081",
+  "source_hash": "sha256:df9ea8e093c41b533bdcc06401f65b07ff5330ff38c558452b61e1c94e102bf1",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-14T06:48:42.092964+00:00"
+}

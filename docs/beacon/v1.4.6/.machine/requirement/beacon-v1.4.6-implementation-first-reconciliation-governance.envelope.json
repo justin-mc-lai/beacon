@@ -1,0 +1,141 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+  "version": "v1.4.6",
+  "generated_at": "2026-05-14T06:47:33.961775+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "user_story": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "research": "research:docs/beacon/v1.4.6/research/beacon-v1.4.6-implementation-first-reconciliation-governance.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.6-implementation-first-reconciliation-governance`",
+      "Version**: `v1.4.6`",
+      "Date**: `2026-05-14`",
+      "Status**: `freeze-ready`",
+      "Track**: `anti-drift-recovery + change-governance`",
+      "Scenario**: `execution_outpaces_frozen_truth_and_must_be_honestly_reconciled`",
+      " Version summary: `docs/beacon/v1.4.6/SUMMARY.md`",
+      " Anti-drift baseline:",
+      " `docs/beacon/v1.4.6/prd/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md`",
+      " Existing change router:",
+      " `skills/beacon/beacon-change/SKILL.md`",
+      " Existing implement boundary:",
+      " `skills/beacon/beacon-implement/SKILL.md`",
+      " Product tension:"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.6-implementation-first-reconciliation-governance`",
+      "Version**: `v1.4.6`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer or operator recovering from a case where implementation landed before requirement truth was refreshed,",
+      "I want** Beacon to treat that situation as a governed recovery path routed through `beacon-change` with explicit provenance and reprojection requirements,",
+      "So that** the system can recover honesty without pretending post-hoc writeback was truth-first delivery.",
+      " AC-001 Beacon defines implementation-first reconciliation as recovery semantics rather than a normal delivery mode.",
+      " AC-002 implementation-first reconciliation routes through `beacon-change` instead of a new public stage.",
+      " AC-003 Beacon freezes a minimal reconciliation artifact contract."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.6-implementation-first-reconciliation-governance`",
+      "Version**: `v1.4.6`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-RECON46-001 | docs | `python3 -m pytest -q tests/test_v146_implementation_first_reconciliation_governance.py -k \"reconciliation_is_defined_as_recovery_not_normal_delivery\"` | Beacon defines implementation-first reconciliation as recovery semantics rather than a normal delivery mode |",
+      "| AC-002 | TC-RECON46-002 | docs | `python3 -m pytest -q tests/test_v146_implementation_first_reconciliation_governance.py -k \"reconciliation_routes_through_change_not_new_stage\"` | implementation-first reconciliation routes through `beacon-change` instead of a new public stage |",
+      "| AC-003 | TC-RECON46-003 | contract | `python3 -m pytest -q tests/test_v146_implementation_first_reconciliation_governance.py -k \"reconciliation_artifact_contract_is_frozen\"` | Beacon freezes a minimal reconciliation artifact contract |",
+      "| AC-004 | TC-RECON46-004 | docs | `python3 -m pytest -q tests/test_v146_implementation_first_reconciliation_governance.py -k \"reconciliation_requires_reprojection_of_affected_proof\"` | affected truth and proof surfaces must be reprojected or revalidated after reconciliation |",
+      "| AC-005 | TC-RECON46-005 | boundary | `python3 -m pytest -q tests/test_v146_implementation_first_reconciliation_governance.py -k \"reconciliation_preserves_drift_provenance\"` | Beacon preserves drift provenance instead of treating post-hoc writeback as if it were pre-implementation truth |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+    "version": "v1.4.6",
+    "source": "research:docs/beacon/v1.4.6/research/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

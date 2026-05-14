@@ -4,7 +4,13 @@ import importlib
 import json
 from pathlib import Path
 
-from beacon.commands.gate import GateMode, _resolve_release_contract_run_id, check_release_memory_profile, check_spec_consistency
+from beacon.commands.gate import (
+    GateMode,
+    _resolve_latest_closed_workflow_run_id,
+    _resolve_release_contract_run_id,
+    check_release_memory_profile,
+    check_spec_consistency,
+)
 from beacon.utils.runtime import write_json
 
 
@@ -50,6 +56,303 @@ def test_v140_release_contract_run_prefers_verify_gate_report_run(tmp_path: Path
     )
 
     assert _resolve_release_contract_run_id(tmp_path, version=VERSION) == "run-current"
+
+
+def test_v140_release_contract_run_prefers_latest_closed_workflow_over_stale_execution_artifacts(tmp_path: Path) -> None:
+    _write_json(
+        tmp_path / ".beacon" / "runs" / "run-old" / "state.json",
+        {
+            "run_id": "run-old",
+            "workflow": "workflow.start",
+            "version": VERSION,
+            "started_at": "2026-05-14T00:00:00Z",
+            "ended_at": "2026-05-14T00:05:00Z",
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "runs" / "run-new" / "state.json",
+        {
+            "run_id": "run-new",
+            "workflow": "workflow.start",
+            "version": VERSION,
+            "started_at": "2026-05-14T00:10:00Z",
+            "ended_at": "2026-05-14T00:15:00Z",
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "gate-report.json",
+        {"run_id": "run-old", "stage": "verify", "version": VERSION},
+    )
+    _write_json(
+        tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / "terminal.json",
+        {"run_id": "run-old", "version": VERSION},
+    )
+    lifecycle_items: list[dict[str, object]] = []
+    for run_id, prefix in (("run-old", "2026-05-14T00"), ("run-new", "2026-05-14T01")):
+        for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release")):
+            lifecycle_items.extend(
+                [
+                    {
+                        "event_id": f"{run_id}-{stage}-started",
+                        "run_id": run_id,
+                        "stage": stage,
+                        "event": "stage_started",
+                        "source": "test",
+                        "source_session_id": run_id,
+                        "evidence_ref": [],
+                        "ts": f"{prefix}:00:0{idx}Z",
+                        "attempt_seq": 1,
+                    },
+                    {
+                        "event_id": f"{run_id}-{stage}-context",
+                        "run_id": run_id,
+                        "stage": stage,
+                        "event": "stage_context_injected",
+                        "source": "test",
+                        "source_session_id": run_id,
+                        "evidence_ref": [],
+                        "ts": f"{prefix}:01:0{idx}Z",
+                        "attempt_seq": 1,
+                    },
+                    {
+                        "event_id": f"{run_id}-{stage}-finished",
+                        "run_id": run_id,
+                        "stage": stage,
+                        "event": "stage_finished",
+                        "source": "test",
+                        "source_session_id": run_id,
+                        "evidence_ref": [],
+                        "ts": f"{prefix}:02:0{idx}Z",
+                        "attempt_seq": 1,
+                    },
+                    {
+                        "event_id": f"{run_id}-{stage}-writeback",
+                        "run_id": run_id,
+                        "stage": stage,
+                        "event": "memory_writeback",
+                        "source": "test",
+                        "source_session_id": run_id,
+                        "evidence_ref": [],
+                        "ts": f"{prefix}:03:0{idx}Z",
+                        "attempt_seq": 1,
+                    },
+                ]
+            )
+    _write_json(
+        tmp_path / ".beacon" / "memory" / "workflow-lifecycle.json",
+        {
+            "schema_version": "1.0",
+            "updated_at": "2026-05-14T01:10:00Z",
+            "items": lifecycle_items,
+        },
+    )
+
+    assert _resolve_release_contract_run_id(tmp_path, version=VERSION) == "run-new"
+
+
+def test_v140_release_contract_run_falls_back_to_latest_closed_workflow_run(tmp_path: Path) -> None:
+    _write_json(
+        tmp_path / ".beacon" / "runs" / "run-closed" / "state.json",
+        {
+            "run_id": "run-closed",
+            "workflow": "workflow.start",
+            "version": VERSION,
+            "started_at": "2026-05-14T00:00:00Z",
+            "ended_at": "2026-05-14T00:10:00Z",
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "gate-report.json",
+        {
+            "run_id": "run-verify-only",
+            "stage": "verify",
+            "version": VERSION,
+        },
+    )
+    lifecycle_path = tmp_path / ".beacon" / "memory" / "workflow-lifecycle.json"
+    _write_json(
+        lifecycle_path,
+        {
+            "schema_version": "1.0",
+            "updated_at": "2026-05-14T00:10:00Z",
+            "items": [
+                {
+                    "event_id": f"{stage}-started",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_started",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:00:0{idx}Z",
+                }
+                for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release"))
+            ]
+            + [
+                {
+                    "event_id": f"{stage}-context",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_context_injected",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:01:0{idx}Z",
+                }
+                for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release"))
+            ]
+            + [
+                {
+                    "event_id": f"{stage}-finished",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_finished",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:02:0{idx}Z",
+                }
+                for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release"))
+            ]
+            + [
+                {
+                    "event_id": f"{stage}-writeback",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "memory_writeback",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:03:0{idx}Z",
+                }
+                for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release"))
+            ]
+            + [
+                {
+                    "event_id": "verify-only",
+                    "run_id": "run-verify-only",
+                    "stage": "qa",
+                    "event": "memory_writeback",
+                    "source": "test",
+                    "source_session_id": "run-verify-only",
+                    "evidence_ref": [],
+                    "ts": "2026-05-14T00:20:00Z",
+                }
+            ],
+        },
+    )
+
+    assert _resolve_release_contract_run_id(tmp_path, version=VERSION) == "run-closed"
+
+
+def test_v140_latest_closed_run_should_use_memory_closure_contract(tmp_path: Path) -> None:
+    _write_json(
+        tmp_path / ".beacon" / "runs" / "run-closed" / "state.json",
+        {
+            "run_id": "run-closed",
+            "workflow": "workflow.start",
+            "version": VERSION,
+            "started_at": "2026-05-14T00:00:00Z",
+            "ended_at": "2026-05-14T00:10:00Z",
+        },
+    )
+    lifecycle_items: list[dict[str, object]] = []
+    for idx, stage in enumerate(("prd", "user-story", "test-case", "implement", "qa", "release")):
+        lifecycle_items.extend(
+            [
+                {
+                    "event_id": f"{stage}-started",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_started",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:00:0{idx}Z",
+                    "attempt_seq": 1,
+                },
+                {
+                    "event_id": f"{stage}-context",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_context_injected",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:01:0{idx}Z",
+                    "attempt_seq": 1,
+                },
+                {
+                    "event_id": f"{stage}-finished",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "stage_finished",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:02:0{idx}Z",
+                    "attempt_seq": 1,
+                },
+                {
+                    "event_id": f"{stage}-writeback",
+                    "run_id": "run-closed",
+                    "stage": stage,
+                    "event": "memory_writeback",
+                    "source": "test",
+                    "source_session_id": "run-closed",
+                    "evidence_ref": [],
+                    "ts": f"2026-05-14T00:03:0{idx}Z",
+                    "attempt_seq": 1,
+                },
+            ]
+        )
+    lifecycle_items.extend(
+        [
+            {
+                "event_id": "qa-retry-started",
+                "run_id": "run-closed",
+                "stage": "qa",
+                "event": "stage_started",
+                "source": "test",
+                "source_session_id": "run-closed",
+                "evidence_ref": [],
+                "ts": "2026-05-14T00:04:00Z",
+                "attempt_seq": 2,
+            },
+            {
+                "event_id": "qa-retry-context",
+                "run_id": "run-closed",
+                "stage": "qa",
+                "event": "stage_context_injected",
+                "source": "test",
+                "source_session_id": "run-closed",
+                "evidence_ref": [],
+                "ts": "2026-05-14T00:04:10Z",
+                "attempt_seq": 2,
+            },
+            {
+                "event_id": "qa-retry-finished",
+                "run_id": "run-closed",
+                "stage": "qa",
+                "event": "stage_finished",
+                "source": "test",
+                "source_session_id": "run-closed",
+                "evidence_ref": [],
+                "ts": "2026-05-14T00:04:20Z",
+                "attempt_seq": 2,
+            },
+        ]
+    )
+    _write_json(
+        tmp_path / ".beacon" / "memory" / "workflow-lifecycle.json",
+        {
+            "schema_version": "1.0",
+            "updated_at": "2026-05-14T00:10:00Z",
+            "items": lifecycle_items,
+        },
+    )
+
+    assert _resolve_latest_closed_workflow_run_id(tmp_path, version=VERSION) == "run-closed"
 
 
 def test_v140_release_memory_profile_checks_latest_release_event_only(tmp_path: Path, monkeypatch) -> None:
@@ -219,3 +522,44 @@ def test_v140_spec_consistency_blocks_current_verify_run_drift_even_with_old_rep
     assert "spec_impl_drift_detected" in reason_codes
     assert verdict["actual_spec_fingerprint"] == "post-qa-writeback-fingerprint"
     assert verdict["expected_spec_fingerprint"] == "current-fingerprint"
+
+
+def test_v140_spec_consistency_should_prefer_acceptance_run_fingerprint_for_release(tmp_path: Path, monkeypatch) -> None:
+    feature = "feature-a"
+    _write_json(
+        tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / f"qa-acceptance-{feature}.json",
+        {"feature": feature, "version": VERSION, "run_id": "run-acceptance", "verdict": "passed"},
+    )
+    write_json(
+        tmp_path / ".beacon" / "state" / "spec-fingerprints" / VERSION / "run-acceptance.json",
+        {
+            "run_id": "run-acceptance",
+            "version": VERSION,
+            "fingerprint_hash": "acceptance-fingerprint",
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "auto-test-status.json",
+        {
+            "status": "passed",
+            "version": VERSION,
+            "spec_fingerprint_hash": "acceptance-fingerprint",
+            "execution": {"spec_fingerprint": {"fingerprint_hash": "acceptance-fingerprint"}},
+        },
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "acceptance": {
+                "source": "qa_acceptance_envelope",
+                "feature": feature,
+                "acceptance_envelope_path": f"docs/beacon/{VERSION}/.machine/execution/qa-acceptance-{feature}.json",
+            }
+        },
+    )
+
+    issues, verdict = check_spec_consistency(tmp_path, GateMode.STRICT, "release", version=VERSION)
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "spec_impl_drift_detected" not in reason_codes
+    assert verdict["expected_spec_fingerprint"] == "acceptance-fingerprint"

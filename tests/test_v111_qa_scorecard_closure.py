@@ -4,6 +4,8 @@ from pathlib import Path
 
 from beacon.commands.auto_test import _collect_required_file_issues
 from beacon.utils.qa_feature import build_feature_qa_precision_artifacts
+from beacon.utils.revision_state import freeze_revision_state, reopen_revision_state
+from beacon.utils.writeback import record_implementation_writeback
 
 
 def test_feature_qa_precision_should_infer_required_families_from_source_tc_results(tmp_path: Path):
@@ -170,3 +172,47 @@ def test_feature_qa_precision_should_route_browser_session_blockers_to_qa_sessio
     assert "protected_surface_session_bridge_missing" in feature_scorecard["stop_reasons"]
     assert feature_scorecard["repair_handoff"]["action"] == "qa-session"
     assert "beacon qa session list" in feature_scorecard["repair_handoff"]["command"]
+
+
+def test_feature_qa_precision_should_require_reconciliation_before_acceptance(tmp_path: Path):
+    version = "v1.4.6"
+    feature = "QA Reconciliation Feature"
+    slug = "qa-reconciliation-feature"
+    version_root = tmp_path / "docs" / "beacon" / version
+    (version_root / "prd").mkdir(parents=True, exist_ok=True)
+    (version_root / "user-story").mkdir(parents=True, exist_ok=True)
+    (version_root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (version_root / "user-story" / f"{slug}.md").write_text(
+        "# User Story\n\n| AC ID | Theme | Description |\n| --- | --- | --- |\n| AC-001 | Recovery | QA must respect reconciliation |\n",
+        encoding="utf-8",
+    )
+    (version_root / "prd" / f"{slug}.md").write_text("# PRD\n", encoding="utf-8")
+    (version_root / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Cases\n", encoding="utf-8")
+
+    freeze_revision_state(tmp_path, version=version, feature=feature)
+    record_implementation_writeback(
+        tmp_path,
+        version=version,
+        feature=feature,
+        run_id="run-impl-r1",
+        implemented_item_ids=["AC-001"],
+        changed_files=["beacon/utils/writeback.py"],
+    )
+    reopen_revision_state(tmp_path, version=version, feature=feature, reason="change-request")
+    freeze_revision_state(tmp_path, version=version, feature=feature)
+
+    _, _, feature_scorecard, _, _ = build_feature_qa_precision_artifacts(
+        tmp_path,
+        feature=feature,
+        run_id="run-qa-recon",
+        plan={"version": version, "required_scenario_families": [], "targeted_source_tc_ids": [], "story_scenarios": {"stories": []}},
+        per_item_results=[],
+        qa_status={"quality_issues": []},
+        exhaustiveness={"status": "passed", "scenario_count": 0, "missing_axes": [], "missing_replay_scenarios": [], "missing_browser_evidence_scenarios": []},
+    )
+
+    assert feature_scorecard["continue_decision"] == "stop_for_repair"
+    assert "implementation_first_reconciliation_required" in feature_scorecard["stop_reasons"]
+    assert feature_scorecard["repair_handoff"]["action"] == "beacon-change"
+    assert "beacon change" in feature_scorecard["repair_handoff"]["command"]
+    assert feature_scorecard["release_ready"] is False

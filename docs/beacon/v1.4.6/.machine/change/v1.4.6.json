@@ -2,20 +2,34 @@
   "schema_version": "1.0",
   "version": "v1.4.6",
   "status": "generated",
-  "feature_count": 1,
+  "feature_count": 3,
   "features": [
     {
       "feature": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "feature_slug": "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
       "summary": "Host-visible skill contracts, support-surface bindings, and machine-checkable anti-drift enforcement implemented.",
       "status": "completed"
+    },
+    {
+      "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "summary": "Project-local automation/jobs now persists QA feedback ledger state, updates queue intent through explicit rules, scaffolds project-local automation assets, freezes tiered executor capability boundaries, and emits one shared automation summary schema for wrappers and notifications.",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+      "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+      "summary": "When execution outruns frozen truth, Beacon must recover through beacon-change, preserve drift provenance, and require reprojection of affected proof instead of pretending post-hoc writeback was truth-first delivery.",
+      "status": "completed"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 1,
+    "feature_count": 3,
     "ordered_feature_slugs": [
-      "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"
+      "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces",
+      "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "beacon-v1.4.6-implementation-first-reconciliation-governance"
     ],
     "waves": [
       {
@@ -38,6 +52,44 @@
             ],
             "parallelizable": false,
             "reason_code": "shared_skill_contract_surface"
+          },
+          {
+            "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+            "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "beacon/commands",
+              "beacon/utils",
+              "automation/jobs",
+              "docs/beacon",
+              "tests"
+            ],
+            "writable_services": [
+              "beacon/commands",
+              "beacon/utils",
+              "automation/jobs",
+              "docs/beacon",
+              "tests"
+            ],
+            "parallelizable": false,
+            "reason_code": "project_local_automation_feedback_loop"
+          },
+          {
+            "feature": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+            "feature_slug": "beacon-v1.4.6-implementation-first-reconciliation-governance",
+            "depends_on_features": [
+              "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"
+            ],
+            "direct_delivery_services": [
+              "skills/beacon",
+              "docs/beacon"
+            ],
+            "writable_services": [
+              "skills/beacon",
+              "docs/beacon"
+            ],
+            "parallelizable": false,
+            "reason_code": "truth_recovery_governance"
           }
         ]
       }
@@ -45,8 +97,19 @@
   },
   "added": [
     "beacon/utils/skill_contracts.py",
+    "beacon/utils/automation_feedback.py",
+    "beacon/utils/automation_executors.py",
+    "beacon/utils/automation_scaffold.py",
+    "tests/test_automation_executors.py",
     "tests/test_v146_anti_drift_skill_contracts.py",
-    "docs/beacon/v1.4.6/"
+    "tests/test_automation_scaffold.py",
+    "tests/test_v146_automation_jobs_feedback_loop.py",
+    "docs/beacon/v1.4.6/",
+    "docs/beacon/v1.4.6/prd/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/user-story/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/qa/test-cases/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/change/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/.machine/change/beacon-v1.4.6-implementation-first-reconciliation-governance.json"
   ],
   "removed": [],
   "fixed": [
@@ -55,13 +118,24 @@
     "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/support_surface_transactions.py`",
     "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/ceo_review_surface.py`",
     "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated `beacon/utils/design_review_surface.py`",
-    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated Beacon skill examples to current release-line anchors"
+    "[beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces] Updated Beacon skill examples to current release-line anchors",
+    "[beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance] Added executor-tiered automation scaffold, QA feedback ledger, and queue update CLI surfaces",
+    "[beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance] Updated automation wrappers to refresh feedback ledger and queue intent",
+    "[beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance] Added requirement package, machine change payload, and focused tests",
+    "[beacon-v1.4.6-implementation-first-reconciliation-governance] Added truth-recovery change package and machine payload for implementation-first reconciliation",
+    "[beacon-v1.4.6-implementation-first-reconciliation-governance] Added implementation writeback ledger, canonical reconciliation artifact, and help-route enforcement through beacon-change"
   ],
   "traceability_refs": [
     "docs/beacon/v1.4.6/change/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.md",
     "docs/beacon/v1.4.6/.machine/change/beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces.json",
+    "docs/beacon/v1.4.6/change/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md",
+    "docs/beacon/v1.4.6/.machine/change/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
+    "docs/beacon/v1.4.6/change/beacon-v1.4.6-implementation-first-reconciliation-governance.md",
+    "docs/beacon/v1.4.6/.machine/change/beacon-v1.4.6-implementation-first-reconciliation-governance.json",
     "docs/beacon/v1.4.6/execution/architecture-blueprint.md",
-    "tests/test_v146_anti_drift_skill_contracts.py"
+    "tests/test_automation_scaffold.py",
+    "tests/test_v146_anti_drift_skill_contracts.py",
+    "tests/test_v146_automation_jobs_feedback_loop.py"
   ],
   "generated_at": "2026-05-13 11:30"
 }

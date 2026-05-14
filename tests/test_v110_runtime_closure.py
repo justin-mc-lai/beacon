@@ -247,6 +247,8 @@ def test_v110_qa_run_should_emit_precision_artifacts(tmp_path: Path):
     assert qa_status["scenario_results_v2"]
     assert qa_status["feature_scorecard"]["release_ready"] is True
     assert qa_status["feature_scorecard"]["continue_decision"] == "ready_for_release"
+    assert qa_status["summary"]["continue_decision"] == "ready_for_release"
+    assert qa_status["summary"]["reconciliation_required"] is False
     assert qa_status["feature_scorecard"]["test_case_backfill_required"] is False
     assert qa_status["feature_scorecard"]["coverage_current"]["coverage_rate"] == 1.0
     assert (tmp_path / qa_status["ac_closure_path"]).exists()

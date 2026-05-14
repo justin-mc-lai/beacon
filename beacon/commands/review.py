@@ -836,6 +836,15 @@ def review_quality(
     gate_ready = not any(item.get("severity") == "critical" for item in issues)
     status = "pass" if gate_ready and not issues else ("fail" if not gate_ready else "warn")
 
+    if gate_ready:
+        obligations = update_artifact_update_obligation(
+            project_root,
+            feature=feature,
+            artifact="review_quality",
+            status="completed",
+            note="review quality passed and gate_ready=true",
+        )
+
     payload = {
         "schema_version": "1.0",
         "review_type": "quality",
@@ -862,15 +871,6 @@ def review_quality(
         markdown=_render_markdown("Beacon Review Quality", payload),
         artifact_name=artifact_name,
     )
-    if gate_ready:
-        update_artifact_update_obligation(
-            project_root,
-            feature=feature,
-            artifact="review_quality",
-            status="completed",
-            note="review quality passed and gate_ready=true",
-        )
-
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return

@@ -21,6 +21,7 @@ from beacon.utils.implementation_plan import (
 from beacon.utils.learning_loop import load_latest_evo_experiment
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.revision_state import load_revision_state
@@ -536,6 +537,16 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     git_workflow_contracts = list_implementation_git_workflow_contracts(project_root, version=resolved_version)
     revision_state = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=False) if feature else {}
     revision_binding = _revision_binding(revision_state)
+    reconciliation_gate = (
+        detect_implementation_first_reconciliation_needed(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_state=revision_state,
+        )
+        if feature and revision_state
+        else {}
+    )
     feature_change = _feature_change_payload(project_root, version=resolved_version, feature=feature) if feature else {}
     delivery_type = _delivery_type(revision_state, feature_change) if feature else ""
     requirement_completeness_gate = build_requirement_completeness_gate(
@@ -624,6 +635,15 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                 ],
             }
         )
+    if bool(reconciliation_gate.get("required")):
+        gate_status = "Blocked"
+        blocked_count = max(blocked_count, 1)
+        gate_reason_codes = sorted(
+            {
+                *gate_reason_codes,
+                str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required"),
+            }
+        )
     gate_pass = gate_status.strip().lower() == "pass"
     decision_summary = scorecard_state.get("counts") if isinstance(scorecard_state.get("counts"), dict) else {}
     project_profile_gate = qa_status.get("project_profile_gate") if isinstance(qa_status.get("project_profile_gate"), dict) else {}
@@ -682,24 +702,32 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and qa_version_match
             and acceptance_kit_pass
         )
+    requirement_clarity_status = str(requirement_clarity_gate.get("status") or "not_required").strip().lower()
+    requirement_clarity_ready = (
+        not bool(feature)
+        or requirement_clarity_status in {"", "pass", "not_required"}
+        or (
+            not bool(requirement_clarity_gate.get("blocked", False))
+            and not bool(requirement_clarity_state)
+        )
+    )
     if project_runtime_feature_enabled(
         project_root,
         "v1.3.3",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     ):
-        release_ready = (
-            release_ready
-            and bool(feature)
-            and bool(revision_binding.get("gate_bound_to_latest_revision", False))
-            and semantic_pass
-            and not bool(requirement_clarity_gate.get("blocked", False))
-            and bool(requirement_clarity_state)
-            and not bool(technical_review_gate.get("blocked", False))
-            and (
-                not bool(technical_review_gate.get("required", False))
-                or (
-                    str(technical_review_state.get("review_status") or "").strip().lower() in {"approved", "accepted"}
+            release_ready = (
+                release_ready
+                and bool(feature)
+                and bool(revision_binding.get("gate_bound_to_latest_revision", False))
+                and semantic_pass
+                and requirement_clarity_ready
+                and not bool(technical_review_gate.get("blocked", False))
+                and (
+                    not bool(technical_review_gate.get("required", False))
+                    or (
+                        str(technical_review_state.get("review_status") or "").strip().lower() in {"approved", "accepted"}
                     and bool(technical_review_state)
                 )
             )
@@ -719,7 +747,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_ready = release_ready and str(acceptance_transaction.get("status") or "warn").strip().lower() == "pass"
     if feature and requirement_completeness_gate:
         release_ready = release_ready and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
-    release_ready = release_ready and version_surface_governance_pass and deep_release_supplement_pass and test_contract_governance_pass
+    release_ready = release_ready and version_surface_governance_pass and deep_release_supplement_pass and test_contract_governance_pass and not bool(reconciliation_gate.get("required"))
     if (
         runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime)
         and gate_pass
@@ -743,6 +771,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and version_surface_governance_pass
         and deep_release_supplement_pass
         and test_contract_governance_pass
+        and not bool(reconciliation_gate.get("required"))
     ):
         release_ready = True
     release_delivery_read_model = load_delivery_read_model(
@@ -782,6 +811,11 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                         if str(code or "").strip()
                     ]
                     if test_contract_release_gate.get("blocked")
+                    else []
+                ),
+                *(
+                    [str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required")]
+                    if bool(reconciliation_gate.get("required"))
                     else []
                 ),
                 *browser_release_reason_codes,
@@ -824,6 +858,11 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                     if str(code or "").strip()
                 ]
                 if test_contract_release_gate.get("blocked")
+                else []
+            ),
+            *(
+                [str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required")]
+                if bool(reconciliation_gate.get("required"))
                 else []
             ),
             *browser_release_reason_codes,
@@ -887,6 +926,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
                 if str(code or "").strip()
             ]
         )
+    if bool(reconciliation_gate.get("required")):
+        host_native_reason_codes.append(str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required"))
     host_native_reason_codes.extend(browser_release_reason_codes)
     host_native_delivery = {
         "schema_version": "1.0",
@@ -977,6 +1018,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         },
         "deep_release_supplement": deep_release_supplement,
         "test_contract_governance": test_contract_governance,
+        "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
         "browser_release_reason_codes": browser_release_reason_codes,
         "prompt_boundary": prompt_boundary,
         "change_documents": change_documents,
@@ -1038,6 +1080,7 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     decisions = learning.get("decision_summary") if isinstance(learning.get("decision_summary"), dict) else {}
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
     host_native_delivery = payload.get("host_native_delivery") if isinstance(payload.get("host_native_delivery"), dict) else {}
+    reconciliation = payload.get("reconciliation") if isinstance(payload.get("reconciliation"), dict) else {}
     return {
         "release_ready": bool(payload.get("release_ready", False)),
         "gate_status": str(gate.get("status") or "unknown"),
@@ -1140,4 +1183,8 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "version_surface_governance_repair": list(version_surface_governance.get("repair_commands") or []),
         "host_native_delivery_status": str(host_native_delivery.get("status") or ""),
         "host_native_delivery_reason_codes": list(host_native_delivery.get("reason_codes") or []),
+        "reconciliation_required": bool(reconciliation.get("required", False)),
+        "reconciliation_reason_code": str(reconciliation.get("reason_code") or ""),
+        "reconciliation_artifact_path": str(reconciliation.get("artifact_path") or ""),
+        "reconciliation_reprojection_targets": list(((reconciliation.get("artifact") or {}).get("reprojection_targets")) or []),
     }

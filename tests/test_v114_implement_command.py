@@ -207,6 +207,46 @@ def test_implement_run_native_dry_run_should_not_materialize_tracked_delivery_ar
     assert not execution_file_output(tmp_path, "v1.1.4", "technical-implementation-my-feature.json").exists()
 
 
+def test_review_quality_should_emit_completed_review_quality_obligation_when_gate_ready(tmp_path: Path):
+    feature = "My Feature"
+    version = "v1.1.4"
+    _seed_feature_docs(tmp_path, feature=feature, version=version)
+
+    from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
+    from beacon.utils.runtime import write_json
+
+    write_json(tmp_path / ".beacon" / "auto-test-status.json", {"status": "passed"})
+    write_json(tmp_path / ".beacon" / "qa" / "status.json", {"evidence_done": True})
+    write_json(tmp_path / ".beacon" / "story-state" / version / "my-feature.json", {"feature": feature, "status": "implemented"})
+    write_json(tmp_path / "docs" / "beacon" / version / ".machine" / "qa" / "my-feature.ac-test-matrix.json", {"entries": []})
+    write_artifact_update_obligations(
+        tmp_path,
+        version=version,
+        feature=feature,
+        run_id="run-test",
+        technical_archive_path=f"docs/beacon/{version}/.machine/execution/technical-implementation-my-feature.json",
+        updates={
+            "review_quality": {"required": True, "reason": "run quality review after native implementation"},
+            "acceptance": {"required": True, "reason": "acceptance remains a formal post-verify action"},
+        },
+    )
+    (tmp_path / "docs" / "beacon" / version / "SUMMARY.md").write_text("# summary\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / version / "execution" / "boundaries.md").write_text("# boundaries\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / version / "execution" / "project-skill-qa-evolution-blueprint.md").write_text("# blueprint\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / version / "source-architecture").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / version / "source-architecture" / "index.md").write_text("# source architecture\n", encoding="utf-8")
+    (tmp_path / "docs" / "beacon" / version / "release").mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs" / "beacon" / version / "release" / "index.md").write_text("# release\n", encoding="utf-8")
+
+    result = _invoke(["review", "quality", feature, "--project", str(tmp_path), "--version", version, "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["gate_ready"] is True
+    obligations = payload["artifact_update_obligations"]["obligations"]
+    review_quality = next(item for item in obligations if item["artifact"] == "review_quality")
+    assert review_quality["status"] == "completed"
+
+
 @pytest.mark.parametrize("mode", ["single", "team", "ralph"])
 def test_implement_run_should_block_requirement_change_host_prompt_before_execution(
     monkeypatch,

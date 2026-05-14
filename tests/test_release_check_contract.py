@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -165,6 +166,37 @@ def test_gate_check_release_should_persist_release_gate_report_with_version_and_
     assert payload["stage"] == "release"
     assert payload["version"] == version
     assert payload["run_id"] == "run-123"
+
+
+def test_gate_check_release_should_refresh_manifest_for_release_gate_report(tmp_path: Path):
+    version = "v1.4.5"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    result = _invoke(["gate", "check", "release", "--project-root", str(tmp_path), "--version", version, "--json"])
+
+    assert result.exit_code in {0, 2}, result.stdout
+    report_path = tmp_path / ".beacon" / "release-gate-report.json"
+    manifest_path = tmp_path / ".beacon" / "evidence-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    entries = {
+        str(item.get("path")): str(item.get("sha256"))
+        for item in manifest.get("entries", [])
+        if isinstance(item, dict)
+    }
+    assert ".beacon/release-gate-report.json" in entries
+    assert entries[".beacon/release-gate-report.json"] == hashlib.sha256(report_path.read_bytes()).hexdigest()
+
+
+def test_gate_check_release_should_not_report_transient_release_gate_manifest_mismatch(tmp_path: Path):
+    version = "v1.4.5"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    result = _invoke(["gate", "check", "release", "--project-root", str(tmp_path), "--version", version, "--json"])
+
+    assert result.exit_code in {0, 2}, result.stdout
+    payload = json.loads(result.stdout)
+    reason_codes = [str(item.get("reason_code") or "") for item in payload.get("issues", []) if isinstance(item, dict)]
+    assert "evidence_sha256_manifest_mismatch" not in reason_codes
 
 
 def test_release_check_should_fail_when_v136_scorecard_is_not_release_ready(tmp_path: Path, monkeypatch):
@@ -379,6 +411,116 @@ def test_release_check_should_accept_authoritative_scorecard_when_manifest_and_c
     assert "evidence manifest run_id matches test artifacts" in result.stdout
     assert "coverage summary run_id matches test artifacts" in result.stdout
     assert "authoritative_release_scorecard=true" in result.stdout
+
+
+def test_release_check_should_accept_authoritative_feature_qa_when_gate_run_id_and_coverage_summary_lag(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.4.6"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+
+    (tmp_path / ".beacon" / "gate-report.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-stale-gate", "stage": "verify"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "release-gate-report.json").write_text(
+        json.dumps({"status": "Pass", "version": version, "run_id": "run-release", "stage": "release"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "auto-test-status.json").write_text(
+        json.dumps({"status": "passed", "version": version, "run_id": "run-qa-current"}, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "coverage-summary.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-qa-current",
+                "version": version,
+                "coverage_rate": 0.0,
+                "full_coverage": False,
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / ".beacon" / "evidence-manifest.json").write_text(
+        json.dumps(
+            {
+                "version": version,
+                "run_id": "run-qa-current",
+                "entries": [
+                    {"path": ".beacon/auto-test-status.json"},
+                    {"path": ".beacon/release-gate-report.json"},
+                    {"path": ".beacon/coverage-summary.json"},
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"blocked": False},
+    )
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True, "release_ready": True},
+            "semantic": {},
+            "feature_qa_scorecard": {
+                "release_ready": True,
+                "continue_decision": "ready_for_release",
+                "coverage_current": {
+                    "required_scenarios": 16,
+                    "executed_scenarios": 16,
+                    "coverage_rate": 1.0,
+                },
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+        },
+    )
+    monkeypatch.setattr(
+        release_command,
+        "acceptance_projection_transaction_contract",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": ""},
+    )
+
+    result = _invoke(["release", "check", version, "--project-root", str(tmp_path), "--json"])
+
+    assert result.exit_code == 1, result.stdout
+    payload = json.loads(result.stdout)
+    gate_run_id_check = next(item for item in payload["checks"] if item["name"] == "gate report run_id matches auto-test")
+    coverage_check = next(item for item in payload["checks"] if item["name"] == "coverage artifact ready")
+    assert gate_run_id_check["passed"] is True
+    assert coverage_check["passed"] is True
+    assert "authoritative_release_scorecard=true" in gate_run_id_check["detail"]
+    assert "authoritative_release_scorecard=true" in coverage_check["detail"]
+    assert payload["failed_checks"] == ["release scorecard ready"]
 
 
 def test_release_check_should_fail_when_v137_prompt_boundary_verdict_is_missing(tmp_path: Path, monkeypatch):
