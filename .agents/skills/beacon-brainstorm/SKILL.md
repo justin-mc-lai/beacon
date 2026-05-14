@@ -128,6 +128,14 @@ When the feature is materially complex, brainstorm must help produce a human-rea
 - state-machine explanation when states or transitions matter
 - decision-priority explanation when conflicting rules must be resolved
 
+This package is the upstream human-readable contract for:
+
+- `prd`
+- `user-story`
+- `test-case`
+- `requirement_clarity`
+- `freeze`
+
 Do not treat this as decoration. These materials are upstream inputs to `prd -> user-story -> test-case -> requirement_clarity -> freeze`.
 
 ## Examples

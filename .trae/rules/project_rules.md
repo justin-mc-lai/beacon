@@ -15,19 +15,26 @@
 - `beacon-brainstorm`
 - `beacon-ceo-review`
 - `beacon-change`
+- `beacon-context-engineering`
+- `beacon-debug-recovery`
 - `beacon-deep`
 - `beacon-design-review`
 - `beacon-doctor`
+- `beacon-documentation-adr`
+- `beacon-doubt-review`
 - `beacon-friction-intake`
 - `beacon-help`
 - `beacon-implement`
 - `beacon-learn`
+- `beacon-performance-review`
 - `beacon-prd`
 - `beacon-prd-bootstrap`
 - `beacon-prototype`
 - `beacon-qa`
 - `beacon-real-project-validation`
 - `beacon-release`
+- `beacon-security-review`
+- `beacon-source-driven`
 - `beacon-status`
 - `beacon-test-case`
 - `beacon-toolkit-automation`
@@ -37,6 +44,8 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
+
 
 
 

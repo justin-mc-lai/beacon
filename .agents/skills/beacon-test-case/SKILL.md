@@ -7,7 +7,7 @@ description: Use when the user wants to create, extend, or audit test cases and 
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
-The active coverage contract is aligned to the `v1.4.5` docs line.
+The active coverage contract is aligned to the current `v1.4.6` docs line.
 Compatibility bridges may still resolve older entrypoints, but the truth package should be read from `docs/beacon/v1.4.6/`.
 
 ## Use for
@@ -43,9 +43,11 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - Continue in `test-case` when acceptance criteria are ready to compile into verifiable scenarios.
 - Route back to `user-story` if acceptance criteria are still ambiguous.
 - Route to `change` when frozen acceptance coverage must materially change.
+- Keep `test-case` as the last truth surface before `requirement_clarity -> freeze`; do not treat coverage drafting as a side note that can be skipped before freeze.
 - Require negative, boundary, recovery, and fallback coverage when the feature introduces blocked paths or guardrail behavior.
 - If the feature has real UX/UI handoff, determine whether `prototype` should be conditionally triggered before implementation.
 - When complexity-triggered human closure artifacts exist, compile coverage directly from business flow, state-machine, and decision-priority truth instead of only from happy-path acceptance bullets.
+- For complexity-triggered features, ensure every upstream AC remains traceable in `test-case` truth before freeze; missing AC projection must route back for补料 instead of freezing shallowly.
 
 ## Anti-Inertia Notes
 
@@ -81,3 +83,4 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - `test-case` 负责 coverage truth，不负责执行 verdict。
 - 只有 happy-path 的矩阵不算 coverage closure。
 - 如果 feature 有真实 UX/UI handoff，要显式判断 `prototype` 是否应先触发。
+- `test-case` 不是 freeze 后补写的说明文档；它是 `research -> prd -> user-story -> test-case -> requirement_clarity -> freeze` 合同链的一环。

@@ -13,9 +13,9 @@ Prototype is a conditional requirement surface, not a parallel implementation la
 
 - requirement-driven wireframe freeze package generation
 - UX PRD closure bundle generation
-- design context / design reasoning / UX contract freezing
+- `design_context` / `design_reasoning` / `ux_contract` freezing
 - page intent and state visibility contract freezing
-- DESIGN.md / preview asset projection before implementation
+- `DESIGN.md` / `preview-dark.html` preview asset projection before implementation
 - prototype review and freeze readiness
 - requirement-to-screen-and-UX handoff before implementation
 
@@ -37,6 +37,12 @@ Keep `prototype` inside the requirement stage:
 Expected prototype truth should make screen intent, UX reasoning, and interaction/state handoff auditable.
 
 Do not turn prototype into a generic design playground, a final visual approval layer, or a parallel frontend entrypoint.
+
+Legacy design anchors that may still appear in historical requirement packs or compatibility tests:
+
+- `apple-inspired-design-md`
+- `ui-ux-pro-max-skill`
+- `awesome-design-md`
 
 ## Examples
 

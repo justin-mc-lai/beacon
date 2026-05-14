@@ -10,6 +10,8 @@ description: Use when the user wants to plan or run implementation through Beaco
 This skill routes execution work through Beacon's `implement` surface.
 
 `implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
+The active human-facing contract is aligned to the current `v1.4.6` docs line (`docs/beacon/v1.4.6/`).
+Compatibility bridges may still exist for older entrypoints or wrappers, but they must not override the current requirement package.
 
 ## When to Use
 
@@ -102,6 +104,16 @@ This skill routes execution work through Beacon's `implement` surface.
 - `beacon implement ...`
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
+
+## Supporting References
+
+Use these lightweight references when implementation needs a tighter support frame before coding or repair:
+
+- `../references/business-flow-checklist.md`
+- `../references/state-machine-checklist.md`
+- `../references/support-surface-routing-cheatsheet.md`
+
+When execution confusion is really context, source, performance, security, or blocker diagnosis, route through the matching support surface first, then come back to `implement`.
 
 ## Examples
 

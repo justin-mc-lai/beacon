@@ -10,6 +10,7 @@ description: Use when the user wants to draft, refine, clarify, or review a prod
 This skill routes requirement-definition work through Beacon's `prd` surface.
 
 The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.4.6/`). `prd` defines problem, scope, goals, boundaries, and promised surface before the requirement package moves downstream.
+Compatibility bridges may still exist for older entrypoints or wrappers, but they do not replace the current `v1.4.6` requirement truth line.
 
 ## When to Use
 
@@ -83,6 +84,7 @@ The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.
 - Block shallow template fill when the feature clearly needs state, transition, route, or semantic modeling.
 - Prefer reusing official wording from current version truth over inventing parallel terms.
 - For complexity-triggered features, require a human-readable closure package that covers research, architecture, business flow, and the relevant diagram truth before freeze.
+- Treat that closure package as part of the formal requirement chain, not optional commentary; freeze should only happen after the chain reaches `test-case -> requirement_clarity`.
 
 ## Anti-Inertia Notes
 
@@ -105,6 +107,18 @@ The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.
 - `beacon brainstorm ...` for read-only convergence
 - `beacon change ...` for frozen-truth revision
 
+## Supporting References
+
+Use these lightweight references when they reduce ambiguity faster than free-form prompting:
+
+- `../references/requirement-closure-checklist.md`
+- `../references/research-closure-checklist.md`
+- `../references/business-flow-checklist.md`
+- `../references/state-machine-checklist.md`
+- `../references/freeze-readiness-checklist.md`
+
+These are support material only. They help close requirement reasoning, but they do not replace canonical truth under `docs/beacon/<version>/`.
+
 ## Examples
 
 - 适用例：
@@ -120,3 +134,4 @@ The human-facing contract is aligned to the `v1.4.6` docs line (`docs/beacon/v1.
 - `brainstorm` 可以帮忙 challenge 和收敛，但不能代替 `prd` 冻结正式 truth。
 - 不要在 `prd` 里提前做实现、视觉或 release 层判断。
 - 复杂需求不能只靠文字段落冻结；缺少 research / business flow / state-machine / decision-priority 闭环时，应回补而不是假装 freeze-ready。
+- 最小可执行 requirement contract 是：`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`。

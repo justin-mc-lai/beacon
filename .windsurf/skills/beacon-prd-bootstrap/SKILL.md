@@ -19,6 +19,7 @@ This optional skill reduces requirement startup friction while keeping Beacon sa
 - dry-run unless explicitly `--apply`
 - no-overwrite by default
 - lock + state artifact + rollback manifest
+- bootstrap only creates the first requirement package shell; freeze still depends on `research -> prd -> user-story -> test-case -> requirement_clarity`
 
 ## Operator rule
 
@@ -44,3 +45,4 @@ Do not treat this as Beacon mainline replacement.
 - `prd-bootstrap` 解决的是 requirement 冷启动，不是主链替代。
 - 默认应先安全、可验证、可回滚，再考虑 apply。
 - 一旦项目已经进入正式 truth 演化，后续应回到 `prd / user-story / test-case / change` 主链。
+- 如果 feature 属于复杂场景，bootstrap 之后仍必须补齐 research / architecture / business flow / state-machine 等人类闭环材料，才能进入 freeze。
