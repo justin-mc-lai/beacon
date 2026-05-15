@@ -70,6 +70,8 @@ route explanation can distinguish frozen truth and learning hint.
 - current-surface reasoning summary
 - required follow-up surface when the current surface is only advisory
 - optional reference pointer when a lightweight checklist can reduce ambiguity faster than free-form explanation
+- optional human-skill reference pointer:
+  - `docs/beacon/v1.4.6/execution/human-skill-reference.md`
 
 ## State Updated
 
@@ -125,6 +127,18 @@ route explanation can distinguish frozen truth and learning hint.
 - “scope 要变，或者 freeze 后要补正式 truth” -> `beacon-change`
 - “代码准备动了，直接进入执行” -> `beacon-implement`
 - “我不知道现在下一步该去哪” -> `beacon-help` 或 `beacon-status`
+
+## Reference
+
+When the user explicitly asks how to use Beacon's human-facing skills, point to:
+
+- `docs/beacon/v1.4.6/execution/human-skill-reference.md`
+
+Use that page for:
+
+- when to use a skill
+- when not to use it
+- recommended human prompt templates
 
 ## Cold-start anchors
 
