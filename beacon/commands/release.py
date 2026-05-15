@@ -18,7 +18,7 @@ from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
-from beacon.utils.release_scorecard import build_release_scorecard
+from beacon.utils.release_scorecard import build_ceo_challenge_coverage, build_release_scorecard
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.story_state import feature_slug
@@ -315,6 +315,28 @@ def _normalize_string_list(values: object) -> list[str]:
     return out
 
 
+def _render_ceo_challenge_release_section(release_scorecard: dict[str, Any]) -> str:
+    ceo_review = release_scorecard.get("ceo_review") if isinstance(release_scorecard.get("ceo_review"), dict) else {}
+    coverage = (
+        release_scorecard.get("ceo_challenge_coverage")
+        if isinstance(release_scorecard.get("ceo_challenge_coverage"), dict)
+        else build_ceo_challenge_coverage(ceo_review)
+    )
+    covered_axes = [str(item).strip() for item in (coverage.get("covered_axes") or []) if str(item).strip()]
+    missing_axes = [str(item).strip() for item in (coverage.get("missing_axes") or []) if str(item).strip()]
+    needs_challenge = bool(coverage.get("needs_challenge", False))
+    return (
+        "## CEO Challenge Coverage\n\n"
+        f"- status: `{str(coverage.get('status') or 'missing')}`\n"
+        f"- decision: `{str(coverage.get('decision') or 'none')}`\n"
+        f"- covered_axes: `{', '.join(covered_axes) or 'none'}`\n"
+        f"- missing_axes: `{', '.join(missing_axes) or 'none'}`\n"
+        f"- needs_challenge: `{needs_challenge}`\n"
+        f"- gap_status: `{str(coverage.get('gap_status') or 'warn')}`\n"
+        f"- next_route: `{str(coverage.get('latest_next_route') or 'none')}`\n"
+    )
+
+
 def _feature_order_sort_key(item: dict) -> tuple[str, str, str, str]:
     return (
         str(item.get("frozen_at") or ""),
@@ -601,6 +623,8 @@ def create(
     version_change_json.write_text(json.dumps(version_change_payload, ensure_ascii=False, indent=2), encoding="utf-8")
     version_change_md_ref = str(version_change_md.relative_to(project_root))
     version_change_json_ref = str(version_change_json.relative_to(project_root))
+    release_scorecard = build_release_scorecard(project_root, version=resolved_version)
+    ceo_challenge_section = _render_ceo_challenge_release_section(release_scorecard)
 
     release_content = f"""# Release Checklist: {resolved_version}
 
@@ -642,6 +666,10 @@ def create(
 - [x] Version change document generated: `{version_change_md_ref}`
 - [x] Version change machine payload generated: `{version_change_json_ref}`
 - [ ] Release reviewer confirmed included feature packages match intended scope
+
+---
+
+{ceo_challenge_section}
 
 ---
 
@@ -794,14 +822,14 @@ def check(
     manifest_path = project_root / ".beacon" / "evidence-manifest.json"
     coverage_summary_path = project_root / ".beacon" / "coverage-summary.json"
 
-    checks: list[tuple[str, bool, str]] = []
+    checks: list[tuple[str, str, str]] = []
     evidence_refs: list[str] = []
 
     if requirement_package_gate_blocked:
         checks.append(
             (
                 "requirement package contract",
-                False,
+                "fail",
                 str(requirement_package_gate.get("reason_code") or "requirement_package_contract_blocked"),
             )
         )
@@ -820,18 +848,18 @@ def check(
         auto_test_run_id = _extract_run_id(auto_test_payload)
         auto_test_version = _extract_version(auto_test_payload)
         evidence_refs.append(str(auto_test_path.relative_to(project_root)))
-    checks.append(("auto-test status passed", auto_test_ok, f"status={auto_test_status}"))
+    checks.append(("auto-test status passed", "pass" if auto_test_ok else "fail", f"status={auto_test_status}"))
     checks.append(
         (
             "auto-test version matches release version",
-            bool(auto_test_version) and auto_test_version == resolved_version,
+            "pass" if bool(auto_test_version) and auto_test_version == resolved_version else "fail",
             f"artifact_version={auto_test_version or 'missing'}, expected={resolved_version}",
         )
     )
     checks.append(
         (
             "auto-test run_id present",
-            bool(auto_test_run_id),
+            "pass" if bool(auto_test_run_id) else "fail",
             f"run_id={auto_test_run_id or 'missing'}",
         )
     )
@@ -864,28 +892,28 @@ def check(
             gate_run_id = str(scorecard_gate.get("run_id") or gate_run_id)
         if scorecard_gate.get("artifact_version"):
             gate_version = str(scorecard_gate.get("artifact_version") or gate_version)
-    checks.append(("gate report pass", gate_ok, f"status={gate_status or 'unknown'}"))
+    checks.append(("gate report pass", "pass" if gate_ok else "fail", f"status={gate_status or 'unknown'}"))
     checks.append(
         (
             "gate report version matches release version",
-            bool(gate_version) and gate_version == resolved_version,
+            "pass" if bool(gate_version) and gate_version == resolved_version else "fail",
             f"artifact_version={gate_version or 'missing'}, expected={resolved_version}",
         )
     )
     checks.append(
-        (
-            "gate report run_id matches auto-test",
-            (
-                bool(gate_run_id)
-                and bool(auto_test_run_id)
-                and (
-                    gate_run_id == auto_test_run_id
-                    or ((scorecard_authoritative or authoritative_qa_ready) and gate_ok and auto_test_ok)
-                )
-            ),
-            (
-                f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
-                + (
+            ( 
+                "gate report run_id matches auto-test",
+                "pass" if (
+                    bool(gate_run_id)
+                    and bool(auto_test_run_id)
+                    and (
+                        gate_run_id == auto_test_run_id
+                        or ((scorecard_authoritative or authoritative_qa_ready) and gate_ok and auto_test_ok)
+                    )
+                ) else "fail",
+                (
+                    f"gate_run_id={gate_run_id or 'missing'}, auto_test_run_id={auto_test_run_id or 'missing'}"
+                    + (
                     ", authoritative_release_scorecard=true"
                     if (scorecard_authoritative or authoritative_qa_ready) and gate_ok and auto_test_ok
                     else ""
@@ -910,22 +938,22 @@ def check(
         manifest_run_id = _extract_run_id(manifest_payload)
         manifest_version = _extract_version(manifest_payload)
         evidence_refs.append(str(manifest_path.relative_to(project_root)))
-    checks.append(("evidence manifest present", manifest_ok, f"entries={manifest_entries}"))
+    checks.append(("evidence manifest present", "pass" if manifest_ok else "fail", f"entries={manifest_entries}"))
     checks.append(
         (
             "evidence manifest version matches release version",
-            bool(manifest_version) and manifest_version == resolved_version,
+            "pass" if bool(manifest_version) and manifest_version == resolved_version else "fail",
             f"artifact_version={manifest_version or 'missing'}, expected={resolved_version}",
         )
     )
     expected_run_id = auto_test_run_id or gate_run_id
     checks.append(
-        (
-            "evidence manifest run_id matches test artifacts",
             (
-                bool(manifest_run_id)
-                and bool(expected_run_id)
-                and (
+                "evidence manifest run_id matches test artifacts",
+                "pass" if (
+                    bool(manifest_run_id)
+                    and bool(expected_run_id)
+                    and (
                     manifest_run_id == expected_run_id
                     or (
                         scorecard_authoritative
@@ -933,10 +961,10 @@ def check(
                         and manifest_ok
                     )
                 )
-            ),
-            (
-                f"manifest_run_id={manifest_run_id or 'missing'}, expected={expected_run_id or 'missing'}"
-                + (
+                ) else "fail",
+                (
+                    f"manifest_run_id={manifest_run_id or 'missing'}, expected={expected_run_id or 'missing'}"
+                    + (
                     ", authoritative_release_scorecard=true"
                     if scorecard_authoritative and bool(authoritative_feature) and manifest_ok
                     else ""
@@ -982,19 +1010,19 @@ def check(
                 f"feature_scorecard.coverage_current={executed}/{required} "
                 f"({coverage_rate if coverage_rate is not None else 'n/a'}), authoritative_release_scorecard=true"
             )
-    checks.append(("coverage artifact ready", coverage_ok, coverage_detail))
+    checks.append(("coverage artifact ready", "pass" if coverage_ok else "fail", coverage_detail))
     if coverage_summary_path.exists():
         checks.append(
             (
                 "coverage summary version matches release version",
-                bool(coverage_version) and coverage_version == resolved_version,
+                "pass" if bool(coverage_version) and coverage_version == resolved_version else "fail",
                 f"artifact_version={coverage_version or 'missing'}, expected={resolved_version}",
             )
         )
         checks.append(
             (
                 "coverage summary run_id matches test artifacts",
-                (
+                "pass" if (
                     bool(coverage_run_id)
                     and bool(expected_run_id)
                     and (
@@ -1005,7 +1033,7 @@ def check(
                             and coverage_ok
                         )
                     )
-                ),
+                ) else "fail",
                 (
                     f"coverage_run_id={coverage_run_id or 'missing'}, expected={expected_run_id or 'missing'}"
                     + (
@@ -1034,7 +1062,7 @@ def check(
         checks.append(
             (
                 "runtime projection transaction contract",
-                runtime_tx_ok,
+                "pass" if runtime_tx_ok else "fail",
                 f"status={runtime_tx_contract.get('status') or 'unknown'}, reason={runtime_tx_contract.get('reason_code') or '-'}",
             )
         )
@@ -1055,7 +1083,7 @@ def check(
         checks.append(
             (
                 "acceptance projection transaction contract",
-                acceptance_tx_ok,
+                "pass" if acceptance_tx_ok else "fail",
                 f"status={acceptance_tx_contract.get('status') or 'unknown'}, reason={acceptance_tx_contract.get('reason_code') or '-'}",
             )
         )
@@ -1071,7 +1099,7 @@ def check(
         checks.append(
             (
                 "project metadata contract",
-                metadata_ok,
+                "pass" if metadata_ok else "fail",
                 "; ".join(failing_checks) if failing_checks else f"status={metadata_verdict.get('status') or 'unknown'}",
             )
         )
@@ -1086,28 +1114,28 @@ def check(
         checks.append(
             (
                 "version change markdown exists",
-                bool(change_documents.get("markdown_exists", False)),
+                "pass" if bool(change_documents.get("markdown_exists", False)) else "fail",
                 f"path={change_md_ref or 'missing'}",
             )
         )
         checks.append(
             (
                 "version change payload exists",
-                bool(change_documents.get("json_exists", False)),
+                "pass" if bool(change_documents.get("json_exists", False)) else "fail",
                 f"path={change_json_ref or 'missing'}",
             )
         )
         checks.append(
             (
                 "version change payload matches release version",
-                bool(change_documents.get("version_match", False)),
+                "pass" if bool(change_documents.get("version_match", False)) else "fail",
                 f"feature_count={change_documents.get('feature_count', 0)}",
             )
         )
         checks.append(
             (
                 "version change document includes current feature",
-                bool(change_documents.get("includes_current_feature", False)),
+                "pass" if bool(change_documents.get("includes_current_feature", False)) else "fail",
                 f"current_feature={change_documents.get('current_feature_slug') or 'none'}",
             )
         )
@@ -1119,7 +1147,7 @@ def check(
         checks.append(
             (
                 "release scorecard ready",
-                bool(release_scorecard.get("release_ready", False)),
+                "pass" if bool(release_scorecard.get("release_ready", False)) else "fail",
                 f"feature={release_scorecard.get('qa', {}).get('feature') or 'none'}, semantic_reason={semantic_reason or '-'}",
             )
         )
@@ -1127,17 +1155,34 @@ def check(
             checks.append(
                 (
                     "semantic contract ready",
-                    semantic_status == "pass",
+                    "pass" if semantic_status == "pass" else "fail",
                     f"status={semantic_status}, reason={semantic_reason or '-'}",
                 )
             )
+
+        ceo_challenge_coverage = (
+            release_scorecard.get("ceo_challenge_coverage")
+            if isinstance(release_scorecard.get("ceo_challenge_coverage"), dict)
+            else {}
+        )
+        checks.append(
+            (
+                "ceo challenge coverage current",
+                "warn" if bool(ceo_challenge_coverage.get("needs_challenge", False)) else "pass",
+                (
+                    f"status={ceo_challenge_coverage.get('status') or 'missing'}, "
+                    f"missing_axes={','.join(str(item) for item in (ceo_challenge_coverage.get('missing_axes') or [])) or 'none'}, "
+                    f"decision={ceo_challenge_coverage.get('decision') or 'none'}"
+                ),
+            )
+        )
 
     if bool(version_surface_governance.get("configured", False)):
         repair_commands = version_surface_repair_commands(project_root)
         checks.append(
             (
                 "version surface governance pass",
-                not bool(version_surface_governance.get("blocked", False)),
+                "pass" if not bool(version_surface_governance.get("blocked", False)) else "fail",
                 (
                     f"status={version_surface_governance.get('status') or 'unknown'}, "
                     f"reason={version_surface_governance.get('reason_code') or '-'}, "
@@ -1155,7 +1200,9 @@ def check(
         checks.append(
             (
                 "implement prompt boundary verdict pass",
-                prompt_boundary_status.lower() == "pass" and not bool(prompt_boundary.get("blocked", False)),
+                "pass"
+                if prompt_boundary_status.lower() == "pass" and not bool(prompt_boundary.get("blocked", False))
+                else "fail",
                 (
                     f"status={prompt_boundary_status}, "
                     f"classification={prompt_boundary_classification or '-'}, "
@@ -1167,16 +1214,21 @@ def check(
 
     all_passed = True
     failed_checks: list[str] = []
+    warning_checks: list[str] = []
     check_records: list[dict[str, Any]] = []
-    for check_name, passed, detail in checks:
+    for check_name, status_label, detail in checks:
+        passed = status_label != "fail"
         check_records.append(
             {
                 "name": check_name,
+                "status": status_label,
                 "passed": bool(passed),
                 "detail": detail,
             }
         )
-        if not passed:
+        if status_label == "warn":
+            warning_checks.append(check_name)
+        if status_label == "fail":
             all_passed = False
             failed_checks.append(check_name)
 
@@ -1196,6 +1248,7 @@ def check(
         "status": status,
         "release_ready": all_passed,
         "failed_checks": failed_checks,
+        "warning_checks": warning_checks,
         "checks": check_records,
         "browser_release_blockers": browser_release_blockers,
         "recommended_command": recommended_command,
@@ -1207,10 +1260,12 @@ def check(
         typer.echo(f"Checking release conditions for {resolved_version}")
         typer.echo("=" * 40)
         for record in check_records:
-            marker = "✓ PASS" if record["passed"] else "✗ FAIL"
+            marker = "✓ PASS" if record["status"] == "pass" else "⚠ WARN" if record["status"] == "warn" else "✗ FAIL"
             typer.echo(f"{marker}: {record['name']} ({record['detail']})")
         if all_passed:
             typer.echo("\n✓ Release conditions met")
+            if warning_checks:
+                typer.echo(f"Warnings: {', '.join(warning_checks)}")
         else:
             typer.echo("\n✗ Some checks failed")
             if browser_release_blockers:

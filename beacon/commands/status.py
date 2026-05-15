@@ -477,6 +477,12 @@ def _status_impl(
                 f"feature_count={release_summary.get('change_documents_feature_count')} "
                 f"includes_current={release_summary.get('change_documents_includes_current_feature')}"
             )
+        if release_summary.get("ceo_challenge_gap_status"):
+            typer.echo(
+                f"- release.ceo_challenge: {release_summary.get('ceo_challenge_gap_status')} "
+                f"promotion={release_summary.get('ceo_challenge_promotion_decision') or '-'} "
+                f"missing={','.join(release_summary.get('ceo_challenge_missing_axes') or []) or 'none'}"
+            )
         coverage_current = release_summary.get("coverage_current") if isinstance(release_summary.get("coverage_current"), dict) else {}
         if coverage_current:
             typer.echo(
@@ -550,9 +556,11 @@ def _status_impl(
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
             )
         if target_feature and payload.get("ceo_review", {}).get("status"):
+            ceo_axes = payload.get("ceo_review", {}).get("challenge_axis_codes") if isinstance(payload.get("ceo_review", {}), dict) else []
+            ceo_axis_suffix = f" axes={','.join(ceo_axes)}" if isinstance(ceo_axes, list) and ceo_axes else ""
             typer.echo(
                 f"- ceo_review: {payload.get('ceo_review', {}).get('status')} "
-                f"next={payload.get('ceo_review', {}).get('latest_next_route') or 'none'}"
+                f"next={payload.get('ceo_review', {}).get('latest_next_route') or 'none'}{ceo_axis_suffix}"
             )
         if target_feature and payload.get("design_review", {}).get("status"):
             typer.echo(

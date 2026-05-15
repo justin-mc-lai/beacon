@@ -26,7 +26,7 @@ from beacon.utils.versioning import resolve_runtime_version, resolve_target_vers
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.learning_loop import load_keep_discard_engine
 from beacon.utils.qa_runtime import load_qa_status
-from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.release_scorecard import build_ceo_challenge_coverage, build_release_scorecard, summarize_release_scorecard
 from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.v110_metrics import (
@@ -238,6 +238,35 @@ def _human_summary(machine: dict[str, Any]) -> str:
     if isinstance(release_scorecard, dict) and release_scorecard and release_summary.get("exhaustiveness_status"):
         lines.append(
             f"- exhaustiveness: `{release_summary.get('exhaustiveness_status')}` score=`{release_summary.get('exhaustiveness_score')}` threshold=`{release_summary.get('exhaustiveness_threshold')}`"
+        )
+    if release_summary.get("ceo_review_status"):
+        lines.extend(
+            [
+                "",
+                "## CEO Challenge Coverage",
+                f"- ceo_review_status: `{release_summary.get('ceo_review_status')}`",
+                f"- ceo_review_decision: `{release_summary.get('ceo_review_decision')}`",
+                f"- ceo_review_latest_next_route: `{release_summary.get('ceo_review_latest_next_route')}`",
+                f"- ceo_review_challenge_axes: `{', '.join(release_summary.get('ceo_review_challenge_axis_codes') or [])}`",
+                f"- ceo_challenge_gap_status: `{release_summary.get('ceo_challenge_gap_status')}`",
+                f"- ceo_challenge_missing_axes: `{', '.join(release_summary.get('ceo_challenge_missing_axes') or []) or 'none'}`",
+                f"- ceo_challenge_promotion_status: `{release_summary.get('ceo_challenge_promotion_status')}`",
+                f"- ceo_challenge_promotion_decision: `{release_summary.get('ceo_challenge_promotion_decision')}`",
+                f"- ceo_challenge_recommended_action: `{release_summary.get('ceo_challenge_recommended_action')}`",
+            ]
+        )
+    elif release_summary.get("ceo_challenge_gap_status"):
+        lines.extend(
+            [
+                "",
+                "## CEO Challenge Coverage",
+                f"- ceo_review_status: `{release_summary.get('ceo_review_status') or 'missing'}`",
+                f"- ceo_challenge_gap_status: `{release_summary.get('ceo_challenge_gap_status')}`",
+                f"- ceo_challenge_missing_axes: `{', '.join(release_summary.get('ceo_challenge_missing_axes') or []) or 'none'}`",
+                f"- ceo_challenge_promotion_status: `{release_summary.get('ceo_challenge_promotion_status')}`",
+                f"- ceo_challenge_promotion_decision: `{release_summary.get('ceo_challenge_promotion_decision')}`",
+                f"- ceo_challenge_recommended_action: `{release_summary.get('ceo_challenge_recommended_action')}`",
+            ]
         )
     return "\n".join(lines) + "\n"
 
@@ -457,6 +486,7 @@ def _report_impl(
     )
     feature_filter = feature.strip() if feature and feature.strip() else None
     payload = _build_machine_payload(root, run_id, version=version_filter, feature=feature_filter)
+    payload["release_summary"] = summarize_release_scorecard(payload.get("release_scorecard"))
     report_version = (
         version_filter
         or str(payload.get("workflow_progress", {}).get("version", "")).strip()
@@ -539,6 +569,23 @@ def _run_real_project_validation_command(project_root: Path, args: list[str]) ->
         "stdout": stdout,
         "stderr": stderr,
         "json": parsed or {},
+    }
+
+
+def _ceo_challenge_coverage(summary: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "status": str(summary.get("ceo_review_status") or ""),
+        "decision": str(summary.get("ceo_review_decision") or ""),
+        "latest_next_route": str(summary.get("ceo_review_latest_next_route") or ""),
+        "covered_axes": list(summary.get("ceo_challenge_covered_axes") or []),
+        "missing_axes": list(summary.get("ceo_challenge_missing_axes") or []),
+        "coverage_complete": bool(summary.get("ceo_challenge_coverage_complete", False)),
+        "needs_challenge": bool(summary.get("ceo_challenge_needs_challenge", False)),
+        "recommended_action": str(summary.get("ceo_challenge_recommended_action") or ""),
+        "gap_status": str(summary.get("ceo_challenge_gap_status") or ""),
+        "promotion_status": str(summary.get("ceo_challenge_promotion_status") or ""),
+        "promotion_decision": str(summary.get("ceo_challenge_promotion_decision") or ""),
+        "reason_code": str(summary.get("ceo_challenge_reason_code") or ""),
     }
 
 
@@ -663,6 +710,11 @@ def _real_project_overlay(
     acceptance_kit: dict[str, Any],
 ) -> dict[str, Any]:
     summary = summarize_release_scorecard(release_scorecard)
+    ceo_challenge_coverage = (
+        release_scorecard.get("ceo_challenge_coverage")
+        if isinstance(release_scorecard.get("ceo_challenge_coverage"), dict)
+        else _ceo_challenge_coverage(summary)
+    )
     kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
     materials_verify = surface_results.get("doctor_verify_materials", {})
     materials_verify_payload = materials_verify.get("json") if isinstance(materials_verify.get("json"), dict) else {}
@@ -763,6 +815,7 @@ def _real_project_overlay(
         )
     return {
         "version": version,
+        "ceo_challenge_coverage": ceo_challenge_coverage,
         "checks": checks,
     }
 
@@ -846,6 +899,13 @@ def real_project_validation(
             "summary": release_summary,
         },
         "latest_feature_overlay": overlay,
+        "ceo_challenge_coverage": overlay.get("ceo_challenge_coverage", {}),
+        "ceo_challenge_promotion": {
+            "status": str((overlay.get("ceo_challenge_coverage") or {}).get("promotion_status") or ""),
+            "decision": str((overlay.get("ceo_challenge_coverage") or {}).get("promotion_decision") or ""),
+            "recommended_action": str((overlay.get("ceo_challenge_coverage") or {}).get("recommended_action") or ""),
+            "missing_axes": list(((overlay.get("ceo_challenge_coverage") or {}).get("missing_axes")) or []),
+        },
         "acceptance_kit": acceptance_kit,
         "covered_paths": {
             "current_version_release_proof": True,
@@ -866,6 +926,22 @@ def real_project_validation(
         typer.echo(f"beacon defects: {len(defects)}")
         typer.echo(f"current-feature closure ready: {payload['current_feature_closure_ready']}")
         typer.echo(f"version-line package/change-doc closure open: {payload['version_line_package_change_doc_closure_open']}")
+        ceo_coverage = payload.get("ceo_challenge_coverage", {}) if isinstance(payload.get("ceo_challenge_coverage"), dict) else {}
+        if ceo_coverage:
+            typer.echo(
+                "ceo challenge coverage: "
+                f"status={ceo_coverage.get('status') or 'missing'} "
+                f"decision={ceo_coverage.get('decision') or 'none'} "
+                f"covered={','.join(ceo_coverage.get('covered_axes') or []) or 'none'} "
+                f"missing={','.join(ceo_coverage.get('missing_axes') or []) or 'none'} "
+                f"needs_challenge={ceo_coverage.get('needs_challenge')}"
+            )
+            typer.echo(
+                "ceo challenge promotion: "
+                f"status={ceo_coverage.get('promotion_status') or 'warn'} "
+                f"decision={ceo_coverage.get('promotion_decision') or 'challenge_refresh_recommended'} "
+                f"recommended_action={ceo_coverage.get('recommended_action') or 'rerun_ceo_review'}"
+            )
         typer.echo(f"recommendation: {payload['recommendation']}")
 
 

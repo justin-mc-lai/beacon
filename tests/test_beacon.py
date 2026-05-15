@@ -460,6 +460,37 @@ class TestBeaconRelease:
         assert (tmp_path / "docs" / "beacon" / "v1.0.0" / "release" / "checklist-v1.0.0.md").exists()
         assert not (tmp_path / "docs" / "beacon" / "v1.0.0" / "release" / "v1.0.0.md").exists()
 
+    def test_release_create_should_include_ceo_challenge_coverage(self, monkeypatch, tmp_path):
+        """Test release create embeds CEO challenge coverage block"""
+        import beacon.commands.release as release_module
+
+        monkeypatch.setattr(
+            release_module,
+            "build_release_scorecard",
+            lambda _root, version: {
+                "version": version,
+                "ceo_review": {
+                    "status": "accepted_for_writeback",
+                    "decision": "reframe",
+                    "latest_next_route": "beacon change run ...",
+                    "challenge_axis_codes": [
+                        "too_smooth_path",
+                        "buried_landmine",
+                        "truth_freeze_destabilization",
+                    ],
+                },
+            },
+        )
+
+        result = runner.invoke(app, ["release", "create", "v1.0.0", "--project", str(tmp_path)])
+        assert result.exit_code == 0
+        checklist = (tmp_path / "docs" / "beacon" / "v1.0.0" / "release" / "checklist-v1.0.0.md").read_text(encoding="utf-8")
+        assert "## CEO Challenge Coverage" in checklist
+        assert "- status: `accepted_for_writeback`" in checklist
+        assert "- covered_axes: `too_smooth_path, buried_landmine, truth_freeze_destabilization`" in checklist
+        assert "- missing_axes: `stage_boundary_sprawl, false_closure_signal, operator_cost_underpricing`" in checklist
+        assert "- needs_challenge: `True`" in checklist
+
 
 class TestBeaconApiDesign:
     """Test api-design command"""

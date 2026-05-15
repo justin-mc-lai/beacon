@@ -113,6 +113,74 @@ def test_release_check_should_pass_when_coverage_summary_matches_release(tmp_pat
     assert "Release conditions met" in result.stdout
 
 
+def test_release_check_should_print_ceo_challenge_warning_without_blocking_release(tmp_path: Path, monkeypatch):
+    version = "v1.4.7"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False},
+    )
+    monkeypatch.setattr(
+        release_command,
+        "acceptance_projection_transaction_contract",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": ""},
+    )
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True, "release_ready": True},
+            "semantic": {"status": "pass", "reason_code": ""},
+            "ceo_challenge_coverage": {
+                "status": "missing",
+                "decision": "none",
+                "latest_next_route": "none",
+                "covered_axes": [],
+                "missing_axes": [
+                    "too_smooth_path",
+                    "buried_landmine",
+                    "truth_freeze_destabilization",
+                    "stage_boundary_sprawl",
+                    "false_closure_signal",
+                    "operator_cost_underpricing",
+                ],
+                "needs_challenge": True,
+                "gap_status": "warn",
+                "reason_code": "ceo_challenge_gap",
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+            "version_surface_governance": {"configured": False},
+            "browser_release_reason_codes": [],
+            "feature_qa_scorecard": {},
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path)])
+
+    assert result.exit_code == 0, result.stdout
+    assert "⚠ WARN: ceo challenge coverage current" in result.stdout
+    assert "Warnings: ceo challenge coverage current" in result.stdout
+
+
 def test_release_check_should_support_project_root_alias_and_json_output(tmp_path: Path):
     version = "v1.3.4"
     _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
@@ -125,7 +193,80 @@ def test_release_check_should_support_project_root_alias_and_json_output(tmp_pat
     assert payload["status"] == "pass"
     assert payload["release_ready"] is True
     assert payload["failed_checks"] == []
+    assert payload["warning_checks"] == []
     assert any(item["name"] == "coverage summary version matches release version" for item in payload["checks"])
+
+
+def test_release_check_should_surface_ceo_challenge_warning_in_json_when_release_scorecard_enforced(tmp_path: Path, monkeypatch):
+    version = "v1.4.7"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    monkeypatch.setattr(
+        release_command,
+        "build_requirement_package_gate",
+        lambda *_args, **_kwargs: {"status": "pass", "blocked": False},
+    )
+    monkeypatch.setattr(
+        release_command,
+        "acceptance_projection_transaction_contract",
+        lambda *_args, **_kwargs: {"status": "pass", "reason_code": ""},
+    )
+    monkeypatch.setattr(
+        release_command,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": True,
+            "qa": {"feature": "feature-a", "status": "passed", "evidence_done": True, "release_ready": True},
+            "semantic": {"status": "pass", "reason_code": ""},
+            "ceo_challenge_coverage": {
+                "status": "missing",
+                "decision": "none",
+                "latest_next_route": "none",
+                "covered_axes": [],
+                "missing_axes": [
+                    "too_smooth_path",
+                    "buried_landmine",
+                    "truth_freeze_destabilization",
+                    "stage_boundary_sprawl",
+                    "false_closure_signal",
+                    "operator_cost_underpricing",
+                ],
+                "needs_challenge": True,
+                "gap_status": "warn",
+                "reason_code": "ceo_challenge_gap",
+            },
+            "change_documents": {
+                "markdown_exists": True,
+                "json_exists": True,
+                "version_match": True,
+                "includes_current_feature": True,
+                "markdown_path": f"docs/beacon/{version}/change/{version}.md",
+                "json_path": f"docs/beacon/{version}/.machine/change/{version}.json",
+                "current_feature_slug": "feature-a",
+                "feature_count": 1,
+            },
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "reason_code": "",
+                "surface": "host_prompt",
+            },
+            "version_surface_governance": {"configured": False},
+            "browser_release_reason_codes": [],
+            "feature_qa_scorecard": {},
+        },
+    )
+
+    result = _invoke(["release", "check", version, "--project-root", str(tmp_path), "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["warning_checks"] == ["ceo challenge coverage current"]
+    ceo_check = next(item for item in payload["checks"] if item["name"] == "ceo challenge coverage current")
+    assert ceo_check["status"] == "warn"
+    assert ceo_check["passed"] is True
+    assert "missing_axes=" in ceo_check["detail"]
 
 
 def test_release_check_should_prefer_release_gate_report_over_verify_gate_report(tmp_path: Path, monkeypatch):

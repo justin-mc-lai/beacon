@@ -99,6 +99,19 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
                 "includes_current_feature": True,
             },
             "host_native_delivery": {"status": "pass", "reason_codes": []},
+            "ceo_review": {
+                "status": "accepted_for_writeback",
+                "decision": "reframe",
+                "latest_next_route": "beacon change run ...",
+                "challenge_axis_codes": [
+                    "too_smooth_path",
+                    "buried_landmine",
+                    "truth_freeze_destabilization",
+                    "stage_boundary_sprawl",
+                    "false_closure_signal",
+                    "operator_cost_underpricing",
+                ],
+            },
         },
     )
 
@@ -118,6 +131,10 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["recommendation"] == "safe to use on this project"
+    assert payload["ceo_challenge_coverage"]["needs_challenge"] is False
+    assert payload["ceo_challenge_coverage"]["missing_axes"] == []
+    assert payload["ceo_challenge_promotion"]["status"] == "pass"
+    assert payload["ceo_challenge_promotion"]["decision"] == "challenge_coverage_current"
     assert f"release check {version} --project-root {tmp_path} --json" in payload["executed_commands"]
     check_ids = {item["id"]: item["status"] for item in payload["latest_feature_overlay"]["checks"]}
     assert check_ids["acceptance_projection_transaction_dual_write"] == "pass"
@@ -126,6 +143,45 @@ def test_report_real_project_validation_should_surface_latest_feature_overlay(mo
     assert check_ids["prompt_boundary_gate_release_convergence"] == "pass"
     assert check_ids["archive_governance_support_surface"] == "pass"
     assert check_ids["canonical_delivery_baseline_convergence"] == "pass"
+
+
+def test_real_project_overlay_should_mark_missing_ceo_challenge_axes(monkeypatch, tmp_path: Path) -> None:
+    version = "v1.4.7"
+    feature = "Feature"
+    _seed_docs(tmp_path, version)
+
+    overlay = report_module._real_project_overlay(
+        version=version,
+        runtime_version="v1.4.6",
+        surface_results={
+            "archive_status": {"json": {"status": "pass"}, "exit_code": 0},
+            "archive_explain": {"json": {"status": "pass"}, "exit_code": 0},
+            "archive_plan": {"json": {"status": "pass"}, "exit_code": 0},
+            "gate_prototype": {"json": {"status": "pass", "issues": []}, "exit_code": 0},
+        },
+        release_scorecard={
+            "qa": {"acceptance_transaction_status": "pass"},
+            "ceo_review": {
+                "status": "advisory",
+                "decision": "hold",
+                "latest_next_route": "beacon implement ...",
+                "challenge_axis_codes": ["too_smooth_path", "buried_landmine"],
+            },
+        },
+        acceptance_kit={"summary": {"all_layers_passed": True}},
+    )
+
+    coverage = overlay["ceo_challenge_coverage"]
+    assert coverage["needs_challenge"] is True
+    assert coverage["coverage_complete"] is False
+    assert coverage["promotion_status"] == "warn"
+    assert coverage["promotion_decision"] == "challenge_refresh_recommended"
+    assert coverage["missing_axes"] == [
+        "truth_freeze_destabilization",
+        "stage_boundary_sprawl",
+        "false_closure_signal",
+        "operator_cost_underpricing",
+    ]
 
 
 def test_report_real_project_validation_should_use_runtime_capability_for_overlay_checks(monkeypatch, tmp_path: Path) -> None:
