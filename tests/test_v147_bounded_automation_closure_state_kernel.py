@@ -225,6 +225,6 @@ def test_automation_kernel_preserves_truth_boundary_and_rejects_full_loop_claims
     payload = refresh_qa_feedback_ledger(tmp_path, features=["feature pass"])
     runtime = payload["entries"][0]["bounded_runtime"]
     assert runtime["next_route"] == "release"
-    assert "support_review" not in runtime.values()
-    assert "change_refreeze" not in runtime.values()
+    assert runtime["truth_recompiled_pending"] is False
+    assert runtime["support_review"] == {}
     assert runtime["human_takeover_required"] is False

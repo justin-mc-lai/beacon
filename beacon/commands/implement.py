@@ -23,6 +23,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.branch_governance import evaluate_branch_governance
 from beacon.utils.archive_governance import load_feature_archive_boundary
+from beacon.utils.automation_runtime import load_feature_automation_runtime
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.change_surface import build_change_command
@@ -710,6 +711,52 @@ def _requirement_closure_preflight(project_root: Path, *, version: str, feature:
         "reason_code": reason_code,
         "recommended_command": recommended_command,
         **inspection,
+    }
+
+
+def _automation_runtime_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    runtime = load_feature_automation_runtime(project_root, feature=feature)
+    next_route = str(runtime.get("next_route") or "").strip()
+    truth_recompiled_pending = bool(runtime.get("truth_recompiled_pending", False))
+    support_review = runtime.get("support_review") if isinstance(runtime.get("support_review"), dict) else {}
+    truth_gate = runtime.get("truth_recompile_gate") if isinstance(runtime.get("truth_recompile_gate"), dict) else {}
+
+    blocked = False
+    reason_code = ""
+    recommended_command = ""
+    if next_route == "support_review" or bool(support_review.get("required", False)):
+        blocked = True
+        reason_code = "automation_support_review_required"
+        executor = str(support_review.get("executor") or "deep").strip() or "deep"
+        recommended_command = f'beacon {executor} run "{feature}" --project-root {project_root}'
+    elif truth_recompiled_pending or bool(truth_gate.get("required", False)):
+        blocked = True
+        reason_code = "automation_truth_recompile_pending"
+        recommended_command = f'beacon doctor sync-materials --project-root {project_root} --version {resolved_version} --all-features'
+    elif next_route == "change_refreeze":
+        blocked = True
+        reason_code = "automation_truth_refreeze_required"
+        recommended_command = build_change_command(
+            feature=feature,
+            project_root=project_root,
+            version=resolved_version,
+            reason="automation-truth-refreeze-required",
+        )
+
+    return {
+        "enabled": True,
+        "status": "blocked" if blocked else "pass",
+        "blocked": blocked,
+        "reason_code": reason_code,
+        "recommended_command": recommended_command,
+        "feature": feature,
+        "version": resolved_version,
+        "runtime_path": str(project_root / ".beacon" / "automation" / "features" / _slug(feature) / "runtime.json"),
+        "next_route": next_route,
+        "truth_recompiled_pending": truth_recompiled_pending,
+        "support_review": support_review,
+        "truth_recompile_gate": truth_gate,
     }
 
 
@@ -2123,6 +2170,33 @@ def run_implement_stage(  # noqa: PLR0913
                     project_root=project_root,
                     version=resolved_version,
                     reason="requirement-closure-blocked",
+                )
+            ),
+        }, blocked=True)
+        return 2, payload
+    automation_runtime_preflight = _automation_runtime_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(automation_runtime_preflight.get("blocked")):
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(automation_runtime_preflight.get("reason_code") or "automation_runtime_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "requirement_package_gate": requirement_package_gate,
+            "closure_preflight": closure_preflight,
+            "automation_runtime_preflight": automation_runtime_preflight,
+            "recommended_command": str(
+                automation_runtime_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="automation-runtime-blocked",
                 )
             ),
         }, blocked=True)
@@ -4012,6 +4086,65 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
         else:
             typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
         return 2
+    closure_preflight = _requirement_closure_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(closure_preflight.get("blocked")):
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "closure_preflight": closure_preflight,
+            "recommended_command": str(
+                closure_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-closure-blocked",
+                )
+            ),
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
+    automation_runtime_preflight = _automation_runtime_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(automation_runtime_preflight.get("blocked")):
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(automation_runtime_preflight.get("reason_code") or "automation_runtime_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "automation_runtime_preflight": automation_runtime_preflight,
+            "closure_preflight": closure_preflight,
+            "recommended_command": str(
+                automation_runtime_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="automation-runtime-blocked",
+                )
+            ),
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
     requirement_package_gate = build_requirement_package_gate(
         project_root,
         version=resolved_version,
@@ -4034,36 +4167,6 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
                     project_root=project_root,
                     version=resolved_version,
                     reason="requirement-package-contract-blocked",
-                )
-            ),
-        }, blocked=True)
-        if json_output:
-            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
-        else:
-            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
-        return 2
-    closure_preflight = _requirement_closure_preflight(
-        project_root,
-        version=resolved_version,
-        feature=feature,
-    )
-    if bool(closure_preflight.get("blocked")):
-        payload = _with_implement_surface({
-            "schema_version": "1.0",
-            "status": "blocked",
-            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
-            "feature": feature,
-            "feature_slug": _slug(feature),
-            "version": resolved_version,
-            "closure_preflight": closure_preflight,
-            "requirement_package_gate": requirement_package_gate,
-            "recommended_command": str(
-                closure_preflight.get("recommended_command")
-                or build_change_command(
-                    feature=feature,
-                    project_root=project_root,
-                    version=resolved_version,
-                    reason="requirement-closure-blocked",
                 )
             ),
         }, blocked=True)
@@ -4124,6 +4227,65 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
                 mapped_command=f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
                 payload=payload,
             )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    closure_preflight = _requirement_closure_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(closure_preflight.get("blocked")):
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(closure_preflight.get("reason_code") or "requirement_closure_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "closure_preflight": closure_preflight,
+            "recommended_command": str(
+                closure_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="requirement-closure-blocked",
+                )
+            ),
+        }, blocked=True)
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    automation_runtime_preflight = _automation_runtime_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(automation_runtime_preflight.get("blocked")):
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": str(automation_runtime_preflight.get("reason_code") or "automation_runtime_blocked"),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "automation_runtime_preflight": automation_runtime_preflight,
+            "closure_preflight": closure_preflight,
+            "recommended_command": str(
+                automation_runtime_preflight.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="automation-runtime-blocked",
+                )
+            ),
+        }, blocked=True)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
