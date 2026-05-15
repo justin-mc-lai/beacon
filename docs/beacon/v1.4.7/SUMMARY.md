@@ -19,10 +19,13 @@
   - `docs/beacon/v1.4.7/research/beacon-v1.4.7-agent-skills-lifecycle-and-meta-protocol-analysis.md`
 - PRD
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+  - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - User Story
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+  - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - Test Cases
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+  - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - Change
   - `docs/beacon/v1.4.7/change/v1.4.7.md`
   - `docs/beacon/v1.4.7/change/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
@@ -33,6 +36,21 @@
 ## 正式子线
 
 - `beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces`
+
+## 新增规划子线
+
+- `beacon-v1.4.7-bounded-automation-closure-state-kernel`
+  - 当前状态：`qa-validated-for-planning-line`
+  - 目标：把 automation 从 QA feedback helper 推进到 bounded closure-state runtime kernel
+  - 边界：只做 `closure-state envelope + active issue register + QA/implement bounded loop + queue safety primitives`
+  - 明确不承诺：`deep/refreeze/release` end-to-end automation 或 full autonomous closure-loop
+  - 当前需求链：
+    - `prd` 已冻结
+    - `user-story` 已冻结
+    - `test-case` 已冻结
+    - `change` 已接入
+    - `qa` 已完成 planning-line 验收
+    - `release` 尚未接入
 
 ## First Slice Freeze
 
@@ -71,6 +89,7 @@
 - lightweight references 只做人类判断支架，不得成为 canonical truth，也不得反向驱动 machine truth。
 - `agent-skills` 与 `gstack` 只作为研究与映射输入；Beacon 吸收它们的 anatomy、discipline、specialist packaging 与 host readability，但不引入外部仓库为运行时依赖。
 - 当前版本仍处于 planning line，必须保持对 `v1.4.6` runtime context 的兼容尊重，不静默把 `v1.4.7` 提升为 active docs line。
+- automation 方向当前只允许推进 bounded runtime kernel；不允许把 research north-star 误写成近线产品承诺。
 
 ## 与 v1.4.6 的关系
 
@@ -98,8 +117,11 @@ anti-drift contract exists
 - `docs/beacon/v1.4.6/SUMMARY.md`
 - `docs/beacon/v1.4.7/research/beacon-v1.4.7-agent-skills-lifecycle-and-meta-protocol-analysis.md`
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+- `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+- `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+- `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/qa/acceptance-summary.md`
 
 ## 当前 QA 状态
@@ -114,6 +136,10 @@ anti-drift contract exists
   - second-wave support skills
   - second-wave lightweight references
   - `prd / implement / qa / release` 对 lightweight references 的显式消费接线
+  - bounded automation closure-state kernel
+  - active issue register inheritance
+  - queue revision / stale-writer rejection
+  - feature execution lease / single-flight
 - 当前不代表：
   - `v1.4.7` runtime promotion
   - 全量 roadmap closure

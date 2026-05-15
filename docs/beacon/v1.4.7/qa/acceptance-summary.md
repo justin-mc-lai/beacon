@@ -3,13 +3,19 @@
 ## Scope
 
 - version: `v1.4.7`
-- feature: `beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces`
-- slice: `first-slice + second-slice`
-- qa date: `2026-05-14`
+- features:
+  - `beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces`
+  - `beacon-v1.4.7-bounded-automation-closure-state-kernel`
+- slices:
+  - `support-surface accepted slices`
+  - `bounded automation runtime kernel`
+- qa dates:
+  - `2026-05-14`
+  - `2026-05-15`
 
 ## Verification Target
 
-This QA pass validates the currently accepted slices frozen in the `v1.4.7` requirement package:
+This QA pass validates the currently accepted `v1.4.7` requirement packages:
 
 1. `skills/beacon/SKILL.md` meta-protocol convergence
 2. `skills/beacon/using-beacon/SKILL.md` host route constitution convergence
@@ -27,6 +33,14 @@ This QA pass validates the currently accepted slices frozen in the `v1.4.7` requ
    - `research-closure-checklist.md`
    - `business-flow-checklist.md`
    - `state-machine-checklist.md`
+7. bounded automation runtime kernel:
+   - closure-state envelope
+   - active issue register
+   - authoritative QA / implement bounded routing
+   - queue revision semantics
+   - feature execution lease / single-flight semantics
+   - stale-writer rejection
+   - operator-visible bounded runtime summary
 
 It does not claim:
 
@@ -43,7 +57,7 @@ It does not claim:
 
 ## Evidence
 
-Validated test command:
+Validated test commands:
 
 ```bash
 python3 -m pytest -q \
@@ -52,11 +66,17 @@ python3 -m pytest -q \
   tests/test_v141_deep_skill_surface.py \
   tests/test_v139_friction_intake.py \
   tests/test_skill_standard_layout.py
+
+python3 -m pytest -q \
+  tests/test_v147_bounded_automation_closure_state_kernel.py
 ```
 
-Observed result:
+Observed results:
 
-- `42 passed`
+- support-surface package:
+  - `42 passed`
+- bounded automation kernel:
+  - `10 passed`
 
 ## Acceptance Verdict
 
@@ -66,7 +86,8 @@ Interpretation:
 
 - the accepted `v1.4.7` support-surface slices are implemented and internally consistent
 - host-pack compatibility relevant to this slice remains intact
-- the slice is ready to proceed to release planning only as a `planning_only` line
+- the accepted support-surface slices and the bounded automation kernel slice are implemented and internally consistent
+- the validated slices are ready to proceed to release planning only as a `planning_only` line
 - this verdict does **not** promote `v1.4.7` to active runtime context
 
 ## Findings
@@ -77,14 +98,20 @@ Interpretation:
 - host route explainability now distinguishes truth routing from advisory support routing more clearly
 - second-wave specialist support packaging now covers security, performance, ADR/documentation, and debug recovery without expanding the lifecycle
 - key mainline skills now consume the new lightweight references explicitly instead of leaving them as passive assets
+- bounded automation runtime now emits a formal closure-state envelope and bounded round summary instead of only QA feedback hints
+- repeated QA/repair flow now preserves active issue register inheritance instead of relying on full artifact carry-forward
+- queue revision mismatch and feature lease conflict are now explicit runtime failure modes rather than silent race conditions
 
 ## Residual Risk
 
-- `real-project-proof` was not executed because this slice is documentation/skill-contract heavy and still belongs to a planning line
+- `real-project-proof` was not executed; validated evidence remains contract/integration heavy and still belongs to a planning line
 - broader `v1.4.7` roadmap items remain unimplemented and unverified
-- release promotion should require a later pass once runtime-facing implementation exists
+- bounded automation kernel still intentionally excludes `deep/refreeze/release` end-to-end automation
+- release promotion should require a later pass that includes broader runtime-facing verification and promotion review
 
 ## Recommended Route
 
 - next mainline route: `beacon-release v1.4.7` only for planning-line release materials if needed
-- practical product route: continue `v1.4.7` implementation on later slices through `beacon-change` or `beacon-implement`
+- practical product route:
+  - continue later `v1.4.7` slices through `beacon-change` or `beacon-implement`
+  - or use this validated automation kernel slice as the starting point for broader runtime evolution
