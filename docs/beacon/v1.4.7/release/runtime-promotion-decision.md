@@ -15,7 +15,8 @@
 - accepted change surfaces
 - implemented support-surface slices
 - implemented bounded automation closure-state kernel slice
-- planning-line QA evidence for both accepted feature packages
+- implemented automation support-review / truth-refreeze / promotion-proof second slice
+- planning-line QA evidence for all accepted feature packages
 - planning-line release materials
 
 ## Why Promotion Is Still Deferred
@@ -23,16 +24,17 @@
 Promotion is intentionally blocked for four reasons:
 
 1. evidence coverage is still slice-bounded
-   - current evidence validates the accepted support-surface slices and the bounded automation kernel slice
+   - current evidence validates the accepted support-surface slices and the accepted runtime-facing automation slices
    - it does not validate the broader `v1.4.7` roadmap as a fully converged runtime line
 2. runtime-facing proof is still incomplete
    - `real-project-proof` has not been rerun as a promotion-grade proof chain for the broader line
 3. automation ambition is still intentionally capped
-   - the bounded automation kernel is accepted only as:
+   - the accepted automation slices are still bounded to:
      - closure-state envelope
      - active issue register
      - QA/implement bounded loop
      - queue safety primitives
+     - support-review / truth-refreeze / promotion-proof routing contracts
    - it is not acceptance for full autonomous `deep/refreeze/release` automation
 4. version truth is still correctly anchored to `v1.4.6`
    - changing runtime/default docs line now would overstate what `v1.4.7` has actually proven
@@ -58,7 +60,7 @@ python3 -m beacon.main doctor setup-context --project-root . --version v1.4.7 --
 python3 -m beacon.main doctor verify-version-surfaces --project-root . --strict --json
 python3 -m beacon.main doctor verify-context --project-root . --strict --json
 python3 -m beacon.main release check v1.4.7 --project . --json
-python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py
+python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py tests/test_v147_automation_support_review_and_promotion_contract.py
 ```
 
 Additional promotion-grade QA commands should be appended when later runtime-facing slices land.
