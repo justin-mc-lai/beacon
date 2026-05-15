@@ -2,10 +2,11 @@
 
 from __future__ import annotations
 
+import secrets
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.runtime import read_json
+from beacon.utils.runtime import now_iso, read_json, write_json
 
 
 ALLOWED_SCHEMA_VERSIONS = {"v0"}
@@ -23,7 +24,10 @@ def default_queue_path(project_root: Path) -> Path:
 
 def load_automation_queue(path: Path) -> dict[str, Any]:
     payload = read_json(path, {})
-    return payload if isinstance(payload, dict) else {}
+    payload = payload if isinstance(payload, dict) else {}
+    payload.setdefault("queue_revision", 0)
+    payload.setdefault("feature_leases", {})
+    return payload
 
 
 def validate_automation_queue(payload: dict[str, Any]) -> list[str]:
@@ -136,4 +140,59 @@ def build_automation_queue_validation_payload(project_root: Path, queue_path: Pa
         "error_count": len(errors),
         "errors": errors,
         "queue": payload,
+    }
+
+
+def claim_feature_execution_lease(
+    queue_path: Path,
+    *,
+    feature: str,
+    owner: str,
+    expected_revision: int | None = None,
+) -> dict[str, Any]:
+    queue = load_automation_queue(queue_path)
+    revision_before = int(queue.get("queue_revision") or 0)
+    if expected_revision is not None and int(expected_revision) != revision_before:
+        return {
+            "schema_version": "1.0",
+            "status": "stale_writer_rejected",
+            "feature": str(feature).strip(),
+            "queue_path": str(queue_path),
+            "queue_revision_before": revision_before,
+            "queue_revision_after": revision_before,
+        }
+    leases = queue.get("feature_leases") if isinstance(queue.get("feature_leases"), dict) else {}
+    feature_name = str(feature).strip()
+    active = leases.get(feature_name) if isinstance(leases.get(feature_name), dict) else {}
+    active_owner = str(active.get("owner") or "").strip()
+    active_state = str(active.get("state") or "active").strip()
+    if active_owner and active_state == "active" and active_owner != str(owner).strip():
+        return {
+            "schema_version": "1.0",
+            "status": "lease_conflict",
+            "feature": feature_name,
+            "queue_path": str(queue_path),
+            "queue_revision_before": revision_before,
+            "queue_revision_after": revision_before,
+            "active_lease": active,
+        }
+    lease = {
+        "lease_id": f"lease-{secrets.token_hex(4)}",
+        "feature": feature_name,
+        "owner": str(owner).strip(),
+        "state": "active",
+        "claimed_at": now_iso(),
+    }
+    leases[feature_name] = lease
+    queue["feature_leases"] = leases
+    queue["queue_revision"] = revision_before + 1
+    write_json(queue_path, queue)
+    return {
+        "schema_version": "1.0",
+        "status": "claimed",
+        "feature": feature_name,
+        "queue_path": str(queue_path),
+        "queue_revision_before": revision_before,
+        "queue_revision_after": int(queue.get("queue_revision") or 0),
+        "lease": lease,
     }
