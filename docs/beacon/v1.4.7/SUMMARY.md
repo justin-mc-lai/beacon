@@ -20,15 +20,20 @@
 - PRD
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+  - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - User Story
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+  - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - Test Cases
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+  - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - Change
   - `docs/beacon/v1.4.7/change/v1.4.7.md`
   - `docs/beacon/v1.4.7/change/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
+  - `docs/beacon/v1.4.7/change/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+  - `docs/beacon/v1.4.7/change/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - Release
   - `docs/beacon/v1.4.7/release/v1.4.7.md`
   - `docs/beacon/v1.4.7/release/checklist-v1.4.7.md`
@@ -36,6 +41,7 @@
 ## 正式子线
 
 - `beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces`
+- `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`
 
 ## 新增规划子线
 
@@ -51,6 +57,17 @@
     - `change` 已接入
     - `qa` 已完成 planning-line 验收
     - `release` 尚未接入
+
+- `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`
+  - 当前状态：`accepted_for_implementation`
+  - 目标：把 automation 的 support-review / truth-refreeze / scenario-discovery / promotion-proof 缺口正式收成 runtime-facing second slice
+  - 边界：只做 route / block / proof contract，不做自动 deep、自动 refreeze、自动 truth 写入
+  - 当前需求链：
+    - `prd` 已冻结
+    - `user-story` 已冻结
+    - `test-case` 已冻结
+    - `change` 已接入
+    - `qa` 尚未开始
 
 ## First Slice Freeze
 
@@ -118,10 +135,13 @@ anti-drift contract exists
 - `docs/beacon/v1.4.7/research/beacon-v1.4.7-agent-skills-lifecycle-and-meta-protocol-analysis.md`
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+- `docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+- `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
+- `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
 - `docs/beacon/v1.4.7/qa/acceptance-summary.md`
 
 ## 当前 QA 状态
