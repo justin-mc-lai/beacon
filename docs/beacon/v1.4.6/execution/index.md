@@ -3,6 +3,7 @@
 ## Human Primary Surface
 
 - `boundaries.md`
+- `human-skill-reference.md`
 - Markdown execution notes and release-facing guidance
 - `automation-jobs-runbook.md`
 
