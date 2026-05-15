@@ -2,8 +2,8 @@
 
 **Version**: v1.4.7
 **Created**: 2026-05-14
-**Updated**: 2026-05-15
-**Status**: Pass for planning line
+**Updated**: 2026-05-16
+**Status**: Pass for runtime release
 
 ---
 
@@ -12,8 +12,9 @@
 - [x] Requirement package frozen for accepted slices
 - [x] Accepted-slice implementation completed
 - [x] Targeted QA regression passing
-- [x] Planning-line acceptance summary written and refreshed after support-surface and runtime-facing automation verification
-- [x] Release reviewer confirmed this is a planning-line verdict, not runtime promotion
+- [x] Runtime-release acceptance summary written and refreshed after support-surface and runtime-facing automation verification
+- [x] Release reviewer confirmed this is a runtime-promotion verdict
+- [x] Real-project proof refreshed against `shopxo_canada` feature closure
 
 ## Build
 
@@ -25,17 +26,18 @@
 
 ## Deployment
 
-- [x] No runtime cutover requested
-- [x] No docs-default cutover requested
-- [x] No version-truth promotion performed
+- [x] Runtime cutover requested and completed
+- [x] Docs-default cutover requested and completed
+- [x] Version-truth promotion performed
 
 ## Release
 
-- [x] Formal planning-line release verdict written
-- [x] Planning-line checklist completed
+- [x] Formal runtime-release verdict written
+- [x] Runtime-release checklist completed
 - [x] QA evidence linked from release notes
-- [x] Promotion decision explicitly recorded as deferred
-- [x] Runtime/default docs line explicitly left unchanged
+- [x] Promotion decision explicitly recorded as approved
+- [x] Runtime/default docs line explicitly updated
+- [x] Latest real-project proof linked into release materials
 
 ## Change Documents
 
@@ -46,18 +48,20 @@
 - [x] QA acceptance summary generated: `docs/beacon/v1.4.7/qa/acceptance-summary.md`
 - [x] Release notes generated: `docs/beacon/v1.4.7/release/v1.4.7.md`
 - [x] Promotion decision material generated: `docs/beacon/v1.4.7/release/runtime-promotion-decision.md`
+- [x] Real-project proof generated: `docs/beacon/v1.4.7/release/shopxo-canada-real-project-proof-2026-05-16.md`
 
 ---
 
 ## Promotion Decision
 
-- `v1.4.7` planning-line release candidate: approved
-- runtime/default docs promotion: deferred
-- active default line remains: `v1.4.6`
+- `v1.4.7` runtime release candidate: approved
+- runtime/default docs promotion: approved
+- active default line remains: `v1.4.7`
 
 ## Notes
 
-- `v1.4.7` has passed planning-line QA for the accepted support-surface slices and the accepted runtime-facing automation slices.
-- This line is not release-ready for runtime promotion because it is still a planning-only line and broader roadmap slices remain open.
+- `v1.4.7` has passed runtime-promotion QA for the accepted support-surface slices and the accepted runtime-facing automation slices.
+- `v1.4.7` now also has a repaired and passing real-project feature proof on `shopxo_canada` for `admin-merchandising-analytics`.
+- This line is release-ready as the active Beacon runtime/docs line, even though broader roadmap slices remain open.
 - The accepted automation slices are included only as bounded runtime contracts; they do not imply approval of full autonomous closure-loop behavior.
-- Local/global CLI and managed runtime context should remain aligned to `v1.4.6` until a later `v1.4.7` promotion verdict is explicitly approved.
+- Local/global CLI and managed runtime context should now align to `v1.4.7`.

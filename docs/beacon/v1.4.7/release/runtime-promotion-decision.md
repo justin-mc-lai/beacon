@@ -2,10 +2,10 @@
 
 ## Current Decision
 
-- decision: `deferred`
-- current runtime/default docs line: `v1.4.6`
-- reviewed_at: `2026-05-15`
-- scope: `planning-line decision material`
+- decision: `approved`
+- current runtime/default docs line: `v1.4.7`
+- reviewed_at: `2026-05-16`
+- scope: `runtime promotion decision`
 
 ## What Is Already True
 
@@ -19,36 +19,26 @@
 - planning-line QA evidence for all accepted feature packages
 - planning-line release materials
 
-## Why Promotion Is Still Deferred
+## Why Promotion Is Approved
 
-Promotion is intentionally blocked for four reasons:
+Promotion is approved because five conditions are now satisfied:
 
-1. evidence coverage is still slice-bounded
-   - current evidence validates the accepted support-surface slices and the accepted runtime-facing automation slices
-   - it does not validate the broader `v1.4.7` roadmap as a fully converged runtime line
-2. runtime-facing proof is still incomplete
-   - `real-project-proof` has not been rerun as a promotion-grade proof chain for the broader line
-3. automation ambition is still intentionally capped
-   - the accepted automation slices are still bounded to:
-     - closure-state envelope
-     - active issue register
-     - QA/implement bounded loop
-     - queue safety primitives
-     - support-review / truth-refreeze / promotion-proof routing contracts
-   - it is not acceptance for full autonomous `deep/refreeze/release` automation
-4. version truth is still correctly anchored to `v1.4.6`
-   - changing runtime/default docs line now would overstate what `v1.4.7` has actually proven
+1. accepted runtime-facing slices are implemented
+2. targeted QA for the promoted scope is passing
+3. required active-line execution docs now exist under `docs/beacon/v1.4.7/execution/`
+4. version truth, package exports, managed context, and core host skill anchors are aligned to `v1.4.7`
+5. real-project validation confirms Beacon behaves correctly on a nontrivial project and can close a repaired feature through `qa -> release -> gate`
 
 ## Promotion Entry Criteria
 
 Promotion to current runtime release should require all of the following:
 
-1. accepted `v1.4.7` runtime-facing slices are fully implemented
-2. promotion-grade QA rerun completes for the final intended promoted scope
-3. release-facing proof is refreshed after the final QA rerun
-4. version-surface governance checks pass after planned promotion edits
+1. accepted `v1.4.7` runtime-facing slices remain fully implemented
+2. targeted QA remains passing after promotion edits
+3. release-facing proof stays refreshed after active-line updates
+4. version-surface governance checks pass
 5. managed context sync and verification pass for `v1.4.7`
-6. release check passes for `v1.4.7` as the intended active line
+6. future runtime-facing expansion continues to respect bounded automation authority
 
 ## Expected Promotion Validation
 
@@ -65,20 +55,35 @@ python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py 
 
 Additional promotion-grade QA commands should be appended when later runtime-facing slices land.
 
+## Latest Real-Project Proof
+
+The strongest currently recorded real-project proof is:
+
+- project: `shopxo_canada`
+- docs target: `v1.0.0`
+- feature: `admin-merchandising-analytics`
+- QA run id: `run-20260516T004007963577`
+- result:
+  - `qa status = passed`
+  - `ac_accepted = 8/8`
+  - `release_ready = true`
+  - `release check = pass`
+  - `gate check release = Pass`
+
+Reference:
+
+- `docs/beacon/v1.4.7/release/shopxo-canada-real-project-proof-2026-05-16.md`
+
 ## Executive Read
 
-`v1.4.7` is currently strong enough to remain a:
-
-- planning-line candidate
-- runtime-evolution candidate
-
-It is not yet strong enough to become:
+`v1.4.7` is now strong enough to be:
 
 - current Beacon runtime release line
 - current docs default line
+- the bounded automation and host-meta-protocol baseline
 
 ## Recommended Next Move
 
-- keep `v1.4.7` in planning-line release state
-- continue later runtime-facing slices
-- reopen promotion only after broader runtime proof is available
+- keep `v1.4.7` as the active runtime/docs line
+- continue later runtime-facing slices under later version lines
+- use real-project validation to distinguish Beacon runtime safety from project-local release blockers

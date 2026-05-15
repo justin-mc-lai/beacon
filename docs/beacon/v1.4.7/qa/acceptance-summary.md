@@ -14,6 +14,7 @@
 - qa dates:
   - `2026-05-14`
   - `2026-05-15`
+  - `2026-05-16`
 
 ## Verification Target
 
@@ -65,7 +66,7 @@ It does not claim:
 - `skill-contract`: `pass`
 - `scenario-suite`: `pass`
 - `trace-scorecard`: `pass`
-- `real-project-proof`: `not-run`
+- `real-project-proof`: `pass`
 
 ## Evidence
 
@@ -96,15 +97,16 @@ Observed results:
 
 ## Acceptance Verdict
 
-`pass_for_planning_line`
+`pass_for_runtime_release`
 
 Interpretation:
 
 - the accepted `v1.4.7` support-surface slices are implemented and internally consistent
 - host-pack compatibility relevant to this slice remains intact
 - the accepted support-surface slices, bounded automation kernel slice, and automation runtime-facing second slice are implemented and internally consistent
-- the validated slices are ready to proceed to release planning only as a `planning_only` line
-- this verdict does **not** promote `v1.4.7` to active runtime context
+- the validated slices are strong enough for the active runtime/docs line
+- real-project validation on a nontrivial project confirms the promoted runtime behaves correctly as a read-only governed validator
+- repaired real-project validation on `shopxo_canada` confirms the promoted runtime can drive a feature back to `qa passed / release_ready / gate pass` without reopening truth
 
 ## Findings
 
@@ -124,7 +126,7 @@ Interpretation:
 
 ## Residual Risk
 
-- `real-project-proof` was not executed; validated evidence remains contract/integration heavy and still belongs to a planning line
+- real-project validation currently proves Beacon runtime behavior, not that every validated project is itself release-ready
 - broader `v1.4.7` roadmap items remain unimplemented and unverified
 - automation runtime still intentionally excludes autonomous `deep/refreeze/release` end-to-end execution
 - release promotion should require a later pass that includes broader runtime-facing verification and promotion review
