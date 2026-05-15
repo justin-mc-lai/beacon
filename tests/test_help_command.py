@@ -50,3 +50,41 @@ def test_help_human_output_should_include_scores_and_next_step(tmp_path: Path):
     assert "Beacon Help / Next Step" in result.stdout
     assert "test_score" in result.stdout
     assert "command :" in result.stdout
+
+
+def test_help_should_surface_ceo_review_challenge_axes(tmp_path: Path):
+    version = "v1.4.7"
+    feature = "beacon-v1.4.7-help-surface-ceo-review-axes"
+    slug = "beacon-v1.4.7-help-surface-ceo-review-axes"
+    for rel in (
+        "docs/beacon/global-boundaries.md",
+        f"docs/beacon/{version}/SUMMARY.md",
+        f"docs/beacon/{version}/execution/index.md",
+        f"docs/beacon/{version}/execution/architecture-blueprint.md",
+        f"docs/beacon/{version}/prd/{slug}.md",
+        f"docs/beacon/{version}/user-story/{slug}.md",
+        f"docs/beacon/{version}/qa/test-cases/{slug}.md",
+    ):
+        path = tmp_path / rel
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("# seeded\n", encoding="utf-8")
+
+    review_result = _invoke(["review", "ceo", feature, "--project", str(tmp_path), "--version", version, "--decision", "reframe"])
+    assert review_result.exit_code == 0, review_result.stdout
+
+    json_result = _invoke(["help", "--json", "--project-root", str(tmp_path), "--version", version, "--feature", feature])
+    assert json_result.exit_code == 0, json_result.stdout
+    payload = json.loads(json_result.stdout)
+    ceo_review = payload["support_reviews"]["ceo_review"]
+    assert ceo_review["challenge_axis_codes"] == [
+        "too_smooth_path",
+        "buried_landmine",
+        "truth_freeze_destabilization",
+        "stage_boundary_sprawl",
+        "false_closure_signal",
+        "operator_cost_underpricing",
+    ]
+
+    human_result = _invoke(["help", "--project-root", str(tmp_path), "--version", version, "--feature", feature])
+    assert human_result.exit_code == 0, human_result.stdout
+    assert "axes=too_smooth_path,buried_landmine,truth_freeze_destabilization,stage_boundary_sprawl,false_closure_signal,operator_cost_underpricing" in human_result.stdout

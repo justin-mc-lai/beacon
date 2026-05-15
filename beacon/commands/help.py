@@ -179,8 +179,10 @@ def _render_human(payload: dict[str, object]) -> str:
             item = support_reviews.get(surface_key, {}) if isinstance(support_reviews.get(surface_key), dict) else {}
             if not item or not item.get("status"):
                 continue
+            axis_codes = item.get("challenge_axis_codes", []) if isinstance(item.get("challenge_axis_codes"), list) else []
+            axis_suffix = f" axes={','.join(axis_codes)}" if axis_codes else ""
             lines.append(
-                f"- {surface_key}: status={item.get('status')} blocked={item.get('blocked')} next={item.get('latest_next_route') or 'none'}"
+                f"- {surface_key}: status={item.get('status')} blocked={item.get('blocked')} next={item.get('latest_next_route') or 'none'}{axis_suffix}"
             )
     return "\n".join(lines) + "\n"
 

@@ -1098,6 +1098,14 @@ def review_ceo(
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         return
     typer.echo(f"✓ CEO review complete: {payload.get('status')}")
+    challenge_axes = payload.get("challenge_axes", []) if isinstance(payload.get("challenge_axes"), list) else []
+    axis_codes = [
+        str(item.get("code", "") or "").strip()
+        for item in challenge_axes
+        if isinstance(item, dict) and str(item.get("code", "") or "").strip()
+    ]
+    if axis_codes:
+        typer.echo(f"✓ Challenge axes: {', '.join(axis_codes)}")
     next_route = payload.get("next_route", {}) if isinstance(payload.get("next_route"), dict) else {}
     if next_route.get("command"):
         typer.echo(f"✓ Next route: {next_route.get('command')}")

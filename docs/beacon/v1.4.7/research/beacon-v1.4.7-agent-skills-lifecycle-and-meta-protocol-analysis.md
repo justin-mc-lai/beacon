@@ -26,6 +26,11 @@
 > - `skills/beacon/beacon-release/SKILL.md`
 > - `docs/beacon/global-boundaries.md`
 > - `docs/beacon/v1.4.6/SUMMARY.md`
+> - `docs/beacon/v1.4.6/prd/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md`
+> - `docs/beacon/v1.4.6/execution/automation-jobs-runbook.md`
+> - `beacon/utils/automation_feedback.py`
+> - `beacon/utils/automation_queue.py`
+> - `beacon/utils/qa_feature.py`
 
 ---
 
@@ -732,7 +737,579 @@ This would materially improve Beacon's engineering completeness without expandin
 
 ---
 
-## 11. Final Research Verdict
+## 11. Automation Closure-Loop Direction
+
+### 11.1 Why this matters
+
+Beacon `v1.4.6` already freezes a useful automation/jobs feedback loop:
+
+- scheduled QA
+- queue validation
+- gated implement queue refill
+- summary artifact generation
+
+But in real-project usage this is still too QA-centered.
+
+The current system is closer to:
+
+```text
+nightly qa
+→ refresh ledger
+→ update queue
+→ maybe refill implement queue
+```
+
+What real projects actually need is stronger:
+
+```text
+qa
+→ implement
+→ qa
+→ deep
+→ change/refreeze
+→ implement
+→ qa
+→ release
+```
+
+with one hard constraint:
+
+> automation may iterate evidence, repair, and closure quality, but it must not silently expand or rewrite requirement truth.
+
+### 11.2 CEO verdict
+
+CEO review verdict for this direction:
+
+- `reframe`
+- bounded `expand`
+
+Interpretation:
+
+- do **not** expand Beacon automation into a scheduler-owned pseudo lifecycle
+- do **not** let nightly QA become endless generic rerun noise
+- do expand automation from a **QA feedback loop** into a **truth-preserving closure-state routing loop**
+
+The correct product framing is:
+
+> Beacon automation should become a closure router that preserves frozen truth while iteratively improving implementation quality, QA coverage, scenario depth, and release readiness.
+
+### 11.2.1 What `ceo-review` should challenge by default
+
+This research exposes a broader product-system lesson:
+
+`ceo-review` should not default to a polite confirmation pass.
+It should default to an adversarial boundary and downside challenge.
+
+Why:
+
+- Beacon planning lines often become over-linear on paper
+- automation proposals naturally bias toward "continuous improvement" optimism
+- support surfaces can silently drift into shadow stages if nobody actively challenges the shape
+- truth freeze failure rarely starts as an explicit rewrite; it usually starts as a convenience shortcut that "still seems aligned"
+
+Therefore the default `ceo-review` posture should be:
+
+- challenge where the proposal is **too smooth**
+- expose **buried landmines**
+- test whether the design bends **truth freeze**, **stage boundaries**, or **gate ownership**
+- assume real execution will include variance, queue races, stale evidence, operator fatigue, and pressure to shortcut
+
+This does **not** mean turning `ceo-review` into a long operation script.
+
+It means the skill should encode a stronger review constitution:
+
+- default challenge lenses
+- stronger rationalization rebuttals
+- explicit sensitivity to "support surface becomes stage" failure
+- explicit sensitivity to "local pass signal mistaken for closure" failure
+
+Practical implication for `v1.4.7`:
+
+> `ceo-review` should become Beacon's default anti-overconfidence and anti-boundary-erosion review surface, while still remaining advisory-only and route-back based.
+
+### 11.3 Non-negotiable boundaries
+
+This automation evolution must keep Beacon's global boundaries intact:
+
+1. support surfaces still do not become public lifecycle stages
+2. automation may not auto-rewrite PRD / user-story / test-case truth
+3. new scenario discovery is machine-side first, not automatic truth writeback
+4. any discovery that changes requirement meaning must route to `change/refreeze`
+5. every automatic stage must have an explicit terminal signal
+
+### 11.4 Product direction: from feedback loop to closure-state routing loop
+
+The current `v1.4.6` loop is best understood as:
+
+- QA emits feedback
+- queue updates candidate lists
+- implement can consume repair-needed items
+
+The next useful evolution is:
+
+- QA emits closure-state and route intent
+- implement emits repair outcome and closure delta
+- deep emits structural challenge and truth-delta judgment
+- change/refreeze remains the only path that can revise canonical truth
+- release consumes the fully converged closure state
+
+### 11.5 Proposed routing model
+
+This direction should not collapse state, route, and terminal signal into one flat enum.
+
+That design looks compact on paper, but in implementation it creates state explosion and hides who owns the next move.
+
+The safer model is a 3-layer machine contract:
+
+#### A. Closure state
+
+- `active`
+- `blocked`
+- `release_ready`
+- `closed`
+- `human_escalation_required`
+
+#### B. Next route
+
+- `qa`
+- `implement`
+- `support_review`
+- `change_refreeze`
+- `release`
+- `human`
+
+#### C. Route executor
+
+- `qa`
+- `implement`
+- `deep`
+- `change`
+- `release`
+- `human`
+
+Interpretation:
+
+- `deep` is a support executor, not a lifecycle stage
+- `change/refreeze` is the only truth-revision route
+- `support_review` is the machine-side route label; `deep` is one concrete executor for that route
+
+This preserves Beacon's main-chain compactness while still allowing automation to route repeated work intelligently.
+
+### 11.6 Proposed terminal signals by stage
+
+Each automated stage needs explicit stop signals.
+
+#### QA terminal signals
+
+- `qa_exit_ready_for_release`
+- `qa_route_implement_repair`
+- `qa_route_structural_review`
+- `qa_route_truth_refreeze`
+- `qa_route_human_escalation`
+
+#### Implement terminal signals
+
+- `implement_exit_to_qa`
+- `implement_route_structural_review`
+- `implement_route_truth_refreeze`
+- `implement_route_human_escalation`
+
+#### Support review / deep terminal signals
+
+- `deep_exit_no_truth_delta`
+- `deep_route_implement`
+- `deep_route_truth_refreeze`
+- `deep_repeat_cap_reached`
+
+#### Change / refreeze terminal signals
+
+- `refreeze_accepted`
+- `refreeze_rejected`
+- `refreeze_human_pending`
+- `truth_recompiled_pending`
+
+#### Release terminal signals
+
+- `release_ready`
+- `release_blocked`
+
+#### Global stop guards
+
+- repeated same failure signature over max rounds -> `human_escalation_required`
+- `ready_for_release` + unchanged truth hash + unchanged implementation evidence hash -> no QA re-entry
+- no-progress across bounded rounds -> `human_escalation_required`
+- no feature may hold more than one active execution lease at a time
+
+### 11.7 Automation state machine
+
+```mermaid
+stateDiagram-v2
+    [*] --> active
+
+    active --> release_ready: qa_exit_ready_for_release
+    active --> blocked: qa_route_implement_repair
+    active --> blocked: qa_route_structural_review
+    active --> blocked: qa_route_truth_refreeze
+    active --> human_escalation_required: qa_route_human_escalation
+
+    blocked --> active: implement_exit_to_qa
+    blocked --> blocked: implement_route_structural_review
+    blocked --> blocked: implement_route_truth_refreeze
+    blocked --> human_escalation_required: implement_route_human_escalation
+
+    blocked --> active: deep_exit_no_truth_delta_and_targeted_qa
+    blocked --> blocked: deep_route_implement
+    blocked --> blocked: deep_route_truth_refreeze
+    blocked --> human_escalation_required: deep_repeat_cap_reached
+
+    blocked --> blocked: truth_recompiled_pending
+    blocked --> active: refreeze_accepted_and_truth_recompiled
+    blocked --> human_escalation_required: refreeze_human_pending
+    blocked --> closed: refreeze_rejected
+
+    release_ready --> closed: release_ready
+    release_ready --> human_escalation_required: release_blocked
+```
+
+Important correction:
+
+- `refreeze accepted` must **not** route directly to `implement`
+- it must first pass through truth recompilation:
+  - updated `user-story`
+  - updated `test-case`
+  - `requirement_clarity`
+  - `freeze`
+
+Only then may the loop re-enter `implement`.
+
+### 11.8 Operator flowchart
+
+```mermaid
+flowchart TD
+    A[Scheduled QA or targeted QA entry] --> B{QA verdict}
+    B -->|ready_for_release| R[Mark release-ready and stop QA loop]
+    B -->|implementation defect only| C[Queue implement repair]
+    B -->|structural ambiguity or repeated failure| D[Queue support review]
+    B -->|requirement meaning changed| E[Route to change/refreeze]
+    B -->|environment or repeated unresolved blocker| H[Human escalation]
+
+    C --> C1[Implement repair round N]
+    C1 --> C2[Write implement outcome ledger]
+    C2 --> C3[Carry previous QA artifacts forward]
+    C3 --> F[Queue targeted QA rerun round N+1]
+
+    D --> D1[Deep analysis round]
+    D1 --> D2{Truth delta?}
+    D2 -->|no| F
+    D2 -->|yes| E
+
+    E --> E1{Refreeze accepted?}
+    E1 -->|yes| E2[Recompile user-story and test-case, rerun freeze]
+    E2 --> C
+    E1 -->|no| H
+
+    F --> B
+    R --> G[Release check]
+    G -->|pass| I[Closed]
+    G -->|blocked| H
+```
+
+### 11.9 Multi-round QA / repair model
+
+Important clarification:
+
+- the initial failing QA observation is **not** yet counted as a repair round
+- **Round 1 starts after the first accepted repair action**
+- every later round continues from the previous round's still-active closure issues and accepted repair evidence
+
+Suggested round semantics:
+
+- `Round 0`
+  - first QA observation
+  - emits stop reasons, targeted rerun hints, repair route, and notification
+- `Round 1`
+  - first repair attempt after Round 0
+  - must include Round 0 QA artifacts as inherited closure input
+- `Round 2`
+  - second repair attempt after QA or deep says closure is still incomplete
+  - must include Round 1 implement outcome + prior QA evidence + any new scenario discovery
+- `Round N`
+  - continues until terminal signal or max-round guard fires
+
+Required inherited payload per round should be reduced to an **active issue register**, not the entire prior artifact bundle:
+
+- unresolved stop reasons
+- accepted fixes
+- targeted rerun hints still in force
+- latest implement outcome ref
+- latest deep verdict ref if any
+- cumulative non-promoted scenario discoveries
+- current truth hash
+- current implementation evidence hash
+- previous round summary ref
+
+This distinction matters.
+
+If automation tries to inherit every prior artifact wholesale, the loop becomes context-heavy, stale, and hard to audit.
+
+If it inherits only the active issue register, the loop stays explainable and convergent.
+
+### 11.10 Scenario discovery and truth preservation
+
+Beacon should support deeper business closure discovery during repeated QA/deep rounds, but the discovery must be split into two classes.
+
+#### Class A: closure supplement only
+
+Examples:
+
+- more edge scenarios under existing acceptance
+- richer state coverage under an existing state machine
+- additional replay hints
+- new targeted rerun clusters
+
+These should:
+
+- enrich machine-side closure supplements
+- improve future QA depth
+- improve targeted rerun precision
+- optionally enrich human-readable review notes
+
+These should **not** automatically change canonical `user-story` or `test-case`.
+
+They also must not become shadow truth.
+
+That means:
+
+- implement and QA may use them for replay precision and closure depth
+- but release or acceptance cannot treat them as canonical promise unless they are promoted through `change/refreeze`
+
+#### Class B: requirement-meaning change
+
+Examples:
+
+- a new business rule
+- a new actor responsibility
+- a new state or transition
+- a new decision-priority ordering
+- a new contractual acceptance obligation
+
+These must:
+
+- stop automatic loop progression
+- route to `change/refreeze`
+- require explicit acceptance before re-entering implement/QA
+
+### 11.11 Notification model
+
+Each round should emit an operator-visible notification artifact.
+
+Minimum notification payload:
+
+- `feature`
+- `round_number`
+- `previous_round_ref`
+- `current_closure_state`
+- `terminal_signal`
+- `next_route`
+- `truth_hash`
+- `implementation_evidence_hash`
+- `new_scenarios_discovered_count`
+- `scenario_promotion_required`
+- `stop_reasons`
+- `recommended_command`
+- `dedupe_key`
+- `queue_revision`
+- `feature_execution_lease_id`
+
+Human-facing notification line should answer only:
+
+- what changed
+- what state the feature is now in
+- what the next route is
+- whether human action is required
+
+Minimum machine-side delivery guarantees:
+
+- notifications must be monotonic by round number
+- duplicated sends for the same `dedupe_key` must be suppressible
+- every round write must carry queue revision / execution lease metadata
+
+### 11.12 Suggested user-story additions for this direction
+
+1. As an operator, I want a feature to exit the QA loop automatically once it is truly release-ready and no relevant truth or implementation evidence has changed.
+2. As an operator, I want QA-detected implementation defects to route into a governed implement-repair round instead of remaining as endless generic QA reruns.
+3. As an operator, I want structurally ambiguous or repeatedly failing features to route into `deep` rather than blindly re-entering implement.
+4. As an operator, I want new scenario discoveries to accumulate as closure supplements without silently rewriting canonical truth.
+5. As an operator, I want any discovery that changes requirement meaning to stop automation and route into `change/refreeze`.
+6. As an operator, I want every automatic round to inherit the previous round's QA delivery and repair evidence so the loop converges instead of restarting from zero.
+7. As an operator, I want every stage to publish a terminal signal and a next-route notification so the automation loop remains explainable.
+
+### 11.13 Suggested test-case additions for this direction
+
+1. QA `ready_for_release` + unchanged truth/evidence hash -> feature exits QA queue
+2. QA `stop_for_repair` + repair action `implement` -> feature enters implement repair queue
+3. QA repeated structural failure -> feature routes to deep queue
+4. Deep no-truth-delta verdict -> feature routes to targeted QA rerun or implement, not change
+5. Deep truth-delta verdict -> feature enters `truth_refreeze_required`
+6. Refreeze accepted -> feature can re-enter implement/qa
+7. Refreeze rejected or max rounds reached -> feature enters `human_escalation_required`
+8. New scenario discovery under existing truth -> closure supplement only, no canonical writeback
+9. New scenario discovery that changes requirement meaning -> automatic loop stops and routes to `change/refreeze`
+
+### 11.14 Net research verdict for automation
+
+Beacon should not keep automation at the level of:
+
+- nightly QA runner
+- queue refill helper
+
+It should evolve toward:
+
+> a truth-preserving closure-state routing loop with bounded rounds, explicit terminal signals, cumulative QA inheritance, and machine-first scenario discovery.
+
+This is a good `v1.4.7+` research direction because it strengthens Beacon's real-project delivery power without weakening:
+
+- truth boundaries
+- gate discipline
+- lifecycle compactness
+- support-surface constitution
+
+### 11.15 Research Risks and Breakthrough Plan
+
+This direction is promising, but it is **not** freeze-ready until the following six risks are explicitly resolved.
+
+#### Risk 1: `refreeze -> implement` shortcut breaks truth recompilation
+
+Failure mode:
+
+- truth changes
+- automation jumps straight back into implement
+- `user-story` / `test-case` remain stale
+- QA then validates against mixed truth
+
+Breakthrough:
+
+- introduce `truth_recompiled_pending`
+- require:
+  - `change/refreeze`
+  - regenerated `user-story`
+  - regenerated `test-case`
+  - `requirement_clarity`
+  - `freeze`
+- only then allow re-entry into implement
+
+#### Risk 2: `deep` silently becomes a new lifecycle stage
+
+Failure mode:
+
+- the public main chain still claims 6 stages
+- but operator reality becomes 7 or 8 stages because `deep` is now a mandatory named phase
+
+Breakthrough:
+
+- never model `deep` as a stage name
+- model `support_review` as the route
+- let `deep` remain a support executor for structural challenge
+
+#### Risk 3: state, route, and terminal signal are mixed into one unstable machine
+
+Failure mode:
+
+- queue contract becomes hard to implement
+- transitions become ambiguous
+- tests become combinatorial
+
+Breakthrough:
+
+- split the model into:
+  - `closure_state`
+  - `next_route`
+  - `terminal_signal`
+- keep each axis small and independently testable
+
+#### Risk 4: scenario discovery becomes shadow truth
+
+Failure mode:
+
+- machine-side discoveries start influencing acceptance or release
+- but canonical requirement truth was never updated
+
+Breakthrough:
+
+- freeze a two-class discovery contract:
+  - `closure_supplement`
+  - `promotion_candidate`
+- add `requirement_meaning_delta=true|false`
+- only `true` may route to `change/refreeze`
+
+#### Risk 5: round inheritance is too broad and causes context blow-up
+
+Failure mode:
+
+- every new round drags full prior artifacts
+- stale evidence remains active
+- automation gets heavier and noisier each round
+
+Breakthrough:
+
+- inherit only the active issue register
+- link to prior artifacts by ref
+- never inline the whole prior round package into the new round contract
+
+#### Risk 6: real projects will hit concurrency races and queue corruption
+
+Failure mode:
+
+- two schedulers run the same feature
+- QA and implement both mutate queue state
+- notification order drifts
+- round numbers fork
+
+Breakthrough:
+
+- add feature-level execution lease
+- add queue revision / compare-and-swap semantics
+- require single-flight per feature
+- reject stale writers
+- require notification dedupe keys
+
+#### Net breakthrough plan
+
+Do not implement this as one giant automation upgrade.
+
+Break it into four narrow slices:
+
+1. **Model hardening**
+   - split state / route / terminal signal
+   - define authoritative QA exit predicate
+   - define no-progress / round-cap guards
+2. **Route hardening**
+   - keep `deep` as support executor
+   - add truth recompilation gate after refreeze
+   - formalize scenario discovery classes
+3. **Concurrency hardening**
+   - leases
+   - queue revisions
+   - single-flight guarantees
+   - notification dedupe
+4. **Lifecycle reintegration**
+   - re-enter implement only after truth recompilation
+   - re-enter QA only with active issue register + targeted rerun intent
+   - release only from authoritative release-ready predicate
+
+If Beacon does not solve these six risks explicitly, this direction will degrade from:
+
+- truth-preserving closure loop
+
+into:
+
+- noisy scheduler with pseudo-stages and hidden shadow truth
+
+That is the main trap to avoid.
+
+---
+
+## 13. Final Research Verdict
 
 Beacon should not try to become `agent-skills`.
 

@@ -52,3 +52,4 @@ def test_v145_ceo_review_binds_version_package_truth_refs(tmp_path: Path) -> Non
     assert len(payload["truth_refs"]) == 9
     assert all(any(feature in ref for ref in payload["truth_refs"]) for feature in SUBFEATURES)
     assert "Bound version package features" in payload["operator_visible_summary"]
+    assert "default downside axes" in payload["operator_visible_summary"]

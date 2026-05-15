@@ -59,6 +59,7 @@ def render_support_surface_markdown(payload: dict[str, Any]) -> str:
     next_route = payload.get("next_route", {}) if isinstance(payload.get("next_route"), dict) else {}
     reason_codes = payload.get("reason_codes", []) if isinstance(payload.get("reason_codes"), list) else []
     truth_refs = payload.get("truth_refs", []) if isinstance(payload.get("truth_refs"), list) else []
+    challenge_axes = payload.get("challenge_axes", []) if isinstance(payload.get("challenge_axes"), list) else []
     lines = [
         f"# {payload.get('surface', 'Support Surface')} Transaction",
         "",
@@ -80,6 +81,18 @@ def render_support_surface_markdown(payload: dict[str, Any]) -> str:
             f"- why: {next_route.get('why', '')}",
         ]
     )
+    if challenge_axes:
+        lines.extend(["", "## Challenge Axes"])
+        for axis in challenge_axes:
+            if not isinstance(axis, dict):
+                continue
+            code = str(axis.get("code", "") or "").strip()
+            prompt = str(axis.get("prompt", "") or "").strip()
+            risk = str(axis.get("risk", "") or "").strip()
+            if code:
+                lines.append(f"- `{code}`: {prompt or risk or 'challenge applied'}")
+            elif prompt or risk:
+                lines.append(f"- {prompt or risk}")
     if reason_codes:
         lines.extend(["", "## Reason Codes"])
         for code in reason_codes:
@@ -104,6 +117,7 @@ def build_support_surface_transaction(
     truth_refs: list[str] | None = None,
     evidence_refs: list[str] | None = None,
     reason_codes: list[str] | None = None,
+    challenge_axes: list[dict[str, Any]] | None = None,
     state_impact: dict[str, Any] | None = None,
     gate_impact: dict[str, Any] | None = None,
     blocked: bool = False,
@@ -122,6 +136,7 @@ def build_support_surface_transaction(
         "reason_codes": [str(item).strip() for item in (reason_codes or []) if str(item).strip()],
         "truth_refs": [str(item).strip() for item in (truth_refs or []) if str(item).strip()],
         "evidence_refs": [str(item).strip() for item in (evidence_refs or []) if str(item).strip()],
+        "challenge_axes": [item for item in (challenge_axes or []) if isinstance(item, dict)],
         "route_decision": route_decision if isinstance(route_decision, dict) else {},
         "next_route": next_route if isinstance(next_route, dict) else {},
         "writeback_targets": [str(item).strip() for item in (writeback_targets or []) if str(item).strip()],
@@ -154,6 +169,11 @@ def write_support_surface_transaction(project_root: Path, *, version: str, paylo
         "blocked": bool(payload.get("blocked", False)),
         "blocked_reason": payload.get("blocked_reason", ""),
         "reason_codes": payload.get("reason_codes", []),
+        "challenge_axis_codes": [
+            str(item.get("code", "") or "").strip()
+            for item in payload.get("challenge_axes", [])
+            if isinstance(item, dict) and str(item.get("code", "") or "").strip()
+        ],
         "next_route": payload.get("next_route", {}),
         "operator_visible_summary": payload.get("operator_visible_summary", ""),
         "transaction_id": transaction_id,
@@ -180,11 +200,18 @@ def load_support_surface_summary(project_root: Path, *, surface: str) -> dict[st
     next_route = payload.get("next_route", {}) if isinstance(payload.get("next_route"), dict) else {}
     return {
         "surface": normalize_support_surface(surface),
+        "version": str(payload.get("version", "") or ""),
+        "feature": str(payload.get("feature", "") or ""),
         "status": str(payload.get("status", "") or ""),
         "decision": str(payload.get("decision", "") or ""),
         "blocked": bool(payload.get("blocked", False)),
         "reason_code": str(payload.get("blocked_reason", "") or ""),
         "state_path": str(payload.get("state_path", "") or ""),
         "latest_next_route": str(next_route.get("command", "") or ""),
+        "challenge_axis_codes": [
+            str(item).strip()
+            for item in payload.get("challenge_axis_codes", [])
+            if str(item).strip()
+        ] if isinstance(payload.get("challenge_axis_codes"), list) else [],
         "summary": str(payload.get("operator_visible_summary", "") or ""),
     }

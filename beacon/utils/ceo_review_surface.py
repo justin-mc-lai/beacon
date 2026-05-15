@@ -14,6 +14,40 @@ from beacon.utils.support_surface_transactions import build_support_surface_tran
 from beacon.utils.versioning import resolve_target_version
 
 
+DEFAULT_CEO_CHALLENGE_AXES = [
+    {
+        "code": "too_smooth_path",
+        "prompt": "What meaningful variance, dependency, operator behavior, or runtime mismatch is being ignored?",
+        "risk": "linear plan optimism",
+    },
+    {
+        "code": "buried_landmine",
+        "prompt": "What failure mode is low-visibility now but expensive after rollout?",
+        "risk": "hidden post-release downside",
+    },
+    {
+        "code": "truth_freeze_destabilization",
+        "prompt": "Does this idea let support surfaces, automation, or convenience loops silently rewrite or bypass frozen truth?",
+        "risk": "truth drift via convenience path",
+    },
+    {
+        "code": "stage_boundary_sprawl",
+        "prompt": "Does this proposal accidentally turn a support surface into a shadow lifecycle stage?",
+        "risk": "main-chain erosion",
+    },
+    {
+        "code": "false_closure_signal",
+        "prompt": "Are local pass signals being mistaken for requirement closure or release readiness?",
+        "risk": "local success overclaimed as global closure",
+    },
+    {
+        "code": "operator_cost_underpricing",
+        "prompt": "Does the proposal create hidden maintenance, triage, or governance burden?",
+        "risk": "operator cost hidden by conceptual elegance",
+    },
+]
+
+
 def _doc_path(project_root: Path, version: str, feature: str, folder: str) -> Path:
     return project_root / "docs" / "beacon" / version / folder / f"{feature_slug(feature)}.md"
 
@@ -104,6 +138,7 @@ def run_ceo_review(
             reason_codes=["truth_refs_missing"],
             truth_refs=[],
             evidence_refs=[],
+            challenge_axes=DEFAULT_CEO_CHALLENGE_AXES,
             route_decision={"route": "support-recovery", "target_surface": "beacon-help"},
             next_route={
                 "command": "beacon help",
@@ -165,18 +200,22 @@ def run_ceo_review(
         decision=resolved_decision,
         truth_refs=[str(path.relative_to(project_root)) for path in truth_refs],
         evidence_refs=[],
+        challenge_axes=DEFAULT_CEO_CHALLENGE_AXES,
         route_decision={"route": "change/refreeze" if writebacks else "implement", "target_surface": route["target_surface"]},
         next_route=route,
         writeback_targets=writebacks,
         state_impact={"writes_transaction_state": True, "reopens_requirement_truth": bool(writebacks)},
         gate_impact={"blocks_execution": bool(writebacks), "gate_owner": "support-route-only"},
         operator_visible_summary=(
-            f"CEO review decision is `{resolved_decision}` for focus `{focus or 'full'}`."
+            f"CEO review decision is `{resolved_decision}` for focus `{focus or 'full'}`. "
+            "Default challenge axes applied: too_smooth_path, buried_landmine, truth_freeze_destabilization, "
+            "stage_boundary_sprawl, false_closure_signal, operator_cost_underpricing."
             if writebacks
             else (
-                f"CEO review did not find a version-level reframing blocker. Bound version package features: {', '.join(package_features)}."
+                "CEO review did not find a version-level reframing blocker after challenging default downside axes. "
+                f"Bound version package features: {', '.join(package_features)}."
                 if package_features
-                else "CEO review did not find a version-level reframing blocker."
+                else "CEO review did not find a version-level reframing blocker after challenging default downside axes."
             )
         ),
     )

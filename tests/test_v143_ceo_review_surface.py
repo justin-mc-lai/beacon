@@ -34,6 +34,14 @@ def test_v143_ceo_review_surface_exists_and_is_support_only(tmp_path: Path) -> N
     assert payload["status"] == "advisory"
     assert payload["next_route"]["target_surface"] == "beacon-implement"
     assert payload["artifacts"]["machine_path"].endswith("beacon-ceo-review-transaction.json")
+    assert [axis["code"] for axis in payload["challenge_axes"]] == [
+        "too_smooth_path",
+        "buried_landmine",
+        "truth_freeze_destabilization",
+        "stage_boundary_sprawl",
+        "false_closure_signal",
+        "operator_cost_underpricing",
+    ]
 
 
 def test_v143_ceo_review_scope_judgment_modes(tmp_path: Path) -> None:
@@ -85,3 +93,4 @@ def test_v143_ceo_review_routes_back_to_truth_surfaces(tmp_path: Path) -> None:
         "beacon-test-case",
     ]
     assert "beacon change" in payload["next_route"]["command"]
+    assert "Default challenge axes applied" in payload["operator_visible_summary"]

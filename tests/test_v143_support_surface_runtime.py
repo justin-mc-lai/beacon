@@ -42,9 +42,25 @@ def test_v143_ceo_review_should_write_support_surface_receipt(tmp_path: Path) ->
     assert payload["surface"] == "beacon-ceo-review"
     assert payload["decision"] == "reframe"
     machine_path = tmp_path / payload["artifacts"]["machine_path"]
+    human_path = tmp_path / payload["artifacts"]["human_path"]
     state_path = tmp_path / payload["artifacts"]["state_path"]
     assert machine_path.exists()
+    assert human_path.exists()
     assert state_path.exists()
+    machine_payload = json.loads(machine_path.read_text(encoding="utf-8"))
+    state_payload = json.loads(state_path.read_text(encoding="utf-8"))
+    human_text = human_path.read_text(encoding="utf-8")
+    assert machine_payload["challenge_axes"]
+    assert state_payload["challenge_axis_codes"] == [
+        "too_smooth_path",
+        "buried_landmine",
+        "truth_freeze_destabilization",
+        "stage_boundary_sprawl",
+        "false_closure_signal",
+        "operator_cost_underpricing",
+    ]
+    assert "## Challenge Axes" in human_text
+    assert "`truth_freeze_destabilization`" in human_text
     summary = load_support_surface_summary(tmp_path, surface="beacon-ceo-review")
     assert summary["status"] == "accepted_for_writeback"
     assert "beacon change" in summary["latest_next_route"]
