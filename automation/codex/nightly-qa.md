@@ -1,4 +1,4 @@
-# Codex Automation Spec: Nightly QA
+# Automation Spec: Nightly QA
 
 Type: `standalone`
 
@@ -10,6 +10,8 @@ Schedule suggestion:
 Workspace mode:
 
 - Prefer `worktree`
+- executor: `codex`
+- tier: `native`
 
 Prompt:
 
@@ -36,6 +38,8 @@ Steps:
    - repair handoff needed or not
    - evidence paths
 4. If a protected live surface blocks execution because session admission is missing, record it explicitly as blocked or skipped, not as product failure.
+5. Capability note:
+   - Run through a Beacon-supported runtime.
 
 Output:
 - one section per feature

@@ -39,7 +39,9 @@ def build_automation_capabilities_payload(project_root: Path) -> dict[str, Any]:
         },
         "supported_job_patterns": [
             "morning-status",
+            "hourly-qa",
             "nightly-qa",
+            "repair-window",
             "gated-implement",
         ],
         "feedback_loop": {

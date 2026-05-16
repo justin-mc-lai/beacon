@@ -1,4 +1,4 @@
-# Codex Automation Spec: Gated Implement
+# Automation Spec: Gated Implement
 
 Type: `standalone`
 
@@ -10,6 +10,8 @@ Schedule suggestion:
 Workspace mode:
 
 - Prefer `worktree`
+- executor: `codex`
+- tier: `native`
 
 Prompt:
 
@@ -41,4 +43,5 @@ Constraints:
 - do not force execution when gates fail
 - do not edit the queue file during the run
 - do not run release write actions
+- capability note: This executor can drive Beacon implement/qa directly.
 ```

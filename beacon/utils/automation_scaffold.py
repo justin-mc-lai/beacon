@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import shutil
 import stat
 from pathlib import Path
 from typing import Any
@@ -16,6 +17,18 @@ def _slug(value: str) -> str:
     slug = re.sub(r"[^a-z0-9]+", "-", str(value or "").strip().lower())
     slug = slug.strip("-")
     return slug or "project"
+
+
+def _default_beacon_bin() -> str:
+    return shutil.which("beacon") or "beacon"
+
+
+def _env_example() -> str:
+    return """# Optional local notification transport for Beacon automation wrappers.
+# Keep real webhook values in automation/.env only; do not commit automation/.env.
+AUTOMATION_FEISHU_WEBHOOK=
+AUTOMATION_FEISHU_SECRET=
+"""
 
 
 def _default_queue_payload(project_root: Path, *, executor: str) -> dict[str, Any]:
@@ -73,6 +86,74 @@ def _default_queue_payload(project_root: Path, *, executor: str) -> dict[str, An
     }
 
 
+_NOTIFICATION_SHELL = r'''
+ENV_FILE="${ROOT_DIR}/automation/.env"
+NOTIFY_HELPER="${ROOT_DIR}/automation/jobs/beacon-notify-feishu-post.py"
+FEISHU_WEBHOOK=""
+FEISHU_SECRET=""
+
+load_notification_env() {
+  if [[ -f "${ENV_FILE}" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "${ENV_FILE}"
+    set +a
+  fi
+  FEISHU_WEBHOOK="${AUTOMATION_FEISHU_WEBHOOK:-}"
+  FEISHU_SECRET="${AUTOMATION_FEISHU_SECRET:-}"
+}
+
+record_notification_status() {
+  local summary_path="$1"
+  local status="$2"
+  python3 - "${summary_path}" "${status}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = json.loads(path.read_text(encoding="utf-8"))
+artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
+artifacts["feishu_status"] = sys.argv[2]
+payload["artifacts"] = artifacts
+path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+PY
+}
+
+summary_status() {
+  python3 - "$1" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+print(str(payload.get("status") or "").strip())
+PY
+}
+
+send_summary_notification() {
+  local summary_path="$1"
+  local title_prefix="$2"
+  load_notification_env
+  if [[ -n "${FEISHU_WEBHOOK}" && -x "${NOTIFY_HELPER}" ]]; then
+    local notify_status
+    notify_status="$(summary_status "${summary_path}")"
+    if python3 "${NOTIFY_HELPER}" \
+      --webhook "${FEISHU_WEBHOOK}" \
+      --secret "${FEISHU_SECRET}" \
+      --title "${title_prefix} ${notify_status:-update}" \
+      --summary-path "${summary_path}"; then
+      record_notification_status "${summary_path}" sent
+    else
+      record_notification_status "${summary_path}" failed
+    fi
+  else
+    record_notification_status "${summary_path}" skipped
+  fi
+}
+'''
+
+
 def _status_job_script() -> str:
     return """#!/usr/bin/env bash
 set -euo pipefail
@@ -83,6 +164,7 @@ QUEUE_PATH="${ROOT_DIR}/automation/beacon-automation-queue.json"
 VERSION="auto"
 OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/status"
 BEACON_BIN="beacon"
+""" + _NOTIFICATION_SHELL + r'''
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -106,6 +188,10 @@ while [[ $# -gt 0 ]]; do
       BEACON_BIN="$2"
       shift 2
       ;;
+    --env-file)
+      ENV_FILE="$2"
+      shift 2
+      ;;
     *)
       echo "Unknown argument: $1" >&2
       exit 2
@@ -116,7 +202,9 @@ done
 mkdir -p "${OUTPUT_DIR}"
 TIMESTAMP="$(date '+%Y%m%dT%H%M%S')"
 OUT_FILE="${OUTPUT_DIR}/status-${TIMESTAMP}.txt"
+SUMMARY_PATH="${OUTPUT_DIR}/status-summary-${TIMESTAMP}.json"
 
+set +e
 {
   echo "job=beacon-status-job"
   echo "timestamp=${TIMESTAMP}"
@@ -126,9 +214,30 @@ OUT_FILE="${OUTPUT_DIR}/status-${TIMESTAMP}.txt"
   echo
   "${BEACON_BIN}" status --project-root "${PROJECT_ROOT}" --version "${VERSION}" show-status
 } | tee "${OUT_FILE}"
+STATUS_CODE=${PIPESTATUS[0]}
+set -e
+
+SUMMARY_STATUS="passed"
+if [[ "${STATUS_CODE}" != "0" ]]; then
+  SUMMARY_STATUS="failed"
+fi
+
+"${BEACON_BIN}" automation build-summary \
+  --project-root "${PROJECT_ROOT}" \
+  --summary-kind status \
+  --job beacon-morning-status \
+  --layer status \
+  --status "${SUMMARY_STATUS}" \
+  --artifact status="${OUT_FILE}" \
+  --artifact queue="${QUEUE_PATH}" \
+  > "${SUMMARY_PATH}"
+
+send_summary_notification "${SUMMARY_PATH}" "Beacon morning status"
 
 echo "wrote ${OUT_FILE}"
-"""
+echo "wrote ${SUMMARY_PATH}"
+exit "${STATUS_CODE}"
+'''
 
 
 def _qa_job_script() -> str:
@@ -142,9 +251,7 @@ VERSION="auto"
 HOST_RUNTIME="codex"
 OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/qa"
 BEACON_BIN="beacon"
-FEISHU_WEBHOOK="${AUTOMATION_FEISHU_WEBHOOK:-}"
-FEISHU_SECRET="${AUTOMATION_FEISHU_SECRET:-}"
-NOTIFY_HELPER="${ROOT_DIR}/automation/jobs/beacon-notify-feishu-post.py"
+""" + _NOTIFICATION_SHELL + r'''
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -170,6 +277,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --beacon-bin)
       BEACON_BIN="$2"
+      shift 2
+      ;;
+    --env-file)
+      ENV_FILE="$2"
       shift 2
       ;;
     *)
@@ -208,8 +319,18 @@ PY
 )
 
 if [[ ${#FEATURES[@]} -eq 0 ]]; then
-  echo "No enabled QA features found in ${QUEUE_PATH}" >&2
-  exit 1
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind nightly \
+    --job beacon-nightly-qa \
+    --layer qa \
+    --status skipped \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon nightly QA"
+  echo "No enabled QA features found in ${QUEUE_PATH}; nightly QA window closed, skipping." >&2
+  echo "wrote ${SUMMARY_PATH}"
+  exit 0
 fi
 
 for feature in "${FEATURES[@]}"; do
@@ -252,62 +373,190 @@ cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"
   --artifact queue_update="${QUEUE_UPDATE_ARTIFACT_PATH}" \
   > "${SUMMARY_PATH}"
 
-if [[ -n "${FEISHU_WEBHOOK}" && -x "${NOTIFY_HELPER}" ]]; then
-  NOTIFY_STATUS="$(python3 - "${SUMMARY_PATH}" <<'PY'
+send_summary_notification "${SUMMARY_PATH}" "Beacon nightly QA"
+'''
+
+
+def _hourly_qa_job_script() -> str:
+    return """#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT_ROOT="${ROOT_DIR}"
+QUEUE_PATH="${ROOT_DIR}/automation/beacon-automation-queue.json"
+VERSION="auto"
+HOST_RUNTIME="codex"
+OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/hourly-qa"
+BEACON_BIN="beacon"
+""" + _NOTIFICATION_SHELL + r'''
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project-root)
+      PROJECT_ROOT="$2"
+      shift 2
+      ;;
+    --queue)
+      QUEUE_PATH="$2"
+      shift 2
+      ;;
+    --version)
+      VERSION="$2"
+      shift 2
+      ;;
+    --host-runtime)
+      HOST_RUNTIME="$2"
+      shift 2
+      ;;
+    --output-dir)
+      OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    --beacon-bin)
+      BEACON_BIN="$2"
+      shift 2
+      ;;
+    --env-file)
+      ENV_FILE="$2"
+      shift 2
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+LOCK_DIR="${PROJECT_ROOT}/.beacon/automation-runs/qa-global.lock"
+LOCK_PID_FILE="${LOCK_DIR}/pid"
+LOCK_ACQUIRED=0
+
+cleanup_lock() {
+  if [[ "${LOCK_ACQUIRED}" = "1" ]]; then
+    rm -rf "${LOCK_DIR}"
+  fi
+}
+
+acquire_lock() {
+  mkdir -p "$(dirname "${LOCK_DIR}")"
+  if mkdir "${LOCK_DIR}" 2>/dev/null; then
+    LOCK_ACQUIRED=1
+    printf '%s\n' "$$" > "${LOCK_PID_FILE}"
+    trap cleanup_lock EXIT INT TERM
+    return 0
+  fi
+  if [[ -f "${LOCK_PID_FILE}" ]]; then
+    EXISTING_PID="$(cat "${LOCK_PID_FILE}" 2>/dev/null || true)"
+    if [[ "${EXISTING_PID}" =~ ^[0-9]+$ ]] && kill -0 "${EXISTING_PID}" 2>/dev/null; then
+      echo "Another Beacon QA automation job is already running (pid=${EXISTING_PID}); skipping hourly QA." >&2
+      exit 0
+    fi
+  fi
+  echo "Removing stale Beacon QA automation lock: ${LOCK_DIR}" >&2
+  rm -rf "${LOCK_DIR}"
+  if mkdir "${LOCK_DIR}" 2>/dev/null; then
+    LOCK_ACQUIRED=1
+    printf '%s\n' "$$" > "${LOCK_PID_FILE}"
+    trap cleanup_lock EXIT INT TERM
+    return 0
+  fi
+  echo "Another Beacon QA automation job acquired the lock first; skipping hourly QA." >&2
+  exit 0
+}
+
+acquire_lock
+
+mkdir -p "${OUTPUT_DIR}"
+TIMESTAMP="$(date '+%Y%m%dT%H%M%S')"
+LEDGER_ARTIFACT_PATH="${OUTPUT_DIR}/qa-feedback-ledger-${TIMESTAMP}.json"
+CANONICAL_LEDGER_PATH="${PROJECT_ROOT}/.beacon/automation/qa-feedback-ledger.json"
+QUEUE_UPDATE_ARTIFACT_PATH="${OUTPUT_DIR}/queue-update-${TIMESTAMP}.json"
+SUMMARY_PATH="${OUTPUT_DIR}/qa-summary-${TIMESTAMP}.json"
+
+FEATURE_LIST="$(
+  python3 - "${QUEUE_PATH}" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-print(str(payload.get("status") or "").strip())
+for job in payload.get("jobs", []):
+    if not job.get("enabled"):
+        continue
+    if job.get("job_kind") != "qa":
+        continue
+    selector = job.get("feature_selector") or {}
+    if isinstance(selector, dict) and selector.get("mode") == "explicit_list":
+        for feature in selector.get("features", []):
+            text = str(feature or "").strip()
+            if text:
+                print(text)
 PY
 )"
-  if python3 "${NOTIFY_HELPER}" \
-    --webhook "${FEISHU_WEBHOOK}" \
-    --secret "${FEISHU_SECRET}" \
-    --title "Beacon nightly QA ${NOTIFY_STATUS:-update}" \
-    --summary-path "${SUMMARY_PATH}"; then
-    python3 - "${SUMMARY_PATH}" sent <<'PY'
-import json
-import sys
-from pathlib import Path
 
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
-PY
-  else
-    python3 - "${SUMMARY_PATH}" failed <<'PY'
-import json
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
-PY
-  fi
-else
-  python3 - "${SUMMARY_PATH}" skipped <<'PY'
-import json
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\\n", encoding="utf-8")
-PY
+if [[ -z "${FEATURE_LIST}" ]]; then
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind hourly \
+    --job beacon-hourly-qa \
+    --layer qa \
+    --status skipped \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon hourly QA"
+  echo "No enabled QA features found in ${QUEUE_PATH}; hourly QA window closed, skipping." >&2
+  echo "wrote ${SUMMARY_PATH}"
+  exit 0
 fi
-"""
+
+while IFS= read -r feature; do
+  [[ -n "${feature}" ]] || continue
+  SAFE_NAME="$(printf '%s' "${feature}" | tr ' /' '__')"
+  OUT_FILE="${OUTPUT_DIR}/qa-${SAFE_NAME}-${TIMESTAMP}.txt"
+  {
+    echo "job=beacon-hourly-qa-job"
+    echo "timestamp=${TIMESTAMP}"
+    echo "project_root=${PROJECT_ROOT}"
+    echo "feature=${feature}"
+    echo "version=${VERSION}"
+    echo "host_runtime=${HOST_RUNTIME}"
+    echo "beacon_bin=${BEACON_BIN}"
+    echo
+    "${BEACON_BIN}" qa run "${feature}" \
+      --project-root "${PROJECT_ROOT}" \
+      --version "${VERSION}" \
+      --host-runtime "${HOST_RUNTIME}"
+  } | tee "${OUT_FILE}"
+done <<< "${FEATURE_LIST}"
+
+"${BEACON_BIN}" automation summarize-qa \
+  --project-root "${PROJECT_ROOT}" \
+  --json > "${LEDGER_ARTIFACT_PATH}"
+
+mkdir -p "$(dirname "${CANONICAL_LEDGER_PATH}")"
+cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"
+
+"${BEACON_BIN}" automation update-queue \
+  --project-root "${PROJECT_ROOT}" \
+  --queue "${QUEUE_PATH}" \
+  --json > "${QUEUE_UPDATE_ARTIFACT_PATH}"
+
+"${BEACON_BIN}" automation build-summary \
+  --project-root "${PROJECT_ROOT}" \
+  --summary-kind hourly \
+  --job beacon-hourly-qa \
+  --layer qa \
+  --ledger-path "${LEDGER_ARTIFACT_PATH}" \
+  --queue-update-path "${QUEUE_UPDATE_ARTIFACT_PATH}" \
+  --artifact qa_feedback_ledger="${LEDGER_ARTIFACT_PATH}" \
+  --artifact queue_update="${QUEUE_UPDATE_ARTIFACT_PATH}" \
+  --artifact queue="${QUEUE_PATH}" \
+  > "${SUMMARY_PATH}"
+
+send_summary_notification "${SUMMARY_PATH}" "Beacon hourly QA"
+
+echo "wrote ${SUMMARY_PATH}"
+'''
 
 
 def _feishu_post_notifier_script() -> str:
@@ -337,7 +586,10 @@ def parse_args() -> argparse.Namespace:
 def load_summary(path: Path) -> dict:
     if not path.exists():
         return {
-            "notification": {"title": f"Beacon automation summary missing", "lines": [f"summary_path={path}", "summary_missing=true"]},
+            "notification": {
+                "title": "Beacon automation summary missing",
+                "lines": [f"summary_path={path}", "summary_missing=true"],
+            }
         }
     payload = json.loads(path.read_text(encoding="utf-8"))
     return payload if isinstance(payload, dict) else {}
@@ -410,7 +662,7 @@ if __name__ == "__main__":
 
 
 def _gated_implement_job_script() -> str:
-    return """#!/usr/bin/env bash
+    return r"""#!/usr/bin/env bash
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -587,6 +839,331 @@ cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"
 echo "wrote ${SUMMARY_PATH}"
 exit "${IMPLEMENT_STATUS}"
 """
+
+
+def _repair_window_job_script() -> str:
+    return """#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+PROJECT_ROOT="${ROOT_DIR}"
+QUEUE_PATH="${ROOT_DIR}/automation/beacon-automation-queue.json"
+VERSION="auto"
+HOST_RUNTIME="codex"
+RUNTIME="file"
+MODE="team"
+RUNNER="codex-subagents"
+OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/repair-window"
+BEACON_BIN="beacon"
+FEATURE=""
+DRY_RUN=0
+ALLOW_DIRTY=0
+""" + _NOTIFICATION_SHELL + r'''
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --project-root)
+      PROJECT_ROOT="$2"
+      shift 2
+      ;;
+    --queue)
+      QUEUE_PATH="$2"
+      shift 2
+      ;;
+    --version)
+      VERSION="$2"
+      shift 2
+      ;;
+    --host-runtime)
+      HOST_RUNTIME="$2"
+      shift 2
+      ;;
+    --runtime)
+      RUNTIME="$2"
+      shift 2
+      ;;
+    --mode)
+      MODE="$2"
+      shift 2
+      ;;
+    --runner)
+      RUNNER="$2"
+      shift 2
+      ;;
+    --output-dir)
+      OUTPUT_DIR="$2"
+      shift 2
+      ;;
+    --beacon-bin)
+      BEACON_BIN="$2"
+      shift 2
+      ;;
+    --feature)
+      FEATURE="$2"
+      shift 2
+      ;;
+    --env-file)
+      ENV_FILE="$2"
+      shift 2
+      ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
+    --allow-dirty)
+      ALLOW_DIRTY=1
+      shift
+      ;;
+    *)
+      echo "Unknown argument: $1" >&2
+      exit 2
+      ;;
+  esac
+done
+
+LOCK_DIR="${PROJECT_ROOT}/.beacon/automation-runs/qa-global.lock"
+LOCK_PID_FILE="${LOCK_DIR}/pid"
+LOCK_ACQUIRED=0
+
+cleanup_lock() {
+  if [[ "${LOCK_ACQUIRED}" = "1" ]]; then
+    rm -rf "${LOCK_DIR}"
+  fi
+}
+
+acquire_lock() {
+  mkdir -p "$(dirname "${LOCK_DIR}")"
+  if mkdir "${LOCK_DIR}" 2>/dev/null; then
+    LOCK_ACQUIRED=1
+    printf '%s\n' "$$" > "${LOCK_PID_FILE}"
+    trap cleanup_lock EXIT INT TERM
+    return 0
+  fi
+  if [[ -f "${LOCK_PID_FILE}" ]]; then
+    EXISTING_PID="$(cat "${LOCK_PID_FILE}" 2>/dev/null || true)"
+    if [[ "${EXISTING_PID}" =~ ^[0-9]+$ ]] && kill -0 "${EXISTING_PID}" 2>/dev/null; then
+      echo "Another Beacon automation job is already running (pid=${EXISTING_PID}); skipping repair window." >&2
+      exit 0
+    fi
+  fi
+  echo "Removing stale Beacon automation lock: ${LOCK_DIR}" >&2
+  rm -rf "${LOCK_DIR}"
+  if mkdir "${LOCK_DIR}" 2>/dev/null; then
+    LOCK_ACQUIRED=1
+    printf '%s\n' "$$" > "${LOCK_PID_FILE}"
+    trap cleanup_lock EXIT INT TERM
+    return 0
+  fi
+  echo "Another Beacon automation job acquired the lock first; skipping repair window." >&2
+  exit 0
+}
+
+acquire_lock
+
+mkdir -p "${OUTPUT_DIR}"
+TIMESTAMP="$(date '+%Y%m%dT%H%M%S')"
+RUN_DIR="${OUTPUT_DIR}/${TIMESTAMP}"
+mkdir -p "${RUN_DIR}"
+
+FEATURE_LIST="$(
+  python3 - "${QUEUE_PATH}" "${FEATURE}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+queue_path = Path(sys.argv[1])
+requested = str(sys.argv[2] or "").strip()
+payload = json.loads(queue_path.read_text(encoding="utf-8"))
+features = []
+for job in payload.get("jobs", []):
+    if not isinstance(job, dict):
+        continue
+    if not job.get("enabled"):
+        continue
+    if job.get("job_kind") != "implement":
+        continue
+    selector = job.get("feature_selector") or {}
+    if isinstance(selector, dict) and selector.get("mode") == "explicit_list":
+        for feature in selector.get("features", []):
+            text = str(feature or "").strip()
+            if text:
+                features.append(text)
+
+if requested:
+    features = [item for item in features if item == requested]
+
+for feature in features:
+    print(feature)
+PY
+)"
+
+FEATURE_COUNT="$(printf '%s\n' "${FEATURE_LIST}" | sed '/^[[:space:]]*$/d' | wc -l | tr -d ' ')"
+if [[ "${FEATURE_COUNT}" = "0" ]]; then
+  SUMMARY_PATH="${RUN_DIR}/repair-window-summary.json"
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind functional \
+    --job beacon-repair-window \
+    --layer implement-qa \
+    --status skipped \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"
+  echo "No enabled implement feature found in ${QUEUE_PATH}${FEATURE:+ for ${FEATURE}}; repair window closed, skipping." >&2
+  echo "wrote ${SUMMARY_PATH}"
+  exit 0
+fi
+if [[ "${FEATURE_COUNT}" != "1" ]]; then
+  echo "Repair window requires exactly one enabled implement feature; got ${FEATURE_COUNT}." >&2
+  printf '%s\n' "${FEATURE_LIST}" >&2
+  exit 2
+fi
+
+TARGET_FEATURE="$(printf '%s\n' "${FEATURE_LIST}" | sed '/^[[:space:]]*$/d' | head -n 1)"
+SAFE_NAME="$(printf '%s' "${TARGET_FEATURE}" | tr ' /' '__')"
+IMPLEMENT_OUT="${RUN_DIR}/implement-${SAFE_NAME}.txt"
+QA_OUT="${RUN_DIR}/qa-${SAFE_NAME}.txt"
+LEDGER_ARTIFACT_PATH="${RUN_DIR}/qa-feedback-ledger.json"
+CANONICAL_LEDGER_PATH="${PROJECT_ROOT}/.beacon/automation/qa-feedback-ledger.json"
+SUMMARY_PATH="${RUN_DIR}/repair-window-summary.json"
+QUEUE_UPDATE_ARTIFACT_PATH="${RUN_DIR}/queue-update.json"
+
+if [[ "${ALLOW_DIRTY}" != "1" ]] && git -C "${PROJECT_ROOT}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  if [[ -n "$(git -C "${PROJECT_ROOT}" status --porcelain)" ]]; then
+    "${BEACON_BIN}" automation build-summary \
+      --project-root "${PROJECT_ROOT}" \
+      --summary-kind exception \
+      --job beacon-repair-window \
+      --layer implement \
+      --status blocked \
+      --feature "${TARGET_FEATURE}" \
+      --artifact queue="${QUEUE_PATH}" \
+      > "${SUMMARY_PATH}"
+    send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"
+    echo "Refusing repair window on dirty worktree. Re-run with --allow-dirty for an explicit controlled validation window." >&2
+    echo "wrote ${SUMMARY_PATH}"
+    exit 3
+  fi
+fi
+
+set +e
+{
+  echo "job=beacon-repair-window-job"
+  echo "phase=implement"
+  echo "timestamp=${TIMESTAMP}"
+  echo "project_root=${PROJECT_ROOT}"
+  echo "feature=${TARGET_FEATURE}"
+  echo "version=${VERSION}"
+  echo "host_runtime=${HOST_RUNTIME}"
+  echo "runtime=${RUNTIME}"
+  echo "mode=${MODE}"
+  echo "runner=${RUNNER}"
+  echo "dry_run=${DRY_RUN}"
+  echo "beacon_bin=${BEACON_BIN}"
+  echo
+  if [[ "${DRY_RUN}" = "1" ]]; then
+    "${BEACON_BIN}" implement run "${TARGET_FEATURE}" \
+      --project "${PROJECT_ROOT}" \
+      --version "${VERSION}" \
+      --host-runtime "${HOST_RUNTIME}" \
+      --mode "${MODE}" \
+      --runner "${RUNNER}" \
+      --runtime "${RUNTIME}" \
+      --auto-switch-branch \
+      --dry-run
+  else
+    "${BEACON_BIN}" implement run "${TARGET_FEATURE}" \
+      --project "${PROJECT_ROOT}" \
+      --version "${VERSION}" \
+      --host-runtime "${HOST_RUNTIME}" \
+      --mode "${MODE}" \
+      --runner "${RUNNER}" \
+      --runtime "${RUNTIME}" \
+      --auto-switch-branch
+  fi
+} | tee "${IMPLEMENT_OUT}"
+IMPLEMENT_STATUS=${PIPESTATUS[0]}
+set -e
+
+if [[ "${DRY_RUN}" = "1" ]]; then
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind functional \
+    --job beacon-repair-window \
+    --layer implement \
+    --status dry_run \
+    --feature "${TARGET_FEATURE}" \
+    --artifact implement="${IMPLEMENT_OUT}" \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"
+  echo "wrote ${SUMMARY_PATH}"
+  exit 0
+fi
+
+if [[ "${IMPLEMENT_STATUS}" != "0" ]]; then
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind exception \
+    --job beacon-repair-window \
+    --layer implement \
+    --status failed \
+    --feature "${TARGET_FEATURE}" \
+    --artifact implement="${IMPLEMENT_OUT}" \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"
+  echo "wrote ${SUMMARY_PATH}"
+  exit "${IMPLEMENT_STATUS}"
+fi
+
+{
+  echo "job=beacon-repair-window-job"
+  echo "phase=qa"
+  echo "timestamp=${TIMESTAMP}"
+  echo "project_root=${PROJECT_ROOT}"
+  echo "feature=${TARGET_FEATURE}"
+  echo "version=${VERSION}"
+  echo "host_runtime=${HOST_RUNTIME}"
+  echo "beacon_bin=${BEACON_BIN}"
+  echo
+  "${BEACON_BIN}" qa run "${TARGET_FEATURE}" \
+    --project-root "${PROJECT_ROOT}" \
+    --version "${VERSION}" \
+    --host-runtime "${HOST_RUNTIME}"
+} | tee "${QA_OUT}"
+
+"${BEACON_BIN}" automation summarize-qa \
+  --project-root "${PROJECT_ROOT}" \
+  --feature "${TARGET_FEATURE}" \
+  --json > "${LEDGER_ARTIFACT_PATH}"
+
+mkdir -p "$(dirname "${CANONICAL_LEDGER_PATH}")"
+cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"
+
+"${BEACON_BIN}" automation update-queue \
+  --project-root "${PROJECT_ROOT}" \
+  --queue "${QUEUE_PATH}" \
+  --json > "${QUEUE_UPDATE_ARTIFACT_PATH}"
+
+"${BEACON_BIN}" automation build-summary \
+  --project-root "${PROJECT_ROOT}" \
+  --summary-kind functional \
+  --job beacon-repair-window \
+  --layer implement-qa \
+  --ledger-path "${LEDGER_ARTIFACT_PATH}" \
+  --queue-update-path "${QUEUE_UPDATE_ARTIFACT_PATH}" \
+  --artifact implement="${IMPLEMENT_OUT}" \
+  --artifact qa="${QA_OUT}" \
+  --artifact qa_feedback_ledger="${LEDGER_ARTIFACT_PATH}" \
+  --artifact queue_update="${QUEUE_UPDATE_ARTIFACT_PATH}" \
+  --artifact queue="${QUEUE_PATH}" \
+  > "${SUMMARY_PATH}"
+
+send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"
+
+echo "wrote ${SUMMARY_PATH}"
+'''
 
 
 def _status_prompt(project_root: Path, queue_path: Path, *, executor: str) -> str:
@@ -771,8 +1348,30 @@ Constraints:
 """
 
 
-def _launchd_plist(*, label: str, script_path: Path, project_root: Path, queue_path: Path, output_dir: Path, hour: int, minute: int, host_runtime: str = "", workspace_mode: str = "") -> str:
+def _launchd_plist(
+    *,
+    label: str,
+    script_path: Path,
+    project_root: Path,
+    queue_path: Path,
+    output_dir: Path,
+    hour: int = 0,
+    minute: int = 0,
+    interval_seconds: int = 0,
+    host_runtime: str = "",
+    workspace_mode: str = "",
+    version: str = "",
+    mode: str = "",
+    runner: str = "",
+    runtime: str = "",
+    beacon_bin: str = "",
+    env_file: Path | None = None,
+) -> str:
     extra_args = ""
+    if version:
+        extra_args += f"""
+      <string>--version</string>
+      <string>{version}</string>"""
     if host_runtime:
         extra_args += f"""
       <string>--host-runtime</string>
@@ -781,6 +1380,40 @@ def _launchd_plist(*, label: str, script_path: Path, project_root: Path, queue_p
         extra_args += f"""
       <string>--workspace-mode</string>
       <string>{workspace_mode}</string>"""
+    if runtime:
+        extra_args += f"""
+      <string>--runtime</string>
+      <string>{runtime}</string>"""
+    if mode:
+        extra_args += f"""
+      <string>--mode</string>
+      <string>{mode}</string>"""
+    if runner:
+        extra_args += f"""
+      <string>--runner</string>
+      <string>{runner}</string>"""
+    if beacon_bin:
+        extra_args += f"""
+      <string>--beacon-bin</string>
+      <string>{beacon_bin}</string>"""
+    if env_file:
+        extra_args += f"""
+      <string>--env-file</string>
+      <string>{env_file}</string>"""
+    schedule = (
+        f"""
+    <key>StartInterval</key>
+    <integer>{interval_seconds}</integer>"""
+        if interval_seconds
+        else f"""
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>{hour}</integer>
+      <key>Minute</key>
+      <integer>{minute}</integer>
+    </dict>"""
+    )
     return f"""<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -802,14 +1435,7 @@ def _launchd_plist(*, label: str, script_path: Path, project_root: Path, queue_p
 
     <key>WorkingDirectory</key>
     <string>{project_root}</string>
-
-    <key>StartCalendarInterval</key>
-    <dict>
-      <key>Hour</key>
-      <integer>{hour}</integer>
-      <key>Minute</key>
-      <integer>{minute}</integer>
-    </dict>
+{schedule}
 
     <key>RunAtLoad</key>
     <false/>
@@ -880,18 +1506,26 @@ Use $beacon:beacon-toolkit-automation
 
 Feedback loop:
 
-- nightly QA should refresh:
+- hourly/nightly QA should refresh:
   - `.beacon/automation/qa-feedback-ledger.json`
-- nightly QA should also build:
+- hourly/nightly QA should also build:
+  - `.beacon/automation-runs/hourly-qa/qa-summary-*.json`
   - `.beacon/automation-runs/qa/qa-summary-*.json`
-- nightly QA should then update:
+- hourly/nightly QA should then update:
   - `automation/beacon-automation-queue.json`
-- implement windows may also refresh queue after candidate execution
+- `repair-window` is the recommended controlled implement window:
+  - queue must contain exactly one implement feature
+  - dirty worktrees are blocked by default
+  - successful implement automatically returns to QA and updates the queue
+- `gated-implement` remains generated for compatibility, but should stay disabled unless an operator explicitly opens a governed implement window
 
 Optional notification env:
 
 - `AUTOMATION_FEISHU_WEBHOOK`
 - `AUTOMATION_FEISHU_SECRET`
+- Optional local file: `automation/.env`
+- Example template: `automation/.env.example`
+- Notification transport is host-plane only; it is not release truth.
 
 Scaffolded helper:
 
@@ -929,9 +1563,14 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
     prompts_dir_name = scaffold_scheduler_dir(root, resolved_executor)
     prompt_root = automation_root / prompts_dir_name
     launchd_root = automation_root / "launchd"
+    env_example_path = automation_root / ".env.example"
+    env_path = automation_root / ".env"
+    beacon_bin = _default_beacon_bin()
     status_dir = root / ".beacon" / "automation-runs" / "status"
     qa_dir = root / ".beacon" / "automation-runs" / "qa"
+    hourly_qa_dir = root / ".beacon" / "automation-runs" / "hourly-qa"
     implement_dir = root / ".beacon" / "automation-runs" / "implement"
+    repair_window_dir = root / ".beacon" / "automation-runs" / "repair-window"
 
     actions: list[dict[str, str]] = []
     created_count = 0
@@ -946,7 +1585,9 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
         root / ".beacon" / "automation",
         status_dir,
         qa_dir,
+        hourly_qa_dir,
         implement_dir,
+        repair_window_dir,
     ]:
         existed = directory.exists()
         directory.mkdir(parents=True, exist_ok=True)
@@ -967,6 +1608,8 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
             output_dir=status_dir,
             hour=9,
             minute=0,
+            beacon_bin=beacon_bin,
+            env_file=env_path,
         ),
         f"com.beacon.{project_slug}.nightly-qa.plist": _launchd_plist(
             label=f"com.beacon.{project_slug}.nightly-qa",
@@ -977,6 +1620,19 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
             hour=23,
             minute=0,
             host_runtime=str(capability.get("host_runtime_value") or ""),
+            beacon_bin=beacon_bin,
+            env_file=env_path,
+        ),
+        f"com.beacon.{project_slug}.hourly-qa.plist": _launchd_plist(
+            label=f"com.beacon.{project_slug}.hourly-qa",
+            script_path=jobs_root / "beacon-hourly-qa-job.sh",
+            project_root=root,
+            queue_path=queue_path,
+            output_dir=hourly_qa_dir,
+            interval_seconds=3600,
+            host_runtime=str(capability.get("host_runtime_value") or ""),
+            beacon_bin=beacon_bin,
+            env_file=env_path,
         ),
         f"com.beacon.{project_slug}.gated-implement.plist": _launchd_plist(
             label=f"com.beacon.{project_slug}.gated-implement",
@@ -988,6 +1644,22 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
             minute=0,
             host_runtime=str(capability.get("host_runtime_value") or ""),
             workspace_mode="worktree",
+            beacon_bin=beacon_bin,
+        ),
+        f"com.beacon.{project_slug}.repair-window.plist": _launchd_plist(
+            label=f"com.beacon.{project_slug}.repair-window",
+            script_path=jobs_root / "beacon-repair-window-job.sh",
+            project_root=root,
+            queue_path=queue_path,
+            output_dir=repair_window_dir,
+            hour=2,
+            minute=30,
+            host_runtime=str(capability.get("host_runtime_value") or ""),
+            runtime="file",
+            mode="team",
+            runner="codex-subagents",
+            beacon_bin=beacon_bin,
+            env_file=env_path,
         ),
     }
 
@@ -995,6 +1667,7 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
         {"path": queue_path, "kind": "json", "payload": _default_queue_payload(root, executor=resolved_executor)},
         {"path": jobs_root / "beacon-status-job.sh", "kind": "text", "content": _status_job_script(), "executable": True},
         {"path": jobs_root / "beacon-qa-job.sh", "kind": "text", "content": _qa_job_script(), "executable": True},
+        {"path": jobs_root / "beacon-hourly-qa-job.sh", "kind": "text", "content": _hourly_qa_job_script(), "executable": True},
         {"path": jobs_root / "beacon-notify-feishu-post.py", "kind": "text", "content": _feishu_post_notifier_script(), "executable": True},
         {
             "path": jobs_root / "beacon-gated-implement-job.sh",
@@ -1002,10 +1675,17 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
             "content": _gated_implement_job_script(),
             "executable": True,
         },
+        {
+            "path": jobs_root / "beacon-repair-window-job.sh",
+            "kind": "text",
+            "content": _repair_window_job_script(),
+            "executable": True,
+        },
         {"path": prompt_root / "morning-status.md", "kind": "text", "content": _status_prompt(root, queue_path, executor=resolved_executor)},
         {"path": prompt_root / "nightly-qa.md", "kind": "text", "content": _qa_prompt(root, queue_path, executor=resolved_executor)},
         {"path": prompt_root / "gated-implement.md", "kind": "text", "content": _implement_prompt(root, queue_path, executor=resolved_executor)},
         {"path": automation_root / "README.md", "kind": "text", "content": _automation_readme(root, project_slug, executor=resolved_executor)},
+        {"path": env_example_path, "kind": "text", "content": _env_example()},
     ]
     for filename, content in launchd_specs.items():
         file_specs.append({"path": launchd_root / filename, "kind": "text", "content": content})
@@ -1048,6 +1728,7 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
         f"beacon automation capabilities --project-root {project_root_text}",
         f"beacon automation summarize-qa --project-root {project_root_text} --json",
         f"cp {launchd_dir / f'com.beacon.{project_slug}.nightly-qa.plist'} {install_dir}/",
+        f"cp {launchd_dir / f'com.beacon.{project_slug}.hourly-qa.plist'} {install_dir}/",
     ]
     return {
         "schema_version": "1.0",
@@ -1058,6 +1739,7 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
         "queue_path": str(queue_path),
         "executor": resolved_executor,
         "executor_capability": capability,
+        "beacon_bin": beacon_bin,
         "prompt_root": str(prompt_root),
         "launchd_root": str(launchd_root),
         "readme_path": str(automation_root / "README.md"),
@@ -1075,7 +1757,9 @@ def init_automation_scaffold(project_root: Path, *, force: bool = False, executo
         "launchd_labels": sorted(spec["Label"] for spec in [
             {"Label": f"com.beacon.{project_slug}.morning-status"},
             {"Label": f"com.beacon.{project_slug}.nightly-qa"},
+            {"Label": f"com.beacon.{project_slug}.hourly-qa"},
             {"Label": f"com.beacon.{project_slug}.gated-implement"},
+            {"Label": f"com.beacon.{project_slug}.repair-window"},
         ]),
         "next_steps": next_steps,
         "toolkit": {
@@ -1094,6 +1778,7 @@ def render_automation_init_markdown(payload: dict[str, Any]) -> str:
         "",
         f"- status: `{payload.get('status', '')}`",
         f"- project_root: `{payload.get('project_root', '')}`",
+        f"- beacon_bin: `{payload.get('beacon_bin', '')}`",
         f"- automation_root: `{payload.get('automation_root', '')}`",
         f"- queue_path: `{payload.get('queue_path', '')}`",
         f"- readme_path: `{payload.get('readme_path', '')}`",

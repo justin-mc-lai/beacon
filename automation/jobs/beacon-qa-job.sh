@@ -7,10 +7,73 @@ QUEUE_PATH="${ROOT_DIR}/automation/beacon-automation-queue.json"
 VERSION="auto"
 HOST_RUNTIME="codex"
 OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/qa"
-BEACON_BIN="${ROOT_DIR}/beacon-cli"
-FEISHU_WEBHOOK="${AUTOMATION_FEISHU_WEBHOOK:-}"
-FEISHU_SECRET="${AUTOMATION_FEISHU_SECRET:-}"
+BEACON_BIN="beacon"
+
+ENV_FILE="${ROOT_DIR}/automation/.env"
 NOTIFY_HELPER="${ROOT_DIR}/automation/jobs/beacon-notify-feishu-post.py"
+FEISHU_WEBHOOK=""
+FEISHU_SECRET=""
+
+load_notification_env() {
+  if [[ -f "${ENV_FILE}" ]]; then
+    set -a
+    # shellcheck disable=SC1090
+    source "${ENV_FILE}"
+    set +a
+  fi
+  FEISHU_WEBHOOK="${AUTOMATION_FEISHU_WEBHOOK:-}"
+  FEISHU_SECRET="${AUTOMATION_FEISHU_SECRET:-}"
+}
+
+record_notification_status() {
+  local summary_path="$1"
+  local status="$2"
+  python3 - "${summary_path}" "${status}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+payload = json.loads(path.read_text(encoding="utf-8"))
+artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
+artifacts["feishu_status"] = sys.argv[2]
+payload["artifacts"] = artifacts
+path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+PY
+}
+
+summary_status() {
+  python3 - "$1" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
+print(str(payload.get("status") or "").strip())
+PY
+}
+
+send_summary_notification() {
+  local summary_path="$1"
+  local title_prefix="$2"
+  load_notification_env
+  if [[ -n "${FEISHU_WEBHOOK}" && -x "${NOTIFY_HELPER}" ]]; then
+    local notify_status
+    notify_status="$(summary_status "${summary_path}")"
+    if python3 "${NOTIFY_HELPER}" \
+      --webhook "${FEISHU_WEBHOOK}" \
+      --secret "${FEISHU_SECRET}" \
+      --title "${title_prefix} ${notify_status:-update}" \
+      --summary-path "${summary_path}"; then
+      record_notification_status "${summary_path}" sent
+    else
+      record_notification_status "${summary_path}" failed
+    fi
+  else
+    record_notification_status "${summary_path}" skipped
+  fi
+}
+
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -36,6 +99,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --beacon-bin)
       BEACON_BIN="$2"
+      shift 2
+      ;;
+    --env-file)
+      ENV_FILE="$2"
       shift 2
       ;;
     *)
@@ -74,8 +141,18 @@ PY
 )
 
 if [[ ${#FEATURES[@]} -eq 0 ]]; then
-  echo "No enabled QA features found in ${QUEUE_PATH}" >&2
-  exit 1
+  "${BEACON_BIN}" automation build-summary \
+    --project-root "${PROJECT_ROOT}" \
+    --summary-kind nightly \
+    --job beacon-nightly-qa \
+    --layer qa \
+    --status skipped \
+    --artifact queue="${QUEUE_PATH}" \
+    > "${SUMMARY_PATH}"
+  send_summary_notification "${SUMMARY_PATH}" "Beacon nightly QA"
+  echo "No enabled QA features found in ${QUEUE_PATH}; nightly QA window closed, skipping." >&2
+  echo "wrote ${SUMMARY_PATH}"
+  exit 0
 fi
 
 for feature in "${FEATURES[@]}"; do
@@ -118,58 +195,4 @@ cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"
   --artifact queue_update="${QUEUE_UPDATE_ARTIFACT_PATH}" \
   > "${SUMMARY_PATH}"
 
-if [[ -n "${FEISHU_WEBHOOK}" && -x "${NOTIFY_HELPER}" ]]; then
-  NOTIFY_STATUS="$(python3 - "${SUMMARY_PATH}" <<'PY'
-import json
-import sys
-from pathlib import Path
-
-payload = json.loads(Path(sys.argv[1]).read_text(encoding="utf-8"))
-print(str(payload.get("status") or "").strip())
-PY
-)"
-  if python3 "${NOTIFY_HELPER}" \
-    --webhook "${FEISHU_WEBHOOK}" \
-    --secret "${FEISHU_SECRET}" \
-    --title "Beacon nightly QA ${NOTIFY_STATUS:-update}" \
-    --summary-path "${SUMMARY_PATH}"; then
-    python3 - "${SUMMARY_PATH}" sent <<'PY'
-import json
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-PY
-  else
-    python3 - "${SUMMARY_PATH}" failed <<'PY'
-import json
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-PY
-  fi
-else
-  python3 - "${SUMMARY_PATH}" skipped <<'PY'
-import json
-import sys
-from pathlib import Path
-
-path = Path(sys.argv[1])
-payload = json.loads(path.read_text(encoding="utf-8"))
-artifacts = payload.get("artifacts") if isinstance(payload.get("artifacts"), dict) else {}
-artifacts["feishu_status"] = sys.argv[2]
-payload["artifacts"] = artifacts
-path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-PY
-fi
+send_summary_notification "${SUMMARY_PATH}" "Beacon nightly QA"

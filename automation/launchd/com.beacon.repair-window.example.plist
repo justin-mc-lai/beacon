@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>com.beacon.repair-window</string>
+
+    <key>ProgramArguments</key>
+    <array>
+      <string>/bin/zsh</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/automation/jobs/beacon-repair-window-job.sh</string>
+      <string>--project-root</string>
+      <string>/Users/apple/Developer/Personal/products/beacon</string>
+      <string>--queue</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/automation/beacon-automation-queue.json</string>
+      <string>--host-runtime</string>
+      <string>codex</string>
+      <string>--runtime</string>
+      <string>file</string>
+      <string>--mode</string>
+      <string>team</string>
+      <string>--runner</string>
+      <string>codex-subagents</string>
+      <string>--beacon-bin</string>
+      <string>/Users/apple/.local/bin/beacon</string>
+      <string>--env-file</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/automation/.env</string>
+      <string>--output-dir</string>
+      <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/repair-window</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>/Users/apple/Developer/Personal/products/beacon</string>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Hour</key>
+      <integer>2</integer>
+      <key>Minute</key>
+      <integer>30</integer>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>StandardOutPath</key>
+    <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/repair-window/launchd.out</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/apple/Developer/Personal/products/beacon/.beacon/automation-runs/repair-window/launchd.err</string>
+  </dict>
+</plist>

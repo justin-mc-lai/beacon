@@ -11,7 +11,7 @@ MODE="team"
 RUNNER="codex-subagents"
 RUNTIME="file"
 OUTPUT_DIR="${ROOT_DIR}/.beacon/automation-runs/implement"
-BEACON_BIN="${ROOT_DIR}/beacon-cli"
+BEACON_BIN="beacon"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in

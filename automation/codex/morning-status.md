@@ -10,6 +10,8 @@ Schedule suggestion:
 Workspace mode:
 
 - Prefer `worktree`
+- executor: `codex`
+- tier: `native`
 
 Prompt:
 

@@ -81,7 +81,7 @@ def summarize_qa(
 @app.command("build-summary")
 def build_summary(
     project_root: str = typer.Option("", "--project-root", help="Project root path."),
-    summary_kind: str = typer.Option("qa", "--summary-kind", help="Summary kind: qa|functional|exception|regression|nightly."),
+    summary_kind: str = typer.Option("qa", "--summary-kind", help="Summary kind: status|qa|functional|exception|regression|hourly|nightly."),
     job: str = typer.Option(..., "--job", help="Automation job id."),
     layer: str = typer.Option("qa", "--layer", help="Automation layer name."),
     status: str = typer.Option("", "--status", help="Explicit overall status."),
