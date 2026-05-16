@@ -9,6 +9,7 @@ from typing import Optional
 import typer
 
 from beacon.commands.reopen import _reopen_impl
+from beacon.utils.change_refreeze import run_change_refreeze_chain
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.versioning import resolve_target_version
@@ -50,10 +51,26 @@ def _change_impl(
     version: str,
     reason: str,
     reopen_now: bool,
+    refreeze_chain: bool,
     json_output: bool,
 ) -> int:
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
+    if refreeze_chain:
+        payload = run_change_refreeze_chain(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            reason=reason,
+        )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Change refreeze {payload.get('refreeze_status')}: {feature}")
+            if payload.get("blocked_reason"):
+                typer.echo(f"Blocked reason: {payload.get('blocked_reason')}")
+            typer.echo(f"Next route: {(payload.get('next_route') or {}).get('command', '')}")
+        return 0 if payload.get("refreeze_status") == "complete" else 2
     if reopen_now:
         return _reopen_impl(feature, str(project_root), resolved_version, reason, json_output)
     payload = _change_payload(project_root, version=resolved_version, feature=feature, reason=reason)
@@ -71,7 +88,8 @@ def change_entry(
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
     reason: str = typer.Option("change-request", "--reason", help="Reason for reopening truth"),
     reopen_now: bool = typer.Option(False, "--reopen-now", help="Immediately reopen the active revision"),
+    refreeze_chain: bool = typer.Option(False, "--refreeze-chain", help="Run governed change -> PRD -> story -> test-case -> clarity -> freeze closure"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Prepare the change loop or optionally reopen immediately."""
-    raise typer.Exit(code=_change_impl(feature, project, version, reason, reopen_now, json_output))
+    raise typer.Exit(code=_change_impl(feature, project, version, reason, reopen_now, refreeze_chain, json_output))

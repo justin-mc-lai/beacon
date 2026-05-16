@@ -45,6 +45,12 @@
 - [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+- [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-change-refreeze-one-shot-requirement-closure.md`
+- [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
+- [x] Feature change document generated: `docs/beacon/v1.4.7/change/beacon-v1.4.7-deep-lightweight-lineage-projection-contract.md`
+- [x] Stable `beacon-change-refreeze` human route verified
+- [x] Deep lightweight lineage projection verified
+- [x] v1.4.7 plus automation regression package passing: `96 passed`
 - [x] QA acceptance summary generated: `docs/beacon/v1.4.7/qa/acceptance-summary.md`
 - [x] Release notes generated: `docs/beacon/v1.4.7/release/v1.4.7.md`
 - [x] Promotion decision material generated: `docs/beacon/v1.4.7/release/runtime-promotion-decision.md`
@@ -62,6 +68,6 @@
 
 - `v1.4.7` has passed runtime-promotion QA for the accepted support-surface slices and the accepted runtime-facing automation slices.
 - `v1.4.7` now also has a repaired and passing real-project feature proof on `shopxo_canada` for `admin-merchandising-analytics`.
-- This line is release-ready as the active Beacon runtime/docs line, even though broader roadmap slices remain open.
+- This line is release-ready as the active Beacon runtime/docs line for the six listed feature packages, even though broader roadmap slices remain open.
 - The accepted automation slices are included only as bounded runtime contracts; they do not imply approval of full autonomous closure-loop behavior.
 - Local/global CLI and managed runtime context should now align to `v1.4.7`.

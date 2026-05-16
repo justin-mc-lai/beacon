@@ -157,6 +157,11 @@ def test_nightly_qa_wrapper_refreshes_feedback_loop() -> None:
 
 def test_gated_implement_wrapper_refreshes_queue() -> None:
     text = (ROOT / "automation" / "jobs" / "beacon-gated-implement-job.sh").read_text(encoding="utf-8")
+    assert "implement run" in text
+    assert "implement dev-run" not in text
+    assert "--auto-qa" in text
+    assert 'automation summarize-qa' in text
+    assert 'automation build-summary' in text
     assert 'automation update-queue' in text
 
 

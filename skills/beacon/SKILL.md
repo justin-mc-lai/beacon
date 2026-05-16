@@ -46,6 +46,7 @@ The public Codex / Claude surfaces are:
 - support:
   - `beacon-brainstorm`
   - `beacon-deep`
+  - `beacon-change-refreeze`
   - `beacon-ceo-review`
   - `beacon-design-review`
   - `beacon-context-engineering`
@@ -91,6 +92,7 @@ Use these defaults:
 
 - promise, scope, ambiguity, or acceptance still open -> `beacon-prd`, `beacon-user-story`, or `beacon-test-case`
 - frozen truth must change -> `beacon-change`
+- accepted post-freeze one-shot refreeze closure -> `beacon-change-refreeze`
 - coding or implementation execution against frozen truth -> `beacon-implement`
 - evidence closure, verification depth, or acceptance proof -> `beacon-qa`
 - release readiness, blocker judgment, or go/no-go -> `beacon-release`
@@ -119,6 +121,7 @@ They may not:
 - silently replace `change`, `implement`, `qa`, or `release`
 
 `beacon-deep` remains the deep analysis support surface for high-risk structural review and test-delta derivation.
+`beacon-change-refreeze` remains a change-family support route to `beacon change ... --refreeze-chain`; it is not a lifecycle stage, truth source, or gate source.
 
 ## Human vs Machine Readout
 
@@ -144,6 +147,7 @@ Beacon should absorb complexity into machine-readable surfaces first, then proje
 Keep only the minimum current anchors here:
 
 - current package version: `1.4.7`
+- current planning line for this evolution theme: `docs/beacon/v1.4.7/`
 - current public runtime/docs line: `docs/beacon/v1.4.7/`
 - previous runtime line: `docs/beacon/v1.4.6/`
 - if a target project pins another docs line, follow the pinned local truth instead of silently overriding it

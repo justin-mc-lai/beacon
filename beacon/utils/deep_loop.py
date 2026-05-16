@@ -7,6 +7,7 @@ from typing import Any
 from beacon.utils.artifact_paths import machine_root, version_root
 from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.guidance_family import build_guidance_surface_projection
+from beacon.utils.deep_lineage import build_deep_lineage_projection, infer_candidate_parent_refs, truth_impact_for_route
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
@@ -288,6 +289,52 @@ def _derive_test_deltas(feature: str, qa_content: str, diagram_truth: dict[str, 
     return deltas
 
 
+def _attach_lineage_to_findings(
+    findings: list[dict[str, Any]],
+    *,
+    source_truth_refs: list[str],
+    candidate_parent_refs: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    enriched: list[dict[str, Any]] = []
+    for finding in findings:
+        item = dict(finding)
+        route = item.get("route_decision") if isinstance(item.get("route_decision"), dict) else {}
+        route_target = str(route.get("target_surface") or "")
+        truth_impact = truth_impact_for_route(
+            route_target=route_target,
+            classification=str(item.get("classification") or ""),
+        )
+        item["lineage"] = build_deep_lineage_projection(
+            source_truth_refs=source_truth_refs,
+            candidate_parent_refs=candidate_parent_refs,
+            route_target=route_target,
+            truth_impact=truth_impact,
+            promotion_required=truth_impact == "requirement_meaning_delta",
+        )
+        enriched.append(item)
+    return enriched
+
+
+def _attach_lineage_to_test_deltas(
+    deltas: list[dict[str, Any]],
+    *,
+    source_truth_refs: list[str],
+    candidate_parent_refs: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    enriched: list[dict[str, Any]] = []
+    for delta in deltas:
+        item = dict(delta)
+        item["lineage"] = build_deep_lineage_projection(
+            source_truth_refs=source_truth_refs,
+            candidate_parent_refs=candidate_parent_refs,
+            route_target=str(item.get("route_target") or "test-case"),
+            truth_impact="acceptance_delta",
+            promotion_required=False,
+        )
+        enriched.append(item)
+    return enriched
+
+
 def _render_markdown(title: str, payload: dict[str, Any]) -> str:
     lines = [f"# {title}", ""]
     for key, value in payload.items():
@@ -338,6 +385,21 @@ def run_deep_loop(
     test_deltas = [] if trigger.get("skipped") else _derive_test_deltas(feature, truth.get("test_case", ""), diagram_truth, trigger)
     generated_at = now_iso()
     refs = {key: _relative(path, project_root) for key, path in truth_paths.items()}
+    source_truth_refs = [value for value in refs.values() if value]
+    candidate_parent_refs = infer_candidate_parent_refs(
+        user_story_content=truth.get("user_story", ""),
+        qa_content=truth.get("test_case", ""),
+    )
+    findings = _attach_lineage_to_findings(
+        findings,
+        source_truth_refs=source_truth_refs,
+        candidate_parent_refs=candidate_parent_refs,
+    )
+    test_deltas = _attach_lineage_to_test_deltas(
+        test_deltas,
+        source_truth_refs=source_truth_refs,
+        candidate_parent_refs=candidate_parent_refs,
+    )
     artifact_paths = deep_artifact_paths(project_root, resolved_version, feature)
     loop_iterations = [
         {"state": state, "status": "completed", "sequence": index}
@@ -371,6 +433,7 @@ def run_deep_loop(
         "generated_at": generated_at,
         "source_refs": refs,
         "canonical_truth_policy": "read_only_frozen_truth",
+        "lineage_policy": "trace-on-promotion; L0/L1 are non-canonical support projections, L2 requires truth-surface adoption, L3 belongs to PRD/user-story/test-case",
     }
     analysis_report = {
         **common,
@@ -379,6 +442,13 @@ def run_deep_loop(
         "trigger": trigger,
         "finding_count": len(findings),
         "test_delta_count": len(test_deltas),
+        "lineage_projection": build_deep_lineage_projection(
+            source_truth_refs=source_truth_refs,
+            candidate_parent_refs=candidate_parent_refs,
+            route_target="deep",
+            truth_impact="none",
+            promotion_required=False,
+        ),
         "status": verdict,
     }
     state_machine_report = {

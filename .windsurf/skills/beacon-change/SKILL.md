@@ -30,6 +30,7 @@ It does not create a new primary stage. It reopens frozen truth in a governed wa
 - reopen the affected requirement truth and revision context
 - refresh `prd`, `user-story`, and `test-case` as needed
 - re-freeze before returning to `implement`, `qa`, or `release`
+- when the accepted change already has refreshed truth surfaces, use `beacon change ... --refreeze-chain` for the governed one-shot `change -> prd -> user-story -> test-case -> requirement_clarity -> freeze` closure
 
 ## Common Rationalizations
 
@@ -70,6 +71,8 @@ It does not create a new primary stage. It reopens frozen truth in a governed wa
 Prefer:
 
 - `beacon change ...`
+- `beacon change ... --refreeze-chain` when closing an accepted post-freeze change through the full requirement chain in one governed transaction
+- `beacon-change-refreeze` when the user expresses natural-language one-shot refreeze intent and needs a stable route to the same transaction
 
 Treat `beacon-change` as a router, not a new public Beacon stage.
 Do not introduce a new Beacon primary command such as `change`, `revision`, or `hotfix`.

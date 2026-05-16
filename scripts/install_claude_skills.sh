@@ -25,6 +25,7 @@ BEACON_SUBSKILLS=(
     "beacon-brainstorm"
     "beacon-ceo-review"
     "beacon-change"
+    "beacon-change-refreeze"
     "beacon-deep"
     "beacon-design-review"
     "beacon-doctor"

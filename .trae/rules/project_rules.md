@@ -15,6 +15,7 @@
 - `beacon-brainstorm`
 - `beacon-ceo-review`
 - `beacon-change`
+- `beacon-change-refreeze`
 - `beacon-context-engineering`
 - `beacon-debug-recovery`
 - `beacon-deep`
@@ -44,17 +45,3 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-

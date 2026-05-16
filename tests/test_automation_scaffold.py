@@ -40,7 +40,21 @@ def test_automation_init_scaffold_should_generate_project_local_assets(tmp_path:
     assert 'NOTIFY_HELPER="${ROOT_DIR}/automation/jobs/beacon-notify-feishu-post.py"' in qa_text
     assert "automation build-summary" in qa_text
     assert 'SUMMARY_PATH="${OUTPUT_DIR}/qa-summary-${TIMESTAMP}.json"' in qa_text
+    assert "SUMMARY_FEATURE_ARGS" not in qa_text
     assert os.access(qa_wrapper, os.X_OK)
+
+    implement_wrapper = tmp_path / "automation" / "jobs" / "beacon-gated-implement-job.sh"
+    implement_text = implement_wrapper.read_text(encoding="utf-8")
+    assert "implement run" in implement_text
+    assert "implement dev-run" not in implement_text
+    assert '--mode "${MODE}"' in implement_text
+    assert '--runner "${RUNNER}"' in implement_text
+    assert '--auto-qa' in implement_text
+    assert 'automation summarize-qa' in implement_text
+    assert 'automation build-summary' in implement_text
+    assert 'SUMMARY_PATH="${OUTPUT_DIR}/implement-summary-${TIMESTAMP}.json"' in implement_text
+    assert '"${SUMMARY_FEATURE_ARGS[@]}"' in implement_text
+    assert os.access(implement_wrapper, os.X_OK)
 
     notify_helper = tmp_path / "automation" / "jobs" / "beacon-notify-feishu-post.py"
     notify_text = notify_helper.read_text(encoding="utf-8")

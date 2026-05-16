@@ -31,7 +31,7 @@ It is not a primary lifecycle stage.
 
 - analyze frozen truth and structural evidence
 - derive findings, deltas, and route decisions
-- route requirement gaps to `change/refreeze`
+- route accepted requirement gaps to `beacon-change-refreeze` for governed `change/refreeze`
 - route acceptance gaps to `test-case`
 - route implementation gaps to `implement`
 - route QA evidence gaps to supplemental `qa`

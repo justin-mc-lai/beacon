@@ -1,9 +1,9 @@
 ---
-description: Beacon v1.4.6 agent skill surface and routing
+description: Beacon v1.4.7 agent skill surface and routing
 ---
 <!-- BEACON:AGENT_SURFACE:START -->
-<!-- BEACON:VERSION:v1.4.6 -->
-<!-- BEACON:DOCS_VERSION:v1.4.6 -->
+<!-- BEACON:VERSION:v1.4.7 -->
+<!-- BEACON:DOCS_VERSION:v1.4.7 -->
 # Beacon Windsurf Agent Surface
 
 Use this workflow to discover and route to project-local Beacon skills.
@@ -20,6 +20,7 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-brainstorm`
 - `beacon-ceo-review`
 - `beacon-change`
+- `beacon-change-refreeze`
 - `beacon-context-engineering`
 - `beacon-debug-recovery`
 - `beacon-deep`
@@ -49,14 +50,3 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
-
-
-
-
-
-
-
-
-
-
-

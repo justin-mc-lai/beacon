@@ -21,19 +21,31 @@
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
   - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+  - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-change-refreeze-one-shot-requirement-closure.md`
+  - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
+  - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-deep-lightweight-lineage-projection-contract.md`
 - User Story
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
   - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+  - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-change-refreeze-one-shot-requirement-closure.md`
+  - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
+  - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-deep-lightweight-lineage-projection-contract.md`
 - Test Cases
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
   - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+  - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-change-refreeze-one-shot-requirement-closure.md`
+  - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
+  - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-deep-lightweight-lineage-projection-contract.md`
 - Change
   - `docs/beacon/v1.4.7/change/v1.4.7.md`
   - `docs/beacon/v1.4.7/change/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
   - `docs/beacon/v1.4.7/change/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
   - `docs/beacon/v1.4.7/change/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+  - `docs/beacon/v1.4.7/change/beacon-v1.4.7-change-refreeze-one-shot-requirement-closure.md`
+  - `docs/beacon/v1.4.7/change/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
+  - `docs/beacon/v1.4.7/change/beacon-v1.4.7-deep-lightweight-lineage-projection-contract.md`
 - Release
   - `docs/beacon/v1.4.7/release/v1.4.7.md`
   - `docs/beacon/v1.4.7/release/checklist-v1.4.7.md`
@@ -56,7 +68,7 @@
     - `test-case` 已冻结
     - `change` 已接入
     - `qa` 已完成 planning-line 验收
-    - `release` 尚未接入
+    - `release` 已接入 runtime release readout
 
 - `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`
   - 当前状态：`promoted-to-runtime-release`
@@ -67,7 +79,43 @@
     - `user-story` 已冻结
     - `test-case` 已冻结
     - `change` 已接入
-    - `qa` 尚未开始
+    - `qa` 已完成 targeted runtime 验收
+
+- `beacon-v1.4.7-change-refreeze-one-shot-requirement-closure`
+  - 当前状态：`implemented-and-verified`
+  - 目标：确认 `beacon-change` 人类面需要一键支持 `change -> prd -> user-story -> test-case -> requirement_clarity -> freeze` 的 governed refreeze 闭环
+  - 边界：只做 change-family support route / transaction / fail-closed refreeze contract，不做自动 implement、自动 QA 或自动 release
+  - 当前需求链：
+    - `change` 已接入
+    - `prd` 已冻结
+    - `user-story` 已冻结
+    - `test-case` 已冻结
+    - `freeze` 已通过 `--refreeze-chain` transaction 验收
+    - `qa` 已完成 targeted 验收
+
+- `beacon-v1.4.7-change-refreeze-human-skill-stable-route`
+  - 当前状态：`implemented-and-verified`
+  - 目标：把 change 一键冻结 / refreeze intent 收敛为稳定可命中的 `beacon-change-refreeze` 人类 skill 路由
+  - 边界：只新增 skill route constitution；机器执行仍走 `beacon change ... --refreeze-chain`；不新增 stage、truth source 或 gate source
+  - 当前需求链：
+    - `change` 已接入
+    - `prd` 已冻结
+    - `user-story` 已冻结
+    - `test-case` 已冻结
+    - `freeze` 已通过 skill route / installer / main entry route 验收
+    - `qa` 已完成 targeted 验收
+
+- `beacon-v1.4.7-deep-lightweight-lineage-projection-contract`
+  - 当前状态：`implemented-and-verified`
+  - 目标：把 `deep` lineage 设计从 trace-on-discovery 收敛为 trace-on-promotion，避免 US/AC/TC 级人工维护成本污染 deep 低摩擦 support surface
+  - 边界：L0/L1 只做非 canonical 投影；L2/L3 只在 adoption/promotion 或 truth surface 中强化 trace；不让 deep 写 canonical truth 或成为新 stage
+  - 当前需求链：
+    - `change` 已接入
+    - `prd` 已冻结
+    - `user-story` 已冻结
+    - `test-case` 已冻结
+    - `deep` artifact lineage projection 已实现
+    - `qa` 已完成 targeted 验收
 
 ## First Slice Freeze
 
@@ -136,12 +184,15 @@ anti-drift contract exists
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+- `docs/beacon/v1.4.7/prd/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+- `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`
 - `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md`
+- `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-change-refreeze-human-skill-stable-route.md`
 - `docs/beacon/v1.4.7/qa/acceptance-summary.md`
 
 ## 当前 QA 状态
@@ -160,6 +211,10 @@ anti-drift contract exists
   - active issue register inheritance
   - queue revision / stale-writer rejection
   - feature execution lease / single-flight
+  - automation support-review / truth-refreeze / promotion-proof contract
+  - change refreeze one-shot requirement closure
+  - `beacon-change-refreeze` stable human skill route
+  - deep lightweight lineage projection / trace-on-promotion
 - 当前不代表：
   - 全量 roadmap closure
   - autonomous `deep/refreeze/release` 闭环
