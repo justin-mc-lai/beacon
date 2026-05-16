@@ -3,9 +3,9 @@
 ## 版本状态
 
 - `v1.4.7` 当前主题是：`meta-protocol hardening and horizontal engineering support surfaces`
-- 当前版本状态：`planning_only`
-- 当前版本不是 runtime release line；当前 runtime/default docs 仍保持 `v1.4.6`
-- `v1.4.7` 站在 `v1.4.6` 的 anti-drift contract 基线上，继续增强 Beacon 的公共入口协议、support skill 宽度与人类可读性，但不扩张主生命周期，也不切 active runtime context
+- 当前版本状态：`current_runtime_release`
+- 当前版本已经是 runtime release line；当前 runtime/default docs 已切到 `v1.4.7`
+- `v1.4.7` 站在 `v1.4.6` 的 anti-drift contract 基线上，继续增强 Beacon 的公共入口协议、support skill 宽度与人类可读性，并把这些能力收成新的 active runtime context
 
 ## 版本目标
 
@@ -46,7 +46,7 @@
 ## 新增规划子线
 
 - `beacon-v1.4.7-bounded-automation-closure-state-kernel`
-  - 当前状态：`qa-validated-for-planning-line`
+  - 当前状态：`promoted-to-runtime-release`
   - 目标：把 automation 从 QA feedback helper 推进到 bounded closure-state runtime kernel
   - 边界：只做 `closure-state envelope + active issue register + QA/implement bounded loop + queue safety primitives`
   - 明确不承诺：`deep/refreeze/release` end-to-end automation 或 full autonomous closure-loop
@@ -59,7 +59,7 @@
     - `release` 尚未接入
 
 - `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`
-  - 当前状态：`accepted_for_implementation`
+  - 当前状态：`promoted-to-runtime-release`
   - 目标：把 automation 的 support-review / truth-refreeze / scenario-discovery / promotion-proof 缺口正式收成 runtime-facing second slice
   - 边界：只做 route / block / proof contract，不做自动 deep、自动 refreeze、自动 truth 写入
   - 当前需求链：
@@ -105,7 +105,7 @@
 - 新增横向工程 skill 只能是 support surface，不得成为 truth source、gate source 或新的 stage。
 - lightweight references 只做人类判断支架，不得成为 canonical truth，也不得反向驱动 machine truth。
 - `agent-skills` 与 `gstack` 只作为研究与映射输入；Beacon 吸收它们的 anatomy、discipline、specialist packaging 与 host readability，但不引入外部仓库为运行时依赖。
-- 当前版本仍处于 planning line，必须保持对 `v1.4.6` runtime context 的兼容尊重，不静默把 `v1.4.7` 提升为 active docs line。
+- 当前版本已经提升为 active docs/runtime line，但仍需保持 `v1.4.6` 项目上的向后兼容读取能力。
 - automation 方向当前只允许推进 bounded runtime kernel；不允许把 research north-star 误写成近线产品承诺。
 
 ## 与 v1.4.6 的关系
@@ -146,8 +146,8 @@ anti-drift contract exists
 
 ## 当前 QA 状态
 
-- `v1.4.7` 已完成已接受 slices 的规划线 QA
-- 当前 QA verdict：`pass_for_planning_line`
+- `v1.4.7` 已完成已接受 slices 的 runtime-promotion QA
+- 当前 QA verdict：`pass_for_runtime_release`
 - 已验证范围：
   - main `beacon` meta-protocol
   - `using-beacon` host route constitution
@@ -161,16 +161,16 @@ anti-drift contract exists
   - queue revision / stale-writer rejection
   - feature execution lease / single-flight
 - 当前不代表：
-  - `v1.4.7` runtime promotion
   - 全量 roadmap closure
-  - active runtime/docs line 切换
+  - autonomous `deep/refreeze/release` 闭环
+  - 所有真实项目都已 release-ready
 
 ## 当前 Release 状态
 
-- `v1.4.7` 已补齐 planning-line release materials
-- 当前 release verdict：`planning_line_candidate_only`
-- 当前 promotion decision：`deferred`
-- active runtime/docs line 仍保持：`v1.4.6`
+- `v1.4.7` 已补齐 runtime release materials
+- 当前 release verdict：`current_runtime_release`
+- 当前 promotion decision：`approved`
+- active runtime/docs line 已切换为：`v1.4.7`
 
 ## 外部映射定位
 

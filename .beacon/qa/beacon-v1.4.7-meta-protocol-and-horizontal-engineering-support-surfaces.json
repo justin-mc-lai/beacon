@@ -1,0 +1,474 @@
+{
+  "feature": "beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces",
+  "feature_slug": "beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces",
+  "version": "v1.4.7",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-019"
+    ],
+    "AC-002": [
+      "TC-META47-002"
+    ],
+    "AC-003": [
+      "TC-META47-003"
+    ],
+    "AC-004": [
+      "TC-META47-004"
+    ],
+    "AC-005": [
+      "TC-META47-005"
+    ],
+    "AC-006": [
+      "TC-META47-006"
+    ],
+    "AC-007": [
+      "TC-META47-007"
+    ],
+    "AC-008": [
+      "TC-META47-008"
+    ],
+    "AC-009": [
+      "TC-META47-009"
+    ],
+    "AC-010": [
+      "TC-META47-010"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-META47-001",
+      "tc_id": "TC-META47-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: `skills/beacon/SKILL.md` acts as a compact meta-protocol centered on decision-surface classifica",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"beacon_main_skill_is_meta_protocol_not_wrapper_sprawl\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-META47-002",
+      "tc_id": "TC-META47-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: `using-beacon` explicitly separates truth, execution, verification, gate, and support routing an",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"using_beacon_is_host_route_constitution\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-META47-003",
+      "tc_id": "TC-META47-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Beacon defines first-wave support skills for context engineering, source-driven work, and doubt-",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"first_wave_horizontal_support_skills_are_defined\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-META47-004",
+      "tc_id": "TC-META47-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: new horizontal support skills are explicitly non-truth, non-gate, and non-stage surfaces and rou",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"horizontal_support_skills_remain_non_truth_non_gate_non_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-META47-005",
+      "tc_id": "TC-META47-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: first-wave lightweight references exist and are clearly presented as supporting human-readable m",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"lightweight_reference_package_is_present_and_marked_non_canonical\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-META47-006",
+      "tc_id": "TC-META47-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Beacon documents how `agent-skills` and `gstack` lifecycle models map into Beacon without changi",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"external_lifecycle_mapping_is_documented_without_mainline_expansion\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-META47-007",
+      "tc_id": "TC-META47-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: specialist packaging becomes clearer without exploding Beacon into a flat public command catalog",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"support_surface_specialist_packaging_does_not_turn_into_command_sprawl\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-META47-008",
+      "tc_id": "TC-META47-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: host portability and browser/session/tooling support become more operator-readable without becom",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"host_and_browser_tooling_story_is_more_readable_but_not_a_new_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-META47-009",
+      "tc_id": "TC-META47-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: route explanations distinguish frozen truth from advisory learning hints and preserve support/ad",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"route_explainability_distinguishes_truth_from_learning_hints\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-META47-010",
+      "tc_id": "TC-META47-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: v1.4.7 preserves compact main chain, canonical truth, fail-closed QA/release, non-stage support ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v147_meta_protocol_and_support_surfaces.py -k \"root_preservation_rules_hold_under_v147_surface_expansion\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces/{run_id}/TC-META47-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "requirement_deepening": {
+    "completeness_verdict": "pass",
+    "supplement_focus_areas": [
+      "复核 requirement completeness 的补料方向"
+    ],
+    "supplement_task": {
+      "feature": "beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces",
+      "version": "v1.4.7",
+      "target_artifact": "test-case",
+      "candidate_kind": "coverage",
+      "candidate_families": [
+        "happy",
+        "negative",
+        "boundary",
+        "exception",
+        "recovery",
+        "compatibility"
+      ],
+      "candidate_payload": {
+        "focus_areas": [
+          "复核 requirement completeness 的补料方向"
+        ],
+        "open_questions": [
+          "happy 是否需要补成 machine-readable supplement candidate？",
+          "negative 是否需要补成 machine-readable supplement candidate？",
+          "boundary 是否需要补成 machine-readable supplement candidate？",
+          "exception 是否需要补成 machine-readable supplement candidate？"
+        ],
+        "missing_dimensions": [],
+        "high_risk_unresolved_categories": []
+      },
+      "source_truth_ref": "docs/beacon/v1.4.7/prd/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md",
+      "writeback_target": "docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.md",
+      "rationale": "pass",
+      "confidence": "medium",
+      "human_decision": "pending",
+      "audit_trail_required": true,
+      "recommended_route": "beacon-test-case",
+      "recommended_command": "beacon test-case create \"beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces\" --project <project-root> --version v1.4.7 --json",
+      "recommended_mode": "requirement-convergence"
+    },
+    "re_freeze_transaction": {
+      "schema_version": "1.0",
+      "feature": "beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces",
+      "version": "v1.4.7",
+      "revision_id": "R1",
+      "accepted_candidates": [
+        "GAP-001",
+        "GAP-002",
+        "GAP-003",
+        "GAP-004",
+        "GAP-005",
+        "GAP-006",
+        "GAP-007",
+        "GAP-008",
+        "GAP-009",
+        "GAP-010",
+        "GAP-011",
+        "GAP-012",
+        "GAP-013",
+        "GAP-014",
+        "GAP-015"
+      ],
+      "rejected_candidates": [],
+      "deferred_candidates": [],
+      "writeback_targets": [
+        "qa/test-cases.executable-matrix",
+        "user-story.acceptance-criteria"
+      ],
+      "machine_mirror_paths": {
+        "dir": "docs/beacon/v1.4.7/.machine/requirement",
+        "envelope": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.envelope.json",
+        "candidate_ledger": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.candidate-ledger.json",
+        "decision_log": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.supplement-decision-log.json",
+        "freeze_contract": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.freeze-contract.json",
+        "completeness": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.completeness.json",
+        "supplement_task": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.supplement-task.json",
+        "re_freeze_transaction": "docs/beacon/v1.4.7/.machine/requirement/beacon-v1.4.7-meta-protocol-and-horizontal-engineering-support-surfaces.re-freeze-transaction.json"
+      },
+      "refreeze_required": true,
+      "revalidate_required": true,
+      "decision_count": 15,
+      "generated_at": "2026-05-15T11:52:02.429452+00:00"
+    }
+  }
+}

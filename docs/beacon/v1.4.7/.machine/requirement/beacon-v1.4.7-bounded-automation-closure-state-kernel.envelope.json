@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+  "feature_slug": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+  "version": "v1.4.7",
+  "generated_at": "2026-05-15T11:52:00.205411+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+    "user_story": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+    "research": "research:docs/beacon/v1.4.7/research/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.7-bounded-automation-closure-state-kernel`",
+      "Version**: `v1.4.7`",
+      "Date**: `2026-05-15`",
+      "Status**: `freeze-ready`",
+      "Track**: `automation-runtime-kernel + bounded-repair-loop + queue-safety`",
+      "Scenario**: `scheduled_qa_and_implement_repair_need_a_truth-preserving_runtime_contract`",
+      " Global boundaries:",
+      " `docs/beacon/global-boundaries.md`",
+      " Current runtime baseline:",
+      " `docs/beacon/v1.4.6/SUMMARY.md`",
+      " `docs/beacon/v1.4.6/prd/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.md`",
+      " Current automation runtime surfaces:",
+      " `beacon/commands/automation.py`",
+      " `beacon/utils/automation_feedback.py`"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.7-bounded-automation-closure-state-kernel`",
+      "Version**: `v1.4.7`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer, scheduled automation operator, or project owner relying on recurring QA and repair loops,",
+      "I want** Beacon automation to express bounded closure state, repeated repair rounds, and queue-safety semantics as formal runtime truth,",
+      "So that** repeated QA and implement repair can converge predictably without silently rewriting requirement truth, forking state under concurrent schedulers, or pretending to be a full autonomous lifecycle.",
+      " AC-001 Beacon defines a machine-readable closure-state envelope for feature-level bounded automation repair work, including current closure state, next route, terminal signal, round number, and previous-round reference.",
+      " AC-002 Beacon freezes a bounded closure-state taxonomy that can at minimum distinguish `active`, `blocked`, `release_ready`, `closed`, and `human_escalation_required`.",
+      " AC-003 Beacon freezes a bounded next-route taxonomy that can at minimum distinguish `qa`, `implement`, `release`, and `human` for the current slice, without implying that `deep/refreeze` automation is already runtime-ready."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.7-bounded-automation-closure-state-kernel`",
+      "Version**: `v1.4.7`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-AUTO47-001 | contract | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"closure_state_envelope_is_emitted_with_required_fields\"` | bounded automation runtime emits a machine-readable closure-state envelope containing feature, version, closure state, next route, terminal signal, round number, and previous-round reference |",
+      "| AC-002 | TC-AUTO47-002 | contract | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"bounded_closure_state_taxonomy_is_frozen\"` | runtime contract recognizes the bounded closure-state set `active / blocked / release_ready / closed / human_escalation_required` |",
+      "| AC-003 | TC-AUTO47-003 | contract | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"bounded_next_route_taxonomy_is_frozen_for_current_slice\"` | runtime contract recognizes the bounded next-route set `qa / implement / release / human` for the current slice and does not imply full deep/refreeze automation |",
+      "| AC-004 | TC-AUTO47-004 | integration | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"active_issue_register_inherits_only_live_repair_context\"` | repeated repair rounds inherit active issue register fields rather than copying full prior artifact history |",
+      "| AC-005 | TC-AUTO47-005 | integration | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"qa_exit_predicates_drive_bounded_runtime_routes\"` | QA can authoritatively emit `ready_for_release`, `implement_repair`, and `human_escalation` routing intent into the bounded automation runtime object |",
+      "| AC-006 | TC-AUTO47-006 | integration | `python3 -m pytest -q tests/test_v147_bounded_automation_closure_state_kernel.py -k \"implement_exit_predicates_drive_return_to_qa_or_human\"` | implement repair can authoritatively emit return-to-QA or human-escalation routing intent |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+    "version": "v1.4.7",
+    "source": "research:docs/beacon/v1.4.7/research/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

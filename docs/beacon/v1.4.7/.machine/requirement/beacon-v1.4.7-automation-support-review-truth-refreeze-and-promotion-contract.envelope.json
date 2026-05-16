@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract",
+  "feature_slug": "beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract",
+  "version": "v1.4.7",
+  "generated_at": "2026-05-15T11:51:56.008521+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+    "user_story": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+    "research": "research:docs/beacon/v1.4.7/research/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.7/prd/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`",
+      "Version**: `v1.4.7`",
+      "Date**: `2026-05-15`",
+      "Status**: `freeze-ready`",
+      "Track**: `automation-runtime-second-slice + support-review-routing + truth-refreeze-barrier + promotion-proof-hooks`",
+      "Scenario**: `runtime-facing_automation_needs_support_and_truth-pressure_contracts_before_more_autonomy`",
+      " Global boundaries:",
+      " `docs/beacon/global-boundaries.md`",
+      " Current runtime baseline:",
+      " `docs/beacon/v1.4.6/SUMMARY.md`",
+      " Existing `v1.4.7` automation slice:",
+      " `docs/beacon/v1.4.7/prd/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`",
+      " `docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`",
+      " `docs/beacon/v1.4.7/qa/test-cases/beacon-v1.4.7-bounded-automation-closure-state-kernel.md`"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`",
+      "Version**: `v1.4.7`",
+      "Revision**: `R1`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer, automation operator, or real-project owner,",
+      "I want** automation runtime to distinguish support-review, truth pressure, scenario-discovery class, and promotion-proof strength,",
+      "So that** repeated closure work can continue boundedly without mistaking structural uncertainty for implementation work, and without letting runtime silently mutate frozen truth.",
+      " AC-001 Beacon can emit `next_route=support_review` with explicit executor and reason metadata when QA or automation determines that repeated structural failure needs a support surface rather than immediate implement retry.",
+      " AC-002 Beacon can record bounded `deep` outcomes that distinguish implementation-only findings, truth-pressure findings, and repeat-cap exhaustion.",
+      " AC-003 Beacon can route support-review outcomes to `implement`, `change_refreeze`, or `human`, without inventing a new primary lifecycle stage."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract`",
+      "Version**: `v1.4.7`",
+      "Status**: `freeze-ready`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-AUTO47B-001 | contract | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"qa_can_route_to_support_review_with_executor_metadata\"` | QA can emit `support_review` as next route and runtime records executor/reason metadata |",
+      "| AC-002 | TC-AUTO47B-002 | integration | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"support_review_outcome_can_route_back_to_implement_without_truth_delta\"` | support-review/deep can conclude implementation-only defect and route back to `implement` with bounded deep-exit signal |",
+      "| AC-003 | TC-AUTO47B-003 | integration | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"support_review_outcome_can_route_to_change_refreeze_on_requirement_meaning_delta\"` | support-review/deep can conclude requirement-meaning pressure and route to `change_refreeze` |",
+      "| AC-004 | TC-AUTO47B-004 | boundary | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"truth_recompile_barrier_is_written_and_can_be_cleared\"` | runtime can write and clear `truth_recompiled_pending` plus explicit truth-recompile targets |",
+      "| AC-005 | TC-AUTO47B-005 | gate | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"implement_preflight_blocks_on_support_review_truth_refreeze_and_truth_recompile_barriers\"` | `implement` preflight fail-closes while support review, truth refreeze, or truth recompile barriers are still active |",
+      "| AC-006 | TC-AUTO47B-006 | contract | `python3 -m pytest -q tests/test_v147_automation_support_review_and_promotion_contract.py -k \"scenario_discovery_is_split_between_closure_supplement_and_promotion_candidate\"` | scenario discovery is classified into `closure_supplement` vs `promotion_candidate` with explicit truth-pressure flags |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract",
+    "version": "v1.4.7",
+    "source": "research:docs/beacon/v1.4.7/research/beacon-v1.4.7-automation-support-review-truth-refreeze-and-promotion-contract.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

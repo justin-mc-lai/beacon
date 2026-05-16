@@ -1,0 +1,367 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+  "feature_slug": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+  "version": "v1.4.7",
+  "current_revision_id": "R1",
+  "lifecycle_status": "draft",
+  "updated_at": "2026-05-15T11:51:59.868675+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "draft",
+      "delivery_status": "idle",
+      "baseline_hash": null,
+      "superseded_by": null,
+      "created_at": "2026-05-15T11:51:59.866954+00:00",
+      "frozen_at": null,
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+      "priority": "medium",
+      "status": "draft",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Beacon 为 QA/implement repeated repair work 定义了 machine-readable closure-state envelope",
+          "text": "Beacon defines a machine-readable closure-state envelope for feature-level bounded automation repair work, including current closure state, next route, terminal signal, round number, and previous-round reference.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Beacon 为 repeated repair round 定义了 active issue register inheritance contract",
+          "text": "Beacon freezes a bounded closure-state taxonomy that can at minimum distinguish `active`, `blocked`, `release_ready`, `closed`, and `human_escalation_required`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "QA 能稳定写出 `ready_for_release` / `implement_repair` / `human_escalation` 三类 authoritative exit intent",
+          "text": "Beacon freezes a bounded next-route taxonomy that can at minimum distinguish `qa`, `implement`, `release`, and `human` for the current slice, without implying that `deep/refreeze` automation is already runtime-ready.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Implement repair 能稳定写出回到 QA 或升级人工的 exit intent",
+          "text": "Beacon defines an active issue register inheritance contract so repeated repair rounds carry only still-relevant stop reasons, accepted fixes, targeted rerun hints, and prior-round references rather than copying full artifact history.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Queue writes 具备 revision 校验，stale writer 会被拒绝",
+          "text": "Beacon makes QA exit authoritative for bounded runtime routing, so a QA round can explicitly emit `ready_for_release`, `implement_repair`, or `human_escalation` intent into the automation runtime object.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "同一 feature 不能被两个 automation worker 同时 claim",
+          "text": "Beacon makes implement repair exit authoritative for bounded runtime routing, so a repair round can explicitly emit either return-to-QA intent or human-escalation intent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "bounded runtime 仍保持 support-plane 身份，不扩张成新的 lifecycle stage",
+          "text": "Beacon adds queue revision semantics so automation queue mutation is guarded against stale writers and does not silently overwrite newer queue state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "automation runtime 不具备 truth-moving authority，也不宣传 full autonomous closure-loop",
+          "text": "Beacon adds feature-level execution lease semantics so only one automation worker can actively claim the same feature at one time.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Beacon provides operator-visible bounded runtime explanation for each round, including the current round number, closure state, terminal signal, next route, and whether human takeover is required.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Beacon explicitly preserves the truth boundary for this slice: automation can move repair work and state, but cannot autonomously move requirement truth, auto-promote scenario discoveries, or market itself as a full Automation Closure-Loop.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon defines a machine-readable closure-state envelope for feature-level bounded automation repair work, including current closure state, next route, terminal signal, round number, and previous-round reference.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Beacon freezes a bounded closure-state taxonomy that can at minimum distinguish `active`, `blocked`, `release_ready`, `closed`, and `human_escalation_required`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon freezes a bounded next-route taxonomy that can at minimum distinguish `qa`, `implement`, `release`, and `human` for the current slice, without implying that `deep/refreeze` automation is already runtime-ready.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Beacon defines an active issue register inheritance contract so repeated repair rounds carry only still-relevant stop reasons, accepted fixes, targeted rerun hints, and prior-round references rather than copying full artifact history.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Beacon makes QA exit authoritative for bounded runtime routing, so a QA round can explicitly emit `ready_for_release`, `implement_repair`, or `human_escalation` intent into the automation runtime object.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Beacon makes implement repair exit authoritative for bounded runtime routing, so a repair round can explicitly emit either return-to-QA intent or human-escalation intent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Beacon adds queue revision semantics so automation queue mutation is guarded against stale writers and does not silently overwrite newer queue state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Beacon adds feature-level execution lease semantics so only one automation worker can actively claim the same feature at one time.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Beacon provides operator-visible bounded runtime explanation for each round, including the current round number, closure state, terminal signal, next route, and whether human takeover is required.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Beacon explicitly preserves the truth boundary for this slice: automation can move repair work and state, but cannot autonomously move requirement truth, auto-promote scenario discoveries, or market itself as a full Automation Closure-Loop.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.7/user-story/beacon-v1.4.7-bounded-automation-closure-state-kernel.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.4.7-bounded-automation-closure-state-kernel",
+        "version": "v1.4.7",
+        "source": "research:docs/beacon/v1.4.7/research/beacon-v1.4.7-bounded-automation-closure-state-kernel.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    }
+  ]
+}
