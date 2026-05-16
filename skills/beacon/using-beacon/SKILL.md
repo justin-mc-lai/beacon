@@ -71,7 +71,7 @@ route explanation can distinguish frozen truth and learning hint.
 - required follow-up surface when the current surface is only advisory
 - optional reference pointer when a lightweight checklist can reduce ambiguity faster than free-form explanation
 - optional human-skill reference pointer:
-  - `docs/beacon/v1.4.6/execution/human-skill-reference.md`
+  - `docs/beacon/v1.4.7/execution/human-skill-reference.md`
 
 ## State Updated
 
@@ -132,7 +132,7 @@ route explanation can distinguish frozen truth and learning hint.
 
 When the user explicitly asks how to use Beacon's human-facing skills, point to:
 
-- `docs/beacon/v1.4.6/execution/human-skill-reference.md`
+- `docs/beacon/v1.4.7/execution/human-skill-reference.md`
 
 Use that page for:
 
