@@ -19,6 +19,8 @@ def test_automation_init_scaffold_should_generate_project_local_assets(tmp_path:
     assert payload["status"] == "completed"
     assert payload["queue_validation"]["status"] == "valid"
     assert payload["executor"] == "codex"
+    assert payload["beacon_bin"]
+    assert (tmp_path / "automation" / ".env").exists() is False
 
     queue_path = tmp_path / "automation" / "beacon-automation-queue.json"
     queue = json.loads(queue_path.read_text(encoding="utf-8"))
@@ -34,14 +36,33 @@ def test_automation_init_scaffold_should_generate_project_local_assets(tmp_path:
     assert 'BEACON_BIN="beacon"' in qa_text
     assert "automation summarize-qa" in qa_text
     assert "automation update-queue" in qa_text
+    assert "nightly QA window closed, skipping" in qa_text
+    assert "send_summary_notification" in qa_text
     assert 'CANONICAL_LEDGER_PATH="${PROJECT_ROOT}/.beacon/automation/qa-feedback-ledger.json"' in qa_text
     assert 'cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"' in qa_text
+    assert 'ENV_FILE="${ROOT_DIR}/automation/.env"' in qa_text
     assert 'FEISHU_WEBHOOK="${AUTOMATION_FEISHU_WEBHOOK:-}"' in qa_text
     assert 'NOTIFY_HELPER="${ROOT_DIR}/automation/jobs/beacon-notify-feishu-post.py"' in qa_text
     assert "automation build-summary" in qa_text
     assert 'SUMMARY_PATH="${OUTPUT_DIR}/qa-summary-${TIMESTAMP}.json"' in qa_text
     assert "SUMMARY_FEATURE_ARGS" not in qa_text
     assert os.access(qa_wrapper, os.X_OK)
+
+    status_wrapper = tmp_path / "automation" / "jobs" / "beacon-status-job.sh"
+    status_text = status_wrapper.read_text(encoding="utf-8")
+    assert "automation build-summary" in status_text
+    assert 'SUMMARY_PATH="${OUTPUT_DIR}/status-summary-${TIMESTAMP}.json"' in status_text
+    assert "send_summary_notification" in status_text
+
+    hourly_wrapper = tmp_path / "automation" / "jobs" / "beacon-hourly-qa-job.sh"
+    hourly_text = hourly_wrapper.read_text(encoding="utf-8")
+    assert "qa-global.lock" in hourly_text
+    assert "automation summarize-qa" in hourly_text
+    assert "automation update-queue" in hourly_text
+    assert "hourly QA window closed, skipping" in hourly_text
+    assert "send_summary_notification" in hourly_text
+    assert "--summary-kind hourly" in hourly_text
+    assert os.access(hourly_wrapper, os.X_OK)
 
     implement_wrapper = tmp_path / "automation" / "jobs" / "beacon-gated-implement-job.sh"
     implement_text = implement_wrapper.read_text(encoding="utf-8")
@@ -56,6 +77,20 @@ def test_automation_init_scaffold_should_generate_project_local_assets(tmp_path:
     assert '"${SUMMARY_FEATURE_ARGS[@]}"' in implement_text
     assert os.access(implement_wrapper, os.X_OK)
 
+    repair_wrapper = tmp_path / "automation" / "jobs" / "beacon-repair-window-job.sh"
+    repair_text = repair_wrapper.read_text(encoding="utf-8")
+    assert "Repair window requires exactly one enabled implement feature" in repair_text
+    assert "Refusing repair window on dirty worktree" in repair_text
+    assert "--allow-dirty" in repair_text
+    assert "implement run" in repair_text
+    assert "qa run" in repair_text
+    assert "automation update-queue" in repair_text
+    assert "send_summary_notification" in repair_text
+    assert os.access(repair_wrapper, os.X_OK)
+
+    env_example = tmp_path / "automation" / ".env.example"
+    assert "AUTOMATION_FEISHU_WEBHOOK=" in env_example.read_text(encoding="utf-8")
+
     notify_helper = tmp_path / "automation" / "jobs" / "beacon-notify-feishu-post.py"
     notify_text = notify_helper.read_text(encoding="utf-8")
     assert '"msg_type": "post"' in notify_text
@@ -69,10 +104,20 @@ def test_automation_init_scaffold_should_generate_project_local_assets(tmp_path:
 
     project_slug = tmp_path.resolve().name.lower().replace("_", "-")
     launchd_files = sorted(path.name for path in (tmp_path / "automation" / "launchd").glob("*.plist"))
-    assert any(project_slug in name for name in launchd_files)
-    launchd_text = (tmp_path / "automation" / "launchd" / launchd_files[0]).read_text(encoding="utf-8")
+    assert launchd_files == [
+        f"com.beacon.{project_slug}.gated-implement.plist",
+        f"com.beacon.{project_slug}.hourly-qa.plist",
+        f"com.beacon.{project_slug}.morning-status.plist",
+        f"com.beacon.{project_slug}.nightly-qa.plist",
+        f"com.beacon.{project_slug}.repair-window.plist",
+    ]
+    launchd_text = "\n".join((tmp_path / "automation" / "launchd" / name).read_text(encoding="utf-8") for name in launchd_files)
     assert str(tmp_path.resolve()) in launchd_text
     assert str(tmp_path / ".beacon" / "automation-runs") in launchd_text
+    assert "<string>--beacon-bin</string>" in launchd_text
+    assert "<string>--env-file</string>" in launchd_text
+    assert "<key>StartInterval</key>" in launchd_text
+    assert "<integer>3600</integer>" in launchd_text
 
 
 def test_automation_init_should_not_overwrite_existing_files_without_force(tmp_path: Path) -> None:
@@ -107,6 +152,8 @@ def test_automation_init_cli_should_support_json_output(tmp_path: Path) -> None:
     assert payload["status"] == "completed"
     assert payload["queue_validation"]["status"] == "valid"
     assert any(label.endswith(".nightly-qa") for label in payload["launchd_labels"])
+    assert any(label.endswith(".hourly-qa") for label in payload["launchd_labels"])
+    assert any(label.endswith(".repair-window") for label in payload["launchd_labels"])
     assert payload["toolkit"]["skill"] == "beacon-toolkit-automation"
     assert payload["readme_path"].endswith("automation/README.md")
     assert any("beacon automation validate-queue" in step for step in payload["next_steps"])

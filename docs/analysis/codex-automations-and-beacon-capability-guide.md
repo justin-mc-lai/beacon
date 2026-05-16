@@ -15,8 +15,9 @@ The boundary is deliberate:
 Codex Automations is a good fit when you need:
 
 - scheduled read-only status passes
+- scheduled hourly QA feedback loops
 - scheduled QA windows
-- scheduled gated implement windows for explicitly queued candidates
+- scheduled controlled repair/implement windows for explicitly queued candidates
 - host-level launch control, worktree isolation, and notification fan-out
 
 In practice, the useful pattern is:
@@ -89,7 +90,9 @@ Use a host wrapper that:
 Current examples:
 
 - `automation/jobs/beacon-status-job.sh`
+- `automation/jobs/beacon-hourly-qa-job.sh`
 - `automation/jobs/beacon-qa-job.sh`
+- `automation/jobs/beacon-repair-window-job.sh`
 - `automation/jobs/beacon-gated-implement-job.sh`
 
 ### 4. Host Scheduler
@@ -124,10 +127,34 @@ Recommended Beacon behavior:
 - return layered verdicts
 - distinguish blocked environment from product failure
 - produce repair handoff hints without forcing implementation
+- refresh `.beacon/automation/qa-feedback-ledger.json`
+- update `automation/beacon-automation-queue.json` from governed QA feedback
+
+### Hourly QA
+
+Same boundary as nightly QA, but tuned for a tighter feedback loop.
+
+Recommended Beacon behavior:
+
+- run only enabled explicit QA queue features
+- use a global QA automation lock to avoid overlapping scheduled runs
+- refresh the canonical QA feedback ledger and queue update artifacts
+- emit a shared summary and optional host-plane notification
+
+### Repair Window
+
+Preferred controlled implement surface for scheduled automation.
+
+Recommended Beacon behavior:
+
+- require exactly one enabled implement feature
+- block dirty worktrees by default unless the operator passes `--allow-dirty`
+- run implement first, then QA, then queue update
+- treat notification delivery as an artifact status, not release truth
 
 ### Gated Implement
 
-Most sensitive.
+Compatibility surface for broader gated implement windows.
 
 Recommended Beacon behavior:
 
@@ -288,10 +315,18 @@ Current wrapper expectations:
 
 - `beacon-status-job.sh`
   - read-only status pass
-  - single artifact output
+  - status artifact and shared summary output
+- `beacon-hourly-qa-job.sh`
+  - explicit QA feature iteration
+  - global lock
+  - refreshes QA feedback ledger, queue update, shared summary, and optional notification
 - `beacon-qa-job.sh`
   - explicit feature iteration
   - one artifact per feature
+- `beacon-repair-window-job.sh`
+  - exactly one implement feature
+  - dirty worktree blocked by default
+  - implement -> QA -> queue update
 - `beacon-gated-implement-job.sh`
   - explicit candidate iteration only
   - never opportunistic selection
@@ -328,8 +363,9 @@ Current queue update semantics:
 
 This is enough for:
 
+- hourly QA -> next hourly QA reuse
 - nightly QA -> next nightly QA reuse
-- nightly QA -> next gated implement handoff
+- nightly/hourly QA -> next repair-window or gated implement handoff
 - environment blocker vs product failure separation in later runs
 
 ## Why This Matters For Other Agents

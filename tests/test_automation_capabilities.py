@@ -12,6 +12,7 @@ from beacon.utils.automation_capabilities import (
 )
 from beacon.utils.automation_feedback import refresh_qa_feedback_ledger
 from beacon.utils.automation_queue import validate_automation_queue
+from beacon.utils.automation_scaffold import init_automation_scaffold
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,11 +24,17 @@ def test_automation_capabilities_payload_should_report_boundary_and_assets():
 
     assert payload["boundary"]["scheduler_owner"] == "codex_automations_or_host_scheduler"
     assert payload["boundary"]["truth_owner"] == "beacon"
+    assert "hourly-qa" in payload["supported_job_patterns"]
     assert "nightly-qa" in payload["supported_job_patterns"]
+    assert "repair-window" in payload["supported_job_patterns"]
     assert payload["assets"]["docs"] == "docs/analysis/codex-automations-and-beacon-capability-guide.md"
     assert payload["assets"]["queue_path"] == "automation/beacon-automation-queue.json"
     assert "automation/codex/nightly-qa.md" in payload["assets"]["codex_specs"]
     assert "automation/jobs/beacon-qa-job.sh" in payload["assets"]["job_wrappers"]
+    assert "automation/jobs/beacon-hourly-qa-job.sh" in payload["assets"]["job_wrappers"]
+    assert "automation/jobs/beacon-repair-window-job.sh" in payload["assets"]["job_wrappers"]
+    assert "automation/launchd/com.beacon.hourly-qa.example.plist" in payload["assets"]["launchd_examples"]
+    assert "automation/launchd/com.beacon.repair-window.example.plist" in payload["assets"]["launchd_examples"]
     assert payload["queue_contract"]["status"] == "valid"
     assert payload["bootstrap"]["init_entrypoint"] == "beacon automation init --project-root ."
     assert payload["bootstrap"]["toolkit_skill"] == "beacon-toolkit-automation"
@@ -60,6 +67,7 @@ def test_automation_capabilities_cli_should_support_json_and_human_output():
     payload = json.loads(machine.stdout)
     assert payload["assets"]["automation_root"] == "automation"
     assert "gated-implement" in payload["supported_job_patterns"]
+    assert "repair-window" in payload["supported_job_patterns"]
     assert payload["queue_contract"]["status"] == "valid"
     assert payload["feedback_loop"]["qa_feedback_ledger"] == ".beacon/automation/qa-feedback-ledger.json"
     assert "build-summary" in payload["feedback_loop"]["shared_summary_entrypoint"]
@@ -76,13 +84,15 @@ def test_automation_validate_queue_should_accept_current_contract():
     assert payload["error_count"] == 0
 
 
-def test_automation_summarize_and_update_queue_cli_should_exist():
-    summarize = runner.invoke(app, ["automation", "summarize-qa", "--project-root", str(ROOT), "--json"])
+def test_automation_summarize_and_update_queue_cli_should_exist(tmp_path: Path):
+    init_automation_scaffold(tmp_path)
+
+    summarize = runner.invoke(app, ["automation", "summarize-qa", "--project-root", str(tmp_path), "--json"])
     assert summarize.exit_code == 0, summarize.stdout
     payload = json.loads(summarize.stdout)
     assert "entries" in payload
 
-    update = runner.invoke(app, ["automation", "update-queue", "--project-root", str(ROOT), "--json"])
+    update = runner.invoke(app, ["automation", "update-queue", "--project-root", str(tmp_path), "--json"])
     assert update.exit_code == 0, update.stdout
     payload = json.loads(update.stdout)
     assert payload["status"] == "updated"
