@@ -157,6 +157,56 @@ def _seed_review_acceptance_feature(project_root: Path, *, version: str, feature
     return slug
 
 
+def _seed_legacy_story_machine_state(project_root: Path, *, version: str, feature: str, revision_id: str = "R2") -> str:
+    slug = _seed_review_acceptance_feature(project_root, version=version, feature=feature)
+    docs_root = project_root / "docs" / "beacon" / version
+    machine_user_story = docs_root / ".machine" / "user-story"
+    machine_user_story.mkdir(parents=True, exist_ok=True)
+    (machine_user_story / f"{slug}.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+                "story_count": 2,
+                "acceptance_criteria": {"functionality": ["Legacy shape should still accept review writeback"]},
+                "stories": [
+                    {
+                        "story_id": "US-001",
+                        "title": "Old Revision",
+                        "revision_id": "R1",
+                        "status": "superseded",
+                        "items": [
+                            {"id": "AC-001", "kind": "ac", "text": "Old AC", "required": True, "status": "accepted"},
+                            {"id": "TEST-001", "kind": "test", "text": "Old TEST", "required": True, "status": "accepted"},
+                        ],
+                    },
+                    {
+                        "story_id": "US-002",
+                        "title": "Current Revision",
+                        "revision_id": revision_id,
+                        "status": "implemented",
+                        "items": [
+                            {"id": "AC-001", "kind": "ac", "text": "Current AC", "required": True, "status": "implemented"},
+                            {"id": "TEST-001", "kind": "test", "text": "Current TEST", "required": True, "status": "draft"},
+                        ],
+                    },
+                ],
+                "revisions": [
+                    {"revision_id": "R1", "doc_status": "superseded", "delivery_status": "superseded"},
+                    {"revision_id": revision_id, "doc_status": "frozen", "delivery_status": "implemented"},
+                ],
+                "lifecycle_status": "implemented",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    return slug
+
+
 def test_run_workflow_strict_flag_should_enable_effective_strict_mode(tmp_path: Path):
     result = _invoke(
         [
@@ -217,6 +267,61 @@ def test_gate_should_fallback_when_gate_config_json_is_malformed(tmp_path: Path)
     )
     assert result.exit_code == 0
     assert "Traceback" not in result.stdout
+
+
+def test_review_accept_should_support_legacy_story_machine_shape(tmp_path: Path):
+    version = "v1.0.0"
+    feature = "Legacy Review Feature"
+    slug = _seed_legacy_story_machine_state(tmp_path, version=version, feature=feature, revision_id="R2")
+    freeze_revision_state(tmp_path, version=version, feature=feature)
+
+    machine_exec = machine_execution_dir(tmp_path, version)
+    (machine_exec / f"{slug}.revision.json").write_text(
+        json.dumps(
+            {
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+                "revision_id": "R2",
+                "source_revision_id": "R1",
+                "doc_status": "frozen",
+                "delivery_status": "implemented",
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+    beacon_dir = tmp_path / ".beacon"
+    beacon_dir.mkdir(parents=True, exist_ok=True)
+    (beacon_dir / "auto-test-status.json").write_text(
+        json.dumps({"status": "passed", "version": version, "run_id": "legacy-review-run"}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+
+    result = _invoke(
+        [
+            "review",
+            "accept",
+            feature,
+            "--project",
+            str(tmp_path),
+            "--version",
+            version,
+            "--reviewer",
+            "qa",
+            "--json",
+        ]
+    )
+
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "accepted"
+
+    story_payload = json.loads((tmp_path / "docs" / "beacon" / version / ".machine" / "user-story" / f"{slug}.json").read_text(encoding="utf-8"))
+    active_story = next(story for story in story_payload["stories"] if story.get("revision_id") == "R2")
+    item_status = {str(item.get("id")): str(item.get("status")) for item in active_story.get("items", []) if isinstance(item, dict)}
+    assert item_status["AC-001"] == "accepted"
+    assert item_status["TEST-001"] == "accepted"
 
 
 def test_gate_should_resolve_relative_matrix_path_from_project_root(tmp_path: Path):

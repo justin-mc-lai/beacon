@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_ROOT = ROOT / "skills" / "beacon"
-ACTIVE_LINE = "v1.4.6"
+ACTIVE_LINE = "v1.4.7"
 CORE_SKILLS = [
     "beacon-prd",
     "beacon-user-story",
@@ -44,7 +44,7 @@ def test_runtime_docs_host_lines_are_consistent():
 def test_test_case_skill_does_not_mix_v145_and_v146_docs_lines() -> None:
     text = _skill_text("beacon-test-case")
     assert "v1.4.5 docs line" not in text
-    assert "docs/beacon/v1.4.6/" in text
+    assert f"docs/beacon/{ACTIVE_LINE}/" in text
 
 
 def test_version_alignment_precedes_surface_thickening():

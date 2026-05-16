@@ -319,7 +319,24 @@ def _browser_evidence_authenticity(
         for bundle in (explore_bundle, replay_bundle)
         if isinstance(bundle, dict) and str(bundle.get("status") or "").strip()
     }
-    placeholder_only = admission_status == "blocked" or (bool(runner_statuses) and runner_statuses.issubset(PLACEHOLDER_BROWSER_RUNNER_STATUSES))
+    real_fallback_execution = False
+    for bundle in (explore_bundle, replay_bundle):
+        if not isinstance(bundle, dict):
+            continue
+        bundle_status = str(bundle.get("status") or "").strip().lower()
+        if bundle_status not in PLACEHOLDER_BROWSER_RUNNER_STATUSES:
+            continue
+        report_ref = str(bundle.get("report_ref") or "").strip()
+        result_ref = str(bundle.get("result_ref") or "").strip()
+        task_ref = str(bundle.get("task_ref") or "").strip()
+        if report_ref and result_ref and task_ref:
+            real_fallback_execution = True
+            break
+    placeholder_only = admission_status == "blocked" or (
+        bool(runner_statuses)
+        and runner_statuses.issubset(PLACEHOLDER_BROWSER_RUNNER_STATUSES)
+        and not real_fallback_execution
+    )
     authenticity = not placeholder_only
     reason_code = "browser_evidence_placeholder_only" if placeholder_only else ""
     if str(admission.get("status") or "") == "blocked" and not authenticity:
@@ -329,6 +346,7 @@ def _browser_evidence_authenticity(
         "authentic": authenticity,
         "reason_code": reason_code,
         "runner_statuses": sorted(runner_statuses),
+        "real_fallback_execution": real_fallback_execution,
     }
 
 
@@ -1462,8 +1480,8 @@ def _execute_qa9_tc_entries(
             }
             continue
         command = str(
-            explicit_layer_overrides.get(qa_type)
-            or item.get("command")
+            item.get("command")
+            or explicit_layer_overrides.get(qa_type)
             or commands.get(qa_type)
             or ""
         ).strip()
@@ -1558,10 +1576,10 @@ def _execute_qa9_tc_entries(
                 explore_payload = dict(run_payload)
             else:
                 explore_command = str(
-                    explicit_layer_overrides.get(qa_type)
-                    or item.get("explore_command")
+                    item.get("explore_command")
                     or compiled_runner
                     or command
+                    or explicit_layer_overrides.get(qa_type)
                     or commands.get(qa_type)
                     or ""
                 ).strip()
@@ -1580,9 +1598,9 @@ def _execute_qa9_tc_entries(
                 run_payload = dict(explore_payload)
             if bool(item.get("replay_required")) and str(run_payload.get("status") or "").strip().lower() == "passed":
                 replay_command = str(
-                    explicit_layer_overrides.get(qa_type)
-                    or item.get("replay_command")
+                    item.get("replay_command")
                     or command
+                    or explicit_layer_overrides.get(qa_type)
                     or commands.get(qa_type)
                     or ""
                 ).strip()

@@ -158,6 +158,74 @@ def test_auto_test_qa9_should_execute_and_write_matrix_evidence(tmp_path: Path):
     assert matrix_report["evidence_generated"] >= 2
 
 
+def test_auto_test_qa9_tc_execution_should_prefer_entry_command_over_layer_override(tmp_path: Path):
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_payload = {
+        "schema_version": "1.0.2",
+        "feature": "QA9 Feature",
+        "feature_slug": "qa9-feature",
+        "version": "v1.0.2",
+        "qa_profile": "web-full",
+        "qa_types": ["unit"],
+        "llm_plan": {
+            "mode": "rule",
+            "model": "beacon-rule-llm-v1",
+            "project_scan": {"language": "python", "framework": "pytest", "frontend": "web", "api_spec_refs": [], "risk_points": []},
+            "generated_at": "2026-03-03T00:00:00Z",
+            "prompt_ref": "test",
+        },
+        "qa_requirements": [
+            {"qa_type": "unit", "required": True, "automation_required": True, "min_cases": 1, "applicability": "required", "waiver": {}},
+        ],
+        "entries": [
+            {
+                "tc_id": "TC-001",
+                "ac_id": "AC-001",
+                "qa_type": "unit",
+                "automation": "auto",
+                "command": PASS_WITH_JUNIT_AND_ASSERT + " # entry-command",
+                "assertion": "unit assertion",
+                "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-001.json",
+                "status": "pending",
+            },
+        ],
+    }
+    matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    override_command = PASS_WITH_JUNIT_AND_ASSERT + " # layer-override"
+    result = runner.invoke(
+        app,
+        [
+            "auto-test",
+            "create",
+            "qa9",
+            "--project",
+            str(tmp_path),
+            "--qa-matrix-path",
+            str(matrix_path),
+            "--layer-command",
+            f"unit={override_command}",
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+
+    status_payload = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    run_id = status_payload["run_id"]
+    tc_command = (
+        tmp_path
+        / ".beacon"
+        / "evidence"
+        / "auto-test"
+        / run_id
+        / "qa9-tc"
+        / "TC-001"
+        / "command.txt"
+    ).read_text(encoding="utf-8")
+    assert "# entry-command" in tc_command
+    assert "# layer-override" not in tc_command
+
+
 def test_gate_check_release_should_report_qa9_matrix_missing(tmp_path: Path):
     result = runner.invoke(
         app,

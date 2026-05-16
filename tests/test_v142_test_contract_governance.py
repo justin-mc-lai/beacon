@@ -614,6 +614,23 @@ def test_browser_evidence_authenticity_marks_placeholder_runner_statuses() -> No
     assert payload["reason_code"] == "browser_evidence_placeholder_only"
 
 
+def test_browser_evidence_authenticity_accepts_real_fallback_execution() -> None:
+    payload = _browser_evidence_authenticity(
+        explore_bundle={
+            "status": "fallback-browser-use-unavailable",
+            "report_ref": ".beacon/evidence/auto-test/run-x/tc/explore/browser-runner-report.json",
+            "result_ref": ".beacon/evidence/auto-test/run-x/tc/explore/browser-runner-result.json",
+            "task_ref": ".beacon/evidence/auto-test/run-x/tc/explore/browser-runner-task.json",
+        },
+        replay_bundle={},
+        admission={"status": "ready"},
+    )
+
+    assert payload["authentic"] is True
+    assert payload["reason_code"] == ""
+    assert payload["real_fallback_execution"] is True
+
+
 def test_feature_qa_default_ui_runner_prefers_agent_browser_for_attached_session(tmp_path: Path) -> None:
     session_root = tmp_path / ".beacon" / "qa" / "sessions" / "attached-demo"
     session_root.mkdir(parents=True, exist_ok=True)

@@ -227,6 +227,11 @@ def load_story_state(
     if not root_state:
         return None
     target_revision = str(root_state.get("current_revision_id", "") or revision_id)
+    stories = root_state.get("stories") if isinstance(root_state.get("stories"), list) else []
+    if not target_revision and len(stories) == 1 and isinstance(stories[0], dict):
+        target_revision = str(stories[0].get("revision_id", "") or revision_id or "R1")
+        if target_revision:
+            root_state["current_revision_id"] = target_revision
     for story in root_state.get("stories", []):
         if isinstance(story, dict) and str(story.get("revision_id", "")) == target_revision:
             out = dict(story)
@@ -234,6 +239,41 @@ def load_story_state(
             out.setdefault("feature_slug", feature_slug(feature))
             out.setdefault("version", resolved_version)
             out.setdefault("revision_id", target_revision)
+            return out
+    if len(stories) == 1 and isinstance(stories[0], dict):
+        out = dict(stories[0])
+        out.setdefault("feature", feature)
+        out.setdefault("feature_slug", feature_slug(feature))
+        out.setdefault("version", resolved_version)
+        out.setdefault("revision_id", str(out.get("revision_id", "") or target_revision or revision_id or "R1"))
+        return out
+    if stories:
+        merged_items: list[dict[str, Any]] = []
+        seen_ids: set[str] = set()
+        first_story = next((story for story in stories if isinstance(story, dict)), {})
+        for story in stories:
+            if not isinstance(story, dict):
+                continue
+            for item in story.get("items", []):
+                if not isinstance(item, dict):
+                    continue
+                item_id = str(item.get("id", "") or "").strip().upper()
+                if item_id and item_id in seen_ids:
+                    continue
+                merged_items.append(dict(item))
+                if item_id:
+                    seen_ids.add(item_id)
+        if merged_items:
+            out = dict(first_story if isinstance(first_story, dict) else {})
+            out["story_id"] = str(out.get("story_id") or "US-001")
+            out["title"] = str(out.get("title") or feature)
+            out["priority"] = str(out.get("priority") or "medium")
+            out["status"] = str(out.get("status") or root_state.get("lifecycle_status") or "draft")
+            out["items"] = merged_items
+            out["feature"] = feature
+            out["feature_slug"] = feature_slug(feature)
+            out["version"] = resolved_version
+            out["revision_id"] = str(target_revision or revision_id or "R1")
             return out
     return None
 
@@ -270,6 +310,7 @@ def save_story_state(
         effective["revision_id"] = target_revision
         stories.append(effective)
     root_state["stories"] = stories
+    root_state["current_revision_id"] = target_revision
     root_state["version"] = resolved_version
     root_state["updated_at"] = _now_iso()
     _write_json(path, root_state)
