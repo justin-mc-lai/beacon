@@ -97,6 +97,21 @@ def refresh_qa_feedback_ledger(project_root: Path, *, features: list[str] | None
     return payload
 
 
+def _entry_needs_repair(entry: dict[str, Any]) -> bool:
+    continue_decision = str(entry.get("continue_decision") or "").strip()
+    next_route = str(entry.get("next_route") or "").strip()
+    terminal_signal = str(entry.get("terminal_signal") or "").strip()
+    repair_route = str(entry.get("repair_route") or "").strip()
+    stop_reasons = {str(item).strip() for item in (entry.get("stop_reasons") or []) if str(item).strip()}
+    return bool(
+        continue_decision == "stop_for_repair"
+        or next_route == "implement"
+        or terminal_signal == "qa_route_implement_repair"
+        or repair_route == "implement-repair"
+        or stop_reasons
+    )
+
+
 def update_automation_queue_from_feedback(
     project_root: Path,
     *,
@@ -142,6 +157,9 @@ def update_automation_queue_from_feedback(
                 if not isinstance(entry, dict):
                     next_features.append(feature_name)
                     continue
+                if _entry_needs_repair(entry):
+                    next_features.append(feature_name)
+                    continue
                 closure_state = str(entry.get("closure_state") or "").strip().lower()
                 if closure_state in {"release_ready", "closed"} or str(entry.get("status") or "").strip().lower() == "passed":
                     updates.append({"job_id": str(job.get("job_id") or ""), "feature": feature_name, "action": "removed_from_qa_queue", "reason": "qa_passed"})
@@ -154,10 +172,7 @@ def update_automation_queue_from_feedback(
             for feature_name, entry in by_feature.items():
                 if not isinstance(entry, dict):
                     continue
-                next_route = str(entry.get("next_route") or "").strip()
-                terminal_signal = str(entry.get("terminal_signal") or "").strip()
-                stop_reasons = {str(item).strip() for item in (entry.get("stop_reasons") or []) if str(item).strip()}
-                if next_route == "implement" and (terminal_signal == "qa_route_implement_repair" or stop_reasons):
+                if _entry_needs_repair(entry):
                     canonical = str(entry.get("feature") or feature_name).strip()
                     if canonical and canonical not in current:
                         current.add(canonical)

@@ -144,6 +144,33 @@ def test_queue_update_is_explicit_and_governed(tmp_path: Path) -> None:
     assert any(item["action"] == "added_to_implement_queue" for item in payload["updates"])
 
 
+def test_queue_update_keeps_passed_but_repair_needed_feature_in_repair_loop(tmp_path: Path) -> None:
+    _seed_feature_status(tmp_path, feature="feature pass", status="passed")
+    _seed_feature_status(
+        tmp_path,
+        feature="feature qa repair",
+        status="passed",
+        continue_decision="stop_for_repair",
+        stop_reasons=["assertion_count_zero_pass"],
+    )
+    _seed_queue(tmp_path)
+    queue_path = tmp_path / "automation" / "beacon-automation-queue.json"
+    queue = json.loads(queue_path.read_text(encoding="utf-8"))
+    queue["jobs"][0]["feature_selector"]["features"] = ["feature pass", "feature qa repair"]
+    queue_path.write_text(json.dumps(queue, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    refresh_qa_feedback_ledger(tmp_path, features=["feature pass", "feature qa repair"])
+    payload = update_automation_queue_from_feedback(tmp_path)
+
+    updated = json.loads(queue_path.read_text(encoding="utf-8"))
+    qa_features = updated["jobs"][0]["feature_selector"]["features"]
+    implement_features = updated["jobs"][1]["feature_selector"]["features"]
+    assert "feature pass" not in qa_features
+    assert "feature qa repair" in qa_features
+    assert "feature qa repair" in implement_features
+    assert any(item["feature"] == "feature qa repair" and item["action"] == "added_to_implement_queue" for item in payload["updates"])
+
+
 def test_nightly_qa_wrapper_refreshes_feedback_loop() -> None:
     text = (ROOT / "automation" / "jobs" / "beacon-qa-job.sh").read_text(encoding="utf-8")
     assert 'automation summarize-qa' in text
@@ -153,6 +180,20 @@ def test_nightly_qa_wrapper_refreshes_feedback_loop() -> None:
     assert 'cp "${LEDGER_ARTIFACT_PATH}" "${CANONICAL_LEDGER_PATH}"' in text
     assert 'AUTOMATION_FEISHU_WEBHOOK' in text
     assert 'beacon-notify-feishu-post.py' in text
+    assert 'send_summary_notification "${SUMMARY_PATH}" "Beacon nightly QA"' in text
+    assert "nightly QA window closed, skipping" in text
+
+
+def test_hourly_qa_wrapper_refreshes_feedback_loop() -> None:
+    text = (ROOT / "automation" / "jobs" / "beacon-hourly-qa-job.sh").read_text(encoding="utf-8")
+    assert "qa-global.lock" in text
+    assert 'automation summarize-qa' in text
+    assert 'automation build-summary' in text
+    assert 'automation update-queue' in text
+    assert '.beacon/automation/qa-feedback-ledger.json' in text
+    assert '--summary-kind hourly' in text
+    assert 'send_summary_notification "${SUMMARY_PATH}" "Beacon hourly QA"' in text
+    assert "hourly QA window closed, skipping" in text
 
 
 def test_gated_implement_wrapper_refreshes_queue() -> None:
@@ -165,6 +206,18 @@ def test_gated_implement_wrapper_refreshes_queue() -> None:
     assert 'automation update-queue' in text
 
 
+def test_repair_window_wrapper_is_controlled_and_refreshes_queue() -> None:
+    text = (ROOT / "automation" / "jobs" / "beacon-repair-window-job.sh").read_text(encoding="utf-8")
+    assert "Repair window requires exactly one enabled implement feature" in text
+    assert "Refusing repair window on dirty worktree" in text
+    assert "--allow-dirty" in text
+    assert "implement run" in text
+    assert "qa run" in text
+    assert 'automation summarize-qa' in text
+    assert 'automation update-queue' in text
+    assert 'send_summary_notification "${SUMMARY_PATH}" "Beacon repair window"' in text
+
+
 def test_automation_capabilities_report_feedback_loop_surface() -> None:
     payload = build_automation_capabilities_payload(ROOT)
     feedback_loop = payload["feedback_loop"]
@@ -172,6 +225,8 @@ def test_automation_capabilities_report_feedback_loop_surface() -> None:
     assert "summarize-qa" in feedback_loop["qa_summary_entrypoint"]
     assert "build-summary" in feedback_loop["shared_summary_entrypoint"]
     assert "update-queue" in feedback_loop["queue_update_entrypoint"]
+    assert "hourly-qa" in payload["supported_job_patterns"]
+    assert "repair-window" in payload["supported_job_patterns"]
     assert any(item["executor"] == "codex" and item["beacon_runtime_execution"] is True for item in payload["executor_matrix"])
 
 
