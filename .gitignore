@@ -1,5 +1,5 @@
 # BEACON:GITIGNORE:START
-# BEACON:GITIGNORE:VERSION:v1.4.6
+# BEACON:GITIGNORE:VERSION:v1.4.7
 # Local orchestration scratch state
 .omx/
 .omc/
@@ -41,19 +41,20 @@
 
 # Rolling local runtime state and evo experiment scratch
 .beacon/flaky-history.json
+.beacon/state/beacon-*-latest.json
+.beacon/state/prd-transactions/
+.beacon/transactions/*/
+.beacon/transactions/tx-project-metadata-*.json
+.beacon/prd/beacon-v1.4.3-*.json
+.beacon/qa/beacon-v1.4.3-*.json
+.beacon/transactions/prd-beacon-v1.4.3-*.json
+.beacon/transactions/qa-acceptance-beacon-v1.4.3-*.json
+.beacon/runs/repair-v1.4.3-*/
 .beacon/state/evo/experiments/evo-20*.json
 .beacon/state/evo/ledger.jsonl
 .beacon/state/requirement-clarity-*.json
 .beacon/state/technical-review-contract-*.json
 .beacon/state/exhaustion.json
-.beacon/state/beacon-*-latest.json
-.beacon/state/prd-transactions/
-.beacon/transactions/*/
-.beacon/transactions/prd-beacon-v1.4.3-*.json
-.beacon/transactions/qa-acceptance-beacon-v1.4.3-*.json
-.beacon/prd/beacon-v1.4.3-*.json
-.beacon/qa/beacon-v1.4.3-*.json
-.beacon/runs/repair-v1.4.3-*/
 
 # Only explicitly promoted canonical QA and test-result surfaces stay tracked
 .beacon/evidence/test-results/*
@@ -69,6 +70,8 @@
 
 # Local temp scratch
 .tmp/
+docs/beacon/v1.4.6/.machine/deep/v1.0.0-*/
+docs/beacon/v1.4.6/deep/v1.0.0-*/
 
 # Python cache noise
 __pycache__/
