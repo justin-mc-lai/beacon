@@ -11,6 +11,7 @@ from beacon.utils import qa_feature
 from beacon.commands.auto_test import _browser_evidence_authenticity, resolve_browser_runtime_admission
 from beacon.commands.auto_test import _write_browser_runner_learning_note
 from beacon.commands.qa import _default_feature_qa_ui_runner
+from beacon.utils.browser_task_compiler import build_browser_task, default_browser_runner_command
 from beacon.utils.story_scenarios import expand_story_scenarios
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency, _resolve_entry_command
@@ -782,3 +783,30 @@ def test_runner_gap_does_not_reopen_implementation() -> None:
 
     assert evidence == "strong"
     assert closure == "needs_more_evidence"
+
+
+def test_browser_runtime_admission_defaults_to_playwright_without_session() -> None:
+    admission = resolve_browser_runtime_admission(
+        item={"exploratory_runner": "", "target_url": "/"},
+        active_browser_session={},
+    )
+
+    assert admission["status"] == "ready"
+    assert admission["preferred_runner"] == "playwright"
+
+
+def test_browser_task_defaults_to_playwright_runner_contract(tmp_path: Path) -> None:
+    payload = build_browser_task(
+        item={"tc_id": "TC-US001-001", "source_tc_id": "TC-US001-001", "assertion": "Dashboard renders"},
+        qa_type="functional",
+        mode="functional",
+        project_root=tmp_path,
+        session={},
+    )
+
+    assert payload["runner_contract"]["exploratory_runner"] == "playwright"
+    assert payload["runner_contract"]["deterministic_runner"] == "playwright"
+
+
+def test_default_browser_runner_command_ignores_playwright() -> None:
+    assert default_browser_runner_command("playwright", qa_type="functional") == ""

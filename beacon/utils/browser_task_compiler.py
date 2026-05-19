@@ -60,7 +60,7 @@ def build_browser_task(
             },
         ],
         "runner_contract": {
-            "exploratory_runner": str(item.get("exploratory_runner") or "agent-browser").strip() or "agent-browser",
+            "exploratory_runner": str(item.get("exploratory_runner") or "playwright").strip() or "playwright",
             "deterministic_runner": str(item.get("deterministic_runner") or "playwright").strip() or "playwright",
             "replay_required": bool(item.get("replay_required")),
         },

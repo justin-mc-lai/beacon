@@ -260,7 +260,7 @@ def resolve_browser_runtime_admission(
     attached_runner_available = session_bridge_present and (
         session_runner in ATTACHED_BROWSER_RUNNER_TYPES or requested_runner in {"agent-browser", "web-access"}
     )
-    preferred_runner = requested_runner or "browser-use"
+    preferred_runner = requested_runner or "playwright"
     if protected_surface:
         if session_runner == "web-access":
             preferred_runner = "web-access"
@@ -1599,6 +1599,7 @@ def _execute_qa9_tc_entries(
             if bool(item.get("replay_required")) and str(run_payload.get("status") or "").strip().lower() == "passed":
                 replay_command = str(
                     item.get("replay_command")
+                    or compiled_runner
                     or command
                     or explicit_layer_overrides.get(qa_type)
                     or commands.get(qa_type)
