@@ -56,6 +56,28 @@ def to_legacy_layer(value: str | None) -> str:
     return QA_TO_LEGACY_LAYER.get(qa_type, qa_type)
 
 
+def _playwright_workspace_command(args: str = "") -> str:
+    suffix = f" {args.strip()}" if str(args).strip() else ""
+    candidates = (
+        ".",
+        "tournament_miniapp",
+        "frontend",
+        "web",
+        "app",
+        "client",
+    )
+    probes = []
+    for candidate in candidates:
+        prefix = "" if candidate == "." else f"{candidate}/"
+        cd_clause = ":" if candidate == "." else f'cd "{candidate}"'
+        probes.append(
+            f'if [ -f "{prefix}playwright.config.ts" ] || [ -f "{prefix}playwright.config.js" ]; then {cd_clause} && npx playwright test{suffix}; '
+            "exit $?; fi"
+        )
+    probes.append(f"npx playwright test{suffix}")
+    return " ".join(probes)
+
+
 def parse_qa_types(raw: str | Iterable[str] | None, profile: str = "web-full") -> list[str]:
     profile_norm = str(profile or "web-full").strip().lower()
     default_types = list(QA_PROFILE_TYPES.get(profile_norm, QA_PROFILE_TYPES["web-full"]))
@@ -118,7 +140,7 @@ def default_command_for_qa_type(qa_type: str, *, ui_runner: str = "playwright") 
             )
         if runner == "midscene":
             return "node scripts/midscene-functional.mjs"
-        return "npx playwright test"
+        return _playwright_workspace_command()
     if qa_type == "regression":
         return f"python3 -m pytest -q -k regression {junit_arg}"
     if qa_type == "exception":
@@ -140,7 +162,7 @@ def default_command_for_qa_type(qa_type: str, *, ui_runner: str = "playwright") 
             )
         if runner == "midscene":
             return "node scripts/midscene-compatibility.mjs"
-        return "npx playwright test --project=chromium --project=firefox --project=webkit"
+        return _playwright_workspace_command("--project=chromium --project=firefox --project=webkit")
     return f"python3 -m pytest -q {junit_arg}"
 
 

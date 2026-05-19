@@ -15,6 +15,7 @@ from beacon.utils.browser_task_compiler import build_browser_task, default_brows
 from beacon.utils.story_scenarios import expand_story_scenarios
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
 from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency, _resolve_entry_command
+from beacon.utils.qa9 import default_command_for_qa_type
 from beacon.utils.test_contract_governance import (
     CANONICAL_TEST_CONTRACT_LANES,
     QA_FIRST_PRINCIPLES_ORDER,
@@ -672,7 +673,8 @@ def test_story_scenarios_default_browser_path_prefers_playwright() -> None:
 
     browser_scenario = next(item for item in payload["scenarios"] if item["source_tc_id"] == "TC-US001-001")
     assert browser_scenario["browser_required"] is True
-    assert browser_scenario["command"] == "npx playwright test"
+    assert 'npx playwright test' in browser_scenario["command"]
+    assert 'browser_use_runner' not in browser_scenario["command"]
     assert browser_scenario["exploratory_runner"] == "playwright"
     assert browser_scenario["deterministic_runner"] == "playwright"
 
@@ -684,7 +686,8 @@ def test_feature_plan_rewrites_legacy_browser_use_default_to_playwright() -> Non
         ui_runner="playwright",
     )
 
-    assert command == "npx playwright test"
+    assert 'npx playwright test' in command
+    assert 'browser_use_runner' not in command
 
 
 def test_story_scenario_augment_rewrites_legacy_browser_use_default() -> None:
@@ -716,9 +719,10 @@ def test_story_scenario_augment_rewrites_legacy_browser_use_default() -> None:
     )
 
     scenario = augmented["scenarios"][0]
-    assert scenario["command"] == "npx playwright test"
+    assert 'npx playwright test' in scenario["command"]
+    assert 'browser_use_runner' not in scenario["command"]
     assert scenario["exploratory_runner"] == "playwright"
-    assert scenario["replay_command"] == "npx playwright test"
+    assert 'npx playwright test' in scenario["replay_command"]
 
 
 def test_browser_runner_learning_reason_code_is_frozen() -> None:
@@ -810,3 +814,17 @@ def test_browser_task_defaults_to_playwright_runner_contract(tmp_path: Path) -> 
 
 def test_default_browser_runner_command_ignores_playwright() -> None:
     assert default_browser_runner_command("playwright", qa_type="functional") == ""
+
+
+def test_playwright_default_command_prefers_frontend_workspace_probe() -> None:
+    command = default_command_for_qa_type("functional", ui_runner="playwright")
+
+    assert 'tournament_miniapp/playwright.config.ts' in command
+    assert 'cd "tournament_miniapp" && npx playwright test' in command
+
+
+def test_playwright_compatibility_command_prefers_frontend_workspace_probe() -> None:
+    command = default_command_for_qa_type("compatibility", ui_runner="playwright")
+
+    assert 'tournament_miniapp/playwright.config.ts' in command
+    assert '--project=chromium --project=firefox --project=webkit' in command
