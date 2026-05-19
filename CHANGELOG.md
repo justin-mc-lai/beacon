@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Aligned Beacon release/status read models for historical docs lines so projects pinned to older docs versions are no longer incorrectly blocked by newer runtime-era governance gates.
+- Limited release-facing enforcement of semantic, prompt-boundary, evidence-manifest, and test-contract blockers to docs lines that actually opted into those release contracts.
+- Fixed release scorecard version isolation so cross-version QA feature scorecards no longer leak into another version's release verdict.
+- Reduced status board noise for historical docs lines by suppressing non-applicable `semantic`, `technical_review`, and `release.exhaustiveness` release annotations.
+
+### Verified
+
+- Beacon regression slice: `python3 -m pytest -q tests/test_v119_release_scorecard_and_browser_compiler.py tests/test_release_check_contract.py tests/test_v147_release_historical_docs_governance.py tests/test_v147_status_historical_release_noise.py` → `28 passed`
+- install-mode verification:
+  - `python3 -m pip install -e '.[dev]'`
+  - `/Users/apple/Library/Python/3.9/bin/beacon release check v1.0.0 --project /Users/apple/Developer/Personal/products/slow_uni_bmtop --json` → `status=pass`, `release_ready=true`
+  - `/Users/apple/Library/Python/3.9/bin/beacon status --project-root /Users/apple/Developer/Personal/products/slow_uni_bmtop --version v1.0.0 --feature miniapp-ui-visual-refresh --board` → `board.blocker=none`, `release.ready=True`
+
 ## [1.3.7] - 2026-04-23
 
 ### Added
