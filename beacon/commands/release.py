@@ -26,7 +26,12 @@ from beacon.utils.technical_review_contract import load_technical_review_contrac
 from beacon.utils.version_surface import version_surface_repair_commands
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
-from beacon.utils.versioning import project_runtime_feature_enabled, resolve_runtime_version, resolve_target_version
+from beacon.utils.versioning import (
+    project_release_feature_enabled,
+    project_runtime_feature_enabled,
+    resolve_runtime_version,
+    resolve_target_version,
+)
 from beacon.utils.workflow_memory import append_lifecycle_event
 
 app = typer.Typer(name="release", help="Release checklist")
@@ -785,25 +790,25 @@ def check(
         if isinstance(release_scorecard.get("feature_qa_scorecard"), dict)
         else {}
     )
-    enforce_change_documents = project_runtime_feature_enabled(
+    enforce_change_documents = project_release_feature_enabled(
         project_root,
         "v1.3.1",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
-    enforce_release_scorecard = project_runtime_feature_enabled(
+    enforce_release_scorecard = project_release_feature_enabled(
         project_root,
         "v1.3.6",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
-    enforce_prompt_boundary = project_runtime_feature_enabled(
+    enforce_prompt_boundary = project_release_feature_enabled(
         project_root,
         "v1.3.7",
         docs_version=resolved_version,
         runtime_version=resolved_runtime,
     )
-    enforce_acceptance_transaction = project_runtime_feature_enabled(
+    enforce_acceptance_transaction = project_release_feature_enabled(
         project_root,
         "v1.3.9",
         docs_version=resolved_version,

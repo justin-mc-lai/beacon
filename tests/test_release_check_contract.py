@@ -967,3 +967,41 @@ def test_release_scorecard_json_should_preserve_browser_blocker_codes(tmp_path: 
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["browser_release_reason_codes"] == ["browser_runner_learning_missing"]
+
+
+def test_release_check_should_not_enforce_new_release_gates_for_legacy_docs_line_even_with_new_runtime(
+    tmp_path: Path,
+    monkeypatch,
+):
+    version = "v1.0.0"
+    _seed_release_artifacts(tmp_path, version=version, coverage_version=version)
+    onboarding_dir = tmp_path / ".beacon" / "state"
+    onboarding_dir.mkdir(parents=True, exist_ok=True)
+    (onboarding_dir / "project-onboarding.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "project_mode": "takeover",
+                "docs_version": version,
+                "runtime_version": "v1.4.6",
+                "lifecycle_adoption_level": 2,
+                "qa_managed": False,
+                "gate_managed": False,
+                "runtime_capability_lines": ["v1.3.1", "v1.3.6", "v1.3.7", "v1.3.9", "v1.4.6"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(release_command, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.4.6")
+
+    result = _invoke(["release", "check", version, "--project", str(tmp_path), "--json"])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["release_ready"] is True
+    assert "release scorecard ready" not in payload["failed_checks"]
+    assert "semantic contract ready" not in payload["failed_checks"]
+    assert "implement prompt boundary verdict pass" not in payload["failed_checks"]

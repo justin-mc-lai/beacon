@@ -446,6 +446,26 @@ def project_runtime_feature_enabled(
     return False
 
 
+def project_release_feature_enabled(
+    project_root: Path,
+    capability_version: str | None,
+    *,
+    docs_version: str | None = None,
+    runtime_version: str | None = None,
+) -> bool:
+    del project_root, runtime_version
+    normalized_capability = release_line_key(capability_version) or normalize_version(capability_version)
+    if not normalized_capability:
+        return False
+    normalized_docs_full = normalize_version(docs_version)
+    normalized_docs = release_line_key(docs_version) or normalized_docs_full
+    return bool(
+        normalized_docs
+        and normalized_docs_full == normalized_docs
+        and _version_key(normalized_docs) >= _version_key(normalized_capability)
+    )
+
+
 def context_managed_versions(project_root: Path) -> dict[str, str]:
     versions: dict[str, str] = {}
     for name in ("AGENTS.md", "CLAUDE.md"):

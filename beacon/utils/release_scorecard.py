@@ -41,6 +41,7 @@ from beacon.utils.version_surface import (
     version_surface_repair_commands,
 )
 from beacon.utils.versioning import (
+    project_release_feature_enabled,
     project_runtime_feature_enabled,
     resolve_runtime_version,
     resolve_target_version,
@@ -383,7 +384,7 @@ def _delivery_type(revision_state: dict[str, Any], feature_change: dict[str, Any
 def _semantic_gate_required(project_root: Path, *, version: str, runtime_version: str, feature: str) -> bool:
     return (
         bool(str(feature or "").strip())
-        and project_runtime_feature_enabled(
+        and project_release_feature_enabled(
             project_root,
             "v1.3.6",
             docs_version=version,
@@ -615,7 +616,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     deep_release_supplement_pass = not bool(deep_release_supplement.get("blocked", False))
     test_contract_governance = (
         build_test_contract_gate_payload(project_root, version=resolved_version, feature=feature)
-        if feature and project_runtime_feature_enabled(
+        if feature and project_release_feature_enabled(
             project_root,
             "v1.4.2",
             docs_version=resolved_version,
@@ -656,7 +657,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         gate_status = "Blocked"
         blocked_count = max(blocked_count, 1)
         gate_reason_codes = sorted({*gate_reason_codes, "gate_consistency_report_mismatch"})
-    if bool(evidence_manifest.get("blocked")) and project_runtime_feature_enabled(
+    if bool(evidence_manifest.get("blocked")) and project_release_feature_enabled(
         project_root,
         "v1.3.8",
         docs_version=resolved_version,
@@ -750,7 +751,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and not bool(requirement_clarity_state)
         )
     )
-    if project_runtime_feature_enabled(
+    if project_release_feature_enabled(
         project_root,
         "v1.3.3",
         docs_version=resolved_version,
@@ -777,7 +778,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and str(requirement_completeness_gate.get("status") or "pass") in {"pass", "pass_with_downgrade"}
             and acceptance_kit_pass
     )
-    if project_runtime_feature_enabled(
+    if project_release_feature_enabled(
         project_root,
         "v1.3.9",
         docs_version=resolved_version,
@@ -799,7 +800,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         and bool(change_documents.get("version_match", False))
         and bool(change_documents.get("includes_current_feature", False))
         and (
-            not project_runtime_feature_enabled(
+            not project_release_feature_enabled(
                 project_root,
                 "v1.3.9",
                 docs_version=resolved_version,
@@ -926,7 +927,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and not bool(prompt_boundary.get("blocked", False))
         )
     )
-    if project_runtime_feature_enabled(
+    if project_release_feature_enabled(
         project_root,
         "v1.3.7",
         docs_version=resolved_version,
