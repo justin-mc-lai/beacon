@@ -14,7 +14,7 @@ from beacon.commands.qa import _default_feature_qa_ui_runner
 from beacon.utils.browser_task_compiler import build_browser_task, default_browser_runner_command
 from beacon.utils.story_scenarios import expand_story_scenarios
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
-from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency, _resolve_entry_command
+from beacon.utils.qa_feature import _build_story_scenario_map, _closure_outcome, _evidence_sufficiency, _resolve_entry_command
 from beacon.utils.qa9 import default_command_for_qa_type
 from beacon.utils.test_contract_governance import (
     CANONICAL_TEST_CONTRACT_LANES,
@@ -697,6 +697,54 @@ def test_story_scenarios_treats_legacy_ui_layer_as_browser_required() -> None:
     assert all(item["browser_required"] is True for item in browser_scenarios)
     assert any(item["scenario_family"] == "happy" for item in browser_scenarios)
     assert all('tournament_miniapp/playwright.config.ts' in item["explore_command"] for item in browser_scenarios)
+
+
+def test_build_story_scenario_map_regenerates_stale_legacy_ui_machine_map(tmp_path: Path) -> None:
+    docs_map = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.story-scenario-map.json"
+    docs_map.parent.mkdir(parents=True, exist_ok=True)
+    docs_map.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "version": VERSION,
+                "stories": [{"ac_id": "AC-001", "theme": "legacy-ui", "text": "Create match from miniapp", "scenario_ids": ["SC-001"], "scenario_families": ["primary"], "scenarios": []}],
+                "scenarios": [
+                    {
+                        "scenario_id": "SC-001",
+                        "source_tc_id": "TC-US001-UI",
+                        "tc_id": "TC-US001-UI-PRIMARY",
+                        "ac_id": "AC-001",
+                        "qa_type": "functional",
+                        "layer": "ui",
+                        "scenario_family": "primary",
+                        "browser_required": False,
+                        "explore_command": "",
+                        "replay_command": "",
+                        "command": 'npx playwright test',
+                    }
+                ],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    payload = _build_story_scenario_map(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        story_sequence=[{"ac_id": "AC-001", "theme": "legacy-ui", "text": "Create match from miniapp"}],
+        entries=[{"ac_id": "AC-001", "tc_id": "TC-US001-UI", "layer": "ui", "assertion": "Create flow succeeds"}],
+        ui_runner="playwright",
+    )
+
+    browser_scenarios = [item for item in payload["scenarios"] if item["source_tc_id"] == "TC-US001-UI"]
+    assert browser_scenarios
+    assert any(item["scenario_family"] == "happy" for item in browser_scenarios)
+    assert all(item["browser_required"] is True for item in browser_scenarios)
 
 
 def test_feature_plan_rewrites_legacy_browser_use_default_to_playwright() -> None:

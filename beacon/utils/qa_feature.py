@@ -22,7 +22,11 @@ from beacon.utils.qa_precision import (
 from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
-from beacon.utils.story_scenarios import expand_story_scenarios, scenario_map_path as docs_story_scenario_map_path
+from beacon.utils.story_scenarios import (
+    _entry_browser_required,
+    expand_story_scenarios,
+    scenario_map_path as docs_story_scenario_map_path,
+)
 from beacon.utils.story_state import feature_slug, load_story_state
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.versioning import normalize_version, resolve_target_version
@@ -260,13 +264,20 @@ def _build_story_scenario_map(
     if docs_path.exists():
         payload = _load_json(docs_path)
         if isinstance(payload.get("scenarios"), list):
-            return _augment_story_scenario_map(
+            augmented = _augment_story_scenario_map(
                 feature=feature,
                 payload=payload,
                 story_sequence=story_sequence,
                 entries=entries,
                 ui_runner=ui_runner,
             )
+            if not _scenario_map_needs_regeneration(
+                feature=feature,
+                payload=augmented,
+                story_sequence=story_sequence,
+                entries=entries,
+            ):
+                return augmented
     return expand_story_scenarios(
         feature=feature,
         version=version,
@@ -276,6 +287,54 @@ def _build_story_scenario_map(
         scenario_depth="standard",
         ui_runner=ui_runner,
     )
+
+
+def _scenario_map_needs_regeneration(
+    *,
+    feature: str,
+    payload: dict[str, Any],
+    story_sequence: list[dict[str, Any]],
+    entries: list[dict[str, Any]],
+) -> bool:
+    scenarios = [dict(item) for item in (payload.get("scenarios") or []) if isinstance(item, dict)]
+    if not scenarios:
+        return False
+    story_by_ac = {
+        str(item.get("ac_id") or "").strip(): item
+        for item in story_sequence
+        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
+    }
+    scenarios_by_source_tc_id: dict[str, list[dict[str, Any]]] = {}
+    for item in scenarios:
+        source_tc_id = str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+        if not source_tc_id:
+            continue
+        scenarios_by_source_tc_id.setdefault(source_tc_id, []).append(item)
+
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        source_tc_id = str(entry.get("source_tc_id") or entry.get("tc_id") or "").strip()
+        if not source_tc_id:
+            continue
+        ac_id = str(entry.get("ac_id") or "").strip()
+        story_row = story_by_ac.get(ac_id, {})
+        expected_browser = _entry_browser_required(
+            entry,
+            story_text=str(story_row.get("text") or ""),
+            feature=feature,
+            theme=str(story_row.get("theme") or ""),
+        )
+        if not expected_browser:
+            continue
+        related = scenarios_by_source_tc_id.get(source_tc_id, [])
+        if not related:
+            return True
+        if not any(bool(item.get("browser_required")) for item in related):
+            return True
+        if "happy" not in {str(item.get("scenario_family") or "").strip().lower() for item in related}:
+            return True
+    return False
 
 
 def _augment_story_scenario_map(
@@ -291,6 +350,11 @@ def _augment_story_scenario_map(
     stories = [dict(item) for item in (payload.get("stories") or []) if isinstance(item, dict)]
     normalized["scenarios"] = scenarios
     normalized["stories"] = stories
+    story_sequence_by_ac = {
+        str(item.get("ac_id") or "").strip(): item
+        for item in story_sequence
+        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
+    }
     entry_by_source_tc_id = {
         str(item.get("source_tc_id") or item.get("tc_id") or "").strip(): item
         for item in entries
@@ -302,9 +366,16 @@ def _augment_story_scenario_map(
         entry = entry_by_source_tc_id.get(source_tc_id)
         if not isinstance(entry, dict):
             continue
+        ac_id = str(entry.get("ac_id") or scenario.get("ac_id") or "").strip()
+        story_row = story_sequence_by_ac.get(ac_id, {})
         qa_type = str(entry.get("qa_type") or entry.get("layer") or scenario.get("qa_type") or "contract").strip()
         scenario_family = str(scenario.get("scenario_family") or "primary").strip().lower() or "primary"
-        browser_required = bool(scenario.get("browser_required") or entry.get("browser_required"))
+        browser_required = _entry_browser_required(
+            entry,
+            story_text=str(story_row.get("text") or ""),
+            feature=feature,
+            theme=str(story_row.get("theme") or ""),
+        )
         replay_required = bool(scenario.get("replay_required") or entry.get("replay_required"))
         scenario["qa_type"] = qa_type
         scenario["layer"] = str(entry.get("layer") or qa_type).strip() or qa_type
@@ -343,11 +414,6 @@ def _augment_story_scenario_map(
         str(item.get("ac_id") or "").strip(): item
         for item in stories
         if str(item.get("ac_id") or "").strip()
-    }
-    story_sequence_by_ac = {
-        str(item.get("ac_id") or "").strip(): item
-        for item in story_sequence
-        if isinstance(item, dict) and str(item.get("ac_id") or "").strip()
     }
 
     for entry in entries:
