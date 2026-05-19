@@ -208,6 +208,11 @@ def _latest_revision_feature(project_root: Path, *, version: str) -> str:
 
 
 def _resolve_scorecard_feature(project_root: Path, *, version: str, qa_status: dict[str, Any]) -> str:
+    if not qa_status and version:
+        return _latest_revision_feature(project_root, version=version) or _latest_implement_feature(
+            project_root,
+            version=version,
+        )
     revision_feature = _latest_revision_feature(project_root, version=version)
     if revision_feature:
         return revision_feature
@@ -252,6 +257,9 @@ def _latest_release_ready_feature(project_root: Path, *, version: str) -> str:
     for scorecard_path in qa_root.glob("*/scorecard.json"):
         payload = _load_json(scorecard_path)
         if not _scorecard_is_release_ready(payload):
+            continue
+        payload_version = str(payload.get("version") or "").strip()
+        if payload_version and payload_version != version:
             continue
         feature = str(payload.get("feature") or payload.get("feature_slug") or scorecard_path.parent.name).strip()
         if not feature:
@@ -726,6 +734,12 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature) if feature else {}
     acceptance_kit_summary = acceptance_kit.get("summary") if isinstance(acceptance_kit.get("summary"), dict) else {}
     acceptance_kit_pass = (not acceptance_kit) or bool(acceptance_kit_summary.get("all_layers_passed", False))
+    acceptance_kit_required = project_release_feature_enabled(
+        project_root,
+        "v1.3.3",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    )
     version_surface_governance = _version_surface_governance(project_root)
     version_surface_governance_pass = not bool(version_surface_governance.get("blocked", False))
     if runtime_feature_supported("v1.1.10", runtime_version=resolved_runtime):
@@ -740,7 +754,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             and (exhaustiveness_pass or feature_scorecard_authoritative)
             and gate_version_match
             and qa_version_match
-            and acceptance_kit_pass
+            and (not acceptance_kit_required or acceptance_kit_pass)
         )
     requirement_clarity_status = str(requirement_clarity_gate.get("status") or "not_required").strip().lower()
     requirement_clarity_ready = (

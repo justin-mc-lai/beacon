@@ -22,7 +22,11 @@ from beacon.utils.runtime_projection_store import list_projects, load_project_de
 from beacon.utils.runtime import newest_run_id, read_json
 from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
-from beacon.utils.versioning import describe_project_version_context, resolve_target_version
+from beacon.utils.versioning import (
+    describe_project_version_context,
+    project_release_feature_enabled,
+    resolve_target_version,
+)
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.workflow_memory import compute_memory_metrics, compute_workflow_progress, workflow_memory_transaction_contract
 from beacon.utils.help_support import build_help_payload, canonicalize_lifecycle_action, canonicalize_lifecycle_stage
@@ -34,6 +38,15 @@ app = typer.Typer(
     invoke_without_command=True,
     no_args_is_help=False,
 )
+
+
+def _release_surface_enabled(root: Path, version: str, capability_version: str) -> bool:
+    return project_release_feature_enabled(
+        root,
+        capability_version,
+        docs_version=version,
+        runtime_version=None,
+    )
 
 
 def _implementation_order_view(root: Path, *, version: str) -> dict[str, object]:
@@ -199,6 +212,7 @@ def _status_impl(
     requirement_clarity_state = load_requirement_clarity_state(root, feature=target_feature) if target_feature else {}
     technical_review_gate = build_technical_review_gate_payload(root, version=coverage_version, feature=target_feature, revision_id=str(help_payload.get("revision_id", "") or "")) if target_feature else {}
     technical_review_state = load_technical_review_state(root, feature=target_feature) if target_feature else {}
+    technical_review_release_enabled = bool(target_feature) and _release_surface_enabled(root, coverage_version, "v1.3.3")
     qa_status = load_qa_status(root)
     resume_contract = build_resume_contract(root, run_id=resolved_run_id or None)
     keep_discard_engine = load_keep_discard_engine(root)
@@ -219,11 +233,19 @@ def _status_impl(
         if acceptance_feature
         else {}
     )
+    semantic_release_enabled = bool(target_feature) and _release_surface_enabled(root, coverage_version, "v1.3.6")
+    if not technical_review_release_enabled and target_feature:
+        technical_review_gate = {
+            **(technical_review_gate if isinstance(technical_review_gate, dict) else {}),
+            "status": "not_required",
+            "blocked": False,
+            "reason_code": "",
+        }
     semantic_status = (
         evaluate_semantic_contract(root, version=coverage_version, feature=target_feature)
-        if target_feature
+        if semantic_release_enabled
         else {
-            "status": "not_applicable",
+            "status": "not_required" if target_feature else "not_applicable",
             "reason_code": "",
             "message": "",
             "artifacts": {},
@@ -457,7 +479,7 @@ def _status_impl(
             typer.echo(
                 f"- release.project_gate: {release_summary.get('qa_project_profile_gate_status')} ({release_summary.get('qa_project_profile_id') or '-'})"
             )
-        if release_summary.get("exhaustiveness_status"):
+        if release_summary.get("exhaustiveness_status") and _release_surface_enabled(root, coverage_version, "v1.3.3"):
             typer.echo(
                 f"- release.exhaustiveness: {release_summary.get('exhaustiveness_status')} ({release_summary.get('exhaustiveness_score')})"
             )
@@ -550,7 +572,7 @@ def _status_impl(
                 f"- re_freeze_transaction: refreeze={re_freeze_transaction.get('refreeze_required')} "
                 f"revalidate={re_freeze_transaction.get('revalidate_required')}"
             )
-        if target_feature:
+        if target_feature and str(payload.get("technical_review", {}).get("status") or "") not in {"", "not_required", "not_applicable"}:
             typer.echo(
                 f"- technical_review: {payload.get('technical_review', {}).get('status')} "
                 f"review_status={payload.get('technical_review', {}).get('review_status') or 'none'}"
@@ -572,7 +594,7 @@ def _status_impl(
                 f"- learning_governance: {payload.get('learning_governance', {}).get('status')} "
                 f"next={payload.get('learning_governance', {}).get('latest_next_route') or 'none'}"
             )
-        if target_feature:
+        if target_feature and str(payload.get("semantic", {}).get("status") or "") not in {"", "not_required", "not_applicable"}:
             typer.echo(
                 f"- semantic: {payload.get('semantic', {}).get('status')} "
                 f"bridge={((payload.get('semantic', {}).get('details', {}) or {}).get('default_design_bridge', {}) or {}).get('skill_id', 'none')}"
