@@ -681,6 +681,24 @@ def test_story_scenarios_default_browser_path_prefers_playwright() -> None:
     assert browser_scenario["deterministic_runner"] == "playwright"
 
 
+def test_story_scenarios_treats_legacy_ui_layer_as_browser_required() -> None:
+    payload = expand_story_scenarios(
+        feature=FEATURE,
+        version=VERSION,
+        story_sequence=[{"ac_id": "AC-001", "theme": "legacy-ui", "text": "Create match from miniapp"}],
+        entries=[{"ac_id": "AC-001", "tc_id": "TC-US001-UI", "layer": "ui", "assertion": "Create flow succeeds"}],
+        ui_runner="playwright",
+        expansion_profile="pua-web",
+        scenario_depth="standard",
+    )
+
+    browser_scenarios = [item for item in payload["scenarios"] if item["source_tc_id"] == "TC-US001-UI"]
+    assert browser_scenarios
+    assert all(item["browser_required"] is True for item in browser_scenarios)
+    assert any(item["scenario_family"] == "happy" for item in browser_scenarios)
+    assert all('tournament_miniapp/playwright.config.ts' in item["explore_command"] for item in browser_scenarios)
+
+
 def test_feature_plan_rewrites_legacy_browser_use_default_to_playwright() -> None:
     command = _resolve_entry_command(
         qa_type="functional",

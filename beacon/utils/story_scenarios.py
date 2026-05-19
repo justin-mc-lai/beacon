@@ -103,6 +103,9 @@ def _entry_browser_required(
 ) -> bool:
     if bool(entry.get("browser_required")):
         return True
+    raw_layer = str(entry.get("layer") or "").strip().lower()
+    if raw_layer == "ui":
+        return True
     qa_type = normalize_qa_type(str(entry.get("qa_type") or entry.get("layer") or "").strip())
     assertion = str(entry.get("assertion") or "").strip()
     title = str(entry.get("title") or "").strip()
