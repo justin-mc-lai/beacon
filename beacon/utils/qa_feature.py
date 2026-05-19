@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.commands.auto_test import LAYER_NAMES
-from beacon.utils.artifact_paths import qa_matrix_candidates
+from beacon.utils.artifact_paths import qa_feature_evidence_contract_candidates, qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
 from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
 from beacon.utils.qa_precision import (
@@ -153,6 +153,16 @@ def _load_source_matrix(project_root: Path, *, version: str, feature: str, story
     return qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0], synthetic
 
 
+def _load_feature_evidence_contract(project_root: Path, *, version: str, feature: str) -> tuple[Path | None, dict[str, Any]]:
+    slug = feature_slug(feature)
+    for candidate in qa_feature_evidence_contract_candidates(project_root, version, slug):
+        if candidate.exists():
+            payload = _load_json(candidate)
+            if isinstance(payload, dict):
+                return candidate, payload
+    return None, {}
+
+
 def _normalize_entry_command(value: str) -> str:
     command = str(value or "").strip()
     lowered = command.lower()
@@ -184,6 +194,58 @@ def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str) -> str
     if "beacon.adapters.browser_use_runner" in normalized and qa_type in {"functional", "compatibility"} and ui_runner != "browser-use":
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
     return normalized
+
+
+def _apply_feature_evidence_contract(
+    entries: list[dict[str, Any]],
+    *,
+    contract: dict[str, Any],
+    ui_runner: str,
+) -> list[dict[str, Any]]:
+    overrides_raw = contract.get("tc_overrides") if isinstance(contract.get("tc_overrides"), dict) else {}
+    if not overrides_raw:
+        return entries
+    patched: list[dict[str, Any]] = []
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        tc_id = str(entry.get("tc_id") or "").strip()
+        override = overrides_raw.get(tc_id)
+        if not isinstance(override, dict):
+            patched.append(entry)
+            continue
+        item = dict(entry)
+        if "layer" in override and str(override.get("layer") or "").strip():
+            item["layer"] = str(override.get("layer") or "").strip()
+        if "qa_type" in override and str(override.get("qa_type") or "").strip():
+            item["qa_type"] = _map_entry_qa_type(str(override.get("qa_type") or "").strip())
+        if "browser_required" in override:
+            item["browser_required"] = bool(override.get("browser_required"))
+        if "replay_required" in override:
+            item["replay_required"] = bool(override.get("replay_required"))
+        if "exploratory_runner" in override and str(override.get("exploratory_runner") or "").strip():
+            item["exploratory_runner"] = str(override.get("exploratory_runner") or "").strip()
+        if "deterministic_runner" in override and str(override.get("deterministic_runner") or "").strip():
+            item["deterministic_runner"] = str(override.get("deterministic_runner") or "").strip()
+        qa_type = str(item.get("qa_type") or item.get("layer") or "contract").strip()
+        for key in ("command", "explore_command", "replay_command"):
+            if key not in override:
+                continue
+            value = str(override.get(key) or "").strip()
+            if not value:
+                item[key] = ""
+                continue
+            item[key] = _resolve_entry_command(
+                qa_type="compatibility" if key == "replay_command" and qa_type == "compatibility" else qa_type,
+                command=value,
+                ui_runner=ui_runner,
+            )
+        if "assertion" in override and str(override.get("assertion") or "").strip():
+            item["assertion"] = str(override.get("assertion") or "").strip()
+        if "target_url" in override and str(override.get("target_url") or "").strip():
+            item["target_url"] = str(override.get("target_url") or "").strip()
+        patched.append(item)
+    return patched
 
 
 def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: str = "playwright") -> list[dict[str, Any]]:
@@ -674,10 +736,16 @@ def build_feature_qa_plan(
     story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist) or {}
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist)
     source_matrix_path, source_matrix = _load_source_matrix(project_root, version=resolved_version, feature=feature, story=story)
+    evidence_contract_path, evidence_contract = _load_feature_evidence_contract(project_root, version=resolved_version, feature=feature)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
     derived_entries = _derive_entries(
         feature,
         [item for item in source_entries if isinstance(item, dict)],
+        ui_runner=ui_runner,
+    )
+    derived_entries = _apply_feature_evidence_contract(
+        derived_entries,
+        contract=evidence_contract,
         ui_runner=ui_runner,
     )
     source_matrix_hash = _entries_fingerprint(derived_entries)
@@ -785,6 +853,7 @@ def build_feature_qa_plan(
         "docs_story_scenario_map_path": str(docs_story_scenario_map_path(project_root, version=resolved_version, feature=feature).relative_to(project_root)),
         "technical_archive_path": str(archive_path.relative_to(project_root)) if archive_path.exists() else str(archive_path.relative_to(project_root)),
         "feature_status_path": str(feature_qa_status_path(project_root, feature=feature).relative_to(project_root)),
+        "feature_evidence_contract_path": str(evidence_contract_path.relative_to(project_root)) if evidence_contract_path else "",
         "story_sequence": story_sequence,
         "story_scenarios": scenario_map,
         "required_scenario_families": list(scenario_map.get("families_required") or []),

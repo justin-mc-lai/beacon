@@ -1396,6 +1396,12 @@ def _derive_qa_round_stop_issue(tc_execution_map: dict[str, dict[str, Any]]) -> 
     return None
 
 
+def _is_feature_aware_qa_matrix(matrix_payload: dict[str, Any]) -> bool:
+    execution_mode = str(matrix_payload.get("execution_mode") or "").strip().lower()
+    source_matrix_path = str(matrix_payload.get("source_matrix_path") or "").strip()
+    return execution_mode in {"feature-aware", "story-exhaustive"} or bool(source_matrix_path)
+
+
 def _execute_qa9_tc_entries(
     *,
     project_root: Path,
@@ -1417,6 +1423,7 @@ def _execute_qa9_tc_entries(
     active_browser_session = _active_browser_session(project_root)
     resolved_version = str(matrix_payload.get("version") or "").strip() or "auto"
     feature_name = str(matrix_payload.get("feature") or matrix_payload.get("feature_slug") or "").strip()
+    prefer_explicit_layer_overrides = _is_feature_aware_qa_matrix(matrix_payload)
     round_stop_active = False
     round_stop_reasons: list[str] = []
     round_stop_anchor = ""
@@ -1479,12 +1486,20 @@ def _execute_qa9_tc_entries(
                 "stop_on_fail": bool(item.get("stop_on_fail")),
             }
             continue
-        command = str(
-            item.get("command")
-            or explicit_layer_overrides.get(qa_type)
-            or commands.get(qa_type)
-            or ""
-        ).strip()
+        if prefer_explicit_layer_overrides:
+            command = str(
+                explicit_layer_overrides.get(qa_type)
+                or item.get("command")
+                or commands.get(qa_type)
+                or ""
+            ).strip()
+        else:
+            command = str(
+                item.get("command")
+                or explicit_layer_overrides.get(qa_type)
+                or commands.get(qa_type)
+                or ""
+            ).strip()
         tc_dir = evidence_root / "qa9-tc" / tc_id
         tc_dir.mkdir(parents=True, exist_ok=True)
 
@@ -1579,7 +1594,11 @@ def _execute_qa9_tc_entries(
                     item.get("explore_command")
                     or compiled_runner
                     or command
-                    or explicit_layer_overrides.get(qa_type)
+                    or (
+                        explicit_layer_overrides.get(qa_type)
+                        if prefer_explicit_layer_overrides
+                        else ""
+                    )
                     or commands.get(qa_type)
                     or ""
                 ).strip()
@@ -1601,7 +1620,11 @@ def _execute_qa9_tc_entries(
                     item.get("replay_command")
                     or compiled_runner
                     or command
-                    or explicit_layer_overrides.get(qa_type)
+                    or (
+                        explicit_layer_overrides.get(qa_type)
+                        if prefer_explicit_layer_overrides
+                        else ""
+                    )
                     or commands.get(qa_type)
                     or ""
                 ).strip()

@@ -13,7 +13,7 @@ import typer
 from beacon.commands.auto_test import _update_evidence_manifest
 from beacon.commands.auto_test import _normalize_browser_runner_type
 from beacon.commands.team import TeamState, TerminalStatus, get_team_state_file, save_team_state
-from beacon.utils.artifact_paths import machine_trace_dir
+from beacon.utils.artifact_paths import machine_trace_dir, release_gate_report_file
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
@@ -78,6 +78,7 @@ from beacon.utils.team_surface import (
     load_implement_to_qa_handoff,
     qa_team_contract,
 )
+from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.v110_baseline import generate_spec_fingerprint
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.writeback import record_acceptance_writeback, record_verification_writeback
@@ -105,6 +106,50 @@ def _with_qa_surface(
         blocked=blocked_value,
         dual_read_required=True,
     )
+
+
+def _write_release_gate_projection(
+    project_root: Path,
+    *,
+    version: str,
+    run_id: str,
+    qa_status: dict[str, Any],
+    feature_scorecard: dict[str, Any],
+) -> str:
+    status = "Pass" if str(qa_status.get("status") or "").strip().lower() == "passed" else "Blocked"
+    stop_reasons = [
+        str(item).strip()
+        for item in (feature_scorecard.get("stop_reasons") if isinstance(feature_scorecard.get("stop_reasons"), list) else [])
+        if str(item).strip()
+    ]
+    issues = [
+        {
+            "reason_code": reason,
+            "message": reason,
+            "blocked": True,
+        }
+        for reason in stop_reasons
+    ]
+    report_path = release_gate_report_file(project_root)
+    write_json(
+        report_path,
+        {
+            "stage": "release",
+            "mode": "strict",
+            "status": status,
+            "issues": issues,
+            "blocked_count": len(issues),
+            "run_id": run_id,
+            "version": version,
+            "updated_at": now_iso(),
+        },
+    )
+    refresh_evidence_manifest(
+        project_root,
+        refs=[str(report_path.relative_to(project_root))],
+        version=version,
+    )
+    return str(report_path.relative_to(project_root))
 
 KNOWN_SCOPES = {
     "all",
@@ -1326,6 +1371,13 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             precision_status["status"] = "blocked"
             precision_status["evidence_done"] = False
             precision_status["reason_codes"] = sorted({*list(precision_status.get("reason_codes") or []), *list(design_truth_verdict.get("reason_codes") or [])})
+        release_gate_ref = _write_release_gate_projection(
+            project_root,
+            version=version,
+            run_id=current_run_id or str(plan.get("implementation_run_id") or "feature-qa"),
+            qa_status=precision_status,
+            feature_scorecard=feature_scorecard,
+        )
         precision_status["verified_item_ids"] = verified_ids
         precision_status["failed_item_ids"] = failed_ids
         payload.update(
@@ -1341,6 +1393,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 "failed_item_ids": failed_ids,
                 "exhaustiveness": exhaustiveness,
                 "canonical_matrix_path": str(canonical_matrix.relative_to(project_root)) if canonical_matrix is not None else str(payload.get("canonical_matrix_path") or ""),
+                "release_gate_report_path": release_gate_ref,
             }
         )
         _with_delivery_contract(
@@ -1353,6 +1406,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
                 str(handoff.get("summary_ref") or ""),
                 str(handoff.get("technical_archive_ref") or ""),
+                release_gate_ref,
             ],
             execution_surface="qa-team" if team_mode else "qa",
         )
@@ -1366,6 +1420,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 str(feature_qa_matrix_path(project_root, feature=feature).relative_to(project_root)),
                 str(handoff.get("summary_ref") or ""),
                 str(handoff.get("technical_archive_ref") or ""),
+                release_gate_ref,
             ],
             execution_surface="qa-team" if team_mode else "qa",
         )
@@ -1396,6 +1451,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             value = str(payload.get(key) or "").strip()
             if value:
                 manifest_refs.append(value)
+        manifest_refs.append(release_gate_ref)
         _update_evidence_manifest(
             project_root,
             manifest_refs,
@@ -1644,6 +1700,13 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         qa_status["status"] = "blocked"
         qa_status["evidence_done"] = False
         qa_status["release_ready"] = False
+    release_gate_ref = _write_release_gate_projection(
+        project_root,
+        version=version,
+        run_id=str(qa_status.get("run_id") or plan.get("implementation_run_id") or "feature-qa"),
+        qa_status=qa_status,
+        feature_scorecard=feature_scorecard,
+    )
     _with_delivery_contract(
         qa_status,
         requirement_binding={
@@ -1656,6 +1719,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             str(qa_status.get("canonical_matrix_path") or ""),
             str(ac_closure_path.relative_to(project_root)),
             str(feature_scorecard_path.relative_to(project_root)),
+            release_gate_ref,
             str(handoff.get("summary_ref") or ""),
             str(handoff.get("technical_archive_ref") or ""),
         ],
@@ -1710,6 +1774,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
             str(coverage_summary_path.relative_to(project_root)),
             str(ac_closure_path.relative_to(project_root)),
             str(feature_scorecard_path.relative_to(project_root)),
+            release_gate_ref,
         ]
     )
     acceptance_writeback: dict[str, Any] | None = None

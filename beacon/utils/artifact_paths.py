@@ -154,3 +154,20 @@ def qa_matrix_output(project_root: Path, version: str, feature_slug: str, kind: 
     if uses_machine_surface(version):
         return machine_qa_file(project_root, version, filename)
     return qa_docs_file(project_root, version, filename)
+
+
+def qa_feature_evidence_contract_candidates(project_root: Path, version: str, feature_slug: str) -> list[Path]:
+    filename = f"{feature_slug}.evidence-contract.json"
+    if not uses_machine_surface(version):
+        return [qa_docs_file(project_root, version, filename)]
+    return [
+        machine_qa_file(project_root, version, filename),
+        qa_docs_file(project_root, version, filename),
+    ]
+
+
+def qa_feature_evidence_contract_output(project_root: Path, version: str, feature_slug: str) -> Path:
+    filename = f"{feature_slug}.evidence-contract.json"
+    if uses_machine_surface(version):
+        return machine_qa_file(project_root, version, filename)
+    return qa_docs_file(project_root, version, filename)

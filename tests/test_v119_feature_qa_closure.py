@@ -8,7 +8,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.commands.qa import _browser_blocker_lines
-from beacon.utils.qa_feature import writeback_feature_matrix_evidence
+from beacon.utils.qa_feature import build_feature_qa_plan, materialize_feature_qa_matrix, writeback_feature_matrix_evidence
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
 
@@ -159,6 +159,84 @@ def test_v119_qa_evolve_should_compute_feature_delta_plan(tmp_path: Path):
     assert payload["implementation_done"] is True
     assert payload["targeted_tc_ids"] == ["TC-001", "TC-002"]
     assert "no_prior_feature_qa" in payload["reason_codes"]
+
+
+def test_v119_feature_plan_should_apply_feature_evidence_contract_overrides(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    contract_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.evidence-contract.json"
+    contract_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "version": VERSION,
+                "tc_overrides": {
+                    "TC-001": {
+                        "layer": "ui",
+                        "qa_type": "functional",
+                        "browser_required": True,
+                        "command": 'cd "tournament_miniapp" && pnpm exec playwright test e2e/tests/p0-critical/closure-real.spec.ts --project=chromium',
+                        "explore_command": 'cd "tournament_miniapp" && pnpm exec playwright test e2e/tests/p0-critical/closure-real.spec.ts --project=chromium',
+                        "replay_command": 'cd "tournament_miniapp" && pnpm exec playwright test e2e/tests/p0-critical/closure-real.spec.ts --project=chromium',
+                    }
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    payload = build_feature_qa_plan(tmp_path, version=VERSION, feature=FEATURE, persist=False)
+
+    assert payload["feature_evidence_contract_path"].endswith(f"{SLUG}.evidence-contract.json")
+    entry = next(item for item in payload["all_entries"] if item["tc_id"] == "TC-001")
+    assert entry["qa_type"] == "functional"
+    assert entry["layer"] == "ui"
+    assert entry["browser_required"] is True
+    assert "closure-real.spec.ts" in entry["command"]
+    assert "pnpm exec playwright test" in entry["explore_command"]
+
+
+def test_v119_materialized_feature_qa_matrix_should_preserve_feature_evidence_contract_commands(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    contract_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.evidence-contract.json"
+    contract_path.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "feature": FEATURE,
+                "feature_slug": SLUG,
+                "version": VERSION,
+                "tc_overrides": {
+                    "TC-001": {
+                        "layer": "ui",
+                        "qa_type": "functional",
+                        "browser_required": True,
+                        "command": 'cd "tournament_miniapp" && pnpm exec playwright test e2e/tests/p0-critical/closure-real.spec.ts --project=chromium',
+                        "explore_command": 'cd "tournament_miniapp" && pnpm exec playwright test e2e/tests/p0-critical/closure-real.spec.ts --project=chromium',
+                    }
+                },
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    plan = build_feature_qa_plan(tmp_path, version=VERSION, feature=FEATURE, persist=False)
+    matrix_path = materialize_feature_qa_matrix(tmp_path, plan=plan)
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+
+    entry = next(item for item in matrix["entries"] if item["tc_id"] == "TC-001")
+    assert entry["qa_type"] == "functional"
+    assert entry["layer"] == "ui"
+    assert entry["browser_required"] is True
+    assert "closure-real.spec.ts" in entry["command"]
+    assert "closure-real.spec.ts" in entry["explore_command"]
 
 
 def test_v119_qa_run_help_should_expose_feature_aware_options():
