@@ -11,7 +11,7 @@ from typing import Any
 from beacon.commands.auto_test import LAYER_NAMES
 from beacon.utils.artifact_paths import qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
-from beacon.utils.qa9 import QA9_TYPES, normalize_qa_type
+from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
 from beacon.utils.qa_precision import (
     DEFAULT_AUTO_ACCEPT_THRESHOLD,
     DEFAULT_REVIEW_THRESHOLD,
@@ -173,7 +173,16 @@ def _derived_evidence_path(*, feature: str, tc_id: str) -> str:
     return f".beacon/evidence/qa-feature/{feature_slug(feature)}/{tc_id.lower()}/__RUN_ID__.json"
 
 
-def _derive_entries(feature: str, entries: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str) -> str:
+    normalized = _normalize_entry_command(command)
+    if not normalized:
+        return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+    if "beacon.adapters.browser_use_runner" in normalized and qa_type in {"functional", "compatibility"} and ui_runner != "browser-use":
+        return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
+    return normalized
+
+
+def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: str = "playwright") -> list[dict[str, Any]]:
     derived: list[dict[str, Any]] = []
     for index, item in enumerate(entries, start=1):
         if not isinstance(item, dict):
@@ -190,7 +199,11 @@ def _derive_entries(feature: str, entries: list[dict[str, Any]]) -> list[dict[st
                 "layer": raw_layer or qa_type,
                 "qa_type": qa_type,
                 "automation": str(item.get("automation") or "auto"),
-                "command": _normalize_entry_command(str(item.get("command") or "")),
+                "command": _resolve_entry_command(
+                    qa_type=qa_type,
+                    command=str(item.get("command") or ""),
+                    ui_runner=ui_runner,
+                ),
                 "evidence_path": str(item.get("evidence_path") or _derived_evidence_path(feature=feature, tc_id=tc_id)),
             }
         )
@@ -241,6 +254,7 @@ def _build_story_scenario_map(
     feature: str,
     story_sequence: list[dict[str, Any]],
     entries: list[dict[str, Any]],
+    ui_runner: str = "playwright",
 ) -> dict[str, Any]:
     docs_path = docs_story_scenario_map_path(project_root, version=version, feature=feature)
     if docs_path.exists():
@@ -251,6 +265,7 @@ def _build_story_scenario_map(
                 payload=payload,
                 story_sequence=story_sequence,
                 entries=entries,
+                ui_runner=ui_runner,
             )
     return expand_story_scenarios(
         feature=feature,
@@ -259,7 +274,7 @@ def _build_story_scenario_map(
         entries=entries,
         expansion_profile="pua-web",
         scenario_depth="standard",
-        ui_runner="browser-use",
+        ui_runner=ui_runner,
     )
 
 
@@ -269,12 +284,49 @@ def _augment_story_scenario_map(
     payload: dict[str, Any],
     story_sequence: list[dict[str, Any]],
     entries: list[dict[str, Any]],
+    ui_runner: str = "playwright",
 ) -> dict[str, Any]:
     normalized = dict(payload)
     scenarios = [dict(item) for item in (payload.get("scenarios") or []) if isinstance(item, dict)]
     stories = [dict(item) for item in (payload.get("stories") or []) if isinstance(item, dict)]
     normalized["scenarios"] = scenarios
     normalized["stories"] = stories
+    entry_by_source_tc_id = {
+        str(item.get("source_tc_id") or item.get("tc_id") or "").strip(): item
+        for item in entries
+        if isinstance(item, dict) and str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
+    }
+
+    for scenario in scenarios:
+        source_tc_id = str(scenario.get("source_tc_id") or scenario.get("tc_id") or "").strip()
+        entry = entry_by_source_tc_id.get(source_tc_id)
+        if not isinstance(entry, dict):
+            continue
+        qa_type = str(entry.get("qa_type") or entry.get("layer") or scenario.get("qa_type") or "contract").strip()
+        scenario_family = str(scenario.get("scenario_family") or "primary").strip().lower() or "primary"
+        browser_required = bool(scenario.get("browser_required") or entry.get("browser_required"))
+        replay_required = bool(scenario.get("replay_required") or entry.get("replay_required"))
+        scenario["qa_type"] = qa_type
+        scenario["layer"] = str(entry.get("layer") or qa_type).strip() or qa_type
+        scenario["browser_required"] = browser_required
+        scenario["replay_required"] = replay_required
+        scenario["command"] = _resolve_entry_command(
+            qa_type=qa_type,
+            command=str(entry.get("command") or scenario.get("command") or ""),
+            ui_runner=ui_runner,
+        )
+        if browser_required:
+            exploratory_runner = str(scenario.get("exploratory_runner") or entry.get("exploratory_runner") or "").strip().lower()
+            if exploratory_runner in {"", "browser-use"} and ui_runner != "browser-use":
+                exploratory_runner = ui_runner
+            scenario["exploratory_runner"] = exploratory_runner or ui_runner
+            scenario["deterministic_runner"] = "playwright"
+            replay_qa_type = "compatibility" if scenario_family == "compatibility" else qa_type
+            scenario["replay_command"] = default_command_for_qa_type(replay_qa_type, ui_runner="playwright")
+        else:
+            scenario["exploratory_runner"] = str(scenario.get("exploratory_runner") or entry.get("exploratory_runner") or "native").strip() or "native"
+            scenario["deterministic_runner"] = str(scenario.get("deterministic_runner") or entry.get("deterministic_runner") or "native").strip() or "native"
+            scenario["replay_command"] = str(scenario.get("replay_command") or entry.get("replay_command") or "").strip()
 
     existing_source_tc_ids = {
         str(item.get("source_tc_id") or item.get("tc_id") or "").strip()
@@ -539,6 +591,7 @@ def build_feature_qa_plan(
     version: str = "auto",
     feature: str,
     execution_mode: str = "feature-aware",
+    ui_runner: str = "playwright",
     persist: bool = True,
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
@@ -546,7 +599,11 @@ def build_feature_qa_plan(
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist)
     source_matrix_path, source_matrix = _load_source_matrix(project_root, version=resolved_version, feature=feature, story=story)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
-    derived_entries = _derive_entries(feature, [item for item in source_entries if isinstance(item, dict)])
+    derived_entries = _derive_entries(
+        feature,
+        [item for item in source_entries if isinstance(item, dict)],
+        ui_runner=ui_runner,
+    )
     source_matrix_hash = _entries_fingerprint(derived_entries)
     marker = _implementation_marker(project_root, feature=feature)
     archive_path, archive_payload = _technical_archive(project_root, version=resolved_version, feature=feature)
@@ -574,6 +631,7 @@ def build_feature_qa_plan(
         feature=feature,
         story_sequence=story_sequence,
         entries=derived_entries,
+        ui_runner=ui_runner,
     )
     exhaustive_source_entries = derived_entries if implementation_done and str(execution_mode or "").strip().lower() == "story-exhaustive" else (targeted_source_entries if implementation_done else [])
     targeted_entries, targeted_scenario_ids, targeted_scenario_families = _expand_targeted_entries_for_mode(
@@ -852,8 +910,16 @@ def _evidence_sufficiency(item: dict[str, Any]) -> str:
     return "strong" if has_refs else "weak"
 
 
+def _is_runner_reason_code(reason_code: str) -> bool:
+    normalized_reason = str(reason_code or "").strip().lower()
+    if not normalized_reason:
+        return False
+    return any(token in normalized_reason for token in ("runner", "browser-use", "agent-browser", "junit", "assertion_count_zero"))
+
+
 def _closure_outcome(item: dict[str, Any], *, evidence_sufficiency: str) -> str:
     status = str(item.get("status") or "pending").strip().lower()
+    reason_code = str(item.get("reason_code") or "").strip()
     browser_required = bool(item.get("browser_required"))
     replay_required = bool(item.get("replay_required"))
     has_replay = bool(str(item.get("replay_ref") or "").strip())
@@ -865,6 +931,8 @@ def _closure_outcome(item: dict[str, Any], *, evidence_sufficiency: str) -> str:
         return "needs_more_evidence"
     if browser_required and not has_browser_pack:
         return "needs_more_evidence"
+    if _is_runner_reason_code(reason_code):
+        return "needs_more_evidence" if browser_required else "review_required"
     if status == "passed":
         return "accepted"
     if status == "failed":
@@ -884,7 +952,7 @@ def _root_cause_type(*, status: str, closure_outcome: str, reason_code: str = ""
         return "environment_gap"
     if any(token in normalized_reason for token in ("flake", "rerun")):
         return "flake"
-    if any(token in normalized_reason for token in ("runner", "browser-use", "agent-browser", "junit", "assertion_count_zero")):
+    if _is_runner_reason_code(normalized_reason):
         return "runner_gap"
     if closure_outcome in {"needs_more_evidence", "needs_replay"}:
         return "evidence_gap"

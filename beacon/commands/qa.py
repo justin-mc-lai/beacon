@@ -193,14 +193,16 @@ def _default_feature_qa_ui_runner(project_root: Path) -> str:
     current = load_current_qa_session(project_root)
     session_id = str(current.get("session_id") or "").strip()
     if not session_id:
-        return "browser-use"
+        return "playwright"
     session = load_qa_session(project_root, session_id)
     runner_type = _normalize_browser_runner_type(str(session.get("runner_type") or current.get("runner_type") or ""))
     if runner_type in {"web-access", "agent-browser", "attached-chrome"}:
         return "agent-browser"
     if runner_type in {"playwright", "playwright-cli", "playwright-cdp"}:
         return "playwright"
-    return "browser-use"
+    if runner_type == "browser-use":
+        return "browser-use"
+    return "playwright"
 
 
 def _browser_blocker_lines(feature_scorecard: dict[str, Any]) -> list[str]:
@@ -1138,7 +1140,14 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
                 typer.echo(f"Beacon QA blocked: {blocked_payload['reason_codes'][0]}", err=True)
             return 2, blocked_payload
 
-    plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
+    feature_ui_runner = _default_feature_qa_ui_runner(project_root)
+    plan = build_feature_qa_plan(
+        project_root,
+        version=version,
+        feature=feature,
+        execution_mode=mode,
+        ui_runner=feature_ui_runner,
+    )
     team_contract = qa_team_contract(project_root, version=version, feature=feature)
     handoff = load_implement_to_qa_handoff(
         project_root,
@@ -1417,7 +1426,7 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "--qa-types",
         ",".join(plan.get("targeted_layers") or ["contract"]),
         "--ui-runner",
-        _default_feature_qa_ui_runner(project_root),
+        feature_ui_runner,
         "--require-fresh-evidence",
     ]
     auto_args.extend(
@@ -1978,11 +1987,13 @@ def evolve(
 ):
     """Compute the delta-aware rerun plan for a feature without executing QA."""
     project_root = Path(project).resolve() if project else Path.cwd()
+    feature_ui_runner = _default_feature_qa_ui_runner(project_root)
     plan = build_feature_qa_plan(
         project_root,
         version=version,
         feature=feature,
         execution_mode=mode,
+        ui_runner=feature_ui_runner,
         persist=write_matrix,
     )
     if write_matrix and plan.get("targeted_entries"):
@@ -2015,7 +2026,13 @@ def team_plan(
 ):
     """Build a QA plan with explicit qa-team execution guidance."""
     project_root = Path(project).resolve() if project else Path.cwd()
-    plan = build_feature_qa_plan(project_root, version=version, feature=feature, execution_mode=mode)
+    plan = build_feature_qa_plan(
+        project_root,
+        version=version,
+        feature=feature,
+        execution_mode=mode,
+        ui_runner=_default_feature_qa_ui_runner(project_root),
+    )
     plan["team_surface"] = "qa-team"
     plan["team_mode"] = True
     plan["team_contract"] = qa_team_contract(project_root, version=version, feature=feature)

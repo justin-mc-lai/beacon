@@ -197,7 +197,11 @@ def expand_story_scenarios(
 ) -> dict[str, Any]:
     by_ac: dict[str, list[dict[str, Any]]] = {}
     normalized_ui_runner = str(ui_runner or "").strip().lower()
-    default_exploratory_runner = normalized_ui_runner if normalized_ui_runner in {"agent-browser", "browser-use"} else "browser-use"
+    default_exploratory_runner = (
+        normalized_ui_runner
+        if normalized_ui_runner in {"agent-browser", "browser-use", "playwright", "playwright-cli", "playwright-cdp"}
+        else "playwright"
+    )
     for entry in entries:
         if not isinstance(entry, dict):
             continue

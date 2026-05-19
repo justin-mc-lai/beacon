@@ -7,11 +7,13 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils import qa_feature
 from beacon.commands.auto_test import _browser_evidence_authenticity, resolve_browser_runtime_admission
 from beacon.commands.auto_test import _write_browser_runner_learning_note
 from beacon.commands.qa import _default_feature_qa_ui_runner
+from beacon.utils.story_scenarios import expand_story_scenarios
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
-from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency
+from beacon.utils.qa_feature import _closure_outcome, _evidence_sufficiency, _resolve_entry_command
 from beacon.utils.test_contract_governance import (
     CANONICAL_TEST_CONTRACT_LANES,
     QA_FIRST_PRINCIPLES_ORDER,
@@ -652,6 +654,72 @@ def test_feature_qa_default_ui_runner_prefers_agent_browser_for_attached_session
     assert _default_feature_qa_ui_runner(tmp_path) == "agent-browser"
 
 
+def test_feature_qa_default_ui_runner_prefers_playwright_without_session(tmp_path: Path) -> None:
+    assert _default_feature_qa_ui_runner(tmp_path) == "playwright"
+
+
+def test_story_scenarios_default_browser_path_prefers_playwright() -> None:
+    payload = expand_story_scenarios(
+        feature=FEATURE,
+        version=VERSION,
+        story_sequence=[{"ac_id": "AC-001", "theme": "browser", "text": "Open dashboard in browser"}],
+        entries=[{"ac_id": "AC-001", "tc_id": "TC-US001-001", "qa_type": "functional", "assertion": "Dashboard renders", "browser_required": True}],
+        ui_runner="playwright",
+        expansion_profile="pua-web",
+        scenario_depth="standard",
+    )
+
+    browser_scenario = next(item for item in payload["scenarios"] if item["source_tc_id"] == "TC-US001-001")
+    assert browser_scenario["browser_required"] is True
+    assert browser_scenario["command"] == "npx playwright test"
+    assert browser_scenario["exploratory_runner"] == "playwright"
+    assert browser_scenario["deterministic_runner"] == "playwright"
+
+
+def test_feature_plan_rewrites_legacy_browser_use_default_to_playwright() -> None:
+    command = _resolve_entry_command(
+        qa_type="functional",
+        command='python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd "python3 -m pytest -q -k functional --junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""',
+        ui_runner="playwright",
+    )
+
+    assert command == "npx playwright test"
+
+
+def test_story_scenario_augment_rewrites_legacy_browser_use_default() -> None:
+    payload = {
+        "scenarios": [
+            {
+                "scenario_id": "SC-001",
+                "source_tc_id": "TC-US001-001",
+                "tc_id": "TC-US001-001-PRIMARY",
+                "qa_type": "functional",
+                "layer": "functional",
+                "scenario_family": "happy",
+                "browser_required": True,
+                "replay_required": True,
+                "exploratory_runner": "browser-use",
+                "deterministic_runner": "playwright",
+                "command": 'python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd "python3 -m pytest -q -k functional --junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""',
+                "replay_command": "",
+            }
+        ],
+        "stories": [{"ac_id": "AC-001", "scenario_ids": ["SC-001"], "scenario_families": ["happy"], "scenarios": []}],
+    }
+    augmented = qa_feature._augment_story_scenario_map(
+        feature=FEATURE,
+        payload=payload,
+        story_sequence=[{"ac_id": "AC-001", "theme": "browser", "text": "Open dashboard in browser"}],
+        entries=[{"ac_id": "AC-001", "tc_id": "TC-US001-001", "qa_type": "functional", "browser_required": True}],
+        ui_runner="playwright",
+    )
+
+    scenario = augmented["scenarios"][0]
+    assert scenario["command"] == "npx playwright test"
+    assert scenario["exploratory_runner"] == "playwright"
+    assert scenario["replay_command"] == "npx playwright test"
+
+
 def test_browser_runner_learning_reason_code_is_frozen() -> None:
     assert "browser_runner_learning_missing" in TEST_CONTRACT_REASON_CODES
 
@@ -694,4 +762,23 @@ def test_placeholder_browser_evidence_forces_needs_more_evidence() -> None:
     closure = _closure_outcome(item, evidence_sufficiency=evidence)
 
     assert evidence == "weak"
+    assert closure == "needs_more_evidence"
+
+
+def test_runner_gap_does_not_reopen_implementation() -> None:
+    item = {
+        "status": "failed",
+        "browser_required": True,
+        "replay_required": False,
+        "browser_evidence_pack_ref": ".beacon/evidence/browser-pack.json",
+        "browser_evidence_authenticity_status": "authentic",
+        "replay_ref": "",
+        "evidence_ref": [".beacon/evidence/browser-pack.json"],
+        "reason_code": "browser-use-unavailable",
+    }
+
+    evidence = _evidence_sufficiency(item)
+    closure = _closure_outcome(item, evidence_sufficiency=evidence)
+
+    assert evidence == "strong"
     assert closure == "needs_more_evidence"
