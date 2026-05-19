@@ -321,11 +321,17 @@ def _augment_story_scenario_map(
                 exploratory_runner = ui_runner
             scenario["exploratory_runner"] = exploratory_runner or ui_runner
             scenario["deterministic_runner"] = "playwright"
+            scenario["explore_command"] = _resolve_entry_command(
+                qa_type=qa_type,
+                command=str(entry.get("explore_command") or scenario.get("explore_command") or scenario.get("command") or ""),
+                ui_runner=ui_runner,
+            )
             replay_qa_type = "compatibility" if scenario_family == "compatibility" else qa_type
             scenario["replay_command"] = default_command_for_qa_type(replay_qa_type, ui_runner="playwright")
         else:
             scenario["exploratory_runner"] = str(scenario.get("exploratory_runner") or entry.get("exploratory_runner") or "native").strip() or "native"
             scenario["deterministic_runner"] = str(scenario.get("deterministic_runner") or entry.get("deterministic_runner") or "native").strip() or "native"
+            scenario["explore_command"] = str(scenario.get("explore_command") or entry.get("explore_command") or "").strip()
             scenario["replay_command"] = str(scenario.get("replay_command") or entry.get("replay_command") or "").strip()
 
     existing_source_tc_ids = {
@@ -366,7 +372,11 @@ def _augment_story_scenario_map(
             "replay_required": bool(entry.get("replay_required")),
             "exploratory_runner": str(entry.get("exploratory_runner") or "native").strip() or "native",
             "deterministic_runner": str(entry.get("deterministic_runner") or "native").strip() or "native",
-            "explore_command": str(entry.get("explore_command") or "").strip(),
+            "explore_command": _resolve_entry_command(
+                qa_type=qa_type,
+                command=str(entry.get("explore_command") or entry.get("command") or "").strip(),
+                ui_runner=ui_runner,
+            ) if bool(entry.get("browser_required")) else str(entry.get("explore_command") or "").strip(),
             "replay_command": str(entry.get("replay_command") or "").strip(),
             "coverage_axes": [axis for axis in ("primary", qa_type, "non-browser") if axis],
             "depends_on": list(entry.get("depends_on") or []),

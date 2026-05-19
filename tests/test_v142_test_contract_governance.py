@@ -674,6 +674,8 @@ def test_story_scenarios_default_browser_path_prefers_playwright() -> None:
     browser_scenario = next(item for item in payload["scenarios"] if item["source_tc_id"] == "TC-US001-001")
     assert browser_scenario["browser_required"] is True
     assert 'npx playwright test' in browser_scenario["command"]
+    assert 'npx playwright test' in browser_scenario["explore_command"]
+    assert 'tournament_miniapp/playwright.config.ts' in browser_scenario["explore_command"]
     assert 'browser_use_runner' not in browser_scenario["command"]
     assert browser_scenario["exploratory_runner"] == "playwright"
     assert browser_scenario["deterministic_runner"] == "playwright"
@@ -720,9 +722,45 @@ def test_story_scenario_augment_rewrites_legacy_browser_use_default() -> None:
 
     scenario = augmented["scenarios"][0]
     assert 'npx playwright test' in scenario["command"]
+    assert 'npx playwright test' in scenario["explore_command"]
+    assert 'tournament_miniapp/playwright.config.ts' in scenario["explore_command"]
     assert 'browser_use_runner' not in scenario["command"]
     assert scenario["exploratory_runner"] == "playwright"
     assert 'npx playwright test' in scenario["replay_command"]
+
+
+def test_story_scenario_augment_backfills_empty_browser_explore_command() -> None:
+    payload = {
+        "scenarios": [
+            {
+                "scenario_id": "SC-001",
+                "source_tc_id": "TC-US001-001",
+                "tc_id": "TC-US001-001-HAPPY",
+                "qa_type": "functional",
+                "layer": "functional",
+                "scenario_family": "happy",
+                "browser_required": True,
+                "replay_required": True,
+                "exploratory_runner": "playwright",
+                "deterministic_runner": "playwright",
+                "command": "",
+                "explore_command": "",
+                "replay_command": "",
+            }
+        ],
+        "stories": [{"ac_id": "AC-001", "scenario_ids": ["SC-001"], "scenario_families": ["happy"], "scenarios": []}],
+    }
+    augmented = qa_feature._augment_story_scenario_map(
+        feature=FEATURE,
+        payload=payload,
+        story_sequence=[{"ac_id": "AC-001", "theme": "browser", "text": "Open dashboard in browser"}],
+        entries=[{"ac_id": "AC-001", "tc_id": "TC-US001-001", "qa_type": "functional", "browser_required": True}],
+        ui_runner="playwright",
+    )
+
+    scenario = augmented["scenarios"][0]
+    assert 'npx playwright test' in scenario["explore_command"]
+    assert 'tournament_miniapp/playwright.config.ts' in scenario["explore_command"]
 
 
 def test_browser_runner_learning_reason_code_is_frozen() -> None:

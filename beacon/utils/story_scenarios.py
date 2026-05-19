@@ -256,7 +256,7 @@ def expand_story_scenarios(
                     "replay_required": browser_required and family in {"happy", "negative", "compatibility"},
                     "exploratory_runner": default_exploratory_runner if browser_required else "native",
                     "deterministic_runner": "playwright" if browser_required else "native",
-                    "explore_command": "" if browser_required else explore_command,
+                    "explore_command": explore_command if browser_required else "",
                     "replay_command": replay_command,
                     "coverage_axes": [family, scenario_qa_type] + (["browser"] if browser_required else ["non-browser"]),
                     "depends_on": [depends_on_seed] if depends_on_seed and family != "happy" else [],
