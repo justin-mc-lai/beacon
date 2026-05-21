@@ -1,0 +1,858 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "version": "v1.4.8",
+  "generated_at": "2026-05-21T07:55:16.665400+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Beacon defines a required execution host surface contract for execution-bound features, including `execution/index.md`, `execution/architecture-blueprint.md`, delivery baseline, git workflow, and technical review contract.",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-MATGATE48-001",
+          "tc_id": "TC-MATGATE48-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "general",
+      "text": "Beacon blocks `implement` when architecture blueprint projection is missing, drifted, or not bound to the canonical execution host.",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-MATGATE48-002",
+          "tc_id": "TC-MATGATE48-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "general",
+      "text": "Beacon treats branch / service / worktree facts as explicit frozen facts, not as acceptable silent defaults.",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-MATGATE48-003",
+          "tc_id": "TC-MATGATE48-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "general",
+      "text": "Beacon marks `source=version_default`, `source=project_config_seed`, blank `approved_by`, blank `reviewed_at`, or missing managed projection as weak fact sources that cannot unlock implementation by themselves.",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-MATGATE48-004",
+          "tc_id": "TC-MATGATE48-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "general",
+      "text": "Beacon provides a per-subskill material effect registry covering host, truth, execution, gate, support, toolkit, compatibility, and project-local skills.",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-MATGATE48-005",
+          "tc_id": "TC-MATGATE48-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "general",
+      "text": "Beacon requires every human-facing subskill invocation to resolve to `writeback_completed`, `writeback_required`, `obligation_opened`, `truth_reopen_required`, `execution_host_update_required`, `evidence_update_required`, or `read_only_route_only`.",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-MATGATE48-006",
+          "tc_id": "TC-MATGATE48-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "general",
+      "text": "Beacon converts accepted support findings into explicit material updates, release blockers, or `artifact_update_obligations`.",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-MATGATE48-007",
+          "tc_id": "TC-MATGATE48-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "general",
+      "text": "Beacon keeps support surfaces advisory unless their findings are adopted through `change`, truth surfaces, execution host updates, evidence updates, or obligations.",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-MATGATE48-008",
+          "tc_id": "TC-MATGATE48-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "general",
+      "text": "Beacon makes `beacon-toolkit-branch-governance` write delivery service, branch, and worktree updates through canonical git workflow, technical review contract, execution host, service slice, and metadata surfaces.",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-MATGATE48-009",
+          "tc_id": "TC-MATGATE48-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "general",
+      "text": "Beacon blocks QA and release while blocking artifact update obligations remain open.",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-MATGATE48-010",
+          "tc_id": "TC-MATGATE48-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "general",
+      "text": "Beacon emits diagnostics that name the missing material, default-seeded field, unadopted support finding, open obligation, and recommended repair surface.",
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-MATGATE48-011",
+          "tc_id": "TC-MATGATE48-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "general",
+      "text": "Beacon preserves the main lifecycle boundary and does not turn support or toolkit skills into truth sources, gate sources, or new lifecycle stages.",
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-MATGATE48-012",
+          "tc_id": "TC-MATGATE48-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "regression",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-MATGATE48-001",
+      "tc_id": "TC-MATGATE48-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Beacon declares required execution host surfaces for execution-bound features",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"execution_host_required_surfaces_are_declared\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-MATGATE48-002",
+      "tc_id": "TC-MATGATE48-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: `implement` blocks when architecture blueprint projection is missing or drifted",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"implement_blocks_on_missing_or_drifted_architecture_blueprint_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-MATGATE48-003",
+      "tc_id": "TC-MATGATE48-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: branch / service / worktree facts cannot rely only on default seeds",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"delivery_facts_must_be_explicit_not_default_seeded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-MATGATE48-004",
+      "tc_id": "TC-MATGATE48-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: weak fact sources such as `version_default` or `project_config_seed` do not unlock implementatio",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"weak_fact_sources_do_not_unlock_implement\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-MATGATE48-005",
+      "tc_id": "TC-MATGATE48-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: material effect registry covers host, truth, execution, gate, support, toolkit, compatibility, a",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_material_effect_registry_covers_all_human_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-MATGATE48-006",
+      "tc_id": "TC-MATGATE48-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: every human-facing subskill invocation resolves to one allowed material effect",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_invocation_must_resolve_to_material_effect\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-MATGATE48-007",
+      "tc_id": "TC-MATGATE48-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "workflow",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: accepted support finding becomes material update, release blocker, or artifact update obligation",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"accepted_support_finding_opens_material_update_or_obligation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-MATGATE48-008",
+      "tc_id": "TC-MATGATE48-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "exception",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: support surfaces do not become truth sources unless routed through governed adoption",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"support_surfaces_remain_advisory_until_adopted\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-MATGATE48-009",
+      "tc_id": "TC-MATGATE48-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: branch governance writes service / branch / worktree updates through canonical surfaces",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"branch_governance_updates_canonical_execution_and_metadata_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-MATGATE48-010",
+      "tc_id": "TC-MATGATE48-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: QA and release block while blocking artifact update obligations remain open",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"qa_and_release_block_on_open_artifact_update_obligations\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-MATGATE48-011",
+      "tc_id": "TC-MATGATE48-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "diagnostics",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: gate diagnostics name missing material, default-seeded field, unadopted finding, open obligation",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"gate_diagnostics_name_missing_material_and_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-MATGATE48-012",
+      "tc_id": "TC-MATGATE48-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: support and toolkit skills remain outside truth/gate authority and do not create new lifecycle s",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"support_and_toolkit_do_not_become_new_lifecycle_stages\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-012-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "requirement_deepening_story_families": [
+    "primary_actor_goal",
+    "secondary_or_opposing_role",
+    "state_transition",
+    "exception_recovery",
+    "permission_or_constraint",
+    "governance_extension"
+  ],
+  "requirement_completeness_ref": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.completeness.json",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract\" --project <project-root> --version v1.4.8 --json",
+  "supplement_task": {
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "writeback_target": "docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract\" --project <project-root> --version v1.4.8 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "docs/beacon/v1.4.8/.machine/requirement",
+      "envelope": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.re-freeze-transaction.json"
+    },
+    "refreeze_required": false,
+    "revalidate_required": false,
+    "closure_status": "complete",
+    "official_refreeze_transaction_ref": "docs/beacon/v1.4.8/.machine/change/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.refreeze-transaction.json",
+    "decision_count": 15,
+    "generated_at": "2026-05-21T08:13:24+00:00"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "执行材料契约层",
+        "定义 `execution/index.md`、`architecture-blueprint.md`、`service-slice-map.md`、`git-workflow-*`、`technical-review-contract-*` 等执行 host 材料的最低存在与字段要求。",
+        "子 skill 材料闭环层",
+        "定义每个人类面 skill 的 `material_effect`、目标材料面、只读边界、写回义务和 fail-closed 条件。",
+        "Gate 消费层",
+        "`implement`、`qa`、`release`、`doctor verify-context --strict`、`material audit` 必须消费这些材料状态并在缺失时阻断。",
+        "support surface 不直接写 canonical truth",
+        "toolkit surface 一旦改变项目事实，必须写入 canonical metadata / execution transaction path",
+        "execution-bound feature 不允许从默认 branch / service / worktree 假设进入 implement",
+        "side dossier 不能替代 canonical execution host"
+      ],
+      "decision_priority": [
+        "Frozen truth 高于 support finding。",
+        "显式冻结事实高于 default seed。",
+        "Canonical execution host 高于 side dossier。",
+        "Open obligation 高于局部 green signal。",
+        "Requirement clarity gate 高于 implement convenience。",
+        "QA evidence chain 高于单层通过。",
+        "Release gate 高于 status board。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Frozen truth 高于 support finding。",
+          "显式冻结事实高于 default seed。",
+          "Canonical execution host 高于 side dossier。",
+          "Open obligation 高于局部 green signal。",
+          "Requirement clarity gate 高于 implement convenience。",
+          "QA evidence chain 高于单层通过。",
+          "Release gate 高于 status board。"
+        ],
+        "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md"
+      }
+    ]
+  }
+}

@@ -1,29 +1,27 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-14T15:00:53.459548",
+  "timestamp": "2026-05-21T19:51:52.561351",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.4.6",
-  "run_id": "run-20260514T150053458785",
-  "spec_fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79",
+  "version": "v1.4.8",
+  "run_id": "run-20260521T195152560432",
+  "spec_fingerprint_hash": "85ee2613baffeaac7fcac4880a718154ecaa0a6816fd9402330e3d45ce383ebc",
   "status": "passed",
   "selected_layers": [
-    "contract",
-    "integration",
-    "regression"
+    "contract"
   ],
   "execution": {
-    "run_id": "run-20260514T150053458785",
-    "version": "v1.4.6",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260514T150053458785",
+    "run_id": "run-20260521T195152560432",
+    "version": "v1.4.8",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260521T195152560432",
     "spec_fingerprint": {
-      "fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79",
-      "version": "v1.4.6",
-      "generated_at": "2026-05-14T07:01:04.186888+00:00"
+      "fingerprint_hash": "85ee2613baffeaac7fcac4880a718154ecaa0a6816fd9402330e3d45ce383ebc",
+      "version": "v1.4.8",
+      "generated_at": "2026-05-21T11:51:59.088864+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"qa_feedback_ledger_contract_is_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"markdown_documents_are_canonical_freeze_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -35,92 +33,38 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "479dfcc3c360758f7bc89e7b2841067dcb394121b81c3ce2797e97a15611b4e4",
-        "started_at": "2026-05-14T15:00:53.460017",
-        "ended_at": "2026-05-14T15:00:54.111619",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/contract/junit.xml",
+        "execution_fingerprint": "581e4fc74b910f68c14433038e0dbfc26e1ccc0307fc856c7d797ef940070478",
+        "started_at": "2026-05-21T19:51:52.561682",
+        "ended_at": "2026-05-21T19:51:53.192697",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/contract/result.json"
-        ]
-      },
-      {
-        "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_summarize_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "d6271fcce8164e470817b8e470bdc06297e6b75c307582c41d293fb42519d5e5",
-        "started_at": "2026-05-14T15:00:54.112594",
-        "ended_at": "2026-05-14T15:00:54.865298",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/integration/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/integration/result.json"
-        ]
-      },
-      {
-        "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"queue_update_is_explicit_and_governed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "f32b35cfad93d28366129b797eb5ee57fd6318bbaa948ae68e8b4482ae8617b6",
-        "started_at": "2026-05-14T15:00:54.866053",
-        "ended_at": "2026-05-14T15:00:55.362457",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/regression/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-      "evidence_generated": 16,
-      "entry_count": 16,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+      "evidence_generated": 9,
+      "entry_count": 9,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260514T150053458785/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260514T150053458785/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260514T150053458785/summary.json",
+      ".beacon/evidence/auto-test/run-20260521T195152560432/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260521T195152560432/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260521T195152560432/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 3,
+      "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -129,12 +73,10 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "contract",
-      "integration",
-      "regression"
+      "contract"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-    "ui_runner": "browser-use",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+    "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
       "require_assertion_count": true
@@ -146,23 +88,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 16,
-      "passed": 16,
+      "cases_total": 9,
+      "passed": 9,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 16,
-      "auto_cases_executed": 16,
+      "auto_cases_total": 9,
+      "auto_cases_executed": 9,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-AUTO46-001",
+        "tc_id": "TC-MDFIRST-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-AUTO46-001",
+        "source_tc_id": "TC-MDFIRST-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -172,20 +114,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"qa_feedback_ledger_contract_is_frozen\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"markdown_documents_are_canonical_freeze_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/result.json"
         ],
-        "execution_fingerprint": "5f5078fdeb1cf2f01c39eeadec95fecce22522e6a9c4a6523e01951504326fff",
-        "started_at": "2026-05-14T15:00:55.366544",
-        "ended_at": "2026-05-14T15:00:55.885329",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
+        "execution_fingerprint": "df9398576be7f43671e63bb4c02c2c01fd20257cd2af59e138c75a7d6da5054c",
+        "started_at": "2026-05-21T19:51:53.196151",
+        "ended_at": "2026-05-21T19:51:53.666948",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -198,32 +140,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-002",
+        "tc_id": "TC-MDFIRST-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-AUTO46-002",
+        "source_tc_id": "TC-MDFIRST-002",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_summarize_qa\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"fulltext_machine_mirrors_are_not_truth_sources\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/result.json"
         ],
-        "execution_fingerprint": "29b29b29f4a0ed12bcbe062d2a6b19d5bf4f5032c7a185045f347d78ef066ae7",
-        "started_at": "2026-05-14T15:00:55.886385",
-        "ended_at": "2026-05-14T15:00:56.482868",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
+        "execution_fingerprint": "1077289e0df92cacccae9427a679df5d8b958103e35ce61a3a8e4d5145f5ff7d",
+        "started_at": "2026-05-21T19:51:53.667744",
+        "ended_at": "2026-05-21T19:51:54.541114",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -236,32 +178,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-003",
+        "tc_id": "TC-MDFIRST-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-AUTO46-003",
+        "source_tc_id": "TC-MDFIRST-003",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_cli_exposes_update_queue\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"freeze_stage_json_contains_only_minimal_state\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/result.json"
         ],
-        "execution_fingerprint": "2b8cfe4a104651469f2132c1318a548c152e0ad0bd0b91f2a89a1ad0b37a4dac",
-        "started_at": "2026-05-14T15:00:56.484114",
-        "ended_at": "2026-05-14T15:00:57.060817",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
+        "execution_fingerprint": "a57f056e96c6b0b97f27971d2189ad50b60d66aba8c4223d89c6a1b8b8a36be0",
+        "started_at": "2026-05-21T19:51:54.541878",
+        "ended_at": "2026-05-21T19:51:55.012195",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -274,32 +216,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-004",
+        "tc_id": "TC-MDFIRST-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-AUTO46-004",
+        "source_tc_id": "TC-MDFIRST-004",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"queue_update_is_explicit_and_governed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"runtime_evidence_json_is_preserved\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/result.json"
         ],
-        "execution_fingerprint": "6deeefe399d03a5fa73d273b614ec7a22e53715cdfcb85249f87d407ac8fdea5",
-        "started_at": "2026-05-14T15:00:57.061717",
-        "ended_at": "2026-05-14T15:00:57.544574",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
+        "execution_fingerprint": "5efa828e4613a61d64fa73ca48412cad0003c5663c4996b7dc83102d03c1ce2f",
+        "started_at": "2026-05-21T19:51:55.012985",
+        "ended_at": "2026-05-21T19:51:55.484587",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -312,9 +254,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-005",
+        "tc_id": "TC-MDFIRST-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-AUTO46-005",
+        "source_tc_id": "TC-MDFIRST-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -324,20 +266,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"nightly_qa_wrapper_refreshes_feedback_loop\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"gate_parses_ac_and_coverage_from_markdown_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/result.json"
         ],
-        "execution_fingerprint": "cb5c19efb211228d5fb8fe61c29bdaaf2d898e5761ef94868a2bf373d18dc42d",
-        "started_at": "2026-05-14T15:00:57.545432",
-        "ended_at": "2026-05-14T15:00:58.014008",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
+        "execution_fingerprint": "8f3794c3e60a4b8aa1af6570ab5289ffc6dbbc2beafd3541b1b4c2956e017577",
+        "started_at": "2026-05-21T19:51:55.485477",
+        "ended_at": "2026-05-21T19:51:55.983736",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -350,9 +292,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-006",
+        "tc_id": "TC-MDFIRST-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-AUTO46-006",
+        "source_tc_id": "TC-MDFIRST-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -362,20 +304,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"gated_implement_wrapper_refreshes_queue\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"markdown_parser_failure_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/result.json"
         ],
-        "execution_fingerprint": "a8e7e2b823cdb76b8f9b69dad1d2710859f034be386158ae96ccc03b18a86da3",
-        "started_at": "2026-05-14T15:00:58.014946",
-        "ended_at": "2026-05-14T15:00:58.496322",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
+        "execution_fingerprint": "3b3d3540a1000c8075ebc704ddab87194cbb11d2d56732d716435eda68d9ba39",
+        "started_at": "2026-05-21T19:51:55.984471",
+        "ended_at": "2026-05-21T19:51:56.451983",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -388,9 +330,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-007",
+        "tc_id": "TC-MDFIRST-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-AUTO46-007",
+        "source_tc_id": "TC-MDFIRST-007",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -400,20 +342,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_capabilities_report_feedback_loop_surface\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"baseline_hash_mismatch_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/result.json"
         ],
-        "execution_fingerprint": "fdac5089cf1897fd86df6e47d4d2f89db55cd681a206b865d0c862d45ee26c8c",
-        "started_at": "2026-05-14T15:00:58.497358",
-        "ended_at": "2026-05-14T15:00:59.019756",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
+        "execution_fingerprint": "05411b84cce9b5db95703588e6d088531880bef5ea7f89fdb3850e38e9a2ef85",
+        "started_at": "2026-05-21T19:51:56.452760",
+        "ended_at": "2026-05-21T19:51:56.923925",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -426,123 +368,47 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AUTO46-009",
+        "tc_id": "TC-MDFIRST-008",
+        "ac_id": "AC-008",
+        "source_tc_id": "TC-MDFIRST-008",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"ambiguous_refreeze_status_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-008/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/result.json"
+        ],
+        "execution_fingerprint": "65d9e6e917393c8442d650e9a8ed0dad520d287bc3b969701bd769d7114fbb76",
+        "started_at": "2026-05-21T19:51:56.925031",
+        "ended_at": "2026-05-21T19:51:57.406872",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-MDFIRST-009",
         "ac_id": "AC-009",
-        "source_tc_id": "TC-AUTO46-009",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_cli_should_support_json_output\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-009/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
-        ],
-        "execution_fingerprint": "9cabd4db97ccdb8860355dfae9cef3e52af25ea7f506e446bfc954021616941a",
-        "started_at": "2026-05-14T15:00:59.020682",
-        "ended_at": "2026-05-14T15:00:59.594083",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-010",
-        "ac_id": "AC-010",
-        "source_tc_id": "TC-AUTO46-010",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_scaffold_should_generate_project_local_assets\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-010/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
-        ],
-        "execution_fingerprint": "fb90790fe12f5afd02675bea77ff31cf3c9568ba788b96116620effe163fc605",
-        "started_at": "2026-05-14T15:00:59.595009",
-        "ended_at": "2026-05-14T15:01:00.059278",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-011",
-        "ac_id": "AC-011",
-        "source_tc_id": "TC-AUTO46-011",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_should_not_overwrite_existing_files_without_force or automation_init_should_refresh_existing_files_with_force\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-011/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
-        ],
-        "execution_fingerprint": "e5bc5de2134a7289f454a6429e96ae5a41e348a7e15c860597705ef522a8e575",
-        "started_at": "2026-05-14T15:01:00.060137",
-        "ended_at": "2026-05-14T15:01:00.521704",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-012",
-        "ac_id": "AC-012",
-        "source_tc_id": "TC-AUTO46-012",
+        "source_tc_id": "TC-MDFIRST-009",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -552,210 +418,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_executors.py -k \"executor_capability_matrix_should_reflect_tiered_support\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-012/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"diagnostics_include_path_line_hash_reason_and_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260521T195152560432",
+        "evidence_path": ".beacon/evidence/qa-feature/markdown-first-freeze-truth-and-minimal-machine-state-contract/tc-mdfirst-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/result.json"
         ],
-        "execution_fingerprint": "92006393cad7f214207b32df60ebff6092644474250d3fae39624a8b2e73716e",
-        "started_at": "2026-05-14T15:01:00.522623",
-        "ended_at": "2026-05-14T15:01:00.962106",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-013",
-        "ac_id": "AC-013",
-        "source_tc_id": "TC-AUTO46-013",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_scaffold.py -k \"automation_init_should_support_non_codex_executor_profiles\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-013/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
-        ],
-        "execution_fingerprint": "56d93cd576263b7985176a46ac5dc3e2973319fe1ca879d2c858af070d360012",
-        "started_at": "2026-05-14T15:01:00.963477",
-        "ended_at": "2026-05-14T15:01:01.406776",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-015",
-        "ac_id": "AC-015",
-        "source_tc_id": "TC-AUTO46-015",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_capabilities.py -k \"automation_build_summary_cli_should_emit_shared_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-015/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
-        ],
-        "execution_fingerprint": "2db9b0e1562236acbc615ed51b41d83532f953874e8ad4e3cc683a6811f13cc9",
-        "started_at": "2026-05-14T15:01:01.407596",
-        "ended_at": "2026-05-14T15:01:01.937396",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-016",
-        "ac_id": "AC-016",
-        "source_tc_id": "TC-AUTO46-016",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_automation_capabilities.py -k \"automation_build_summary_cli_should_emit_shared_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-016/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
-        ],
-        "execution_fingerprint": "a5808e69568c4a0a6fc1edf4ac365df0e20a61a65f75421c8672d6d9532a4fc3",
-        "started_at": "2026-05-14T15:01:01.938586",
-        "ended_at": "2026-05-14T15:01:02.462301",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-017",
-        "ac_id": "AC-017",
-        "source_tc_id": "TC-AUTO46-017",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 2,
-        "command": "python3 -m pytest -q tests/test_automation_scaffold.py tests/test_v146_automation_jobs_feedback_loop.py -k \"automation_init_scaffold_should_generate_project_local_assets or nightly_qa_wrapper_refreshes_feedback_loop\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-017/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
-        ],
-        "execution_fingerprint": "1c1360d22064739ac2c7a603f4b6be123cdf66aa9d72f2f6bba7ce1f8ccf8dc8",
-        "started_at": "2026-05-14T15:01:02.463239",
-        "ended_at": "2026-05-14T15:01:02.946883",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-AUTO46-018",
-        "ac_id": "AC-018",
-        "source_tc_id": "TC-AUTO46-018",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v140_branch_governance_surface.py -k \"alongside_existing_toolkits\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260514T150053458785",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/tc-auto46-018/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
-          ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
-        ],
-        "execution_fingerprint": "9c11542b36605244c214aad32f00eb9980168fb27a9c9054a6b6b915a2c565ad",
-        "started_at": "2026-05-14T15:01:02.947727",
-        "ended_at": "2026-05-14T15:01:03.388368",
-        "junit_path": ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
+        "execution_fingerprint": "867559262983aa4e89e59d170724fbdc529e74ce2df01a8a61cbf7e4258de0cc",
+        "started_at": "2026-05-21T19:51:57.408067",
+        "ended_at": "2026-05-21T19:51:57.878514",
+        "junit_path": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -771,10 +447,10 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-14T07:01:03.940913+00:00",
+  "updated_at": "2026-05-21T11:51:58.560795+00:00",
   "summary": {
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "version": "v1.4.6",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
     "status": "passed",
     "release_ready": true,
     "continue_decision": "ready_for_release",
@@ -784,19 +460,19 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.8 --feature \"markdown-first-freeze-truth-and-minimal-machine-state-contract\""
   },
-  "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-  "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+  "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+  "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "Beacon freezes a project-local QA feedback ledger contract",
-      "text": "Beacon freezes a project-local QA feedback ledger for automation/jobs.",
+      "theme": "general",
+      "text": "Beacon treats Markdown PRD, user-story, test-case, research, execution, and release documents as the canonical freeze truth.",
       "tc_ids": [
-        "TC-AUTO46-001"
+        "TC-MDFIRST-001"
       ],
       "qa_types": [
         "contract"
@@ -804,43 +480,43 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "Beacon exposes `beacon automation summarize-qa` as public CLI",
-      "text": "Beacon exposes `beacon automation summarize-qa` as a public automation surface.",
+      "theme": "general",
+      "text": "Beacon does not treat frozen-stage fulltext machine mirrors as canonical truth.",
       "tc_ids": [
-        "TC-AUTO46-002"
+        "TC-MDFIRST-002"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-003",
-      "theme": "Beacon exposes `beacon automation update-queue` as public CLI",
-      "text": "Beacon exposes `beacon automation update-queue` as a public automation surface.",
+      "theme": "general",
+      "text": "Beacon stores only minimal freeze state in requirement-stage JSON.",
       "tc_ids": [
-        "TC-AUTO46-003"
+        "TC-MDFIRST-003"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-004",
-      "theme": "queue update uses explicit pass/repair rules and does not create opportunistic work",
-      "text": "queue update remains explicit and governed: passed QA candidates leave the QA queue, repair-needed candidates may enter the implement queue, and wrappers do not invent opportunistic work.",
+      "theme": "general",
+      "text": "Beacon keeps implement, QA, release runtime evidence JSON.",
       "tc_ids": [
-        "TC-AUTO46-004"
+        "TC-MDFIRST-004"
       ],
       "qa_types": [
-        "regression"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-005",
-      "theme": "nightly QA wrapper refreshes ledger and queue after QA execution",
-      "text": "the nightly QA wrapper refreshes feedback ledger and queue after QA execution.",
+      "theme": "general",
+      "text": "Beacon parses AC and test-case coverage from Markdown truth before consulting cache.",
       "tc_ids": [
-        "TC-AUTO46-005"
+        "TC-MDFIRST-005"
       ],
       "qa_types": [
         "contract"
@@ -848,10 +524,10 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "gated implement wrapper refreshes queue after implement execution",
-      "text": "the gated implement wrapper refreshes queue state after implement execution.",
+      "theme": "general",
+      "text": "Beacon blocks when Markdown parser fails.",
       "tc_ids": [
-        "TC-AUTO46-006"
+        "TC-MDFIRST-006"
       ],
       "qa_types": [
         "contract"
@@ -859,10 +535,10 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "automation capability reporting exposes feedback loop surfaces",
-      "text": "`beacon automation capabilities` reports the feedback loop entrypoints and ledger path.",
+      "theme": "general",
+      "text": "Beacon blocks when Markdown baseline hash differs from frozen state.",
       "tc_ids": [
-        "TC-AUTO46-007"
+        "TC-MDFIRST-007"
       ],
       "qa_types": [
         "contract"
@@ -870,137 +546,47 @@
     },
     {
       "ac_id": "AC-008",
-      "theme": "the automation/jobs supplement preserves Beacon core lifecycle boundaries",
-      "text": "the supplement remains host-scheduled capability governance and does not create a new Beacon lifecycle stage or absorb scheduler runtime into Beacon core.",
+      "theme": "general",
+      "text": "Beacon blocks when refreeze transaction status is missing or ambiguous.",
       "tc_ids": [
-        "TC-AUTO46-008"
+        "TC-MDFIRST-008"
       ],
       "qa_types": [
-        "exception"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-009",
-      "theme": "Beacon exposes `beacon automation init --project-root .` as a public scaffold bootstrap surface",
-      "text": "Beacon exposes `beacon automation init --project-root .` as a public scaffold bootstrap surface.",
+      "theme": "general",
+      "text": "Beacon emits diagnostics with path, line or section, hash, reason_code, and repair route.",
       "tc_ids": [
-        "TC-AUTO46-009"
+        "TC-MDFIRST-009"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-010",
-      "theme": "scaffold output is project-local and rewrites paths/labels for the target repo",
-      "text": "scaffold output is project-local and rewrites paths/labels for the target repo.",
+      "theme": "general",
+      "text": "Beacon provides a migration boundary so historical fulltext JSON remains readable but new v1.4.8+ freeze artifacts stop duplicating full Markdown.",
       "tc_ids": [
-        "TC-AUTO46-010"
+        "TC-MDFIRST-010"
       ],
       "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "theme": "scaffold generation is conservative by default and refreshes only with explicit force",
-      "text": "scaffold generation is conservative by default and refreshes only with explicit force.",
-      "tc_ids": [
-        "TC-AUTO46-011"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "theme": "Beacon freezes a tiered executor capability matrix instead of claiming uniform native automation across all agents",
-      "text": "Beacon freezes a tiered executor capability matrix instead of claiming uniform native automation across all agents.",
-      "tc_ids": [
-        "TC-AUTO46-012"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
-      "theme": "scaffold generation supports executor profiles and reflects them in queue/spec outputs",
-      "text": "scaffold generation supports executor profiles and reflects them in queue/spec outputs.",
-      "tc_ids": [
-        "TC-AUTO46-013"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-014",
-      "theme": "unsupported executors are not represented as current Beacon-native implement/qa runtimes",
-      "text": "unsupported executors are not represented as current Beacon-native implement/qa runtimes.",
-      "tc_ids": [
-        "TC-AUTO46-014"
-      ],
-      "qa_types": [
-        "exception"
-      ]
-    },
-    {
-      "ac_id": "AC-015",
-      "theme": "Beacon freezes a shared automation summary schema that multiple QA layers and notification adapters can consume",
-      "text": "Beacon freezes a shared automation summary schema that multiple QA layers and notification adapters can consume.",
-      "tc_ids": [
-        "TC-AUTO46-015"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-016",
-      "theme": "Beacon exposes `beacon automation build-summary` as a public automation surface",
-      "text": "Beacon exposes `beacon automation build-summary` as a public automation surface.",
-      "tc_ids": [
-        "TC-AUTO46-016"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
-      "ac_id": "AC-017",
-      "theme": "scaffolded wrappers and notification helpers consume the same summary schema instead of project-specific summary formats",
-      "text": "scaffolded wrappers and notification helpers consume the same summary schema instead of project-specific summary formats.",
-      "tc_ids": [
-        "TC-AUTO46-017"
-      ],
-      "qa_types": [
-        "regression"
-      ]
-    },
-    {
-      "ac_id": "AC-018",
-      "theme": "Beacon exposes a human-facing `beacon-toolkit-automation` support surface for project-local scheduled automation bootstrap and maintenance",
-      "text": "Beacon exposes a human-facing `beacon-toolkit-automation` support surface for project-local scheduled automation bootstrap and maintenance.",
-      "tc_ids": [
-        "TC-AUTO46-018"
-      ],
-      "qa_types": [
-        "contract"
+        "compatibility"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
+      "spec_fingerprint_changed",
       "implementation_run_changed",
-      "source_matrix_changed",
-      "artifact_updates_pending"
+      "source_matrix_changed"
     ],
     "targeted_layers": [
-      "contract",
-      "integration",
-      "regression"
+      "contract"
     ],
     "targeted_ac_ids": [
       "AC-001",
@@ -1010,33 +596,19 @@
       "AC-005",
       "AC-006",
       "AC-007",
-      "AC-009",
-      "AC-010",
-      "AC-011",
-      "AC-012",
-      "AC-013",
-      "AC-015",
-      "AC-016",
-      "AC-017",
-      "AC-018"
+      "AC-008",
+      "AC-009"
     ],
     "targeted_tc_ids": [
-      "TC-AUTO46-001",
-      "TC-AUTO46-002",
-      "TC-AUTO46-003",
-      "TC-AUTO46-004",
-      "TC-AUTO46-005",
-      "TC-AUTO46-006",
-      "TC-AUTO46-007",
-      "TC-AUTO46-009",
-      "TC-AUTO46-010",
-      "TC-AUTO46-011",
-      "TC-AUTO46-012",
-      "TC-AUTO46-013",
-      "TC-AUTO46-015",
-      "TC-AUTO46-016",
-      "TC-AUTO46-017",
-      "TC-AUTO46-018"
+      "TC-MDFIRST-001",
+      "TC-MDFIRST-002",
+      "TC-MDFIRST-003",
+      "TC-MDFIRST-004",
+      "TC-MDFIRST-005",
+      "TC-MDFIRST-006",
+      "TC-MDFIRST-007",
+      "TC-MDFIRST-008",
+      "TC-MDFIRST-009"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -1046,23 +618,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 16
+    "verification_item_count": 9
   },
-  "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-  "blocking_artifact_updates": [
-    {
-      "artifact": "review_quality",
-      "required": true,
-      "reason": "run quality review after native implementation",
-      "status": "open",
-      "notes": ""
-    }
-  ],
+  "feature_matrix_path": ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+  "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-AUTO46-001",
-      "source_tc_id": "TC-AUTO46-001",
+      "tc_id": "TC-MDFIRST-001",
+      "source_tc_id": "TC-MDFIRST-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -1075,86 +639,86 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-AUTO46-002",
-      "source_tc_id": "TC-AUTO46-002",
+      "tc_id": "TC-MDFIRST-002",
+      "source_tc_id": "TC-MDFIRST-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-AUTO46-003",
-      "source_tc_id": "TC-AUTO46-003",
+      "tc_id": "TC-MDFIRST-003",
+      "source_tc_id": "TC-MDFIRST-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-AUTO46-004",
-      "source_tc_id": "TC-AUTO46-004",
+      "tc_id": "TC-MDFIRST-004",
+      "source_tc_id": "TC-MDFIRST-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-AUTO46-005",
-      "source_tc_id": "TC-AUTO46-005",
+      "tc_id": "TC-MDFIRST-005",
+      "source_tc_id": "TC-MDFIRST-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -1167,17 +731,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-AUTO46-006",
-      "source_tc_id": "TC-AUTO46-006",
+      "tc_id": "TC-MDFIRST-006",
+      "source_tc_id": "TC-MDFIRST-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -1190,17 +754,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-AUTO46-007",
-      "source_tc_id": "TC-AUTO46-007",
+      "tc_id": "TC-MDFIRST-007",
+      "source_tc_id": "TC-MDFIRST-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
@@ -1213,91 +777,45 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-MDFIRST-008",
+      "source_tc_id": "TC-MDFIRST-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/result.json"
       ]
     },
     {
       "ac_id": "AC-009",
-      "tc_id": "TC-AUTO46-009",
-      "source_tc_id": "TC-AUTO46-009",
+      "tc_id": "TC-MDFIRST-009",
+      "source_tc_id": "TC-MDFIRST-009",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-009",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-010",
-      "tc_id": "TC-AUTO46-010",
-      "source_tc_id": "TC-AUTO46-010",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-010",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "tc_id": "TC-AUTO46-011",
-      "source_tc_id": "TC-AUTO46-011",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "tc_id": "TC-AUTO46-012",
-      "source_tc_id": "TC-AUTO46-012",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-012",
-      "status": "passed",
-      "reason_code": "",
       "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
@@ -1305,126 +823,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-013",
-      "tc_id": "TC-AUTO46-013",
-      "source_tc_id": "TC-AUTO46-013",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-013",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-015",
-      "tc_id": "TC-AUTO46-015",
-      "source_tc_id": "TC-AUTO46-015",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-015",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-016",
-      "tc_id": "TC-AUTO46-016",
-      "source_tc_id": "TC-AUTO46-016",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-016",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-017",
-      "tc_id": "TC-AUTO46-017",
-      "source_tc_id": "TC-AUTO46-017",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-017",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-018",
-      "tc_id": "TC-AUTO46-018",
-      "source_tc_id": "TC-AUTO46-018",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-018",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/result.json"
       ]
     }
   ],
@@ -1456,17 +859,17 @@
     "blocked": false,
     "reason_code": "",
     "target_stage": "qa",
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "version": "v1.4.6",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.re-freeze-transaction.json"
     },
     "unresolved_gap_count": 0,
     "high_risk_unresolved_categories": [],
@@ -1509,13 +912,13 @@
         "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.re-freeze-transaction.json"
           }
         }
       },
@@ -1597,9 +1000,9 @@
     },
     "completeness": {
       "schema_version": "1.0",
-      "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "version": "v1.4.6",
+      "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "version": "v1.4.8",
       "revision_id": "R1",
       "completeness_verdict": "pass",
       "unresolved_gap_count": 0,
@@ -1631,12 +1034,12 @@
         "implement_ready": true,
         "release_ready": true
       },
-      "generated_at": "2026-05-14T06:47:33.956681+00:00"
+      "generated_at": "2026-05-21T11:36:14.007614+00:00"
     },
     "freeze_contract": {
       "schema_version": "1.0",
-      "version": "v1.4.6",
-      "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "version": "v1.4.8",
+      "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "revision_id": "R1",
       "status": "freeze-ready",
       "human_supplement_contract": {
@@ -1670,20 +1073,20 @@
       "freeze_verdict": "pass",
       "implementation_verdict": "pending",
       "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-14T06:47:33.957376+00:00"
+      "updated_at": "2026-05-21T11:36:14.008077+00:00"
     }
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.6/.machine/requirement/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.8/.machine/qa/markdown-first-freeze-truth-and-minimal-machine-state-contract.qa9-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "run_id": "run-20260514T150053458785",
-    "generated_at": "2026-05-14T07:01:04.181940+00:00",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "run_id": "run-20260521T195152560432",
+    "generated_at": "2026-05-21T11:51:58.843495+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 16,
+    "scenario_count": 9,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1703,11 +1106,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-AUTO46-001",
-      "tc_id": "TC-AUTO46-001",
-      "source_tc_id": "TC-AUTO46-001",
+      "scenario_id": "TC-MDFIRST-001",
+      "tc_id": "TC-MDFIRST-001",
+      "source_tc_id": "TC-MDFIRST-001",
       "ac_id": "AC-001",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1731,19 +1134,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-001/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-002",
-      "tc_id": "TC-AUTO46-002",
-      "source_tc_id": "TC-AUTO46-002",
+      "scenario_id": "TC-MDFIRST-002",
+      "tc_id": "TC-MDFIRST-002",
+      "source_tc_id": "TC-MDFIRST-002",
       "ac_id": "AC-002",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1767,19 +1170,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-002/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-003",
-      "tc_id": "TC-AUTO46-003",
-      "source_tc_id": "TC-AUTO46-003",
+      "scenario_id": "TC-MDFIRST-003",
+      "tc_id": "TC-MDFIRST-003",
+      "source_tc_id": "TC-MDFIRST-003",
       "ac_id": "AC-003",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1803,19 +1206,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-003/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-004",
-      "tc_id": "TC-AUTO46-004",
-      "source_tc_id": "TC-AUTO46-004",
+      "scenario_id": "TC-MDFIRST-004",
+      "tc_id": "TC-MDFIRST-004",
+      "source_tc_id": "TC-MDFIRST-004",
       "ac_id": "AC-004",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1839,19 +1242,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-004/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-005",
-      "tc_id": "TC-AUTO46-005",
-      "source_tc_id": "TC-AUTO46-005",
+      "scenario_id": "TC-MDFIRST-005",
+      "tc_id": "TC-MDFIRST-005",
+      "source_tc_id": "TC-MDFIRST-005",
       "ac_id": "AC-005",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1875,19 +1278,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-005/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-006",
-      "tc_id": "TC-AUTO46-006",
-      "source_tc_id": "TC-AUTO46-006",
+      "scenario_id": "TC-MDFIRST-006",
+      "tc_id": "TC-MDFIRST-006",
+      "source_tc_id": "TC-MDFIRST-006",
       "ac_id": "AC-006",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1911,19 +1314,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-006/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-007",
-      "tc_id": "TC-AUTO46-007",
-      "source_tc_id": "TC-AUTO46-007",
+      "scenario_id": "TC-MDFIRST-007",
+      "tc_id": "TC-MDFIRST-007",
+      "source_tc_id": "TC-MDFIRST-007",
       "ac_id": "AC-007",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1947,19 +1350,55 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-007/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AUTO46-009",
-      "tc_id": "TC-AUTO46-009",
-      "source_tc_id": "TC-AUTO46-009",
+      "scenario_id": "TC-MDFIRST-008",
+      "tc_id": "TC-MDFIRST-008",
+      "source_tc_id": "TC-MDFIRST-008",
+      "ac_id": "AC-008",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-MDFIRST-009",
+      "tc_id": "TC-MDFIRST-009",
+      "source_tc_id": "TC-MDFIRST-009",
       "ac_id": "AC-009",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1983,313 +1422,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-009/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-010",
-      "tc_id": "TC-AUTO46-010",
-      "source_tc_id": "TC-AUTO46-010",
-      "ac_id": "AC-010",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-010/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-011",
-      "tc_id": "TC-AUTO46-011",
-      "source_tc_id": "TC-AUTO46-011",
-      "ac_id": "AC-011",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-011/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-012",
-      "tc_id": "TC-AUTO46-012",
-      "source_tc_id": "TC-AUTO46-012",
-      "ac_id": "AC-012",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-012/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-013",
-      "tc_id": "TC-AUTO46-013",
-      "source_tc_id": "TC-AUTO46-013",
-      "ac_id": "AC-013",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-013/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-015",
-      "tc_id": "TC-AUTO46-015",
-      "source_tc_id": "TC-AUTO46-015",
-      "ac_id": "AC-015",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-015/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-016",
-      "tc_id": "TC-AUTO46-016",
-      "source_tc_id": "TC-AUTO46-016",
-      "ac_id": "AC-016",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-016/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-017",
-      "tc_id": "TC-AUTO46-017",
-      "source_tc_id": "TC-AUTO46-017",
-      "ac_id": "AC-017",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-017/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-AUTO46-018",
-      "tc_id": "TC-AUTO46-018",
-      "source_tc_id": "TC-AUTO46-018",
-      "ac_id": "AC-018",
-      "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/command.txt",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stdout.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/stderr.log",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/junit.xml",
-        ".beacon/evidence/auto-test/run-20260514T150053458785/qa9-tc/TC-AUTO46-018/result.json"
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "feature_slug": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "run_id": "run-20260514T150053458785",
-    "ac_total": 16,
-    "ac_accepted": 16,
-    "scenario_total": 16,
-    "scenario_passed": 16,
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "run_id": "run-20260521T195152560432",
+    "ac_total": 9,
+    "ac_accepted": 9,
+    "scenario_total": 9,
+    "scenario_passed": 9,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -2299,8 +1450,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 16,
-      "executed_scenarios": 16,
+      "required_scenarios": 9,
+      "executed_scenarios": 9,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -2327,7 +1478,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 16,
+      "verification_item_count": 9,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -2348,19 +1499,19 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.8 --feature \"markdown-first-freeze-truth-and-minimal-machine-state-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.6 --feature \"beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.8 --feature \"markdown-first-freeze-truth-and-minimal-machine-state-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "version": "v1.4.6",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -2379,17 +1530,18 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.6",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.8",
+      "feature_matrix_path": ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.8/.machine/qa/markdown-first-freeze-truth-and-minimal-machine-state-contract.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
-      "docs/beacon/v1.4.6/.machine/execution/implementation-summary-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
-      "docs/beacon/v1.4.6/.machine/execution/technical-implementation-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json"
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.8/.machine/qa/markdown-first-freeze-truth-and-minimal-machine-state-contract.qa9-matrix.json",
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/ac-closure.json",
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/scorecard.json",
+      ".beacon/release-gate-report.json",
+      "docs/beacon/v1.4.8/.machine/execution/implementation-summary-markdown-first-freeze-truth-and-minimal-machine-state-contract.json",
+      "docs/beacon/v1.4.8/.machine/execution/technical-implementation-markdown-first-freeze-truth-and-minimal-machine-state-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2402,8 +1554,8 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance",
-    "version": "v1.4.6",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
@@ -2422,17 +1574,18 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.6",
-      "feature_matrix_path": ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.8",
+      "feature_matrix_path": ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.8/.machine/qa/markdown-first-freeze-truth-and-minimal-machine-state-contract.qa9-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/matrix.qa9.json",
-      "docs/beacon/v1.4.6/.machine/qa/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.qa9-matrix.json",
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/ac-closure.json",
-      ".beacon/qa/features/beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance/scorecard.json",
-      "docs/beacon/v1.4.6/.machine/execution/implementation-summary-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json",
-      "docs/beacon/v1.4.6/.machine/execution/technical-implementation-beacon-v1.4.6-automation-jobs-feedback-loop-and-queue-governance.json"
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.8/.machine/qa/markdown-first-freeze-truth-and-minimal-machine-state-contract.qa9-matrix.json",
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/ac-closure.json",
+      ".beacon/qa/features/markdown-first-freeze-truth-and-minimal-machine-state-contract/scorecard.json",
+      ".beacon/release-gate-report.json",
+      "docs/beacon/v1.4.8/.machine/execution/implementation-summary-markdown-first-freeze-truth-and-minimal-machine-state-contract.json",
+      "docs/beacon/v1.4.8/.machine/execution/technical-implementation-markdown-first-freeze-truth-and-minimal-machine-state-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -2443,5 +1596,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "cd5a3dddb6a72646cab64ea990c63c6cca9ed9b09222da1ed1c9aac437388d79"
+  "current_spec_fingerprint_hash": "85ee2613baffeaac7fcac4880a718154ecaa0a6816fd9402330e3d45ce383ebc"
 }

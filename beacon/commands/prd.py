@@ -15,6 +15,14 @@ import typer
 
 from beacon.utils.artifact_paths import machine_root
 from beacon.utils.diagram_truth import normalize_diagram_types, normalize_state_axes, render_diagram_truth_section
+from beacon.utils.markdown_first_freeze import (
+    build_markdown_first_compile_payload,
+    build_markdown_first_legacy_prd_payload,
+    build_markdown_first_prd_canonical,
+    markdown_first_freeze_supported,
+    stable_text_hash,
+    stable_text_hash_uri,
+)
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.semantic_runtime import (
@@ -507,30 +515,48 @@ def _persist_prd_projection(
     source_refs: list[str],
     project_metadata_context: dict[str, object],
 ) -> dict[str, object]:
-    canonical = {
-        "schema_version": "1.0",
-        "feature": feature,
-        "feature_slug": slug,
-        "version": version,
-        "track": template["track"],
-        "family": template["family"],
-        "label": template["label"],
-        **build_mode_contract(
-            requested_mode=requested_mode,
-            effective_mode=effective_mode,
-            fallback_reason=fallback_reason,
-            capability_snapshot=capability_snapshot,
-        ),
-        "model": model,
-        "diagram_truth_request": {
-            "diagram_types": requested_diagrams,
-            "state_axes": requested_state_axes,
-        },
-        "source_refs": source_refs,
-        "project_metadata_context": project_metadata_context,
-        "contract": contract,
-        "markdown": md_content,
-    }
+    markdown_first = markdown_first_freeze_supported(version)
+    mode_contract = build_mode_contract(
+        requested_mode=requested_mode,
+        effective_mode=effective_mode,
+        fallback_reason=fallback_reason,
+        capability_snapshot=capability_snapshot,
+    )
+    if markdown_first:
+        canonical = build_markdown_first_prd_canonical(
+            feature=feature,
+            slug=slug,
+            version=version,
+            template=template,
+            mode_contract=mode_contract,
+            model=model,
+            requested_diagrams=requested_diagrams,
+            requested_state_axes=requested_state_axes,
+            source_refs=source_refs,
+            project_metadata_context=project_metadata_context,
+            contract=contract,
+            md_content=md_content,
+        )
+    else:
+        canonical = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": slug,
+            "version": version,
+            "track": template["track"],
+            "family": template["family"],
+            "label": template["label"],
+            **mode_contract,
+            "model": model,
+            "diagram_truth_request": {
+                "diagram_types": requested_diagrams,
+                "state_axes": requested_state_axes,
+            },
+            "source_refs": source_refs,
+            "project_metadata_context": project_metadata_context,
+            "contract": contract,
+            "markdown": md_content,
+        }
     source_hash = _stable_hash(canonical)
     projection_seq = f"prd-{source_hash[:16]}"
     transaction_id = f"tx-prd-{slug}-{projection_seq}"
@@ -595,37 +621,63 @@ def _persist_prd_projection(
             "machine": _stable_hash(canonical_path.read_text(encoding="utf-8")),
         }
         committed_at = now_iso()
-        compile_payload = {
-            "schema_version": "1.0",
-            "feature": feature,
-            "feature_slug": slug,
-            "version": version,
-            "effective_mode": effective_mode,
-            "generator_mode": generator_mode,
-            "requested_mode": requested_mode,
-            "model": model,
-            "diagram_truth_request": {
-                "diagram_types": requested_diagrams,
-                "state_axes": requested_state_axes,
-            },
-            "fallback_reason": fallback_reason,
-            "capability_snapshot": capability_snapshot,
-            "source_refs": source_refs,
-            "project_metadata_context": project_metadata_context,
-            "constraint_hits": contract.get("semantic_hits", {}),
-            "missing_headings": contract.get("missing_headings", []),
-            "open_questions": contract.get("placeholder_hits", []),
-            "contract_ok": bool(contract.get("ok", False)),
-            "compile_hash": _stable_hash(md_content),
-            "source_hash": source_hash,
-            "projection_seq": projection_seq,
-            "transaction_id": transaction_id,
-            "committed_at": committed_at,
-            "sink_checksums": sink_checksums,
-            "status": "applied",
-            "supersedes_transaction_id": supersedes_transaction_id,
-            "supersedes_projection_seq": supersedes_projection_seq,
-        }
+        if markdown_first:
+            compile_payload = build_markdown_first_compile_payload(
+                feature=feature,
+                slug=slug,
+                version=version,
+                md_content=md_content,
+                contract=contract,
+                transaction_id=transaction_id,
+                source_hash=source_hash,
+                projection_seq=projection_seq,
+                committed_at=committed_at,
+                sink_checksums=sink_checksums,
+                requested_mode=requested_mode,
+                effective_mode=effective_mode,
+                generator_mode=generator_mode,
+                fallback_reason=fallback_reason,
+                capability_snapshot=capability_snapshot,
+                source_refs=source_refs,
+                project_metadata_context=project_metadata_context,
+                model=model,
+                requested_diagrams=requested_diagrams,
+                requested_state_axes=requested_state_axes,
+                supersedes_transaction_id=supersedes_transaction_id,
+                supersedes_projection_seq=supersedes_projection_seq,
+            )
+        else:
+            compile_payload = {
+                "schema_version": "1.0",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+                "effective_mode": effective_mode,
+                "generator_mode": generator_mode,
+                "requested_mode": requested_mode,
+                "model": model,
+                "diagram_truth_request": {
+                    "diagram_types": requested_diagrams,
+                    "state_axes": requested_state_axes,
+                },
+                "fallback_reason": fallback_reason,
+                "capability_snapshot": capability_snapshot,
+                "source_refs": source_refs,
+                "project_metadata_context": project_metadata_context,
+                "constraint_hits": contract.get("semantic_hits", {}),
+                "missing_headings": contract.get("missing_headings", []),
+                "open_questions": contract.get("placeholder_hits", []),
+                "contract_ok": bool(contract.get("ok", False)),
+                "compile_hash": _stable_hash(md_content),
+                "source_hash": source_hash,
+                "projection_seq": projection_seq,
+                "transaction_id": transaction_id,
+                "committed_at": committed_at,
+                "sink_checksums": sink_checksums,
+                "status": "applied",
+                "supersedes_transaction_id": supersedes_transaction_id,
+                "supersedes_projection_seq": supersedes_projection_seq,
+            }
         write_json(compile_path, compile_payload)
         canonical["transaction"] = {
             "transaction_id": transaction_id,
@@ -654,27 +706,41 @@ def _persist_prd_projection(
     write_json(tx_record_path, transaction_record)
     legacy_machine_path = _legacy_prd_path(project_root, slug)
     legacy_machine_path.parent.mkdir(parents=True, exist_ok=True)
-    legacy_machine_payload = {
-        "metadata": {
-            "feature": feature,
-            "feature_slug": slug,
-            "version": version,
-        },
-        "content": md_content,
-        "markdown": md_content,
-        "semantic_payload": {
-            "track": template["track"],
-            "family": template["family"],
-            "label": template["label"],
-        },
-        "mode_contract": {
-            "compilation_mode": requested_mode,
-            "effective_mode": effective_mode,
-            "generator_mode": generator_mode,
-            "fallback_reason": fallback_reason,
-        },
-        "transaction": canonical["transaction"],
-    }
+    if markdown_first:
+        legacy_machine_payload = build_markdown_first_legacy_prd_payload(
+            feature=feature,
+            slug=slug,
+            version=version,
+            template=template,
+            requested_mode=requested_mode,
+            effective_mode=effective_mode,
+            generator_mode=generator_mode,
+            fallback_reason=fallback_reason,
+            md_content=md_content,
+            transaction=canonical["transaction"],
+        )
+    else:
+        legacy_machine_payload = {
+            "metadata": {
+                "feature": feature,
+                "feature_slug": slug,
+                "version": version,
+            },
+            "content": md_content,
+            "markdown": md_content,
+            "semantic_payload": {
+                "track": template["track"],
+                "family": template["family"],
+                "label": template["label"],
+            },
+            "mode_contract": {
+                "compilation_mode": requested_mode,
+                "effective_mode": effective_mode,
+                "generator_mode": generator_mode,
+                "fallback_reason": fallback_reason,
+            },
+            "transaction": canonical["transaction"],
+        }
     write_json(legacy_machine_path, legacy_machine_payload)
     legacy_transaction_path = _legacy_prd_transaction_path(project_root, slug)
     legacy_transaction_path.parent.mkdir(parents=True, exist_ok=True)
@@ -741,6 +807,7 @@ def _build_prd_audit_payload(project_root: Path, *, version: str, feature: str) 
         return payload
     markdown = prd_path.read_text(encoding="utf-8")
     contract = _validate_contract(markdown, require_no_placeholders=False)
+    markdown_first = markdown_first_freeze_supported(version)
     payload["contract"] = contract
     checks: list[dict[str, object]] = [
         {
@@ -763,21 +830,51 @@ def _build_prd_audit_payload(project_root: Path, *, version: str, feature: str) 
     legacy_path = _legacy_prd_path(project_root, slug)
     legacy_payload = _read_json_dict(legacy_path)
     legacy_markdown = str(legacy_payload.get("content") or legacy_payload.get("markdown") or "")
+    legacy_hash = str(legacy_payload.get("markdown_hash") or "").strip()
+    legacy_source_path = ""
+    if isinstance(legacy_payload.get("source_paths"), dict):
+        legacy_source_path = str(legacy_payload["source_paths"].get("prd") or "").strip()
+    legacy_ok = (
+        legacy_path.exists()
+        and (
+            (legacy_hash == stable_text_hash_uri(markdown) and legacy_source_path.endswith(f"/prd/{slug}.md"))
+            if markdown_first
+            else legacy_markdown.strip() == markdown.strip()
+        )
+    )
     _append_check(
         "legacy_machine_mirror_sync",
-        legacy_path.exists() and legacy_markdown.strip() == markdown.strip(),
+        legacy_ok,
         path=str(legacy_path.relative_to(project_root)) if legacy_path.exists() else str(legacy_path),
         exists=legacy_path.exists(),
+        markdown_hash=legacy_hash,
+        expected_markdown_hash=stable_text_hash_uri(markdown) if markdown_first else "",
+        mode="markdown_first_state" if markdown_first else "fulltext_mirror",
     )
 
     canonical_path = _machine_prd_dir(project_root, version) / f"{slug}.canonical.json"
     canonical_payload = _read_json_dict(canonical_path)
     canonical_markdown = str(canonical_payload.get("markdown") or "")
+    canonical_hash = str(canonical_payload.get("markdown_hash") or "").strip()
+    canonical_source_path = ""
+    if isinstance(canonical_payload.get("source_paths"), dict):
+        canonical_source_path = str(canonical_payload["source_paths"].get("prd") or "").strip()
+    canonical_ok = (
+        canonical_path.exists()
+        and (
+            (canonical_hash == stable_text_hash_uri(markdown) and canonical_source_path.endswith(f"/prd/{slug}.md"))
+            if markdown_first
+            else canonical_markdown.strip() == markdown.strip()
+        )
+    )
     _append_check(
         "canonical_machine_mirror_sync",
-        canonical_path.exists() and canonical_markdown.strip() == markdown.strip(),
+        canonical_ok,
         path=str(canonical_path.relative_to(project_root)) if canonical_path.exists() else str(canonical_path),
         exists=canonical_path.exists(),
+        markdown_hash=canonical_hash,
+        expected_markdown_hash=stable_text_hash_uri(markdown) if markdown_first else "",
+        mode="markdown_first_state" if markdown_first else "fulltext_mirror",
     )
 
     compile_path = _machine_prd_dir(project_root, version) / f"{slug}.compile.json"
@@ -785,11 +882,11 @@ def _build_prd_audit_payload(project_root: Path, *, version: str, feature: str) 
     compile_hash = str(compile_payload.get("compile_hash") or "").strip()
     _append_check(
         "compile_machine_mirror_sync",
-        compile_path.exists() and compile_hash == _stable_hash(markdown) and bool(compile_payload.get("contract_ok", False)) == bool(contract.get("ok", False)),
+        compile_path.exists() and compile_hash == stable_text_hash(markdown) and bool(compile_payload.get("contract_ok", False)) == bool(contract.get("ok", False)),
         path=str(compile_path.relative_to(project_root)) if compile_path.exists() else str(compile_path),
         exists=compile_path.exists(),
         compile_hash=compile_hash,
-        expected_compile_hash=_stable_hash(markdown),
+        expected_compile_hash=stable_text_hash(markdown),
         compile_contract_ok=bool(compile_payload.get("contract_ok", False)),
         current_contract_ok=bool(contract.get("ok", False)),
     )

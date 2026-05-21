@@ -1,0 +1,707 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "version": "v1.4.8",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-21T15:55:16.664572",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-21T15:55:16.663048",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-MATGATE48-001",
+      "ac_id": "AC-001",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-001 :: Beacon declares required execution host surfaces for execution-bound features",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"execution_host_required_surfaces_are_declared\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon declares required execution host surfaces for execution-bound features",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-001/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-002",
+      "ac_id": "AC-002",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-002 :: `implement` blocks when architecture blueprint projection is missing or drifted",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"implement_blocks_on_missing_or_drifted_architecture_blueprint_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement` blocks when architecture blueprint projection is missing or drifted",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-002/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-003",
+      "ac_id": "AC-003",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-003 :: branch / service / worktree facts cannot rely only on default seeds",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"delivery_facts_must_be_explicit_not_default_seeded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "branch / service / worktree facts cannot rely only on default seeds",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-003/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-004",
+      "ac_id": "AC-004",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-004 :: weak fact sources such as `version_default` or `project_config_seed` do not unlo",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"weak_fact_sources_do_not_unlock_implement\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "weak fact sources such as `version_default` or `project_config_seed` do not unlock implementation",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-004/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-005",
+      "ac_id": "AC-005",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-005 :: material effect registry covers host, truth, execution, gate, support, toolkit, ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_material_effect_registry_covers_all_human_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "material effect registry covers host, truth, execution, gate, support, toolkit, compatibility, and project-local skills",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-005/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-006",
+      "ac_id": "AC-006",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-006 :: every human-facing subskill invocation resolves to one allowed material effect",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_invocation_must_resolve_to_material_effect\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "every human-facing subskill invocation resolves to one allowed material effect",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-006/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-007",
+      "ac_id": "AC-007",
+      "layer": "workflow",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-007 :: accepted support finding becomes material update, release blocker, or artifact u",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"accepted_support_finding_opens_material_update_or_obligation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "accepted support finding becomes material update, release blocker, or artifact update obligation",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-007/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-008",
+      "ac_id": "AC-008",
+      "layer": "boundary",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-008 :: support surfaces do not become truth sources unless routed through governed adop",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"support_surfaces_remain_advisory_until_adopted\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "support surfaces do not become truth sources unless routed through governed adoption",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-008/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-009",
+      "ac_id": "AC-009",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-009 :: branch governance writes service / branch / worktree updates through canonical s",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"branch_governance_updates_canonical_execution_and_metadata_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "branch governance writes service / branch / worktree updates through canonical surfaces",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-009/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-010",
+      "ac_id": "AC-010",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-010 :: QA and release block while blocking artifact update obligations remain open",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"qa_and_release_block_on_open_artifact_update_obligations\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA and release block while blocking artifact update obligations remain open",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-010/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-011",
+      "ac_id": "AC-011",
+      "layer": "diagnostics",
+      "qa_type": "unit",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-011 :: gate diagnostics name missing material, default-seeded field, unadopted finding,",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"gate_diagnostics_name_missing_material_and_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "gate diagnostics name missing material, default-seeded field, unadopted finding, open obligation, and repair route",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-011.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-011/command.txt"
+    },
+    {
+      "tc_id": "TC-MATGATE48-012",
+      "ac_id": "AC-012",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract AC-012 :: support and toolkit skills remain outside truth/gate authority and do not create",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"support_and_toolkit_do_not_become_new_lifecycle_stages\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "support and toolkit skills remain outside truth/gate authority and do not create new lifecycle stages",
+      "evidence_path": ".beacon/evidence/test-results/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract/{run_id}/TC-MATGATE48-012.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+      "last_run_id": "run-20260521T194621074501",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T194621074501/qa9-tc/TC-MATGATE48-012/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-21T15:55:16.664603",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "执行材料契约层",
+        "定义 `execution/index.md`、`architecture-blueprint.md`、`service-slice-map.md`、`git-workflow-*`、`technical-review-contract-*` 等执行 host 材料的最低存在与字段要求。",
+        "子 skill 材料闭环层",
+        "定义每个人类面 skill 的 `material_effect`、目标材料面、只读边界、写回义务和 fail-closed 条件。",
+        "Gate 消费层",
+        "`implement`、`qa`、`release`、`doctor verify-context --strict`、`material audit` 必须消费这些材料状态并在缺失时阻断。",
+        "support surface 不直接写 canonical truth",
+        "toolkit surface 一旦改变项目事实，必须写入 canonical metadata / execution transaction path",
+        "execution-bound feature 不允许从默认 branch / service / worktree 假设进入 implement",
+        "side dossier 不能替代 canonical execution host"
+      ],
+      "decision_priority": [
+        "Frozen truth 高于 support finding。",
+        "显式冻结事实高于 default seed。",
+        "Canonical execution host 高于 side dossier。",
+        "Open obligation 高于局部 green signal。",
+        "Requirement clarity gate 高于 implement convenience。",
+        "QA evidence chain 高于单层通过。",
+        "Release gate 高于 status board。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Frozen truth 高于 support finding。",
+          "显式冻结事实高于 default seed。",
+          "Canonical execution host 高于 side dossier。",
+          "Open obligation 高于局部 green signal。",
+          "Requirement clarity gate 高于 implement convenience。",
+          "QA evidence chain 高于单层通过。",
+          "Release gate 高于 status board。"
+        ],
+        "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md"
+      }
+    ]
+  },
+  "coverage_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "exception",
+    "recovery",
+    "compatibility",
+    "permission",
+    "stale-data-or-drift",
+    "downgrade-or-fallback"
+  ],
+  "requirement_completeness_verdict": "pass",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract\" --project <project-root> --version v1.4.8 --json",
+  "supplement_task": {
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "writeback_target": "docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract\" --project <project-root> --version v1.4.8 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "docs/beacon/v1.4.8/.machine/requirement",
+      "envelope": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.re-freeze-transaction.json"
+    },
+    "refreeze_required": false,
+    "revalidate_required": false,
+    "closure_status": "complete",
+    "official_refreeze_transaction_ref": "docs/beacon/v1.4.8/.machine/change/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.refreeze-transaction.json",
+    "decision_count": 15,
+    "generated_at": "2026-05-21T08:13:24+00:00"
+  }
+}

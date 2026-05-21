@@ -1,0 +1,179 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "version": "v1.4.8",
+  "generated_at": "2026-05-21T11:36:06.261922+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "user_story": "user-story:docs/beacon/v1.4.8/user-story/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "research": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.8/user-story/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract`",
+      "Version**: `v1.4.8`",
+      "Date**: `2026-05-21`",
+      "Status**: `frozen`",
+      "Track**: `material-gate-hardening + human-subskill-atomic-writeback + fail-closed-governance`",
+      "Scenario**: `beacon_must_not_continue_when_required_materials_or_skill_writebacks_are_missing`",
+      " Global boundaries:",
+      " `docs/beacon/global-boundaries.md`",
+      " Research closure:",
+      " `docs/beacon/v1.4.8/research/beacon-v1.4.8-execution-material-rigor-and-version-governance-analysis.md`",
+      " `docs/beacon/v1.4.8/research/beacon-v1.4.8-human-subskill-material-closure-and-gate-contract.md`",
+      " `docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md`",
+      " Source architecture:",
+      " `docs/beacon/v1.4.8/source-architecture/index.md`"
+    ],
+    "user_story": [
+      "Feature**: `beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract`",
+      "Version**: `v1.4.8`",
+      "Revision**: `R3`",
+      "Status**: `frozen`",
+      "As a** Beacon maintainer, real-project operator, or human skill caller,",
+      "I want** Beacon to require explicit material effects for every human-facing skill invocation and fail closed when required Beacon materials are missing or default-seeded,",
+      "So that** implementation, QA, and release cannot proceed from silent assumptions, fragmented side documents, or advisory findings that were never adopted into governed materials.",
+      " AC-001 Beacon defines a required execution host surface contract for execution-bound features, including `execution/index.md`, `execution/architecture-blueprint.md`, delivery baseline, git workflow, and technical review contract.",
+      " AC-002 Beacon blocks `implement` when architecture blueprint projection is missing, drifted, or not bound to the canonical execution host.",
+      " AC-003 Beacon treats branch / service / worktree facts as explicit frozen facts, not as acceptable silent defaults."
+    ],
+    "qa": [
+      "Feature**: `beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract`",
+      "Version**: `v1.4.8`",
+      "Status**: `frozen`",
+      "| AC ID | TC ID | Layer | Command | Assertion |",
+      "| AC-001 | TC-MATGATE48-001 | contract | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"execution_host_required_surfaces_are_declared\"` | Beacon declares required execution host surfaces for execution-bound features |",
+      "| AC-002 | TC-MATGATE48-002 | gate | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"implement_blocks_on_missing_or_drifted_architecture_blueprint_projection\"` | `implement` blocks when architecture blueprint projection is missing or drifted |",
+      "| AC-003 | TC-MATGATE48-003 | gate | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"delivery_facts_must_be_explicit_not_default_seeded\"` | branch / service / worktree facts cannot rely only on default seeds |",
+      "| AC-004 | TC-MATGATE48-004 | contract | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"weak_fact_sources_do_not_unlock_implement\"` | weak fact sources such as `version_default` or `project_config_seed` do not unlock implementation |",
+      "| AC-005 | TC-MATGATE48-005 | contract | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_material_effect_registry_covers_all_human_surfaces\"` | material effect registry covers host, truth, execution, gate, support, toolkit, compatibility, and project-local skills |",
+      "| AC-006 | TC-MATGATE48-006 | contract | `python3 -m pytest -q tests/test_v148_material_gate_and_subskill_writeback.py -k \"subskill_invocation_must_resolve_to_material_effect\"` | every human-facing subskill invocation resolves to one allowed material effect |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+    "version": "v1.4.8",
+    "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "执行材料契约层",
+        "定义 `execution/index.md`、`architecture-blueprint.md`、`service-slice-map.md`、`git-workflow-*`、`technical-review-contract-*` 等执行 host 材料的最低存在与字段要求。",
+        "子 skill 材料闭环层",
+        "定义每个人类面 skill 的 `material_effect`、目标材料面、只读边界、写回义务和 fail-closed 条件。",
+        "Gate 消费层",
+        "`implement`、`qa`、`release`、`doctor verify-context --strict`、`material audit` 必须消费这些材料状态并在缺失时阻断。",
+        "support surface 不直接写 canonical truth",
+        "toolkit surface 一旦改变项目事实，必须写入 canonical metadata / execution transaction path",
+        "execution-bound feature 不允许从默认 branch / service / worktree 假设进入 implement",
+        "side dossier 不能替代 canonical execution host"
+      ],
+      "decision_priority": [
+        "Frozen truth 高于 support finding。",
+        "显式冻结事实高于 default seed。",
+        "Canonical execution host 高于 side dossier。",
+        "Open obligation 高于局部 green signal。",
+        "Requirement clarity gate 高于 implement convenience。",
+        "QA evidence chain 高于单层通过。",
+        "Release gate 高于 status board。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Frozen truth 高于 support finding。",
+          "显式冻结事实高于 default seed。",
+          "Canonical execution host 高于 side dossier。",
+          "Open obligation 高于局部 green signal。",
+          "Requirement clarity gate 高于 implement convenience。",
+          "QA evidence chain 高于单层通过。",
+          "Release gate 高于 status board。"
+        ],
+        "source": "research:docs/beacon/v1.4.8/research/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md"
+      }
+    ]
+  }
+}

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.markdown_first_freeze import markdown_first_freeze_supported, strip_fulltext_mirrors
 from beacon.utils.requirement_parsing import build_research_projection
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
@@ -854,6 +855,7 @@ def sync_requirement_deepening_artifacts(
     resolved_version = resolve_target_version(project_root, version)
     if not requirement_deepening_supported(resolved_version):
         return {}
+    markdown_first = markdown_first_freeze_supported(resolved_version)
 
     paths = requirement_paths(project_root, resolved_version, feature)
     envelope = build_requirement_envelope(
@@ -959,6 +961,15 @@ def sync_requirement_deepening_artifacts(
         completeness=completeness,
         paths=paths,
     )
+
+    if markdown_first:
+        envelope = strip_fulltext_mirrors(envelope)
+        ledger = strip_fulltext_mirrors(ledger)
+        decision_log = strip_fulltext_mirrors(decision_log)
+        freeze_contract = strip_fulltext_mirrors(freeze_contract)
+        completeness = strip_fulltext_mirrors(completeness)
+        supplement_task = strip_fulltext_mirrors(supplement_task)
+        re_freeze_transaction = strip_fulltext_mirrors(re_freeze_transaction)
 
     write_json(paths["envelope"], envelope)
     write_json(paths["candidate_ledger"], ledger)

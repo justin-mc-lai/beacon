@@ -3,8 +3,8 @@
 - project_root: `/Users/apple/Developer/Personal/products/beacon`
 - topology_kind: `single_repo`
 - default_execution_service: `beacon`
-- transaction_id: `tx-project-metadata-b1efc0bbefd30cbe`
-- committed_at: `2026-05-15T11:51:06.653911+00:00`
+- transaction_id: `tx-project-metadata-bbb99ad8c88d0bbb`
+- committed_at: `2026-05-21T09:11:18.747245+00:00`
 
 ## Service Bindings
 - `beacon` repo_root=`/Users/apple/Developer/Personal/products/beacon` role=`service` writable=`True`
@@ -37,4 +37,7 @@
   - template=`standard-feature` previous=`` next=``
 - `v1.4.7` services=`beacon` branch_guard_mode=`strict` validation_state=`active`
   - `beacon` -> `main`
+  - template=`standard-feature` previous=`` next=``
+- `v1.4.8` services=`beacon` branch_guard_mode=`strict` validation_state=`active`
+  - `beacon` -> `beacon/v1.4.8`
   - template=`standard-feature` previous=`` next=``

@@ -425,6 +425,53 @@ class TestBeaconAutoTest:
         result = runner.invoke(app, ["auto-test", "create", "--project", str(tmp_path)])
         assert result.exit_code == 0
 
+    def test_auto_test_create_executes_ac_matrix_rows(self, tmp_path):
+        """Test AC executable matrix rows produce release-gate evidence."""
+        marker = tmp_path / "marker.txt"
+        matrix_path = tmp_path / "matrix.json"
+        evidence_path = ".beacon/evidence/test-results/sample-feature/{run_id}/TC-AC-001.json"
+        matrix_path.write_text(
+            json.dumps(
+                {
+                    "schema_version": "1.0",
+                    "entries": [
+                        {
+                            "ac_id": "AC-001",
+                            "tc_id": "TC-AC-001",
+                            "layer": "parser",
+                            "command": "python3 -c 'from pathlib import Path; Path(\"marker.txt\").write_text(\"ok\")'",
+                            "assertion": "row command executes",
+                            "evidence_path": evidence_path,
+                        }
+                    ],
+                }
+            ),
+            encoding="utf-8",
+        )
+
+        result = runner.invoke(
+            app,
+            [
+                "auto-test",
+                "create",
+                "qa9",
+                "--project",
+                str(tmp_path),
+                "--matrix-path",
+                str(matrix_path),
+                "--qa-profile",
+                "custom",
+            ],
+        )
+
+        assert result.exit_code == 0, result.stdout
+        status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+        run_id = status["run_id"]
+        assert status["status"] == "passed"
+        assert status["selected_layers"] == ["parser"]
+        assert marker.read_text(encoding="utf-8") == "ok"
+        assert (tmp_path / evidence_path.replace("{run_id}", run_id)).exists()
+
     def test_auto_test_status(self, tmp_path):
         """Test auto-test status"""
         result = runner.invoke(app, ["auto-test", "status", "--project", str(tmp_path)])

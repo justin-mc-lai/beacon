@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.8",
+  "status": "generated",
+  "feature_count": 2,
+  "features": [
+    {
+      "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+      "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+      "summary": "",
+      "status": ""
+    },
+    {
+      "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "summary": "",
+      "status": ""
+    }
+  ],
+  "implementation_order": {
+    "status": "analyzed",
+    "feature_count": 2,
+    "ordered_feature_slugs": [
+      "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+      "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract"
+    ],
+    "waves": [
+      {
+        "wave": 1,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+            "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+            "depends_on_features": [],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+            "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+            "depends_on_features": [
+              "markdown-first-freeze-truth-and-minimal-machine-state-contract"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      }
+    ]
+  },
+  "added": [],
+  "removed": [],
+  "fixed": [],
+  "traceability_refs": [
+    "docs/beacon/v1.4.8/.machine/change/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.json",
+    "docs/beacon/v1.4.8/change/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "docs/beacon/v1.4.8/.machine/change/markdown-first-freeze-truth-and-minimal-machine-state-contract.json",
+    "docs/beacon/v1.4.8/change/markdown-first-freeze-truth-and-minimal-machine-state-contract.md"
+  ],
+  "generated_at": "2026-05-21 18:30"
+}

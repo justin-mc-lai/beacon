@@ -131,6 +131,7 @@ REASON_CODES = [
     "memory_lifecycle_missing",
     "memory_evidence_missing",
     "memory_feedback_unsynced",
+    "release_decision_missing_for_version",
     "release_memory_profile_invalid",
     "memory_run_selector_drift",
     "test_execution_missing",
@@ -1347,7 +1348,6 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
         and str(item.get("stage", "")) == "release"
         and str(item.get("event", "")) == "release_decision_recorded"
     ]
-    unfiltered_release_events = list(release_events)
     if resolved_version:
         release_events = [
             item
@@ -1358,17 +1358,20 @@ def check_release_memory_profile(project_root: Path, mode: GateMode, stage: str,
             )
             or str(item.get("run_id") or "").strip() == f"release:{resolved_version}"
         ]
-    if not release_events and unfiltered_release_events:
-        release_events = unfiltered_release_events
     if not release_events:
         if authoritative_acceptance:
             return issues
         issues.append(
             {
-                "reason_code": "release_memory_profile_invalid",
+                "reason_code": "release_decision_missing_for_version" if resolved_version else "release_memory_profile_invalid",
                 "severity": "critical",
-                "message": "release stage missing release_decision_recorded memory event",
+                "message": (
+                    f"release stage missing release_decision_recorded memory event for version={resolved_version}"
+                    if resolved_version
+                    else "release stage missing release_decision_recorded memory event"
+                ),
                 "blocked": True,
+                "details": {"version": resolved_version} if resolved_version else {},
             }
         )
         return issues

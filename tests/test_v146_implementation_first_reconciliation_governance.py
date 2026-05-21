@@ -114,3 +114,26 @@ def test_reconciliation_preserves_drift_provenance(tmp_path: Path) -> None:
     assert implementation_artifact["run_id"] == "run-impl-r1"
     assert artifact["provenance"]["post_hoc_writeback_occurred"] is True
     assert artifact["provenance"]["preserve_drift_history"] is True
+
+
+def test_reconciliation_closes_when_current_revision_has_implementation_writeback(tmp_path: Path) -> None:
+    result = _seed_reconciliation_scenario(tmp_path)
+    revision = result["revision"]
+
+    record_implementation_writeback(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        run_id="run-impl-r2",
+        implemented_item_ids=["AC-001"],
+        changed_files=["beacon/utils/writeback.py"],
+    )
+
+    detection = detect_implementation_first_reconciliation_needed(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        revision_state=revision,
+    )
+
+    assert detection["required"] is False

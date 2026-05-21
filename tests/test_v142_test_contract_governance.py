@@ -376,6 +376,57 @@ def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_rel
     assert "feature_release_lane_missing" not in gate["release_gate"]["reason_codes"]
 
 
+def test_research_projection_entries_do_not_block_release_until_adopted_into_test_case(tmp_path: Path) -> None:
+    _seed_project(tmp_path, include_evidence=False)
+    story_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "user-story" / f"{SLUG}.json"
+    story_payload = json.loads(story_path.read_text(encoding="utf-8"))
+    for story in story_payload["stories"]:
+        story["items"] = [
+            item
+            for item in story["items"]
+            if str(item.get("id") or "") in {"AC-001", "AC-002", "AC-003"}
+        ]
+    story_path.write_text(json.dumps(story_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"] = [
+        {
+            "tc_id": "TC-US003-001",
+            "ac_id": "AC-003",
+            "layer": "regression",
+            "command": "python3 -m pytest -q tests/test_v142_test_contract_index.py",
+            "assertion": "adopted release-facing mapping stays executable",
+            "evidence_path": f".beacon/evidence/test-results/{SLUG}/TC-US003-001.json",
+            "status": "pending",
+            "source": f"qa:test-cases:docs/beacon/{VERSION}/qa/test-cases/{SLUG}.md",
+        },
+        {
+            "tc_id": "TC-RESEARCH-001",
+            "ac_id": "AC-003",
+            "layer": "unit",
+            "command": "python3 -m pytest -q -k unit",
+            "assertion": "research projection remains visible but advisory",
+            "evidence_path": f".beacon/evidence/test-results/{SLUG}/TC-RESEARCH-001.json",
+            "status": "pending",
+            "source": f"research:docs/beacon/{VERSION}/research/{SLUG}.md",
+        },
+    ]
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    _write_json(
+        tmp_path / ".beacon" / "evidence" / "test-results" / SLUG / "TC-US003-001.json",
+        {"status": "passed", "tc_id": "TC-US003-001"},
+    )
+
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    gate = build_test_contract_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    research_entry = next(item for item in payload["test_refs"] if item["tc_id"] == "TC-RESEARCH-001")
+    assert research_entry["evidence_status"] == "missing"
+    assert research_entry["release_blocking"] is False
+    assert gate["release_gate"]["blocked"] is False
+    assert "feature_release_lane_missing" not in gate["release_gate"]["reason_codes"]
+
+
 def test_feature_qa_placeholder_evidence_paths_resolve_to_feature_qa_artifacts(tmp_path: Path) -> None:
     _seed_project(tmp_path, include_evidence=False)
     feature_matrix_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "matrix.qa9.json"

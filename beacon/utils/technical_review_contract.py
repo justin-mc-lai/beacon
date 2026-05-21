@@ -458,6 +458,10 @@ def materialize_technical_review_contract(
             feature=feature,
             revision_id=revision_id,
         )
+    source_overridden = isinstance(contract_overrides, dict) and "source" in contract_overrides
+    review_overridden = isinstance(contract_overrides, dict) and bool(
+        {"review_status", "approved_by", "reviewed_at"} & set(contract_overrides)
+    )
     if contract_overrides:
         for key, value in contract_overrides.items():
             if value is None:
@@ -489,6 +493,8 @@ def materialize_technical_review_contract(
     reviewed_at = str(payload.get("reviewed_at") or "").strip()
     if review_status in {"approved", "accepted"} and approved_by and not reviewed_at:
         payload["reviewed_at"] = now_iso()
+    if review_status in {"approved", "accepted"} and approved_by and review_overridden and not source_overridden:
+        payload["source"] = "human_approved"
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)
     markdown_path = technical_review_contract_markdown_path(project_root, resolved_version, feature)
     write_json(json_path, payload)

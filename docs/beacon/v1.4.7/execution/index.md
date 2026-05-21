@@ -5,6 +5,7 @@
 - `boundaries.md`
 - `architecture-blueprint.md`
 - `human-skill-reference.md`
+- `support-skill-usage-guide.md`
 - `project-skill-qa-evolution-blueprint.md`
 - release-facing execution notes under this version line
 

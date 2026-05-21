@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.8",
+  "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "revision_id": "R1",
+  "source_revision_id": "R2",
+  "status": "freeze-ready",
+  "human_supplement_contract": {
+    "allowed_decisions": [
+      "accepted",
+      "rejected",
+      "deferred"
+    ],
+    "required_fields": [
+      "source_research_ref",
+      "material_effect",
+      "target_artifact",
+      "gate_surface",
+      "human_decision",
+      "decision_reason",
+      "writeback_target",
+      "revision_id"
+    ],
+    "writeback_flow": [
+      "support_finding",
+      "material_effect_classification",
+      "artifact_update_obligation_or_truth_surface",
+      "gate_verification"
+    ]
+  },
+  "blocking_rules": [
+    "missing_execution_host_surface",
+    "architecture_blueprint_projection_missing_or_drifted",
+    "branch_service_worktree_fact_missing",
+    "critical_fact_default_seeded",
+    "support_finding_accepted_without_material_target",
+    "artifact_update_obligation_open",
+    "qa_evidence_chain_incomplete",
+    "release_version_surface_drift"
+  ],
+  "freeze_verdict": "pass",
+  "implementation_verdict": "pending",
+  "qa_execution_verdict": "pending",
+  "official_refreeze_transaction_ref": "docs/beacon/v1.4.8/.machine/change/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.refreeze-transaction.json",
+  "updated_at": "2026-05-21T11:36:06.263196+00:00"
+}

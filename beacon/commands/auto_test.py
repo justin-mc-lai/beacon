@@ -963,6 +963,76 @@ def _write_matrix_evidence(
     }
 
 
+def _load_executable_matrix(matrix_path: Path) -> dict[str, Any]:
+    if not matrix_path.exists():
+        return {"error": "missing", "path": str(matrix_path)}
+    try:
+        payload = json.loads(matrix_path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {"error": "invalid_json", "path": str(matrix_path)}
+    if not isinstance(payload, dict) or not isinstance(payload.get("entries"), list):
+        return {"error": "invalid_schema", "path": str(matrix_path)}
+    return {"payload": payload}
+
+
+def _matrix_entry_layer(item: dict[str, Any]) -> str:
+    return normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+
+
+def _execute_matrix_tc_entries(
+    *,
+    project_root: Path,
+    run_id: str,
+    evidence_root: Path,
+    matrix_payload: dict[str, Any],
+    commands: dict[str, str],
+    rerun_flaky: int,
+) -> list[dict[str, Any]]:
+    entries = matrix_payload.get("entries")
+    if not isinstance(entries, list):
+        return []
+
+    results: list[dict[str, Any]] = []
+    for item in entries:
+        if not isinstance(item, dict):
+            continue
+        tc_id = str(item.get("tc_id") or "").strip()
+        ac_id = str(item.get("ac_id") or "").strip()
+        layer = _matrix_entry_layer(item)
+        if not tc_id or not layer:
+            continue
+        command = str(item.get("command") or commands.get(layer) or "").strip()
+        if not command:
+            results.append(
+                {
+                    "layer": layer,
+                    "tc_id": tc_id,
+                    "ac_id": ac_id,
+                    "status": "not_executed",
+                    "reason_code": "matrix_command_missing",
+                    "command": None,
+                    "exit_code": None,
+                    "evidence_ref": [],
+                }
+            )
+            continue
+
+        tc_dir = evidence_root / "matrix-tc" / tc_id
+        result = _run_layer_command(
+            layer=layer,
+            command=command,
+            project_root=project_root,
+            layer_dir=tc_dir,
+            retries=rerun_flaky,
+            run_id=run_id,
+            stage="verify",
+            tc_id=tc_id,
+            ac_id=ac_id,
+        )
+        results.append(result)
+    return results
+
+
 def _normalize_required_pairs(raw_pairs: Any) -> list[dict[str, str]]:
     out: list[dict[str, str]] = []
     if not isinstance(raw_pairs, list):
@@ -2278,10 +2348,19 @@ def create(
     compat_required_pairs: list[dict[str, str]] = []
 
     active_matrix_path = matrix_path
+    matrix_payload: dict[str, Any] | None = None
     qa9_matrix_payload: dict[str, Any] | None = None
+    if active_matrix_path:
+        loaded_matrix = _load_executable_matrix(Path(active_matrix_path))
+        if loaded_matrix.get("payload"):
+            matrix_payload = loaded_matrix["payload"]
+        else:
+            typer.echo(
+                f"⚠ executable matrix load failed: {loaded_matrix.get('error', 'unknown')} ({loaded_matrix.get('path', active_matrix_path)})"
+            )
     qa9_matrix_resolve_path = qa_matrix_path or matrix_path
     if is_qa9_scope and qa9_matrix_resolve_path:
-        loaded = _load_qa9_matrix(Path(qa9_matrix_resolve_path))
+        loaded = {"payload": matrix_payload} if matrix_payload and qa9_matrix_resolve_path == active_matrix_path else _load_qa9_matrix(Path(qa9_matrix_resolve_path))
         if loaded.get("payload"):
             qa9_matrix_payload = loaded["payload"]
             active_matrix_path = qa9_matrix_resolve_path
@@ -2289,6 +2368,16 @@ def create(
                 selected_layers = explicit_qa_types
             else:
                 selected_layers = parse_qa_types(qa9_matrix_payload.get("qa_types"), profile=qa_profile)
+                if matrix_payload and not qa9_matrix_payload.get("qa_types"):
+                    selected_layers = [
+                        layer
+                        for layer in dict.fromkeys(
+                            _matrix_entry_layer(item)
+                            for item in qa9_matrix_payload.get("entries", [])
+                            if isinstance(item, dict)
+                        )
+                        if layer
+                    ]
             for layer, cmd in _qa9_commands_from_matrix(qa9_matrix_payload).items():
                 if not commands.get(layer):
                     commands[layer] = cmd
@@ -2315,7 +2404,8 @@ def create(
     if not compat_required_pairs and compat_browsers_list and compat_devices_list:
         compat_required_pairs = _expand_pairs(compat_browsers_list, compat_devices_list)
 
-    if is_qa9_scope:
+    matrix_row_execution = bool(is_qa9_scope and matrix_payload and not explicit_qa_types and not matrix_payload.get("qa_types"))
+    if is_qa9_scope and not matrix_row_execution:
         for layer in selected_layers:
             if not commands.get(layer):
                 commands[layer] = default_command_for_qa_type(layer, ui_runner=ui_runner)
@@ -2400,34 +2490,60 @@ def create(
         test_status["ui_guard"] = ui_guard
 
     layer_results: list[dict] = []
-    for layer in selected_layers:
-        layer_dir = evidence_root / layer
-        command = str(commands.get(layer, "")).strip()
-        if command:
-            layer_extra_env: dict[str, str] = {}
-            if layer == "compatibility":
-                layer_extra_env = {
-                    "BEACON_COMPAT_EVIDENCE_PATH": str(evidence_root / "compatibility" / "pair-evidence.json"),
-                    "BEACON_COMPAT_REQUIRED_PAIRS": json.dumps(compat_required_pairs, ensure_ascii=False),
-                    "BEACON_COMPAT_BROWSERS": ",".join(compat_browsers_list),
-                    "BEACON_COMPAT_DEVICES": ",".join(compat_devices_list),
-                }
-            result = _run_layer_command(
-                layer=layer,
-                command=command,
-                project_root=project_root,
-                layer_dir=layer_dir,
-                retries=rerun_flaky,
-                run_id=run_id,
-                stage="verify",
-                extra_env=layer_extra_env,
-            )
-            if (
-                layer == "visual"
-                and visual_baseline_dir
-                and visual_current_dir
-                and str(result.get("status")) == "passed"
-            ):
+    if matrix_row_execution and matrix_payload:
+        layer_results = _execute_matrix_tc_entries(
+            project_root=project_root,
+            run_id=run_id,
+            evidence_root=evidence_root,
+            matrix_payload=matrix_payload,
+            commands=commands,
+            rerun_flaky=rerun_flaky,
+        )
+    else:
+        for layer in selected_layers:
+            layer_dir = evidence_root / layer
+            command = str(commands.get(layer, "")).strip()
+            if command:
+                layer_extra_env: dict[str, str] = {}
+                if layer == "compatibility":
+                    layer_extra_env = {
+                        "BEACON_COMPAT_EVIDENCE_PATH": str(evidence_root / "compatibility" / "pair-evidence.json"),
+                        "BEACON_COMPAT_REQUIRED_PAIRS": json.dumps(compat_required_pairs, ensure_ascii=False),
+                        "BEACON_COMPAT_BROWSERS": ",".join(compat_browsers_list),
+                        "BEACON_COMPAT_DEVICES": ",".join(compat_devices_list),
+                    }
+                result = _run_layer_command(
+                    layer=layer,
+                    command=command,
+                    project_root=project_root,
+                    layer_dir=layer_dir,
+                    retries=rerun_flaky,
+                    run_id=run_id,
+                    stage="verify",
+                    extra_env=layer_extra_env,
+                )
+                if (
+                    layer == "visual"
+                    and visual_baseline_dir
+                    and visual_current_dir
+                    and str(result.get("status")) == "passed"
+                ):
+                    comparison = _run_visual_comparison(
+                        project_root=project_root,
+                        layer_dir=layer_dir,
+                        baseline_dir=visual_baseline_dir,
+                        current_dir=visual_current_dir,
+                        threshold=visual_threshold,
+                    )
+                    result["visual_compare"] = comparison["report"]
+                    result["evidence_ref"] = list(dict.fromkeys(result.get("evidence_ref", []) + comparison["evidence_ref"]))
+                    if comparison["status"] != "passed":
+                        result["status"] = "failed"
+                        result["reason_code"] = "visual_diff_exceeded_threshold"
+                layer_results.append(result)
+                continue
+
+            if layer == "visual" and visual_baseline_dir and visual_current_dir:
                 comparison = _run_visual_comparison(
                     project_root=project_root,
                     layer_dir=layer_dir,
@@ -2435,62 +2551,46 @@ def create(
                     current_dir=visual_current_dir,
                     threshold=visual_threshold,
                 )
-                result["visual_compare"] = comparison["report"]
-                result["evidence_ref"] = list(dict.fromkeys(result.get("evidence_ref", []) + comparison["evidence_ref"]))
-                if comparison["status"] != "passed":
-                    result["status"] = "failed"
-                    result["reason_code"] = "visual_diff_exceeded_threshold"
-            layer_results.append(result)
-            continue
+                layer_results.append(
+                    {
+                        "layer": "visual",
+                        "status": comparison["status"],
+                        "reason_code": "visual_compare_only",
+                        "command": None,
+                        "exit_code": None,
+                        "evidence_ref": comparison["evidence_ref"],
+                        "visual_compare": comparison["report"],
+                    }
+                )
+                continue
 
-        if layer == "visual" and visual_baseline_dir and visual_current_dir:
-            comparison = _run_visual_comparison(
-                project_root=project_root,
-                layer_dir=layer_dir,
-                baseline_dir=visual_baseline_dir,
-                current_dir=visual_current_dir,
-                threshold=visual_threshold,
-            )
-            layer_results.append(
-                {
-                    "layer": "visual",
-                    "status": comparison["status"],
-                    "reason_code": "visual_compare_only",
-                    "command": None,
-                    "exit_code": None,
-                    "evidence_ref": comparison["evidence_ref"],
-                    "visual_compare": comparison["report"],
-                }
-            )
-            continue
-
-        if layer in {"ui", "functional"} and ui_guard is not None:
-            payload = {
-                "layer": layer,
-                "status": ui_guard["status"],
-                "reason_code": ui_guard["reason_code"],
-                "detail": ui_guard["detail"],
-                "command": None,
-                "exit_code": None,
-                "evidence_ref": [],
-            }
-            if snapshot_payload:
-                snap_path = layer_dir / "snapshot.txt"
-                layer_dir.mkdir(parents=True, exist_ok=True)
-                snap_path.write_text(snapshot_payload, encoding="utf-8")
-                payload["evidence_ref"].append(str(snap_path.relative_to(project_root)))
-            layer_results.append(payload)
-        else:
-            layer_results.append(
-                {
+            if layer in {"ui", "functional"} and ui_guard is not None:
+                payload = {
                     "layer": layer,
-                    "status": "not_executed",
-                    "reason_code": "layer_command_missing",
+                    "status": ui_guard["status"],
+                    "reason_code": ui_guard["reason_code"],
+                    "detail": ui_guard["detail"],
                     "command": None,
                     "exit_code": None,
                     "evidence_ref": [],
                 }
-            )
+                if snapshot_payload:
+                    snap_path = layer_dir / "snapshot.txt"
+                    layer_dir.mkdir(parents=True, exist_ok=True)
+                    snap_path.write_text(snapshot_payload, encoding="utf-8")
+                    payload["evidence_ref"].append(str(snap_path.relative_to(project_root)))
+                layer_results.append(payload)
+            else:
+                layer_results.append(
+                    {
+                        "layer": layer,
+                        "status": "not_executed",
+                        "reason_code": "layer_command_missing",
+                        "command": None,
+                        "exit_code": None,
+                        "evidence_ref": [],
+                    }
+                )
 
     ui_action_map = _parse_ui_action_evidence(ui_action_evidence)
     detected_actions = _detect_ui_actions(
@@ -2592,7 +2692,7 @@ def create(
 
     qa9_tc_execution_map: dict[str, dict[str, Any]] = {}
     qa9_tc_failure_detected = False
-    if qa9_matrix_payload:
+    if qa9_matrix_payload and not matrix_row_execution:
         qa9_tc_execution_map = _execute_qa9_tc_entries(
             project_root=project_root,
             run_id=run_id,
@@ -2634,7 +2734,7 @@ def create(
             }
         )
 
-    if qa9_matrix_payload:
+    if qa9_matrix_payload and not matrix_row_execution:
         execution_payload["qa9_matrix_schema_version"] = qa9_matrix_payload.get("schema_version")
         auto_missing_command: list[str] = []
         entries = qa9_matrix_payload.get("entries")

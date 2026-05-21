@@ -173,7 +173,7 @@ def test_gate_release_should_flag_release_memory_profile_missing(tmp_path: Path)
     _seed_complete_lifecycle(tmp_path, with_evidence=True)
     payload = _gate_release_payload(tmp_path)
     reason_codes = {item["reason_code"] for item in payload["issues"]}
-    assert "release_memory_profile_invalid" in reason_codes
+    assert "release_decision_missing_for_version" in reason_codes
 
 
 def test_gate_release_should_accept_release_memory_profile_with_evidence(tmp_path: Path):

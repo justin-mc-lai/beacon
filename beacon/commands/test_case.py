@@ -13,6 +13,7 @@ from typing import Any, Optional
 import typer
 
 from beacon.utils.artifact_paths import qa_docs_dir, qa_matrix_candidates, qa_matrix_output, uses_machine_surface
+from beacon.utils.markdown_first_freeze import markdown_first_freeze_supported, strip_fulltext_mirrors
 from beacon.utils.qa9 import (
     QA9_TYPES,
     build_qa_strategy,
@@ -1815,6 +1816,8 @@ def create(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     matrix_path = qa_matrix_output(project_root, resolved_version, feature_slug, "ac-test-matrix")
     matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    if markdown_first_freeze_supported(resolved_version):
+        matrix_payload = strip_fulltext_mirrors(matrix_payload)
     matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
     qa9_matrix_path = (
         Path(matrix_output)
@@ -1822,7 +1825,11 @@ def create(
         else qa_matrix_output(project_root, resolved_version, feature_slug, "qa9-matrix")
     )
     qa9_matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    if markdown_first_freeze_supported(resolved_version):
+        qa9_payload = strip_fulltext_mirrors(qa9_payload)
     qa9_matrix_path.write_text(json.dumps(qa9_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    if markdown_first_freeze_supported(resolved_version):
+        scenario_payload = strip_fulltext_mirrors(scenario_payload)
     scenario_map_path = write_story_scenario_map(
         project_root,
         version=resolved_version,

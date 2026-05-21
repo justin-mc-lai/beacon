@@ -648,10 +648,23 @@ def _closure_analysis(documents: dict[str, str], metadata: dict[str, dict[str, s
     test_case_text = documents.get("test_case", "")
     story_ac = sorted(set(_extract_ac_ids(story_text)))
     test_ac = sorted(set(_extract_ac_ids(test_case_text)))
+    goal_sections = [
+        "## 1. overview",
+        "## overview",
+        "## 2. 目标",
+        "## 目标",
+        "## goals",
+    ]
+    scope_sections = [
+        "## 2. scope",
+        "## scope",
+        "## 4. 范围",
+        "## 范围",
+    ]
     checks = {
-        "goal_defined": bool(metadata.get("prd", {}).get("title")) and _has_any_section(prd_text, ["## 1. overview", "## overview"]),
+        "goal_defined": bool(metadata.get("prd", {}).get("title")) and _has_any_section(prd_text, goal_sections),
         "main_flow_defined": _has_any_section(story_text, ["## story", "## user story"]),
-        "scope_defined": _has_any_section(prd_text, ["## 2. scope", "## scope"]),
+        "scope_defined": _has_any_section(prd_text, scope_sections),
         "acceptance_coverage_sufficient": bool(story_ac) and bool(test_ac) and set(story_ac).issubset(set(test_ac)),
         "blocking_unknowns": _placeholder_count(prd_text) + _placeholder_count(story_text) + _placeholder_count(test_case_text) > 0,
     }

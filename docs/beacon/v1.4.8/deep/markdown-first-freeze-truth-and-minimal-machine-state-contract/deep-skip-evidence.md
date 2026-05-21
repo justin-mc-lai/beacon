@@ -1,0 +1,22 @@
+# Deep Skip Evidence
+
+- schema_version: `1.0`
+- feature: `markdown-first-freeze-truth-and-minimal-machine-state-contract`
+- feature_slug: `markdown-first-freeze-truth-and-minimal-machine-state-contract`
+- version: `v1.4.8`
+- generated_at: `2026-05-21T11:51:46.252490+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/v1.4.8/prd/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+  "user_story": "docs/beacon/v1.4.8/user-story/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+  "test_case": "docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- lineage_policy: `trace-on-promotion; L0/L1 are non-canonical support projections, L2 requires truth-surface adoption, L3 belongs to PRD/user-story/test-case`
+- artifact_type: `deep_skip_evidence`
+- status: `not_applicable`
+- skip_reason: ``
+- accepted: `False`

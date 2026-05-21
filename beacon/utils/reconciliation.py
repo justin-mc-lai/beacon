@@ -186,11 +186,21 @@ def detect_implementation_first_reconciliation_needed(
 
     ledger = load_implementation_writeback_ledger(project_root, version=resolved_version, feature=feature)
     current_revision_id = str(revision_state.get("revision_id", "") or "")
+    entries = ledger.get("entries") if isinstance(ledger.get("entries"), list) else []
+    has_current_implementation = any(
+        isinstance(item, dict)
+        and str(item.get("revision_id", "") or "") == current_revision_id
+        and str(item.get("run_id", "") or "").strip()
+        for item in entries
+    )
+    if has_current_implementation:
+        return {"required": False, "reason_code": "", "artifact_path": "", "artifact": {}}
+
     has_prior_implementation = any(
         isinstance(item, dict)
         and str(item.get("revision_id", "") or "")
         and str(item.get("revision_id", "") or "") != current_revision_id
-        for item in (ledger.get("entries") or [])
+        for item in entries
     )
     if not has_prior_implementation:
         return {"required": False, "reason_code": "", "artifact_path": "", "artifact": {}}

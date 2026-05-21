@@ -24,6 +24,7 @@ from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
 from beacon.utils.implementation_design import extract_prd_feature_sections
+from beacon.utils.material_gate_contract import build_material_gate_preflight
 from beacon.utils.project_metadata import resolve_project_metadata_view
 from beacon.utils.requirement_parsing import load_machine_research_projection
 from beacon.utils.revision_delta import (
@@ -1698,7 +1699,6 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "recommended_command": str(technical_review_gate.get("contract_json_path") or ""),
         }
         return 2, payload
-
     story = load_story_state(
         project_root,
         version=resolved_version,
@@ -1808,6 +1808,20 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
     reference_only_services = _normalize_string_list(git_workflow.get("reference_only_services")) or _normalize_string_list(
         baseline.get("reference_only_services")
     ) or ["docs"]
+    material_gate_preflight = build_material_gate_preflight(project_root, version=resolved_version, feature=feature)
+    if bool(material_gate_preflight.get("blocked")):
+        payload = {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "blocked": True,
+            "reason_code": str(material_gate_preflight.get("reason_code") or "material_gate_contract_blocked"),
+            "feature": feature,
+            "feature_slug": feature_slug(feature),
+            "version": resolved_version,
+            "material_gate_preflight": material_gate_preflight,
+            "recommended_command": f'beacon doctor sync-technical-review-contract "{feature}" --project-root {project_root} --version {resolved_version} --review-status approved',
+        }
+        return 2, payload
 
     prd_content = _read_text(project_root / source_refs["prd"])
     prd_candidates = _extract_prd_task_candidates(prd_content)
@@ -2209,6 +2223,17 @@ def build_implementation_plan_gate_payload(project_root: Path, *, version: str =
                 "reason_code": str(
                     blueprint_projection_gate.get("reason_code", "") or "architecture_blueprint_projection_missing"
                 ),
+            }
+        )
+        return payload
+    material_gate_preflight = build_material_gate_preflight(project_root, version=resolved_version, feature=feature)
+    payload["material_gate_preflight"] = material_gate_preflight
+    if bool(material_gate_preflight.get("blocked")):
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": str(material_gate_preflight.get("reason_code") or "material_gate_contract_blocked"),
             }
         )
         return payload

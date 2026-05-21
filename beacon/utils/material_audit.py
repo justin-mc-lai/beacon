@@ -9,6 +9,14 @@ from typing import Any
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.implementation_plan import list_implementation_git_workflow_contracts
+from beacon.utils.markdown_first_freeze import (
+    markdown_first_freeze_supported,
+    parse_markdown_truth_projection,
+    stable_text_hash,
+    stable_text_hash_uri,
+    validate_minimal_freeze_state,
+    write_minimal_freeze_state,
+)
 from beacon.utils.requirement_deepening import requirement_paths
 from beacon.utils.revision_state import load_revision_state, revision_state_file
 from beacon.utils.story_state import _baseline_hash, machine_story_path
@@ -148,6 +156,29 @@ def _requirement_package_failure_summary(checks: list[dict[str, Any]]) -> dict[s
                     }.get(str(drift_code), "stale_prd_machine_mirror")
                     detail = drift_detail if isinstance(drift_detail, dict) else {"value": drift_detail}
                     _push(category, {"feature": str(feature), **detail})
+        elif name == "markdown_first_freeze_truth_gate":
+            drift_by_feature = info.get("drift_by_feature") if isinstance(info.get("drift_by_feature"), dict) else {}
+            for feature, drift in drift_by_feature.items():
+                if not isinstance(drift, dict):
+                    continue
+                for drift_code, drift_detail in drift.items():
+                    detail = drift_detail if isinstance(drift_detail, dict) else {"value": drift_detail}
+                    diagnostics = detail.get("diagnostics") if isinstance(detail.get("diagnostics"), list) else []
+                    for diagnostic in diagnostics:
+                        if not isinstance(diagnostic, dict):
+                            continue
+                        reason_code = str(diagnostic.get("reason_code") or drift_code)
+                        category = {
+                            "baseline_hash_mismatch": "baseline_hash_mismatch",
+                            "missing_markdown_truth": "missing_requirement_artifact",
+                            "ambiguous_refreeze_status": "ambiguous_refreeze_status",
+                            "prd_ac_parse_failed": "markdown_parser_failure",
+                            "user_story_ac_parse_failed": "markdown_parser_failure",
+                            "missing_test_case_coverage": "missing_machine_ac_matrix",
+                        }.get(reason_code, "markdown_first_freeze_truth_gate")
+                        _push(category, {"feature": str(feature), "gate": drift_code, **diagnostic})
+                    if not diagnostics:
+                        _push("markdown_first_freeze_truth_gate", {"feature": str(feature), "gate": drift_code, **detail})
         else:
             _push(f"material_check_failed:{name}", {"check": name})
     return {
@@ -169,6 +200,7 @@ def build_material_audit(
     requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     requires_prd_mirror_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 11)
     requires_requirement_deepening = _parse_semver_tuple(resolved_version) >= (1, 3, 12)
+    requires_markdown_first_freeze = markdown_first_freeze_supported(resolved_version)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -261,6 +293,7 @@ def build_material_audit(
 
     revision_drift_by_feature: dict[str, dict[str, Any]] = {}
     prd_mirror_drift_by_feature: dict[str, dict[str, Any]] = {}
+    markdown_first_drift_by_feature: dict[str, dict[str, Any]] = {}
     if requires_change_loop_dual_write:
         for name in feature_names:
             revision_path = revision_state_file(root, resolved_version, name)
@@ -299,23 +332,53 @@ def build_material_audit(
                 legacy_markdown = ""
                 if isinstance(legacy_payload, dict):
                     legacy_markdown = str(legacy_payload.get("content") or legacy_payload.get("markdown") or "").strip()
-                if not legacy_path.exists() or legacy_markdown != markdown:
+                legacy_hash = str((legacy_payload or {}).get("markdown_hash") or "").strip() if isinstance(legacy_payload, dict) else ""
+                legacy_source_path = ""
+                if isinstance(legacy_payload, dict) and isinstance(legacy_payload.get("source_paths"), dict):
+                    legacy_source_path = str(legacy_payload["source_paths"].get("prd") or "").strip()
+                legacy_ok = (
+                    legacy_path.exists()
+                    and (
+                        (legacy_hash == stable_text_hash_uri(markdown_raw) and legacy_source_path.endswith(f"/prd/{name}.md"))
+                        if requires_markdown_first_freeze
+                        else legacy_markdown == markdown
+                    )
+                )
+                if not legacy_ok:
                     drift["legacy_machine_mirror_sync"] = {
                         "path": str(legacy_path.relative_to(root)) if legacy_path.exists() else str(legacy_path),
                         "exists": legacy_path.exists(),
+                        "mode": "markdown_first_state" if requires_markdown_first_freeze else "fulltext_mirror",
+                        "markdown_hash": legacy_hash,
+                        "expected_markdown_hash": stable_text_hash_uri(markdown_raw) if requires_markdown_first_freeze else "",
                     }
                 canonical_path = root / "docs" / "beacon" / resolved_version / ".machine" / "prd" / f"{name}.canonical.json"
                 canonical_payload = _read_json(canonical_path)
                 canonical_markdown = str(canonical_payload.get("markdown") or "").strip() if isinstance(canonical_payload, dict) else ""
-                if not canonical_path.exists() or canonical_markdown != markdown:
+                canonical_hash = str((canonical_payload or {}).get("markdown_hash") or "").strip() if isinstance(canonical_payload, dict) else ""
+                canonical_source_path = ""
+                if isinstance(canonical_payload, dict) and isinstance(canonical_payload.get("source_paths"), dict):
+                    canonical_source_path = str(canonical_payload["source_paths"].get("prd") or "").strip()
+                canonical_ok = (
+                    canonical_path.exists()
+                    and (
+                        (canonical_hash == stable_text_hash_uri(markdown_raw) and canonical_source_path.endswith(f"/prd/{name}.md"))
+                        if requires_markdown_first_freeze
+                        else canonical_markdown == markdown
+                    )
+                )
+                if not canonical_ok:
                     drift["canonical_machine_mirror_sync"] = {
                         "path": str(canonical_path.relative_to(root)) if canonical_path.exists() else str(canonical_path),
                         "exists": canonical_path.exists(),
+                        "mode": "markdown_first_state" if requires_markdown_first_freeze else "fulltext_mirror",
+                        "markdown_hash": canonical_hash,
+                        "expected_markdown_hash": stable_text_hash_uri(markdown_raw) if requires_markdown_first_freeze else "",
                     }
                 compile_path = root / "docs" / "beacon" / resolved_version / ".machine" / "prd" / f"{name}.compile.json"
                 compile_payload = _read_json(compile_path)
                 compile_hash = str(compile_payload.get("compile_hash") or "").strip() if isinstance(compile_payload, dict) else ""
-                expected_compile_hash = _stable_hash(markdown_raw)
+                expected_compile_hash = stable_text_hash(markdown_raw)
                 compile_contract_ok = bool(compile_payload.get("contract_ok", False)) if isinstance(compile_payload, dict) else False
                 if not compile_path.exists() or compile_hash != expected_compile_hash or not compile_contract_ok:
                     drift["compile_machine_mirror_sync"] = {
@@ -346,6 +409,27 @@ def build_material_audit(
                     }
                 if drift:
                     prd_mirror_drift_by_feature[name] = drift
+
+    if requires_markdown_first_freeze:
+        for name in feature_names:
+            freeze_state = write_minimal_freeze_state(root, version=resolved_version, feature=name)
+            state_validation = validate_minimal_freeze_state(freeze_state)
+            projection = parse_markdown_truth_projection(root, version=resolved_version, feature=name)
+            drift: dict[str, Any] = {}
+            if state_validation.get("status") != "pass":
+                drift["minimal_state_contract"] = state_validation
+            if str(freeze_state.get("status") or "") != "frozen":
+                drift["freeze_state"] = {
+                    "status": freeze_state.get("status"),
+                    "diagnostics": freeze_state.get("diagnostics", []),
+                }
+            if projection.get("status") != "pass":
+                drift["markdown_truth_projection"] = {
+                    "status": projection.get("status"),
+                    "diagnostics": projection.get("diagnostics", []),
+                }
+            if drift:
+                markdown_first_drift_by_feature[name] = drift
 
     feature_status = "pass"
     if not feature_names:
@@ -398,6 +482,18 @@ def build_material_audit(
                     },
                 }
             )
+    if requires_markdown_first_freeze:
+        markdown_first_status = "pass" if not markdown_first_drift_by_feature else ("fail" if strict else "warn")
+        checks.append(
+            {
+                "name": "markdown_first_freeze_truth_gate",
+                "status": markdown_first_status,
+                "details": {
+                    "feature_count": len(feature_names),
+                    "drift_by_feature": markdown_first_drift_by_feature,
+                },
+            }
+        )
 
     checks.append(
         {

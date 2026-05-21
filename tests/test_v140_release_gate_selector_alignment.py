@@ -403,6 +403,44 @@ def test_v140_release_memory_profile_checks_latest_release_event_only(tmp_path: 
     assert check_release_memory_profile(tmp_path, GateMode.STRICT, "release", VERSION) == []
 
 
+def test_release_memory_profile_does_not_fallback_to_historical_release_event(tmp_path: Path, monkeypatch) -> None:
+    _write_json(tmp_path / ".beacon" / "gate-report.json", {"status": "Pass"})
+    _write_json(
+        tmp_path / ".beacon" / "memory" / "workflow-lifecycle.json",
+        {
+            "schema_version": "1.0",
+            "updated_at": "2026-05-21T00:00:00Z",
+            "items": [
+                {
+                    "event_id": "evt-v147",
+                    "run_id": "release:v1.4.7",
+                    "stage": "release",
+                    "event": "release_decision_recorded",
+                    "source": "release.check",
+                    "source_session_id": "release:v1.4.7",
+                    "evidence_ref": ["docs/beacon/v1.4.7/.machine/change/v1.4.7.json"],
+                    "ts": "2026-05-20T00:00:00Z",
+                    "details": {"version": "v1.4.7"},
+                }
+            ],
+        },
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "release_ready": False,
+            "acceptance": {"source": "qa_status"},
+            "acceptance_transaction": {"status": "pass"},
+        },
+    )
+
+    issues = check_release_memory_profile(tmp_path, GateMode.STRICT, "release", "v1.4.8")
+
+    assert [item["reason_code"] for item in issues] == ["release_decision_missing_for_version"]
+    assert issues[0]["details"] == {"version": "v1.4.8"}
+
+
 def test_v140_spec_consistency_uses_current_verify_run_selector(tmp_path: Path) -> None:
     # Current authoritative run is the verify-stage gate report run.
     _write_json(tmp_path / ".beacon" / "runs" / "run-current" / "state.json", {"run_id": "run-current", "version": VERSION})

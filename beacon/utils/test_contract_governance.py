@@ -151,6 +151,11 @@ def _is_requirement_deepening_entry(entry: dict[str, Any]) -> bool:
     return source.startswith("requirement-deepening:")
 
 
+def _is_advisory_projection_entry(entry: dict[str, Any]) -> bool:
+    source = str(entry.get("source") or "").strip().lower()
+    return source.startswith("research:")
+
+
 def _entry_release_blocking(lane: str) -> bool:
     return lane in {"feature_release_facing", "current_runtime_contract", "generated_surface_sync", "compatibility_contract", "browser_runtime_admission"}
 
@@ -382,7 +387,11 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
         mapping_status = "pass" if ac_id and tc_id and (evidence_path or lane == "generated_surface_sync") else "missing"
         if _entry_release_blocking(lane) and mapping_status != "pass":
             mapping_gaps.append(tc_id or ac_id or "unknown")
-        release_blocking = _entry_release_blocking(lane) and not _is_requirement_deepening_entry(entry)
+        release_blocking = (
+            _entry_release_blocking(lane)
+            and not _is_requirement_deepening_entry(entry)
+            and not _is_advisory_projection_entry(entry)
+        )
         normalized = {
             "tc_id": tc_id,
             "ac_id": ac_id,

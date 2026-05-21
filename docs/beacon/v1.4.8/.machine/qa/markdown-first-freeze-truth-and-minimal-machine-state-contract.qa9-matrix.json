@@ -1,0 +1,647 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+  "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+  "version": "v1.4.8",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "host",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-21T16:43:11.566515",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-21T16:43:11.564793",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-MDFIRST-001",
+      "ac_id": "AC-001",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-001 :: Markdown requirement documents are the canonical freeze truth",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"markdown_documents_are_canonical_freeze_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown requirement documents are the canonical freeze truth",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-001/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-002",
+      "ac_id": "AC-002",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-002 :: Fulltext machine mirrors are not treated as canonical truth",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"fulltext_machine_mirrors_are_not_truth_sources\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Fulltext machine mirrors are not treated as canonical truth",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-002/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-003",
+      "ac_id": "AC-003",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-003 :: Freeze-stage JSON contains only minimal state fields",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"freeze_stage_json_contains_only_minimal_state\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Freeze-stage JSON contains only minimal state fields",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-003/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-004",
+      "ac_id": "AC-004",
+      "layer": "runtime",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-004 :: Implement, QA, and release runtime evidence JSON remains supported",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"runtime_evidence_json_is_preserved\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Implement, QA, and release runtime evidence JSON remains supported",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-004/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-005",
+      "ac_id": "AC-005",
+      "layer": "parser",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-005 :: Gate parses AC and test coverage from Markdown before cache",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"gate_parses_ac_and_coverage_from_markdown_first\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Gate parses AC and test coverage from Markdown before cache",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-005/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-006",
+      "ac_id": "AC-006",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-006 :: Markdown parser failure blocks freeze/gate",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"markdown_parser_failure_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown parser failure blocks freeze/gate",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-006/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-007",
+      "ac_id": "AC-007",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-007 :: Markdown baseline hash mismatch blocks and routes to change",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"baseline_hash_mismatch_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown baseline hash mismatch blocks and routes to change",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-007/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-008",
+      "ac_id": "AC-008",
+      "layer": "gate",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-008 :: Missing or ambiguous refreeze status blocks",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"ambiguous_refreeze_status_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing or ambiguous refreeze status blocks",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-008/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-009",
+      "ac_id": "AC-009",
+      "layer": "diagnostics",
+      "qa_type": "unit",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-009 :: Diagnostics include path, line or section, hash, reason_code, and repair route",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"diagnostics_include_path_line_hash_reason_and_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Diagnostics include path, line or section, hash, reason_code, and repair route",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T195152560432",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T195152560432/qa9-tc/TC-MDFIRST-009/command.txt"
+    },
+    {
+      "tc_id": "TC-MDFIRST-010",
+      "ac_id": "AC-010",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "markdown-first-freeze-truth-and-minimal-machine-state-contract AC-010 :: Historical fulltext JSON remains readable while new freeze artifacts avoid fullt",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v148_markdown_first_freeze_truth.py -k \"historical_fulltext_json_is_readable_but_not_generated_for_new_freezes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Historical fulltext JSON remains readable while new freeze artifacts avoid fulltext duplication",
+      "evidence_path": ".beacon/evidence/test-results/markdown-first-freeze-truth-and-minimal-machine-state-contract/{run_id}/TC-MDFIRST-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+      "last_run_id": "run-20260521T171127074926",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260521T171127074926/qa9-tc/TC-MDFIRST-010/explore/command.txt"
+    }
+  ],
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-21T16:43:11.566555",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
+    "source": "research:docs/beacon/v1.4.8/research/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "Markdown truth layer：`research/`、`prd/`、`user-story/`、`qa/test-cases/`、`execution/`、`release/`。",
+        "Minimal machine state layer：只记录 hash、revision、status、diagnostics、transaction pointer。",
+        "Runtime evidence layer：只在 implement / QA / release 运行时写入过程、线程、session、trace、evidence JSON。"
+      ],
+      "decision_priority": [
+        "Markdown truth 高于 machine cache。",
+        "Deterministic parser 高于 LLM interpretation。",
+        "Minimal state cache 高于 fulltext mirror。",
+        "Runtime JSON 只属于 implement / QA / release 过程证据。",
+        "缺失或漂移时 fail closed，而不是从旧 JSON 猜测 truth。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown truth 高于 machine cache。",
+          "Deterministic parser 高于 LLM interpretation。",
+          "Minimal state cache 高于 fulltext mirror。",
+          "Runtime JSON 只属于 implement / QA / release 过程证据。",
+          "缺失或漂移时 fail closed，而不是从旧 JSON 猜测 truth。"
+        ],
+        "source": "research:docs/beacon/v1.4.8/research/markdown-first-freeze-truth-and-minimal-machine-state-contract.md"
+      }
+    ]
+  },
+  "coverage_families": [
+    "happy",
+    "negative",
+    "boundary",
+    "exception",
+    "recovery",
+    "compatibility",
+    "permission",
+    "stale-data-or-drift",
+    "downgrade-or-fallback"
+  ],
+  "requirement_completeness_verdict": "pass",
+  "supplement_focus_areas": [
+    "复核 requirement completeness 的补料方向"
+  ],
+  "supplement_recommended_command": "beacon test-case create \"markdown-first-freeze-truth-and-minimal-machine-state-contract\" --project <project-root> --version v1.4.8 --json",
+  "supplement_task": {
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
+    "target_artifact": "test-case",
+    "candidate_kind": "coverage",
+    "candidate_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility"
+    ],
+    "candidate_payload": {
+      "focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "open_questions": [
+        "happy 是否需要补成 machine-readable supplement candidate？",
+        "negative 是否需要补成 machine-readable supplement candidate？",
+        "boundary 是否需要补成 machine-readable supplement candidate？",
+        "exception 是否需要补成 machine-readable supplement candidate？"
+      ],
+      "missing_dimensions": [],
+      "high_risk_unresolved_categories": []
+    },
+    "source_truth_ref": "docs/beacon/v1.4.8/prd/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "writeback_target": "docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "rationale": "pass",
+    "confidence": "medium",
+    "human_decision": "pending",
+    "audit_trail_required": true,
+    "recommended_route": "beacon-test-case",
+    "recommended_command": "beacon test-case create \"markdown-first-freeze-truth-and-minimal-machine-state-contract\" --project <project-root> --version v1.4.8 --json",
+    "recommended_mode": "requirement-convergence"
+  },
+  "re_freeze_transaction": {
+    "schema_version": "1.0",
+    "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+    "version": "v1.4.8",
+    "revision_id": "R1",
+    "accepted_candidates": [
+      "GAP-001",
+      "GAP-002",
+      "GAP-003",
+      "GAP-004",
+      "GAP-005",
+      "GAP-006",
+      "GAP-007",
+      "GAP-008",
+      "GAP-009",
+      "GAP-010",
+      "GAP-011",
+      "GAP-012",
+      "GAP-013",
+      "GAP-014",
+      "GAP-015"
+    ],
+    "rejected_candidates": [],
+    "deferred_candidates": [],
+    "writeback_targets": [
+      "qa/test-cases.executable-matrix",
+      "user-story.acceptance-criteria"
+    ],
+    "machine_mirror_paths": {
+      "dir": "docs/beacon/v1.4.8/.machine/requirement",
+      "envelope": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.re-freeze-transaction.json"
+    },
+    "refreeze_required": true,
+    "revalidate_required": true,
+    "decision_count": 15,
+    "generated_at": "2026-05-21T08:43:08.151481+00:00"
+  }
+}
