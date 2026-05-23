@@ -193,11 +193,17 @@ def _classify_qa_failure_item(item: dict[str, Any]) -> str:
 def _qa_runtime_taxonomy(qa_status: dict[str, Any]) -> dict[str, Any]:
     qa9 = qa_status.get("qa9") if isinstance(qa_status.get("qa9"), dict) else {}
     tc_results = qa9.get("tc_results") if isinstance(qa9.get("tc_results"), list) else []
+    non_passing_results = [
+        item
+        for item in tc_results
+        if isinstance(item, dict)
+        and str(item.get("status") or item.get("layer_status") or "").strip().lower()
+        in {"blocked", "failed", "review_required"}
+    ]
     classes = sorted(
         {
             classification
-            for item in tc_results
-            if isinstance(item, dict)
+            for item in non_passing_results
             for classification in [_classify_qa_failure_item(item)]
             if classification
         }

@@ -27,9 +27,11 @@ from beacon.utils.skill_discovery import (
     write_skill_discovery_state,
 )
 from beacon.utils.skill_drift import build_skill_drift_report
+from beacon.utils.skill_eval_kit import materialize_skill_eval_kit, run_skill_eval
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
 registry_app = typer.Typer(name="registry", help="Inspect Beacon multi-skill registry")
+eval_kit_app = typer.Typer(name="eval-kit", help="Manage Beacon Skill Eval Kit")
 
 
 def _resolve_scope_path(project_root: Path, scope: str) -> Path:
@@ -443,3 +445,39 @@ def sync_check(
 
 
 app.add_typer(registry_app, name="registry")
+
+
+@eval_kit_app.command("init")
+def eval_kit_init(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Materialize default Skill Eval Kit cases, tags, splits, and regression core."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = materialize_skill_eval_kit(root)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") == "blocked":
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit ready: {payload.get('root')}")
+
+
+@eval_kit_app.command("run")
+def eval_kit_run(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    split: str = typer.Option("regression-core", "--split", help="Split to run: regression-core|optimization|holdout|all"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Run Skill Eval Kit cases and write runtime evidence."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = run_skill_eval(root, split=split)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") != "pass":
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit run: {payload.get('metrics_path')}")
+
+
+app.add_typer(eval_kit_app, name="eval-kit")

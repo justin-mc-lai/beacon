@@ -60,6 +60,7 @@ from beacon.utils.qa_runtime import (
     write_qa_session,
     write_qa_status,
 )
+from beacon.utils.qa_evo_deep import run_qa_evo_deep
 from beacon.utils.story_state import feature_slug
 from beacon.utils.skill_decision_surface import attach_skill_decision_surface
 from beacon.utils.subagent_readiness import (
@@ -92,6 +93,29 @@ session_app = typer.Typer(name="session", help="QA login/session state helpers")
 audit_app = typer.Typer(name="audit", help="QA audit truth helpers")
 app.add_typer(session_app, name="session")
 app.add_typer(audit_app, name="audit")
+
+
+@app.command("evo-deep")
+def evo_deep(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Materialize governed QA evo-deep routeable findings."""
+    project_root = Path(project) if project else Path.cwd()
+    payload = run_qa_evo_deep(project_root, version=version, feature=feature)
+    payload = _with_qa_surface(
+        payload,
+        reason_code=str(payload.get("validation", {}).get("issues", [{}])[0].get("reason_code", "")) if payload.get("validation", {}).get("blocked") else "",
+        blocked=bool(payload.get("validation", {}).get("blocked")),
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("validation", {}).get("blocked"):
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ QA evo-deep written: {payload.get('output_path')}")
 
 
 def _with_qa_surface(
