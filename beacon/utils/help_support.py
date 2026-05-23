@@ -396,7 +396,9 @@ def _build_brainstorm_hint(
         else "requirement-convergence"
     )
     recommended_output = (
-        "docs/brainstorms/"
+        f"docs/beacon/{str(digest.get('version') or '')}/research/{feature_slug(str(digest.get('feature') or 'feature'))}.md"
+        if recommended_route == "beacon-brainstorm" and _semver_tuple(str(digest.get("version") or "")) >= (1, 4, 9)
+        else "docs/brainstorms/"
         if recommended_route == "beacon-brainstorm"
         else f"docs/beacon/{str(digest.get('version') or '')}/"
     )

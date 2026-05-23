@@ -11,6 +11,7 @@ from beacon.utils.deep_lineage import build_deep_lineage_projection, infer_candi
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.support_research_topology import upsert_deep_summary_index
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version, runtime_feature_supported
 
 DEEP_LOOP_STATES = [
@@ -526,7 +527,7 @@ def run_deep_loop(
         title = DEEP_ARTIFACT_FAMILY[key].replace("-", " ").title()
         artifact_refs[key] = _write_artifact(project_root, artifact_paths[key], title, payload)
     supplement = build_deep_release_supplement(project_root, version=resolved_version, feature=feature, write=True)
-    return {
+    result = {
         "schema_version": "1.0",
         "status": "closed" if not supplement.get("blocked") else "blocked",
         "feature": feature,
@@ -545,6 +546,13 @@ def run_deep_loop(
         ),
         "generated_at": generated_at,
     }
+    result["support_research_writeback"] = upsert_deep_summary_index(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        payload=result,
+    )
+    return result
 
 
 def load_deep_artifact(project_root: Path, *, version: str, feature: str, artifact: str) -> dict[str, Any]:

@@ -8,7 +8,12 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
-from beacon.utils.markdown_first_freeze import markdown_first_freeze_supported, strip_fulltext_mirrors
+from beacon.utils.markdown_first_freeze import (
+    build_minimal_freeze_state,
+    markdown_first_freeze_supported,
+    parse_markdown_truth_projection,
+    strip_fulltext_mirrors,
+)
 from beacon.utils.requirement_parsing import build_research_projection
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
@@ -600,6 +605,88 @@ def build_requirement_completeness_gate(
     candidate_ledger = read_json(paths["candidate_ledger"], {})
     if not completeness:
         missing_paths = {key: str(path.relative_to(project_root)) for key, path in paths.items() if key != "dir"}
+        if markdown_first_freeze_supported(resolved_version):
+            markdown_projection = parse_markdown_truth_projection(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+            )
+            freeze_state = build_minimal_freeze_state(
+                project_root,
+                version=resolved_version,
+                feature=feature,
+            )
+            markdown_truth_ready = (
+                str(markdown_projection.get("status") or "").strip().lower() == "pass"
+                and str(freeze_state.get("status") or "").strip().lower() == "frozen"
+            )
+            if markdown_truth_ready:
+                recommended_command = (
+                    f'beacon doctor sync-materials --project-root {project_root} '
+                    f'--version {resolved_version} --feature "{feature}" --single-feature'
+                )
+                stage_gates = {
+                    "artifact_read_model": _status_payload(
+                        status="pass",
+                        reason_code="requirement_completeness_projection_missing",
+                        summary=(
+                            "machine completeness projection is missing, but Markdown-first "
+                            "requirement truth is frozen and parseable"
+                        ),
+                        details={"paths": missing_paths, "projection_status": "missing_nonblocking"},
+                    ),
+                    "decision_traceability": _status_payload(
+                        status="pass",
+                        summary="human requirement truth is carried by frozen Markdown surfaces",
+                    ),
+                    "coverage_closure": _status_payload(
+                        status="pass",
+                        summary="acceptance coverage is parseable from Markdown truth",
+                        details={
+                            "prd_ac_ids": list(markdown_projection.get("prd_ac_ids") or []),
+                            "user_story_ac_ids": list(markdown_projection.get("user_story_ac_ids") or []),
+                            "test_case_ac_ids": list(markdown_projection.get("test_case_ac_ids") or []),
+                        },
+                    ),
+                    "downgrade_control": _status_payload(
+                        status="pass",
+                        summary="missing completeness projection does not activate a truth downgrade",
+                    ),
+                    "stage_admission": _status_payload(
+                        status="pass",
+                        summary=f"{target_stage} admission uses frozen Markdown truth; projection sync is advisory",
+                        details={"target_stage": target_stage, "stage_ready": True, "stage_key": "markdown_first_truth"},
+                    ),
+                }
+                return {
+                    "schema_version": "1.0",
+                    "enabled": True,
+                    "status": "pass",
+                    "blocked": False,
+                    "reason_code": "requirement_completeness_projection_missing",
+                    "target_stage": target_stage,
+                    "feature": feature,
+                    "version": resolved_version,
+                    "stage_ready": True,
+                    "paths": missing_paths,
+                    "projection_status": "missing_nonblocking",
+                    "recommended_command": recommended_command,
+                    "next_action": target_stage,
+                    "stage_gates": stage_gates,
+                    "human_loop_handoff": {
+                        "action": target_stage,
+                        "reason": "markdown_first_truth_pass",
+                        "recommended_command": "",
+                        "focus_areas": [],
+                    },
+                    "markdown_first_truth": {
+                        "status": "pass",
+                        "projection": markdown_projection,
+                        "freeze_state": freeze_state,
+                    },
+                    "completeness": {},
+                    "freeze_contract": freeze_contract,
+                }
         stage_gates = {
             "artifact_read_model": _status_payload(
                 status="blocked",

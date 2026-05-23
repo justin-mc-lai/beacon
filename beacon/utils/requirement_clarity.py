@@ -10,6 +10,7 @@ from beacon.utils.artifact_paths import human_execution_file, machine_execution_
 from beacon.utils.diagram_truth import diagram_truth_findings, load_feature_diagram_truth
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.support_research_topology import support_topology_diagnostics
 from beacon.utils.versioning import (
     normalize_version,
     project_runtime_feature_enabled,
@@ -546,6 +547,27 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
         diagram_truth=diagram_truth,
     )
     payload["version_projection_truth_contract"] = projection_truth_contract
+    support_topology = support_topology_diagnostics(project_root, version=resolved_version, feature=feature)
+    payload["support_write_topology_contract"] = support_topology
+    for diagnostic in support_topology.get("diagnostics", []) if isinstance(support_topology.get("diagnostics"), list) else []:
+        if not isinstance(diagnostic, dict):
+            continue
+        findings.append(
+            {
+                "file": str(project_root / str(diagnostic.get("actual_path") or diagnostic.get("expected_path") or "")),
+                "line": 1,
+                "kind": "support_write_topology_violation",
+                "text": (
+                    f"{diagnostic.get('reason_code')}: source_skill={diagnostic.get('source_skill', '')} "
+                    f"expected={diagnostic.get('expected_path', '')} actual={diagnostic.get('actual_path', '')}"
+                ),
+                "reason_code": str(diagnostic.get("reason_code") or ""),
+                "source_skill": str(diagnostic.get("source_skill") or ""),
+                "expected_path": str(diagnostic.get("expected_path") or ""),
+                "actual_path": str(diagnostic.get("actual_path") or ""),
+                "repair_route": str(diagnostic.get("repair_route") or "beacon-change-refreeze"),
+            }
+        )
     if bool(human_closure_contract.get("required")):
         if not bool(human_closure_contract.get("research_exists")):
             findings.append(
@@ -722,6 +744,17 @@ def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
             f"- projection_types: {', '.join(projection_truth.get('projection_types', [])) if isinstance(projection_truth.get('projection_types'), list) else 'none'}",
             f"- missing_fields: {', '.join(projection_truth.get('missing_fields', [])) if isinstance(projection_truth.get('missing_fields'), list) else 'none'}",
             f"- missing_ref_targets: {', '.join(projection_truth.get('missing_ref_targets', [])) if isinstance(projection_truth.get('missing_ref_targets'), list) else 'none'}",
+            "",
+            "## Support Write Topology Contract",
+        ]
+    )
+    support_topology = payload.get("support_write_topology_contract") if isinstance(payload.get("support_write_topology_contract"), dict) else {}
+    lines.extend(
+        [
+            f"- supported: `{bool(support_topology.get('supported', False))}`",
+            f"- status: `{support_topology.get('status', '')}`",
+            f"- reason_code: `{support_topology.get('reason_code', '')}`",
+            f"- diagnostic_count: `{len(support_topology.get('diagnostics') or []) if isinstance(support_topology.get('diagnostics'), list) else 0}`",
             "",
             "## Scanned Files",
         ]
