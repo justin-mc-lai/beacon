@@ -19,33 +19,13 @@ echo ""
 # Create Claude skills directory if it doesn't exist
 mkdir -p "${CLAUDE_SKILLS_DIR}"
 
-# List of host-visible beacon sub-skills to install
-BEACON_SUBSKILLS=(
-    "beacon-archive"
-    "beacon-brainstorm"
-    "beacon-ceo-review"
-    "beacon-change"
-    "beacon-change-refreeze"
-    "beacon-deep"
-    "beacon-design-review"
-    "beacon-doctor"
-    "beacon-friction-intake"
-    "beacon-help"
-    "beacon-implement"
-    "beacon-learn"
-    "beacon-prd"
-    "beacon-prd-bootstrap"
-    "beacon-prototype"
-    "beacon-qa"
-    "beacon-real-project-validation"
-    "beacon-release"
-    "beacon-status"
-    "beacon-test-case"
-    "beacon-toolkit-branch-governance"
-    "beacon-toolkit-lighthouse"
-    "beacon-toolkit-metadata"
-    "beacon-user-story"
-    "using-beacon"
+BEACON_SUBSKILLS=()
+while IFS= read -r skill; do
+    BEACON_SUBSKILLS+=("${skill}")
+done < <(
+    find "${SKILLS_SOURCE}" -mindepth 2 -maxdepth 2 -name "SKILL.md" -print \
+        | sed "s#${SKILLS_SOURCE}/##; s#/SKILL.md##" \
+        | sort
 )
 
 # Install main beacon skill as repo root so Claude can scan

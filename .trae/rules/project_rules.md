@@ -32,6 +32,7 @@
 - `beacon-prd-bootstrap`
 - `beacon-prototype`
 - `beacon-qa`
+- `beacon-qa-evo-deep`
 - `beacon-real-project-validation`
 - `beacon-release`
 - `beacon-security-review`
@@ -45,5 +46,6 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
 
 

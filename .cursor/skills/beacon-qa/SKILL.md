@@ -1,6 +1,6 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.7 runtime surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.10 runtime surface.
 ---
 
 # Beacon QA
@@ -10,8 +10,8 @@ description: Use when the user wants to verify a Beacon feature, inspect new fin
 This skill routes verification work through Beacon's `qa` surface.
 
 QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
-The active human-facing contract is aligned to the current `v1.4.7` docs line (`docs/beacon/v1.4.7/`).
-Compatibility bridges may still exist for older entrypoints or wrappers, but current QA judgment should bind to the `v1.4.7` requirement package.
+The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
+Compatibility bridges may still exist for older entrypoints or wrappers, but current QA judgment should bind to the `v1.4.10` requirement package.
 
 ## When to Use
 
@@ -33,6 +33,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - route back to `implement` for execution gaps
 - route to `change` for truth drift
 - route to `test-case` when coverage truth is insufficient
+- route to `beacon-qa-evo-deep` when deep QA support analysis is needed for state machines, business flows, scenario combinations, permission boundaries, data consistency, cross-surface closure, or repeated QA round memory
 - evaluate layered verdicts before handing off to `release`
 
 ## Common Rationalizations
@@ -92,6 +93,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - Passing one layer does not imply release readiness.
 - Browser or live-environment blockers must be recorded explicitly, not masked as product failure.
 - `qa` cannot rewrite frozen truth or override gate truth by itself.
+- `beacon-qa-evo-deep` can produce routeable findings and release supplement input, but it cannot replace `beacon qa run` or produce QA/release verdicts.
 
 ## Learning Notes
 
@@ -102,6 +104,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 ## Backstop CLI
 
 - `beacon qa ...`
+- `beacon qa evo-deep "<feature>" --project . --version <version>` for deep QA support findings
 - `beacon implement ...` for repair handoff
 - `beacon release ...` only after layered evidence is sufficient
 
