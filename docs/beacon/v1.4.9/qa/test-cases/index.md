@@ -4,6 +4,7 @@
 
 - `real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
 - `ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
+- `read-only-support-research-write-topology-gate-contract.md`
 
 ## Machine Secondary Surface
 
