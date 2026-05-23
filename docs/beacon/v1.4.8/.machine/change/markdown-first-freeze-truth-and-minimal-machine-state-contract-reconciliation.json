@@ -1,0 +1,114 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+  "feature_slug": "markdown-first-freeze-truth-and-minimal-machine-state-contract",
+  "version": "v1.4.8",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-21T11:37:06.236204+00:00",
+  "detected_revision_id": "R4",
+  "source_revision_id": "R3",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R3",
+      "run_id": "run-20260521T091058Z-60e4",
+      "recorded_at": "2026-05-21T09:10:59.672641+00:00",
+      "implemented_item_ids": [
+        "AC-007",
+        "AC-009",
+        "AC-010",
+        "AC-004",
+        "AC-005",
+        "AC-001",
+        "TASK-001",
+        "AC-008",
+        "AC-002",
+        "AC-003",
+        "AC-006"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/release-gate-report.json",
+        ".omc/sessions/7bed93aa-b19a-4459-aca9-8f4cefda38ea.json",
+        ".omc/sessions/f83c02d5-6d74-471d-9e25-0aad3b43d255.json",
+        "README.md",
+        "beacon/commands/prd.py",
+        "beacon/commands/test_case.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/requirement_deepening.py",
+        "docs/beacon/v1.4.7/execution/index.md"
+      ]
+    },
+    {
+      "revision_id": "R3",
+      "run_id": "run-20260521T091235Z-f040",
+      "recorded_at": "2026-05-21T09:12:35.819599+00:00",
+      "implemented_item_ids": [
+        "TASK-001",
+        "AC-003",
+        "AC-006",
+        "AC-007",
+        "AC-010",
+        "AC-002",
+        "AC-001",
+        "AC-009",
+        "AC-008",
+        "AC-004",
+        "AC-005"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        ".omc/sessions/7bed93aa-b19a-4459-aca9-8f4cefda38ea.json",
+        ".omc/sessions/f83c02d5-6d74-471d-9e25-0aad3b43d255.json",
+        "README.md",
+        "beacon/commands/prd.py",
+        "beacon/commands/test_case.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/requirement_deepening.py",
+        "docs/beacon/v1.4.7/execution/index.md"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.8/prd/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "docs/beacon/v1.4.8/user-story/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.8/user-story/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "docs/beacon/v1.4.8/qa/test-cases/markdown-first-freeze-truth-and-minimal-machine-state-contract.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R4",
+    "current_delivery_status": "idle"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"markdown-first-freeze-truth-and-minimal-machine-state-contract\" --project-root . --version v1.4.8 --reason \"implementation-first-reconciliation\""
+  }
+}

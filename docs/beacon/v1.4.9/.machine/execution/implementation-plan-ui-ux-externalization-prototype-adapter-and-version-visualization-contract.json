@@ -1,0 +1,1838 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-ui-ux-externalization-prototype-adapter-and-version-visualization-contract-r3",
+  "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "version": "v1.4.9",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:2a3971da3e06d284679bcf7888a42a56a6098de9099b3529e1af9df955c4481d",
+  "plan_hash": "sha256:3d6d208e9850b6381d3b8a3ff3ab5dbc6ae405c3e6318206749d3a74a5ce82d5",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "prd": "docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "test_case": "docs/beacon/v1.4.9/qa/test-cases/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "revision_delta": "docs/beacon/v1.4.9/.machine/execution/revision-delta-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+    "ac_matrix": "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.9/.machine/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.9/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.9",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "ui_ux_route",
+      "adapter_binding",
+      "requirement_visualization",
+      "truth_binding"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "ownership",
+      "state machine",
+      "decision priority"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `docs/beacon/v1.4.8/research/beacon-vnext-business-flow-and-state-machine-document-design.md`",
+        "3. Beacon 对整版需求的人类可读 projection 仍不足，缺少 business flow、state-machine 和三件套映射图。",
+        "6. 冻结版本级 state-machine projection。",
+        "business flow、state-machine 和 three-piece map 只做可读投影，不替代 PRD、user-story、test-case。",
+        "- state-machine projection contract",
+        "state-machine projection 必须只解释 stable closure states，不解释页面 widget 交互状态。",
+        "每个 business flow、state-machine、three-piece map 至少必须声明：",
+        "D --> J[Business flow / state-machine / map projection]"
+      ],
+      "decision-priority": [
+        "1. `ui-ux-dev` owns UI/UX execution.",
+        "2. Beacon owns requirement truth and gates.",
+        "3. Accepted design result must be bound before implementation.",
+        "4. Projection without truth bindings is invalid.",
+        "5. Historical compatibility must not override v1.4.9 ownership.",
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `ui_ux_route`",
+        "- `adapter_binding`",
+        "- `requirement_visualization`",
+        "- `truth_binding`",
+        "- State axes must not be silently compressed into one implicit status field."
+      ]
+    },
+    "generated_at": "2026-05-22T02:59:18.450325+00:00",
+    "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "prd_ref": "docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "version": "v1.4.9",
+    "source": "research:docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "`ui-ux-dev` owns UI/UX execution。",
+        "Beacon owns requirement truth、gate、adapter binding、evidence closure。",
+        "`prototype` owns accepted design result 的 requirement-facing adapter，不拥有设计生成。",
+        "`beacon-design-review` owns route / governance support，不拥有 UI/UX execution verdict。",
+        "version-level visualization owns human-readable projection，不拥有 canonical truth。"
+      ],
+      "decision_priority": [
+        "Beacon requirement truth 高于设计输出。",
+        "`ui-ux-dev` 负责 UI/UX execution，Beacon 负责 governance。",
+        "Accepted design result 必须进入 adapter binding，否则不能解锁 implementation。",
+        "Business flow / state-machine / map 是 projection，不是 canonical truth。",
+        "没有 truth bindings 的图不算 freeze-facing projection。",
+        "Historical prototype bundles 可兼容读取，但新版本不得继续把 Beacon 当设计生成器。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Beacon requirement truth 高于设计输出。",
+          "`ui-ux-dev` 负责 UI/UX execution，Beacon 负责 governance。",
+          "Accepted design result 必须进入 adapter binding，否则不能解锁 implementation。",
+          "Business flow / state-machine / map 是 projection，不是 canonical truth。",
+          "没有 truth bindings 的图不算 freeze-facing projection。",
+          "Historical prototype bundles 可兼容读取，但新版本不得继续把 Beacon 当设计生成器。"
+        ],
+        "source": "research:docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.9/.machine/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 Beacon 必须停止扩张内部 UI/UX execution",
+      "description": "Beacon 后续不得把 UI/UX exploration、system、review、polish、extract、library lookup 作为主能力继续增强。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-UXEXT-001",
+        "TC-014",
+        "TC-015",
+        "TC-016",
+        "TC-017",
+        "TC-018",
+        "TC-019",
+        "TC-020",
+        "TC-021",
+        "TC-022",
+        "TC-UXEXT-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-UXEXT-001",
+        "TC-UXEXT-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260522T025925Z-9fb0-tester",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260522T110009971576",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/summary.json",
+        "verify:run-20260522T110606787215",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/summary.json",
+        "verify:run-20260522T111210438355",
+        "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/ac-closure.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept",
+        "run:run-20260522T031243Z-1fe4",
+        "verify:run-20260522T031243Z-1fe4-tester",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/summary.json",
+        "verify:run-20260522T111246990781",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/summary.json",
+        "verify:run-20260522T112029809593",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/summary.json",
+        "verify:run-20260522T112735760896"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.369320+00:00",
+      "completed_at": "2026-05-22T03:12:44.445457+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 Beacon 必须把 UI/UX execution 请求路由到 `ui-ux-dev`",
+      "description": "当用户意图属于 UI/UX execution 时，Beacon 应推荐或桥接到： `ui-ux-dev-explore` `ui-ux-dev-system` `ui-ux-dev-review` `ui-ux-dev-polish` `ui-ux-dev-extract` `ui-ux-dev-library`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-UXEXT-012",
+        "TC-UXEXT-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-UXEXT-003",
+        "TC-UXEXT-012"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260522T025925Z-9fb0-tester",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260522T110009971576",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/summary.json",
+        "verify:run-20260522T110606787215",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/summary.json",
+        "verify:run-20260522T111210438355",
+        "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/ac-closure.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept",
+        "run:run-20260522T031243Z-1fe4",
+        "verify:run-20260522T031243Z-1fe4-tester",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/summary.json",
+        "verify:run-20260522T111246990781",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/summary.json",
+        "verify:run-20260522T112029809593",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/summary.json",
+        "verify:run-20260522T112735760896"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436676+00:00",
+      "completed_at": "2026-05-22T03:12:44.445492+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 Beacon 不得在 `ui-ux-dev` 缺失时静默 fallback 到内建设计生成",
+      "description": "如果 `ui-ux-dev` 或其 upstream 不可用，应路由到 `ui-ux-dev-bootstrap`，而不是静默使用 Beacon prototype 生成。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-006",
+        "AC-005",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TC-UXEXT-004",
+        "TC-UXEXT-006",
+        "TC-UXEXT-005",
+        "TC-UXEXT-007",
+        "TC-UXEXT-008",
+        "TC-UXEXT-009",
+        "TC-UXEXT-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-UXEXT-004",
+        "TC-UXEXT-005",
+        "TC-UXEXT-006",
+        "TC-UXEXT-007",
+        "TC-UXEXT-008",
+        "TC-UXEXT-009",
+        "TC-UXEXT-010"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260522T025925Z-9fb0-tester",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260522T110009971576",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/summary.json",
+        "verify:run-20260522T110606787215",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/summary.json",
+        "verify:run-20260522T111210438355",
+        "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/ac-closure.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept",
+        "run:run-20260522T031243Z-1fe4",
+        "verify:run-20260522T031243Z-1fe4-tester",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/summary.json",
+        "verify:run-20260522T111246990781",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/summary.json",
+        "verify:run-20260522T112029809593",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/summary.json",
+        "verify:run-20260522T112735760896"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436689+00:00",
+      "completed_at": "2026-05-22T03:12:44.445521+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 Beacon 必须将 `prototype` 降级为 design-result adapter",
+      "description": "`prototype` 的新职责只包括： intake accepted design result capture screen intent capture state visibility capture interaction handoff bind design result to PRD / user-story / test-case",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TC-UXEXT-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-UXEXT-011"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260522T025925Z-9fb0-tester",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110009971576/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260522T110009971576",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T110606787215/summary.json",
+        "verify:run-20260522T110606787215",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111210438355/summary.json",
+        "verify:run-20260522T111210438355",
+        "docs/beacon/v1.4.9/.machine/qa/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.qa9-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/ac-closure.json",
+        ".beacon/qa/features/ui-ux-externalization-prototype-adapter-and-version-visualization-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept",
+        "run:run-20260522T031243Z-1fe4",
+        "verify:run-20260522T031243Z-1fe4-tester",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T111246990781/summary.json",
+        "verify:run-20260522T111246990781",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112029809593/summary.json",
+        "verify:run-20260522T112029809593",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/compatibility/pair-evidence.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260522T112735760896/summary.json",
+        "verify:run-20260522T112735760896"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436699+00:00",
+      "completed_at": "2026-05-22T03:12:44.445548+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 Beacon 必须阻断 accepted design result 未绑定 truth 的 implement",
+      "description": "如果 feature 存在 accepted UI/UX result，但没有 adapter truth binding，implement 必须 fail closed。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436709+00:00",
+      "completed_at": "2026-05-22T03:12:44.445575+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 Beacon 必须保留历史 prototype bundle 兼容读取",
+      "description": "历史 `docs/beacon/<version>/prototype/` bundle 可以继续被 status、archive、release history 读取，但不应定义 v1.4.9+ 新 UI/UX execution ownership。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436719+00:00",
+      "completed_at": "2026-05-22T03:12:44.445590+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 Beacon 必须冻结版本级 business flow projection",
+      "description": "business flow projection 必须只解释业务闭环，不解释实现细节。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436728+00:00",
+      "completed_at": "2026-05-22T03:12:44.445604+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 Beacon 必须冻结版本级 state-machine projection",
+      "description": "state-machine projection 必须只解释 stable closure states，不解释页面 widget 交互状态。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436738+00:00",
+      "completed_at": "2026-05-22T03:12:44.445618+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 Beacon 必须冻结版本级 PRD / user-story / test-case map",
+      "description": "three-piece map 必须说明 PRD、user-story、test-case 各自拥有的 truth，以及它们如何组成版本需求包。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436750+00:00",
+      "completed_at": "2026-05-22T03:12:44.445632+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 每个 projection 必须声明 truth bindings",
+      "description": "每个 business flow、state-machine、three-piece map 至少必须声明： `prd_refs` `user_story_refs` `test_case_refs` `coverage_notes` `out_of_scope_notes`",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436760+00:00",
+      "completed_at": "2026-05-22T03:12:44.445646+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 Requirement clarity 必须阻断缺失 visualization truth bindings",
+      "description": "当 version visualization 被声明 required，但缺少 projection 或 truth bindings 时，requirement clarity 必须 blocked。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436769+00:00",
+      "completed_at": "2026-05-22T03:12:44.445660+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 Design review 必须保持 support surface 边界",
+      "description": "`beacon-design-review` 不能直接写 canonical truth、不能给 release verdict、不能替代 `ui-ux-dev review` 或 `beacon-change`。 ## 6. Business Flow ```mermaid flowchart TD A[UI/UX or version visualization need] --> B{Need type} B -->|UI/UX execution| C[ui-ux-dev intent router] B -->|Beacon requirement governance| D[Beacon truth surfaces] C --> E[explore/system/review/polish/extract/library] E --> F{Accepted output changes requirement?} F -->|No| G[Advisory retained outside truth] F -->|Yes| H[Prototype adapter binding] H --> I[PRD / user-story / test-case update or obligation] D --> J[Business flow / state-machine / map projection] I --> K[Requirement clarity gate] J --> K K -->|pass| L[Freeze/refreeze] K -->|blocked| M[Route back to change / truth surface] ``` ## 7. State Machine ```mermaid stateDiagram-v2 [*] --> route_classified route_classified --> ui_ux_external_route: UI/UX execution route_classified --> beacon_truth_route: requirement governance ui_ux_external_route --> design_result_advisory design_result_advisory --> design_result_accepted design_result_accepted --> adapter_binding_pending adapter_binding_pending --> adapter_binding_blocked: truth bindings missing adapter_binding_pending --> adapter_binding_ready beacon_truth_route --> visualization_projection_pending visualization_projection_pending --> visualization_blocked: projection bindings missing visualization_projection_pending --> clarity_ready adapter_binding_ready --> clarity_ready clarity_ready --> frozen frozen --> implement_ready adapter_binding_blocked --> change_required visualization_blocked --> change_required ``` ## 8. 验收标准 AC-001 Beacon stops treating internal UI/UX execution as a future core capability. AC-002 Beacon routes UI/UX execution intent to `ui-ux-dev`. AC-003 Beacon does not silently fallback to internal design generation when `ui-ux-dev` is unavailable. AC-004 Beacon redefines `prototype` as a design-result adapter. AC-005 Beacon blocks implementation when accepted design results lack truth bindings. AC-006 Beacon keeps historical prototype bundles readable without making them v1.4.9 execution truth. AC-007 Beacon defines version-level business flow projection. AC-008 Beacon defines version-level state-machine projection. AC-009 Beacon defines version-level PRD / user-story / test-case map projection. AC-010 Beacon requires truth bindings for every version-level projection. AC-011 Requirement clarity blocks when required visualization bindings are missing. AC-012 Beacon keeps `beacon-design-review` as route / governance support, not a truth source or UI/UX execution substitute. ## 9. 边界 / 分层 / 恢复策略 ### 9.1 边界 Beacon 的边界是 requirement governance，不是 UI/UX execution。`ui-ux-dev` 的边界是 UI/UX execution，不是 Beacon truth source。 ### 9.2 分层 本需求按三层闭合： Requirement truth layer：PRD、user-story、test-case、research、source-architecture。 Projection layer：business flow、state-machine、PRD / user-story / test-case map。 Runtime evidence layer：implement、QA、release 后续产生的过程、session、evidence、trace。 Projection layer 只能解释 truth，不能新增 truth。 ### 9.3 恢复策略 当 `ui-ux-dev` 缺失、adapter binding 缺失、projection truth bindings 缺失或历史 prototype bundle 被误用为 v1.4.9 execution truth 时，Beacon 必须阻断并恢复到对应治理路径： UI/UX execution 缺失：恢复到 `ui-ux-dev-bootstrap` 或明确提示安装/调用外部 skill。 Adapter binding 缺失：恢复到 `beacon-prototype` adapter writeback 或 `beacon-change`。 Projection truth bindings 缺失：恢复到 PRD、user-story、test-case 或 research 补齐。 历史 prototype 语义漂移：恢复到 compatibility-only 读取，不允许作为新 execution truth。 ## 10. 风险与缓解 | 风险 | 影响 | 缓解 | | --- | --- | --- | | Beacon 继续被当作 UI/UX 生成器 | 生命周期职责膨胀，需求治理变弱 | 明确 `ui-ux-dev` owns UI/UX execution，Beacon 只保留 adapter 和 gate | | Accepted design result 未进入 truth binding | 实现按设计印象推进，需求不可追溯 | implement gate 阻断缺失 adapter binding | | 可视化图被当作 truth | 人类说明图覆盖三件套 truth | 每张 projection 必须声明 truth bindings，且不得新增要求 | | 历史 prototype bundle 被误判为 v1.4.9 truth | 旧材料绕过新边界 | 历史 bundle 只兼容读取，不能定义新 execution ownership | | `ui-ux-dev` 不可用时静默 fallback | 重新产生 Beacon 内建设计执行面 | 缺失 upstream 时恢复到 bootstrap，不允许 silent fallback | ## 11. Decision Priority 1. `ui-ux-dev` owns UI/UX execution. 2. Beacon owns requirement truth and gates. 3. Accepted design result must be bound before implementation. 4. Projection without truth bindings is invalid. 5. Historical compatibility must not override v1.4.9 ownership. ## 12. Diagram Truth Layer ### 12.1 Diagram Types `branch-flow` `state-machine` `decision-priority` ### 12.2 State Axes `ui_ux_route` `adapter_binding` `requirement_visualization` `truth_binding` ### 12.3 Propagation Contract Diagram truth must stay explicit through freeze readiness, implementation planning, and QA coverage. State axes must not be silently compressed into one implicit status field. ## 13. 冻结交付物 `docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` `docs/beacon/v1.4.9/source-architecture/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` `docs/beacon/v1.4.9/change/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` `docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` `docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` `docs/beacon/v1.4.9/qa/test-cases/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md` ## 14. 成功指标 Human-facing Beacon lifecycle becomes smaller and clearer. UI/UX work has one stable external route. Accepted design outputs still enter Beacon truth through explicit bindings. Version-level requirement packages become easier to understand without weakening canonical truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: ui_ux_route, adapter_binding, requirement_visualization, truth_binding"
+      ],
+      "diagram_state_axes": [
+        "ui_ux_route",
+        "adapter_binding",
+        "requirement_visualization",
+        "truth_binding"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260522T025925Z-9fb0",
+        "run:run-20260522T031243Z-1fe4"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        ".beacon/gate-report.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/agent-surfaces.json",
+        ".claude-plugin/plugin.json",
+        ".cursor/rules/beacon-agent-surface.mdc",
+        ".trae/rules/project_rules.md",
+        ".windsurf/workflows/beacon-agent-surface.md",
+        "beacon/cli_factory.py",
+        "beacon/commands/implement.py",
+        "beacon/commands/prototype.py",
+        "beacon/commands/qa.py",
+        "beacon/utils/design_review_surface.py",
+        "beacon/utils/prototype_support.py",
+        "beacon/utils/requirement_clarity.py",
+        "docs/beacon/v1.4.8/.machine/requirement/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.freeze-state.json",
+        "docs/beacon/v1.4.8/.machine/requirement/markdown-first-freeze-truth-and-minimal-machine-state-contract.freeze-state.json",
+        "skills/beacon/beacon-prototype/SKILL.md",
+        "skills/beacon/beacon-prototype/agents/openai.yaml",
+        "tests/test_cli_factory_mainline_help.py",
+        "tests/test_v131_host_skill_pack.py",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/state/project-metadata/latest.json"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-22T02:59:26.436778+00:00",
+      "completed_at": "2026-05-22T03:12:44.445674+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "version": "v1.4.9",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 12,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon blocks implementation when accepted design results lack truth bindings.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon blocks implementation when accepted design results lack truth bindings.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon defines version-level business flow projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon defines version-level business flow projection.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon defines version-level PRD / user-story / test-case map projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon defines version-level prd / user-story / test-case map projection.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon defines version-level state-machine projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon defines version-level state-machine projection.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon does not silently fallback to internal design generation when `ui-ux-dev` is unavailable.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon does not silently fallback to internal design generation when `ui-ux-dev` is unavailable.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon keeps `beacon-design-review` as route / governance support, not a truth source or UI/UX execution substitute.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon keeps `beacon-design-review` as route / governance support, not a truth source or ui/ux execution substitute.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon keeps historical prototype bundles readable without making them v1.4.9 execution truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon keeps historical prototype bundles readable without making them v1.4.9 execution truth.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon redefines `prototype` as a design-result adapter.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon redefines `prototype` as a design-result adapter.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon requires truth bindings for every version-level projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon requires truth bindings for every version-level projection.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon routes UI/UX execution intent to `ui-ux-dev`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon routes ui/ux execution intent to `ui-ux-dev`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Beacon stops treating internal UI/UX execution as a future core capability.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::beacon stops treating internal ui/ux execution as a future core capability.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Requirement clarity blocks when required visualization bindings are missing.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "signature": "ac::::general::requirement clarity blocks when required visualization bindings are missing.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:2a3971da3e06d284679bcf7888a42a56a6098de9099b3529e1af9df955c4481d",
+    "source_baseline_hash": "sha256:2a3971da3e06d284679bcf7888a42a56a6098de9099b3529e1af9df955c4481d",
+    "story_state_ref": "docs/beacon/v1.4.9/.machine/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+    "generated_at": "2026-05-22T02:59:18.446934+00:00",
+    "json_ref": "docs/beacon/v1.4.9/.machine/execution/revision-delta-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.9/execution/revision-delta-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.9/.machine/execution/revision-delta-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.9/execution/revision-delta-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"ui-ux-externalization-prototype-adapter-and-version-visualization-contract\" --project-root . --version v1.4.9",
+    "run_command": "beacon implement team-run \"ui-ux-externalization-prototype-adapter-and-version-visualization-contract\" --project . --version v1.4.9",
+    "dev_run_command": "beacon implement dev-run \"ui-ux-externalization-prototype-adapter-and-version-visualization-contract\" --project . --version v1.4.9",
+    "ralph_command": "beacon implement run \"ui-ux-externalization-prototype-adapter-and-version-visualization-contract\" --project . --version v1.4.9 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"ui-ux-externalization-prototype-adapter-and-version-visualization-contract\" --project . --version v1.4.9",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "version": "v1.4.9",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.9",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.9.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-22T02:59:18.450477+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.9-ui-ux-externalization-prototype-adapter-and-version-visualization-contract-R3",
+    "transaction_id": "tx-c45878474ede29656",
+    "source_hash": "sha256:56e99d17c34cb7cac644dfbce20482831a9436e4e8d3f03bfa3badbde54b55da",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.9/.machine/execution/git-workflow-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.9/execution/git-workflow-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.9",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+      "user_story": "docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+      "test_case": "docs/beacon/v1.4.9/qa/test-cases/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.9-ui-ux-externalization-prototype-adapter-and-version-visualization-contract-R3",
+    "transaction_id": "tx-c45878474ede29656",
+    "source_hash": "sha256:56e99d17c34cb7cac644dfbce20482831a9436e4e8d3f03bfa3badbde54b55da",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-ui-ux-externalization-prototype-adapter-and-version-visualization-contract.json",
+  "generated_at": "2026-05-22T02:59:18.495282+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.9-ui-ux-externalization-prototype-adapter-and-version-visualization-contract-R3",
+  "transaction_id": "tx-c45878474ede29656",
+  "source_hash": "sha256:56e99d17c34cb7cac644dfbce20482831a9436e4e8d3f03bfa3badbde54b55da",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-22T03:29:09.564198+00:00",
+  "accepted_at": "2026-05-22T03:29:09.564180+00:00",
+  "accepted_by": "codex-beacon-implement"
+}

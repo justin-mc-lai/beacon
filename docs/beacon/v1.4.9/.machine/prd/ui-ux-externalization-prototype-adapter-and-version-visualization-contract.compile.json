@@ -1,0 +1,148 @@
+{
+  "schema_version": "1.0",
+  "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "version": "v1.4.9",
+  "effective_mode": "rule",
+  "generator_mode": "rule",
+  "requested_mode": "rule",
+  "model": "beacon-prd-compiler",
+  "diagram_truth_request": {
+    "diagram_types": [],
+    "state_axes": []
+  },
+  "fallback_reason": "",
+  "capability_snapshot": {
+    "schema_version": "1.0",
+    "command_name": "prd",
+    "host_runtime": "codex",
+    "host_runtime_supported": true,
+    "host_bridge_declared": true,
+    "host_bridge_command_available": true,
+    "host_bridge_command_source": "env_cmd",
+    "host_bridge_command_env": "BEACON_HOST_PRD_BRIDGE_CMD",
+    "host_response_available": false,
+    "host_response_source": "none",
+    "host_response_path": "",
+    "host_transport": "command-bridge",
+    "host_semantic_ready": true,
+    "provider_available": false,
+    "provider_key_present": false,
+    "llm_disabled": false,
+    "disable_env": "BEACON_PRD_DISABLE_LLM"
+  },
+  "source_refs": [
+    "docs/beacon/global-boundaries.md",
+    "docs/beacon/v1.4.9/SUMMARY.md",
+    ".beacon/debug/index.json",
+    ".beacon/metadata/project-version-metadata.json"
+  ],
+  "project_metadata_context": {
+    "metadata_ref": ".beacon/metadata/project-version-metadata.json",
+    "resolved_metadata_view": {
+      "project_root": "/Users/apple/Developer/Personal/products/beacon",
+      "topology_kind": "single_repo",
+      "default_execution_service": "beacon",
+      "service_bindings": [
+        {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "service",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        }
+      ],
+      "service_bindings_by_key": {
+        "beacon": {
+          "service_key": "beacon",
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "repo_root_relative": ".",
+          "role": "service",
+          "writable": true,
+          "worktree_path_policy": "follow-repo-root"
+        }
+      },
+      "version": "v1.4.9",
+      "version_contract": {},
+      "selected_service": "beacon",
+      "selected_service_binding": {
+        "service_key": "beacon",
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "repo_root_relative": ".",
+        "role": "service",
+        "writable": true,
+        "worktree_path_policy": "follow-repo-root"
+      },
+      "selected_branch": "",
+      "paths": {
+        "machine": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.json",
+        "human": "/Users/apple/Developer/Personal/products/beacon/.beacon/metadata/project-version-metadata.md",
+        "state": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/project-metadata/latest.json"
+      },
+      "transaction": {
+        "transaction_id": "tx-project-metadata-e44f8eb9fd387ba7",
+        "event_type": "update",
+        "committed_at": "2026-05-21T12:05:12.332994+00:00",
+        "source_hash": "e44f8eb9fd387ba7404f58725a960e1529a06221241d5469276297bd37b5ec13"
+      },
+      "branch_governance": {
+        "schema_version": "1.0",
+        "tool_name": "beacon-toolkit-branch-governance",
+        "feature": "",
+        "version": "v1.4.9",
+        "template_name": "standard-feature",
+        "template_source": "default",
+        "service_key": "beacon",
+        "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+        "base_branch": "",
+        "current_branch": "main",
+        "target_branch": "",
+        "worktree_mode": "branch-only",
+        "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+        "previous_version_baseline_branch": "",
+        "next_version_feature_branch": "",
+        "hotfix_branch_naming_rule": "",
+        "allow_worktree_when_feature_dirty": false,
+        "merge_direction_policy": [],
+        "forbidden_directions": [],
+        "evidence_contract": [],
+        "evidence": {},
+        "status": "pass",
+        "blocked": false,
+        "reason_codes": [],
+        "blocked_reason": "",
+        "recommended_action": "",
+        "missing_evidence_fields": [],
+        "evidence_contract_status": "pass",
+        "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `default`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: ``\n- current_branch: `main`\n- target_branch: ``\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nbase_branch\n    -> feature_branch\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+      }
+    }
+  },
+  "constraint_hits": {
+    "boundary": true,
+    "layering": true,
+    "recovery": true,
+    "acceptance": true,
+    "risk_mitigation": true
+  },
+  "missing_headings": [],
+  "open_questions": [],
+  "contract_ok": true,
+  "compile_hash": "4cb74a3f5340394590faec94f96a0f24a3f0ea7942f42e00f318aa2e99e03d2e",
+  "source_hash": "ddda0e97c8df2f43f09f4b85a44a56de9974137e9af096e17adef0a6e6979a67",
+  "source_paths": {
+    "prd": "docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+  },
+  "projection_seq": "prd-ddda0e97c8df2f43",
+  "transaction_id": "tx-prd-ui-ux-externalization-prototype-adapter-and-version-visualization-contract-prd-ddda0e97c8df2f43",
+  "committed_at": "2026-05-21T15:21:01.248444+00:00",
+  "sink_checksums": {
+    "human": "4cb74a3f5340394590faec94f96a0f24a3f0ea7942f42e00f318aa2e99e03d2e",
+    "machine": "343ce3436764923460f12bfdf207197f740b5a93d1b726af8053e8856eea6337"
+  },
+  "status": "applied",
+  "supersedes_transaction_id": "",
+  "supersedes_projection_seq": ""
+}

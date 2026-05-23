@@ -94,12 +94,13 @@ def test_packaged_beacon_skill_should_describe_v131_host_visible_subskills():
 
 def test_beacon_prototype_skill_should_describe_v1310_ux_closure_contract():
     skill_text = (ROOT / "skills" / "beacon" / "beacon-prototype" / "SKILL.md").read_text(encoding="utf-8")
-    assert "wireframe + UX PRD closure bundles" in skill_text
-    assert "`design_context`" in skill_text
-    assert "`design_reasoning`" in skill_text
-    assert "`ux_contract`" in skill_text
-    assert "`DESIGN.md`" in skill_text
-    assert "`preview-dark.html`" in skill_text
+    assert "design-result adapter" in skill_text
+    assert "ui-ux-dev" in skill_text
+    assert "prototype adapt" in skill_text
+    assert "truth bindings" in skill_text
+    assert "legacy requirement-driven wireframe freeze bundles" in skill_text
+    assert "legacy `design_context`" in skill_text
+    assert "legacy `DESIGN.md`" in skill_text
     assert "apple-inspired-design-md" in skill_text
     assert "ui-ux-pro-max-skill" in skill_text
     assert "awesome-design-md" in skill_text
@@ -107,7 +108,9 @@ def test_beacon_prototype_skill_should_describe_v1310_ux_closure_contract():
 
 def test_beacon_prototype_agent_prompt_should_match_v1310_ux_closure_surface():
     agent_yaml = (ROOT / "skills" / "beacon" / "beacon-prototype" / "agents" / "openai.yaml").read_text(encoding="utf-8")
-    assert "Beacon Prototype UX Closure" in agent_yaml
-    assert "wireframe plus UX PRD closure bundles" in agent_yaml
-    assert "design_context" in agent_yaml
-    assert "DESIGN.md" in agent_yaml
+    assert "Beacon Prototype Adapter" in agent_yaml
+    assert "design-result adapter" in agent_yaml
+    assert "ui-ux-dev" in agent_yaml
+    assert "beacon prototype adapt" in agent_yaml
+    assert "truth bindings" in agent_yaml
+    assert "Legacy wireframe plus UX PRD closure bundles" in agent_yaml

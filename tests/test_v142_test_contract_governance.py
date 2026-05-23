@@ -280,6 +280,46 @@ def test_canonical_qa_matrix_evidence_should_satisfy_release_lane_when_feature_q
     assert "feature_release_lane_missing" not in gate["release_gate"]["reason_codes"]
 
 
+def test_current_qa9_status_should_satisfy_release_lane_evidence(tmp_path: Path) -> None:
+    _seed_project(tmp_path, include_evidence=False)
+    _write_json(
+        tmp_path / ".beacon" / "qa" / "status.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "passed",
+            "run_id": "run-qa9-current",
+            "qa9": {
+                "tc_results": [
+                    {
+                        "tc_id": "TC-US003-001-PRIMARY",
+                        "source_tc_id": "TC-US003-001",
+                        "ac_id": "AC-003",
+                        "status": "passed",
+                    }
+                ]
+            },
+        },
+    )
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"] = [
+        entry for entry in matrix["entries"] if str(entry.get("tc_id")) == "TC-US003-001"
+    ]
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    payload = build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    gate = build_test_contract_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    feature_lane = payload["lanes"]["feature_release_facing"]
+    assert len(feature_lane) == 1
+    assert feature_lane[0]["tc_id"] == "TC-US003-001"
+    assert feature_lane[0]["evidence_status"] == "passed"
+    assert "feature_release_lane_failed" not in gate["release_gate"]["reason_codes"]
+
+
 def test_requirement_deepening_coverage_entries_do_not_block_current_runtime_release(tmp_path: Path) -> None:
     version = "v1.4.6"
     feature = "beacon-v1.4.6-anti-drift-skill-contracts-and-enforced-decision-surfaces"

@@ -25,7 +25,11 @@ from beacon.utils.process_lock import project_process_lock
 from beacon.utils.exhaustiveness import build_exhaustiveness_report, write_exhaustiveness_report
 from beacon.utils.exhaustiveness import feature_exhaustiveness_report_path
 from beacon.utils.prototype_utils import prototype_files
-from beacon.utils.prototype_support import feature_requires_prototype
+from beacon.utils.prototype_support import (
+    feature_requires_design_result_binding,
+    feature_requires_prototype,
+    prototype_adapter_only_supported,
+)
 from beacon.utils.project_skills import (
     evaluate_project_profile_gate,
     resolve_profile_for_feature,
@@ -354,11 +358,61 @@ def _qa_design_truth_verdict(
 ) -> dict[str, Any]:
     if _semver_tuple(version) < (1, 4, 4):
         return {"schema_version": "1.0", "status": "not_applicable", "blocked": False, "reason_codes": []}
+    handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
+    handoff_design_truth_status = str(handoff_design_truth.get("status") or "").strip().lower()
+    if prototype_adapter_only_supported(version) and (
+        str(handoff_design_truth.get("source_surface") or "").strip() == "prototype-adapter"
+        or str(handoff_design_truth.get("mode") or "").strip() == "design-result-adapter"
+    ):
+        adapter_required = bool(handoff_design_truth.get("required")) or feature_requires_design_result_binding(
+            project_root,
+            version,
+            feature,
+        )
+        refs = handoff_design_truth.get("refs") if isinstance(handoff_design_truth.get("refs"), dict) else {}
+        if handoff_design_truth_status == "not_applicable" and not adapter_required:
+            return {
+                "schema_version": "1.0",
+                "status": "not_applicable",
+                "blocked": False,
+                "reason_codes": [],
+                "source_surface": "implement-to-qa-handoff",
+                "verification_surface": "qa",
+                "refs": refs,
+                "findings": [],
+            }
+        missing_refs = [
+            value
+            for value in (str(refs.get("binding_json") or ""), str(refs.get("binding_md") or ""))
+            if value and not (project_root / value).exists()
+        ]
+        reason_codes = []
+        findings = []
+        if handoff_design_truth_status != "ready":
+            reason_codes.append("design_result_adapter_binding_missing")
+            findings.append(
+                {
+                    "reason_code": "design_result_adapter_binding_missing",
+                    "message": "implement-to-qa handoff design-result adapter binding is not ready",
+                }
+            )
+        if missing_refs:
+            reason_codes.append("design_result_adapter_ref_missing")
+            findings.append({"reason_code": "design_result_adapter_ref_missing", "missing_refs": missing_refs})
+        reason_codes = sorted(set(reason_codes))
+        return {
+            "schema_version": "1.0",
+            "status": "blocked" if reason_codes else "passed",
+            "blocked": bool(reason_codes),
+            "reason_codes": reason_codes,
+            "source_surface": "implement-to-qa-handoff",
+            "verification_surface": "qa",
+            "refs": refs,
+            "findings": findings,
+        }
     files = prototype_files(project_root, version, feature)
     style_path = files["design_artifacts_dir"] / "style-preset.json"
     lint_path = files["design_artifacts_dir"] / "design-lint-rules.json"
-    handoff_design_truth = handoff.get("design_truth") if isinstance(handoff.get("design_truth"), dict) else {}
-    handoff_design_truth_status = str(handoff_design_truth.get("status") or "").strip().lower()
     design_truth_required = (
         feature_requires_prototype(project_root, version, feature)
         or (bool(handoff_design_truth) and handoff_design_truth_status != "not_applicable")

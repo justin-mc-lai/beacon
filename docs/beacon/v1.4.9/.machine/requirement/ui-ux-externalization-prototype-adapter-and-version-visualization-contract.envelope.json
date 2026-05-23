@@ -1,0 +1,172 @@
+{
+  "schema_version": "1.0",
+  "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "feature_slug": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+  "version": "v1.4.9",
+  "generated_at": "2026-05-21T15:21:25.664748+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "user_story": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "research": "research:docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `ui-ux-externalization-prototype-adapter-and-version-visualization-contract`",
+      "Version**: `v1.4.9`",
+      "Date**: `2026-05-21`",
+      "Status**: `frozen`",
+      "Track**: `ui-ux-externalization + prototype-adapter + version-requirement-visualization`",
+      "Scenario**: `beacon_should_govern_design_results_without_owning_ui_ux_execution`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Research: `docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`",
+      " Source architecture: `docs/beacon/v1.4.9/source-architecture/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`",
+      " Prior research:",
+      " `docs/beacon/v1.4.7/research/beacon-vnext-ui-ux-externalization-and-version-requirement-visualization-analysis.md`",
+      " `docs/beacon/v1.4.8/research/beacon-vnext-business-flow-and-state-machine-document-design.md`",
+      " External UI/UX surface:",
+      " `/Users/apple/Developer/Personal/products/justin-mc-lai-skills/skills/ui-ux-dev/SKILL.md`"
+    ],
+    "user_story": [
+      "Feature**: `ui-ux-externalization-prototype-adapter-and-version-visualization-contract`",
+      "Version**: `v1.4.9`",
+      "Status**: `frozen`",
+      "As a Beacon operator,",
+      "I want UI/UX execution to be handled by `ui-ux-dev` while Beacon governs accepted design results and version-level requirement projections,",
+      "So that Beacon remains a requirement governance kernel instead of a redundant design execution toolbox.",
+      " AC-001 Beacon stops treating internal UI/UX execution as a future core capability.",
+      " AC-002 Beacon routes UI/UX execution intent to `ui-ux-dev`.",
+      " AC-003 Beacon does not silently fallback to internal design generation when `ui-ux-dev` is unavailable.",
+      " AC-004 Beacon redefines `prototype` as a design-result adapter."
+    ],
+    "qa": [
+      "Feature**: `ui-ux-externalization-prototype-adapter-and-version-visualization-contract`",
+      "Version**: `v1.4.9`",
+      "Status**: `frozen`",
+      "| AC ID | Test ID | Layer | Command / Evidence | Assertion |",
+      "| AC-001 | TC-UXEXT-001 | contract | PRD/source review | Beacon marks internal UI/UX execution as non-core future capability |",
+      "| AC-002 | TC-UXEXT-002 | routing | skill routing evidence | UI/UX execution intent maps to `ui-ux-dev` intents |",
+      "| AC-003 | TC-UXEXT-003 | gate | missing upstream simulation | Missing `ui-ux-dev` routes to bootstrap, not silent internal fallback |",
+      "| AC-004 | TC-UXEXT-004 | contract | prototype skill / command review | `prototype` is adapter, not generator, in v1.4.9 contract |",
+      "| AC-005 | TC-UXEXT-005 | implement gate | accepted design result without binding | Implement blocks when adapter truth binding is missing |",
+      "| AC-006 | TC-UXEXT-006 | compatibility | historical prototype bundle fixture | Historical prototype remains readable but not v1.4.9 execution truth |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "ui-ux-externalization-prototype-adapter-and-version-visualization-contract",
+    "version": "v1.4.9",
+    "source": "research:docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "`ui-ux-dev` owns UI/UX execution。",
+        "Beacon owns requirement truth、gate、adapter binding、evidence closure。",
+        "`prototype` owns accepted design result 的 requirement-facing adapter，不拥有设计生成。",
+        "`beacon-design-review` owns route / governance support，不拥有 UI/UX execution verdict。",
+        "version-level visualization owns human-readable projection，不拥有 canonical truth。"
+      ],
+      "decision_priority": [
+        "Beacon requirement truth 高于设计输出。",
+        "`ui-ux-dev` 负责 UI/UX execution，Beacon 负责 governance。",
+        "Accepted design result 必须进入 adapter binding，否则不能解锁 implementation。",
+        "Business flow / state-machine / map 是 projection，不是 canonical truth。",
+        "没有 truth bindings 的图不算 freeze-facing projection。",
+        "Historical prototype bundles 可兼容读取，但新版本不得继续把 Beacon 当设计生成器。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Beacon requirement truth 高于设计输出。",
+          "`ui-ux-dev` 负责 UI/UX execution，Beacon 负责 governance。",
+          "Accepted design result 必须进入 adapter binding，否则不能解锁 implementation。",
+          "Business flow / state-machine / map 是 projection，不是 canonical truth。",
+          "没有 truth bindings 的图不算 freeze-facing projection。",
+          "Historical prototype bundles 可兼容读取，但新版本不得继续把 Beacon 当设计生成器。"
+        ],
+        "source": "research:docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md"
+      }
+    ]
+  }
+}

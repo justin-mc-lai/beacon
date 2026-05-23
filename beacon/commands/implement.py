@@ -70,7 +70,13 @@ from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
 from beacon.utils.project_metadata import resolve_project_metadata_view
-from beacon.utils.prototype_support import feature_requires_prototype
+from beacon.utils.prototype_support import (
+    build_ui_ux_dev_route,
+    design_result_adapter_status,
+    feature_requires_design_result_binding,
+    feature_requires_prototype,
+    prototype_adapter_only_supported,
+)
 from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.requirement_deepening import load_requirement_completeness, requirement_paths
 from beacon.utils.release_scorecard import build_release_scorecard
@@ -345,6 +351,35 @@ def _resolve_task_template_boundary(
         payload["surface"] = "task_template"
         payload["prompt"] = template
     return payload
+
+
+def _build_import_evidence_prompt_boundary(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    source_refs: list[str],
+    changed_files: list[str],
+    service_dirs: list[str],
+    summary_ref: str,
+) -> dict[str, Any]:
+    refs = ", ".join([*source_refs, summary_ref])
+    touched = ", ".join([*changed_files, *service_dirs])
+    prompt = (
+        "Import externally produced implementation evidence for the scoped Beacon feature. "
+        "Read Beacon source of truth and bind the imported evidence to the frozen PRD, user-story, "
+        "and test-case truth. Implement only against the frozen PRD, user-story, and test-case truth above. "
+        f"Evidence refs: {refs}. Changed files or service directories: {touched}."
+    )
+    payload = evaluate_implement_prompt_boundary(
+        project_root,
+        version=version,
+        feature=feature,
+        host_prompt=prompt,
+    )
+    if isinstance(payload, dict) and payload:
+        payload["surface"] = "import-evidence"
+    return payload if isinstance(payload, dict) else {}
 
 
 def _blocked_prompt_boundary_payload(
@@ -1404,6 +1439,69 @@ def _read_json_dict(path: Path) -> dict[str, Any]:
 
 
 def _implementation_design_truth(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    if prototype_adapter_only_supported(version):
+        adapter_status = design_result_adapter_status(project_root, version, feature)
+        required = feature_requires_design_result_binding(project_root, version, feature)
+        status_text = str(adapter_status.get("status") or "").strip().lower()
+        paths = adapter_status.get("paths") if isinstance(adapter_status.get("paths"), dict) else {}
+        if required or status_text == "ready":
+            refs = {
+                key: str(value)
+                for key, value in paths.items()
+                if key in {"binding_json", "binding_md"} and str(value).strip()
+            }
+            missing_refs = [] if status_text == "ready" else ["adapter_binding"]
+            return {
+                "schema_version": "1.0",
+                "status": "ready" if status_text == "ready" else "missing",
+                "feature": feature,
+                "feature_slug": _slug(feature),
+                "version": version,
+                "source_surface": "prototype-adapter",
+                "consumption_surface": "implement",
+                "mode": "design-result-adapter",
+                "required": required,
+                "allowed_inputs": [value for value in refs.values() if value],
+                "blocked_human_inputs": ["Beacon-native wireframe generation"] if missing_refs else [],
+                "refs": refs,
+                "missing_refs": missing_refs,
+                "reason_code": "" if status_text == "ready" else "design_result_adapter_binding_missing",
+                "recommended_route": adapter_status.get("recommended_route")
+                or build_ui_ux_dev_route(feature=feature, version=version, project_root=project_root, intent="review"),
+                "recommended_command": str(adapter_status.get("recommended_command") or ""),
+                "adapter_binding": adapter_status,
+                "design_preset": "",
+                "canonical_design_preset": "",
+                "preset_source": "ui-ux-dev",
+                "preset_family": "",
+                "template_catalog_count": 0,
+                "anti_ai_ui_contract": {},
+                "template_layout_rules": [],
+                "interaction_discipline_rules": [],
+            }
+        return {
+            "schema_version": "1.0",
+            "status": "not_applicable",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": version,
+            "source_surface": "prototype-adapter",
+            "consumption_surface": "implement",
+            "mode": "design-result-adapter",
+            "required": False,
+            "allowed_inputs": [],
+            "blocked_human_inputs": [],
+            "refs": {},
+            "missing_refs": [],
+            "design_preset": "",
+            "canonical_design_preset": "",
+            "preset_source": "",
+            "preset_family": "",
+            "template_catalog_count": 0,
+            "anti_ai_ui_contract": {},
+            "template_layout_rules": [],
+            "interaction_discipline_rules": [],
+        }
     if not feature_requires_prototype(project_root, version, feature):
         return {
             "schema_version": "1.0",
@@ -2503,6 +2601,35 @@ def run_implement_stage(  # noqa: PLR0913
     )
     design_truth = _implementation_design_truth(project_root, version=resolved_version, feature=feature)
     design_truth_refs = design_truth.get("refs") if isinstance(design_truth.get("refs"), dict) else {}
+    if bool(design_truth.get("required")) and str(design_truth.get("status") or "").strip().lower() != "ready":
+        payload = _with_implement_surface({
+            "schema_version": "1.0",
+            "run_id": run_id,
+            "feature": feature,
+            "feature_slug": feature_slug,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": str(design_truth.get("reason_code") or "design_truth_missing"),
+            "design_truth": design_truth,
+            "missing_refs": design_truth.get("missing_refs", []),
+            "recommended_command": str(
+                design_truth.get("recommended_command")
+                or build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="design-truth-missing",
+                )
+            ),
+            "branch_preflight_path": str(branch_preflight_path),
+            "branch_preflight": branch_preflight,
+            "plan_preflight_path": str(plan_preflight_path),
+            "plan_preflight": implementation_plan_gate,
+            "git_workflow": git_workflow_contract,
+            "generated_at": now_iso(),
+        }, blocked=True)
+        write_json(state_path, payload)
+        return 2, payload
     if design_truth_refs:
         artifacts = {**artifacts, **{f"design_truth_{key}": str(value) for key, value in design_truth_refs.items() if str(value).strip()}}
     request_path = Path(f".beacon/implement/{run_id}/request.json")
@@ -3656,6 +3783,148 @@ def list_runners(
     for row in rows:
         marker = "*" if row["preferred"] else "-"
         typer.echo(f"{marker} {row['id']} ({row['adapter_type']}) detected={row['detected']}")
+
+
+@app.command("import-evidence")
+def import_evidence(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "--project-root", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    run_id: str = typer.Option("", "--run-id", help="Existing implementation/import run id"),
+    source_ref: Optional[list[str]] = typer.Option(None, "--source-ref", help="Evidence source ref, repeatable"),
+    changed_file: Optional[list[str]] = typer.Option(None, "--changed-file", help="Changed file ref, repeatable"),
+    service_dir: Optional[list[str]] = typer.Option(None, "--service-dir", help="Changed service directory, repeatable"),
+    summary_ref: str = typer.Option("", "--summary-ref", help="Implementation summary document or artifact ref"),
+    approved_by: str = typer.Option("", "--approved-by", help="Human/operator approving the import"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Import externally produced implementation evidence into Beacon's QA-readable marker."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    slug = _slug(feature)
+    source_refs = [str(item).strip() for item in (source_ref or []) if str(item).strip()]
+    changed_files = [str(item).strip() for item in (changed_file or []) if str(item).strip()]
+    service_dirs = [str(item).strip() for item in (service_dir or []) if str(item).strip()]
+    summary = str(summary_ref or "").strip()
+    approver = str(approved_by or "").strip()
+
+    problems: list[str] = []
+    if not source_refs:
+        problems.append("source_ref_required")
+    if not changed_files and not service_dirs:
+        problems.append("changed_file_or_service_dir_required")
+    if not summary:
+        problems.append("summary_ref_required")
+    if not approver:
+        problems.append("approved_by_required")
+    if problems:
+        payload = _with_implement_surface(
+            {
+                "schema_version": "1.0",
+                "feature": feature,
+                "feature_slug": slug,
+                "version": resolved_version,
+                "status": "blocked",
+                "reason_code": "implementation_evidence_import_incomplete",
+                "problems": problems,
+                "recommended_command": (
+                    f'beacon implement import-evidence "{feature}" --project {project_root} '
+                    f"--version {resolved_version} --source-ref <ref> --changed-file <path> "
+                    "--summary-ref <ref> --approved-by <operator>"
+                ),
+            },
+            blocked=True,
+        )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo("Beacon implement import-evidence blocked: missing required evidence fields", err=True)
+        raise typer.Exit(2)
+
+    import_run_id = str(run_id or "").strip() or generate_run_id(project_root)
+    prompt_boundary = _build_import_evidence_prompt_boundary(
+        project_root=project_root,
+        version=resolved_version,
+        feature=feature,
+        source_refs=source_refs,
+        changed_files=changed_files,
+        service_dirs=service_dirs,
+        summary_ref=summary,
+    )
+    if prompt_boundary.get("blocked"):
+        payload = _blocked_prompt_boundary_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            prompt_boundary=prompt_boundary,
+        )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement import-evidence blocked: {payload.get('reason_code')}", err=True)
+        raise typer.Exit(2)
+    marker = project_root / ".beacon" / "state" / f"implementation-{slug}.json"
+    marker_payload = {
+        "schema_version": "1.0",
+        "run_id": import_run_id,
+        "import_id": import_run_id,
+        "feature": feature,
+        "feature_slug": slug,
+        "version": resolved_version,
+        "runner": "import-evidence",
+        "skill": "beacon-implement",
+        "status": "completed",
+        "imported": True,
+        "source_refs": source_refs,
+        "changed_files": changed_files,
+        "service_dirs": service_dirs,
+        "summary_ref": summary,
+        "approved_by": approver,
+        "prompt_boundary": prompt_boundary,
+        "created_at": now_iso(),
+        "generated_at": now_iso(),
+    }
+    write_json(marker, marker_payload)
+    story_state = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=True) or {}
+    implemented_item_ids = _story_item_ids(story_state, kinds={"ac", "task", "test"})
+    writeback_payload = record_implementation_writeback(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        run_id=import_run_id,
+        implemented_item_ids=implemented_item_ids,
+        changed_files=[*changed_files, *service_dirs],
+    )
+    refresh_evidence_manifest(
+        project_root,
+        refs=[str(marker.relative_to(project_root)), summary, *source_refs],
+        version=resolved_version,
+    )
+    payload = _with_implement_surface(
+        {
+            **marker_payload,
+            "implementation_marker": str(marker.relative_to(project_root)),
+            "writeback": writeback_payload,
+            "next_route": {
+                "target_surface": "beacon-qa",
+                "command": f'beacon qa run "{feature}" --project {project_root} --version {resolved_version}',
+            },
+        },
+        blocked=False,
+    )
+    state_payload = {
+        **payload,
+        "mode": "import-evidence",
+        "adapter_type": "external-evidence",
+        "request_path": "",
+        "result_path": "",
+        "implementation_marker": str(marker.relative_to(project_root)),
+    }
+    write_json(_impl_root(project_root, import_run_id) / "state.json", state_payload)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Beacon implementation evidence imported: {marker}")
 
 
 @app.command("run")

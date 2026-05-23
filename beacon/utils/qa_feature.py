@@ -68,6 +68,151 @@ PLACEHOLDER_COMMAND_TOKENS = (
 )
 
 
+def _real_project_qa_taxonomy_supported(version: str | None) -> bool:
+    normalized = normalize_version(version) or ""
+    if not normalized.startswith("v"):
+        return False
+    try:
+        major, minor, patch = [int(part) for part in normalized[1:].split(".")]
+    except Exception:  # noqa: BLE001
+        return False
+    return (major, minor, patch) >= (1, 4, 9)
+
+
+def _implementation_evidence_gate(
+    marker: dict[str, Any],
+    *,
+    version: str,
+    archive_payload: dict[str, Any],
+) -> dict[str, Any]:
+    if not _real_project_qa_taxonomy_supported(version):
+        return {"status": "not_applicable", "blocked": False, "reason_codes": []}
+    run_id = str(marker.get("run_id") or archive_payload.get("run_id") or "").strip()
+    if not run_id:
+        return {
+            "status": "blocked",
+            "blocked": True,
+            "reason_codes": ["evidence_binding_missing"],
+            "missing_fields": ["run_id"],
+        }
+    missing_fields: list[str] = []
+    if not str(marker.get("summary_ref") or "").strip() and not archive_payload:
+        missing_fields.append("summary_ref")
+    if not list(marker.get("changed_files") or []) and not list(marker.get("service_dirs") or []) and not list(archive_payload.get("changed_files") or []):
+        missing_fields.append("changed_files_or_service_dirs")
+    if bool(marker.get("imported")) and not str(marker.get("approved_by") or "").strip():
+        missing_fields.append("approved_by")
+    return {
+        "status": "blocked" if missing_fields else "pass",
+        "blocked": bool(missing_fields),
+        "reason_codes": ["evidence_binding_missing"] if missing_fields else [],
+        "missing_fields": missing_fields,
+        "imported": bool(marker.get("imported")),
+        "summary_ref": str(marker.get("summary_ref") or "").strip(),
+        "source_refs": [str(item).strip() for item in (marker.get("source_refs") or []) if str(item).strip()],
+    }
+
+
+def _matrix_projection_gate(source_matrix: dict[str, Any], *, version: str) -> dict[str, Any]:
+    if not _real_project_qa_taxonomy_supported(version):
+        return {"status": "not_applicable", "blocked": False, "reason_codes": []}
+    contract = source_matrix.get("markdown_matrix_contract") if isinstance(source_matrix.get("markdown_matrix_contract"), dict) else {}
+    if str(contract.get("truth_mode") or "").strip() != "markdown":
+        return {
+            "status": "blocked",
+            "blocked": True,
+            "reason_codes": ["truth_projection_gap"],
+            "contract": contract,
+        }
+    return {
+        "status": "pass",
+        "blocked": False,
+        "reason_codes": [],
+        "contract": contract,
+    }
+
+
+def _qa_outcome_taxonomy(reason_codes: list[str], *, plan_status: str) -> dict[str, Any]:
+    codes = {str(item).strip() for item in reason_codes if str(item).strip()}
+    blocker_codes = {
+        "evidence_binding_missing",
+        "truth_projection_gap",
+        "runner_admission_blocked",
+        "environment_blocked",
+        "auth_session_blocked",
+        "coverage_gap",
+        "project_profile_gate_blocked",
+        "auto_test_invocation_failed",
+    }
+    if codes & blocker_codes:
+        category = "admission_blocker"
+    elif str(plan_status or "").strip() in {"failed"}:
+        category = "product_or_test_failure"
+    else:
+        category = "pending_or_ready"
+    return {
+        "category": category,
+        "reason_codes": sorted(codes),
+        "stable_taxonomy": [
+            "product_failed",
+            "test_failed",
+            "runner_admission_blocked",
+            "environment_blocked",
+            "auth_session_blocked",
+            "evidence_binding_missing",
+            "coverage_gap",
+            "truth_projection_gap",
+        ],
+    }
+
+
+def _classify_qa_failure_item(item: dict[str, Any]) -> str:
+    text = " ".join(
+        [
+            str(item.get("reason_code") or ""),
+            str(item.get("command") or ""),
+            str(item.get("stderr") or ""),
+            str(item.get("stdout") or ""),
+            " ".join(str(ref) for ref in (item.get("evidence_ref") or []) if str(ref).strip()),
+        ]
+    ).lower()
+    if any(token in text for token in ("docker", "testcontainers", "connection refused", "econnrefused", "timeout", "mysql", "postgres")):
+        return "environment_blocked"
+    if any(token in text for token in ("command not found", "script missing", "missing script", "no such file", "qa9_command_missing", "layer_command_missing")):
+        return "runner_admission_blocked"
+    if any(token in text for token in ("401", "403", "unauthorized", "forbidden", "login", "session", "cookie", "jwt", "auth")):
+        return "auth_session_blocked"
+    status = str(item.get("status") or item.get("layer_status") or "").strip().lower()
+    if status == "blocked":
+        return "runner_admission_blocked"
+    if status == "failed":
+        return "test_failed"
+    return ""
+
+
+def _qa_runtime_taxonomy(qa_status: dict[str, Any]) -> dict[str, Any]:
+    qa9 = qa_status.get("qa9") if isinstance(qa_status.get("qa9"), dict) else {}
+    tc_results = qa9.get("tc_results") if isinstance(qa9.get("tc_results"), list) else []
+    classes = sorted(
+        {
+            classification
+            for item in tc_results
+            if isinstance(item, dict)
+            for classification in [_classify_qa_failure_item(item)]
+            if classification
+        }
+    )
+    if not classes:
+        return {"status": "not_applicable", "failure_classes": [], "primary_class": ""}
+    blocker_classes = {"environment_blocked", "runner_admission_blocked", "auth_session_blocked"}
+    primary = next((item for item in classes if item in blocker_classes), classes[0])
+    return {
+        "status": "blocked" if primary in blocker_classes else "failed",
+        "failure_classes": classes,
+        "primary_class": primary,
+    }
+
+
 def feature_qa_root(project_root: Path) -> Path:
     return project_root / ".beacon" / "qa" / "features"
 
@@ -111,6 +256,12 @@ def _load_json(path: Path) -> dict[str, Any]:
 def _load_source_matrix(project_root: Path, *, version: str, feature: str, story: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
     slug = feature_slug(feature)
     normalized_version = normalize_version(version) or ""
+    if _real_project_qa_taxonomy_supported(normalized_version):
+        for candidate in qa_matrix_candidates(project_root, version, slug, "ac-test-matrix"):
+            if candidate.exists():
+                payload = _load_json(candidate)
+                if isinstance(payload.get("entries"), list):
+                    return candidate, payload
     if normalized_version.startswith("v"):
         try:
             major, minor, patch = [int(part) for part in normalized_version[1:].split(".")]
@@ -718,6 +869,12 @@ def _targeted_entries(
     ):
         return "up_to_date", [], []
 
+    if any(
+        code in {"spec_fingerprint_changed", "implementation_run_changed", "source_matrix_changed"}
+        for code in reason_codes
+    ):
+        return "rerun_required", reason_codes, list(derived_entries)
+
     impacted_layers = _impacted_layers(derived_entries, technical_archive)
     impacted = [item for item in derived_entries if str(item.get("qa_type") or "") in set(impacted_layers)]
     return "rerun_required", reason_codes, impacted or list(derived_entries)
@@ -751,10 +908,18 @@ def build_feature_qa_plan(
     source_matrix_hash = _entries_fingerprint(derived_entries)
     marker = _implementation_marker(project_root, feature=feature)
     archive_path, archive_payload = _technical_archive(project_root, version=resolved_version, feature=feature)
+    implementation_evidence_gate = _implementation_evidence_gate(
+        marker,
+        version=resolved_version,
+        archive_payload=archive_payload,
+    )
+    matrix_projection_gate = _matrix_projection_gate(source_matrix, version=resolved_version)
     obligations = load_artifact_update_obligations(project_root, feature=feature)
     blocking_updates = blocking_obligations(obligations)
     implementation_run_id = str(marker.get("run_id") or revision.get("last_implementation_run_id") or archive_payload.get("run_id") or "").strip()
     implementation_done = bool(implementation_run_id) or str(revision.get("delivery_status") or "").strip().lower() in {"implemented", "verified", "accepted", "released"}
+    if bool(implementation_evidence_gate.get("blocked")):
+        implementation_done = False
     spec_hash = _spec_hash(project_root, version=resolved_version, revision=revision)
     previous_status = load_feature_qa_status(project_root, feature=feature)
     source_matrix_rel = str(source_matrix_path.relative_to(project_root))
@@ -833,6 +998,23 @@ def build_feature_qa_plan(
     if status == "up_to_date" and not previous_status:
         evidence_done = False
 
+    p0_gate_reason_codes = [
+        str(item).strip()
+        for item in [
+            *(implementation_evidence_gate.get("reason_codes") or []),
+            *(matrix_projection_gate.get("reason_codes") or []),
+        ]
+        if str(item).strip()
+    ]
+    if p0_gate_reason_codes:
+        status = "blocked"
+        targeted_entries = []
+    reason_code_list = (
+        (["implementation_not_recorded"] if not implementation_done and not p0_gate_reason_codes else [])
+        + p0_gate_reason_codes
+        + reason_codes
+        + (["artifact_updates_pending"] if blocking_updates else [])
+    )
     payload = {
         "schema_version": FEATURE_QA_SCHEMA,
         "feature": feature,
@@ -857,11 +1039,10 @@ def build_feature_qa_plan(
         "story_sequence": story_sequence,
         "story_scenarios": scenario_map,
         "required_scenario_families": list(scenario_map.get("families_required") or []),
-        "reason_codes": (
-            (["implementation_not_recorded"] if not implementation_done else [])
-            + reason_codes
-            + (["artifact_updates_pending"] if blocking_updates else [])
-        ),
+        "reason_codes": reason_code_list,
+        "implementation_evidence_gate": implementation_evidence_gate,
+        "matrix_projection_gate": matrix_projection_gate,
+        "qa_outcome_taxonomy": _qa_outcome_taxonomy(reason_code_list, plan_status=status),
         "blocking_artifact_updates": blocking_updates,
         "all_entries": derived_entries,
         "targeted_entries": targeted_entries if implementation_done else [],
@@ -1418,6 +1599,7 @@ def build_feature_qa_precision_artifacts(
         if str(item).strip()
     ]
     quality_issues = qa_status.get("quality_issues") if isinstance(qa_status.get("quality_issues"), list) else []
+    runtime_taxonomy = _qa_runtime_taxonomy(qa_status)
     quality_reason_codes = sorted(
         {
             str(item.get("reason_code") or "").strip()
@@ -1508,6 +1690,9 @@ def build_feature_qa_precision_artifacts(
         stop_reasons.extend(design_truth_reason_codes or ["design_truth_verdict_failed"])
     if bool(reconciliation_gate.get("required")):
         stop_reasons.append(str(reconciliation_gate.get("reason_code") or "implementation_first_reconciliation_required"))
+    primary_runtime_class = str(runtime_taxonomy.get("primary_class") or "").strip()
+    if primary_runtime_class:
+        stop_reasons.append(primary_runtime_class)
     stop_reasons = sorted({code for code in stop_reasons if str(code).strip()})
     required_scenarios = int(exhaustiveness.get("scenario_count") or scenario_total or len(plan.get("targeted_scenario_ids") or []))
     executed_scenarios = len(
@@ -1693,6 +1878,19 @@ def build_feature_qa_precision_artifacts(
             "targeted_scope_only": bool(plan.get("targeted_tc_ids") or plan.get("targeted_ac_ids")),
         },
         "design_truth_verdict": design_truth_verdict,
+        "qa_outcome_taxonomy": {
+            **runtime_taxonomy,
+            "stable_taxonomy": [
+                "product_failed",
+                "test_failed",
+                "runner_admission_blocked",
+                "environment_blocked",
+                "auth_session_blocked",
+                "evidence_binding_missing",
+                "coverage_gap",
+                "truth_projection_gap",
+            ],
+        },
         "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
         "continue_decision": continue_decision,
         "stop_reasons": stop_reasons,

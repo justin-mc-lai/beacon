@@ -1,0 +1,499 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+  "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+  "version": "v1.4.9",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-23T11:46:00.266709",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-23T11:46:00.263794",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-RPQA-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-001 :: Implement run or import-evidence writes a QA-readable implementation marker with",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"implementation_evidence_marker_written\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Implement run or import-evidence writes a QA-readable implementation marker with required source refs.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"implementation_evidence_marker_written\"`",
+      "scenario": "Implement run or import-evidence writes a QA-readable implementation marker with required source refs.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-002",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-001 :: QA blocks as evidence_binding_missing when implementation marker is absent and n",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"qa_blocks_when_marker_missing\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA blocks as evidence_binding_missing when implementation marker is absent and no import evidence exists.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"qa_blocks_when_marker_missing\"`",
+      "scenario": "QA blocks as evidence_binding_missing when implementation marker is absent and no import evidence exists.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-003",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-002 :: Markdown QA table rows compile into machine AC matrix preserving AC ID, TC ID, c",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_compiles_without_fallback\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown QA table rows compile into machine AC matrix preserving AC ID, TC ID, command, assertion, and evidence path.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_compiles_without_fallback\"`",
+      "scenario": "Markdown QA table rows compile into machine AC matrix preserving AC ID, TC ID, command, assertion, and evidence path.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-004",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-002 :: Parser failure blocks with diagnostics and does not write placeholder acceptance",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_parser_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Parser failure blocks with diagnostics and does not write placeholder acceptance fallback.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_parser_fail_closed\"`",
+      "scenario": "Parser failure blocks with diagnostics and does not write placeholder acceptance fallback.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-005",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-003 :: QA resolves Go + UniApp backend target, frontend type-check, miniapp build, and ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"go_uniapp_runner_profile\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA resolves Go + UniApp backend target, frontend type-check, miniapp build, and route check commands.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"go_uniapp_runner_profile\"`",
+      "scenario": "QA resolves Go + UniApp backend target, frontend type-check, miniapp build, and route check commands.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-006",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-004 :: QA classifies product/test failures separately from runner, environment, auth, e",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"admission_blocker_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA classifies product/test failures separately from runner, environment, auth, evidence, coverage, and truth projection blockers.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"admission_blocker_taxonomy\"`",
+      "scenario": "QA classifies product/test failures separately from runner, environment, auth, evidence, coverage, and truth projection blockers.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-RPQA-007",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed AC-005 :: BMTOP fixture prevents implementation marker missing, matrix fallback, runner mi",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"bmtop_fixture_prevents_false_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "BMTOP fixture prevents implementation marker missing, matrix fallback, runner mismatch, unavailable frontend script, and environment blocker regressions.",
+      "evidence_path": ".beacon/evidence/test-results/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/TC-RPQA-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"bmtop_fixture_prevents_false_closure\"`",
+      "scenario": "BMTOP fixture prevents implementation marker missing, matrix fallback, runner mismatch, unavailable frontend script, and environment blocker regressions.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "row_count": 7,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-23T11:46:00.266762",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "version": "v1.4.9",
+    "source": "research:docs/beacon/v1.4.9/research/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Markdown QA truth beats generated fallback.",
+        "Explicit implementation evidence beats missing runtime state only after controlled import.",
+        "Project runner profile beats generic fallback command.",
+        "Environment blocker must not be collapsed into product failure.",
+        "Better Harness and `qa-evo-deep` cannot substitute P0 runtime closure."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown QA truth beats generated fallback.",
+          "Explicit implementation evidence beats missing runtime state only after controlled import.",
+          "Project runner profile beats generic fallback command.",
+          "Environment blocker must not be collapsed into product failure.",
+          "Better Harness and `qa-evo-deep` cannot substitute P0 runtime closure."
+        ],
+        "source": "research:docs/beacon/v1.4.9/research/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md"
+      }
+    ]
+  }
+}
