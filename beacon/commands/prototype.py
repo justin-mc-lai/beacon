@@ -1,4 +1,4 @@
-"""Beacon prototype command - requirement-driven wireframe freeze generation."""
+"""Beacon prototype command - design-result adapter with legacy wireframe compatibility."""
 
 from __future__ import annotations
 
@@ -11,6 +11,13 @@ from typing import Optional
 import typer
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.prototype_support import (
+    build_ui_ux_dev_route,
+    design_result_adapter_status,
+    prototype_adapter_only_supported,
+    prototype_generation_deprecated,
+    write_design_result_adapter_binding,
+)
 from beacon.utils.prototype_utils import (
     _real_prototype_llm_inference,
     bind_prototype_bundle,
@@ -27,7 +34,7 @@ from beacon.utils.prototype_utils import (
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 
-app = typer.Typer(name="prototype", help="Generate and manage requirement-driven wireframe freezes")
+app = typer.Typer(name="prototype", help="Adapt accepted UI/UX results into Beacon truth bindings; read legacy wireframe freezes")
 
 
 def _load_bridge_payload(payload_json: str = "") -> dict:
@@ -53,6 +60,46 @@ def _resolved_operational_version(project_root: Path, version: str, command_name
         raise typer.Exit(2) from exc
 
 
+def _externalized_generation_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    command_name: str,
+) -> dict:
+    route = build_ui_ux_dev_route(feature=feature, version=version, project_root=project_root, intent="review")
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "version": version,
+        "status": "blocked",
+        "reason_code": "prototype_generation_externalized",
+        "command": command_name,
+        "message": (
+            "Beacon v1.4.9+ no longer generates native UI/UX wireframe bundles. "
+            "Route UI/UX execution to ui-ux-dev, then bind accepted output through prototype adapt."
+        ),
+        "prototype_role": "design-result-adapter",
+        "ui_ux_execution_owner": "ui-ux-dev",
+        "recommended_route": route,
+        "recommended_command": (
+            route["command"]
+            + " && "
+            + f'beacon prototype adapt "{feature}" --project {project_root} --version {version} --design-result-ref <ui-ux-dev-output>'
+        ),
+        "bootstrap_command": route["bootstrap_command"],
+    }
+
+
+def _emit_generation_externalized(payload: dict, *, json_output: bool) -> None:
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"Beacon prototype generation blocked: {payload.get('reason_code')}", err=True)
+    typer.echo(str(payload.get("message", "")), err=True)
+    typer.echo(f"recommended: {payload.get('recommended_command', '')}", err=True)
+
+
 @app.command("host-bridge", hidden=True)
 def host_bridge(
     payload_json: str = typer.Argument("", help="Optional bridge request JSON; default reads stdin"),
@@ -67,6 +114,22 @@ def host_bridge(
     request_kind = str(payload.get("request_kind") or "").strip()
     if request_kind != "prototype-wireframe-compile":
         typer.echo("unsupported prototype bridge request_kind", err=True)
+        raise typer.Exit(2)
+    feature = str(payload.get("feature") or "").strip()
+    version = str(payload.get("version") or "").strip()
+    if prototype_generation_deprecated(version):
+        typer.echo(
+            json.dumps(
+                _externalized_generation_payload(
+                    project_root=Path.cwd(),
+                    version=version,
+                    feature=feature,
+                    command_name="prototype host-bridge",
+                ),
+                ensure_ascii=False,
+                indent=2,
+            )
+        )
         raise typer.Exit(2)
 
     documents = payload.get("documents")
@@ -100,6 +163,15 @@ def plan(
     """Compile structured wireframe freeze plan from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype plan")
+    if prototype_generation_deprecated(resolved_version):
+        payload = _externalized_generation_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            command_name="prototype plan",
+        )
+        _emit_generation_externalized(payload, json_output=json_output)
+        raise typer.Exit(2)
     requirement_gate = build_requirement_completeness_gate(
         project_root,
         version=resolved_version,
@@ -162,6 +234,15 @@ def create(
     """Create a requirement-driven wireframe freeze bundle from requirement contracts."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype create")
+    if prototype_generation_deprecated(resolved_version):
+        payload = _externalized_generation_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            command_name="prototype create",
+        )
+        _emit_generation_externalized(payload, json_output=json_output)
+        raise typer.Exit(2)
     requirement_gate = build_requirement_completeness_gate(
         project_root,
         version=resolved_version,
@@ -233,6 +314,59 @@ def create(
     typer.echo(f"✓ Generator mode: {(result['plan'].get('compiler') or {}).get('generator_mode', 'unknown')}")
     if output:
         typer.echo(f"✓ Copied artifacts to: {Path(output)}")
+
+
+@app.command()
+def adapt(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    design_result_ref: str = typer.Option("", "--design-result-ref", help="Accepted ui-ux-dev output reference"),
+    design_result_source: str = typer.Option("ui-ux-dev", "--design-result-source", help="Design result source label"),
+    accepted_by: str = typer.Option("", "--accepted-by", help="Human or agent that accepted the design result"),
+    summary: str = typer.Option("", "--summary", help="Short accepted design result summary"),
+    screen_intent: Optional[list[str]] = typer.Option(None, "--screen-intent", help="Screen intent captured by the adapter"),
+    state_visibility: Optional[list[str]] = typer.Option(None, "--state-visibility", help="State visibility captured by the adapter"),
+    interaction_handoff: Optional[list[str]] = typer.Option(None, "--interaction-handoff", help="Interaction handoff captured by the adapter"),
+    coverage_notes: str = typer.Option("", "--coverage-notes", help="Truth coverage notes"),
+    out_of_scope_notes: str = typer.Option("", "--out-of-scope-notes", help="Out-of-scope notes"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Bind an accepted external UI/UX result to PRD, user-story, and test-case truth."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = _resolved_operational_version(project_root, version, "prototype adapt")
+    if not prototype_adapter_only_supported(resolved_version):
+        payload = {
+            "schema_version": "1.0",
+            "feature": feature,
+            "version": resolved_version,
+            "status": "blocked",
+            "reason_code": "prototype_adapter_not_supported_for_version",
+            "message": "prototype adapt is the v1.4.9+ design-result adapter surface; use legacy prototype create for older versions.",
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(payload["message"], err=True)
+        raise typer.Exit(2)
+    payload = write_design_result_adapter_binding(
+        project_root,
+        resolved_version,
+        feature,
+        design_result_ref=design_result_ref,
+        design_result_source=design_result_source,
+        accepted_by=accepted_by,
+        summary=summary,
+        screen_intent=screen_intent or [],
+        state_visibility=state_visibility or [],
+        interaction_handoff=interaction_handoff or [],
+        coverage_notes=coverage_notes,
+        out_of_scope_notes=out_of_scope_notes,
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"✓ Prototype adapter binding written: {payload.get('paths', {}).get('binding_md', '')}")
 
 
 @app.command()
@@ -466,6 +600,23 @@ def status(
     """Show prototype status including stale detection and review readiness."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = _resolved_operational_version(project_root, version, "prototype status")
+    if prototype_adapter_only_supported(resolved_version):
+        payload = design_result_adapter_status(project_root, resolved_version, feature)
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+            return
+        typer.echo("Beacon Prototype Adapter Status")
+        typer.echo("=" * 32)
+        typer.echo(f"feature      : {feature}")
+        typer.echo(f"version      : {resolved_version}")
+        typer.echo(f"status       : {payload.get('status')}")
+        typer.echo(f"role         : {payload.get('adapter_role')}")
+        typer.echo(f"reason_code  : {payload.get('reason_code', '')}")
+        typer.echo(f"binding_json : {(payload.get('paths') or {}).get('binding_json', '')}")
+        typer.echo(f"binding_ready: {bool(payload.get('binding_ready'))}")
+        if payload.get("recommended_command"):
+            typer.echo(f"next_action  : {payload.get('recommended_command')}")
+        return
     payload = evaluate_prototype_status(project_root, resolved_version, feature)
     payload["requirement_completeness_gate"] = build_requirement_completeness_gate(
         project_root,

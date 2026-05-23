@@ -10,6 +10,7 @@ from beacon.utils.artifact_paths import human_execution_file, machine_execution_
 from beacon.utils.diagram_truth import diagram_truth_findings, load_feature_diagram_truth
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.support_research_topology import support_topology_diagnostics
 from beacon.utils.versioning import (
     normalize_version,
     project_runtime_feature_enabled,
@@ -249,6 +250,15 @@ def _extract_heading_titles(path: Path) -> set[str]:
     return titles
 
 
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    normalized = release_line_key(version) or normalize_version(version) or "v0.0.0"
+    try:
+        major, minor, patch = normalized.lstrip("v").split(".")
+        return (int(major), int(minor), int(patch))
+    except Exception:  # noqa: BLE001
+        return (0, 0, 0)
+
+
 def _feature_research_path(project_root: Path, version: str, feature: str) -> Path:
     return project_root / "docs" / "beacon" / resolve_target_version(project_root, version) / "research" / f"{feature_slug(feature)}.md"
 
@@ -418,6 +428,67 @@ def _build_human_closure_contract(project_root: Path, *, version: str, feature: 
     }
 
 
+_VERSION_PROJECTION_TRUTH_FIELDS = (
+    "prd_refs",
+    "user_story_refs",
+    "test_case_refs",
+    "coverage_notes",
+    "out_of_scope_notes",
+)
+
+
+def _version_projection_truth_contract(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    diagram_truth: dict[str, Any],
+) -> dict[str, Any]:
+    supported = _semver_tuple(version) >= (1, 4, 9)
+    paths = _feature_requirement_paths(project_root, version, feature)
+    research_path = paths["research"]
+    text = research_path.read_text(encoding="utf-8") if research_path.exists() else ""
+    lowered = text.lower()
+    declared_types = [
+        item
+        for item in ("business_flow", "state_machine", "three_piece_map")
+        if (
+            (item == "business_flow" and ("business flow" in lowered or "业务流程" in lowered or "业务闭环" in lowered))
+            or (item == "state_machine" and ("state machine" in lowered or "state-machine" in lowered or "状态机" in lowered))
+            or (item == "three_piece_map" and ("three-piece" in lowered or "three piece" in lowered or "prd / user story / test case map" in lowered or "三件套" in lowered))
+        )
+    ]
+    required = supported and (bool(diagram_truth.get("required")) or bool(declared_types))
+    field_presence = {
+        field: (field in lowered or field.replace("_", "-") in lowered)
+        for field in _VERSION_PROJECTION_TRUTH_FIELDS
+    }
+    missing_fields = [field for field, present in field_presence.items() if required and not present]
+    required_refs = {
+        "prd_refs": str(paths["prd"].relative_to(project_root)),
+        "user_story_refs": str(paths["user_story"].relative_to(project_root)),
+        "test_case_refs": str(paths["test_case"].relative_to(project_root)),
+    }
+    missing_ref_targets = [
+        key
+        for key, rel in required_refs.items()
+        if required and field_presence.get(key) and rel not in text
+    ]
+    return {
+        "required": required,
+        "supported": supported,
+        "projection_types": declared_types,
+        "research_path": str(research_path.relative_to(project_root)),
+        "research_exists": research_path.exists(),
+        "required_fields": list(_VERSION_PROJECTION_TRUTH_FIELDS),
+        "field_presence": field_presence,
+        "missing_fields": missing_fields,
+        "required_refs": required_refs,
+        "missing_ref_targets": missing_ref_targets,
+        "ready": bool(required) and not missing_fields and not missing_ref_targets,
+    }
+
+
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md"
@@ -469,6 +540,34 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
     )
     payload["human_closure_contract"] = human_closure_contract
     payload["requirement_closure_contract"] = requirement_closure_contract
+    projection_truth_contract = _version_projection_truth_contract(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        diagram_truth=diagram_truth,
+    )
+    payload["version_projection_truth_contract"] = projection_truth_contract
+    support_topology = support_topology_diagnostics(project_root, version=resolved_version, feature=feature)
+    payload["support_write_topology_contract"] = support_topology
+    for diagnostic in support_topology.get("diagnostics", []) if isinstance(support_topology.get("diagnostics"), list) else []:
+        if not isinstance(diagnostic, dict):
+            continue
+        findings.append(
+            {
+                "file": str(project_root / str(diagnostic.get("actual_path") or diagnostic.get("expected_path") or "")),
+                "line": 1,
+                "kind": "support_write_topology_violation",
+                "text": (
+                    f"{diagnostic.get('reason_code')}: source_skill={diagnostic.get('source_skill', '')} "
+                    f"expected={diagnostic.get('expected_path', '')} actual={diagnostic.get('actual_path', '')}"
+                ),
+                "reason_code": str(diagnostic.get("reason_code") or ""),
+                "source_skill": str(diagnostic.get("source_skill") or ""),
+                "expected_path": str(diagnostic.get("expected_path") or ""),
+                "actual_path": str(diagnostic.get("actual_path") or ""),
+                "repair_route": str(diagnostic.get("repair_route") or "beacon-change-refreeze"),
+            }
+        )
     if bool(human_closure_contract.get("required")):
         if not bool(human_closure_contract.get("research_exists")):
             findings.append(
@@ -527,6 +626,28 @@ def build_requirement_clarity_gate_payload(project_root: Path, *, version: str =
                 "ac_id": ac_id,
             }
         )
+    if bool(projection_truth_contract.get("required")):
+        for field in projection_truth_contract.get("missing_fields", []) if isinstance(projection_truth_contract.get("missing_fields"), list) else []:
+            findings.append(
+                {
+                    "file": str(_feature_research_path(project_root, resolved_version, feature)),
+                    "line": 1,
+                    "kind": "version_projection_truth_binding_missing",
+                    "text": f"version projection missing truth binding field: {field}",
+                    "field": field,
+                }
+            )
+        for field in projection_truth_contract.get("missing_ref_targets", []) if isinstance(projection_truth_contract.get("missing_ref_targets"), list) else []:
+            findings.append(
+                {
+                    "file": str(_feature_research_path(project_root, resolved_version, feature)),
+                    "line": 1,
+                    "kind": "version_projection_truth_binding_ref_missing",
+                    "text": f"version projection truth binding does not reference required artifact: {field}",
+                    "field": field,
+                    "expected_ref": str((projection_truth_contract.get("required_refs") or {}).get(field, "")),
+                }
+            )
 
     required_artifacts = _extract_required_artifacts(prd_path)
     payload["required_artifacts"] = [str(item.get("path") or "") for item in required_artifacts]
@@ -612,6 +733,28 @@ def _render_requirement_clarity_markdown(payload: dict[str, Any]) -> str:
             f"- test_case_path: `{chain_paths.get('test_case', '')}` exists=`{bool(chain_exists.get('test_case', False))}`",
             f"- upstream_ac_ids: {', '.join(ac_projection.get('upstream_ac_ids', [])) if isinstance(ac_projection.get('upstream_ac_ids'), list) else 'none'}",
             f"- missing_test_case_ac_ids: {', '.join(ac_projection.get('missing_test_case_ac_ids', [])) if isinstance(ac_projection.get('missing_test_case_ac_ids'), list) else 'none'}",
+            "",
+            "## Version Projection Truth Contract",
+        ]
+    )
+    projection_truth = payload.get("version_projection_truth_contract") if isinstance(payload.get("version_projection_truth_contract"), dict) else {}
+    lines.extend(
+        [
+            f"- required: `{bool(projection_truth.get('required', False))}`",
+            f"- projection_types: {', '.join(projection_truth.get('projection_types', [])) if isinstance(projection_truth.get('projection_types'), list) else 'none'}",
+            f"- missing_fields: {', '.join(projection_truth.get('missing_fields', [])) if isinstance(projection_truth.get('missing_fields'), list) else 'none'}",
+            f"- missing_ref_targets: {', '.join(projection_truth.get('missing_ref_targets', [])) if isinstance(projection_truth.get('missing_ref_targets'), list) else 'none'}",
+            "",
+            "## Support Write Topology Contract",
+        ]
+    )
+    support_topology = payload.get("support_write_topology_contract") if isinstance(payload.get("support_write_topology_contract"), dict) else {}
+    lines.extend(
+        [
+            f"- supported: `{bool(support_topology.get('supported', False))}`",
+            f"- status: `{support_topology.get('status', '')}`",
+            f"- reason_code: `{support_topology.get('reason_code', '')}`",
+            f"- diagnostic_count: `{len(support_topology.get('diagnostics') or []) if isinstance(support_topology.get('diagnostics'), list) else 0}`",
             "",
             "## Scanned Files",
         ]

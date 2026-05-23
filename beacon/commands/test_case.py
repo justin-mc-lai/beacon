@@ -442,6 +442,67 @@ def _build_entries_from_qa_case_rows(
         )
     return entries
 
+
+def _markdown_matrix_declared(content: str) -> bool:
+    text = str(content or "")
+    if not text.strip():
+        return False
+    lowered = text.lower()
+    if "coverage matrix" in lowered or "executable ac test matrix" in lowered:
+        return True
+    return bool(
+        re.search(
+            r"\|\s*ac\s+id\s*\|\s*tc\s+id\s*\|",
+            text,
+            flags=re.IGNORECASE,
+        )
+    )
+
+
+def _write_markdown_matrix_diagnostics(
+    *,
+    project_root: Path,
+    version: str,
+    feature_slug: str,
+    qa_path: Path | None,
+    reason_code: str,
+    details: list[str] | None = None,
+) -> Path:
+    diagnostics_path = (
+        project_root
+        / "docs"
+        / "beacon"
+        / version
+        / ".machine"
+        / "qa"
+        / f"{feature_slug}.markdown-matrix-diagnostics.json"
+    )
+    diagnostics_path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        "schema_version": "1.0",
+        "feature_slug": feature_slug,
+        "version": version,
+        "status": "blocked",
+        "reason_code": reason_code,
+        "qa_path": str(qa_path.relative_to(project_root)) if qa_path else "",
+        "details": [str(item) for item in (details or []) if str(item).strip()],
+        "generated_at": datetime.now().isoformat(),
+    }
+    diagnostics_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    return diagnostics_path
+
+
+def _has_markdown_matrix_projection_gap(
+    *,
+    qa_content: str,
+    qa_rows: list[dict[str, Any]],
+) -> bool:
+    return _markdown_matrix_declared(qa_content) and not qa_rows
+
+
+def _markdown_matrix_truth_mode(version: str, qa_content: str, qa_rows: list[dict[str, Any]]) -> bool:
+    return markdown_first_freeze_supported(version) and bool(qa_rows)
+
 _BROWSER_HINT_TOKENS: tuple[str, ...] = (
     "ui",
     "browser",
@@ -1298,6 +1359,41 @@ def create(
                 raise typer.Exit(2)
             ac_items = [{"ac_id": "AC-001", "text": f"{feature} core flow works", "source": "fallback"}]
     qa_case_rows = extract_qa_case_rows(qa_content, f"qa:test-cases:{qa_path}" if qa_path else "qa:test-cases:missing")
+    if markdown_first_freeze_supported(resolved_version) and _has_markdown_matrix_projection_gap(
+        qa_content=qa_content,
+        qa_rows=qa_case_rows,
+    ):
+        diagnostics_path = _write_markdown_matrix_diagnostics(
+            project_root=project_root,
+            version=resolved_version,
+            feature_slug=feature_slug,
+            qa_path=qa_path,
+            reason_code="markdown_matrix_projection_gap",
+            details=[
+                "Markdown QA declares a coverage matrix, but no valid AC ID / TC ID rows were parsed.",
+                "Machine AC matrix generation is fail-closed and will not use fallback rows.",
+            ],
+        )
+        if json_output:
+            typer.echo(
+                json.dumps(
+                    {
+                        "status": "blocked",
+                        "feature": feature,
+                        "feature_slug": feature_slug,
+                        "version": resolved_version,
+                        "reason_code": "markdown_matrix_projection_gap",
+                        "diagnostics_path": str(diagnostics_path.relative_to(project_root)),
+                    },
+                    ensure_ascii=False,
+                    indent=2,
+                )
+            )
+        else:
+            typer.echo("Markdown QA matrix projection failed; fallback generation is blocked.", err=True)
+            typer.echo(f"Diagnostics: {diagnostics_path}", err=True)
+        raise typer.Exit(2)
+    markdown_matrix_truth_mode = _markdown_matrix_truth_mode(resolved_version, qa_content, qa_case_rows)
     research_projection = build_research_projection(
         research_content=research_content,
         research_source=f"research:{research_path}" if research_path else "research:missing",
@@ -1324,7 +1420,7 @@ def create(
         capability_snapshot=capability_snapshot,
     )
     deepening_payload: dict[str, Any] = {}
-    if requirement_deepening_supported(resolved_version):
+    if requirement_deepening_supported(resolved_version) and not markdown_matrix_truth_mode:
         deepening_payload = sync_requirement_deepening_artifacts(
             project_root,
             version=resolved_version,
@@ -1351,7 +1447,17 @@ def create(
         project_root, resolved_version, feature_slug
     )
     host_matrix_entries = host_payload.get("entries") if isinstance(host_payload.get("entries"), list) else []
-    if effective_mode == "host" and host_matrix_entries:
+    if markdown_matrix_truth_mode:
+        entries = _build_entries_from_qa_case_rows(
+            feature=feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_case_rows,
+            ac_items=ac_items,
+            ui_runner="browser-use",
+        )
+        compiler["effective_mode"] = "markdown"
+        compiler["fallback_reason"] = ""
+    elif effective_mode == "host" and host_matrix_entries:
         entries = _normalize_host_matrix_entries(
             feature=feature,
             feature_slug=feature_slug,
@@ -1496,7 +1602,7 @@ def create(
                 }
             )
 
-    if effective_mode == "host" or qa_case_rows:
+    if (effective_mode == "host" or qa_case_rows) and not markdown_matrix_truth_mode:
         synthetic_idx = len(entries)
         ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
         for jump in prototype_navigation.get("jump_map", []) or []:
@@ -1608,18 +1714,19 @@ def create(
                 }
             )
 
-    entries = _ensure_minimum_ac_coverage(
-        feature=feature,
-        feature_slug=feature_slug,
-        entries=entries,
-        ac_items=ac_items,
-    )
-    entries = _ensure_deepening_coverage_entries(
-        feature_slug=feature_slug,
-        entries=entries,
-        ac_items=ac_items,
-        deepening_payload=deepening_payload,
-    )
+    if not markdown_matrix_truth_mode:
+        entries = _ensure_minimum_ac_coverage(
+            feature=feature,
+            feature_slug=feature_slug,
+            entries=entries,
+            ac_items=ac_items,
+        )
+        entries = _ensure_deepening_coverage_entries(
+            feature_slug=feature_slug,
+            entries=entries,
+            ac_items=ac_items,
+            deepening_payload=deepening_payload,
+        )
 
     matrix_payload = {
         "schema_version": "1.0",
@@ -1633,6 +1740,13 @@ def create(
         },
         "entries": entries,
         "research_projection": research_projection,
+        "markdown_matrix_contract": {
+            "truth_mode": "markdown" if markdown_matrix_truth_mode else "generated",
+            "fail_closed": markdown_first_freeze_supported(resolved_version),
+            "source": str(qa_path.relative_to(project_root)) if qa_path else "",
+            "row_count": len(qa_case_rows),
+            "enrichment_disabled": bool(markdown_matrix_truth_mode),
+        },
     }
     if deepening_payload:
         matrix_payload["requirement_deepening"] = {
@@ -1694,7 +1808,15 @@ def create(
     if automation_target_rate < 0 or automation_target_rate > 1:
         raise typer.BadParameter("--automation-target-rate must be between 0 and 1")
     host_qa9_entries = host_payload.get("qa9_entries") if isinstance(host_payload.get("qa9_entries"), list) else []
-    if effective_mode == "host" and host_qa9_entries:
+    if markdown_matrix_truth_mode:
+        qa9_entries = _build_entries_from_qa_case_rows(
+            feature=feature,
+            feature_slug=feature_slug,
+            qa_rows=qa_case_rows,
+            ac_items=ac_items,
+            ui_runner=resolved_ui_runner,
+        )
+    elif effective_mode == "host" and host_qa9_entries:
         qa9_entries = _normalize_existing_qa9_entries(
             feature=feature,
             feature_slug=feature_slug,
@@ -1751,6 +1873,13 @@ def create(
         ),
         "automation_target_rate": automation_target_rate,
         "entries": qa9_entries,
+        "markdown_matrix_contract": {
+            "truth_mode": "markdown" if markdown_matrix_truth_mode else "generated",
+            "fail_closed": markdown_first_freeze_supported(resolved_version),
+            "source": str(qa_path.relative_to(project_root)) if qa_path else "",
+            "row_count": len(qa_case_rows),
+            "enrichment_disabled": bool(markdown_matrix_truth_mode),
+        },
         "compatibility_matrix": {
             "browsers": ["chromium", "firefox", "webkit"],
             "devices": ["desktop", "iphone14"],
@@ -1807,6 +1936,13 @@ def create(
         scenario_payload["supplement_task"] = deepening_payload.get("supplement_task", {})
         scenario_payload["re_freeze_transaction"] = deepening_payload.get("re_freeze_transaction", {})
     scenario_payload["research_projection"] = research_projection
+    scenario_payload["markdown_matrix_contract"] = {
+        "truth_mode": "markdown" if markdown_matrix_truth_mode else "generated",
+        "fail_closed": markdown_first_freeze_supported(resolved_version),
+        "source": str(qa_path.relative_to(project_root)) if qa_path else "",
+        "row_count": len(qa_case_rows),
+        "enrichment_disabled": bool(markdown_matrix_truth_mode),
+    }
 
     output_path = (
         Path(output)

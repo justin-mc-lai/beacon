@@ -568,6 +568,38 @@ def _rolo_profile_example() -> dict[str, Any]:
     }
 
 
+def _go_uniapp_profile_example(project: str, profile_id: str) -> dict[str, Any]:
+    return {
+        "project": project,
+        "profile_id": profile_id,
+        "description": "Go backend + UniApp frontend verification profile.",
+        "skills": {},
+        "required_evidence": [
+            "go_backend_target_tests",
+            "uniapp_typecheck",
+            "miniapp_build",
+            "route_check",
+        ],
+        "required_cases": [],
+        "contracts": [],
+        "qa_layer_commands": {
+            "contract": "go test ./... -run '${BEACON_GO_TEST_PATTERN:-Test}'",
+            "integration": "go test ./... -run '${BEACON_GO_TEST_PATTERN:-Test}'",
+            "regression": "npm run test:routes --if-present",
+            "functional": "npm run build:mp-weixin --if-present",
+            "smoke": "npm run type-check --if-present",
+            "unit": "go test ./...",
+            "default": "go test ./...",
+        },
+        "runner_taxonomy": {
+            "environment_blockers": ["docker", "testcontainers", "mysql", "postgres", "connection refused"],
+            "runner_admission_blockers": ["missing script", "command not found", "no such file"],
+            "auth_session_blockers": ["401", "403", "jwt", "cookie", "session"],
+        },
+        "orchestration": {"nodes": []},
+    }
+
+
 def create_project_profile(
     project_root: Path,
     *,
@@ -590,6 +622,11 @@ def create_project_profile(
             payload["project"] = project
             payload["profile_id"] = profile_id
             profiles[profile_id] = payload
+        section["default_profile"] = profile_id
+    elif example in {"go-uniapp", "bmtop-go-uniapp"}:
+        profiles = section.setdefault("profiles", {})
+        if isinstance(profiles, dict):
+            profiles[profile_id] = _go_uniapp_profile_example(project, profile_id)
         section["default_profile"] = profile_id
     else:
         profiles = section.setdefault("profiles", {})

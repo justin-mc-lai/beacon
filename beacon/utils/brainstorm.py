@@ -13,6 +13,11 @@ from beacon.utils.help_support import build_help_payload
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
+from beacon.utils.support_research_topology import (
+    assert_support_write_topology,
+    support_research_topology_supported,
+    upsert_support_finding_section,
+)
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -148,6 +153,7 @@ def _path_safe_slug(text: str, *, fallback: str) -> str:
 def resolve_brainstorm_output_path(
     project_root: Path,
     *,
+    version: str = "",
     prompt: str,
     feature: str = "",
     output: str = "",
@@ -155,6 +161,8 @@ def resolve_brainstorm_output_path(
     if output:
         path = Path(output)
         return path if path.is_absolute() else project_root / path
+    if feature.strip() and support_research_topology_supported(version):
+        return project_root / "docs" / "beacon" / version / "research" / f"{feature_slug(feature)}.md"
     date = now_iso()[:10]
     if feature.strip():
         slug = _path_safe_slug(feature, fallback="beacon-brainstorm")[:96]
@@ -381,7 +389,16 @@ def run_beacon_brainstorm(
         source_text,
         ("fr-", "ac-", "tc-", "non-goal", "boundary", "baseline", "brainstorm", "implement"),
     )
-    output_path = resolve_brainstorm_output_path(project_root, prompt=prompt, feature=feature, output=output)
+    output_path = resolve_brainstorm_output_path(project_root, version=resolved_version, prompt=prompt, feature=feature, output=output)
+    topology_gate = {}
+    if feature and support_research_topology_supported(resolved_version):
+        topology_gate = assert_support_write_topology(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            surface="beacon-brainstorm",
+            actual_path=output_path,
+        )
     assert_not_requirement_truth_path(output_path, project_root=project_root, version=resolved_version)
     human_closure_scaffold = _materialize_human_closure_scaffold(
         project_root,
@@ -443,10 +460,28 @@ def run_beacon_brainstorm(
             or next_route
         ),
         "output_path": _rel(project_root, output_path),
+        "support_write_topology": topology_gate,
         "generated_at": now_iso(),
     }
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    output_path.write_text(render_brainstorm_markdown(payload), encoding="utf-8")
+    if feature and support_research_topology_supported(resolved_version):
+        writeback = upsert_support_finding_section(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            surface="beacon-brainstorm",
+            finding_summary=str(payload.get("converged_recommendation") or prompt).strip(),
+            source_refs=[
+                str(item.get("path") or "")
+                for item in payload.get("version_material_refs", [])
+                if isinstance(item, dict) and str(item.get("path") or "").strip()
+            ],
+            route_decision=str(payload.get("recommended_route") or payload.get("next_route") or "beacon-brainstorm"),
+        )
+        payload["output_path"] = str(writeback.get("path") or payload["output_path"])
+        payload["support_research_writeback"] = writeback
+    else:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(render_brainstorm_markdown(payload), encoding="utf-8")
     return payload
 
 

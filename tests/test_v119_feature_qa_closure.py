@@ -161,6 +161,47 @@ def test_v119_qa_evolve_should_compute_feature_delta_plan(tmp_path: Path):
     assert "no_prior_feature_qa" in payload["reason_codes"]
 
 
+def test_v119_feature_plan_should_rerun_all_entries_when_source_matrix_changes(tmp_path: Path):
+    _seed_feature_docs(tmp_path)
+    _mark_implemented(tmp_path)
+    matrix_path = tmp_path / "docs" / "beacon" / VERSION / ".machine" / "qa" / f"{SLUG}.ac-test-matrix.json"
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    matrix["entries"].append(
+        {
+            "ac_id": "AC-003",
+            "tc_id": "TC-003",
+            "layer": "compatibility",
+            "command": "",
+            "assertion": "compatibility case remains release-facing",
+            "status": "planned",
+        }
+    )
+    matrix_path.write_text(json.dumps(matrix, ensure_ascii=False, indent=2), encoding="utf-8")
+    status_path = tmp_path / ".beacon" / "qa" / "features" / SLUG / "status.json"
+    status_path.parent.mkdir(parents=True, exist_ok=True)
+    status_path.write_text(
+        json.dumps(
+            {
+                "status": "passed",
+                "evidence_done": True,
+                "current_spec_fingerprint_hash": "stale",
+                "implementation_run_id": "run-impl-001",
+                "source_matrix_path": f"docs/beacon/{VERSION}/.machine/qa/{SLUG}.ac-test-matrix.json",
+                "source_matrix_hash": "stale",
+                "feature_scorecard": {"coverage_current": {"executed_scenarios": 2}},
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    payload = build_feature_qa_plan(tmp_path, version=VERSION, feature=FEATURE, persist=False)
+
+    assert "source_matrix_changed" in payload["reason_codes"]
+    assert sorted(payload["targeted_source_tc_ids"]) == ["TC-001", "TC-002", "TC-003"]
+
+
 def test_v119_feature_plan_should_apply_feature_evidence_contract_overrides(tmp_path: Path):
     _seed_feature_docs(tmp_path)
     _mark_implemented(tmp_path)

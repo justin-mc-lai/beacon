@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "feature_slug": "beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract",
+  "version": "v1.4.8",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-21T11:37:07.220815+00:00",
+  "detected_revision_id": "R5",
+  "source_revision_id": "R4",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R4",
+      "run_id": "run-20260521T101906Z-a302",
+      "recorded_at": "2026-05-21T10:19:07.461312+00:00",
+      "implemented_item_ids": [
+        "AC-011",
+        "AC-004",
+        "AC-002",
+        "AC-007",
+        "AC-001",
+        "AC-012",
+        "AC-010",
+        "AC-005",
+        "AC-008",
+        "AC-009",
+        "AC-003",
+        "TASK-001",
+        "AC-006"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        ".omc/sessions/7bed93aa-b19a-4459-aca9-8f4cefda38ea.json",
+        ".omc/sessions/f83c02d5-6d74-471d-9e25-0aad3b43d255.json",
+        "README.md",
+        "beacon/commands/auto_test.py",
+        "beacon/commands/gate.py",
+        "beacon/commands/prd.py",
+        "beacon/commands/test_case.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/requirement_deepening.py",
+        "beacon/utils/technical_review_contract.py",
+        "docs/beacon/v1.4.7/execution/index.md",
+        "tests/test_beacon.py",
+        "tests/test_gate_memory_closure_contract.py",
+        "tests/test_v140_release_gate_selector_alignment.py"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.8/prd/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "docs/beacon/v1.4.8/user-story/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.8/user-story/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "docs/beacon/v1.4.8/qa/test-cases/beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R5",
+    "current_delivery_status": "accepted"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"beacon-v1.4.8-material-gate-and-human-subskill-atomic-writeback-contract\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.8 --reason \"implementation-first-reconciliation\""
+  }
+}

@@ -263,6 +263,9 @@ def _resolve_feature_qa_evidence_path(project_root: Path, *, feature: str, tc_id
 
 
 def _evidence_status(project_root: Path, relative_path: str, *, feature: str = "", tc_id: str = "") -> str:
+    qa9_status = _qa9_evidence_status(project_root, feature=feature, tc_id=tc_id)
+    if qa9_status:
+        return qa9_status
     path = _resolve_evidence_path(project_root, relative_path)
     if path is None and feature and tc_id:
         path = _resolve_feature_qa_evidence_path(project_root, feature=feature, tc_id=tc_id)
@@ -277,6 +280,41 @@ def _evidence_status(project_root: Path, relative_path: str, *, feature: str = "
     if status in {"fail", "failed", "blocked", "error"}:
         return "failed"
     return "present"
+
+
+def _qa9_evidence_status(project_root: Path, *, feature: str = "", tc_id: str = "") -> str:
+    if not tc_id:
+        return ""
+    expected_feature = feature_slug(feature) if feature else ""
+    for path in (
+        project_root / ".beacon" / "qa" / "status.json",
+        project_root / ".beacon" / "auto-test-status.json",
+    ):
+        payload = read_json(path, {})
+        if not isinstance(payload, dict):
+            continue
+        observed_feature = feature_slug(str(payload.get("feature") or payload.get("feature_slug") or ""))
+        if expected_feature and observed_feature and observed_feature != expected_feature:
+            continue
+        qa9 = payload.get("qa9") if isinstance(payload.get("qa9"), dict) else {}
+        rows = qa9.get("tc_results") if isinstance(qa9.get("tc_results"), list) else []
+        statuses: list[str] = []
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            row_tc_id = str(row.get("tc_id") or "").strip()
+            source_tc_id = str(row.get("source_tc_id") or row_tc_id).strip()
+            if tc_id not in {row_tc_id, source_tc_id}:
+                continue
+            statuses.append(str(row.get("status") or "").strip().lower())
+        normalized = {status for status in statuses if status}
+        if normalized and normalized <= {"passed", "pass", "ok", "success"}:
+            return "passed"
+        if normalized & {"failed", "fail", "blocked", "error"}:
+            return "failed"
+        if normalized:
+            return "present"
+    return ""
 
 
 def _source_paths(project_root: Path, version: str, slug: str) -> dict[str, Path | None]:

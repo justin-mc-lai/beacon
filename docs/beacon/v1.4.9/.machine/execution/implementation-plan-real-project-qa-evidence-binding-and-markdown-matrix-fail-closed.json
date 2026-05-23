@@ -1,0 +1,993 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed-r2",
+  "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+  "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+  "version": "v1.4.9",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:a8614520c1e4ced250e746005ffda519502886d03ccaec829b28c5e97b8a0065",
+  "plan_hash": "sha256:9c423090298235ceeed0f33a90c6a6b6535916365cf49bea8a14d1c31189bed9",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "prd": "docs/beacon/v1.4.9/prd/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "test_case": "docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "revision_delta": "docs/beacon/v1.4.9/.machine/execution/revision-delta-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+    "ac_matrix": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.9/.machine/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.9/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.9",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "implementation_evidence",
+      "markdown_matrix",
+      "runner_profile",
+      "qa_outcome",
+      "admission_blocker"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `implementation_evidence`",
+        "- `markdown_matrix`",
+        "- `runner_profile`",
+        "- `qa_outcome`",
+        "- `admission_blocker`",
+        "- State axes must not be silently compressed into one implicit status field."
+      ]
+    },
+    "generated_at": "2026-05-23T03:56:44.352951+00:00",
+    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "prd_ref": "docs/beacon/v1.4.9/prd/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "user_story_ref": "docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "version": "v1.4.9",
+    "source": "research:docs/beacon/v1.4.9/research/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Markdown QA truth beats generated fallback.",
+        "Explicit implementation evidence beats missing runtime state only after controlled import.",
+        "Project runner profile beats generic fallback command.",
+        "Environment blocker must not be collapsed into product failure.",
+        "Better Harness and `qa-evo-deep` cannot substitute P0 runtime closure."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown QA truth beats generated fallback.",
+          "Explicit implementation evidence beats missing runtime state only after controlled import.",
+          "Project runner profile beats generic fallback command.",
+          "Environment blocker must not be collapsed into product failure.",
+          "Better Harness and `qa-evo-deep` cannot substitute P0 runtime closure."
+        ],
+        "source": "research:docs/beacon/v1.4.9/research/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.9/.machine/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Implement run 完成时必须写入 QA 可读取的 evidence marker。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-RPQA-001",
+        "TC-RPQA-002",
+        "TC-RPQA-003",
+        "TC-RPQA-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003",
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RPQA-001",
+        "TC-RPQA-002",
+        "TC-RPQA-003",
+        "TC-RPQA-004"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8",
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T115747962470",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/ac-closure.json",
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/summary.json",
+        "verify:run-20260523T120349663976",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/summary.json",
+        "verify:run-20260523T121044681575"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T03:57:05.273340+00:00",
+      "completed_at": "2026-05-23T04:03:18.714118+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-001",
+      "description": "提供 `import-evidence` 受控导入路径，记录 source refs、changed files、summary ref、approved_by。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004",
+        "AC-003",
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-RPQA-006",
+        "TC-RPQA-005",
+        "TC-RPQA-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-006",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-RPQA-005",
+        "TC-RPQA-006",
+        "TC-RPQA-007"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T115747962470/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T115747962470",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/ac-closure.json",
+        ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "run:run-20260523T034758Z-16f8",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T120349663976/summary.json",
+        "verify:run-20260523T120349663976",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T121044681575/summary.json",
+        "verify:run-20260523T121044681575"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508580+00:00",
+      "completed_at": "2026-05-23T04:03:18.714141+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-002",
+      "description": "Markdown QA table 可解析时，machine AC matrix 必须保留原 AC ID、TC ID、command、assertion、evidence path。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508597+00:00",
+      "completed_at": "2026-05-23T04:03:18.714157+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-002",
+      "description": "Markdown QA parser 失败时必须 fail closed，并输出 parser diagnostics，不得使用占位 fallback。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508603+00:00",
+      "completed_at": "2026-05-23T04:03:18.714163+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-003",
+      "description": "QA 支持 project runner profile，首批覆盖 Go + UniApp 命令矩阵。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508610+00:00",
+      "completed_at": "2026-05-23T04:03:18.714169+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-004",
+      "description": "QA outcome taxonomy 必须区分 product_failed、test_failed、runner_admission_blocked、environment_blocked、auth_session_blocked、evidence_binding_missing、coverage_gap、truth_projection_gap。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508708+00:00",
+      "completed_at": "2026-05-23T04:03:18.714175+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-005",
+      "description": "BMTOP case 必须固化为 regression fixture，验证 implementation marker、Markdown matrix、runner profile、environment blocker 分类。",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implementation_evidence, markdown_matrix, runner_profile, qa_outcome, admission_blocker"
+      ],
+      "diagram_state_axes": [
+        "implementation_evidence",
+        "markdown_matrix",
+        "runner_profile",
+        "qa_outcome",
+        "admission_blocker"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T034758Z-16f8"
+      ],
+      "changed_files": [
+        "beacon/commands/test_case.py",
+        "beacon/commands/implement.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/project_skills.py",
+        "tests/test_v149_real_project_qa_closure.py",
+        "tests/fixtures/bmtop/rules-encyclopedia-admin-closure"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T04:01:06.508719+00:00",
+      "completed_at": "2026-05-23T04:03:18.714181+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "version": "v1.4.9",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 5,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "blocker taxonomy",
+        "text": "QA distinguishes product_failed, test_failed, runner_admission_blocked, environment_blocked, auth_session_blocked, evidence_binding_missing, coverage_gap, and truth_projection_gap.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+        "signature": "ac::::blocker taxonomy::qa distinguishes product_failed, test_failed, runner_admission_blocked, environment_blocked, auth_session_blocked, evidence_binding_missing, coverage_gap, and truth_projection_gap.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implementation evidence",
+        "text": "Implement completion or controlled `import-evidence` writes a QA-readable implementation evidence marker with feature, version, run/import id, source refs, changed files or service directories, summary ref, created_at, imported flag, and approved_by when imported.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+        "signature": "ac::::implementation evidence::implement completion or controlled `import-evidence` writes a qa-readable implementation evidence marker with feature, version, run/import id, source refs, changed files or service directories, summary ref, created_at, imported flag, and approved_by when imported.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "markdown matrix",
+        "text": "When Markdown QA has a parseable coverage matrix, `.machine/qa/<feature>.ac-test-matrix.json` preserves the original AC ID, TC ID, layer, command, assertion, and evidence path; parser failure blocks with diagnostics instead of fallback.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+        "signature": "ac::::markdown matrix::when markdown qa has a parseable coverage matrix, `.machine/qa/<feature>.ac-test-matrix.json` preserves the original ac id, tc id, layer, command, assertion, and evidence path; parser failure blocks with diagnostics instead of fallback.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "project runner",
+        "text": "QA can resolve a Go + UniApp project runner profile with backend target tests, frontend type-check, miniapp build, and route check commands.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+        "signature": "ac::::project runner::qa can resolve a go + uniapp project runner profile with backend target tests, frontend type-check, miniapp build, and route check commands.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "regression fixture",
+        "text": "The BMTOP `rules-encyclopedia-admin-closure` case is captured as a regression fixture covering missing implementation marker, Markdown matrix fallback, project runner mismatch, unavailable frontend test script, and Docker/testcontainers environment blocker.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+        "signature": "ac::::regression fixture::the bmtop `rules-encyclopedia-admin-closure` case is captured as a regression fixture covering missing implementation marker, markdown matrix fallback, project runner mismatch, unavailable frontend test script, and docker/testcontainers environment blocker.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:a8614520c1e4ced250e746005ffda519502886d03ccaec829b28c5e97b8a0065",
+    "source_baseline_hash": "sha256:a8614520c1e4ced250e746005ffda519502886d03ccaec829b28c5e97b8a0065",
+    "story_state_ref": "docs/beacon/v1.4.9/.machine/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+    "generated_at": "2026-05-23T03:56:44.350679+00:00",
+    "json_ref": "docs/beacon/v1.4.9/.machine/execution/revision-delta-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+    "markdown_ref": "docs/beacon/v1.4.9/execution/revision-delta-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.9/.machine/execution/revision-delta-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.9/execution/revision-delta-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\" --project-root . --version v1.4.9",
+    "run_command": "beacon implement team-run \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\" --project . --version v1.4.9",
+    "dev_run_command": "beacon implement dev-run \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\" --project . --version v1.4.9",
+    "ralph_command": "beacon implement run \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\" --project . --version v1.4.9 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\" --project . --version v1.4.9",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "version": "v1.4.9",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.9",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.9.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-23T03:56:44.353089+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.9-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed-R2",
+    "transaction_id": "tx-42609ae0944958960",
+    "source_hash": "sha256:6d0a16e6258a72a10d26cdfa896c5243453160efaa900380127ce141e447443d",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.9/.machine/execution/git-workflow-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.9/execution/git-workflow-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.9",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.9/prd/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "user_story": "docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md",
+      "test_case": "docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.9-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed-R2",
+    "transaction_id": "tx-42609ae0944958960",
+    "source_hash": "sha256:6d0a16e6258a72a10d26cdfa896c5243453160efaa900380127ce141e447443d",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.9/.machine/execution/implementation-delivery-baseline-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.json",
+  "generated_at": "2026-05-23T03:56:44.410812+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.9-real-project-qa-evidence-binding-and-markdown-matrix-fail-closed-R2",
+  "transaction_id": "tx-42609ae0944958960",
+  "source_hash": "sha256:6d0a16e6258a72a10d26cdfa896c5243453160efaa900380127ce141e447443d",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-23T04:10:55.044328+00:00",
+  "accepted_at": "2026-05-23T04:10:55.044315+00:00",
+  "accepted_by": "qa"
+}

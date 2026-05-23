@@ -18,7 +18,8 @@ def build_app(*, package_version: str) -> typer.Typer:
         name="beacon",
         help=(
             "Beacon - Evidence-first Product Workflow Kernel\n\n"
-            "Mainline: prd -> user-story -> test-case -> prototype -> implement -> qa -> release\n"
+            "Mainline: prd -> user-story -> test-case -> implement -> qa -> release\n"
+            "Conditional: prototype adapts accepted UI/UX results; UI/UX execution routes to ui-ux-dev\n"
             "Support: help | status | doctor | archive"
         ),
         add_completion=False,

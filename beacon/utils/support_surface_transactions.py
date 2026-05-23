@@ -8,6 +8,12 @@ from typing import Any
 
 from beacon.utils.runtime import now_iso, read_json, utc_compact_ts, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.support_research_topology import (
+    feature_research_path,
+    resolve_support_write_topology,
+    support_surface_class,
+    upsert_support_finding_section,
+)
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -156,9 +162,48 @@ def write_support_surface_transaction(project_root: Path, *, version: str, paylo
     human_path = human_transaction_path(project_root, version=version, surface=surface)
     state_path = latest_state_path(project_root, surface=surface)
     history = history_path(project_root, surface=surface, transaction_id=transaction_id) if transaction_id else None
+    feature = str(payload.get("feature", "") or "")
+    policy_class = support_surface_class(surface)
+    topology_actual_path = (
+        feature_research_path(project_root, version=version, feature=feature)
+        if policy_class == "ordinary_support_review"
+        else machine_path
+    )
+    topology = resolve_support_write_topology(
+        project_root,
+        version=version,
+        feature=feature,
+        surface=surface,
+        actual_path=topology_actual_path,
+    )
+    if topology.get("supported"):
+        payload["support_write_topology"] = topology
+        if topology.get("blocked") and surface != "beacon-learn":
+            payload["blocked"] = True
+            payload["blocked_reason"] = str(topology.get("reason_code") or "support_write_topology_unresolved")
+            payload["status"] = "blocked"
+            reason_codes = payload.get("reason_codes") if isinstance(payload.get("reason_codes"), list) else []
+            payload["reason_codes"] = [*reason_codes, str(topology.get("reason_code") or "support_write_topology_unresolved")]
     write_json(machine_path, payload)
     human_path.parent.mkdir(parents=True, exist_ok=True)
     human_path.write_text(render_support_surface_markdown(payload), encoding="utf-8")
+    research_writeback: dict[str, Any] = {}
+    if topology.get("supported") and policy_class == "ordinary_support_review" and not topology.get("blocked"):
+        research_writeback = upsert_support_finding_section(
+            project_root,
+            version=version,
+            feature=feature,
+            surface=surface,
+            finding_summary=str(payload.get("operator_visible_summary") or ""),
+            source_refs=[str(machine_path.relative_to(project_root)), str(human_path.relative_to(project_root))],
+            route_decision=str((payload.get("route_decision") or {}).get("route") or payload.get("decision") or "read-only route-only")
+            if isinstance(payload.get("route_decision"), dict)
+            else str(payload.get("decision") or "read-only route-only"),
+            material_effect="read_only_route_only",
+            adoption_status="route_only",
+        )
+        payload["support_research_writeback"] = research_writeback
+        write_json(machine_path, payload)
     state_payload = {
         "surface": surface,
         "feature": payload.get("feature", ""),

@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.prototype_support import build_ui_ux_dev_route, prototype_adapter_only_supported
 from beacon.utils.support_surface_transactions import build_support_surface_transaction, write_support_surface_transaction
 from beacon.utils.versioning import resolve_target_version
 
@@ -36,15 +37,28 @@ def write_design_review_transaction(
         route_decision = {"route": "support-recovery", "target_surface": "beacon-help"}
         writebacks: list[str] = []
     elif design_verdict == "ready_for_prototype":
-        next_route = {
-            "command": f'beacon prototype "{feature}" --project-root {project_root} --version {resolved_version}',
-            "why": "Design review cleared the feature for formal prototype freeze.",
-            "target_surface": "beacon-prototype",
-            "priority": "medium",
-            "prerequisites": ["design_verdict=ready_for_prototype"],
-        }
-        route_decision = {"route": "prototype-entry", "target_surface": "beacon-prototype"}
-        writebacks = ["beacon-prototype"]
+        if prototype_adapter_only_supported(resolved_version):
+            route = build_ui_ux_dev_route(feature=feature, version=resolved_version, project_root=project_root, intent="review")
+            next_route = {
+                "command": route["command"],
+                "why": "Design review found UI/UX execution need; v1.4.9+ routes execution to ui-ux-dev, then Beacon binds accepted output through prototype adapt.",
+                "target_surface": "ui-ux-dev",
+                "priority": "medium",
+                "prerequisites": ["design_verdict=ready_for_prototype", "accepted result must be bound with beacon prototype adapt"],
+                "writeback_command": f'beacon prototype adapt "{feature}" --project {project_root} --version {resolved_version} --design-result-ref <ui-ux-dev-output>',
+            }
+            route_decision = {"route": "ui-ux-dev-execution", "target_surface": "ui-ux-dev", "writeback_surface": "beacon-prototype"}
+            writebacks = ["beacon-prototype"]
+        else:
+            next_route = {
+                "command": f'beacon prototype "{feature}" --project-root {project_root} --version {resolved_version}',
+                "why": "Design review cleared the feature for formal prototype freeze.",
+                "target_surface": "beacon-prototype",
+                "priority": "medium",
+                "prerequisites": ["design_verdict=ready_for_prototype"],
+            }
+            route_decision = {"route": "prototype-entry", "target_surface": "beacon-prototype"}
+            writebacks = ["beacon-prototype"]
     elif design_verdict == "prototype_not_required":
         next_route = {
             "command": f'beacon implement "{feature}" --project {project_root} --version {resolved_version}',

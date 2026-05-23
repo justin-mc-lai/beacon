@@ -7,6 +7,7 @@ from typing import Any
 
 from beacon.utils.memory import load_memory_entries, normalize_memory_type, search_memory_entries
 from beacon.utils.support_surface_transactions import build_support_surface_transaction, write_support_surface_transaction
+from beacon.utils.support_research_topology import upsert_learning_influence_summary
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -82,6 +83,12 @@ def run_governed_recall(
     payload["stale_learning"] = stale
     payload["conflicting_learning"] = conflicts
     payload["route_influence_summary"] = payload["operator_visible_summary"]
+    payload["support_research_writeback"] = upsert_learning_influence_summary(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        payload=payload,
+    )
     receipts = write_support_surface_transaction(project_root, version=resolved_version, payload=payload)
     payload["artifacts"] = receipts
     return payload
