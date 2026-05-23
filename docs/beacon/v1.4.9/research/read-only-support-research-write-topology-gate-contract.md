@@ -70,7 +70,24 @@ docs/beacon/<version>/.machine/execution/beacon-learn-transaction.json
 
 The feature research document only records `Learning Influence Summary`: applied, stale, conflicting, suppressed, audit ref, and the policy that learning is advisory and frozen truth wins.
 
-## 3. Business Flow
+## 3. Architecture
+
+The architecture is a pre-write target decision followed by class-specific persistence:
+
+```text
+(version, feature, support_surface_class)
+-> support topology gate
+-> governed write target
+```
+
+- Ordinary support review surfaces write one owned section in `research/<feature>.md`.
+- `beacon-deep` writes detailed artifacts in `deep/<feature>/`; research stores only `Deep Summary`.
+- `beacon-learn` writes learning audit in `learning/<feature>.md` or transaction; research stores only `Learning Influence Summary`.
+- If the gate cannot prove `version`, `feature`, and support surface class, persistence is blocked before any file write.
+
+Detailed source-level architecture is tracked in `docs/beacon/v1.4.9/source-architecture/read-only-support-research-write-topology-gate-contract.md`.
+
+## 4. Business Flow
 
 ```mermaid
 flowchart TD
@@ -88,7 +105,7 @@ flowchart TD
   I --> K[Truth surfaces adopt accepted change]
 ```
 
-## 4. State Machine
+## 5. State Machine
 
 ```mermaid
 stateDiagram-v2
@@ -108,7 +125,7 @@ stateDiagram-v2
   truth_reopen_required --> change_refreeze_required
 ```
 
-## 5. Decision Priority
+## 6. Decision Priority
 
 1. Version-bound and feature-bound support output must use governed feature topology.
 2. Ordinary support review must upsert one section in `research/<feature>.md`.
@@ -119,7 +136,7 @@ stateDiagram-v2
 7. Cross-version clarification creates a new version research document with lineage to the prior version.
 8. Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`.
 
-## 6. Required Research Sections
+## 7. Required Research Sections
 
 Feature research documents that receive support writeback must support this minimal section contract:
 
@@ -158,7 +175,7 @@ Sections may be absent until the corresponding support surface runs. When presen
 - material effect
 - adoption status: `open`, `adopted`, `superseded`, `rejected`, or `route_only`
 
-## 7. Gate Rules
+## 8. Gate Rules
 
 The gate must fail closed when a version-bound, feature-bound support write violates this topology:
 
@@ -173,7 +190,7 @@ The gate must fail closed when a version-bound, feature-bound support write viol
 
 The diagnostic must identify the selected policy class, expected write target, actual attempted target, and the repair route. Silent repair, silent relocation, and fallback persistence are not allowed.
 
-## 8. Truth Bindings
+## 9. Truth Bindings
 
 - `prd_refs`: `docs/beacon/v1.4.9/prd/read-only-support-research-write-topology-gate-contract.md`
 - `user_story_refs`: `docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md`
@@ -181,6 +198,6 @@ The diagnostic must identify the selected policy class, expected write target, a
 - `coverage_notes`: AC-001 through AC-007 cover ordinary support topology, deep separation, learning separation, no brainstorm fallback, repeated clarification, cross-version lineage, and fail-closed diagnostics.
 - `out_of_scope_notes`: This research does not implement runtime code and does not make support surfaces truth or gate sources.
 
-## 9. Conclusion
+## 10. Conclusion
 
 This contract makes read-only support surfaces predictable: one feature research document for ordinary reviews, a dedicated deep artifact family for deep analysis, a dedicated learning audit surface for learning, and gate failure for legacy fallback or duplicate support documents.

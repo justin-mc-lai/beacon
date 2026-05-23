@@ -1,0 +1,663 @@
+{
+  "schema_version": "1.0",
+  "feature": "read-only-support-research-write-topology-gate-contract",
+  "feature_slug": "read-only-support-research-write-topology-gate-contract",
+  "version": "v1.4.9",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-23T05:13:05.596599+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:42df2e1b0cf8612d2416554185c2d5ce94b2401ca7158e85f894ef4b7ce21ca7",
+      "superseded_by": "R2",
+      "created_at": "2026-05-23T05:12:45.563628+00:00",
+      "frozen_at": "2026-05-23T05:12:49.930854+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
+      "source_revision_id": "R1",
+      "reason": "read-only support research write topology gate contract",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:42df2e1b0cf8612d2416554185c2d5ce94b2401ca7158e85f894ef4b7ce21ca7",
+      "superseded_by": null,
+      "created_at": "2026-05-23T05:13:05.592099+00:00",
+      "frozen_at": "2026-05-23T05:13:09.480573+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "read-only-support-research-write-topology-gate-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "ordinary support topology",
+          "text": "`beacon-brainstorm`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-ceo-review`, and `beacon-design-review` write version+feature findings into `docs/beacon/<version>/research/<feature>.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "deep topology",
+          "text": "`beacon-deep` writes detailed artifacts into `docs/beacon/<version>/deep/<feature>/` and `.machine/deep/<feature>/`; the research file stores only `Deep Summary` index metadata.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "learning topology",
+          "text": "`beacon-learn` writes learning audit data into `docs/beacon/<version>/learning/<feature>.md` or support transaction; the research file stores only `Learning Influence Summary`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no fallback",
+          "text": "`docs/brainstorms/` is not a default target for explicit Beacon version+feature support analysis.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "repeated clarification",
+          "text": "Repeated support clarification in the same version appends rounds or supersedes owned sections in the same research file instead of creating sibling files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "version lineage",
+          "text": "Cross-version clarification creates a new version research file with lineage fields for previous research, carried-forward findings, and superseded assumptions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed gate",
+          "text": "Gate / requirement clarity blocks invalid support write topology and reports source skill, expected path, actual path, and repair route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "pre-write gate",
+          "text": "Read-only support output is not persisted until Beacon determines the write target from version, feature, and support surface class; unresolved routing fails closed instead of using legacy fallback.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-brainstorm`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-ceo-review`, and `beacon-design-review` write version+feature findings into `docs/beacon/<version>/research/<feature>.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-deep` writes detailed artifacts into `docs/beacon/<version>/deep/<feature>/` and `.machine/deep/<feature>/`; the research file stores only `Deep Summary` index metadata.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon-learn` writes learning audit data into `docs/beacon/<version>/learning/<feature>.md` or support transaction; the research file stores only `Learning Influence Summary`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `docs/brainstorms/` is not a default target for explicit Beacon version+feature support analysis.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Repeated support clarification in the same version appends rounds or supersedes owned sections in the same research file instead of creating sibling files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cross-version clarification creates a new version research file with lineage fields for previous research, carried-forward findings, and superseded assumptions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Gate / requirement clarity blocks invalid support write topology and reports source skill, expected path, actual path, and repair route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Read-only support output is not persisted until Beacon determines the write target from version, feature, and support surface class; unresolved routing fails closed instead of using legacy fallback.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "read-only-support-research-write-topology-gate-contract",
+        "version": "v1.4.9",
+        "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "architecture": [
+            "Ordinary support review surfaces write one owned section in `research/<feature>.md`.",
+            "`beacon-deep` writes detailed artifacts in `deep/<feature>/`; research stores only `Deep Summary`.",
+            "`beacon-learn` writes learning audit in `learning/<feature>.md` or transaction; research stores only `Learning Influence Summary`.",
+            "If the gate cannot prove `version`, `feature`, and support surface class, persistence is blocked before any file write."
+          ],
+          "decision_priority": [
+            "Version-bound and feature-bound support output must use governed feature topology.",
+            "Ordinary support review must upsert one section in `research/<feature>.md`.",
+            "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+            "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+            "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+            "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+            "Cross-version clarification creates a new version research document with lineage to the prior version.",
+            "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Version-bound and feature-bound support output must use governed feature topology.",
+              "Ordinary support review must upsert one section in `research/<feature>.md`.",
+              "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+              "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+              "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+              "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+              "Cross-version clarification creates a new version research document with lineage to the prior version.",
+              "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+            ],
+            "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "read-only-support-research-write-topology-gate-contract",
+      "priority": "medium",
+      "status": "frozen",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "ordinary support topology",
+          "text": "`beacon-brainstorm`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-ceo-review`, and `beacon-design-review` write version+feature findings into `docs/beacon/<version>/research/<feature>.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "deep topology",
+          "text": "`beacon-deep` writes detailed artifacts into `docs/beacon/<version>/deep/<feature>/` and `.machine/deep/<feature>/`; the research file stores only `Deep Summary` index metadata.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "learning topology",
+          "text": "`beacon-learn` writes learning audit data into `docs/beacon/<version>/learning/<feature>.md` or support transaction; the research file stores only `Learning Influence Summary`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no fallback",
+          "text": "`docs/brainstorms/` is not a default target for explicit Beacon version+feature support analysis.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "repeated clarification",
+          "text": "Repeated support clarification in the same version appends rounds or supersedes owned sections in the same research file instead of creating sibling files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "version lineage",
+          "text": "Cross-version clarification creates a new version research file with lineage fields for previous research, carried-forward findings, and superseded assumptions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed gate",
+          "text": "Gate / requirement clarity blocks invalid support write topology and reports source skill, expected path, actual path, and repair route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "pre-write gate",
+          "text": "Read-only support output is not persisted until Beacon determines the write target from version, feature, and support surface class; unresolved routing fails closed instead of using legacy fallback.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-brainstorm`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-ceo-review`, and `beacon-design-review` write version+feature findings into `docs/beacon/<version>/research/<feature>.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-deep` writes detailed artifacts into `docs/beacon/<version>/deep/<feature>/` and `.machine/deep/<feature>/`; the research file stores only `Deep Summary` index metadata.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon-learn` writes learning audit data into `docs/beacon/<version>/learning/<feature>.md` or support transaction; the research file stores only `Learning Influence Summary`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `docs/brainstorms/` is not a default target for explicit Beacon version+feature support analysis.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Repeated support clarification in the same version appends rounds or supersedes owned sections in the same research file instead of creating sibling files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cross-version clarification creates a new version research file with lineage fields for previous research, carried-forward findings, and superseded assumptions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Gate / requirement clarity blocks invalid support write topology and reports source skill, expected path, actual path, and repair route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Read-only support output is not persisted until Beacon determines the write target from version, feature, and support surface class; unresolved routing fails closed instead of using legacy fallback.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "read-only-support-research-write-topology-gate-contract",
+        "version": "v1.4.9",
+        "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "architecture": [
+            "Ordinary support review surfaces write one owned section in `research/<feature>.md`.",
+            "`beacon-deep` writes detailed artifacts in `deep/<feature>/`; research stores only `Deep Summary`.",
+            "`beacon-learn` writes learning audit in `learning/<feature>.md` or transaction; research stores only `Learning Influence Summary`.",
+            "If the gate cannot prove `version`, `feature`, and support surface class, persistence is blocked before any file write."
+          ],
+          "decision_priority": [
+            "Version-bound and feature-bound support output must use governed feature topology.",
+            "Ordinary support review must upsert one section in `research/<feature>.md`.",
+            "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+            "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+            "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+            "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+            "Cross-version clarification creates a new version research document with lineage to the prior version.",
+            "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Version-bound and feature-bound support output must use governed feature topology.",
+              "Ordinary support review must upsert one section in `research/<feature>.md`.",
+              "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+              "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+              "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+              "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+              "Cross-version clarification creates a new version research document with lineage to the prior version.",
+              "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+            ],
+            "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md"
+          }
+        ]
+      }
+    }
+  ]
+}
