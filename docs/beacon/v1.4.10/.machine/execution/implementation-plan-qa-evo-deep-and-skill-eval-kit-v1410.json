@@ -1,0 +1,1493 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-qa-evo-deep-and-skill-eval-kit-v1410-r4",
+  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "version": "v1.4.10",
+  "revision_id": "R4",
+  "baseline_hash": "sha256:11964177ae6f35febbd97f8809910c28f7ccc4ce94e1f8a491795974373ce536",
+  "plan_hash": "sha256:a4649734f8562d971da415d239f8986fc43439c2518fd34ee1feb29749ae1620",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "revision_delta": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-and-skill-eval-kit-v1410.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "qa_deep_output_status",
+      "qa_round_memory_role",
+      "skill_eval_case_state",
+      "regression_core_status",
+      "authority_boundary"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "state machine"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- AC-003: Cover state-machine, business-flow, scenario-combination, permission, data-consistency, and cross-surface closure findings.",
+        "| FR-003 | AC-003 | QA evo-deep must support finding families for state machine, business flow, scenario combination, permission boundary, data-source consistency, cross-surface closure, and repeated failure. |",
+        "- `state-machine`",
+        "| AC-003 | deep coverage taxonomy | QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families. |"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `qa_deep_output_status`",
+        "- `qa_round_memory_role`",
+        "- `skill_eval_case_state`",
+        "- `regression_core_status`",
+        "- `authority_boundary`"
+      ]
+    },
+    "generated_at": "2026-05-23T08:39:49.022138+00:00",
+    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "prd_ref": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "user_story_ref": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Markdown requirement truth wins over QA deep output and skill eval evidence.",
+        "QA evo-deep produces routeable findings, not release pass verdicts.",
+        "QA round memory is advisory influence and must be separated from current evidence.",
+        "Skill Eval Kit governs skill/harness quality, not product requirement truth.",
+        "Regression core failures block skill/harness release readiness, not unrelated requirement truth.",
+        "P1/P2 research inputs cannot silently expand the v1.4.10 P0 scope."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown requirement truth wins over QA deep output and skill eval evidence.",
+          "QA evo-deep produces routeable findings, not release pass verdicts.",
+          "QA round memory is advisory influence and must be separated from current evidence.",
+          "Skill Eval Kit governs skill/harness quality, not product requirement truth.",
+          "Regression core failures block skill/harness release readiness, not unrelated requirement truth.",
+          "P1/P2 research inputs cannot silently expand the v1.4.10 P0 scope."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-and-skill-eval-kit-v1410.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Beacon must provide a QA evo-deep contract that records findings with source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-QAED-001",
+        "TC-QAED-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-QAED-001",
+        "TC-QAED-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260523T084429Z-f210-tester",
+        "run:run-20260523T084635Z-fff3",
+        "verify:run-20260523T084635Z-fff3-tester",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T164716123765",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/summary.json",
+        "verify:run-20260523T164841176671",
+        "verify:review.accept",
+        "run:run-20260523T084904Z-5e7a",
+        "verify:run-20260523T084904Z-5e7a-tester",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/summary.json",
+        "verify:run-20260523T164907216518",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/summary.json",
+        "verify:run-20260523T165302735331"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.302406+00:00",
+      "completed_at": "2026-05-23T08:49:04.860018+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "QA evo-deep must distinguish historical QA round memory from current-run evidence and mark memory as advisory influence only.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007",
+        "AC-004",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-SKEV-003",
+        "TC-QAED-004",
+        "TC-QAED-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-004",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-QAED-003",
+        "TC-QAED-004",
+        "TC-SKEV-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260523T084429Z-f210-tester",
+        "run:run-20260523T084635Z-fff3",
+        "verify:run-20260523T084635Z-fff3-tester",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T164716123765",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/summary.json",
+        "verify:run-20260523T164841176671",
+        "verify:review.accept",
+        "run:run-20260523T084904Z-5e7a",
+        "verify:run-20260523T084904Z-5e7a-tester",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/summary.json",
+        "verify:run-20260523T164907216518",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/summary.json",
+        "verify:run-20260523T165302735331"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355478+00:00",
+      "completed_at": "2026-05-23T08:49:04.860046+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "QA evo-deep must support finding families for state machine, business flow, scenario combination, permission boundary, data-source consistency, cross-surface closure, and repeated failure.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008",
+        "AC-005",
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-SKEV-004",
+        "TC-SKEV-001",
+        "TC-QAED-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005",
+        "SC-008",
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-SKEV-001",
+        "TC-SKEV-004",
+        "TC-QAED-005"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260523T084429Z-f210-tester",
+        "run:run-20260523T084635Z-fff3",
+        "verify:run-20260523T084635Z-fff3-tester",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T164716123765",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/summary.json",
+        "verify:run-20260523T164841176671",
+        "verify:review.accept",
+        "run:run-20260523T084904Z-5e7a",
+        "verify:run-20260523T084904Z-5e7a-tester",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/summary.json",
+        "verify:run-20260523T164907216518",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/summary.json",
+        "verify:run-20260523T165302735331"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355486+00:00",
+      "completed_at": "2026-05-23T08:49:04.860071+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "QA evo-deep detailed output must be written under `docs/beacon/<version>/qa/evo-deep/<feature>.md`; research may only index or summarize it.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-SKEV-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-SKEV-002"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        ".beacon/auto-test-status.json",
+        "verify:run-20260523T084429Z-f210-tester",
+        "run:run-20260523T084635Z-fff3",
+        "verify:run-20260523T084635Z-fff3-tester",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164716123765/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260523T164716123765",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164841176671/summary.json",
+        "verify:run-20260523T164841176671",
+        "verify:review.accept",
+        "run:run-20260523T084904Z-5e7a",
+        "verify:run-20260523T084904Z-5e7a-tester",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T164907216518/summary.json",
+        "verify:run-20260523T164907216518",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260523T165302735331/summary.json",
+        "verify:run-20260523T165302735331"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355494+00:00",
+      "completed_at": "2026-05-23T08:49:04.860092+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005",
+      "description": "Skill Eval Kit must define a case format with id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355502+00:00",
+      "completed_at": "2026-05-23T08:49:04.860112+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-005",
+      "description": "Skill Eval Kit must define optimization and holdout splits plus a regression core that can be run before skill or harness release.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355508+00:00",
+      "completed_at": "2026-05-23T08:49:04.860121+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-006",
+      "description": "Skill Eval Kit run outputs must be stored as runtime evidence under `.beacon/state/skill-eval/` or equivalent machine evidence paths and must not be treated as requirement truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355513+00:00",
+      "completed_at": "2026-05-23T08:49:04.860130+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-007",
+      "description": "Skill Eval Kit must include route stability cases for ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single/team/ralph`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355518+00:00",
+      "completed_at": "2026-05-23T08:49:04.860138+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-008",
+      "description": "Requirement clarity or release readiness must fail closed if QA evo-deep output or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355523+00:00",
+      "completed_at": "2026-05-23T08:49:04.860147+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 AC-009",
+      "description": "Ralph Task Loop, project lifecycle hooks, implement mode playbooks, and automatic learn injection must remain deferred research inputs until a later change/refreeze adopts them.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: qa_deep_output_status, qa_round_memory_role, skill_eval_case_state, regression_core_status, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "qa_deep_output_status",
+        "qa_round_memory_role",
+        "skill_eval_case_state",
+        "regression_core_status",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260523T084429Z-f210",
+        "run:run-20260523T084635Z-fff3",
+        "run:run-20260523T084904Z-5e7a"
+      ],
+      "changed_files": [
+        "beacon/commands/qa.py",
+        "beacon/commands/skill.py",
+        ".beacon/evidence-manifest.json",
+        ".beacon/state/project-onboarding.json",
+        "AGENTS.md",
+        "CLAUDE.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/metadata/project-version-metadata.json",
+        ".beacon/metadata/project-version-metadata.md",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/state/project-metadata/latest.json",
+        "beacon/utils/qa_feature.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-23T08:44:30.355528+00:00",
+      "completed_at": "2026-05-23T08:49:04.860155+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "version": "v1.4.10",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 9,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R4",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority gate",
+        "text": "Requirement clarity or release readiness fails closed if QA evo-deep or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::authority gate::requirement clarity or release readiness fails closed if qa evo-deep or skill eval output claims prd, user-story, test-case, qa verdict, release verdict, or freeze authority.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "deep coverage taxonomy",
+        "text": "QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::deep coverage taxonomy::qa evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "eval case schema",
+        "text": "Skill Eval Kit defines auditable cases with id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::eval case schema::skill eval kit defines auditable cases with id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "evidence boundary",
+        "text": "Skill Eval Kit run outputs are runtime or machine evidence only and do not become requirement truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::evidence boundary::skill eval kit run outputs are runtime or machine evidence only and do not become requirement truth.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "QA evo-deep output",
+        "text": "Beacon defines a governed QA evo-deep output contract with source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::qa evo-deep output::beacon defines a governed qa evo-deep output contract with source refs, finding type, risk, affected acs, route recommendation, blocked admissions, and release supplement input.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "regression core",
+        "text": "Skill Eval Kit defines optimization and holdout splits plus a small regression core that can be run before skill or harness release.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::regression core::skill eval kit defines optimization and holdout splits plus a small regression core that can be run before skill or harness release.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "round memory boundary",
+        "text": "QA evo-deep records prior QA round memory as advisory influence only and never counts it as current pass evidence.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::round memory boundary::qa evo-deep records prior qa round memory as advisory influence only and never counts it as current pass evidence.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "route stability",
+        "text": "Skill Eval Kit includes route-stability cases for ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single/team/ralph`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::route stability::skill eval kit includes route-stability cases for ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single/team/ralph`.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "write topology",
+        "text": "QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md`; research stores only index or design-input summaries.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "signature": "ac::::write topology::qa evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md`; research stores only index or design-input summaries.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:11964177ae6f35febbd97f8809910c28f7ccc4ce94e1f8a491795974373ce536",
+    "source_baseline_hash": "sha256:1c0c20e2f5cb91c6ee427a38136429d6fcb0d012e0abc1c32ea3af52d2eff275",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "generated_at": "2026-05-23T08:39:49.019671+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-qa-evo-deep-and-skill-eval-kit-v1410.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-and-skill-eval-kit-v1410.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-qa-evo-deep-and-skill-eval-kit-v1410.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"qa-evo-deep-and-skill-eval-kit-v1410\" --project-root . --version v1.4.10",
+    "run_command": "beacon implement team-run \"qa-evo-deep-and-skill-eval-kit-v1410\" --project . --version v1.4.10",
+    "dev_run_command": "beacon implement dev-run \"qa-evo-deep-and-skill-eval-kit-v1410\" --project . --version v1.4.10",
+    "ralph_command": "beacon implement run \"qa-evo-deep-and-skill-eval-kit-v1410\" --project . --version v1.4.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"qa-evo-deep-and-skill-eval-kit-v1410\" --project . --version v1.4.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-23T08:39:49.022279+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-and-skill-eval-kit-v1410-R4",
+    "transaction_id": "tx-d391e165bea3d11aa",
+    "source_hash": "sha256:4dd31bd93e3edc3a3457763e17f3cdffebd6b6a8afd273582efca8b053a12446",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.10/.machine/execution/git-workflow-qa-evo-deep-and-skill-eval-kit-v1410.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.10/execution/git-workflow-qa-evo-deep-and-skill-eval-kit-v1410.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-and-skill-eval-kit-v1410-R4",
+    "transaction_id": "tx-d391e165bea3d11aa",
+    "source_hash": "sha256:4dd31bd93e3edc3a3457763e17f3cdffebd6b6a8afd273582efca8b053a12446",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-and-skill-eval-kit-v1410.json",
+  "generated_at": "2026-05-23T08:39:49.054716+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-and-skill-eval-kit-v1410-R4",
+  "transaction_id": "tx-d391e165bea3d11aa",
+  "source_hash": "sha256:4dd31bd93e3edc3a3457763e17f3cdffebd6b6a8afd273582efca8b053a12446",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-23T09:02:13.333633+00:00",
+  "accepted_at": "2026-05-23T09:02:13.333620+00:00",
+  "accepted_by": "qa"
+}

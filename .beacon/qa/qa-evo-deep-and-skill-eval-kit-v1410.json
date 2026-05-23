@@ -1,0 +1,351 @@
+{
+  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "version": "v1.4.10",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-QAED-001"
+    ],
+    "AC-002": [
+      "TC-QAED-002"
+    ],
+    "AC-003": [
+      "TC-QAED-003"
+    ],
+    "AC-004": [
+      "TC-QAED-004"
+    ],
+    "AC-005": [
+      "TC-SKEV-001"
+    ],
+    "AC-006": [
+      "TC-SKEV-002"
+    ],
+    "AC-007": [
+      "TC-SKEV-003"
+    ],
+    "AC-008": [
+      "TC-SKEV-004"
+    ],
+    "AC-009": [
+      "TC-QAED-005"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-QAED-001",
+      "tc_id": "TC-QAED-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: QA evo-deep findings include source refs, finding type, risk, affected ACs, route recommendation",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-QAED-002",
+      "tc_id": "TC-QAED-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Prior QA round memory is labeled as influence and is not counted as current pass evidence.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"round_memory_is_advisory_influence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-QAED-003",
+      "tc_id": "TC-QAED-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, da",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"deep_finding_taxonomy_supported\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-QAED-004",
+      "tc_id": "TC-QAED-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "topology",
+      "layer": "topology",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md` and resea",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "topology",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_write_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-SKEV-001",
+      "tc_id": "TC-SKEV-001-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Skill Eval Kit cases include id, prompt, expected route, boundary expectations, source anchors, ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_case_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-SKEV-002",
+      "tc_id": "TC-SKEV-002-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Skill Eval Kit defines optimization and holdout splits plus a small regression core.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_splits_and_regression_core\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-SKEV-003",
+      "tc_id": "TC-SKEV-003-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Skill Eval Kit run outputs are stored as runtime or machine evidence and do not become requireme",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-SKEV-004",
+      "tc_id": "TC-SKEV-004-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "routing",
+      "layer": "routing",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Route-stability cases cover ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "routing",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"route_stability_cases_cover_support_and_implement_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-QAED-005",
+      "tc_id": "TC-QAED-005-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Requirement clarity or release readiness fails closed when QA evo-deep or Skill Eval output clai",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"authority_bypass_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

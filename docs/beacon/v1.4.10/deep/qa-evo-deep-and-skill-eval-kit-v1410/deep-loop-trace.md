@@ -1,0 +1,134 @@
+# Deep Loop Trace
+
+- schema_version: `1.0`
+- feature: `qa-evo-deep-and-skill-eval-kit-v1410`
+- feature_slug: `qa-evo-deep-and-skill-eval-kit-v1410`
+- version: `v1.4.10`
+- generated_at: `2026-05-23T09:00:22.151664+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
+  "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
+  "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- lineage_policy: `trace-on-promotion; L0/L1 are non-canonical support projections, L2 requires truth-surface adoption, L3 belongs to PRD/user-story/test-case`
+- artifact_type: `deep_loop_trace`
+- user_intent_snapshot: `qa-evo-deep-and-skill-eval-kit-v1410`
+## iterations
+```json
+[
+  {
+    "state": "scan_truth",
+    "status": "completed",
+    "sequence": 1
+  },
+  {
+    "state": "model_business",
+    "status": "completed",
+    "sequence": 2
+  },
+  {
+    "state": "challenge_gaps",
+    "status": "completed",
+    "sequence": 3
+  },
+  {
+    "state": "derive_delta",
+    "status": "completed",
+    "sequence": 4
+  },
+  {
+    "state": "classify_findings",
+    "status": "completed",
+    "sequence": 5
+  },
+  {
+    "state": "route_repairs",
+    "status": "completed",
+    "sequence": 6
+  },
+  {
+    "state": "verify_closure",
+    "status": "completed",
+    "sequence": 7
+  }
+]
+```
+
+## finding_classification
+```json
+[
+  "ranking_or_scoring_flow",
+  "state_machine_workflow",
+  "cross_surface_consistency_chain",
+  "release_blocking_risk"
+]
+```
+
+## route_decisions
+```json
+[
+  {
+    "route": "test-case delta",
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "route": "test-case delta",
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "route": "test-case delta",
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "route": "release closure, waiver, or backlog decision",
+    "target_surface": "release",
+    "next_route": "beacon release"
+  },
+  {
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  },
+  {
+    "target_surface": "test-case",
+    "next_route": "beacon test-case"
+  }
+]
+```
+
+## closure_decisions
+```json
+[
+  "closed",
+  "closed",
+  "closed",
+  "closed"
+]
+```
+
+- stop_reason: `stable_intent_closed`
+- next_allowed_route: `test-case`
+## reopen_conditions
+```json
+[
+  "new_user_intent",
+  "new_role_entity_state_machine_or_business_process",
+  "release_blocking_evidence",
+  "qa_or_implementation_structural_gap"
+]
+```
