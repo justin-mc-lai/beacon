@@ -1,0 +1,551 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "version": "v1.4.10",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-23T16:29:50.086614",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-23T16:29:50.085964",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-QAED-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-001 :: QA evo-deep findings include source refs, finding type, risk, affected ACs, rout",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA evo-deep findings include source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\"`",
+      "scenario": "QA evo-deep findings include source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QAED-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-002 :: Prior QA round memory is labeled as influence and is not counted as current pass",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"round_memory_is_advisory_influence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prior QA round memory is labeled as influence and is not counted as current pass evidence.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"round_memory_is_advisory_influence\"`",
+      "scenario": "Prior QA round memory is labeled as influence and is not counted as current pass evidence.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QAED-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-003 :: QA evo-deep supports state-machine, business-flow, scenario-combination, permiss",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"deep_finding_taxonomy_supported\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"deep_finding_taxonomy_supported\"`",
+      "scenario": "QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QAED-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "topology",
+      "qa_type": "topology",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-004 :: QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<featur",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_write_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md` and research stores only an index or design summary.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_write_topology\"`",
+      "scenario": "QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md` and research stores only an index or design summary.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-SKEV-001",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-005 :: Skill Eval Kit cases include id, prompt, expected route, boundary expectations, ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_case_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skill Eval Kit cases include id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_case_schema\"`",
+      "scenario": "Skill Eval Kit cases include id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-SKEV-002",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-006 :: Skill Eval Kit defines optimization and holdout splits plus a small regression c",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_splits_and_regression_core\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skill Eval Kit defines optimization and holdout splits plus a small regression core.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_splits_and_regression_core\"`",
+      "scenario": "Skill Eval Kit defines optimization and holdout splits plus a small regression core.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-SKEV-003",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "boundary",
+      "qa_type": "boundary",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-007 :: Skill Eval Kit run outputs are stored as runtime or machine evidence and do not ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skill Eval Kit run outputs are stored as runtime or machine evidence and do not become requirement truth.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-SKEV-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\"`",
+      "scenario": "Skill Eval Kit run outputs are stored as runtime or machine evidence and do not become requirement truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-SKEV-004",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "routing",
+      "qa_type": "routing",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-008 :: Route-stability cases cover ordinary support skills, `beacon-deep`, `beacon-lear",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"route_stability_cases_cover_support_and_implement_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Route-stability cases cover ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single",
+      "evidence_path": "team",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"route_stability_cases_cover_support_and_implement_modes\"`",
+      "scenario": "Route-stability cases cover ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QAED-005",
+      "ac_id": "AC-009",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "qa-evo-deep-and-skill-eval-kit-v1410 AC-009 :: Requirement clarity or release readiness fails closed when QA evo-deep or Skill ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"authority_bypass_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Requirement clarity or release readiness fails closed when QA evo-deep or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-and-skill-eval-kit-v1410/TC-QAED-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"authority_bypass_fails_closed\"`",
+      "scenario": "Requirement clarity or release readiness fails closed when QA evo-deep or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "row_count": 9,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-23T16:29:50.086651",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Markdown requirement truth wins over QA deep output and skill eval evidence.",
+        "QA evo-deep produces routeable findings, not release pass verdicts.",
+        "QA round memory is advisory influence and must be separated from current evidence.",
+        "Skill Eval Kit governs skill/harness quality, not product requirement truth.",
+        "Regression core failures block skill/harness release readiness, not unrelated requirement truth.",
+        "P1/P2 research inputs cannot silently expand the v1.4.10 P0 scope."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown requirement truth wins over QA deep output and skill eval evidence.",
+          "QA evo-deep produces routeable findings, not release pass verdicts.",
+          "QA round memory is advisory influence and must be separated from current evidence.",
+          "Skill Eval Kit governs skill/harness quality, not product requirement truth.",
+          "Regression core failures block skill/harness release readiness, not unrelated requirement truth.",
+          "P1/P2 research inputs cannot silently expand the v1.4.10 P0 scope."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md"
+      }
+    ]
+  }
+}

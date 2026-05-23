@@ -1,0 +1,65 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "version": "v1.4.10",
+  "generated_at": "2026-05-23T08:49:05.318710+00:00",
+  "technical_archive_path": "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json",
+  "run_id": "run-20260523T084904Z-5e7a",
+  "modules_touched": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/metadata",
+    ".beacon/qa",
+    ".beacon/release-gate-report.json",
+    ".beacon/state",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands",
+    "beacon/utils"
+  ],
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/metadata/project-version-metadata.json",
+    ".beacon/metadata/project-version-metadata.md",
+    ".beacon/qa/status.json",
+    ".beacon/release-gate-report.json",
+    ".beacon/state/project-metadata/latest.json",
+    ".beacon/state/project-onboarding.json",
+    "AGENTS.md",
+    "CLAUDE.md",
+    "beacon/commands/qa.py",
+    "beacon/commands/skill.py",
+    "beacon/utils/qa_feature.py"
+  ],
+  "known_risks": [],
+  "rollback_notes": [],
+  "artifact_update_obligations": [
+    "review_quality",
+    "acceptance"
+  ],
+  "verification_commands": [
+    "beacon implement run --runner codex-subagents",
+    "auto-test-status"
+  ],
+  "rewrite_targets": {
+    "prd": [],
+    "test_case": [],
+    "version_research": [
+      "Open artifact writeback obligations: ['review_quality', 'acceptance']"
+    ]
+  },
+  "baseline_uplift_candidates": [
+    "artifact_updates.required items must become explicit follow-up obligations before closure."
+  ],
+  "benchmark_refs": [
+    "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json"
+  ]
+}
