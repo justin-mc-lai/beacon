@@ -42,6 +42,53 @@ def test_qa_evo_deep_output_contract(tmp_path: Path) -> None:
     assert "routeable_findings_only" in (tmp_path / payload["output_path"]).read_text(encoding="utf-8")
 
 
+def test_qa_evo_deep_human_facing_skill_packaged() -> None:
+    skill_path = Path("skills/beacon/beacon-qa-evo-deep/SKILL.md")
+    skill_text = skill_path.read_text(encoding="utf-8")
+    qa_text = Path("skills/beacon/beacon-qa/SKILL.md").read_text(encoding="utf-8")
+
+    assert "name: beacon-qa-evo-deep" in skill_text
+    assert 'beacon qa evo-deep "<feature>" --project . --version <version>' in skill_text
+    assert "docs/beacon/<version>/qa/evo-deep/<feature>.md" in skill_text
+    assert "docs/beacon/<version>/.machine/qa/evo-deep/<feature>.json" in skill_text
+    assert "does not replace `beacon qa run`" in skill_text
+    assert "does not produce a formal QA pass/fail verdict" in skill_text
+    assert "does not produce a release verdict" in skill_text
+    assert "does not rewrite PRD, user-story, test-case" in skill_text
+    assert "research: index or design-input summary only" in skill_text
+    assert "v1.4.10" in qa_text
+    assert "beacon-qa-evo-deep" in qa_text
+    assert "v1.4.7" not in qa_text
+
+
+def test_qa_evo_deep_skill_materializes_to_codex_agent_surface(tmp_path: Path) -> None:
+    app = build_app(package_version="0-test")
+    runner = CliRunner()
+
+    result = runner.invoke(
+        app,
+        [
+            "doctor",
+            "setup-agent-surface",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--agent",
+            "codex",
+            "--json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.output
+    payload = json.loads(result.output)
+    installed = {item["id"] for item in payload["result"]["installed"]}
+    assert "beacon-qa-evo-deep" in installed
+    materialized = tmp_path / ".agents" / "skills" / "beacon-qa-evo-deep" / "SKILL.md"
+    assert materialized.exists()
+    assert "routeable findings" in materialized.read_text(encoding="utf-8")
+
+
 def test_round_memory_is_advisory_influence(tmp_path: Path) -> None:
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
 
