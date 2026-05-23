@@ -5,7 +5,7 @@
 **Status**: `refreeze-input`  
 **Date**: `2026-05-23`
 
-## Context
+## Overview
 
 - Research: `docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md`
 - Source architecture: `docs/beacon/v1.4.9/source-architecture/read-only-support-research-write-topology-gate-contract.md`
@@ -50,7 +50,7 @@ For version-bound, feature-bound ordinary support analysis, `research/<feature>.
 
 Invalid support output placement is a material closure problem. It must surface as fail-closed diagnostics, not as silent documentation drift.
 
-## 4. Scope
+## Scope
 
 ### In Scope
 

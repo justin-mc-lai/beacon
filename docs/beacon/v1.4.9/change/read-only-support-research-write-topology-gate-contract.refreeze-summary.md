@@ -1,12 +1,12 @@
 # Change Refreeze Summary: read-only-support-research-write-topology-gate-contract
 
 - version: `v1.4.9`
-- change_reason: `read-only support research write topology gate contract`
+- change_reason: `implementation readiness PRD closure headings`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R2`
+- revision_after: `R3`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.9/change/read-only-support-research-write-topology-gate-contract.md)

@@ -290,3 +290,16 @@ v1.4.9 应冻结为一条治理收敛 feature：
 - Version-level visualization truth binding 化
 
 这能保留 Beacon 的 requirement governance 强项，同时减少内部设计执行冗余。
+
+## Deep Summary
+
+- source_skill: `beacon-deep`
+- deep_artifact_root: `docs/beacon/v1.4.9/deep/ui-ux-externalization-prototype-adapter-and-version-visualization-contract`
+- machine_deep_artifact_root: `docs/beacon/v1.4.9/.machine/deep/ui-ux-externalization-prototype-adapter-and-version-visualization-contract`
+- indexed_artifacts:
+  - `deep-analysis-report.md`
+  - `state-machine-report.md`
+  - `risk-register.md`
+  - `deep-test-delta.md`
+  - `deep-closure-brief.md`
+- policy: research keeps the deep index only; detailed deep findings stay under `deep/<feature>/`.
