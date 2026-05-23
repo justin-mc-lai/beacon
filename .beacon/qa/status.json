@@ -1,29 +1,27 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-23T12:10:44.682773",
+  "timestamp": "2026-05-23T14:53:22.797668",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.9",
-  "run_id": "run-20260523T121044681575",
-  "spec_fingerprint_hash": "770de60db39fa51d0844ad2c9671bea0bf18619f322cde6a31989c3a15803a06",
+  "run_id": "run-20260523T145322795929",
+  "spec_fingerprint_hash": "bd14783a676050b7168069fba50d3995459d65ed570d8287646baa54680ef956",
   "status": "passed",
   "selected_layers": [
-    "contract",
-    "integration",
-    "regression"
+    "contract"
   ],
   "execution": {
-    "run_id": "run-20260523T121044681575",
+    "run_id": "run-20260523T145322795929",
     "version": "v1.4.9",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260523T121044681575",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260523T145322795929",
     "spec_fingerprint": {
-      "fingerprint_hash": "770de60db39fa51d0844ad2c9671bea0bf18619f322cde6a31989c3a15803a06",
+      "fingerprint_hash": "bd14783a676050b7168069fba50d3995459d65ed570d8287646baa54680ef956",
       "version": "v1.4.9",
-      "generated_at": "2026-05-23T04:10:54.905890+00:00"
+      "generated_at": "2026-05-23T06:53:28.335104+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"implementation_evidence_marker_written\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"ordinary_support_writes_feature_research\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -35,92 +33,38 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "be65026ca0c90f024ec6f436f4681c1686eac0734df12d8cdce6ace5cf1580be",
-        "started_at": "2026-05-23T12:10:44.683085",
-        "ended_at": "2026-05-23T12:10:45.741490",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/contract/junit.xml",
+        "execution_fingerprint": "5f4da7969433881e9c2830e7059a0a848b3a3cbf010004e00a9c6e8a507cc273",
+        "started_at": "2026-05-23T14:53:22.798012",
+        "ended_at": "2026-05-23T14:53:23.787879",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/contract/result.json"
-        ]
-      },
-      {
-        "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"go_uniapp_runner_profile\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "843b3cc5d87cc336658b3101d35d7612bd9dee30b121e3e9a9d59a6e1e226304",
-        "started_at": "2026-05-23T12:10:45.743576",
-        "ended_at": "2026-05-23T12:10:46.674473",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/integration/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/integration/result.json"
-        ]
-      },
-      {
-        "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"qa_blocks_when_marker_missing\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "exit_code": 0,
-        "status": "passed",
-        "assertion_count": 1,
-        "was_flaky": false,
-        "attempt_count": 1,
-        "attempts": [
-          {
-            "attempt": 1,
-            "exit_code": 0
-          }
-        ],
-        "execution_fingerprint": "4c192b475707b079a3351e36d40b7939bb17932b2adaa682346da638ff83854f",
-        "started_at": "2026-05-23T12:10:46.675318",
-        "ended_at": "2026-05-23T12:10:47.753122",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/regression/junit.xml",
-        "junit_valid": true,
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260523T145322795929/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/contract/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-      "evidence_generated": 7,
-      "entry_count": 7,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+      "evidence_generated": 8,
+      "entry_count": 8,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260523T121044681575/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260523T121044681575/summary.json",
+      ".beacon/evidence/auto-test/run-20260523T145322795929/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260523T145322795929/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260523T145322795929/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 3,
+      "pass_count": 1,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -129,11 +73,9 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "contract",
-      "integration",
-      "regression"
+      "contract"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -146,23 +88,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 7,
-      "passed": 7,
+      "cases_total": 8,
+      "passed": 8,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 7,
-      "auto_cases_executed": 7,
+      "auto_cases_total": 8,
+      "auto_cases_executed": 8,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-RPQA-001",
+        "tc_id": "TC-ROSUP-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-RPQA-001",
+        "source_tc_id": "TC-ROSUP-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -172,20 +114,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"implementation_evidence_marker_written\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"ordinary_support_writes_feature_research\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/result.json"
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/result.json"
         ],
-        "execution_fingerprint": "c71a1119ef1ab911b2557784f1eceedd5be943c92d2d67e26bdf75354c58ed30",
-        "started_at": "2026-05-23T12:10:47.755169",
-        "ended_at": "2026-05-23T12:10:48.381345",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/junit.xml",
+        "execution_fingerprint": "6869155bc1df05fc7285bdbce8e0e32a6ab94ddda65fcf9573f3428445fb2279",
+        "started_at": "2026-05-23T14:53:23.790493",
+        "ended_at": "2026-05-23T14:53:24.445968",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -198,47 +140,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RPQA-002",
-        "ac_id": "AC-001",
-        "source_tc_id": "TC-RPQA-002",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"qa_blocks_when_marker_missing\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-002/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/result.json"
-        ],
-        "execution_fingerprint": "86649b846148b0e91739667f6b0fdd35748df333b6e36362129dd86fc5d34a57",
-        "started_at": "2026-05-23T12:10:48.382686",
-        "ended_at": "2026-05-23T12:10:49.470586",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-RPQA-003",
+        "tc_id": "TC-ROSUP-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-RPQA-003",
+        "source_tc_id": "TC-ROSUP-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -248,20 +152,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_compiles_without_fallback\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"deep_writes_artifact_family_and_research_index\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/result.json"
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/result.json"
         ],
-        "execution_fingerprint": "8069bd981acc353900f5875b953c5ad9989c236675102570994ad4b84861503a",
-        "started_at": "2026-05-23T12:10:49.471539",
-        "ended_at": "2026-05-23T12:10:50.505685",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/junit.xml",
+        "execution_fingerprint": "144acbd72d08f8bbcdc494e82ff556e10aeebe2e270b67918fb945d5a1247232",
+        "started_at": "2026-05-23T14:53:24.446820",
+        "ended_at": "2026-05-23T14:53:24.946590",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -274,85 +178,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RPQA-004",
-        "ac_id": "AC-002",
-        "source_tc_id": "TC-RPQA-004",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"markdown_matrix_parser_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-004/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/result.json"
-        ],
-        "execution_fingerprint": "d3494ebece26280b337af292b340cc28d4481b67a3f9d4b130ec6fc22fb53af6",
-        "started_at": "2026-05-23T12:10:50.506782",
-        "ended_at": "2026-05-23T12:10:51.143918",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-RPQA-005",
+        "tc_id": "TC-ROSUP-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-RPQA-005",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"go_uniapp_runner_profile\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-005/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/result.json"
-        ],
-        "execution_fingerprint": "abafc6bee30cd97c2c08820e2ca31777b911e89bd70736fe032670d158b95bf0",
-        "started_at": "2026-05-23T12:10:51.144697",
-        "ended_at": "2026-05-23T12:10:52.179222",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-RPQA-006",
-        "ac_id": "AC-004",
-        "source_tc_id": "TC-RPQA-006",
+        "source_tc_id": "TC-ROSUP-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -362,20 +190,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"admission_blocker_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"learn_writes_learning_audit_and_research_index\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/result.json"
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/result.json"
         ],
-        "execution_fingerprint": "8f5416a33ddd007cca997f318eb3156469378213c5deeec3fcae0d5a602ff142",
-        "started_at": "2026-05-23T12:10:52.180043",
-        "ended_at": "2026-05-23T12:10:53.269716",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/junit.xml",
+        "execution_fingerprint": "aa97da4d6e89fd716675bd6082abb8e89af08035371a7068d72910d428ef68e9",
+        "started_at": "2026-05-23T14:53:24.947523",
+        "ended_at": "2026-05-23T14:53:25.399102",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -388,32 +216,184 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-RPQA-007",
-        "ac_id": "AC-005",
-        "source_tc_id": "TC-RPQA-007",
+        "tc_id": "TC-ROSUP-004",
+        "ac_id": "AC-004",
+        "source_tc_id": "TC-ROSUP-004",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "regression",
-        "layer": "regression",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v149_real_project_qa_closure.py -k \"bmtop_fixture_prevents_false_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T121044681575",
-        "evidence_path": ".beacon/evidence/qa-feature/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/tc-rpqa-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"brainstorm_fallback_disallowed_for_version_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/result.json"
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/result.json"
         ],
-        "execution_fingerprint": "d64f6e42fd1cffa68d39ff5b39f842c7d8c8a6471521cb63abb04681a13af996",
-        "started_at": "2026-05-23T12:10:53.270481",
-        "ended_at": "2026-05-23T12:10:53.751906",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/junit.xml",
+        "execution_fingerprint": "044418d9d7d331166f9eda717c1bfa1084e1bed816cd2d15f44596e4495ef840",
+        "started_at": "2026-05-23T14:53:25.399905",
+        "ended_at": "2026-05-23T14:53:25.854920",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ROSUP-005",
+        "ac_id": "AC-005",
+        "source_tc_id": "TC-ROSUP-005",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"same_version_clarification_upserts_rounds\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-005/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/result.json"
+        ],
+        "execution_fingerprint": "da58cf9be781b0472ab763e2b3953e371a487037495ed6d010891dddd4cfe48b",
+        "started_at": "2026-05-23T14:53:25.855816",
+        "ended_at": "2026-05-23T14:53:26.305192",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ROSUP-006",
+        "ac_id": "AC-006",
+        "source_tc_id": "TC-ROSUP-006",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"cross_version_clarification_records_lineage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-006/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/result.json"
+        ],
+        "execution_fingerprint": "110f96052183478b5525a498ea8adf249c598baac6cb44f4b46bb2335366ec15",
+        "started_at": "2026-05-23T14:53:26.306007",
+        "ended_at": "2026-05-23T14:53:26.758680",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ROSUP-007",
+        "ac_id": "AC-007",
+        "source_tc_id": "TC-ROSUP-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"topology_gate_reports_expected_and_actual_paths\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/result.json"
+        ],
+        "execution_fingerprint": "04c6bb987f30257493b79c7defe30537406d7383ddbb50a576d3eeecd2c4c698",
+        "started_at": "2026-05-23T14:53:26.759523",
+        "ended_at": "2026-05-23T14:53:27.199742",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-ROSUP-008",
+        "ac_id": "AC-008",
+        "source_tc_id": "TC-ROSUP-008",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"pre_write_gate_blocks_unresolved_support_target\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260523T145322795929",
+        "evidence_path": ".beacon/evidence/qa-feature/read-only-support-research-write-topology-gate-contract/tc-rosup-008/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/result.json"
+        ],
+        "execution_fingerprint": "cfc716635759f18de07349c0a89cb038de44de05a401e51edf0ba9976761f193",
+        "started_at": "2026-05-23T14:53:27.200620",
+        "ended_at": "2026-05-23T14:53:27.626822",
+        "junit_path": ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -429,9 +409,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-23T04:10:54.196325+00:00",
+  "updated_at": "2026-05-23T06:53:27.886957+00:00",
   "summary": {
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature": "read-only-support-research-write-topology-gate-contract",
     "version": "v1.4.9",
     "status": "passed",
     "release_ready": true,
@@ -442,33 +422,30 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"read-only-support-research-write-topology-gate-contract\""
   },
-  "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-  "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+  "feature": "read-only-support-research-write-topology-gate-contract",
+  "feature_slug": "read-only-support-research-write-topology-gate-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "implementation evidence",
-      "text": "Implement completion or controlled `import-evidence` writes a QA-readable implementation evidence marker with feature, version, run/import id, source refs, changed files or service directories, summary ref, created_at, imported flag, and approved_by when imported.",
+      "theme": "ordinary support topology",
+      "text": "`beacon-brainstorm`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-ceo-review`, and `beacon-design-review` write version+feature findings into `docs/beacon/<version>/research/<feature>.md`.",
       "tc_ids": [
-        "TC-RPQA-001",
-        "TC-RPQA-002"
+        "TC-ROSUP-001"
       ],
       "qa_types": [
-        "contract",
-        "regression"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-002",
-      "theme": "markdown matrix",
-      "text": "When Markdown QA has a parseable coverage matrix, `.machine/qa/<feature>.ac-test-matrix.json` preserves the original AC ID, TC ID, layer, command, assertion, and evidence path; parser failure blocks with diagnostics instead of fallback.",
+      "theme": "deep topology",
+      "text": "`beacon-deep` writes detailed artifacts into `docs/beacon/<version>/deep/<feature>/` and `.machine/deep/<feature>/`; the research file stores only `Deep Summary` index metadata.",
       "tc_ids": [
-        "TC-RPQA-003",
-        "TC-RPQA-004"
+        "TC-ROSUP-002"
       ],
       "qa_types": [
         "contract"
@@ -476,21 +453,21 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "project runner",
-      "text": "QA can resolve a Go + UniApp project runner profile with backend target tests, frontend type-check, miniapp build, and route check commands.",
+      "theme": "learning topology",
+      "text": "`beacon-learn` writes learning audit data into `docs/beacon/<version>/learning/<feature>.md` or support transaction; the research file stores only `Learning Influence Summary`.",
       "tc_ids": [
-        "TC-RPQA-005"
+        "TC-ROSUP-003"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-004",
-      "theme": "blocker taxonomy",
-      "text": "QA distinguishes product_failed, test_failed, runner_admission_blocked, environment_blocked, auth_session_blocked, evidence_binding_missing, coverage_gap, and truth_projection_gap.",
+      "theme": "no fallback",
+      "text": "`docs/brainstorms/` is not a default target for explicit Beacon version+feature support analysis.",
       "tc_ids": [
-        "TC-RPQA-006"
+        "TC-ROSUP-004"
       ],
       "qa_types": [
         "contract"
@@ -498,41 +475,77 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "regression fixture",
-      "text": "The BMTOP `rules-encyclopedia-admin-closure` case is captured as a regression fixture covering missing implementation marker, Markdown matrix fallback, project runner mismatch, unavailable frontend test script, and Docker/testcontainers environment blocker.",
+      "theme": "repeated clarification",
+      "text": "Repeated support clarification in the same version appends rounds or supersedes owned sections in the same research file instead of creating sibling files.",
       "tc_ids": [
-        "TC-RPQA-007"
+        "TC-ROSUP-005"
       ],
       "qa_types": [
-        "regression"
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "version lineage",
+      "text": "Cross-version clarification creates a new version research file with lineage fields for previous research, carried-forward findings, and superseded assumptions.",
+      "tc_ids": [
+        "TC-ROSUP-006"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "fail-closed gate",
+      "text": "Gate / requirement clarity blocks invalid support write topology and reports source skill, expected path, actual path, and repair route.",
+      "tc_ids": [
+        "TC-ROSUP-007"
+      ],
+      "qa_types": [
+        "contract"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "pre-write gate",
+      "text": "Read-only support output is not persisted until Beacon determines the write target from version, feature, and support surface class; unresolved routing fails closed instead of using legacy fallback.",
+      "tc_ids": [
+        "TC-ROSUP-008"
+      ],
+      "qa_types": [
+        "contract"
       ]
     }
   ],
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "source_matrix_changed"
+      "no_prior_feature_qa",
+      "artifact_updates_pending"
     ],
     "targeted_layers": [
-      "contract",
-      "integration",
-      "regression"
+      "contract"
     ],
     "targeted_ac_ids": [
       "AC-001",
       "AC-002",
       "AC-003",
       "AC-004",
-      "AC-005"
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008"
     ],
     "targeted_tc_ids": [
-      "TC-RPQA-001",
-      "TC-RPQA-002",
-      "TC-RPQA-003",
-      "TC-RPQA-004",
-      "TC-RPQA-005",
-      "TC-RPQA-006",
-      "TC-RPQA-007"
+      "TC-ROSUP-001",
+      "TC-ROSUP-002",
+      "TC-ROSUP-003",
+      "TC-ROSUP-004",
+      "TC-ROSUP-005",
+      "TC-ROSUP-006",
+      "TC-ROSUP-007",
+      "TC-ROSUP-008"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -542,15 +555,23 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 7
+    "verification_item_count": 8
   },
-  "feature_matrix_path": ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-  "blocking_artifact_updates": [],
+  "feature_matrix_path": ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+  "blocking_artifact_updates": [
+    {
+      "artifact": "review_quality",
+      "required": true,
+      "reason": "run quality review after native implementation",
+      "status": "open",
+      "notes": ""
+    }
+  ],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-RPQA-001",
-      "source_tc_id": "TC-RPQA-001",
+      "tc_id": "TC-ROSUP-001",
+      "source_tc_id": "TC-ROSUP-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -563,40 +584,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/result.json"
       ]
     },
     {
-      "ac_id": "AC-001",
-      "tc_id": "TC-RPQA-002",
-      "source_tc_id": "TC-RPQA-002",
+      "ac_id": "AC-002",
+      "tc_id": "TC-ROSUP-002",
+      "source_tc_id": "TC-ROSUP-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/result.json"
       ]
     },
     {
-      "ac_id": "AC-002",
-      "tc_id": "TC-RPQA-003",
-      "source_tc_id": "TC-RPQA-003",
+      "ac_id": "AC-003",
+      "tc_id": "TC-ROSUP-003",
+      "source_tc_id": "TC-ROSUP-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -609,17 +630,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/result.json"
       ]
     },
     {
-      "ac_id": "AC-002",
-      "tc_id": "TC-RPQA-004",
-      "source_tc_id": "TC-RPQA-004",
+      "ac_id": "AC-004",
+      "tc_id": "TC-ROSUP-004",
+      "source_tc_id": "TC-ROSUP-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -632,40 +653,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/result.json"
       ]
     },
     {
-      "ac_id": "AC-003",
-      "tc_id": "TC-RPQA-005",
-      "source_tc_id": "TC-RPQA-005",
+      "ac_id": "AC-005",
+      "tc_id": "TC-ROSUP-005",
+      "source_tc_id": "TC-ROSUP-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/result.json"
       ]
     },
     {
-      "ac_id": "AC-004",
-      "tc_id": "TC-RPQA-006",
-      "source_tc_id": "TC-RPQA-006",
+      "ac_id": "AC-006",
+      "tc_id": "TC-ROSUP-006",
+      "source_tc_id": "TC-ROSUP-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -678,34 +699,57 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/result.json"
       ]
     },
     {
-      "ac_id": "AC-005",
-      "tc_id": "TC-RPQA-007",
-      "source_tc_id": "TC-RPQA-007",
+      "ac_id": "AC-007",
+      "tc_id": "TC-ROSUP-007",
+      "source_tc_id": "TC-ROSUP-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "regression",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-ROSUP-008",
+      "source_tc_id": "TC-ROSUP-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/result.json"
       ]
     }
   ],
@@ -728,6 +772,7 @@
     "reason_codes": [],
     "source_surface": "implement-to-qa-handoff",
     "verification_surface": "qa",
+    "refs": {},
     "findings": []
   },
   "requirement_completeness_gate": {
@@ -735,236 +780,194 @@
     "enabled": true,
     "status": "pass",
     "blocked": false,
-    "reason_code": "",
+    "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature": "read-only-support-research-write-topology-gate-contract",
     "version": "v1.4.9",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.re-freeze-transaction.json"
     },
-    "unresolved_gap_count": 0,
-    "high_risk_unresolved_categories": [],
-    "downgrade_fallback_status": "none",
-    "coverage_families": [
-      "happy",
-      "negative",
-      "boundary",
-      "exception",
-      "recovery",
-      "compatibility",
-      "permission",
-      "stale-data-or-drift",
-      "downgrade-or-fallback"
-    ],
-    "decision_count": 15,
-    "candidate_count": 15,
-    "coverage_dimension_statuses": {
-      "actors": "covered",
-      "capability_differences": "covered",
-      "state_machine": "covered",
-      "happy_paths": "",
-      "negative_paths": "",
-      "boundary_conditions": "covered",
-      "exceptions": "covered",
-      "recovery_paths": "covered",
-      "risks": "covered",
-      "open_questions": ""
-    },
-    "missing_dimensions": [
-      "happy_paths",
-      "negative_paths",
-      "open_questions"
-    ],
+    "projection_status": "missing_nonblocking",
+    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"read-only-support-research-write-topology-gate-contract\" --single-feature",
+    "next_action": "qa",
     "stage_gates": {
       "artifact_read_model": {
         "status": "pass",
         "blocked": false,
-        "reason_code": "",
-        "summary": "requirement completeness artifacts are readable",
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.re-freeze-transaction.json"
-          }
+            "envelope": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.re-freeze-transaction.json"
+          },
+          "projection_status": "missing_nonblocking"
         }
       },
       "decision_traceability": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "human supplement decisions remain auditable",
-        "details": {
-          "decision_count": 15,
-          "candidate_count": 15
-        }
+        "summary": "human requirement truth is carried by frozen Markdown surfaces",
+        "details": {}
       },
       "coverage_closure": {
-        "status": "blocked",
-        "blocked": true,
-        "reason_code": "requirement_coverage_closure_blocked",
-        "summary": "role/state/risk coverage closure is evaluated from machine materials",
-        "details": {
-          "coverage_family_count": 9,
-          "coverage_families": [
-            "happy",
-            "negative",
-            "boundary",
-            "exception",
-            "recovery",
-            "compatibility",
-            "permission",
-            "stale-data-or-drift",
-            "downgrade-or-fallback"
-          ],
-          "missing_dimensions": [
-            "happy_paths",
-            "negative_paths",
-            "open_questions"
-          ]
-        }
-      },
-      "unresolved_gap_governance": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "unresolved gaps are classified before downstream delivery",
+        "summary": "acceptance coverage is parseable from Markdown truth",
         "details": {
-          "unresolved_gap_count": 0,
-          "high_risk_unresolved_categories": []
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ]
         }
       },
       "downgrade_control": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "host fallback and downgrade state remain explicit",
-        "details": {
-          "downgrade_fallback_status": "none"
-        }
+        "summary": "missing completeness projection does not activate a truth downgrade",
+        "details": {}
       },
       "stage_admission": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "qa admission evaluated against completeness readiness",
+        "summary": "qa admission uses frozen Markdown truth; projection sync is advisory",
         "details": {
           "target_stage": "qa",
           "stage_ready": true,
-          "stage_key": "implement_ready"
+          "stage_key": "markdown_first_truth"
         }
       }
     },
-    "recommended_command": "",
-    "next_action": "qa",
     "human_loop_handoff": {
       "action": "qa",
-      "reason": "requirement_completeness_pass",
+      "reason": "markdown_first_truth_pass",
       "recommended_command": "",
-      "focus_areas": [
-        "补齐 role/state/risk coverage missing dimensions"
-      ]
+      "focus_areas": []
     },
-    "completeness": {
-      "schema_version": "1.0",
-      "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-      "version": "v1.4.9",
-      "revision_id": "R1",
-      "completeness_verdict": "pass",
-      "unresolved_gap_count": 0,
-      "high_risk_unresolved_categories": [],
-      "downgrade_fallback_status": "none",
-      "role_state_risk_coverage": {
-        "actors": "covered",
-        "capability_differences": "covered",
-        "state_machine": "covered",
-        "boundary_conditions": "covered",
-        "exceptions": "covered",
-        "recovery_paths": "covered",
-        "risks": "covered",
-        "coverage_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "exception",
-          "recovery",
-          "compatibility",
-          "permission",
-          "stale-data-or-drift",
-          "downgrade-or-fallback"
-        ]
+    "markdown_first_truth": {
+      "status": "pass",
+      "projection": {
+        "feature": "read-only-support-research-write-topology-gate-contract",
+        "version": "v1.4.9",
+        "source_paths": {
+          "prd": "docs/beacon/v1.4.9/prd/read-only-support-research-write-topology-gate-contract.md",
+          "user_story": "docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md",
+          "test_case": "docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+          "research": "docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md",
+          "source_architecture": "docs/beacon/v1.4.9/source-architecture/read-only-support-research-write-topology-gate-contract.md",
+          "change": "docs/beacon/v1.4.9/change/read-only-support-research-write-topology-gate-contract.md"
+        },
+        "prd_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008"
+        ],
+        "user_story_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008"
+        ],
+        "test_case_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008"
+        ],
+        "diagnostics": [],
+        "status": "pass"
       },
-      "readiness": {
-        "freeze_ready": true,
-        "prototype_ready": true,
-        "implement_ready": true,
-        "release_ready": true
-      },
-      "generated_at": "2026-05-23T03:32:10.725317+00:00"
+      "freeze_state": {
+        "schema_version": "1.0",
+        "feature": "read-only-support-research-write-topology-gate-contract",
+        "feature_slug": "read-only-support-research-write-topology-gate-contract",
+        "version": "v1.4.9",
+        "revision_id": "R3",
+        "source_revision_id": "R2",
+        "status": "frozen",
+        "baseline_hash": "sha256:3305b84807ac9950ee5619ccf9d3c57ad87bbc26047a7e75389b39834fd663a5",
+        "source_paths": {
+          "prd": "docs/beacon/v1.4.9/prd/read-only-support-research-write-topology-gate-contract.md",
+          "user_story": "docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md",
+          "test_case": "docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+          "research": "docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md",
+          "source_architecture": "docs/beacon/v1.4.9/source-architecture/read-only-support-research-write-topology-gate-contract.md",
+          "change": "docs/beacon/v1.4.9/change/read-only-support-research-write-topology-gate-contract.md"
+        },
+        "diagnostics": [],
+        "transaction_ref": "docs/beacon/v1.4.9/.machine/change/read-only-support-research-write-topology-gate-contract.refreeze-transaction.json",
+        "generated_at": "2026-05-23T06:53:21.575345+00:00"
+      }
     },
-    "freeze_contract": {
-      "schema_version": "1.0",
-      "version": "v1.4.9",
-      "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-      "revision_id": "R1",
-      "status": "freeze-ready",
-      "human_supplement_contract": {
-        "allowed_decisions": [
-          "accepted",
-          "rejected",
-          "deferred"
-        ],
-        "required_fields": [
-          "gap_id",
-          "source_truth_ref",
-          "candidate_kind",
-          "rationale",
-          "human_decision",
-          "decision_reason",
-          "writeback_target",
-          "revision_id"
-        ],
-        "writeback_flow": [
-          "decision_log",
-          "writeback_projection",
-          "truth_refreeze"
-        ]
-      },
-      "blocking_rules": [
-        "high_severity_unresolved_gap",
-        "critical_coverage_family_missing",
-        "host_downgrade_without_explicit_fallback_contract",
-        "truth_writeback_without_machine_decision_trail"
-      ],
-      "freeze_verdict": "pass",
-      "implementation_verdict": "pending",
-      "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-23T03:32:10.726449+00:00"
-    }
+    "completeness": {},
+    "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.9/.machine/requirement/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.9/.machine/requirement/read-only-support-research-write-topology-gate-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/read-only-support-research-write-topology-gate-contract.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-    "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-    "run_id": "run-20260523T121044681575",
-    "generated_at": "2026-05-23T04:10:54.588117+00:00",
+    "feature": "read-only-support-research-write-topology-gate-contract",
+    "feature_slug": "read-only-support-research-write-topology-gate-contract",
+    "run_id": "run-20260523T145322795929",
+    "generated_at": "2026-05-23T06:53:28.124655+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 7,
+    "scenario_count": 8,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -984,11 +987,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-RPQA-001",
-      "tc_id": "TC-RPQA-001",
-      "source_tc_id": "TC-RPQA-001",
+      "scenario_id": "TC-ROSUP-001",
+      "tc_id": "TC-ROSUP-001",
+      "source_tc_id": "TC-ROSUP-001",
       "ac_id": "AC-001",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1012,55 +1015,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-001/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RPQA-002",
-      "tc_id": "TC-RPQA-002",
-      "source_tc_id": "TC-RPQA-002",
-      "ac_id": "AC-001",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-002/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-RPQA-003",
-      "tc_id": "TC-RPQA-003",
-      "source_tc_id": "TC-RPQA-003",
+      "scenario_id": "TC-ROSUP-002",
+      "tc_id": "TC-ROSUP-002",
+      "source_tc_id": "TC-ROSUP-002",
       "ac_id": "AC-002",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1084,55 +1051,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-003/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RPQA-004",
-      "tc_id": "TC-RPQA-004",
-      "source_tc_id": "TC-RPQA-004",
-      "ac_id": "AC-002",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-004/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-RPQA-005",
-      "tc_id": "TC-RPQA-005",
-      "source_tc_id": "TC-RPQA-005",
+      "scenario_id": "TC-ROSUP-003",
+      "tc_id": "TC-ROSUP-003",
+      "source_tc_id": "TC-ROSUP-003",
       "ac_id": "AC-003",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1156,19 +1087,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-005/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RPQA-006",
-      "tc_id": "TC-RPQA-006",
-      "source_tc_id": "TC-RPQA-006",
+      "scenario_id": "TC-ROSUP-004",
+      "tc_id": "TC-ROSUP-004",
+      "source_tc_id": "TC-ROSUP-004",
       "ac_id": "AC-004",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1192,19 +1123,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-006/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-RPQA-007",
-      "tc_id": "TC-RPQA-007",
-      "source_tc_id": "TC-RPQA-007",
+      "scenario_id": "TC-ROSUP-005",
+      "tc_id": "TC-ROSUP-005",
+      "source_tc_id": "TC-ROSUP-005",
       "ac_id": "AC-005",
-      "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1228,25 +1159,133 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T121044681575/qa9-tc/TC-RPQA-007/result.json"
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-005/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-ROSUP-006",
+      "tc_id": "TC-ROSUP-006",
+      "source_tc_id": "TC-ROSUP-006",
+      "ac_id": "AC-006",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-006/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-ROSUP-007",
+      "tc_id": "TC-ROSUP-007",
+      "source_tc_id": "TC-ROSUP-007",
+      "ac_id": "AC-007",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-007/result.json"
+      ]
+    },
+    {
+      "scenario_id": "TC-ROSUP-008",
+      "tc_id": "TC-ROSUP-008",
+      "source_tc_id": "TC-ROSUP-008",
+      "ac_id": "AC-008",
+      "feature_slug": "read-only-support-research-write-topology-gate-contract",
+      "scenario_family": "",
+      "status": "passed",
+      "closure_outcome": "accepted",
+      "confidence_raw": 1.0,
+      "confidence_calibrated": 1.0,
+      "confidence_band": "high",
+      "requires_human_review": false,
+      "evidence_sufficiency": "strong",
+      "root_cause_type": "none",
+      "reason_code": "",
+      "browser_required": false,
+      "replay_required": false,
+      "replay_present": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "judge_signals": {
+        "status_score": 1.0,
+        "evidence_score": 1.0,
+        "replay_score": 1.0,
+        "trace_score": 1.0,
+        "flake_penalty": 0.0
+      },
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260523T145322795929/qa9-tc/TC-ROSUP-008/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-    "feature_slug": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
-    "run_id": "run-20260523T121044681575",
-    "ac_total": 5,
-    "ac_accepted": 5,
-    "scenario_total": 7,
-    "scenario_passed": 7,
+    "feature": "read-only-support-research-write-topology-gate-contract",
+    "feature_slug": "read-only-support-research-write-topology-gate-contract",
+    "run_id": "run-20260523T145322795929",
+    "ac_total": 8,
+    "ac_accepted": 8,
+    "scenario_total": 8,
+    "scenario_passed": 8,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1256,8 +1295,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 7,
-      "executed_scenarios": 7,
+      "required_scenarios": 8,
+      "executed_scenarios": 8,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1284,7 +1323,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 7,
+      "verification_item_count": 8,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1294,6 +1333,7 @@
       "reason_codes": [],
       "source_surface": "implement-to-qa-handoff",
       "verification_surface": "qa",
+      "refs": {},
       "findings": []
     },
     "qa_outcome_taxonomy": {
@@ -1320,18 +1360,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"read-only-support-research-write-topology-gate-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"real-project-qa-evidence-binding-and-markdown-matrix-fail-closed\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.9 --feature \"read-only-support-research-write-topology-gate-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature": "read-only-support-research-write-topology-gate-contract",
     "version": "v1.4.9",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1352,15 +1392,17 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.9",
-      "feature_matrix_path": ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/read-only-support-research-write-topology-gate-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-      "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/ac-closure.json",
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/scorecard.json",
-      ".beacon/release-gate-report.json"
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.9/.machine/qa/read-only-support-research-write-topology-gate-contract.ac-test-matrix.json",
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/ac-closure.json",
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/scorecard.json",
+      ".beacon/release-gate-report.json",
+      "docs/beacon/v1.4.9/.machine/execution/implementation-summary-read-only-support-research-write-topology-gate-contract.json",
+      "docs/beacon/v1.4.9/.machine/execution/technical-implementation-read-only-support-research-write-topology-gate-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1373,7 +1415,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "real-project-qa-evidence-binding-and-markdown-matrix-fail-closed",
+    "feature": "read-only-support-research-write-topology-gate-contract",
     "version": "v1.4.9",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1394,15 +1436,17 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.9",
-      "feature_matrix_path": ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.9/.machine/qa/read-only-support-research-write-topology-gate-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/matrix.qa9.json",
-      "docs/beacon/v1.4.9/.machine/qa/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.ac-test-matrix.json",
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/ac-closure.json",
-      ".beacon/qa/features/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed/scorecard.json",
-      ".beacon/release-gate-report.json"
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.9/.machine/qa/read-only-support-research-write-topology-gate-contract.ac-test-matrix.json",
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/ac-closure.json",
+      ".beacon/qa/features/read-only-support-research-write-topology-gate-contract/scorecard.json",
+      ".beacon/release-gate-report.json",
+      "docs/beacon/v1.4.9/.machine/execution/implementation-summary-read-only-support-research-write-topology-gate-contract.json",
+      "docs/beacon/v1.4.9/.machine/execution/technical-implementation-read-only-support-research-write-topology-gate-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1413,5 +1457,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "770de60db39fa51d0844ad2c9671bea0bf18619f322cde6a31989c3a15803a06"
+  "current_spec_fingerprint_hash": "bd14783a676050b7168069fba50d3995459d65ed570d8287646baa54680ef956"
 }
