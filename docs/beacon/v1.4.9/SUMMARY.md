@@ -2,16 +2,17 @@
 
 ## 版本状态
 
-- `v1.4.9` 当前主题：`ui-ux-externalization-prototype-adapter-and-version-visualization`
+- `v1.4.9` 当前主题：`ui-ux-externalization-prototype-adapter-and-version-visualization`、真实项目 QA 闭环、只读 support research 写入拓扑 gate
 - 当前版本状态：`requirement_frozen`
 - 本版本线用于冻结 Beacon UI/UX 执行外部化、`prototype` 降级为设计结果适配器、以及版本级业务流程 / 状态机 / 三件套映射图契约。
 
 ## 版本目标
 
-`v1.4.9` 当前包含两条正式子线：
+`v1.4.9` 当前包含三条正式子线：
 
 1. `ui-ux-externalization-prototype-adapter-and-version-visualization-contract`
 2. `real-project-qa-evidence-binding-and-markdown-matrix-fail-closed`
+3. `read-only-support-research-write-topology-gate-contract`
 
 第一条子线已经冻结 UI/UX 责任边界：
 
@@ -21,34 +22,45 @@
 
 > 先修复 implementation evidence writeback、Markdown QA -> machine matrix fail-closed、project runner profile、admission blocker taxonomy 和 BMTOP regression fixture；Better Harness Skill Eval Kit 与 `qa-evo-deep` 作为后续 P1/P2 输入。
 
+第三条子线冻结只读 support research 写入拓扑：
+
+> 普通 support review 统一 upsert 到 `docs/beacon/<version>/research/<feature>.md`；`beacon-deep` 详细材料进入 `deep/<feature>/`，research 只保留索引；`beacon-learn` 进入 `learning/<feature>.md` 或 transaction，research 只记录 learning influence 摘要；显式 version+feature 的只读分析不得回退到 `docs/brainstorms/`，写入前必须由 topology gate 决定目标，无法决定则 fail closed。
+
 ## 当前需求包
 
 - Research
   - `docs/beacon/v1.4.9/research/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/research/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md`
   - `docs/beacon/v1.4.9/research/qa-evo-deep-human-subskill-and-implementation-qa-closure-gap.md`
   - `docs/beacon/v1.4.9/research/better-harness-skill-eval-kit-and-source-driven-regression-core.md`
 - Source Architecture
   - `docs/beacon/v1.4.9/source-architecture/index.md`
   - `docs/beacon/v1.4.9/source-architecture/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/source-architecture/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/source-architecture/read-only-support-research-write-topology-gate-contract.md`
 - Change
   - `docs/beacon/v1.4.9/change/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/change/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/change/read-only-support-research-write-topology-gate-contract.md`
 - PRD
   - `docs/beacon/v1.4.9/prd/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/prd/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/prd/read-only-support-research-write-topology-gate-contract.md`
 - User Story
   - `docs/beacon/v1.4.9/user-story/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/user-story/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md`
 - Test Cases
   - `docs/beacon/v1.4.9/qa/test-cases/ui-ux-externalization-prototype-adapter-and-version-visualization-contract.md`
   - `docs/beacon/v1.4.9/qa/test-cases/real-project-qa-evidence-binding-and-markdown-matrix-fail-closed.md`
+  - `docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md`
 
 ## 正式子线
 
 - `ui-ux-externalization-prototype-adapter-and-version-visualization-contract`
 - `real-project-qa-evidence-binding-and-markdown-matrix-fail-closed`
+- `read-only-support-research-write-topology-gate-contract`
 
 ## 冻结边界
 
@@ -90,6 +102,25 @@
 - `qa-evo-deep` release supplement 自动化
 - 新生命周期 stage
 
+## 只读 support research 写入拓扑冻结边界
+
+新增只读 support 子线包括：
+
+- 普通只读 support review 的单 feature research 文档 upsert 模型
+- `beacon-deep` 的 `deep/<feature>/` 详细材料目录和 research 索引模型
+- `beacon-learn` 的 `learning/<feature>.md` 或 transaction 写入模型和 research influence 摘要
+- 显式 version+feature 场景禁止 `docs/brainstorms/` 兜底
+- 写入前 topology gate 选择目标；无法证明 version、feature、support surface class 时 fail closed
+- 同版本重复澄清的 rounds / supersession 规则
+- 跨版本澄清的 lineage 规则
+
+新增只读 support 子线不包括：
+
+- 让 support skill 直接写 PRD / user-story / test-case truth
+- 让 `beacon-deep` 或 `beacon-learn` 变成生命周期 stage
+- 重写历史 `docs/brainstorms/` 文件
+- 执行 implementation、QA 或 release
+
 ## 下一步
 
 冻结完成后，下一跳是：
@@ -111,3 +142,12 @@ P0 QA 闭环子线 implement 必须先实现并验证：
 - Go + UniApp runner profile
 - admission blocker taxonomy
 - BMTOP regression fixture
+
+只读 support research 子线 implement 必须先实现并验证：
+
+- support topology pre-write gate
+- 普通 support review section upsert
+- `beacon-deep` 详细材料与 research index 分离
+- `beacon-learn` audit / transaction 与 research influence summary 分离
+- 显式 version+feature 禁止 `docs/brainstorms/` fallback
+- topology violation 的 fail-closed diagnostics
