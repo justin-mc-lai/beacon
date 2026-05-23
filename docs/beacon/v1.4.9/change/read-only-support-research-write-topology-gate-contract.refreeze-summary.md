@@ -2,23 +2,23 @@
 
 - version: `v1.4.9`
 - change_reason: `read-only support research write topology gate contract`
-- refreeze_status: `blocked`
-- blocked_reason: `revision_not_frozen`
-- next_route: `beacon-change`
+- refreeze_status: `complete`
+- blocked_reason: ``
+- next_route: `beacon-implement`
 - revision_before: `R1`
-- revision_after: ``
+- revision_after: `R2`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.9/change/read-only-support-research-write-topology-gate-contract.md)
 - `prd`: `present` (docs/beacon/v1.4.9/prd/read-only-support-research-write-topology-gate-contract.md)
 - `user-story`: `present` (docs/beacon/v1.4.9/user-story/read-only-support-research-write-topology-gate-contract.md)
 - `test-case`: `present` (docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md)
-- `requirement_clarity`: `pending` (docs/beacon/v1.4.9/.machine/execution/requirement-clarity-read-only-support-research-write-topology-gate-contract.json)
-- `freeze`: `pending` (docs/beacon/v1.4.9/.machine/change/read-only-support-research-write-topology-gate-contract.refreeze-transaction.json)
+- `requirement_clarity`: `passed` (docs/beacon/v1.4.9/.machine/execution/requirement-clarity-read-only-support-research-write-topology-gate-contract.json)
+- `freeze`: `complete` (docs/beacon/v1.4.9/.machine/change/read-only-support-research-write-topology-gate-contract.refreeze-transaction.json)
 
 ## Refreshed Surfaces
 
-- change, prd, user-story, test-case
+- change, prd, user-story, test-case, requirement_clarity, freeze
 
 ## Boundary
 

@@ -1,0 +1,536 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "read-only-support-research-write-topology-gate-contract",
+  "feature_slug": "read-only-support-research-write-topology-gate-contract",
+  "version": "v1.4.9",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-23T13:12:49.921054",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-23T13:12:49.920441",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-ROSUP-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "read-only-support-research-write-topology-gate-contract AC-001 :: Ordinary support skills with explicit version+feature upsert their owned section",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"ordinary_support_writes_feature_research\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Ordinary support skills with explicit version+feature upsert their owned section in `docs/beacon/<version>/research/<feature>.md`.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"ordinary_support_writes_feature_research\"`",
+      "scenario": "Ordinary support skills with explicit version+feature upsert their owned section in `docs/beacon/<version>/research/<feature>.md`.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "read-only-support-research-write-topology-gate-contract AC-002 :: `beacon-deep` writes detailed artifacts under `deep/<feature>/` and research con",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"deep_writes_artifact_family_and_research_index\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-deep` writes detailed artifacts under `deep/<feature>/` and research contains only `Deep Summary` index metadata.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"deep_writes_artifact_family_and_research_index\"`",
+      "scenario": "`beacon-deep` writes detailed artifacts under `deep/<feature>/` and research contains only `Deep Summary` index metadata.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "read-only-support-research-write-topology-gate-contract AC-003 :: `beacon-learn` writes audit data to learning/transaction surfaces and research c",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"learn_writes_learning_audit_and_research_index\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon-learn` writes audit data to learning/transaction surfaces and research contains only learning influence summary.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"learn_writes_learning_audit_and_research_index\"`",
+      "scenario": "`beacon-learn` writes audit data to learning/transaction surfaces and research contains only learning influence summary.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "read-only-support-research-write-topology-gate-contract AC-004 :: Explicit version+feature support analysis cannot default to `docs/brainstorms/`;",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"brainstorm_fallback_disallowed_for_version_feature\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Explicit version+feature support analysis cannot default to `docs/brainstorms/`; violation blocks with topology diagnostics.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"brainstorm_fallback_disallowed_for_version_feature\"`",
+      "scenario": "Explicit version+feature support analysis cannot default to `docs/brainstorms/`; violation blocks with topology diagnostics.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "read-only-support-research-write-topology-gate-contract AC-005 :: Repeated clarification in one version updates rounds or supersedes owned section",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"same_version_clarification_upserts_rounds\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Repeated clarification in one version updates rounds or supersedes owned sections in the same research file.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"same_version_clarification_upserts_rounds\"`",
+      "scenario": "Repeated clarification in one version updates rounds or supersedes owned sections in the same research file.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "read-only-support-research-write-topology-gate-contract AC-006 :: Cross-version clarification writes a new version research document with previous",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"cross_version_clarification_records_lineage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Cross-version clarification writes a new version research document with previous research, carried-forward findings, and superseded assumptions.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"cross_version_clarification_records_lineage\"`",
+      "scenario": "Cross-version clarification writes a new version research document with previous research, carried-forward findings, and superseded assumptions.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "read-only-support-research-write-topology-gate-contract AC-007 :: Gate / requirement clarity reports invalid topology with source skill, expected ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"topology_gate_reports_expected_and_actual_paths\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Gate / requirement clarity reports invalid topology with source skill, expected path, actual path, feature, version, and repair route.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"topology_gate_reports_expected_and_actual_paths\"`",
+      "scenario": "Gate / requirement clarity reports invalid topology with source skill, expected path, actual path, feature, version, and repair route.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-ROSUP-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "read-only-support-research-write-topology-gate-contract AC-008 :: Support output is not persisted until the topology gate selects a governed targe",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"pre_write_gate_blocks_unresolved_support_target\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Support output is not persisted until the topology gate selects a governed target; unresolved route attempts fail closed without legacy fallback writes.",
+      "evidence_path": ".beacon/evidence/test-results/read-only-support-research-write-topology-gate-contract/TC-ROSUP-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v149_read_only_support_topology.py -k \"pre_write_gate_blocks_unresolved_support_target\"`",
+      "scenario": "Support output is not persisted until the topology gate selects a governed target; unresolved route attempts fail closed without legacy fallback writes.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.9/qa/test-cases/read-only-support-research-write-topology-gate-contract.md",
+    "row_count": 8,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-23T13:12:49.921117",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "read-only-support-research-write-topology-gate-contract",
+    "version": "v1.4.9",
+    "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "Ordinary support review surfaces write one owned section in `research/<feature>.md`.",
+        "`beacon-deep` writes detailed artifacts in `deep/<feature>/`; research stores only `Deep Summary`.",
+        "`beacon-learn` writes learning audit in `learning/<feature>.md` or transaction; research stores only `Learning Influence Summary`.",
+        "If the gate cannot prove `version`, `feature`, and support surface class, persistence is blocked before any file write."
+      ],
+      "decision_priority": [
+        "Version-bound and feature-bound support output must use governed feature topology.",
+        "Ordinary support review must upsert one section in `research/<feature>.md`.",
+        "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+        "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+        "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+        "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+        "Cross-version clarification creates a new version research document with lineage to the prior version.",
+        "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Version-bound and feature-bound support output must use governed feature topology.",
+          "Ordinary support review must upsert one section in `research/<feature>.md`.",
+          "`docs/brainstorms/` is not a fallback target. It is allowed only for unbound scratch, external analysis, or explicit scratch output.",
+          "`beacon-deep` owns detailed deep artifacts; research only indexes them.",
+          "`beacon-learn` owns learning audit; research only summarizes learning influence.",
+          "Repeated clarification in the same version appends rounds or supersedes prior section content; it does not generate sibling files.",
+          "Cross-version clarification creates a new version research document with lineage to the prior version.",
+          "Accepted support findings that alter promise, scope, or acceptance must route through `beacon-change` / `beacon-change-refreeze`."
+        ],
+        "source": "research:docs/beacon/v1.4.9/research/read-only-support-research-write-topology-gate-contract.md"
+      }
+    ]
+  }
+}
