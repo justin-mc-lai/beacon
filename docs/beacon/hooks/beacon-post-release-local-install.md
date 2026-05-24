@@ -37,6 +37,31 @@ This hook is project-specific to the Beacon source repository. It is not a defau
 - The operator manually confirms the side-effect follow-up with `--confirm`.
 - The target version is explicit, for example `v1.4.10`.
 
+## Implantation
+
+This hook is implanted into the Beacon source release follow-up after `beacon release check <version>` returns release-ready.
+
+It is invoked manually through the project hook toolkit:
+
+```bash
+python3 -m beacon.main hooks plan beacon-post-release-local-install \
+  --project-root . \
+  --version <version> \
+  --feature <feature> \
+  --hook-code post_release \
+  --json
+
+python3 -m beacon.main hooks run beacon-post-release-local-install \
+  --project-root . \
+  --version <version> \
+  --feature <feature> \
+  --hook-code post_release \
+  --confirm \
+  --json
+```
+
+The hook runtime has a restricted built-in follow-up for this hook id. It does not execute arbitrary shell commands from the Markdown contract.
+
 Expected operator commands for the side-effect follow-up are:
 
 ```bash
