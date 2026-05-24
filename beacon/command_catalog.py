@@ -39,6 +39,7 @@ SUPPORT_COMMANDS = (
     "test-progress",
     "debug",
     "deep",
+    "hooks",
 )
 
 COMPAT_COMMANDS = (
@@ -101,6 +102,7 @@ SUPPORTED_SUBCOMMANDS = (
     "friction-intake",
     "freeze",
     "help",
+    "hooks",
     "gate",
     "implement",
     "init",

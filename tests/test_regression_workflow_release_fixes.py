@@ -637,6 +637,52 @@ def test_release_create_should_aggregate_version_change_document(tmp_path: Path)
     assert f"docs/beacon/{version}/.machine/change/{version}.json" in release_text
 
 
+def test_release_create_should_ignore_refreeze_transactions_as_feature_packages(tmp_path: Path):
+    version = "v2.1.0"
+    slug = "feature-a"
+    machine_change = change_file_output(tmp_path, version, f"{slug}.refreeze-transaction.json")
+    machine_change.parent.mkdir(parents=True, exist_ok=True)
+    machine_change.write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "version": version,
+                "feature": "Feature A",
+                "feature_slug": slug,
+                "status": "required",
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    machine_exec = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_exec.mkdir(parents=True, exist_ok=True)
+    (machine_exec / f"technical-implementation-{slug}.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "version": version,
+                "feature": "Feature A",
+                "feature_slug": slug,
+                "implementation_scope_summary": "Feature A landed",
+                "changed_files": ["beacon/commands/release.py"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    result = _invoke(["release", "create", version, "--project", str(tmp_path)])
+    assert result.exit_code == 0
+
+    payload = json.loads(change_file_output(tmp_path, version, f"{version}.json").read_text(encoding="utf-8"))
+    assert payload["feature_count"] == 1
+    assert [item["feature_slug"] for item in payload["features"]] == [slug]
+
+
 def test_release_create_should_not_overwrite_canonical_release_note(tmp_path: Path):
     version = "v2.1.0"
     release_dir = tmp_path / "docs" / "beacon" / version / "release"
