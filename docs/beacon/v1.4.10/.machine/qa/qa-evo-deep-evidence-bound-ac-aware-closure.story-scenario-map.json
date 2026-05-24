@@ -1,0 +1,672 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+  "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
+  "version": "v1.4.10",
+  "generated_at": "2026-05-24T03:58:15.118043+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "required source reads",
+      "text_hash": "sha256:8f42806bc9a31f7a931ff496792a70ac57bd1dd467ef974293f48ee154d5af29",
+      "text_bytes": 107,
+      "scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-QAED-BIND-001",
+          "tc_id": "TC-QAED-BIND-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "source",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-QAED-BIND-002",
+          "tc_id": "TC-QAED-BIND-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "fail-closed",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "finding evidence binding",
+      "text_hash": "sha256:eddf41673a62d0d63f0a451eb5803612c9b53fdff4b1aa57b2fca02d2489fb25",
+      "text_bytes": 95,
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-QAED-BIND-003",
+          "tc_id": "TC-QAED-BIND-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "empty skeleton block",
+      "text_hash": "sha256:81bbc46d7a467f578b3e3c125683107b0f234a9d63419fff1e5184ca99753ce0",
+      "text_bytes": 129,
+      "scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-QAED-BIND-004",
+          "tc_id": "TC-QAED-BIND-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "fail-closed",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-QAED-BIND-005",
+          "tc_id": "TC-QAED-BIND-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "blocked-admission",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "Skill Eval replay",
+      "text_hash": "sha256:6209f1344072ed4742c51c33028ecac5854a2dd51cbac91430c99f14af3b6d64",
+      "text_bytes": 137,
+      "scenario_ids": [
+        "SC-006",
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary",
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-SKEV-REPLAY-001",
+          "tc_id": "TC-SKEV-REPLAY-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "replay",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-SKEV-REPLAY-002",
+          "tc_id": "TC-SKEV-REPLAY-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "fail-closed",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "formal QA absorption",
+      "text_hash": "sha256:a9d5b1fc889314e8c3ff6dd01d112bd13caf3e36573a7f80424e7a864500bb2c",
+      "text_bytes": 98,
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-QA-ABSORB-001",
+          "tc_id": "TC-QA-ABSORB-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "scorecard",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "release supplement boundary",
+      "text_hash": "sha256:47f6cd74e5ae6130f22850003d24f6259c00e32433da7a04e7ac3ba5a235d303",
+      "text_bytes": 155,
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-REL-SUPP-001",
+          "tc_id": "TC-REL-SUPP-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "release",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "authority boundary",
+      "text_hash": "sha256:4d16feef9c3054eea09b3deb85287e9be46f638d03c76a6564051ff9b12b22aa",
+      "text_bytes": 139,
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-QAED-BIND-006",
+          "tc_id": "TC-QAED-BIND-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "boundary",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-QAED-BIND-001",
+      "tc_id": "TC-QAED-BIND-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "source",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: QA evo-deep loads PRD, user-story, test-case, QA scorecard, and AC closure before status `ready`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "source",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"required_source_materials_are_loaded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-QAED-BIND-002",
+      "tc_id": "TC-QAED-BIND-002-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Missing source material produces `status=blocked` and reason code `qa_evo_deep_source_evidence_m",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"missing_source_material_blocks_ready_report\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-QAED-BIND-003",
+      "tc_id": "TC-QAED-BIND-003-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Ready findings require non-empty `affected_ac_ids` and `current_evidence_refs`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"ready_findings_require_ac_and_evidence_refs\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-QAED-BIND-004",
+      "tc_id": "TC-QAED-BIND-004-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Skeleton findings without AC/evidence binding fail with `qa_evo_deep_empty_skeleton_finding`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"empty_skeleton_findings_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-QAED-BIND-005",
+      "tc_id": "TC-QAED-BIND-005-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "blocked-admission",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Blocked admissions include source refs, reason codes, and route recommendations.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "blocked-admission",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"blocked_admission_can_explain_source_gap\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-SKEV-REPLAY-001",
+      "tc_id": "TC-SKEV-REPLAY-001-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "replay",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Skill Eval Kit replay traces record expected route, actual route, boundary preservation, source ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "replay",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"skill_eval_replays_route_boundary_and_source_anchor\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-SKEV-REPLAY-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-SKEV-REPLAY-002",
+      "tc_id": "TC-SKEV-REPLAY-002-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Route, boundary, or source-anchor replay failure blocks the eval case.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"skill_eval_replay_failure_blocks_case\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-SKEV-REPLAY-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-QA-ABSORB-001",
+      "tc_id": "TC-QA-ABSORB-001-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "scorecard",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: QA scorecard records each deep finding as `absorbed`, `deferred`, `blocked`, or `not_applicable`",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "scorecard",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"qa_scorecard_records_deep_absorption_status\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QA-ABSORB-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-REL-SUPP-001",
+      "tc_id": "TC-REL-SUPP-001-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "release",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Release supplement treats only formally absorbed deep findings as release supplement input.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"release_uses_only_absorbed_deep_findings\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-REL-SUPP-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-QAED-BIND-006",
+      "tc_id": "TC-QAED-BIND-006-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "exception",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: QA evo-deep and Skill Eval outputs fail closed on truth, QA verdict, release verdict, gate verdi",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_evidence_bound.py -k \"authority_bypass_still_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-evo-deep-evidence-bound-ac-aware-closure/TC-QAED-BIND-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "present": true,
+    "section_count": 4,
+    "sections": {
+      "architecture": [
+        "Read frozen requirement truth:",
+        "PRD",
+        "user-story",
+        "test-case",
+        "Read current formal QA evidence:",
+        "`.beacon/qa/features/<feature>/scorecard.json`",
+        "`.beacon/qa/features/<feature>/ac-closure.json`",
+        "Produce evidence-bound deep findings:",
+        "human report: `docs/beacon/<version>/qa/evo-deep/<feature>.md`",
+        "machine projection: `docs/beacon/<version>/.machine/qa/evo-deep/<feature>.json`",
+        "formal QA absorption signal in QA scorecard"
+      ],
+      "business_flow": [
+        "Operator runs `beacon qa evo-deep \"<feature>\" --project . --version <version>`.",
+        "Beacon loads frozen requirement truth and current QA evidence for that feature.",
+        "If any required source is missing, Beacon returns a blocked admission with the missing surface and route recommendation.",
+        "If sources exist, Beacon builds findings and binds each finding to affected AC IDs and current evidence refs.",
+        "If a finding has no AC or evidence binding, Beacon blocks the report instead of returning a ready skeleton.",
+        "Operator routes blocked findings to change, test-case, implement, or QA as recommended.",
+        "Formal QA records whether each finding was absorbed, deferred, blocked, or not applicable.",
+        "Release readiness summarizes only absorbed findings as release supplement input."
+      ],
+      "state_machine": [
+        "`source_evidence_state`",
+        "`finding_binding_state`",
+        "`blocked_admission_state`",
+        "`skill_eval_replay_state`",
+        "`deep_absorption_state`",
+        "`release_supplement_state`",
+        "`authority_boundary`"
+      ],
+      "decision_priority": [
+        "Authority bypass blocks first.",
+        "Missing source evidence blocks readiness.",
+        "Empty AC/evidence binding blocks readiness.",
+        "Skill Eval replay failure blocks eval pass.",
+        "Formal QA absorption controls release supplement eligibility.",
+        "Advisory deep findings may influence exploration but cannot count as pass evidence."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "Operator runs `beacon qa evo-deep \"<feature>\" --project . --version <version>`.",
+          "Beacon loads frozen requirement truth and current QA evidence for that feature.",
+          "If any required source is missing, Beacon returns a blocked admission with the missing surface and route recommendation.",
+          "If sources exist, Beacon builds findings and binds each finding to affected AC IDs and current evidence refs.",
+          "If a finding has no AC or evidence binding, Beacon blocks the report instead of returning a ready skeleton.",
+          "Operator routes blocked findings to change, test-case, implement, or QA as recommended.",
+          "Formal QA records whether each finding was absorbed, deferred, blocked, or not applicable.",
+          "Release readiness summarizes only absorbed findings as release supplement input."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      },
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`source_evidence_state`",
+          "`finding_binding_state`",
+          "`blocked_admission_state`",
+          "`skill_eval_replay_state`",
+          "`deep_absorption_state`",
+          "`release_supplement_state`",
+          "`authority_boundary`"
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Authority bypass blocks first.",
+          "Missing source evidence blocks readiness.",
+          "Empty AC/evidence binding blocks readiness.",
+          "Skill Eval replay failure blocks eval pass.",
+          "Formal QA absorption controls release supplement eligibility.",
+          "Advisory deep findings may influence exploration but cannot count as pass evidence."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      }
+    ]
+  },
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "row_count": 10,
+    "enrichment_disabled": true
+  }
+}
