@@ -1,28 +1,28 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-23T18:37:20.129931",
+  "timestamp": "2026-05-24T11:25:12.596712",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.10",
-  "run_id": "run-20260523T183720129020",
-  "spec_fingerprint_hash": "675bc368032101fafb67309238de577d35220df248346d90d0078053e08c31e7",
+  "run_id": "run-20260524T112512596067",
+  "spec_fingerprint_hash": "4c54d9bd931ae39d84804fb2ebf967542801dfa1f609bd3b9c5753cfc0b8bb1c",
   "status": "passed",
   "selected_layers": [
     "contract",
     "exception"
   ],
   "execution": {
-    "run_id": "run-20260523T183720129020",
+    "run_id": "run-20260524T112512596067",
     "version": "v1.4.10",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260523T183720129020",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260524T112512596067",
     "spec_fingerprint": {
-      "fingerprint_hash": "675bc368032101fafb67309238de577d35220df248346d90d0078053e08c31e7",
+      "fingerprint_hash": "4c54d9bd931ae39d84804fb2ebf967542801dfa1f609bd3b9c5753cfc0b8bb1c",
       "version": "v1.4.10",
-      "generated_at": "2026-05-23T10:37:26.473895+00:00"
+      "generated_at": "2026-05-24T03:25:19.897591+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"project_level_hook_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -34,22 +34,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "b0c7f4f4df99c0f4cabe3d0637d7a860753a012a594fa09d69a0fa51b285eb8c",
-        "started_at": "2026-05-23T18:37:20.130249",
-        "ended_at": "2026-05-23T18:37:20.619932",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/contract/junit.xml",
+        "execution_fingerprint": "2ce0efb5f2ff6f3148b881746c3d00afca58eb4b6d1a06209c44f7ba2028fad6",
+        "started_at": "2026-05-24T11:25:12.597052",
+        "ended_at": "2026-05-24T11:25:13.095150",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json"
         ]
       },
       {
         "layer": "exception",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_authority_boundary\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -61,32 +61,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "44e094dcdbd132a8da8c83b413eb007e6f80cd6ce204fca934ff53dfece19629",
-        "started_at": "2026-05-23T18:37:20.620904",
-        "ended_at": "2026-05-23T18:37:21.198689",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/exception/junit.xml",
+        "execution_fingerprint": "d31ddb53e81508420300407657673420dc2fb7c7566ff8b66d3769801d39f1f4",
+        "started_at": "2026-05-24T11:25:13.096136",
+        "ended_at": "2026-05-24T11:25:13.577950",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/exception/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/exception/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/exception/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/exception/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/exception/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
       "evidence_generated": 9,
       "entry_count": 9,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260523T183720129020/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260523T183720129020/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260523T183720129020/summary.json",
+      ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -104,7 +104,7 @@
       "contract",
       "exception"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -131,9 +131,9 @@
     },
     "tc_results": [
       {
-        "tc_id": "TC-QAED-001",
+        "tc_id": "TC-HOOK-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-QAED-001",
+        "source_tc_id": "TC-HOOK-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -143,20 +143,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"project_level_hook_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/result.json"
         ],
-        "execution_fingerprint": "b35cebfad19ff71103e09cb08d1b393e37f3e2e6089160a1756793e460131fed",
-        "started_at": "2026-05-23T18:37:21.201447",
-        "ended_at": "2026-05-23T18:37:21.761534",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/junit.xml",
+        "execution_fingerprint": "b43f76d6c3bfe88eb05aad3f57ea17dd5d4eca0f62d910c0b50c7f9aa745a9a3",
+        "started_at": "2026-05-24T11:25:13.580397",
+        "ended_at": "2026-05-24T11:25:14.098468",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -169,9 +169,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-002",
+        "tc_id": "TC-HOOK-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-QAED-002",
+        "source_tc_id": "TC-HOOK-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -181,20 +181,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"round_memory_is_advisory_influence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"single_file_hook_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/result.json"
         ],
-        "execution_fingerprint": "24fa7cfe1363a247cb177e639065dfafced7ea19bf6a8213a9f8138bc4bd3713",
-        "started_at": "2026-05-23T18:37:21.762283",
-        "ended_at": "2026-05-23T18:37:22.177916",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/junit.xml",
+        "execution_fingerprint": "1826bab942b0712c1cfb5932bc9dde568820be44e6b50d00dd64ff83819e208b",
+        "started_at": "2026-05-24T11:25:14.099692",
+        "ended_at": "2026-05-24T11:25:14.579796",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -207,9 +207,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-003",
+        "tc_id": "TC-HOOK-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-QAED-003",
+        "source_tc_id": "TC-HOOK-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -219,20 +219,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"deep_finding_taxonomy_supported\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"finite_hook_code_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/result.json"
         ],
-        "execution_fingerprint": "b6c3f82731a9a100011305d38105ba6b367833ecf4ef92a668055f28534702ab",
-        "started_at": "2026-05-23T18:37:22.178644",
-        "ended_at": "2026-05-23T18:37:22.599300",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/junit.xml",
+        "execution_fingerprint": "1d0c87b3949ce87537837be64c8d46aa6ea33b2cf9f46813a43a7aa667fa3ac3",
+        "started_at": "2026-05-24T11:25:14.580598",
+        "ended_at": "2026-05-24T11:25:15.101693",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -245,9 +245,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-004",
+        "tc_id": "TC-HOOK-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-QAED-004",
+        "source_tc_id": "TC-HOOK-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -257,20 +257,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_write_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_admission_requires_manual_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/result.json"
         ],
-        "execution_fingerprint": "29a95ae499b42d99d8de3dedd1823148da7713a5fdd16fd56d1bde5909677a28",
-        "started_at": "2026-05-23T18:37:22.600039",
-        "ended_at": "2026-05-23T18:37:23.018176",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/junit.xml",
+        "execution_fingerprint": "48ca353ba3393c5a06f48031dc5a8c474de8b7d496e296344b76c915e79aa361",
+        "started_at": "2026-05-24T11:25:15.102493",
+        "ended_at": "2026-05-24T11:25:15.624260",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -283,9 +283,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-001",
+        "tc_id": "TC-HOOK-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-SKEV-001",
+        "source_tc_id": "TC-HOOK-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -295,20 +295,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_case_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_evidence_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/result.json"
         ],
-        "execution_fingerprint": "6843e16aa7d4da5724de9b57ebe4405c06873ca046ea8142bd37fd6b5d1cc92e",
-        "started_at": "2026-05-23T18:37:23.018922",
-        "ended_at": "2026-05-23T18:37:23.457606",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/junit.xml",
+        "execution_fingerprint": "b9b09a762a21fe333b87b6bee3db7e592573500d22106edc3a2ebbb4c6063b97",
+        "started_at": "2026-05-24T11:25:15.625290",
+        "ended_at": "2026-05-24T11:25:16.123034",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -321,9 +321,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-002",
+        "tc_id": "TC-HOOK-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-SKEV-002",
+        "source_tc_id": "TC-HOOK-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -333,20 +333,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_splits_and_regression_core\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"human_toolkit_commands\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/result.json"
         ],
-        "execution_fingerprint": "ab07c8229802301913fbb0516f349103d475e7b0f4b76a74a15fcbe546a24895",
-        "started_at": "2026-05-23T18:37:23.458334",
-        "ended_at": "2026-05-23T18:37:23.877411",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/junit.xml",
+        "execution_fingerprint": "3fa2fa157f12c725320e4026e2c88a61e2698497aae51c1a5f9e2832b8bc2ada",
+        "started_at": "2026-05-24T11:25:16.123959",
+        "ended_at": "2026-05-24T11:25:17.073679",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -359,9 +359,47 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-003",
+        "tc_id": "TC-HOOK-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-SKEV-003",
+        "source_tc_id": "TC-HOOK-007",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"fixture_hooks_are_not_global_defaults\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-007/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/result.json"
+        ],
+        "execution_fingerprint": "b925a67df54a4ef62f197a1431292b5a5881d87ef3b9766019dae404f92ea406",
+        "started_at": "2026-05-24T11:25:17.074424",
+        "ended_at": "2026-05-24T11:25:17.613516",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-HOOK-008",
+        "ac_id": "AC-008",
+        "source_tc_id": "TC-HOOK-008",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "exception",
@@ -371,20 +409,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_authority_boundary\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/result.json"
         ],
-        "execution_fingerprint": "71ab4eb452209bd0bc224546a2fcb95982b597e4f2fab2687478c6f38e8cbc02",
-        "started_at": "2026-05-23T18:37:23.878224",
-        "ended_at": "2026-05-23T18:37:24.314431",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/junit.xml",
+        "execution_fingerprint": "da12050afd8c0ce8881e20213a56983707f2fceedb69a39755b17d01e862f2c6",
+        "started_at": "2026-05-24T11:25:17.614445",
+        "ended_at": "2026-05-24T11:25:18.075048",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -397,47 +435,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-004",
-        "ac_id": "AC-008",
-        "source_tc_id": "TC-SKEV-004",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"route_stability_cases_cover_support_and_implement_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-004/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/result.json"
-        ],
-        "execution_fingerprint": "df31edec953957bcb93a87d45580500be0e25011ec6aec388ee81fcfa09826fc",
-        "started_at": "2026-05-23T18:37:24.315198",
-        "ended_at": "2026-05-23T18:37:24.726685",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-QAED-005",
+        "tc_id": "TC-HOOK-009",
         "ac_id": "AC-009",
-        "source_tc_id": "TC-QAED-005",
+        "source_tc_id": "TC-HOOK-009",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -447,20 +447,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"authority_bypass_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T183720129020",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260524T112512596067",
+        "evidence_path": ".beacon/evidence/qa-feature/project-lifecycle-hook-skill-toolkit-contract/tc-hook-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/result.json"
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/result.json"
         ],
-        "execution_fingerprint": "7bf4a75ee66d55c81aa3aa8b33a81a79d40649ed017e3964618782eede36a8bf",
-        "started_at": "2026-05-23T18:37:24.727433",
-        "ended_at": "2026-05-23T18:37:25.139023",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/junit.xml",
+        "execution_fingerprint": "0db28b8f553498e95b5b50ed8c4fa15574c3d24de856c7bbfc49571094d6d38d",
+        "started_at": "2026-05-24T11:25:18.075827",
+        "ended_at": "2026-05-24T11:25:18.519810",
+        "junit_path": ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -476,9 +476,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-23T10:37:25.910032+00:00",
+  "updated_at": "2026-05-24T03:25:19.286348+00:00",
   "summary": {
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
     "version": "v1.4.10",
     "status": "passed",
     "release_ready": true,
@@ -489,19 +489,19 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"project-lifecycle-hook-skill-toolkit-contract\""
   },
-  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "QA evo-deep output",
-      "text": "Beacon defines a governed QA evo-deep output contract with source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+      "theme": "project-level hook truth",
+      "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
       "tc_ids": [
-        "TC-QAED-001"
+        "TC-HOOK-001"
       ],
       "qa_types": [
         "contract"
@@ -509,10 +509,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "round memory boundary",
-      "text": "QA evo-deep records prior QA round memory as advisory influence only and never counts it as current pass evidence.",
+      "theme": "single-file contract",
+      "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
       "tc_ids": [
-        "TC-QAED-002"
+        "TC-HOOK-002"
       ],
       "qa_types": [
         "contract"
@@ -520,10 +520,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "deep coverage taxonomy",
-      "text": "QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.",
+      "theme": "finite hook code taxonomy",
+      "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
       "tc_ids": [
-        "TC-QAED-003"
+        "TC-HOOK-003"
       ],
       "qa_types": [
         "contract"
@@ -531,10 +531,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "write topology",
-      "text": "QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md`; research stores only index or design-input summaries.",
+      "theme": "admission and confirmation",
+      "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
       "tc_ids": [
-        "TC-QAED-004"
+        "TC-HOOK-004"
       ],
       "qa_types": [
         "contract"
@@ -542,10 +542,10 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "eval case schema",
-      "text": "Skill Eval Kit defines auditable cases with id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+      "theme": "evidence topology",
+      "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
       "tc_ids": [
-        "TC-SKEV-001"
+        "TC-HOOK-005"
       ],
       "qa_types": [
         "contract"
@@ -553,10 +553,10 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "regression core",
-      "text": "Skill Eval Kit defines optimization and holdout splits plus a small regression core that can be run before skill or harness release.",
+      "theme": "human-facing toolkit",
+      "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
       "tc_ids": [
-        "TC-SKEV-002"
+        "TC-HOOK-006"
       ],
       "qa_types": [
         "contract"
@@ -564,32 +564,32 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "evidence boundary",
-      "text": "Skill Eval Kit run outputs are runtime or machine evidence only and do not become requirement truth.",
+      "theme": "fixture hooks",
+      "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
       "tc_ids": [
-        "TC-SKEV-003"
-      ],
-      "qa_types": [
-        "exception"
-      ]
-    },
-    {
-      "ac_id": "AC-008",
-      "theme": "route stability",
-      "text": "Skill Eval Kit includes route-stability cases for ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single/team/ralph`.",
-      "tc_ids": [
-        "TC-SKEV-004"
+        "TC-HOOK-007"
       ],
       "qa_types": [
         "contract"
       ]
     },
     {
-      "ac_id": "AC-009",
-      "theme": "authority gate",
-      "text": "Requirement clarity or release readiness fails closed if QA evo-deep or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
+      "ac_id": "AC-008",
+      "theme": "authority boundary",
+      "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
       "tc_ids": [
-        "TC-QAED-005"
+        "TC-HOOK-008"
+      ],
+      "qa_types": [
+        "exception"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "fail-closed safety",
+      "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+      "tc_ids": [
+        "TC-HOOK-009"
       ],
       "qa_types": [
         "contract"
@@ -617,15 +617,15 @@
       "AC-009"
     ],
     "targeted_tc_ids": [
-      "TC-QAED-001",
-      "TC-QAED-002",
-      "TC-QAED-003",
-      "TC-QAED-004",
-      "TC-QAED-005",
-      "TC-SKEV-001",
-      "TC-SKEV-002",
-      "TC-SKEV-003",
-      "TC-SKEV-004"
+      "TC-HOOK-001",
+      "TC-HOOK-002",
+      "TC-HOOK-003",
+      "TC-HOOK-004",
+      "TC-HOOK-005",
+      "TC-HOOK-006",
+      "TC-HOOK-007",
+      "TC-HOOK-008",
+      "TC-HOOK-009"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -637,13 +637,13 @@
     "targeted_scope_only": true,
     "verification_item_count": 9
   },
-  "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-QAED-001",
-      "source_tc_id": "TC-QAED-001",
+      "tc_id": "TC-HOOK-001",
+      "source_tc_id": "TC-HOOK-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -656,17 +656,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-QAED-002",
-      "source_tc_id": "TC-QAED-002",
+      "tc_id": "TC-HOOK-002",
+      "source_tc_id": "TC-HOOK-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -679,17 +679,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-QAED-003",
-      "source_tc_id": "TC-QAED-003",
+      "tc_id": "TC-HOOK-003",
+      "source_tc_id": "TC-HOOK-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -702,17 +702,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-QAED-004",
-      "source_tc_id": "TC-QAED-004",
+      "tc_id": "TC-HOOK-004",
+      "source_tc_id": "TC-HOOK-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -725,109 +725,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-SKEV-001",
-      "source_tc_id": "TC-SKEV-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "tc_id": "TC-SKEV-002",
-      "source_tc_id": "TC-SKEV-002",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-002",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "tc_id": "TC-SKEV-003",
-      "source_tc_id": "TC-SKEV-003",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-003",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "exception",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-008",
-      "tc_id": "TC-SKEV-004",
-      "source_tc_id": "TC-SKEV-004",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-004",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "tc_id": "TC-QAED-005",
-      "source_tc_id": "TC-QAED-005",
+      "tc_id": "TC-HOOK-005",
+      "source_tc_id": "TC-HOOK-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -840,11 +748,103 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-HOOK-006",
+      "source_tc_id": "TC-HOOK-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-HOOK-007",
+      "source_tc_id": "TC-HOOK-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-HOOK-008",
+      "source_tc_id": "TC-HOOK-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "exception",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-HOOK-009",
+      "source_tc_id": "TC-HOOK-009",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-009",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/result.json"
       ]
     }
   ],
@@ -877,20 +877,20 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
     "version": "v1.4.10",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.re-freeze-transaction.json"
     },
     "projection_status": "missing_nonblocking",
-    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\" --single-feature",
+    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"project-lifecycle-hook-skill-toolkit-contract\" --single-feature",
     "next_action": "qa",
     "stage_gates": {
       "artifact_read_model": {
@@ -900,13 +900,13 @@
         "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.re-freeze-transaction.json"
           },
           "projection_status": "missing_nonblocking"
         }
@@ -987,15 +987,15 @@
     "markdown_first_truth": {
       "status": "pass",
       "projection": {
-        "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
         "version": "v1.4.10",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "research": "docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "source_architecture": "docs/beacon/v1.4.10/source-architecture/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "change": "docs/beacon/v1.4.10/change/qa-evo-deep-and-skill-eval-kit-v1410.md"
+          "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+          "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+          "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+          "research": "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+          "source_architecture": "docs/beacon/v1.4.10/source-architecture/project-lifecycle-hook-skill-toolkit-contract.md",
+          "change": "docs/beacon/v1.4.10/change/project-lifecycle-hook-skill-toolkit-contract.md"
         },
         "prd_ac_ids": [
           "AC-001",
@@ -1035,38 +1035,38 @@
       },
       "freeze_state": {
         "schema_version": "1.0",
-        "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-        "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
+        "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
         "version": "v1.4.10",
         "revision_id": "R4",
         "source_revision_id": "R3",
         "status": "frozen",
-        "baseline_hash": "sha256:11964177ae6f35febbd97f8809910c28f7ccc4ce94e1f8a491795974373ce536",
+        "baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "research": "docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "source_architecture": "docs/beacon/v1.4.10/source-architecture/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "change": "docs/beacon/v1.4.10/change/qa-evo-deep-and-skill-eval-kit-v1410.md"
+          "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+          "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+          "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+          "research": "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+          "source_architecture": "docs/beacon/v1.4.10/source-architecture/project-lifecycle-hook-skill-toolkit-contract.md",
+          "change": "docs/beacon/v1.4.10/change/project-lifecycle-hook-skill-toolkit-contract.md"
         },
         "diagnostics": [],
-        "transaction_ref": "docs/beacon/v1.4.10/.machine/change/qa-evo-deep-and-skill-eval-kit-v1410.refreeze-transaction.json",
-        "generated_at": "2026-05-23T10:37:18.897946+00:00"
+        "transaction_ref": "docs/beacon/v1.4.10/.machine/change/project-lifecycle-hook-skill-toolkit-contract.refreeze-transaction.json",
+        "generated_at": "2026-05-24T03:25:11.380126+00:00"
       }
     },
     "completeness": {},
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.10/.machine/requirement/project-lifecycle-hook-skill-toolkit-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "run_id": "run-20260523T183720129020",
-    "generated_at": "2026-05-23T10:37:26.198218+00:00",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "run_id": "run-20260524T112512596067",
+    "generated_at": "2026-05-24T03:25:19.599392+00:00",
     "execution_mode": "feature-aware",
     "scenario_count": 9,
     "browser_scenario_count": 0,
@@ -1088,11 +1088,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-QAED-001",
-      "tc_id": "TC-QAED-001",
-      "source_tc_id": "TC-QAED-001",
+      "scenario_id": "TC-HOOK-001",
+      "tc_id": "TC-HOOK-001",
+      "source_tc_id": "TC-HOOK-001",
       "ac_id": "AC-001",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1116,19 +1116,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-001/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-002",
-      "tc_id": "TC-QAED-002",
-      "source_tc_id": "TC-QAED-002",
+      "scenario_id": "TC-HOOK-002",
+      "tc_id": "TC-HOOK-002",
+      "source_tc_id": "TC-HOOK-002",
       "ac_id": "AC-002",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1152,19 +1152,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-002/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-003",
-      "tc_id": "TC-QAED-003",
-      "source_tc_id": "TC-QAED-003",
+      "scenario_id": "TC-HOOK-003",
+      "tc_id": "TC-HOOK-003",
+      "source_tc_id": "TC-HOOK-003",
       "ac_id": "AC-003",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1188,19 +1188,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-003/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-004",
-      "tc_id": "TC-QAED-004",
-      "source_tc_id": "TC-QAED-004",
+      "scenario_id": "TC-HOOK-004",
+      "tc_id": "TC-HOOK-004",
+      "source_tc_id": "TC-HOOK-004",
       "ac_id": "AC-004",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1224,19 +1224,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-004/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-001",
-      "tc_id": "TC-SKEV-001",
-      "source_tc_id": "TC-SKEV-001",
+      "scenario_id": "TC-HOOK-005",
+      "tc_id": "TC-HOOK-005",
+      "source_tc_id": "TC-HOOK-005",
       "ac_id": "AC-005",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1260,19 +1260,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-001/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-002",
-      "tc_id": "TC-SKEV-002",
-      "source_tc_id": "TC-SKEV-002",
+      "scenario_id": "TC-HOOK-006",
+      "tc_id": "TC-HOOK-006",
+      "source_tc_id": "TC-HOOK-006",
       "ac_id": "AC-006",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1296,19 +1296,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-002/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-003",
-      "tc_id": "TC-SKEV-003",
-      "source_tc_id": "TC-SKEV-003",
+      "scenario_id": "TC-HOOK-007",
+      "tc_id": "TC-HOOK-007",
+      "source_tc_id": "TC-HOOK-007",
       "ac_id": "AC-007",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1332,19 +1332,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-003/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-004",
-      "tc_id": "TC-SKEV-004",
-      "source_tc_id": "TC-SKEV-004",
+      "scenario_id": "TC-HOOK-008",
+      "tc_id": "TC-HOOK-008",
+      "source_tc_id": "TC-HOOK-008",
       "ac_id": "AC-008",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1368,19 +1368,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-SKEV-004/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-008/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-005",
-      "tc_id": "TC-QAED-005",
-      "source_tc_id": "TC-QAED-005",
+      "scenario_id": "TC-HOOK-009",
+      "tc_id": "TC-HOOK-009",
+      "source_tc_id": "TC-HOOK-009",
       "ac_id": "AC-009",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1404,21 +1404,21 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T183720129020/qa9-tc/TC-QAED-005/result.json"
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9-tc/TC-HOOK-009/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "run_id": "run-20260523T183720129020",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "run_id": "run-20260524T112512596067",
     "ac_total": 9,
     "ac_accepted": 9,
     "scenario_total": 9,
@@ -1497,18 +1497,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"project-lifecycle-hook-skill-toolkit-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"project-lifecycle-hook-skill-toolkit-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
     "version": "v1.4.10",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1529,17 +1529,17 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
       ".beacon/release-gate-report.json",
-      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
-      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json"
+      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-project-lifecycle-hook-skill-toolkit-contract.json",
+      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1552,7 +1552,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
     "version": "v1.4.10",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1573,17 +1573,17 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+      ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
       ".beacon/release-gate-report.json",
-      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
-      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json"
+      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-project-lifecycle-hook-skill-toolkit-contract.json",
+      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1594,5 +1594,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "675bc368032101fafb67309238de577d35220df248346d90d0078053e08c31e7"
+  "current_spec_fingerprint_hash": "4c54d9bd931ae39d84804fb2ebf967542801dfa1f609bd3b9c5753cfc0b8bb1c"
 }

@@ -1,0 +1,351 @@
+{
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-HOOK-001"
+    ],
+    "AC-002": [
+      "TC-HOOK-002"
+    ],
+    "AC-003": [
+      "TC-HOOK-003"
+    ],
+    "AC-004": [
+      "TC-HOOK-004"
+    ],
+    "AC-005": [
+      "TC-HOOK-005"
+    ],
+    "AC-006": [
+      "TC-HOOK-006"
+    ],
+    "AC-007": [
+      "TC-HOOK-007"
+    ],
+    "AC-008": [
+      "TC-HOOK-008"
+    ],
+    "AC-009": [
+      "TC-HOOK-009"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-HOOK-001",
+      "tc_id": "TC-HOOK-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "topology",
+      "layer": "topology",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Hook contracts are discovered from `docs/beacon/hooks/<hook-id>.md` and not from `docs/beacon/<v",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "topology",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"project_level_hook_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-HOOK-002",
+      "tc_id": "TC-HOOK-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Hook Markdown frontmatter and body sections include required contract, admission, evidence, and ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"single_file_hook_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-HOOK-003",
+      "tc_id": "TC-HOOK-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Unknown hook codes fail closed; allowed hook codes pass.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"finite_hook_code_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-HOOK-004",
+      "tc_id": "TC-HOOK-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Side-effect hooks require `manual_confirmed` and cannot execute through hidden auto-run.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_admission_requires_manual_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-HOOK-005",
+      "tc_id": "TC-HOOK-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "topology",
+      "layer": "topology",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Hook evidence writes to `.beacon/state/hooks/...` and latest read model writes to `docs/beacon/.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "topology",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_evidence_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-HOOK-006",
+      "tc_id": "TC-HOOK-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Hook toolkit supports list, plan, dry-run, confirmed-run, disable, and status/explain behavior.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"human_toolkit_commands\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-HOOK-007",
+      "tc_id": "TC-HOOK-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "fixture",
+      "layer": "fixture",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Beacon install, Rolo UAT, and Rolo Debug Lab fixtures validate as examples but are not global de",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fixture",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"fixture_hooks_are_not_global_defaults\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-HOOK-008",
+      "tc_id": "TC-HOOK-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Hook output cannot claim PRD, user-story, test-case, QA, release, gate, or freeze authority.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_authority_boundary\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-HOOK-009",
+      "tc_id": "TC-HOOK-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "fail-closed",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail clos",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
