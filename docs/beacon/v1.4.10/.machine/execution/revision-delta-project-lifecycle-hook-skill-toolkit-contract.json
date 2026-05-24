@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "revision_id": "R4",
+  "source_revision_id": "R3",
+  "status": "ready",
+  "cleanup_required": false,
+  "removed_requirement_count": 0,
+  "added_requirement_count": 0,
+  "retained_requirement_count": 9,
+  "removed_requirement_surfaces": [],
+  "added_requirement_surfaces": [],
+  "retained_requirement_surfaces": [
+    {
+      "revision_id": "R4",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "admission and confirmation",
+      "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::admission and confirmation::hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-008",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "authority boundary",
+      "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::authority boundary::hooks cannot rewrite prd, user-story, test-case, freeze state, qa verdict, release verdict, or gate verdict.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "evidence topology",
+      "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::evidence topology::hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-009",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "fail-closed safety",
+      "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::fail-closed safety::hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "finite hook code taxonomy",
+      "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::finite hook code taxonomy::hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-007",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "fixture hooks",
+      "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::fixture hooks::the contract covers beacon post-release local install, rolo post-implement uat, and rolo qa debug lab as fixtures, not global defaults.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-006",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "human-facing toolkit",
+      "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::human-facing toolkit::operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "project-level hook truth",
+      "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::project-level hook truth::hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.::"
+    },
+    {
+      "revision_id": "R4",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "single-file contract",
+      "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "signature": "ac::::single-file contract::each hook is a single markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.::"
+    }
+  ],
+  "current_baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+  "source_baseline_hash": "sha256:2dc23570ad424cf68fc6e436b281d34cfeecf962285dea141ed5e51105a08649",
+  "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/project-lifecycle-hook-skill-toolkit-contract.json",
+  "generated_at": "2026-05-24T03:20:19.223583+00:00",
+  "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+  "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.md"
+}

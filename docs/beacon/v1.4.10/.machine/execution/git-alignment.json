@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "version": "v1.4.10",
-  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
   "run_id": "run-20260523T165302735331",
-  "generated_at": "2026-05-23T09:02:13.711289+00:00",
-  "status": "pass",
+  "generated_at": "2026-05-24T03:26:20.100069+00:00",
+  "status": "warn",
   "strict_required": true,
   "repo_url": "https://github.com/justin-mc-lai/beacon.git",
   "version_ref": "v1.4.10",
@@ -16,19 +16,23 @@
   "git_refs": {
     "base_branch": "main",
     "target_branch": "beacon/v1.4.10",
-    "current_branch": "beacon/v1.4.10",
-    "commit": "03cc935c7eb8b7fc8a8529445666dc075ab671cb",
+    "current_branch": "main",
+    "commit": "587b4b0cab2b66c34926e7a44a628c3f6d5304a2",
     "tag": "",
     "worktree_path": "."
   },
   "alignment": {
-    "branch_matches_target": true,
-    "branch_has_required_prefix": true,
+    "branch_matches_target": false,
+    "branch_has_required_prefix": false,
     "tag_matches_version": false,
-    "version_ref_satisfied": true
+    "version_ref_satisfied": false
   },
-  "reason_codes": [],
-  "blocked": false,
+  "reason_codes": [
+    "git_branch_target_mismatch",
+    "git_branch_prefix_mismatch",
+    "git_version_ref_not_satisfied"
+  ],
+  "blocked": true,
   "notes": [
     "Git alignment is validated against target branch or exact version tag.",
     "This artifact is intended for doctor verify-git-alignment and delivery gate checks."

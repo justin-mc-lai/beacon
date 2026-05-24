@@ -2,20 +2,27 @@
   "schema_version": "1.0",
   "version": "v1.4.10",
   "status": "generated",
-  "feature_count": 1,
+  "feature_count": 2,
   "features": [
+    {
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "summary": "native-single implementation completed",
+      "status": "completed"
+    },
     {
       "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
       "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-      "summary": "",
-      "status": ""
+      "summary": "codex-subagents implementation completed via implement-team flow",
+      "status": "completed"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 1,
+    "feature_count": 2,
     "ordered_feature_slugs": [
-      "qa-evo-deep-and-skill-eval-kit-v1410"
+      "qa-evo-deep-and-skill-eval-kit-v1410",
+      "project-lifecycle-hook-skill-toolkit-contract"
     ],
     "waves": [
       {
@@ -36,15 +43,75 @@
             "reason_code": "parallel_no_conflict"
           }
         ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "project-lifecycle-hook-skill-toolkit-contract",
+            "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+            "depends_on_features": [
+              "qa-evo-deep-and-skill-eval-kit-v1410"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
   "added": [],
   "removed": [],
-  "fixed": [],
+  "fixed": [
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/auto-test-status.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/coverage-summary.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/evidence-manifest.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/evidence-signature-chain.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/gate-report.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/qa/status.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/release-gate-report.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `beacon/cli_factory.py`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `beacon/command_catalog.py`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/execution/architecture-blueprint.md`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md`",
+    "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/source-architecture/index.md`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/auto-test-status.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/coverage-summary.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/evidence-manifest.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/evidence-signature-chain.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/gate-report.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/metadata/project-version-metadata.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/metadata/project-version-metadata.md`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/qa/status.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/release-gate-report.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/state/project-metadata/latest.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/state/project-onboarding.json`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `AGENTS.md`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `CLAUDE.md`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `beacon/commands/qa.py`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `beacon/commands/skill.py`",
+    "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `beacon/utils/qa_feature.py`"
+  ],
   "traceability_refs": [
+    "docs/beacon/v1.4.10/.machine/execution/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-summary-project-lifecycle-hook-skill-toolkit-contract.json",
+    "docs/beacon/v1.4.10/execution/implementation-brief-project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/.machine/change/project-lifecycle-hook-skill-toolkit-contract.json",
+    "docs/beacon/v1.4.10/change/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
+    "docs/beacon/v1.4.10/execution/implementation-brief-qa-evo-deep-and-skill-eval-kit-v1410.md",
     "docs/beacon/v1.4.10/.machine/change/qa-evo-deep-and-skill-eval-kit-v1410.json",
     "docs/beacon/v1.4.10/change/qa-evo-deep-and-skill-eval-kit-v1410.md"
   ],
-  "generated_at": "2026-05-23 16:57"
+  "generated_at": "2026-05-24 11:33"
 }

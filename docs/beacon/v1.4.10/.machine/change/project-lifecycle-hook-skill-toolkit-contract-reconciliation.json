@@ -1,0 +1,95 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-24T03:20:05.860149+00:00",
+  "detected_revision_id": "R4",
+  "source_revision_id": "R3",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R3",
+      "run_id": "run-20260524T030849Z-e1c3",
+      "recorded_at": "2026-05-24T03:08:50.150067+00:00",
+      "implemented_item_ids": [
+        "AC-007",
+        "TASK-001",
+        "AC-004",
+        "AC-008",
+        "AC-009",
+        "AC-006",
+        "AC-003",
+        "AC-001",
+        "AC-005",
+        "AC-002"
+      ],
+      "changed_files": [
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ]
+    },
+    {
+      "revision_id": "R3",
+      "run_id": "run-20260524T031706Z-a810",
+      "recorded_at": "2026-05-24T03:17:07.078199+00:00",
+      "implemented_item_ids": [
+        "AC-006",
+        "AC-004",
+        "AC-009",
+        "AC-001",
+        "AC-007",
+        "AC-002",
+        "AC-008",
+        "AC-003",
+        "AC-005",
+        "TASK-001"
+      ],
+      "changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R4",
+    "current_delivery_status": "idle"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"project-lifecycle-hook-skill-toolkit-contract\" --project-root . --version v1.4.10 --reason \"implementation-first-reconciliation\""
+  }
+}
