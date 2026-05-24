@@ -5,6 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.implement_mode_playbooks import (
+    FORBIDDEN_PUBLIC_IMPLEMENT_MODE_SKILLS,
+    PUBLIC_IMPLEMENT_SKILL,
+)
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 
 
@@ -22,6 +26,7 @@ REQUIRED_CASE_FIELDS = (
     "case_id",
     "prompt",
     "expected_route",
+    "expected_public_skill",
     "boundary_expectations",
     "source_anchor_requirements",
     "tags",
@@ -46,17 +51,50 @@ def default_route_stability_cases() -> list[dict[str, Any]]:
         _case("route-ordinary-support", "Use beacon brainstorm for v1.4.10 feature research", "beacon-brainstorm", ["route_stability", "support"]),
         _case("route-deep", "Run beacon-deep for a feature deep analysis", "beacon-deep", ["route_stability", "deep"]),
         _case("route-learn", "Recall governed learning influence for a feature", "beacon-learn", ["route_stability", "learn"]),
-        _case("route-implement-single", "Implement a small fix with single mode", "beacon-implement --mode single", ["route_stability", "implement"]),
-        _case("route-implement-team", "Implement a complex feature with team mode", "beacon-implement --mode team", ["route_stability", "implement"]),
-        _case("route-implement-ralph", "Continue implementation closure with Ralph", "beacon-implement --mode ralph", ["route_stability", "implement"]),
+        _case(
+            "route-implement-single",
+            "Implement a small fix with single mode",
+            "beacon-implement --mode single",
+            ["route_stability", "implement", "single"],
+            expected_public_skill=PUBLIC_IMPLEMENT_SKILL,
+            expected_mode="single",
+        ),
+        _case(
+            "route-implement-team",
+            "Implement a complex feature with team mode",
+            "beacon-implement --mode team",
+            ["route_stability", "implement", "team"],
+            expected_public_skill=PUBLIC_IMPLEMENT_SKILL,
+            expected_mode="team",
+        ),
+        _case(
+            "route-implement-ralph",
+            "Continue implementation closure with Ralph",
+            "beacon-implement --mode ralph",
+            ["route_stability", "implement", "ralph"],
+            expected_public_skill=PUBLIC_IMPLEMENT_SKILL,
+            expected_mode="ralph",
+        ),
     ]
 
 
-def _case(case_id: str, prompt: str, expected_route: str, tags: list[str]) -> dict[str, Any]:
+def _case(
+    case_id: str,
+    prompt: str,
+    expected_route: str,
+    tags: list[str],
+    *,
+    expected_public_skill: str | None = None,
+    expected_mode: str = "",
+) -> dict[str, Any]:
+    public_skill = expected_public_skill or expected_route.split()[0]
     return {
         "case_id": case_id,
         "prompt": prompt,
         "expected_route": expected_route,
+        "expected_public_skill": public_skill,
+        "expected_mode": expected_mode,
+        "forbidden_public_skills": list(FORBIDDEN_PUBLIC_IMPLEMENT_MODE_SKILLS) if public_skill == PUBLIC_IMPLEMENT_SKILL else [],
         "boundary_expectations": [
             "must_not_rewrite_requirement_truth",
             "must_not_claim_gate_or_release_verdict",
@@ -132,6 +170,10 @@ def validate_cases(cases: list[dict[str, Any]]) -> dict[str, Any]:
     for bad_route in ("beacon-implement-team", "beacon-implement-ralph", "beacon-implement-single"):
         if bad_route in expected_routes:
             issues.append({"reason_code": "skill_eval_invalid_public_implement_skill_route", "route": bad_route})
+    for case in cases:
+        public_skill = str(case.get("expected_public_skill") or "").strip()
+        if public_skill in FORBIDDEN_PUBLIC_IMPLEMENT_MODE_SKILLS:
+            issues.append({"reason_code": "skill_eval_invalid_public_implement_skill_route", "route": public_skill})
     required_routes = {
         "beacon-brainstorm",
         "beacon-deep",

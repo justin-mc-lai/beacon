@@ -91,6 +91,19 @@ def _render_human(payload: dict[str, object]) -> str:
         f"- why     : {next_step.get('reason', '')}",
         f"- command : {next_step.get('command', '')}",
     ])
+    implement_mode = payload.get("implement_mode_recommendation", {}) if isinstance(payload.get("implement_mode_recommendation"), dict) else {}
+    if implement_mode:
+        lines.extend(
+            [
+                "",
+                "implement mode",
+                f"- public skill : {implement_mode.get('public_skill', '')}",
+                f"- mode         : {implement_mode.get('recommended_mode', '')}",
+                f"- why          : {implement_mode.get('reason', '')}",
+                f"- command      : {implement_mode.get('canonical_command', '')}",
+                f"- playbook     : {implement_mode.get('playbook_ref', '')}",
+            ]
+        )
     change_loop = payload.get("change_loop", {}) if isinstance(payload.get("change_loop"), dict) else {}
     requirement_gap_digest = payload.get("requirement_gap_digest", {}) if isinstance(payload.get("requirement_gap_digest"), dict) else {}
     brainstorm_hint = payload.get("brainstorm_hint", {}) if isinstance(payload.get("brainstorm_hint"), dict) else {}
