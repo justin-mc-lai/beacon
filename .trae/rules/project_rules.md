@@ -30,6 +30,7 @@
 - `beacon-performance-review`
 - `beacon-prd`
 - `beacon-prd-bootstrap`
+- `beacon-project-hooks`
 - `beacon-prototype`
 - `beacon-qa`
 - `beacon-qa-evo-deep`
@@ -46,6 +47,3 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
-
-
-

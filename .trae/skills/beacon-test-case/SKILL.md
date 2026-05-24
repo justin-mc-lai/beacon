@@ -1,14 +1,14 @@
 ---
 name: beacon-test-case
-description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.4.7 runtime surface.
+description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.4.10 runtime surface.
 ---
 
 # Beacon Test Case
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
-The active coverage contract is aligned to the current `v1.4.7` docs line.
-Compatibility bridges may still resolve older entrypoints, but the truth package should be read from `docs/beacon/v1.4.7/`.
+The active coverage contract is aligned to the current `v1.4.10` docs line.
+Compatibility bridges may still resolve older entrypoints, but the truth package should be read from `docs/beacon/v1.4.10/`.
 
 ## Use for
 

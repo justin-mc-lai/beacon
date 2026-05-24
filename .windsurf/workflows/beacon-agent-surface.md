@@ -35,6 +35,7 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-performance-review`
 - `beacon-prd`
 - `beacon-prd-bootstrap`
+- `beacon-project-hooks`
 - `beacon-prototype`
 - `beacon-qa`
 - `beacon-qa-evo-deep`
@@ -51,6 +52,3 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
-
-
-

@@ -1,6 +1,6 @@
 ---
 name: beacon-implement
-description: Use when the user wants to plan or run implementation through Beacon's current v1.4.7 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
+description: Use when the user wants to plan or run implementation through Beacon's current v1.4.10 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
 ---
 
 # Beacon Implement
@@ -10,7 +10,7 @@ description: Use when the user wants to plan or run implementation through Beaco
 This skill routes execution work through Beacon's `implement` surface.
 
 `implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
-The active human-facing contract is aligned to the current `v1.4.7` docs line (`docs/beacon/v1.4.7/`).
+The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
 Compatibility bridges may still exist for older entrypoints or wrappers, but they must not override the current requirement package.
 
 ## When to Use

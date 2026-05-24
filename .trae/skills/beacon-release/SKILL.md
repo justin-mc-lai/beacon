@@ -1,6 +1,6 @@
 ---
 name: beacon-release
-description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.4.7 runtime surface.
+description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.4.10 runtime surface.
 ---
 
 # Beacon Release
@@ -10,7 +10,7 @@ description: Use when the user wants Beacon to judge release readiness, inspect 
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
 Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
-The active human-facing contract is aligned to the current `v1.4.7` docs line (`docs/beacon/v1.4.7/`).
+The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
 Compatibility bridges may still exist for older entrypoints or wrappers, but release judgment must bind to the current docs/runtime truth line.
 
 ## When to Use
