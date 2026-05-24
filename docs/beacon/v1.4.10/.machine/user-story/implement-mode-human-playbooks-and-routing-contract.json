@@ -1,0 +1,985 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-mode-human-playbooks-and-routing-contract",
+  "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+  "version": "v1.4.10",
+  "current_revision_id": "R3",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-24T06:03:07.550216+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:7642a798b5cab74216783ebb7bebde9634104537f753c01e208ccf7ddb6545ec",
+      "superseded_by": "R2",
+      "created_at": "2026-05-24T05:40:35.452180+00:00",
+      "frozen_at": "2026-05-24T05:40:39.311609+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "source_revision_id": "R1",
+      "reason": "Freeze implement mode playbooks as the next P1 backlog item after v1.4.10 release closure.",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:7642a798b5cab74216783ebb7bebde9634104537f753c01e208ccf7ddb6545ec",
+      "superseded_by": "R3",
+      "created_at": "2026-05-24T05:40:46.276422+00:00",
+      "frozen_at": "2026-05-24T05:40:48.998777+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "source_revision_id": "R2",
+      "reason": "Normalize PRD Scope heading for requirement closure gate recognition",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:800acefc5870b88f09e8896423cf259f248e72f6ddcf5cc090e93442c3039684",
+      "superseded_by": null,
+      "created_at": "2026-05-24T05:57:19.330373+00:00",
+      "frozen_at": "2026-05-24T05:57:22.840814+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "implement-mode-human-playbooks-and-routing-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "one public entrypoint",
+          "text": "`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "mode playbooks",
+          "text": "Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "mode recommendation",
+          "text": "Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Ralph boundary",
+          "text": "Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "explainable command",
+          "text": "Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "route stability eval",
+          "text": "Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "nonexistent skill fail-closed",
+          "text": "Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "implement-mode-human-playbooks-and-routing-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "`beacon-implement` remains the only public implementation skill.",
+            "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+            "Help/status recommendations must include the reason and canonical command.",
+            "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+            "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+            "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "`beacon-implement` remains the only public implementation skill.",
+              "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+              "Help/status recommendations must include the reason and canonical command.",
+              "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+              "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+              "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "implement-mode-human-playbooks-and-routing-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "one public entrypoint",
+          "text": "`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "mode playbooks",
+          "text": "Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "mode recommendation",
+          "text": "Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Ralph boundary",
+          "text": "Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "explainable command",
+          "text": "Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "route stability eval",
+          "text": "Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "nonexistent skill fail-closed",
+          "text": "Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "implement-mode-human-playbooks-and-routing-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "`beacon-implement` remains the only public implementation skill.",
+            "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+            "Help/status recommendations must include the reason and canonical command.",
+            "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+            "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+            "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "`beacon-implement` remains the only public implementation skill.",
+              "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+              "Help/status recommendations must include the reason and canonical command.",
+              "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+              "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+              "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "implement-mode-human-playbooks-and-routing-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "one public entrypoint",
+          "text": "`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "mode playbooks",
+          "text": "Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "mode recommendation",
+          "text": "Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Ralph boundary",
+          "text": "Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "explainable command",
+          "text": "Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "route stability eval",
+          "text": "Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "nonexistent skill fail-closed",
+          "text": "Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T055817Z-97a0",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T140302253332",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "implement-mode-human-playbooks-and-routing-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "`beacon-implement` remains the only public implementation skill.",
+            "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+            "Help/status recommendations must include the reason and canonical command.",
+            "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+            "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+            "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "`beacon-implement` remains the only public implementation skill.",
+              "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+              "Help/status recommendations must include the reason and canonical command.",
+              "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+              "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+              "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md"
+          }
+        ]
+      },
+      "feature": "implement-mode-human-playbooks-and-routing-contract",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-24T06:03:07.466227+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

@@ -1,0 +1,955 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260524T055817Z-97a0",
+  "feature": "implement-mode-human-playbooks-and-routing-contract",
+  "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+  "version": "v1.4.10",
+  "mode": "single",
+  "host_runtime": "codex",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260524T055817Z-97a0/request.json",
+  "result_path": ".beacon/implement/run-20260524T055817Z-97a0/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260524T055817Z-97a0/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260524T055817Z-97a0/plan-preflight.json",
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::authority boundary::mode playbooks and recommendations cannot rewrite prd, user-story, test-case, freeze state, qa verdict, release verdict, or gate verdict.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "explainable command",
+        "text": "Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::explainable command::mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode playbooks",
+        "text": "Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::mode playbooks::human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode recommendation",
+        "text": "Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::mode recommendation::help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "nonexistent skill fail-closed",
+        "text": "Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::nonexistent skill fail-closed::prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "one public entrypoint",
+        "text": "`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::one public entrypoint::`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Ralph boundary",
+        "text": "Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::ralph boundary::ralph is documented as a closure controller that routes next action; it does not replace qa, release, gate, or frozen truth.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "route stability eval",
+        "text": "Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::route stability eval::skill eval kit includes cases for normal implementation, team/subagent implementation, and ralph closure prompts.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:800acefc5870b88f09e8896423cf259f248e72f6ddcf5cc090e93442c3039684",
+    "source_baseline_hash": "sha256:7642a798b5cab74216783ebb7bebde9634104537f753c01e208ccf7ddb6545ec",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/implement-mode-human-playbooks-and-routing-contract.json",
+    "generated_at": "2026-05-24T05:58:06.638235+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.md"
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-24T05:58:17.471263+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-implement-mode-human-playbooks-and-routing-contract-R3",
+    "transaction_id": "tx-29e2af05b52fd8a8a",
+    "source_hash": "sha256:81f87d294c24eb3048483aeeee86862fb52cf498afae8c6f4b7d180399c70f01",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "generated_at": "2026-05-24T05:58:17.949714+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    }
+  },
+  "design_truth": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "source_surface": "prototype-adapter",
+    "consumption_surface": "implement",
+    "mode": "design-result-adapter",
+    "required": false,
+    "allowed_inputs": [],
+    "blocked_human_inputs": [],
+    "refs": {},
+    "missing_refs": [],
+    "design_preset": "",
+    "canonical_design_preset": "",
+    "preset_source": "",
+    "preset_family": "",
+    "template_catalog_count": 0,
+    "anti_ai_ui_contract": {},
+    "template_layout_rules": [],
+    "interaction_discipline_rules": []
+  },
+  "skill_admission": {},
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.10",
+      "prd": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+      "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R3",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+      "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+      ".beacon/implement/run-20260524T055817Z-97a0/request.json",
+      ".beacon/implement/run-20260524T055817Z-97a0/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.10",
+      "prd": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+      "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R3",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+      "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+      ".beacon/implement/run-20260524T055817Z-97a0/request.json",
+      ".beacon/implement/run-20260524T055817Z-97a0/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "required": true,
+    "prompt": "Implement the scoped Beacon feature.\nFeature: implement-mode-human-playbooks-and-routing-contract\nVersion: v1.4.10\nRead Beacon source of truth:\n- docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md\n- docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md\n- docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md\n- docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-contract.json\n- docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-dictionary.md\n- docs/beacon/v1.4.10/.machine/trace/semantic/implement-mode-human-playbooks-and-routing-contract/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, verification.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260524T055817Z-97a0/result.json",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md"
+    ],
+    "surface": "task_prompt"
+  },
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    ".agents/skills/beacon-implement/SKILL.md",
+    ".agents/skills/beacon-implement/references/implement-ralph.md",
+    ".agents/skills/beacon-implement/references/implement-single.md",
+    ".agents/skills/beacon-implement/references/implement-team.md",
+    "beacon/commands/help.py",
+    "beacon/commands/status.py",
+    "beacon/utils/help_support.py",
+    "beacon/utils/implement_mode_playbooks.py",
+    "beacon/utils/skill_eval_kit.py",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+    "docs/beacon/v1.4.10/SUMMARY.md",
+    "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+    "docs/beacon/v1.4.10/execution/index.md",
+    "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+    "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+    "skills/beacon/beacon-implement/SKILL.md",
+    "skills/beacon/beacon-implement/references/implement-ralph.md",
+    "skills/beacon/beacon-implement/references/implement-single.md",
+    "skills/beacon/beacon-implement/references/implement-team.md",
+    "tests/test_v1410_implement_mode_playbooks.py"
+  ],
+  "verification": [
+    {
+      "command": "python3 -m pytest tests/test_v1410_implement_mode_playbooks.py -q",
+      "status": "passed",
+      "summary": "9 passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_v1410_qa_evo_deep_skill_eval.py -q",
+      "status": "passed",
+      "summary": "13 passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_help_command.py -q",
+      "status": "passed",
+      "summary": "4 passed"
+    },
+    {
+      "command": "python3 -m pytest tests/test_v1410_implement_mode_playbooks.py tests/test_v1410_qa_evo_deep_skill_eval.py tests/test_help_command.py -q",
+      "status": "passed",
+      "summary": "27 passed"
+    },
+    {
+      "command": "beacon implement run \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10 --mode single --runner native-single --json",
+      "status": "passed",
+      "summary": "implementation evidence writeback completed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch main",
+    "blocked": false,
+    "version": "v1.4.10",
+    "expected_branch": "main",
+    "current_branch": "main",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "beacon"
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "beacon"
+      ],
+      "verified_roots": [
+        "/Users/apple/Developer/Personal/products/beacon"
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [
+      "git_branch_prefix_mismatch"
+    ],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "main",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": "/Users/apple/Developer/Personal/products/beacon",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "main",
+          "current_branch": "main",
+          "current_commit": "d69f9c8f34f1647a81cd7e040e51dd56ac26d1df",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.4.10",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": false,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [
+            "git_branch_prefix_mismatch"
+          ],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": [
+        "git_branch_prefix_mismatch"
+      ]
+    },
+    "run_id": "run-20260524T055817Z-97a0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "generated_at": "2026-05-24T05:58:17.832074+00:00",
+    "branch_governance": {
+      "schema_version": "1.0",
+      "tool_name": "beacon-toolkit-branch-governance",
+      "feature": "",
+      "version": "v1.4.10",
+      "template_name": "standard-feature",
+      "template_source": "project_metadata",
+      "service_key": "beacon",
+      "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+      "base_branch": "main",
+      "current_branch": "main",
+      "target_branch": "main",
+      "worktree_mode": "branch-only",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "previous_version_baseline_branch": "",
+      "next_version_feature_branch": "",
+      "hotfix_branch_naming_rule": "",
+      "allow_worktree_when_feature_dirty": false,
+      "merge_direction_policy": [],
+      "forbidden_directions": [],
+      "evidence_contract": [],
+      "evidence": {},
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": [],
+      "blocked_reason": "",
+      "recommended_action": "",
+      "missing_evidence_fields": [],
+      "evidence_contract_status": "pass",
+      "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `main`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> main [current]\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+    },
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "implement-mode-human-playbooks-and-routing-contract",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "version": "v1.4.10",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.4.10",
+      "branch_prefix": "beacon/",
+      "base_branch": "main",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": ".",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.4.10.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-05-24T05:58:17.471263+00:00",
+      "baseline_id": "impl-delivery-baseline-v1.4.10-implement-mode-human-playbooks-and-routing-contract-R3",
+      "transaction_id": "tx-29e2af05b52fd8a8a",
+      "source_hash": "sha256:81f87d294c24eb3048483aeeee86862fb52cf498afae8c6f4b7d180399c70f01",
+      "projection_seq": 1,
+      "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+      "projection_source": "implementation_delivery_baseline_envelope"
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260524T055817Z-97a0/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260524T055817Z-97a0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "expected_plan": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.json",
+    "expected_revision_id": "R3",
+    "baseline_hash": "sha256:800acefc5870b88f09e8896423cf259f248e72f6ddcf5cc090e93442c3039684",
+    "recommended_command": "beacon implement plan \"implement-mode-human-playbooks-and-routing-contract\" --project-root . --version v1.4.10",
+    "generated_at": "2026-05-24T05:58:17.833205+00:00",
+    "required": true,
+    "architecture_blueprint_projection_gate": {
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+      "feature": "implement-mode-human-playbooks-and-routing-contract",
+      "version": "v1.4.10",
+      "issues": []
+    },
+    "material_gate_preflight": {
+      "schema_version": "1.0",
+      "version": "v1.4.10",
+      "feature": "implement-mode-human-playbooks-and-routing-contract",
+      "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "gates": {
+        "execution_host_required_surfaces": {
+          "schema_version": "1.0",
+          "version": "v1.4.10",
+          "feature": "implement-mode-human-playbooks-and-routing-contract",
+          "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+          "required": true,
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "missing_surfaces": [],
+          "surfaces": {
+            "execution_index": {
+              "path": "docs/beacon/v1.4.10/execution/index.md",
+              "exists": true,
+              "required": true
+            },
+            "architecture_blueprint": {
+              "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+              "exists": true,
+              "required": true
+            },
+            "delivery_baseline": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+              "exists": true,
+              "required": true
+            },
+            "git_workflow": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/git-workflow-implement-mode-human-playbooks-and-routing-contract.json",
+              "exists": true,
+              "required": true
+            },
+            "technical_review_contract": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/deterministic-implementation-contract-implement-mode-human-playbooks-and-routing-contract.json",
+              "exists": true,
+              "required": true
+            }
+          }
+        },
+        "architecture_blueprint_projection": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+          "feature": "implement-mode-human-playbooks-and-routing-contract",
+          "version": "v1.4.10",
+          "issues": []
+        },
+        "explicit_delivery_facts": {
+          "schema_version": "1.0",
+          "version": "v1.4.10",
+          "feature": "implement-mode-human-playbooks-and-routing-contract",
+          "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": [],
+          "repair_route": "beacon-toolkit-branch-governance"
+        },
+        "diagnostics": {
+          "schema_version": "1.0",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": []
+        }
+      }
+    },
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-implement-mode-human-playbooks-and-routing-contract-r3",
+    "plan_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.json",
+    "progress_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-implement-mode-human-playbooks-and-routing-contract.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.4.10/.machine/execution/technical-implementation-implement-mode-human-playbooks-and-routing-contract.json",
+    "md": "docs/beacon/v1.4.10/.machine/trace/implementation/implement-mode-human-playbooks-and-routing-contract/technical-implementation-implement-mode-human-playbooks-and-routing-contract.md"
+  },
+  "implementation_plan": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-implement-mode-human-playbooks-and-routing-contract-r3",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "revision_id": "R3",
+    "plan_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.json",
+    "progress_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-implement-mode-human-playbooks-and-routing-contract.progress.json",
+    "status": "completed",
+    "counts": {
+      "total": 8,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 8
+    },
+    "blocked_task_ids": [],
+    "blocked_task_titles": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008"
+    ],
+    "next_task_id": "",
+    "next_task_title": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001"
+        ],
+        "mapped_test_ids": [
+          "TC-IMPL-MODE-001"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-IMPL-MODE-001"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-002",
+          "AC-003"
+        ],
+        "mapped_test_ids": [
+          "TC-IMPL-MODE-002",
+          "TC-IMPL-MODE-003"
+        ],
+        "mapped_scenario_ids": [
+          "SC-002",
+          "SC-003"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-IMPL-MODE-002",
+          "TC-IMPL-MODE-003"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006",
+          "AC-007",
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TC-IMPL-MODE-006",
+          "TC-IMPL-MODE-007",
+          "TC-IMPL-MODE-004"
+        ],
+        "mapped_scenario_ids": [
+          "SC-004",
+          "SC-006",
+          "SC-007"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-IMPL-MODE-004",
+          "TC-IMPL-MODE-006",
+          "TC-IMPL-MODE-007"
+        ]
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-008"
+        ],
+        "mapped_test_ids": [
+          "TC-IMPL-MODE-008"
+        ],
+        "mapped_scenario_ids": [
+          "SC-008"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-IMPL-MODE-008"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TC-IMPL-MODE-005"
+        ],
+        "mapped_scenario_ids": [
+          "SC-005"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-IMPL-MODE-005"
+        ]
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-05-24T05:58:17.946655+00:00",
+    "task_ledger_path": "docs/beacon/v1.4.10/execution/tasks-implement-mode-human-playbooks-and-routing-contract.md"
+  },
+  "implementation_order": {},
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.4.10",
+    "prd": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+    "user_story": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+    "requirement_completeness_ref": "",
+    "requirement_completeness_verdict": "",
+    "revision_id": "R3",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "single",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+    "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+    "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+    "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+    "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+    ".beacon/implement/run-20260524T055817Z-97a0/request.json",
+    ".beacon/implement/run-20260524T055817Z-97a0/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R3",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/implement-mode-human-playbooks-and-routing-contract.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.4.10/.machine/execution/requirement-rewrite-input-implement-mode-human-playbooks-and-routing-contract.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/implement-mode-human-playbooks-and-routing-contract/run-20260524T055817Z-97a0.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}
