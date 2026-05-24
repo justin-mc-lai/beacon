@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import re
+import shutil
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -40,6 +42,8 @@ AUTHORITY_BOUNDARY_KEYWORDS = {
     "freeze state",
     "requirement truth",
 }
+
+BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID = "beacon-post-release-local-install"
 
 
 def hooks_root(project_root: Path) -> Path:
@@ -226,6 +230,106 @@ def plan_hook(project_root: Path, hook_id: str, *, version: str = "", feature: s
     }
 
 
+def _command_output(args: list[str]) -> dict[str, Any]:
+    resolved = shutil.which(args[0])
+    payload: dict[str, Any] = {
+        "command": args,
+        "path": resolved or "",
+        "status": "blocked",
+        "stdout": "",
+        "stderr": "",
+        "returncode": None,
+    }
+    if not resolved:
+        payload["reason_code"] = "launcher_not_found"
+        return payload
+    completed = subprocess.run(args, text=True, capture_output=True, check=False)
+    payload.update(
+        {
+            "status": "pass" if completed.returncode == 0 else "blocked",
+            "stdout": completed.stdout.strip(),
+            "stderr": completed.stderr.strip(),
+            "returncode": completed.returncode,
+            "reason_code": "" if completed.returncode == 0 else "launcher_command_failed",
+        }
+    )
+    return payload
+
+
+def _run_beacon_post_release_local_install(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    from beacon.utils.doctor_orchestrator import (
+        run_agent_surface_setup,
+        run_agent_surface_verify,
+        run_launcher_setup,
+    )
+
+    agent_results: dict[str, Any] = {}
+    blocked_reasons: list[str] = []
+    for agent in ("codex", "claude"):
+        setup = run_agent_surface_setup(
+            project_root=str(project_root),
+            version=version,
+            agent=agent,
+            dry_run=False,
+            force=True,
+        )
+        verify = run_agent_surface_verify(
+            project_root=str(project_root),
+            version=version,
+            agent=agent,
+            strict=True,
+        )
+        agent_results[agent] = {
+            "setup_status": setup.payload.get("status"),
+            "verify_status": verify.payload.get("status"),
+            "setup_result": setup.payload.get("result", {}),
+            "verify_result": verify.payload.get("result", {}),
+        }
+        if setup.exit_code != 0 or setup.payload.get("status") != "PASS":
+            blocked_reasons.append(f"{agent}_agent_surface_setup_failed")
+        if verify.exit_code != 0 or verify.payload.get("status") != "PASS":
+            blocked_reasons.append(f"{agent}_agent_surface_verify_failed")
+
+    launcher_setup = run_launcher_setup(bin_dir="", launcher_source="", force=True, dry_run=False)
+    if launcher_setup.exit_code != 0 or launcher_setup.payload.get("status") != "PASS":
+        blocked_reasons.append("global_cli_launcher_setup_failed")
+
+    cli_versions = {
+        "beacon": _command_output(["beacon", "--version"]),
+        "beacon-cli": _command_output(["beacon-cli", "--version"]),
+    }
+    expected = version.strip()
+    if expected:
+        for name, row in cli_versions.items():
+            output = str(row.get("stdout") or "")
+            if row.get("status") != "pass":
+                blocked_reasons.append(f"{name}_version_command_failed")
+            elif expected not in output:
+                blocked_reasons.append(f"{name}_version_mismatch")
+
+    return {
+        "schema_version": "1.0",
+        "hook_id": BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID,
+        "version": version,
+        "feature": feature,
+        "status": "blocked" if blocked_reasons else "pass",
+        "blocked": bool(blocked_reasons),
+        "reason_codes": blocked_reasons,
+        "agent_surfaces": agent_results,
+        "launcher_setup": launcher_setup.payload,
+        "cli_versions": cli_versions,
+        "commands_confirmed": [
+            f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent codex --force --json",
+            f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent codex --strict --json",
+            f"python3 -m beacon.main doctor setup-agent-surface --project-root . --version {version} --agent claude --force --json",
+            f"python3 -m beacon.main doctor verify-agent-surface --project-root . --version {version} --agent claude --strict --json",
+            "python3 -m beacon.main doctor setup --force --json",
+            "beacon --version",
+            "beacon-cli --version",
+        ],
+    }
+
+
 def run_hook(
     project_root: Path,
     hook_id: str,
@@ -270,6 +374,11 @@ def run_hook(
             payload.update({"status": "blocked", "blocked": True, "reason_code": "hidden_auto_run_not_allowed"})
         else:
             payload["side_effect_executed"] = True
+            if hook_id == BEACON_POST_RELEASE_LOCAL_INSTALL_HOOK_ID:
+                followup = _run_beacon_post_release_local_install(project_root, version=version, feature=feature)
+                payload["post_release_followup"] = followup
+                if followup["blocked"]:
+                    payload.update({"status": "blocked", "blocked": True, "reason_code": "post_release_followup_failed"})
 
     runtime_path = hook_state_dir(project_root, hook_id) / f"{run_id}.json"
     latest_path = hook_latest_read_model_path(project_root, hook_id)

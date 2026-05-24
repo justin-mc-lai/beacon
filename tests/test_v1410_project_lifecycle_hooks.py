@@ -203,3 +203,85 @@ def test_explicit_gate_pytest_with_manual_confirmation_name_stays_automated() ->
     assert row["layer"] == "gate"
     assert row["qa_type"] == "gate"
     assert row["automation"] == "auto"
+
+
+def test_beacon_source_release_hook_contract_exists() -> None:
+    path = Path("docs/beacon/hooks/beacon-post-release-local-install.md")
+
+    assert path.exists()
+    payload = validate_hook_contract(Path("."), "beacon-post-release-local-install", hook_code="post_release")
+
+    assert payload["blocked"] is False
+    assert payload["contract"]["trigger_policy"] == "manual_confirmed"
+    assert "codex_agent_surface_verify" in payload["contract"]["produces_evidence"]
+    assert "global_beacon_cli_version" in payload["contract"]["produces_evidence"]
+
+
+def _copy_beacon_source_hook(tmp_path: Path) -> None:
+    source = Path("docs/beacon/hooks/beacon-post-release-local-install.md")
+    target = tmp_path / "docs" / "beacon" / "hooks" / source.name
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(source.read_text(encoding="utf-8"), encoding="utf-8")
+
+
+def test_beacon_source_release_hook_requires_confirmation(tmp_path: Path) -> None:
+    _copy_beacon_source_hook(tmp_path)
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version=VERSION,
+        feature="implement-mode-human-playbooks-and-routing-contract",
+        hook_code="post_release",
+    )
+
+    assert payload["blocked"] is True
+    assert payload["reason_code"] == "manual_confirmation_required"
+    assert payload["side_effect_executed"] is False
+
+
+def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:
+    _copy_beacon_source_hook(tmp_path)
+
+    def fake_followup(project_root: Path, *, version: str, feature: str) -> dict:
+        return {
+            "schema_version": "1.0",
+            "hook_id": "beacon-post-release-local-install",
+            "version": version,
+            "feature": feature,
+            "status": "pass",
+            "blocked": False,
+            "reason_codes": [],
+            "agent_surfaces": {
+                "codex": {"setup_status": "PASS", "verify_status": "PASS"},
+                "claude": {"setup_status": "PASS", "verify_status": "PASS"},
+            },
+            "launcher_setup": {"status": "PASS"},
+            "cli_versions": {
+                "beacon": {"stdout": f"Beacon CLI {version}", "status": "pass"},
+                "beacon-cli": {"stdout": f"Beacon CLI {version}", "status": "pass"},
+            },
+        }
+
+    monkeypatch.setattr("beacon.utils.project_hooks._run_beacon_post_release_local_install", fake_followup)
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version=VERSION,
+        feature="implement-mode-human-playbooks-and-routing-contract",
+        hook_code="post_release",
+        confirm=True,
+    )
+
+    assert payload["blocked"] is False
+    assert payload["side_effect_executed"] is True
+    followup = payload["post_release_followup"]
+    assert followup["status"] == "pass"
+    assert followup["agent_surfaces"]["codex"]["setup_status"] == "PASS"
+    assert followup["agent_surfaces"]["codex"]["verify_status"] == "PASS"
+    assert followup["agent_surfaces"]["claude"]["setup_status"] == "PASS"
+    assert followup["agent_surfaces"]["claude"]["verify_status"] == "PASS"
+    assert followup["launcher_setup"]["status"] == "PASS"
+    assert VERSION in followup["cli_versions"]["beacon"]["stdout"]
+    assert VERSION in followup["cli_versions"]["beacon-cli"]["stdout"]
