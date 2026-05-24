@@ -19,6 +19,7 @@ from beacon.utils.qa_precision import (
     write_feature_qa_ac_closure,
     write_feature_qa_scorecard,
 )
+from beacon.utils.qa_evo_deep import build_deep_absorption_status
 from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime import now_iso, read_json, write_json
@@ -1554,6 +1555,13 @@ def build_feature_qa_precision_artifacts(
         "reports": ac_reports,
     }
     ac_closure_path = write_feature_qa_ac_closure(project_root, feature=feature, payload=ac_closure_payload)
+    resolved_version = resolve_target_version(project_root, str(plan.get("version") or "auto"))
+    deep_absorption = build_deep_absorption_status(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        ac_closure=ac_closure_payload,
+    )
 
     project_profile_gate = project_profile_gate if isinstance(project_profile_gate, dict) else {}
     review_required_count = len([item for item in scenario_results if bool(item.get("requires_human_review"))])
@@ -1581,7 +1589,6 @@ def build_feature_qa_precision_artifacts(
     qa_status = qa_status if isinstance(qa_status, dict) else {}
     exhaustiveness = exhaustiveness if isinstance(exhaustiveness, dict) else {}
     design_truth_verdict = design_truth_verdict if isinstance(design_truth_verdict, dict) else {}
-    resolved_version = resolve_target_version(project_root, str(plan.get("version") or "auto"))
     revision_state = load_revision_state(
         project_root,
         version=resolved_version,
@@ -1898,6 +1905,14 @@ def build_feature_qa_precision_artifacts(
             ],
         },
         "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
+        "deep_absorption": deep_absorption,
+        "release_supplement_input": {
+            "deep_findings_absorbed": bool(deep_absorption.get("eligible_for_release_supplement", False)),
+            "absorbed_finding_count": int(deep_absorption.get("absorbed_count") or 0),
+            "advisory_or_blocked_finding_count": int(deep_absorption.get("deferred_count") or 0)
+            + int(deep_absorption.get("blocked_count") or 0),
+            "policy": "absorbed_deep_findings_only",
+        },
         "continue_decision": continue_decision,
         "stop_reasons": stop_reasons,
         "test_case_backfill_required": test_case_backfill_required,

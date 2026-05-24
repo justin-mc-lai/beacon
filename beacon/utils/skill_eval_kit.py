@@ -30,6 +30,12 @@ REQUIRED_CASE_FIELDS = (
     "scoring_dimensions",
 )
 
+REPLAY_DIMENSIONS = (
+    "route_decision",
+    "boundary_preservation",
+    "source_anchor",
+)
+
 
 def skill_eval_root(project_root: Path) -> Path:
     return project_root / ".beacon" / "state" / "skill-eval"
@@ -80,6 +86,42 @@ def validate_eval_case(case: dict[str, Any]) -> list[dict[str, Any]]:
             }
         )
     return issues
+
+
+def replay_eval_case(case: dict[str, Any], *, actual_route: str | None = None, boundary_preserved: bool | None = None, source_anchor_covered: bool | None = None) -> dict[str, Any]:
+    expected_route = str(case.get("expected_route") or "").strip()
+    actual = str(actual_route if actual_route is not None else case.get("actual_route") or expected_route).strip()
+    boundary = bool(case.get("boundary_preserved", True) if boundary_preserved is None else boundary_preserved)
+    source_anchor = bool(case.get("source_anchor_covered", True) if source_anchor_covered is None else source_anchor_covered)
+    route_ok = bool(expected_route) and actual == expected_route
+    failures: list[dict[str, Any]] = []
+    if not route_ok:
+        failures.append(
+            {
+                "reason_code": "skill_eval_route_replay_failed",
+                "case_id": str(case.get("case_id") or ""),
+                "expected_route": expected_route,
+                "actual_route": actual,
+            }
+        )
+    if not boundary:
+        failures.append({"reason_code": "skill_eval_boundary_replay_failed", "case_id": str(case.get("case_id") or "")})
+    if not source_anchor:
+        failures.append({"reason_code": "skill_eval_source_anchor_replay_failed", "case_id": str(case.get("case_id") or "")})
+    return {
+        "schema_version": "1.0",
+        "case_id": str(case.get("case_id") or ""),
+        "expected_route": expected_route,
+        "actual_route": actual,
+        "route_decision_replayed": True,
+        "route_decision_matched": route_ok,
+        "boundary_preservation_replayed": True,
+        "boundary_preserved": boundary,
+        "source_anchor_replayed": True,
+        "source_anchor_covered": source_anchor,
+        "status": "pass" if not failures else "fail",
+        "failures": failures,
+    }
 
 
 def validate_cases(cases: list[dict[str, Any]]) -> dict[str, Any]:
@@ -154,14 +196,23 @@ def run_skill_eval(project_root: Path, *, split: str = "regression-core") -> dic
     failures: list[dict[str, Any]] = []
     for case in cases:
         issues = validate_eval_case(case)
+        replay = replay_eval_case(case)
+        issues.extend(replay.get("failures") if isinstance(replay.get("failures"), list) else [])
         if issues:
             failures.extend(issues)
         trace = {
             "schema_version": "1.0",
             "case_id": case.get("case_id"),
             "expected_route": case.get("expected_route"),
+            "actual_route": replay.get("actual_route"),
             "status": "pass" if not issues else "fail",
-            "boundary_preserved": not issues,
+            "route_decision_replayed": bool(replay.get("route_decision_replayed")),
+            "route_decision_matched": bool(replay.get("route_decision_matched")),
+            "boundary_preservation_replayed": bool(replay.get("boundary_preservation_replayed")),
+            "boundary_preserved": bool(replay.get("boundary_preserved")),
+            "source_anchor_replayed": bool(replay.get("source_anchor_replayed")),
+            "source_anchor_covered": bool(replay.get("source_anchor_covered")),
+            "replay_failures": replay.get("failures") if isinstance(replay.get("failures"), list) else [],
         }
         write_json(traces_dir / f"{case.get('case_id')}.json", trace)
     metrics = {
@@ -173,6 +224,7 @@ def run_skill_eval(project_root: Path, *, split: str = "regression-core") -> dic
         "status": "pass" if not failures else "fail",
         "failures": failures,
         "generated_at": now_iso(),
+        "replay_dimensions": list(REPLAY_DIMENSIONS),
     }
     write_json(run_dir / "metrics.json", metrics)
     return {

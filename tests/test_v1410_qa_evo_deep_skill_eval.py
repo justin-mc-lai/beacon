@@ -16,6 +16,7 @@ from beacon.utils.skill_eval_kit import (
     run_skill_eval,
     validate_cases,
 )
+from beacon.utils.runtime import write_json
 
 
 VERSION = "v1.4.10"
@@ -23,7 +24,28 @@ FEATURE = "qa-evo-deep-and-skill-eval-kit-v1410"
 SLUG = "qa-evo-deep-and-skill-eval-kit-v1410"
 
 
+def seed_qa_evo_sources(root: Path, *, feature: str = FEATURE) -> None:
+    base = root / "docs" / "beacon" / VERSION
+    (base / "prd").mkdir(parents=True, exist_ok=True)
+    (base / "user-story").mkdir(parents=True, exist_ok=True)
+    (base / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (base / "prd" / f"{SLUG}.md").write_text("# PRD\n\n- AC-001: contract ready\n", encoding="utf-8")
+    (base / "user-story" / f"{SLUG}.md").write_text(
+        "# User Story\n\n| AC ID | Theme | Description |\n| --- | --- | --- |\n| AC-001 | contract | ready |\n",
+        encoding="utf-8",
+    )
+    (base / "qa" / "test-cases" / f"{SLUG}.md").write_text(
+        "# Test Cases\n\n| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n| --- | --- | --- | --- | --- | --- |\n| AC-001 | TC-001 | contract | `pytest` | pass | `.beacon/evidence/TC-001.json` |\n",
+        encoding="utf-8",
+    )
+    qa_root = root / ".beacon" / "qa" / "features" / SLUG
+    qa_root.mkdir(parents=True, exist_ok=True)
+    write_json(qa_root / "scorecard.json", {"schema_version": "1.0", "feature": feature, "release_ready": True})
+    write_json(qa_root / "ac-closure.json", {"schema_version": "1.0", "feature": feature, "reports": [{"ac_id": "AC-001", "closure_status": "accepted"}]})
+
+
 def test_qa_evo_deep_output_contract(tmp_path: Path) -> None:
+    seed_qa_evo_sources(tmp_path)
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
 
     assert payload["output_path"] == f"docs/beacon/{VERSION}/qa/evo-deep/{SLUG}.md"
@@ -90,6 +112,7 @@ def test_qa_evo_deep_skill_materializes_to_codex_agent_surface(tmp_path: Path) -
 
 
 def test_round_memory_is_advisory_influence(tmp_path: Path) -> None:
+    seed_qa_evo_sources(tmp_path)
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
 
     memory = payload["round_memory"][0]
@@ -99,6 +122,7 @@ def test_round_memory_is_advisory_influence(tmp_path: Path) -> None:
 
 
 def test_deep_finding_taxonomy_supported(tmp_path: Path) -> None:
+    seed_qa_evo_sources(tmp_path)
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
 
     families = {item["finding_family"] for item in payload["findings"]}
@@ -107,6 +131,7 @@ def test_deep_finding_taxonomy_supported(tmp_path: Path) -> None:
 
 
 def test_qa_evo_deep_write_topology(tmp_path: Path) -> None:
+    seed_qa_evo_sources(tmp_path)
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
 
     assert (tmp_path / f"docs/beacon/{VERSION}/qa/evo-deep/{SLUG}.md").exists()
@@ -162,6 +187,7 @@ def test_route_stability_cases_cover_support_and_implement_modes() -> None:
 
 
 def test_authority_bypass_fails_closed(tmp_path: Path) -> None:
+    seed_qa_evo_sources(tmp_path)
     payload = run_qa_evo_deep(tmp_path, version=VERSION, feature=FEATURE)
     payload["findings"][0]["authority_boundary"] = "release_verdict"
 
@@ -195,6 +221,7 @@ def test_runtime_taxonomy_ignores_auth_text_in_passing_authority_cases() -> None
 def test_cli_surfaces_materialize_contracts(tmp_path: Path) -> None:
     app = build_app(package_version="0-test")
     runner = CliRunner()
+    seed_qa_evo_sources(tmp_path)
 
     qa_result = runner.invoke(app, ["qa", "evo-deep", FEATURE, "--project", str(tmp_path), "--version", VERSION, "--json"])
     assert qa_result.exit_code == 0, qa_result.output

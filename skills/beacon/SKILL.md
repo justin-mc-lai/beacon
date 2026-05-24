@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first workflow as the host-level meta-protocol for deciding which truth, execution, gate, or support surface should run next.
 metadata:
   author: Beacon CLI
-  version: "1.4.8"
+  version: "1.4.10"
   organization: Beacon
   date: May 2026
   abstract: Compact meta-protocol for Beacon's human-facing workflow surface. It classifies the current decision surface, preserves hard boundaries, and routes to the right child skill without exposing runtime internals by default.
@@ -146,10 +146,10 @@ Beacon should absorb complexity into machine-readable surfaces first, then proje
 
 Keep only the minimum current anchors here:
 
-- current package version: `1.4.8`
-- current planning line for this evolution theme: `docs/beacon/v1.4.8/`
-- current public runtime/docs line: `docs/beacon/v1.4.8/`
-- previous runtime line: `docs/beacon/v1.4.7/`
+- current package version: `1.4.10`
+- current planning line for this evolution theme: `docs/beacon/v1.4.10/`
+- current public runtime/docs line: `docs/beacon/v1.4.10/`
+- previous runtime line: `docs/beacon/v1.4.9/`
 - if a target project pins another docs line, follow the pinned local truth instead of silently overriding it
 
 ## Lightweight References
@@ -177,10 +177,10 @@ For complex features, the minimum freeze-facing requirement chain remains:
 
 When versioned delivery context is needed, read progressively:
 
-1. [`../../docs/beacon/v1.4.8/SUMMARY.md`](../../docs/beacon/v1.4.8/SUMMARY.md)
-2. [`../../docs/beacon/v1.4.8/execution/index.md`](../../docs/beacon/v1.4.8/execution/index.md)
-3. [`../../docs/beacon/v1.4.8/release/checklist-v1.4.8.md`](../../docs/beacon/v1.4.8/release/checklist-v1.4.8.md)
-4. [`../../docs/beacon/v1.4.7/SUMMARY.md`](../../docs/beacon/v1.4.7/SUMMARY.md)
+1. [`../../docs/beacon/v1.4.10/SUMMARY.md`](../../docs/beacon/v1.4.10/SUMMARY.md)
+2. [`../../docs/beacon/v1.4.10/execution/index.md`](../../docs/beacon/v1.4.10/execution/index.md)
+3. [`../../docs/beacon/v1.4.10/release/checklist-v1.4.10.md`](../../docs/beacon/v1.4.10/release/checklist-v1.4.10.md)
+4. [`../../docs/beacon/v1.4.9/SUMMARY.md`](../../docs/beacon/v1.4.9/SUMMARY.md)
 
 Do not treat this wrapper as the full runtime manual or release note.
 
