@@ -93,8 +93,16 @@ def build_implementation_delivery_baseline(
     worktree_root = str(_field_value(source, "worktree_root", default=".") or ".")
     workspace_root = str(_field_value(source, "workspace_root", default=worktree_root) or worktree_root)
     use_git_worktree = bool(source.get("use_git_worktree", False))
-    service_branch_map = {service: target_branch for service in direct_delivery_services}
-    service_worktree_map = {service: worktree_root for service in direct_delivery_services}
+    source_branch_map = source.get("service_branch_map") if isinstance(source.get("service_branch_map"), dict) else {}
+    source_worktree_map = source.get("service_worktree_map") if isinstance(source.get("service_worktree_map"), dict) else {}
+    service_branch_map = {
+        service: str(source_branch_map.get(service) or target_branch)
+        for service in direct_delivery_services
+    }
+    service_worktree_map = {
+        service: str(source_worktree_map.get(service) or worktree_root)
+        for service in direct_delivery_services
+    }
     feature_overlay = {
         "feature": feature,
         "feature_slug": slug,

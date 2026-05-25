@@ -67,6 +67,38 @@ def git_has_dirty_worktree(project_root: Path) -> bool:
     return bool(str(result.stdout or "").strip())
 
 
+def _normalize_service_map(values: Any) -> dict[str, str]:
+    if not isinstance(values, dict):
+        return {}
+    out: dict[str, str] = {}
+    for key, value in values.items():
+        service = str(key or "").strip()
+        text = str(value or "").strip()
+        if service and text:
+            out[service] = text
+    return out
+
+
+def _resolve_service_root(project_root: Path, root_value: str, service: str) -> Path:
+    text = str(root_value or "").strip()
+    if not text:
+        text = service
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = project_root / path
+    return path.resolve()
+
+
+def _service_root_for_worktree(project_root: Path, service: str, worktree_value: str, root_value: str) -> Path:
+    text = str(worktree_value or "").strip()
+    if not text:
+        return _resolve_service_root(project_root, root_value, service)
+    path = Path(text).expanduser()
+    if not path.is_absolute():
+        path = project_root / path
+    return path.resolve()
+
+
 def collect_git_alignment(
     project_root: Path,
     version: str,
@@ -142,9 +174,139 @@ def build_implement_branch_guard_payload(
     base_branch: str = "main",
     git_roots: list[str] | None = None,
     direct_delivery_services: list[str] | None = None,
+    service_branch_map: dict[str, str] | None = None,
+    service_worktree_map: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     roots = [str(item).strip() for item in (git_roots or []) if str(item).strip()]
     delivery_services = [str(item).strip() for item in (direct_delivery_services or []) if str(item).strip()]
+    branch_map = _normalize_service_map(service_branch_map)
+    worktree_map = _normalize_service_map(service_worktree_map)
+    if str(expected_branch or "").strip() == "per-service":
+        services = delivery_services or list(branch_map) or [Path(item).name for item in roots]
+        root_by_service = {Path(item).name: item for item in roots}
+        root_by_service.update({item: item for item in roots})
+        alignments = []
+        any_repo_detected = False
+        blocked = False
+        dirty_worktree = False
+        reason_codes: list[str] = []
+        recommended_commands: list[str] = []
+        unresolved_services: list[str] = []
+        missing_map_services: list[str] = []
+        for service in services:
+            service_key = str(service or "").strip()
+            if not service_key:
+                continue
+            service_branch = str(branch_map.get(service_key) or "").strip()
+            service_worktree = str(worktree_map.get(service_key) or "").strip()
+            root_value = root_by_service.get(service_key, service_key)
+            if not service_branch or not service_worktree:
+                blocked = True
+                missing_map_services.append(service_key)
+                reason_codes.append("explicit_version_per_service_map_missing")
+                continue
+            repo_root = _resolve_service_root(project_root, root_value, service_key)
+            expected_root = str(_service_root_for_worktree(project_root, service_key, service_worktree, root_value))
+            resolved_prefix = _branch_prefix_from_expected_branch(service_branch, branch_prefix)
+            alignment = collect_git_alignment(
+                repo_root,
+                version,
+                allow_tag=False,
+                require_exact_branch=True,
+                branch_prefix=resolved_prefix,
+                base_branch=base_branch,
+                expected_branch=service_branch,
+            )
+            repo_dirty = git_has_dirty_worktree(repo_root) if alignment.get("repo_detected") else False
+            any_repo_detected = any_repo_detected or bool(alignment.get("repo_detected"))
+            dirty_worktree = dirty_worktree or repo_dirty
+            service_blocked = bool(alignment.get("blocked"))
+            if repo_dirty and require_clean_worktree_for_switch and not alignment.get("branch_matches_target"):
+                service_blocked = True
+                alignment["reason_codes"] = list(
+                    dict.fromkeys([*alignment.get("reason_codes", []), "implement_branch_switch_dirty_worktree"])
+                )
+            actual_root = str(repo_root)
+            worktree_matches = actual_root == expected_root
+            if not worktree_matches:
+                service_blocked = True
+                alignment["reason_codes"] = list(
+                    dict.fromkeys([*alignment.get("reason_codes", []), "explicit_version_canonical_worktree_mismatch"])
+                )
+            if service_blocked:
+                blocked = True
+                reason_codes.append("explicit_version_canonical_branch_mismatch")
+                if not worktree_matches:
+                    recommended_commands.append(f"cd {expected_root} && git switch {service_branch}")
+                elif repo_dirty and require_clean_worktree_for_switch and not alignment.get("branch_matches_target"):
+                    recommended_commands.append(
+                        f"git -C {repo_root} stash push -u && git -C {repo_root} switch {service_branch}"
+                    )
+                else:
+                    recommended_commands.append(f"cd {repo_root} && git switch {service_branch}")
+            reason_codes.extend(list(alignment.get("reason_codes", [])))
+            alignments.append(
+                {
+                    "service": service_key,
+                    "expected_branch": service_branch,
+                    "expected_worktree": expected_root,
+                    "repo_root": actual_root,
+                    "relative_root": str(root_value),
+                    "dirty_worktree": repo_dirty,
+                    "worktree_matches_expected": worktree_matches,
+                    **alignment,
+                }
+            )
+        root_aliases = set(roots) | {Path(item).name for item in roots}
+        for service in services:
+            if service not in branch_map and service not in root_aliases and not roots:
+                unresolved_services.append(service)
+        if unresolved_services:
+            blocked = True
+            reason_codes.append("implement_direct_delivery_service_scope_unresolved")
+        current_branch = ",".join(sorted({str(item.get("current_branch", "") or "") for item in alignments if str(item.get("current_branch", "") or "")}))
+        current_tag = ",".join(sorted({str(item.get("current_tag", "") or "") for item in alignments if str(item.get("current_tag", "") or "")}))
+        if missing_map_services:
+            for service in missing_map_services:
+                recommended_commands.append(f"add per-service branch/worktree mapping for {service}")
+        summary = "implement branch preflight passed on per-service canonical branches"
+        if blocked:
+            summary = "implement branch preflight blocked: explicit version canonical branch/worktree mismatch"
+        service_scope = {
+            "status": "blocked" if unresolved_services or missing_map_services else "pass",
+            "direct_delivery_services": services,
+            "verified_roots": [str(item.get("repo_root", "") or "") for item in alignments],
+            "unresolved_services": list(dict.fromkeys([*unresolved_services, *missing_map_services])),
+        }
+        return {
+            "schema_version": "1.0",
+            "status": "blocked" if blocked else "pass",
+            "summary": summary,
+            "blocked": blocked,
+            "version": version,
+            "expected_branch": "per-service",
+            "current_branch": current_branch,
+            "current_tag": current_tag,
+            "branch_exists": all(git_branch_exists(Path(item["repo_root"]), str(item.get("expected_branch", "") or "")) for item in alignments) if alignments else False,
+            "dirty_worktree": dirty_worktree,
+            "require_clean_worktree_for_switch": require_clean_worktree_for_switch,
+            "recommended_command": recommended_commands[0] if recommended_commands else "",
+            "recommended_commands": list(dict.fromkeys(recommended_commands)),
+            "direct_delivery_services": services,
+            "service_scope": service_scope,
+            "service_branch_map": branch_map,
+            "service_worktree_map": worktree_map,
+            "reason_codes": list(dict.fromkeys(reason_codes)),
+            "git_alignment": {
+                "mode": "workspace",
+                "repo_detected": any_repo_detected,
+                "target_branch": "per-service",
+                "worktree_path": str(project_root),
+                "workspace_repos": alignments,
+                "blocked": blocked,
+                "reason_codes": list(dict.fromkeys(reason_codes)),
+            },
+        }
     if roots:
         alignments = []
         any_repo_detected = False

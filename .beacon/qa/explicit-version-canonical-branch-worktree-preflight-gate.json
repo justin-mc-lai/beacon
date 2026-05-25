@@ -1,0 +1,313 @@
+{
+  "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+  "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
+  "version": "v1.4.10",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-EXVER-BRANCH-001"
+    ],
+    "AC-002": [
+      "TC-EXVER-BRANCH-002"
+    ],
+    "AC-003": [
+      "TC-EXVER-BRANCH-003"
+    ],
+    "AC-004": [
+      "TC-EXVER-BRANCH-004"
+    ],
+    "AC-005": [
+      "TC-EXVER-BRANCH-005"
+    ],
+    "AC-006": [
+      "TC-EXVER-BRANCH-006"
+    ],
+    "AC-007": [
+      "TC-EXVER-BRANCH-007"
+    ],
+    "AC-008": [
+      "TC-EXVER-BRANCH-008"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-EXVER-BRANCH-001",
+      "tc_id": "TC-EXVER-BRANCH-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "preflight",
+      "layer": "preflight",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Explicit version implement preflight loads `docs/beacon/<version>/execution/` before mutation is",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "preflight",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"explicit_version_loads_execution_materials_before_mutation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-EXVER-BRANCH-002",
+      "tc_id": "TC-EXVER-BRANCH-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Branch governance, git workflow, and deterministic implementation contract materials are conside",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"branch_governance_git_workflow_and_deterministic_contract_are_sources\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-EXVER-BRANCH-003",
+      "tc_id": "TC-EXVER-BRANCH-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "preflight",
+      "layer": "preflight",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Target service current branch and worktree are checked against the canonical service entry.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "preflight",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"target_service_branch_and_worktree_are_validated\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-EXVER-BRANCH-004",
+      "tc_id": "TC-EXVER-BRANCH-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "per-service",
+      "layer": "per-service",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: `expected_branch=per-service` resolves the service branch/worktree map and does not pass as a li",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "per-service",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"per_service_expected_branch_resolves_map\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-EXVER-BRANCH-005",
+      "tc_id": "TC-EXVER-BRANCH-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "fail-closed",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Canonical branch/worktree mismatch blocks code edit and commit.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"canonical_mismatch_blocks_before_code_edit_or_commit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-EXVER-BRANCH-006",
+      "tc_id": "TC-EXVER-BRANCH-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "gate-order",
+      "layer": "gate-order",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Passing `origin/master` ancestry cannot mark preflight pass when canonical branch/worktree misma",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate-order",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"origin_master_ancestry_pass_does_not_override_canonical_mismatch\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-EXVER-BRANCH-007",
+      "tc_id": "TC-EXVER-BRANCH-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Rolo v2.0.0 `marketing_sys` and `marketing_primary_fe` on `feature/v1.3.5-truth-engine-cutover` ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"rolo_v200_marketing_services_on_v135_branch_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-EXVER-BRANCH-008",
+      "tc_id": "TC-EXVER-BRANCH-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "output",
+      "layer": "output",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Blocked output includes reason codes and expected canonical branch/worktree recommendations.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "output",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"blocked_output_names_expected_branch_and_worktree\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/explicit-version-canonical-branch-worktree-preflight-gate/TC-EXVER-BRANCH-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
