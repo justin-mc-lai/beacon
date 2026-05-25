@@ -1,0 +1,467 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-qa-evidence-attribution-layer-20260525t100536z",
+  "feature": "qa-evidence-attribution-layer",
+  "feature_slug": "qa-evidence-attribution-layer",
+  "version": "v1.4.10",
+  "change_reason": "promote EmbodiSkill/SkillEvolver research into QA failure attribution requirement truth",
+  "touched_surfaces": [
+    "change",
+    "prd",
+    "user-story",
+    "test-case",
+    "requirement_clarity",
+    "freeze"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.4.10/change/qa-evidence-attribution-layer.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "prd": {
+      "path": "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "user-story": {
+      "path": "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "test-case": {
+      "path": "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.4.10/.machine/execution/requirement-clarity-qa-evidence-attribution-layer.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.4.10/.machine/change/qa-evidence-attribution-layer.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"qa-evidence-attribution-layer\" --project . --version v1.4.10",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-05-25T10:05:36.239374+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.4.10",
+    "feature": "qa-evidence-attribution-layer",
+    "status": "synced",
+    "story_path": "docs/beacon/v1.4.10/.machine/user-story/qa-evidence-attribution-layer.json",
+    "qa_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evidence-attribution-layer.ac-test-matrix.json",
+    "qa9_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evidence-attribution-layer.qa9-matrix.json",
+    "story_scenario_map_path": "docs/beacon/v1.4.10/.machine/qa/qa-evidence-attribution-layer.story-scenario-map.json",
+    "story_sync": {
+      "path": "docs/beacon/v1.4.10/.machine/user-story/qa-evidence-attribution-layer.json",
+      "feature": "qa-evidence-attribution-layer",
+      "version": "v1.4.10",
+      "revision_id": "R2",
+      "ac_count": 7,
+      "test_count": 7,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "qa-evidence-attribution-layer",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "version": "v1.4.10",
+      "runtime_version": "v1.4.10",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.4.10/.machine/execution/requirement-clarity-qa-evidence-attribution-layer.json",
+      "report_markdown_path": "docs/beacon/v1.4.10/execution/requirement-clarity-qa-evidence-attribution-layer.md",
+      "state_path": ".beacon/state/requirement-clarity-qa-evidence-attribution-layer.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.4.10",
+        "supported": true,
+        "required": true,
+        "ready": true,
+        "diagram_types": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority"
+        ],
+        "state_axes": [
+          "qa_evidence_state",
+          "failure_family_state",
+          "route_recommendation_state",
+          "authority_boundary",
+          "skill_evolution_proposal_state",
+          "release_consumption_state"
+        ],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority",
+          "state axes"
+        ],
+        "review_gates": [
+          "implementation must cover the declared branch-flow split points",
+          "implementation must preserve the declared state-machine transitions",
+          "implementation must preserve decision-priority ordering",
+          "implementation must keep state axes explicit: qa_evidence_state, failure_family_state, route_recommendation_state, authority_boundary, skill_evolution_proposal_state, release_consumption_state"
+        ],
+        "qa_coverage_hints": [
+          "cover primary and alternate branch-flow paths",
+          "cover state transitions, illegal transitions, and recovery paths",
+          "cover conflicting conditions using declared decision priority",
+          "cover axis combinations across: qa_evidence_state, failure_family_state, route_recommendation_state, authority_boundary, skill_evolution_proposal_state, release_consumption_state"
+        ],
+        "evidence_lines": {
+          "branch-flow": [
+            "- `branch-flow`"
+          ],
+          "state-machine": [
+            "- `state-machine`"
+          ],
+          "decision-priority": [
+            "- `decision-priority`"
+          ],
+          "state-axes": [
+            "- `qa_evidence_state`",
+            "- `failure_family_state`",
+            "- `route_recommendation_state`",
+            "- `authority_boundary`",
+            "- `skill_evolution_proposal_state`",
+            "- `release_consumption_state`"
+          ]
+        },
+        "generated_at": "2026-05-25T10:05:38.471764+00:00",
+        "feature": "qa-evidence-attribution-layer",
+        "feature_slug": "qa-evidence-attribution-layer",
+        "prd_ref": "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+        "user_story_ref": "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+      },
+      "human_closure_contract": {
+        "required": true,
+        "research_path": "docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.4.10/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow",
+          "state_machine",
+          "decision_priority"
+        ],
+        "missing_sections": [],
+        "diagram_types": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority"
+        ],
+        "complexity_signals": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority",
+          "state axes"
+        ]
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": true,
+        "paths": {
+          "research": "docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+          "prd": "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+          "user_story": "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+          "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [
+          "architecture",
+          "business_flow",
+          "state_machine",
+          "decision_priority"
+        ],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": true,
+        "supported": true,
+        "projection_types": [
+          "business_flow",
+          "state_machine"
+        ],
+        "research_path": "docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": true,
+          "user_story_refs": true,
+          "test_case_refs": true,
+          "coverage_notes": true,
+          "out_of_scope_notes": true
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+          "user_story_refs": "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+          "test_case_refs": "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md"
+        },
+        "missing_ref_targets": [],
+        "ready": true
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+        "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+        "docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.4.10/.machine/execution/requirement-clarity-qa-evidence-attribution-layer.json",
+      "markdown": "docs/beacon/v1.4.10/execution/requirement-clarity-qa-evidence-attribution-layer.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "qa-evidence-attribution-layer",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "version": "v1.4.10",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.4.10/.machine/execution/requirement-clarity-qa-evidence-attribution-layer.json",
+      "report_markdown_path": "docs/beacon/v1.4.10/execution/requirement-clarity-qa-evidence-attribution-layer.md",
+      "finding_count": 0,
+      "run_id": "run-20260523T165302735331",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-05-25T10:05:38.608221+00:00",
+      "state_path": ".beacon/state/requirement-clarity-qa-evidence-attribution-layer.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "qa-evidence-attribution-layer",
+    "feature_slug": "qa-evidence-attribution-layer",
+    "version": "v1.4.10",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 7,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::authority boundary::attribution output cannot claim prd, user-story, test-case, qa verdict, release verdict, gate verdict, or freeze authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "deterministic route",
+        "text": "Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::deterministic route::each failure family maps to the correct route recommendation: implement, change, test-case, qa rerun/continue, blocked, or research/change proposal.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "evidence binding",
+        "text": "Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::evidence binding::each attribution includes affected ac ids and current evidence refs; runner blockers may omit ac ids only when ac evaluation was not reached.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail closed",
+        "text": "Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::fail closed::ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "finite taxonomy",
+        "text": "QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::finite taxonomy::qa attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release consumption boundary",
+        "text": "Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::release consumption boundary::release readiness consumes attribution only through formal qa closure; raw attribution remains support evidence.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "skill defect boundary",
+        "text": "Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+        "signature": "ac::::skill defect boundary::skill defects create research/change proposal input only and never auto-modify beacon skills or requirement truth.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e",
+    "source_baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/qa-evidence-attribution-layer.json",
+    "generated_at": "2026-05-25T10:05:38.723123+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evidence-attribution-layer.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-qa-evidence-attribution-layer.md"
+  }
+}

@@ -1,0 +1,566 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "qa-evidence-attribution-layer",
+  "feature_slug": "qa-evidence-attribution-layer",
+  "version": "v1.4.10",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-25T18:05:30.426409",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-25T18:05:30.425775",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-QA-ATTR-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "taxonomy",
+      "qa_type": "taxonomy",
+      "title": "qa-evidence-attribution-layer AC-001 :: Attribution accepts only the supported failure families and rejects unknown fami",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"finite_failure_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Attribution accepts only the supported failure families and rejects unknown families.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"finite_failure_taxonomy\"`",
+      "scenario": "Attribution accepts only the supported failure families and rejects unknown families.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "qa-evidence-attribution-layer AC-002 :: Non-runner attribution requires non-empty affected AC IDs and current evidence r",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"non_runner_attribution_requires_ac_and_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Non-runner attribution requires non-empty affected AC IDs and current evidence refs.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"non_runner_attribution_requires_ac_and_evidence\"`",
+      "scenario": "Non-runner attribution requires non-empty affected AC IDs and current evidence refs.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-003",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "blocked-admission",
+      "qa_type": "blocked-admission",
+      "title": "qa-evidence-attribution-layer AC-002 :: Runner admission blockers may omit AC IDs only when AC evaluation was not reache",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"runner_blocker_can_precede_ac_evaluation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runner admission blockers may omit AC IDs only when AC evaluation was not reached and blocker evidence is present.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"runner_blocker_can_precede_ac_evaluation\"`",
+      "scenario": "Runner admission blockers may omit AC IDs only when AC evaluation was not reached and blocker evidence is present.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-004",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "routing",
+      "qa_type": "routing",
+      "title": "qa-evidence-attribution-layer AC-003 :: Each failure family maps to the deterministic route recommendation defined by th",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"failure_family_route_matrix\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Each failure family maps to the deterministic route recommendation defined by the PRD.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"failure_family_route_matrix\"`",
+      "scenario": "Each failure family maps to the deterministic route recommendation defined by the PRD.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-005",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "fail-closed",
+      "qa_type": "fail-closed",
+      "title": "qa-evidence-attribution-layer AC-004 :: Ambiguous or missing evidence cannot pass and is classified as insufficient evid",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"ambiguous_or_missing_evidence_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Ambiguous or missing evidence cannot pass and is classified as insufficient evidence unless a more specific blocker is proven.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"ambiguous_or_missing_evidence_fails_closed\"`",
+      "scenario": "Ambiguous or missing evidence cannot pass and is classified as insufficient evidence unless a more specific blocker is proven.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-006",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "skill-boundary",
+      "qa_type": "skill-boundary",
+      "title": "qa-evidence-attribution-layer AC-005 :: Skill defect attribution produces research/change proposal input and does not mo",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"skill_defect_is_proposal_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skill defect attribution produces research/change proposal input and does not modify skill files or requirement truth.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"skill_defect_is_proposal_only\"`",
+      "scenario": "Skill defect attribution produces research/change proposal input and does not modify skill files or requirement truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-007",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "authority",
+      "qa_type": "authority",
+      "title": "qa-evidence-attribution-layer AC-006 :: Attribution fails closed if it claims canonical truth, QA verdict, release verdi",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"attribution_cannot_claim_truth_or_verdict_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Attribution fails closed if it claims canonical truth, QA verdict, release verdict, gate verdict, or freeze authority.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"attribution_cannot_claim_truth_or_verdict_authority\"`",
+      "scenario": "Attribution fails closed if it claims canonical truth, QA verdict, release verdict, gate verdict, or freeze authority.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-QA-ATTR-008",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "release-boundary",
+      "qa_type": "release-boundary",
+      "title": "qa-evidence-attribution-layer AC-007 :: Release readiness may summarize attribution only through formal QA closure and n",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"release_consumes_only_formal_qa_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Release readiness may summarize attribution only through formal QA closure and never treats raw attribution as pass evidence.",
+      "evidence_path": ".beacon/evidence/test-results/qa-evidence-attribution-layer/TC-QA-ATTR-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_qa_evidence_attribution.py -k \"release_consumes_only_formal_qa_closure\"`",
+      "scenario": "Release readiness may summarize attribution only through formal QA closure and never treats raw attribution as pass evidence.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+    "row_count": 8,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-25T18:05:30.426460",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-evidence-attribution-layer",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+    "present": true,
+    "section_count": 3,
+    "sections": {
+      "architecture": [
+        "`truth_drift`: requirement truth must reopen through `beacon-change`.",
+        "`implementation_gap`: implementation must route to `beacon-implement`.",
+        "`coverage_gap`: acceptance coverage must route to `beacon-test-case`.",
+        "`execution_lapse`: QA must rerun or continue through `beacon-qa`.",
+        "`skill_defect`: Beacon skill improvement must become research/change proposal input only.",
+        "`runner_admission_blocker`: runner or environment admission must block without becoming product failure.",
+        "`evidence_insufficient`: QA must continue gathering evidence and cannot pass release readiness."
+      ],
+      "state_machine": [
+        "`source_evidence_missing`: AC or evidence refs are missing.",
+        "`runner_admission_blocked`: runner never reached AC evaluation.",
+        "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+        "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+        "`source_evidence_missing` routes to `evidence_insufficient`.",
+        "`runner_admission_blocked` routes to `blocked`.",
+        "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+        "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+      ],
+      "decision_priority": [
+        "Authority boundary violation blocks first.",
+        "Proven `truth_drift` routes to `beacon-change`.",
+        "Proven `coverage_gap` routes to `beacon-test-case`.",
+        "Proven `implementation_gap` routes to `beacon-implement`.",
+        "Proven `runner_admission_blocker` routes to `blocked`.",
+        "Proven `execution_lapse` routes to `beacon-qa`.",
+        "Proven `skill_defect` becomes research/change proposal input only.",
+        "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+        "Release readiness consumes only formal QA closure after attribution is recorded."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`source_evidence_missing`: AC or evidence refs are missing.",
+          "`runner_admission_blocked`: runner never reached AC evaluation.",
+          "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+          "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+          "`source_evidence_missing` routes to `evidence_insufficient`.",
+          "`runner_admission_blocked` routes to `blocked`.",
+          "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+          "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Authority boundary violation blocks first.",
+          "Proven `truth_drift` routes to `beacon-change`.",
+          "Proven `coverage_gap` routes to `beacon-test-case`.",
+          "Proven `implementation_gap` routes to `beacon-implement`.",
+          "Proven `runner_admission_blocker` routes to `blocked`.",
+          "Proven `execution_lapse` routes to `beacon-qa`.",
+          "Proven `skill_defect` becomes research/change proposal input only.",
+          "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+          "Release readiness consumes only formal QA closure after attribution is recorded."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+      }
+    ]
+  }
+}

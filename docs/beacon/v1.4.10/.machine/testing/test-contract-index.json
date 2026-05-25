@@ -16,11 +16,11 @@
     "story_state": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json"
   },
   "source_hashes": {
-    "prd": "sha256:dd3991818ec02469acce85b58363abf1f46d465d95aa099ee1712fb987a70848",
-    "user_story": "sha256:813a5555c43699f7b5b9c23b9ce47654991d1a89a590df16ff0f1ec30685723f",
+    "prd": "sha256:c3e28bd3a7706e22407975d5e6973c9bc3e918ee4e705fd9cf05dd943b7850fa",
+    "user_story": "sha256:0454786ab7f0e54ca2b43682543eee8d69ecdf495ce023de714e4ef51d739ea4",
     "test_case": "sha256:6601c488e83b47745e4695a896d2b2d9d5f169b3fc72e040077c53e549e6c4d7",
-    "ac_matrix": "sha256:391e2cfebfb1ef18eb4e4c6ac5806637a4ec10074f22a0ad142bebf65311da5d",
-    "story_state": "sha256:ab8296a4cab85df4e77d5fb196c08f0d7c5f73b31ee54d5a87680e1ab607ffdf"
+    "ac_matrix": "sha256:b7e546f2dca0eee2955010c784de9aa7647ff272342a531c950403cfd9d48bda",
+    "story_state": "sha256:d6e511a3479e8e3aa10b9b02af661361404fa2c112b0c3abdedb8cde8e9d9fd5"
   },
   "lanes": {
     "feature_release_facing": [
@@ -32,8 +32,8 @@
         "layer": "unit",
         "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"discover_post_release_hooks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Enabled project hooks matching `post_release` are discovered from `docs/beacon/hooks`.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-001.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-001/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -46,8 +46,8 @@
         "layer": "release",
         "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"release_check_surfaces_post_release_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Release readiness output includes hook advisory and a confirmed-run recommended command.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-002.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-002/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -60,8 +60,8 @@
         "layer": "safety",
         "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"advisory_plan_has_no_side_effect\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Automatic advisory planning does not execute side effects.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-003.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-003/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -74,8 +74,8 @@
         "layer": "gate",
         "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_requires_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "`manual_confirmed` hook run without `--confirm` is blocked.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-004.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-004/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -88,8 +88,8 @@
         "layer": "integration",
         "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_confirmed_followup\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Confirmed hook run executes restricted follow-up and writes evidence.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-005.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-005/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -102,8 +102,8 @@
         "layer": "boundary",
         "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"hook_advisory_has_no_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Hook advisory/evidence is support/runtime evidence only and cannot modify lifecycle verdicts.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-006.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-006/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -116,8 +116,8 @@
         "layer": "support-surface",
         "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"help_status_can_project_hook_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Help/status can expose hook advisory without creating a lifecycle stage.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-007.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-007/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -130,8 +130,8 @@
         "layer": "fail-closed",
         "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "assertion": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
-        "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-008.json",
-        "evidence_status": "missing",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-008/command.txt",
+        "evidence_status": "passed",
         "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
         "release_blocking": true,
         "mapping_status": "pass"
@@ -168,8 +168,8 @@
       "layer": "unit",
       "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"discover_post_release_hooks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Enabled project hooks matching `post_release` are discovered from `docs/beacon/hooks`.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-001.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-001/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -182,8 +182,8 @@
       "layer": "release",
       "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"release_check_surfaces_post_release_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Release readiness output includes hook advisory and a confirmed-run recommended command.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-002.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-002/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -196,8 +196,8 @@
       "layer": "safety",
       "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"advisory_plan_has_no_side_effect\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Automatic advisory planning does not execute side effects.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-003.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-003/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -210,8 +210,8 @@
       "layer": "gate",
       "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_requires_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "`manual_confirmed` hook run without `--confirm` is blocked.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-004.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-004/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -224,8 +224,8 @@
       "layer": "integration",
       "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_confirmed_followup\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Confirmed hook run executes restricted follow-up and writes evidence.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-005.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-005/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -238,8 +238,8 @@
       "layer": "boundary",
       "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"hook_advisory_has_no_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Hook advisory/evidence is support/runtime evidence only and cannot modify lifecycle verdicts.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-006.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-006/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -252,8 +252,8 @@
       "layer": "support-surface",
       "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"help_status_can_project_hook_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Help/status can expose hook advisory without creating a lifecycle stage.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-007.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-007/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -266,8 +266,8 @@
       "layer": "fail-closed",
       "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
-      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-008.json",
-      "evidence_status": "missing",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260525T173622786842/qa9-tc/TC-LBH-008/command.txt",
+      "evidence_status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
       "release_blocking": true,
       "mapping_status": "pass"
@@ -332,6 +332,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-05-25T09:08:49.885894+00:00",
+  "generated_at": "2026-05-25T09:37:08.363575+00:00",
   "index_path": "docs/beacon/v1.4.10/.machine/testing/test-contract-index.json"
 }

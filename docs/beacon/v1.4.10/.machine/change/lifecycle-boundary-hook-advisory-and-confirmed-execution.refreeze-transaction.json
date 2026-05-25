@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-lifecycle-boundary-hook-advisory-and-confirmed-execution-20260525t085839z",
+  "transaction_id": "tx-change-refreeze-lifecycle-boundary-hook-advisory-and-confirmed-execution-20260525t092303z",
   "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
   "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
   "version": "v1.4.10",
-  "change_reason": "accepted change: lifecycle boundary hook advisory with automatic discovery, plan, safe dry-run, recommended commands, support evidence only, and manual confirmation for side effects",
+  "change_reason": "sync frozen baseline after lifecycle hook advisory implementation evidence",
   "touched_surfaces": [
     "change",
     "prd",
@@ -52,16 +52,16 @@
     }
   },
   "truth_revision_before": {
-    "revision_id": "R1",
+    "revision_id": "R2",
     "doc_status": "frozen",
-    "lifecycle_status": "idle",
+    "lifecycle_status": "accepted",
     "baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f"
   },
   "truth_revision_after": {
-    "revision_id": "R2",
+    "revision_id": "R3",
     "doc_status": "frozen",
     "lifecycle_status": "frozen",
-    "baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f"
+    "baseline_hash": "sha256:7eb7a648db5f04cfe80a8baea2d00933af7690e4d7f59a33851a5acb1ec571da"
   },
   "refreeze_status": "complete",
   "next_route": {
@@ -75,21 +75,21 @@
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-05-25T08:58:39.651002+00:00",
+  "created_at": "2026-05-25T09:23:03.301906+00:00",
   "previous_revision": {
-    "revision_id": "R1",
+    "revision_id": "R2",
     "doc_status": "superseded",
     "lifecycle_status": "superseded",
     "baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f"
   },
   "opened_revision": {
-    "revision_id": "R2",
+    "revision_id": "R3",
     "doc_status": "draft",
     "lifecycle_status": "draft",
     "baseline_hash": ""
   },
   "story_reopen": {
-    "current_revision_id": "R2",
+    "current_revision_id": "R3",
     "lifecycle_status": "draft"
   },
   "requirement_package": {
@@ -106,7 +106,7 @@
       "path": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
       "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
       "version": "v1.4.10",
-      "revision_id": "R2",
+      "revision_id": "R3",
       "ac_count": 8,
       "test_count": 8,
       "story_ids": [
@@ -151,7 +151,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-05-25T08:58:41.931573+00:00",
+        "generated_at": "2026-05-25T09:23:06.593485+00:00",
         "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
         "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
         "prd_ref": "docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
@@ -303,7 +303,7 @@
       "finding_count": 0,
       "run_id": "run-20260523T165302735331",
       "source": "change.refreeze-chain",
-      "written_at": "2026-05-25T08:58:42.076266+00:00",
+      "written_at": "2026-05-25T09:23:06.733117+00:00",
       "state_path": ".beacon/state/requirement-clarity-lifecycle-boundary-hook-advisory-and-confirmed-execution.json"
     }
   },
@@ -312,8 +312,8 @@
     "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
     "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
     "version": "v1.4.10",
-    "revision_id": "R2",
-    "source_revision_id": "R1",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
@@ -323,7 +323,7 @@
     "added_requirement_surfaces": [],
     "retained_requirement_surfaces": [
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-001",
         "story_id": "",
         "kind": "ac",
@@ -334,7 +334,7 @@
         "signature": "ac::::boundary discovery::given a lifecycle boundary such as `post_release`, beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-005",
         "story_id": "",
         "kind": "ac",
@@ -345,7 +345,7 @@
         "signature": "ac::::confirmed execution path::given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-006",
         "story_id": "",
         "kind": "ac",
@@ -356,7 +356,7 @@
         "signature": "ac::::evidence authority boundary::hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite qa, release, gate, freeze, prd, user-story, or test-case truth.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-007",
         "story_id": "",
         "kind": "ac",
@@ -367,7 +367,7 @@
         "signature": "ac::::help/status visibility::help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-008",
         "story_id": "",
         "kind": "ac",
@@ -378,7 +378,7 @@
         "signature": "ac::::hidden auto-run fail closed::hidden side-effect auto-run attempts fail closed with explicit reason codes.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-004",
         "story_id": "",
         "kind": "ac",
@@ -389,7 +389,7 @@
         "signature": "ac::::manual confirmation guard::given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-002",
         "story_id": "",
         "kind": "ac",
@@ -400,7 +400,7 @@
         "signature": "ac::::release follow-up advisory::given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-003",
         "story_id": "",
         "kind": "ac",
@@ -411,10 +411,10 @@
         "signature": "ac::::safe automatic planning::automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.::"
       }
     ],
-    "current_baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f",
+    "current_baseline_hash": "sha256:7eb7a648db5f04cfe80a8baea2d00933af7690e4d7f59a33851a5acb1ec571da",
     "source_baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f",
     "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
-    "generated_at": "2026-05-25T08:58:42.195907+00:00",
+    "generated_at": "2026-05-25T09:23:06.848225+00:00",
     "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
     "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
   }

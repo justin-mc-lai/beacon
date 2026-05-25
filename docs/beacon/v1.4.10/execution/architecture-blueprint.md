@@ -207,21 +207,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:qa-evo-deep-evidence-bound-ac-aware-closure:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.4.10`
-- feature_count: `4`
-- transaction_id: `tx-ffe0b1fed56f65795`
-- source_hash: `sha256:b06e450d0121948e2c8688a66882bf5fd08dbea13d88474d9254f8941ff0d346`
-
-### Registered Feature Baselines
-- `implement-mode-human-playbooks-and-routing-contract` | revision=`R3` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json`
-- `project-lifecycle-hook-skill-toolkit-contract` | revision=`R4` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json`
-- `qa-evo-deep-and-skill-eval-kit-v1410` | revision=`R4` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-and-skill-eval-kit-v1410.json`
-- `qa-evo-deep-evidence-bound-ac-aware-closure` | revision=`R3` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-evidence-bound-ac-aware-closure.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:implement-mode-human-playbooks-and-routing-contract:START -->
 ## Technical Delta Blueprint
 
@@ -290,3 +275,88 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:implement-mode-human-playbooks-and-routing-contract:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.4.10`
+- feature_count: `5`
+- transaction_id: `tx-26549daf7f81dd2ea`
+- source_hash: `sha256:fe7c2f4cd3b09b3d9042a5e5fff9531a80a7281d12c5db5d29c1aef90fa04617`
+
+### Registered Feature Baselines
+- `implement-mode-human-playbooks-and-routing-contract` | revision=`R3` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json`
+- `lifecycle-boundary-hook-advisory-and-confirmed-execution` | revision=`R3` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-lifecycle-boundary-hook-advisory-and-confirmed-execution.json`
+- `project-lifecycle-hook-skill-toolkit-contract` | revision=`R4` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json`
+- `qa-evo-deep-and-skill-eval-kit-v1410` | revision=`R4` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-and-skill-eval-kit-v1410.json`
+- `qa-evo-deep-evidence-bound-ac-aware-closure` | revision=`R3` | branch=`beacon/v1.4.10` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-evidence-bound-ac-aware-closure.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:lifecycle-boundary-hook-advisory-and-confirmed-execution:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `lifecycle-boundary-hook-advisory-and-confirmed-execution`
+- version: `v1.4.10`
+
+### Source Refs
+- prd: `docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md`
+- user_story: `docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md`
+- test_case: `docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:lifecycle-boundary-hook-advisory-and-confirmed-execution:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:lifecycle-boundary-hook-advisory-and-confirmed-execution:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.4.10-lifecycle-boundary-hook-advisory-and-confirmed-execution-R3`
+- transaction_id: `tx-74b366f2b1a8fe3dc`
+- source_hash: `sha256:cc975c9957e67eea1bb23ed3e6c512adb1ee94f1d84e1271052516c80f10ec8c`
+- projection_seq: `1`
+- version: `v1.4.10`
+- feature: `lifecycle-boundary-hook-advisory-and-confirmed-execution`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.4.10`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:lifecycle-boundary-hook-advisory-and-confirmed-execution:END -->

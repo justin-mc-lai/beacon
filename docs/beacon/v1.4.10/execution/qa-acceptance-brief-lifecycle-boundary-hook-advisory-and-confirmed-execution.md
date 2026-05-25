@@ -2,9 +2,9 @@
 
 - version: `v1.4.10`
 - feature: `lifecycle-boundary-hook-advisory-and-confirmed-execution`
-- revision_id: `R2`
+- revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-05-25T09:09:47.852601+00:00`
+- accepted_at: `2026-05-25T09:36:30.425223+00:00`
 - accepted_by: `qa`
 
 ## Summary

@@ -1,12 +1,12 @@
 # Change Refreeze Summary: lifecycle-boundary-hook-advisory-and-confirmed-execution
 
 - version: `v1.4.10`
-- change_reason: `accepted change: lifecycle boundary hook advisory with automatic discovery, plan, safe dry-run, recommended commands, support evidence only, and manual confirmation for side effects`
+- change_reason: `sync frozen baseline after lifecycle hook advisory implementation evidence`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R2`
+- revision_after: `R3`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.10/change/lifecycle-boundary-hook-advisory-and-confirmed-execution.md)

@@ -2,12 +2,24 @@
   "schema_version": "1.0",
   "version": "v1.4.10",
   "status": "generated",
-  "feature_count": 5,
+  "feature_count": 6,
   "features": [
+    {
+      "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
+      "summary": "Explicit Beacon version implement preflight now binds branch governance, git workflow, and deterministic implementation contract materials before mutation; canonical branch/worktree validation cannot be satisfied by origin/master ancestry alone.",
+      "status": "completed"
+    },
     {
       "feature": "implement-mode-human-playbooks-and-routing-contract",
       "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
       "summary": "native-single implementation completed",
+      "status": "completed"
+    },
+    {
+      "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "summary": "Lifecycle boundary hook advisory discovers post-release hooks, plans/dry-runs without hidden side effects, recommends confirmed execution, and marks hook evidence as support-only with no QA/release/gate verdict authority.",
       "status": "completed"
     },
     {
@@ -27,23 +39,18 @@
       "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
       "summary": "native-single implementation completed",
       "status": "completed"
-    },
-    {
-      "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
-      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
-      "summary": "Explicit Beacon version implement preflight now binds branch governance, git workflow, and deterministic implementation contract materials before mutation; canonical branch/worktree validation cannot be satisfied by origin/master ancestry alone.",
-      "status": "completed"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 5,
+    "feature_count": 6,
     "ordered_feature_slugs": [
       "qa-evo-deep-and-skill-eval-kit-v1410",
       "project-lifecycle-hook-skill-toolkit-contract",
       "qa-evo-deep-evidence-bound-ac-aware-closure",
       "implement-mode-human-playbooks-and-routing-contract",
-      "explicit-version-canonical-branch-worktree-preflight-gate"
+      "explicit-version-canonical-branch-worktree-preflight-gate",
+      "lifecycle-boundary-hook-advisory-and-confirmed-execution"
     ],
     "waves": [
       {
@@ -136,6 +143,27 @@
             "reason_code": "shared_delivery_service_conflict"
           }
         ]
+      },
+      {
+        "wave": 5,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+            "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+            "depends_on_features": [
+              "implement-mode-human-playbooks-and-routing-contract"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
@@ -144,6 +172,10 @@
   ],
   "removed": [],
   "fixed": [
+    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/commands/implement.py",
+    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/git_alignment.py",
+    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/implementation_plan.py",
+    "[explicit-version-canonical-branch-worktree-preflight-gate] tests/test_v1410_explicit_version_branch_preflight.py",
     "[implement-mode-human-playbooks-and-routing-contract] Updated `.agents/skills/beacon-implement/SKILL.md`",
     "[implement-mode-human-playbooks-and-routing-contract] Updated `beacon/commands/help.py`",
     "[implement-mode-human-playbooks-and-routing-contract] Updated `beacon/commands/status.py`",
@@ -155,6 +187,13 @@
     "[implement-mode-human-playbooks-and-routing-contract] Updated `docs/beacon/v1.4.10/execution/index.md`",
     "[implement-mode-human-playbooks-and-routing-contract] Updated `docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md`",
     "[implement-mode-human-playbooks-and-routing-contract] Updated `skills/beacon/beacon-implement/SKILL.md`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `beacon/utils/project_hooks.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `beacon/commands/release.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `beacon/utils/help_support.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `beacon/commands/help.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `beacon/commands/status.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `tests/test_v1410_lifecycle_hook_advisory.py`",
+    "[lifecycle-boundary-hook-advisory-and-confirmed-execution] Updated `tests/test_v1410_project_lifecycle_hooks.py`",
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/auto-test-status.json`",
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/coverage-summary.json`",
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `.beacon/evidence-manifest.json`",
@@ -193,18 +232,28 @@
     "[qa-evo-deep-evidence-bound-ac-aware-closure] Updated `docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json`",
     "[qa-evo-deep-evidence-bound-ac-aware-closure] Updated `docs/beacon/v1.4.10/execution/architecture-blueprint.md`",
     "[qa-evo-deep-evidence-bound-ac-aware-closure] Updated `docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md`",
-    "[qa-evo-deep-evidence-bound-ac-aware-closure] Updated `tests/test_v1410_qa_evo_deep_skill_eval.py`",
-    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/commands/implement.py",
-    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/git_alignment.py",
-    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/implementation_plan.py",
-    "[explicit-version-canonical-branch-worktree-preflight-gate] tests/test_v1410_explicit_version_branch_preflight.py"
+    "[qa-evo-deep-evidence-bound-ac-aware-closure] Updated `tests/test_v1410_qa_evo_deep_skill_eval.py`"
   ],
   "traceability_refs": [
+    "docs/beacon/v1.4.10/.machine/execution/technical-implementation-explicit-version-canonical-branch-worktree-preflight-gate.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-summary-explicit-version-canonical-branch-worktree-preflight-gate.json",
+    "docs/beacon/v1.4.10/execution/implementation-brief-explicit-version-canonical-branch-worktree-preflight-gate.md",
+    "docs/beacon/v1.4.10/.machine/change/explicit-version-canonical-branch-worktree-preflight-gate.json",
+    "docs/beacon/v1.4.10/change/explicit-version-canonical-branch-worktree-preflight-gate.md",
     "docs/beacon/v1.4.10/.machine/execution/technical-implementation-implement-mode-human-playbooks-and-routing-contract.json",
     "docs/beacon/v1.4.10/.machine/execution/implementation-summary-implement-mode-human-playbooks-and-routing-contract.json",
     "docs/beacon/v1.4.10/execution/implementation-brief-implement-mode-human-playbooks-and-routing-contract.md",
     "docs/beacon/v1.4.10/.machine/change/implement-mode-human-playbooks-and-routing-contract.json",
     "docs/beacon/v1.4.10/change/implement-mode-human-playbooks-and-routing-contract.md",
+    "a11685b0c2d4ceeeeaa46ad3021e4cbb8bb37c4f",
+    "docs/beacon/v1.4.10/.machine/execution/qa-acceptance-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "docs/beacon/v1.4.10/execution/qa-acceptance-brief-lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-writeback-ledger-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "docs/beacon/v1.4.10/.machine/execution/deterministic-implementation-contract-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-plan-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "docs/beacon/v1.4.10/.machine/testing/test-contract-index.json",
+    "docs/beacon/v1.4.10/.machine/change/lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "docs/beacon/v1.4.10/change/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
     "docs/beacon/v1.4.10/.machine/execution/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.json",
     "docs/beacon/v1.4.10/.machine/execution/implementation-summary-project-lifecycle-hook-skill-toolkit-contract.json",
     "docs/beacon/v1.4.10/execution/implementation-brief-project-lifecycle-hook-skill-toolkit-contract.md",
@@ -219,12 +268,7 @@
     "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-evidence-bound-ac-aware-closure.json",
     "docs/beacon/v1.4.10/execution/implementation-brief-qa-evo-deep-evidence-bound-ac-aware-closure.md",
     "docs/beacon/v1.4.10/.machine/change/qa-evo-deep-evidence-bound-ac-aware-closure.json",
-    "docs/beacon/v1.4.10/change/qa-evo-deep-evidence-bound-ac-aware-closure.md",
-    "docs/beacon/v1.4.10/.machine/execution/technical-implementation-explicit-version-canonical-branch-worktree-preflight-gate.json",
-    "docs/beacon/v1.4.10/.machine/execution/implementation-summary-explicit-version-canonical-branch-worktree-preflight-gate.json",
-    "docs/beacon/v1.4.10/execution/implementation-brief-explicit-version-canonical-branch-worktree-preflight-gate.md",
-    "docs/beacon/v1.4.10/.machine/change/explicit-version-canonical-branch-worktree-preflight-gate.json",
-    "docs/beacon/v1.4.10/change/explicit-version-canonical-branch-worktree-preflight-gate.md"
+    "docs/beacon/v1.4.10/change/qa-evo-deep-evidence-bound-ac-aware-closure.md"
   ],
-  "generated_at": "2026-05-25 15:45"
+  "generated_at": "2026-05-25 17:38"
 }

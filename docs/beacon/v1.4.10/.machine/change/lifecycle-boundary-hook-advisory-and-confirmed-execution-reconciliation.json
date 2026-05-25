@@ -1,0 +1,77 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "version": "v1.4.10",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-25T09:23:18.590240+00:00",
+  "detected_revision_id": "R3",
+  "source_revision_id": "R2",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R2",
+      "run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+      "recorded_at": "2026-05-25T09:09:26.588484+00:00",
+      "implemented_item_ids": [
+        "AC-003",
+        "TEST-006",
+        "AC-002",
+        "AC-005",
+        "TEST-003",
+        "TEST-004",
+        "AC-008",
+        "AC-006",
+        "TEST-002",
+        "TEST-005",
+        "TEST-008",
+        "AC-004",
+        "AC-007",
+        "TEST-007",
+        "TEST-001",
+        "AC-001",
+        "TASK-001"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R3",
+    "current_delivery_status": "idle"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project-root . --version v1.4.10 --reason \"implementation-first-reconciliation\""
+  }
+}
