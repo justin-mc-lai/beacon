@@ -1,28 +1,28 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-23T16:53:02.735932",
+  "timestamp": "2026-05-25T14:44:48.223773",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.10",
-  "run_id": "run-20260523T165302735331",
-  "spec_fingerprint_hash": "c425126825f10ee1f8d74e6a70ed6ab169aa3328092475205071f6bbc6fd999d",
+  "run_id": "run-20260525T144448222805",
+  "spec_fingerprint_hash": "9cdb5c7419f98192e514f913b79f7600aa2e0aa527f6df6947a7d828e0c8bf67",
   "status": "passed",
   "selected_layers": [
     "contract",
-    "exception"
+    "regression"
   ],
   "execution": {
-    "run_id": "run-20260523T165302735331",
+    "run_id": "run-20260525T144448222805",
     "version": "v1.4.10",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260523T165302735331",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260525T144448222805",
     "spec_fingerprint": {
-      "fingerprint_hash": "c425126825f10ee1f8d74e6a70ed6ab169aa3328092475205071f6bbc6fd999d",
+      "fingerprint_hash": "9cdb5c7419f98192e514f913b79f7600aa2e0aa527f6df6947a7d828e0c8bf67",
       "version": "v1.4.10",
-      "generated_at": "2026-05-23T08:53:08.570946+00:00"
+      "generated_at": "2026-05-25T06:44:58.668241+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"explicit_version_loads_execution_materials_before_mutation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -34,22 +34,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "9a00a0ff62bffc34043b063d3377c174adf9ab7100625f26609e999dab123aca",
-        "started_at": "2026-05-23T16:53:02.736317",
-        "ended_at": "2026-05-23T16:53:03.198215",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
+        "execution_fingerprint": "4abf9527ca61af276dd0b04c286aaf89cdc0b7f0124c48773605125b681990dc",
+        "started_at": "2026-05-25T14:44:48.224089",
+        "ended_at": "2026-05-25T14:44:48.846741",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/contract/result.json"
         ]
       },
       {
-        "layer": "exception",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"rolo_v200_marketing_services_on_v135_branch_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -61,32 +61,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "bf71155772372a41991b5d14d1718dafb3ae74efec31d6b04d2f168e55d7f053",
-        "started_at": "2026-05-23T16:53:03.199327",
-        "ended_at": "2026-05-23T16:53:03.652526",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
+        "execution_fingerprint": "64144c533cb2044587f95e70505ace5c112d66663ca5ed766cb4b71f43b6d3cc",
+        "started_at": "2026-05-25T14:44:48.847772",
+        "ended_at": "2026-05-25T14:44:49.850505",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/exception/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/exception/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/exception/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/exception/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "evidence_generated": 9,
-      "entry_count": 9,
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
+      "evidence_generated": 8,
+      "entry_count": 8,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260523T165302735331/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260523T165302735331/summary.json",
+      ".beacon/evidence/auto-test/run-20260525T144448222805/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260525T144448222805/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260525T144448222805/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -102,9 +102,9 @@
     "qa_profile": "web-full",
     "qa_types": [
       "contract",
-      "exception"
+      "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -117,23 +117,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 9,
-      "passed": 9,
+      "cases_total": 8,
+      "passed": 8,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 9,
-      "auto_cases_executed": 9,
+      "auto_cases_total": 8,
+      "auto_cases_executed": 8,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-QAED-001",
+        "tc_id": "TC-EXVER-BRANCH-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-QAED-001",
+        "source_tc_id": "TC-EXVER-BRANCH-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -143,20 +143,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_output_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"explicit_version_loads_execution_materials_before_mutation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/result.json"
         ],
-        "execution_fingerprint": "48151c88ea0cad2fdde825f81f84ca897e85016cd7ffb9723a7d90e22f780b2e",
-        "started_at": "2026-05-23T16:53:03.655513",
-        "ended_at": "2026-05-23T16:53:04.118284",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/junit.xml",
+        "execution_fingerprint": "ed236eac2c66bda0738cce8319b4e162f99f7af9f897cd195f324cd8d6825d31",
+        "started_at": "2026-05-25T14:44:49.854033",
+        "ended_at": "2026-05-25T14:44:50.578998",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -169,9 +169,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-002",
+        "tc_id": "TC-EXVER-BRANCH-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-QAED-002",
+        "source_tc_id": "TC-EXVER-BRANCH-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -181,20 +181,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"round_memory_is_advisory_influence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"branch_governance_git_workflow_and_deterministic_contract_are_sources\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/result.json"
         ],
-        "execution_fingerprint": "3c809b0bd8356e8e1c74df0f053f6ecaa8fd7a70581e665e5c768593fe003fe5",
-        "started_at": "2026-05-23T16:53:04.119079",
-        "ended_at": "2026-05-23T16:53:04.556699",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/junit.xml",
+        "execution_fingerprint": "b0b1da8ece76fc526897a154f32589f27869c80290db20f054f679771d15d1e6",
+        "started_at": "2026-05-25T14:44:50.581591",
+        "ended_at": "2026-05-25T14:44:51.206320",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -207,9 +207,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-003",
+        "tc_id": "TC-EXVER-BRANCH-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-QAED-003",
+        "source_tc_id": "TC-EXVER-BRANCH-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -219,20 +219,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"deep_finding_taxonomy_supported\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"target_service_branch_and_worktree_are_validated\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/result.json"
         ],
-        "execution_fingerprint": "a84d19962cc44f5b9ef6ba1deae807591e55ac3c3fb4345961882739e56acded",
-        "started_at": "2026-05-23T16:53:04.557501",
-        "ended_at": "2026-05-23T16:53:04.998340",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/junit.xml",
+        "execution_fingerprint": "0845dd28b56cb4ca3309da6f3d210d3f034edcead3b9bd669d6ee4f230cf8e45",
+        "started_at": "2026-05-25T14:44:51.207228",
+        "ended_at": "2026-05-25T14:44:52.174837",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -245,9 +245,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QAED-004",
+        "tc_id": "TC-EXVER-BRANCH-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-QAED-004",
+        "source_tc_id": "TC-EXVER-BRANCH-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -257,20 +257,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"qa_evo_deep_write_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"per_service_expected_branch_resolves_map\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/result.json"
         ],
-        "execution_fingerprint": "659833197d93b87d42eb9e522965267095c8d6b7fb6410af21d60e80414d8763",
-        "started_at": "2026-05-23T16:53:04.999210",
-        "ended_at": "2026-05-23T16:53:05.433296",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/junit.xml",
+        "execution_fingerprint": "d8e6187a000a9163ea907dc634215b79c3e211ad881da32be3310cb91dedcc13",
+        "started_at": "2026-05-25T14:44:52.175722",
+        "ended_at": "2026-05-25T14:44:53.145507",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -283,9 +283,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-001",
+        "tc_id": "TC-EXVER-BRANCH-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-SKEV-001",
+        "source_tc_id": "TC-EXVER-BRANCH-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -295,20 +295,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_case_schema\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"canonical_mismatch_blocks_before_code_edit_or_commit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/result.json"
         ],
-        "execution_fingerprint": "24c5e1c174d099a5400146107fbf8de20fc73813b9482afeb025ac8212fb3920",
-        "started_at": "2026-05-23T16:53:05.434124",
-        "ended_at": "2026-05-23T16:53:05.873381",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/junit.xml",
+        "execution_fingerprint": "f9bf2e77fdecc7b1e8638f203cef254d8b9f40d6f0131fdf447d862c7a40557c",
+        "started_at": "2026-05-25T14:44:53.146307",
+        "ended_at": "2026-05-25T14:44:54.096481",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -321,9 +321,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-002",
+        "tc_id": "TC-EXVER-BRANCH-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-SKEV-002",
+        "source_tc_id": "TC-EXVER-BRANCH-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -333,20 +333,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_splits_and_regression_core\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"origin_master_ancestry_pass_does_not_override_canonical_mismatch\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/result.json"
         ],
-        "execution_fingerprint": "d5a7580391b6efe85924c3ad7d0498e302b374f5463c5934b601332f0516dd40",
-        "started_at": "2026-05-23T16:53:05.874217",
-        "ended_at": "2026-05-23T16:53:06.304179",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/junit.xml",
+        "execution_fingerprint": "b55a536c42929f6b8cd0ce76dffa116760ae68d005634456892f090872a33331",
+        "started_at": "2026-05-25T14:44:54.097317",
+        "ended_at": "2026-05-25T14:44:55.043369",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -359,32 +359,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-003",
+        "tc_id": "TC-EXVER-BRANCH-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-SKEV-003",
+        "source_tc_id": "TC-EXVER-BRANCH-007",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "exception",
-        "layer": "exception",
+        "qa_type": "regression",
+        "layer": "regression",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"skill_eval_outputs_are_evidence_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"rolo_v200_marketing_services_on_v135_branch_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/result.json"
         ],
-        "execution_fingerprint": "3bdecd0327169bbabe2628d3cd53958a265d58157f8daf6a65acc58c1d25db23",
-        "started_at": "2026-05-23T16:53:06.304918",
-        "ended_at": "2026-05-23T16:53:06.764548",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/junit.xml",
+        "execution_fingerprint": "556f5b0c845c52f659722d141a5c26cfc614afb4e8a58e1526be6f522533b937",
+        "started_at": "2026-05-25T14:44:55.044263",
+        "ended_at": "2026-05-25T14:44:56.040576",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -397,9 +397,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-SKEV-004",
+        "tc_id": "TC-EXVER-BRANCH-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-SKEV-004",
+        "source_tc_id": "TC-EXVER-BRANCH-008",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -409,58 +409,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"route_stability_cases_cover_support_and_implement_modes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-skev-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py -k \"blocked_output_names_expected_branch_and_worktree\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260525T144448222805",
+        "evidence_path": ".beacon/evidence/qa-feature/explicit-version-canonical-branch-worktree-preflight-gate/tc-exver-branch-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/result.json"
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/result.json"
         ],
-        "execution_fingerprint": "8857fdb77a9eba4a9e7e687a0c65721b9d26fb5309fffeb7080495b3bc6bab81",
-        "started_at": "2026-05-23T16:53:06.765294",
-        "ended_at": "2026-05-23T16:53:07.212510",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-QAED-005",
-        "ac_id": "AC-009",
-        "source_tc_id": "TC-QAED-005",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_evo_deep_skill_eval.py -k \"authority_bypass_fails_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260523T165302735331",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-evo-deep-and-skill-eval-kit-v1410/tc-qaed-005/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/result.json"
-        ],
-        "execution_fingerprint": "539dd1fe79e9c892cdfc77850d17449bb9b857c089c6363c85b1879e7d5d7eb3",
-        "started_at": "2026-05-23T16:53:07.213286",
-        "ended_at": "2026-05-23T16:53:07.674080",
-        "junit_path": ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/junit.xml",
+        "execution_fingerprint": "da56591d0d8cf31da4cbd89b319889cc494e021f4f6ae95b0df432aa3d40d740",
+        "started_at": "2026-05-25T14:44:56.042500",
+        "ended_at": "2026-05-25T14:44:57.086807",
+        "junit_path": ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -476,9 +438,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-23T08:53:08.010538+00:00",
+  "updated_at": "2026-05-25T06:44:58.078958+00:00",
   "summary": {
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "version": "v1.4.10",
     "status": "passed",
     "release_ready": true,
@@ -489,19 +451,19 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"explicit-version-canonical-branch-worktree-preflight-gate\""
   },
-  "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-  "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+  "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+  "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "QA evo-deep output",
-      "text": "Beacon defines a governed QA evo-deep output contract with source refs, finding type, risk, affected ACs, route recommendation, blocked admissions, and release supplement input.",
+      "theme": "explicit version material load",
+      "text": "When a user explicitly supplies a Beacon version, implement resolves `docs/beacon/<version>/execution/` materials before code edit or commit.",
       "tc_ids": [
-        "TC-QAED-001"
+        "TC-EXVER-BRANCH-001"
       ],
       "qa_types": [
         "contract"
@@ -509,10 +471,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "round memory boundary",
-      "text": "QA evo-deep records prior QA round memory as advisory influence only and never counts it as current pass evidence.",
+      "theme": "contract source coverage",
+      "text": "Implement reads branch governance, git workflow, and deterministic implementation contract materials when present.",
       "tc_ids": [
-        "TC-QAED-002"
+        "TC-EXVER-BRANCH-002"
       ],
       "qa_types": [
         "contract"
@@ -520,10 +482,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "deep coverage taxonomy",
-      "text": "QA evo-deep supports state-machine, business-flow, scenario-combination, permission-boundary, data-source-consistency, cross-surface-closure, and repeated-failure finding families.",
+      "theme": "branch and worktree validation",
+      "text": "Implement validates the target service's canonical branch and canonical worktree before allowing mutation.",
       "tc_ids": [
-        "TC-QAED-003"
+        "TC-EXVER-BRANCH-003"
       ],
       "qa_types": [
         "contract"
@@ -531,10 +493,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "write topology",
-      "text": "QA evo-deep detailed output writes to `docs/beacon/<version>/qa/evo-deep/<feature>.md`; research stores only index or design-input summaries.",
+      "theme": "per-service branch map",
+      "text": "`expected_branch=per-service` resolves through the service branch/worktree map and never passes as a literal branch.",
       "tc_ids": [
-        "TC-QAED-004"
+        "TC-EXVER-BRANCH-004"
       ],
       "qa_types": [
         "contract"
@@ -542,10 +504,10 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "eval case schema",
-      "text": "Skill Eval Kit defines auditable cases with id, prompt, expected route, boundary expectations, source anchors, tags, split, expected evidence, and scoring dimensions.",
+      "theme": "hard stop on mismatch",
+      "text": "Branch/worktree mismatch blocks code edit, commit, push, UAT merge, and delivery.",
       "tc_ids": [
-        "TC-SKEV-001"
+        "TC-EXVER-BRANCH-005"
       ],
       "qa_types": [
         "contract"
@@ -553,10 +515,10 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "regression core",
-      "text": "Skill Eval Kit defines optimization and holdout splits plus a small regression core that can be run before skill or harness release.",
+      "theme": "ancestry gate ordering",
+      "text": "`origin/master` ancestry validation remains required but cannot by itself satisfy implement preflight.",
       "tc_ids": [
-        "TC-SKEV-002"
+        "TC-EXVER-BRANCH-006"
       ],
       "qa_types": [
         "contract"
@@ -564,32 +526,21 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "evidence boundary",
-      "text": "Skill Eval Kit run outputs are runtime or machine evidence only and do not become requirement truth.",
+      "theme": "Rolo regression",
+      "text": "A Rolo v2.0.0 scenario with `marketing_sys` and `marketing_primary_fe` on `feature/v1.3.5-truth-engine-cutover` blocks and recommends `feature/v2.0.0-all` worktrees.",
       "tc_ids": [
-        "TC-SKEV-003"
+        "TC-EXVER-BRANCH-007"
       ],
       "qa_types": [
-        "exception"
+        "regression"
       ]
     },
     {
       "ac_id": "AC-008",
-      "theme": "route stability",
-      "text": "Skill Eval Kit includes route-stability cases for ordinary support skills, `beacon-deep`, `beacon-learn`, and `beacon-implement --mode single/team/ralph`.",
+      "theme": "actionable output",
+      "text": "Blocked output includes reason codes and expected canonical branch/worktree recommendations.",
       "tc_ids": [
-        "TC-SKEV-004"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "theme": "authority gate",
-      "text": "Requirement clarity or release readiness fails closed if QA evo-deep or Skill Eval output claims PRD, user-story, test-case, QA verdict, release verdict, or freeze authority.",
-      "tc_ids": [
-        "TC-QAED-005"
+        "TC-EXVER-BRANCH-008"
       ],
       "qa_types": [
         "contract"
@@ -603,7 +554,7 @@
     ],
     "targeted_layers": [
       "contract",
-      "exception"
+      "regression"
     ],
     "targeted_ac_ids": [
       "AC-001",
@@ -613,19 +564,17 @@
       "AC-005",
       "AC-006",
       "AC-007",
-      "AC-008",
-      "AC-009"
+      "AC-008"
     ],
     "targeted_tc_ids": [
-      "TC-QAED-001",
-      "TC-QAED-002",
-      "TC-QAED-003",
-      "TC-QAED-004",
-      "TC-QAED-005",
-      "TC-SKEV-001",
-      "TC-SKEV-002",
-      "TC-SKEV-003",
-      "TC-SKEV-004"
+      "TC-EXVER-BRANCH-001",
+      "TC-EXVER-BRANCH-002",
+      "TC-EXVER-BRANCH-003",
+      "TC-EXVER-BRANCH-004",
+      "TC-EXVER-BRANCH-005",
+      "TC-EXVER-BRANCH-006",
+      "TC-EXVER-BRANCH-007",
+      "TC-EXVER-BRANCH-008"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -635,15 +584,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 9
+    "verification_item_count": 8
   },
-  "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-QAED-001",
-      "source_tc_id": "TC-QAED-001",
+      "tc_id": "TC-EXVER-BRANCH-001",
+      "source_tc_id": "TC-EXVER-BRANCH-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -656,17 +605,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-QAED-002",
-      "source_tc_id": "TC-QAED-002",
+      "tc_id": "TC-EXVER-BRANCH-002",
+      "source_tc_id": "TC-EXVER-BRANCH-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -679,17 +628,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-QAED-003",
-      "source_tc_id": "TC-QAED-003",
+      "tc_id": "TC-EXVER-BRANCH-003",
+      "source_tc_id": "TC-EXVER-BRANCH-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -702,17 +651,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-QAED-004",
-      "source_tc_id": "TC-QAED-004",
+      "tc_id": "TC-EXVER-BRANCH-004",
+      "source_tc_id": "TC-EXVER-BRANCH-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -725,109 +674,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-SKEV-001",
-      "source_tc_id": "TC-SKEV-001",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-001",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-006",
-      "tc_id": "TC-SKEV-002",
-      "source_tc_id": "TC-SKEV-002",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-002",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-007",
-      "tc_id": "TC-SKEV-003",
-      "source_tc_id": "TC-SKEV-003",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-003",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "exception",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-008",
-      "tc_id": "TC-SKEV-004",
-      "source_tc_id": "TC-SKEV-004",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-004",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-009",
-      "tc_id": "TC-QAED-005",
-      "source_tc_id": "TC-QAED-005",
+      "tc_id": "TC-EXVER-BRANCH-005",
+      "source_tc_id": "TC-EXVER-BRANCH-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -840,11 +697,80 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-EXVER-BRANCH-006",
+      "source_tc_id": "TC-EXVER-BRANCH-006",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-006",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-EXVER-BRANCH-007",
+      "source_tc_id": "TC-EXVER-BRANCH-007",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-007",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "regression",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/result.json"
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-EXVER-BRANCH-008",
+      "source_tc_id": "TC-EXVER-BRANCH-008",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-008",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "contract",
+      "browser_required": false,
+      "replay_required": false,
+      "browser_evidence_pack_ref": "",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/result.json"
       ]
     }
   ],
@@ -867,7 +793,6 @@
     "reason_codes": [],
     "source_surface": "implement-to-qa-handoff",
     "verification_surface": "qa",
-    "refs": {},
     "findings": []
   },
   "requirement_completeness_gate": {
@@ -877,20 +802,20 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "version": "v1.4.10",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.re-freeze-transaction.json"
     },
     "projection_status": "missing_nonblocking",
-    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\" --single-feature",
+    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"explicit-version-canonical-branch-worktree-preflight-gate\" --single-feature",
     "next_action": "qa",
     "stage_gates": {
       "artifact_read_model": {
@@ -900,13 +825,13 @@
         "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.re-freeze-transaction.json"
           },
           "projection_status": "missing_nonblocking"
         }
@@ -932,8 +857,7 @@
             "AC-005",
             "AC-006",
             "AC-007",
-            "AC-008",
-            "AC-009"
+            "AC-008"
           ],
           "user_story_ac_ids": [
             "AC-001",
@@ -943,8 +867,7 @@
             "AC-005",
             "AC-006",
             "AC-007",
-            "AC-008",
-            "AC-009"
+            "AC-008"
           ],
           "test_case_ac_ids": [
             "AC-001",
@@ -954,8 +877,7 @@
             "AC-005",
             "AC-006",
             "AC-007",
-            "AC-008",
-            "AC-009"
+            "AC-008"
           ]
         }
       },
@@ -987,15 +909,13 @@
     "markdown_first_truth": {
       "status": "pass",
       "projection": {
-        "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+        "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
         "version": "v1.4.10",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "research": "docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "source_architecture": "docs/beacon/v1.4.10/source-architecture/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "change": "docs/beacon/v1.4.10/change/qa-evo-deep-and-skill-eval-kit-v1410.md"
+          "prd": "docs/beacon/v1.4.10/prd/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "user_story": "docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "test_case": "docs/beacon/v1.4.10/qa/test-cases/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "change": "docs/beacon/v1.4.10/change/explicit-version-canonical-branch-worktree-preflight-gate.md"
         },
         "prd_ac_ids": [
           "AC-001",
@@ -1005,8 +925,7 @@
           "AC-005",
           "AC-006",
           "AC-007",
-          "AC-008",
-          "AC-009"
+          "AC-008"
         ],
         "user_story_ac_ids": [
           "AC-001",
@@ -1016,8 +935,7 @@
           "AC-005",
           "AC-006",
           "AC-007",
-          "AC-008",
-          "AC-009"
+          "AC-008"
         ],
         "test_case_ac_ids": [
           "AC-001",
@@ -1027,48 +945,45 @@
           "AC-005",
           "AC-006",
           "AC-007",
-          "AC-008",
-          "AC-009"
+          "AC-008"
         ],
         "diagnostics": [],
         "status": "pass"
       },
       "freeze_state": {
         "schema_version": "1.0",
-        "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-        "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+        "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+        "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
         "version": "v1.4.10",
-        "revision_id": "R4",
-        "source_revision_id": "R3",
+        "revision_id": "R3",
+        "source_revision_id": "R2",
         "status": "frozen",
-        "baseline_hash": "sha256:11964177ae6f35febbd97f8809910c28f7ccc4ce94e1f8a491795974373ce536",
+        "baseline_hash": "sha256:e7fba69d58643e23e911246c55baf79ae24b42134ac46ba50470f8e81240c6d7",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "research": "docs/beacon/v1.4.10/research/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "source_architecture": "docs/beacon/v1.4.10/source-architecture/qa-evo-deep-and-skill-eval-kit-v1410.md",
-          "change": "docs/beacon/v1.4.10/change/qa-evo-deep-and-skill-eval-kit-v1410.md"
+          "prd": "docs/beacon/v1.4.10/prd/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "user_story": "docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "test_case": "docs/beacon/v1.4.10/qa/test-cases/explicit-version-canonical-branch-worktree-preflight-gate.md",
+          "change": "docs/beacon/v1.4.10/change/explicit-version-canonical-branch-worktree-preflight-gate.md"
         },
         "diagnostics": [],
-        "transaction_ref": "docs/beacon/v1.4.10/.machine/change/qa-evo-deep-and-skill-eval-kit-v1410.refreeze-transaction.json",
-        "generated_at": "2026-05-23T08:53:01.735448+00:00"
+        "transaction_ref": "docs/beacon/v1.4.10/.machine/change/explicit-version-canonical-branch-worktree-preflight-gate.refreeze-transaction.json",
+        "generated_at": "2026-05-25T06:44:46.685244+00:00"
       }
     },
     "completeness": {},
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.10/.machine/requirement/explicit-version-canonical-branch-worktree-preflight-gate.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/explicit-version-canonical-branch-worktree-preflight-gate.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "run_id": "run-20260523T165302735331",
-    "generated_at": "2026-05-23T08:53:08.302923+00:00",
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+    "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
+    "run_id": "run-20260525T144448222805",
+    "generated_at": "2026-05-25T06:44:58.392006+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 9,
+    "scenario_count": 8,
     "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
@@ -1088,11 +1003,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-QAED-001",
-      "tc_id": "TC-QAED-001",
-      "source_tc_id": "TC-QAED-001",
+      "scenario_id": "TC-EXVER-BRANCH-001",
+      "tc_id": "TC-EXVER-BRANCH-001",
+      "source_tc_id": "TC-EXVER-BRANCH-001",
       "ac_id": "AC-001",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1116,19 +1031,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-001/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-002",
-      "tc_id": "TC-QAED-002",
-      "source_tc_id": "TC-QAED-002",
+      "scenario_id": "TC-EXVER-BRANCH-002",
+      "tc_id": "TC-EXVER-BRANCH-002",
+      "source_tc_id": "TC-EXVER-BRANCH-002",
       "ac_id": "AC-002",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1152,19 +1067,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-002/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-003",
-      "tc_id": "TC-QAED-003",
-      "source_tc_id": "TC-QAED-003",
+      "scenario_id": "TC-EXVER-BRANCH-003",
+      "tc_id": "TC-EXVER-BRANCH-003",
+      "source_tc_id": "TC-EXVER-BRANCH-003",
       "ac_id": "AC-003",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1188,19 +1103,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-003/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QAED-004",
-      "tc_id": "TC-QAED-004",
-      "source_tc_id": "TC-QAED-004",
+      "scenario_id": "TC-EXVER-BRANCH-004",
+      "tc_id": "TC-EXVER-BRANCH-004",
+      "source_tc_id": "TC-EXVER-BRANCH-004",
       "ac_id": "AC-004",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1224,19 +1139,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-004/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-001",
-      "tc_id": "TC-SKEV-001",
-      "source_tc_id": "TC-SKEV-001",
+      "scenario_id": "TC-EXVER-BRANCH-005",
+      "tc_id": "TC-EXVER-BRANCH-005",
+      "source_tc_id": "TC-EXVER-BRANCH-005",
       "ac_id": "AC-005",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1260,19 +1175,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-001/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-002",
-      "tc_id": "TC-SKEV-002",
-      "source_tc_id": "TC-SKEV-002",
+      "scenario_id": "TC-EXVER-BRANCH-006",
+      "tc_id": "TC-EXVER-BRANCH-006",
+      "source_tc_id": "TC-EXVER-BRANCH-006",
       "ac_id": "AC-006",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1296,19 +1211,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-002/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-003",
-      "tc_id": "TC-SKEV-003",
-      "source_tc_id": "TC-SKEV-003",
+      "scenario_id": "TC-EXVER-BRANCH-007",
+      "tc_id": "TC-EXVER-BRANCH-007",
+      "source_tc_id": "TC-EXVER-BRANCH-007",
       "ac_id": "AC-007",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1332,19 +1247,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-003/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-SKEV-004",
-      "tc_id": "TC-SKEV-004",
-      "source_tc_id": "TC-SKEV-004",
+      "scenario_id": "TC-EXVER-BRANCH-008",
+      "tc_id": "TC-EXVER-BRANCH-008",
+      "source_tc_id": "TC-EXVER-BRANCH-008",
       "ac_id": "AC-008",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
+      "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1368,61 +1283,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-SKEV-004/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-QAED-005",
-      "tc_id": "TC-QAED-005",
-      "source_tc_id": "TC-QAED-005",
-      "ac_id": "AC-009",
-      "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260523T165302735331/qa9-tc/TC-QAED-005/result.json"
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T144448222805/qa9-tc/TC-EXVER-BRANCH-008/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
-    "run_id": "run-20260523T165302735331",
-    "ac_total": 9,
-    "ac_accepted": 9,
-    "scenario_total": 9,
-    "scenario_passed": 9,
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+    "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
+    "run_id": "run-20260525T144448222805",
+    "ac_total": 8,
+    "ac_accepted": 8,
+    "scenario_total": 8,
+    "scenario_passed": 8,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1432,8 +1311,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 9,
-      "executed_scenarios": 9,
+      "required_scenarios": 8,
+      "executed_scenarios": 8,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1460,7 +1339,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 9,
+      "verification_item_count": 8,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1470,7 +1349,6 @@
       "reason_codes": [],
       "source_surface": "implement-to-qa-handoff",
       "verification_surface": "qa",
-      "refs": {},
       "findings": []
     },
     "qa_outcome_taxonomy": {
@@ -1497,18 +1375,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"explicit-version-canonical-branch-worktree-preflight-gate\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-evo-deep-and-skill-eval-kit-v1410\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"explicit-version-canonical-branch-worktree-preflight-gate\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "version": "v1.4.10",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1529,17 +1407,15 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/explicit-version-canonical-branch-worktree-preflight-gate.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
-      ".beacon/release-gate-report.json",
-      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
-      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json"
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
+      "docs/beacon/v1.4.10/.machine/qa/explicit-version-canonical-branch-worktree-preflight-gate.ac-test-matrix.json",
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/ac-closure.json",
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/scorecard.json",
+      ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1552,7 +1428,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
+    "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "version": "v1.4.10",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1573,17 +1449,15 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/explicit-version-canonical-branch-worktree-preflight-gate.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-and-skill-eval-kit-v1410.ac-test-matrix.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/ac-closure.json",
-      ".beacon/qa/features/qa-evo-deep-and-skill-eval-kit-v1410/scorecard.json",
-      ".beacon/release-gate-report.json",
-      "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
-      "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json"
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/matrix.qa9.json",
+      "docs/beacon/v1.4.10/.machine/qa/explicit-version-canonical-branch-worktree-preflight-gate.ac-test-matrix.json",
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/ac-closure.json",
+      ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/scorecard.json",
+      ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
@@ -1594,5 +1468,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "c425126825f10ee1f8d74e6a70ed6ab169aa3328092475205071f6bbc6fd999d"
+  "current_spec_fingerprint_hash": "9cdb5c7419f98192e514f913b79f7600aa2e0aa527f6df6947a7d828e0c8bf67"
 }

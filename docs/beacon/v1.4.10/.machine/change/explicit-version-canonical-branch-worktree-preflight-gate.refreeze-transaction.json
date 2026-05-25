@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-explicit-version-canonical-branch-worktree-preflight-gate-20260525t050900z",
+  "transaction_id": "tx-change-refreeze-explicit-version-canonical-branch-worktree-preflight-gate-20260525t063728z",
   "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
   "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
   "version": "v1.4.10",
-  "change_reason": "Accept P0 friction friction:b0bf5951800d from rolo: explicit Beacon version implement must enforce canonical branch/worktree preflight before code edit or commit; origin/master ancestry cannot independently satisfy the gate; add Rolo v2.0.0 marketing service regression.",
+  "change_reason": "repair requirement baseline hash after generated markdown whitespace cleanup",
   "touched_surfaces": [
     "change",
     "prd",
@@ -52,21 +52,21 @@
     }
   },
   "truth_revision_before": {
-    "revision_id": "R1",
+    "revision_id": "R2",
     "doc_status": "frozen",
     "lifecycle_status": "idle",
     "baseline_hash": "sha256:2450d843243452169a3ca7b1b064df89592d4911ab44f77c59f087e3cad1e39b"
   },
   "truth_revision_after": {
-    "revision_id": "R2",
+    "revision_id": "R3",
     "doc_status": "frozen",
     "lifecycle_status": "frozen",
-    "baseline_hash": "sha256:2450d843243452169a3ca7b1b064df89592d4911ab44f77c59f087e3cad1e39b"
+    "baseline_hash": "sha256:e7fba69d58643e23e911246c55baf79ae24b42134ac46ba50470f8e81240c6d7"
   },
   "refreeze_status": "complete",
   "next_route": {
     "target_surface": "beacon-implement",
-    "command": "beacon implement \"explicit-version-canonical-branch-worktree-preflight-gate\" --project /Users/apple/Developer/Personal/products/beacon --version v1.4.10",
+    "command": "beacon implement \"explicit-version-canonical-branch-worktree-preflight-gate\" --project . --version v1.4.10",
     "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
   },
   "blocked_reason": "",
@@ -75,26 +75,26 @@
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-05-25T05:09:00.688070+00:00",
+  "created_at": "2026-05-25T06:37:28.992470+00:00",
   "previous_revision": {
-    "revision_id": "R1",
+    "revision_id": "R2",
     "doc_status": "superseded",
     "lifecycle_status": "superseded",
     "baseline_hash": "sha256:2450d843243452169a3ca7b1b064df89592d4911ab44f77c59f087e3cad1e39b"
   },
   "opened_revision": {
-    "revision_id": "R2",
+    "revision_id": "R3",
     "doc_status": "draft",
     "lifecycle_status": "draft",
     "baseline_hash": ""
   },
   "story_reopen": {
-    "current_revision_id": "R2",
+    "current_revision_id": "R3",
     "lifecycle_status": "draft"
   },
   "requirement_package": {
     "schema_version": "1.0",
-    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "project_root": ".",
     "version": "v1.4.10",
     "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "status": "synced",
@@ -106,7 +106,7 @@
       "path": "docs/beacon/v1.4.10/.machine/user-story/explicit-version-canonical-branch-worktree-preflight-gate.json",
       "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
       "version": "v1.4.10",
-      "revision_id": "R2",
+      "revision_id": "R3",
       "ac_count": 8,
       "test_count": 8,
       "story_ids": [
@@ -151,7 +151,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-05-25T05:09:02.900379+00:00",
+        "generated_at": "2026-05-25T06:37:38.390296+00:00",
         "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
         "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
         "prd_ref": "docs/beacon/v1.4.10/prd/explicit-version-canonical-branch-worktree-preflight-gate.md",
@@ -304,7 +304,7 @@
       "finding_count": 0,
       "run_id": "run-20260523T165302735331",
       "source": "change.refreeze-chain",
-      "written_at": "2026-05-25T05:09:03.047034+00:00",
+      "written_at": "2026-05-25T06:37:38.968485+00:00",
       "state_path": ".beacon/state/requirement-clarity-explicit-version-canonical-branch-worktree-preflight-gate.json"
     }
   },
@@ -313,8 +313,8 @@
     "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
     "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
     "version": "v1.4.10",
-    "revision_id": "R2",
-    "source_revision_id": "R1",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
@@ -324,98 +324,98 @@
     "added_requirement_surfaces": [],
     "retained_requirement_surfaces": [
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-008",
         "story_id": "",
         "kind": "ac",
         "theme": "actionable output",
         "text": "Blocked output includes reason codes and expected canonical branch/worktree recommendations.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::actionable output::blocked output includes reason codes and expected canonical branch/worktree recommendations.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-006",
         "story_id": "",
         "kind": "ac",
         "theme": "ancestry gate ordering",
         "text": "`origin/master` ancestry validation remains required but cannot by itself satisfy implement preflight.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::ancestry gate ordering::`origin/master` ancestry validation remains required but cannot by itself satisfy implement preflight.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-003",
         "story_id": "",
         "kind": "ac",
         "theme": "branch and worktree validation",
         "text": "Implement validates the target service's canonical branch and canonical worktree before allowing mutation.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::branch and worktree validation::implement validates the target service's canonical branch and canonical worktree before allowing mutation.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-002",
         "story_id": "",
         "kind": "ac",
         "theme": "contract source coverage",
         "text": "Implement reads branch governance, git workflow, and deterministic implementation contract materials when present.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::contract source coverage::implement reads branch governance, git workflow, and deterministic implementation contract materials when present.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-001",
         "story_id": "",
         "kind": "ac",
         "theme": "explicit version material load",
         "text": "When a user explicitly supplies a Beacon version, implement resolves `docs/beacon/<version>/execution/` materials before code edit or commit.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::explicit version material load::when a user explicitly supplies a beacon version, implement resolves `docs/beacon/<version>/execution/` materials before code edit or commit.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-005",
         "story_id": "",
         "kind": "ac",
         "theme": "hard stop on mismatch",
         "text": "Branch/worktree mismatch blocks code edit, commit, push, UAT merge, and delivery.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::hard stop on mismatch::branch/worktree mismatch blocks code edit, commit, push, uat merge, and delivery.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-004",
         "story_id": "",
         "kind": "ac",
         "theme": "per-service branch map",
         "text": "`expected_branch=per-service` resolves through the service branch/worktree map and never passes as a literal branch.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::per-service branch map::`expected_branch=per-service` resolves through the service branch/worktree map and never passes as a literal branch.::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-007",
         "story_id": "",
         "kind": "ac",
         "theme": "Rolo regression",
         "text": "A Rolo v2.0.0 scenario with `marketing_sys` and `marketing_primary_fe` on `feature/v1.3.5-truth-engine-cutover` blocks and recommends `feature/v2.0.0-all` worktrees.",
         "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
+        "source": "user-story:docs/beacon/v1.4.10/user-story/explicit-version-canonical-branch-worktree-preflight-gate.md",
         "signature": "ac::::rolo regression::a rolo v2.0.0 scenario with `marketing_sys` and `marketing_primary_fe` on `feature/v1.3.5-truth-engine-cutover` blocks and recommends `feature/v2.0.0-all` worktrees.::"
       }
     ],
-    "current_baseline_hash": "sha256:2450d843243452169a3ca7b1b064df89592d4911ab44f77c59f087e3cad1e39b",
+    "current_baseline_hash": "sha256:e7fba69d58643e23e911246c55baf79ae24b42134ac46ba50470f8e81240c6d7",
     "source_baseline_hash": "sha256:2450d843243452169a3ca7b1b064df89592d4911ab44f77c59f087e3cad1e39b",
     "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/explicit-version-canonical-branch-worktree-preflight-gate.json",
-    "generated_at": "2026-05-25T05:09:03.156877+00:00",
+    "generated_at": "2026-05-25T06:37:39.154097+00:00",
     "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-explicit-version-canonical-branch-worktree-preflight-gate.json",
     "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-explicit-version-canonical-branch-worktree-preflight-gate.md"
   }

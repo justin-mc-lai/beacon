@@ -1,12 +1,12 @@
 # Change Refreeze Summary: explicit-version-canonical-branch-worktree-preflight-gate
 
 - version: `v1.4.10`
-- change_reason: `Accept P0 friction friction:b0bf5951800d from rolo: explicit Beacon version implement must enforce canonical branch/worktree preflight before code edit or commit; origin/master ancestry cannot independently satisfy the gate; add Rolo v2.0.0 marketing service regression.`
+- change_reason: `repair requirement baseline hash after generated markdown whitespace cleanup`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R2`
+- revision_after: `R3`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.10/change/explicit-version-canonical-branch-worktree-preflight-gate.md)
