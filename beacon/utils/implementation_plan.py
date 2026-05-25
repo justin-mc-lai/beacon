@@ -469,13 +469,17 @@ def has_implementation_git_workflow_contract(project_root: Path, *, version: str
 
 def load_or_seed_implementation_git_workflow_contract(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
+    if has_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature):
+        return load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
     approved_contract = approved_technical_review_contract(project_root, version=resolved_version, feature=feature)
     if approved_contract:
         payload = technical_review_git_workflow_seed(approved_contract)
         if payload:
             return payload
-    if has_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature):
-        return load_implementation_git_workflow_contract(project_root, version=resolved_version, feature=feature)
+    plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
+    plan_contract = plan.get("git_workflow") if isinstance(plan.get("git_workflow"), dict) else {}
+    if isinstance(plan_contract, dict) and str(plan_contract.get("version", "") or "") == resolved_version:
+        return plan_contract
     return _default_git_workflow_contract(
         project_root,
         version=resolved_version,

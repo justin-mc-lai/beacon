@@ -185,6 +185,16 @@ def build_implement_branch_guard_payload(
         services = delivery_services or list(branch_map) or [Path(item).name for item in roots]
         root_by_service = {Path(item).name: item for item in roots}
         root_by_service.update({item: item for item in roots})
+        for item in roots:
+            root_text = str(item or "").strip()
+            if not root_text:
+                continue
+            parts = Path(root_text).parts
+            if parts:
+                root_by_service.setdefault(parts[0], root_text)
+            for service_name in branch_map:
+                if root_text == service_name or root_text.startswith(f"{service_name}/"):
+                    root_by_service[service_name] = root_text
         alignments = []
         any_repo_detected = False
         blocked = False
@@ -329,6 +339,7 @@ def build_implement_branch_guard_payload(
             repo_dirty = git_has_dirty_worktree(repo_root) if alignment.get("repo_detected") else False
             dirty_worktree = dirty_worktree or repo_dirty
             if repo_dirty and require_clean_worktree_for_switch and not alignment.get("branch_matches_target"):
+                blocked = True
                 alignment["reason_codes"] = list(
                     dict.fromkeys([*alignment.get("reason_codes", []), "implement_branch_switch_dirty_worktree"])
                 )
@@ -450,6 +461,8 @@ def build_implement_branch_guard_payload(
             dict.fromkeys([*alignment.get("reason_codes", []), "implement_direct_delivery_service_scope_unresolved"])
         )
     blocked = bool(alignment.get("blocked")) or bool(unresolved_services)
+    if dirty_worktree and require_clean_worktree_for_switch and current_branch != expected_branch:
+        blocked = True
 
     if not alignment.get("repo_detected"):
         summary = "implement branch preflight blocked: git repository not detected"

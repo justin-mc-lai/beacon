@@ -29,6 +29,7 @@ from beacon.utils.artifact_update_obligations import write_artifact_update_oblig
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.delivery_kernel import build_delivery_contract
+from beacon.utils.execution_branch_contract import load_execution_branch_contract
 from beacon.utils.git_alignment import (
     build_implement_branch_guard_payload,
     ensure_expected_worktree_lane,
@@ -2133,6 +2134,30 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
     branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
     contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
+    execution_contract = load_execution_branch_contract(project_root, version=version, feature=feature)
+    if isinstance(execution_contract, dict) and execution_contract.get("material_paths"):
+        contract = {
+            **contract,
+            **{
+                key: value
+                for key, value in execution_contract.items()
+                if key
+                in {
+                    "expected_branch",
+                    "branch_prefix",
+                    "base_branch",
+                    "require_clean_worktree_for_switch",
+                    "service_directories",
+                    "direct_delivery_services",
+                    "git_roots",
+                    "worktree_root",
+                    "service_branch_map",
+                    "service_worktree_map",
+                }
+                and value not in ("", None, [], {})
+            },
+            "execution_branch_contract": execution_contract,
+        }
     service_directories = _normalize_string_list(contract.get("service_directories") or contract.get("git_roots"))
     direct_delivery_services = _normalize_string_list(contract.get("direct_delivery_services") or service_directories)
     expected_branch = str(contract.get("expected_branch", "") or str(branch_guard_cfg.get("expected_branch", "") or "")).strip()
@@ -2143,6 +2168,7 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     )
     payload = {
         "git_workflow": contract,
+        "execution_branch_contract": contract.get("execution_branch_contract", {}),
         "branch_governance": contract.get("branch_governance", {}),
         "expected_branch": expected_branch,
         "branch_prefix": branch_prefix,
