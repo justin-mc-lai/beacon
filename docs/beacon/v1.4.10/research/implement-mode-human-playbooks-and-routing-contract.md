@@ -31,6 +31,17 @@ Beacon 当前 `implement` 已经存在三个运行形态：
 
 ## 3. Source-Driven Findings
 
+## Architecture
+
+```text
+beacon-implement
+  -> single public implementation skill
+  -> references / playbooks explain single, team, and ralph modes
+  -> CLI execution remains beacon implement run ... --mode single|team|ralph
+  -> help/status may recommend a mode with reason and canonical command
+  -> Skill Eval Kit verifies route stability and forbidden public mode-skill routes
+```
+
 ### 3.1 `beacon-implement` 已声明为唯一公开执行入口
 
 `skills/beacon/beacon-implement/SKILL.md` 明确约束：
@@ -253,6 +264,15 @@ Skill Eval Kit 应增加 route stability 用例：
 - 用户说“Ralph / 多轮闭环 / implement 后继续推到 QA release”时，仍路由到 `beacon-implement`，mode 推荐 `ralph`。
 - 不允许路由到不存在的 `beacon-implement-team` 或 `beacon-implement-ralph` public skill。
 
+## Decision Priority
+
+1. `beacon-implement` remains the only public implementation skill.
+2. Mode playbooks explain execution shape; they do not create public lifecycle stages.
+3. Help/status recommendations must include the reason and canonical command.
+4. Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.
+5. Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.
+6. Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features.
+
 ## 10. 收敛结论
 
 三种 implement 运行形态需要更稳定的人类面说明，但不需要拆成三个公开 skill。
@@ -276,3 +296,25 @@ one public implement skill
 - 可作为 Skill Eval Kit 的 `route_stability` eval case 输入。
 - 后续单独冻结时，只补 playbook、help/status 解释和 mode routing evidence。
 - 不创建 `beacon-implement-single`、`beacon-implement-team`、`beacon-implement-ralph` 三个 public skill。
+
+## Truth Bindings
+
+- `prd_refs`: `docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md`
+- `user_story_refs`: `docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md`
+- `test_case_refs`: `docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md`
+- `coverage_notes`: AC-001 through AC-008 cover the one-public-entrypoint contract, mode playbooks, mode recommendation, Ralph boundary, explainable command output, route-stability eval, nonexistent mode-skill fail-closed behavior, and truth authority boundaries.
+- `out_of_scope_notes`: This research does not create public mode-specific skills, split CLI top-level commands, replace QA/release/gate with Ralph, implement full Ralph Task Loop checkpoint/recovery, inject project skills through learn, or let support/research skills execute implementation directly.
+
+## Support Findings
+
+### CEO Review
+
+#### Round 2026-05-24T10:28:49.066566+00:00
+
+- source_skill: `beacon-ceo-review`
+- round_id: `2026-05-24T10:28:49.066566+00:00`
+- material_effect: `read_only_route_only`
+- adoption_status: `route_only`
+- route_decision: implement
+- finding_summary: CEO review did not find a version-level reframing blocker after challenging default downside axes.
+- source_refs: `docs/beacon/v1.4.10/.machine/execution/beacon-ceo-review-transaction.json`, `docs/beacon/v1.4.10/execution/beacon-ceo-review-transaction.md`

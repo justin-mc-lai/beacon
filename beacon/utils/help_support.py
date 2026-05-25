@@ -17,6 +17,7 @@ from beacon.utils.implementation_plan import (
     load_implementation_plan,
     load_implementation_plan_progress,
 )
+from beacon.utils.implement_mode_playbooks import recommend_implement_mode
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.learning_loop import load_learning_plane_contract
 from beacon.utils.material_audit import build_requirement_package_gate
@@ -1472,7 +1473,13 @@ def build_help_payload(
     elif bool((feature_archive or {}).get("active_delivery", False)) and str(revision_state.get("delivery_status", "") or "") in {"implemented", "verifying", "verified"}:
         team_phase = "completed"
     ralph_status = "active" if (str(ralph_state.get("phase", "") or "").strip() and not ralph_handoff_stale) else ""
-    if _semver_tuple(resolved_version) >= (1, 3, 8) and team_phase in {"completed", "passed"} and not ralph_status and not qa_closure_authoritative:
+    if (
+        _semver_tuple(resolved_version) >= (1, 3, 8)
+        and implement_mode == "team"
+        and team_phase in {"completed", "passed"}
+        and not ralph_status
+        and not qa_closure_authoritative
+    ):
         ralph_status = "pending"
     execution_surface = {
         "project_mode": project_mode,
@@ -1580,7 +1587,13 @@ def build_help_payload(
             "reason": "feature truth is archived and excluded from the current delivery plane",
             "command": f"beacon archive status --project-root {project_root} --version {resolved_version} --feature {quoted_feature} --json",
         }
-    elif _semver_tuple(resolved_version) >= (1, 3, 8) and team_phase in {"completed", "passed"} and ralph_status == "pending" and not qa_closure_authoritative:
+    elif (
+        _semver_tuple(resolved_version) >= (1, 3, 8)
+        and implement_mode == "team"
+        and team_phase in {"completed", "passed"}
+        and ralph_status == "pending"
+        and not qa_closure_authoritative
+    ):
         next_step = {
             "action": "ralph",
             "reason": "post-freeze execution contract requires Ralph after implement-team before QA/release closure",
@@ -1664,6 +1677,17 @@ def build_help_payload(
                 or ""
             ),
         }
+    implement_mode_recommendation = (
+        recommend_implement_mode(
+            feature=feature_name,
+            project_root=project_root,
+            version=resolved_version,
+            next_step=next_step,
+            execution_surface=execution_surface,
+        )
+        if feature_name and canonicalize_lifecycle_action(str(next_step.get("action", "") or "")) in {"implement", "ralph"}
+        else {}
+    )
     plan_counts = implementation_plan_progress.get("counts") if isinstance(implementation_plan_progress.get("counts"), dict) else {}
     progress_total = int(plan_counts.get("total", 0) or 0)
     progress_done = int(plan_counts.get("completed", 0) or 0)
@@ -1914,6 +1938,7 @@ def build_help_payload(
         "skill_discovery_hint": discovery_hint,
         "project_gate": profile_gate,
         "execution_surface": execution_surface,
+        "implement_mode_recommendation": implement_mode_recommendation,
         "delivery_read_model": delivery_read_model,
         "support_surface_projection": support_surface_projection,
         "guidance_family": guidance_family,

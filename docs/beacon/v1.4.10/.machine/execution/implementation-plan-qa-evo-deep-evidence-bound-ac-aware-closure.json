@@ -1,0 +1,1296 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-qa-evo-deep-evidence-bound-ac-aware-closure-r3",
+  "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+  "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
+  "version": "v1.4.10",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:5dd1907cb644e00b1aa245d02d80c66fb7a0ecff53ca7262125f46574d5e1cf8",
+  "plan_hash": "sha256:38516850b0d0e022ba5ce9099532ebfdb148299cd91104fe168a6aa99690243f",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "revision_delta": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "source_evidence_state",
+      "finding_binding_state",
+      "blocked_admission_state",
+      "skill_eval_replay_state",
+      "deep_absorption_state",
+      "release_supplement_state",
+      "authority_boundary"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes",
+      "eligibility"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `source_evidence_state`",
+        "- `finding_binding_state`",
+        "- `blocked_admission_state`",
+        "- `skill_eval_replay_state`",
+        "- `deep_absorption_state`",
+        "- `release_supplement_state`",
+        "- `authority_boundary`"
+      ]
+    },
+    "generated_at": "2026-05-24T04:19:38.691973+00:00",
+    "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "prd_ref": "docs/beacon/v1.4.10/prd/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "user_story_ref": "docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+    "present": true,
+    "section_count": 4,
+    "sections": {
+      "architecture": [
+        "Read frozen requirement truth:",
+        "PRD",
+        "user-story",
+        "test-case",
+        "Read current formal QA evidence:",
+        "`.beacon/qa/features/<feature>/scorecard.json`",
+        "`.beacon/qa/features/<feature>/ac-closure.json`",
+        "Produce evidence-bound deep findings:",
+        "human report: `docs/beacon/<version>/qa/evo-deep/<feature>.md`",
+        "machine projection: `docs/beacon/<version>/.machine/qa/evo-deep/<feature>.json`",
+        "formal QA absorption signal in QA scorecard"
+      ],
+      "business_flow": [
+        "Operator runs `beacon qa evo-deep \"<feature>\" --project . --version <version>`.",
+        "Beacon loads frozen requirement truth and current QA evidence for that feature.",
+        "If any required source is missing, Beacon returns a blocked admission with the missing surface and route recommendation.",
+        "If sources exist, Beacon builds findings and binds each finding to affected AC IDs and current evidence refs.",
+        "If a finding has no AC or evidence binding, Beacon blocks the report instead of returning a ready skeleton.",
+        "Operator routes blocked findings to change, test-case, implement, or QA as recommended.",
+        "Formal QA records whether each finding was absorbed, deferred, blocked, or not applicable.",
+        "Release readiness summarizes only absorbed findings as release supplement input."
+      ],
+      "state_machine": [
+        "`source_evidence_state`",
+        "`finding_binding_state`",
+        "`blocked_admission_state`",
+        "`skill_eval_replay_state`",
+        "`deep_absorption_state`",
+        "`release_supplement_state`",
+        "`authority_boundary`"
+      ],
+      "decision_priority": [
+        "Authority bypass blocks first.",
+        "Missing source evidence blocks readiness.",
+        "Empty AC/evidence binding blocks readiness.",
+        "Skill Eval replay failure blocks eval pass.",
+        "Formal QA absorption controls release supplement eligibility.",
+        "Advisory deep findings may influence exploration but cannot count as pass evidence."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "Operator runs `beacon qa evo-deep \"<feature>\" --project . --version <version>`.",
+          "Beacon loads frozen requirement truth and current QA evidence for that feature.",
+          "If any required source is missing, Beacon returns a blocked admission with the missing surface and route recommendation.",
+          "If sources exist, Beacon builds findings and binds each finding to affected AC IDs and current evidence refs.",
+          "If a finding has no AC or evidence binding, Beacon blocks the report instead of returning a ready skeleton.",
+          "Operator routes blocked findings to change, test-case, implement, or QA as recommended.",
+          "Formal QA records whether each finding was absorbed, deferred, blocked, or not applicable.",
+          "Release readiness summarizes only absorbed findings as release supplement input."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      },
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`source_evidence_state`",
+          "`finding_binding_state`",
+          "`blocked_admission_state`",
+          "`skill_eval_replay_state`",
+          "`deep_absorption_state`",
+          "`release_supplement_state`",
+          "`authority_boundary`"
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Authority bypass blocks first.",
+          "Missing source evidence blocks readiness.",
+          "Empty AC/evidence binding blocks readiness.",
+          "Skill Eval replay failure blocks eval pass.",
+          "Formal QA absorption controls release supplement eligibility.",
+          "Advisory deep findings may influence exploration but cannot count as pass evidence."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "`beacon qa evo-deep` must load the target feature PRD, user-story, test-case, QA scorecard, and AC closure before setting status `ready`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-QAED-BIND-001",
+        "TC-QAED-BIND-002",
+        "TC-QAED-BIND-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-QAED-BIND-001",
+        "TC-QAED-BIND-002",
+        "TC-QAED-BIND-003"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T123541983461",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/summary.json",
+        "verify:run-20260524T123615265170"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.456037+00:00",
+      "completed_at": "2026-05-24T04:19:45.516023+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-001",
+      "description": "Missing required source material must produce `status=blocked` with reason code `qa_evo_deep_source_evidence_missing`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-QAED-BIND-004",
+        "TC-QAED-BIND-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-QAED-BIND-004",
+        "TC-QAED-BIND-005"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T123541983461",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/summary.json",
+        "verify:run-20260524T123615265170"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516035+00:00",
+      "completed_at": "2026-05-24T04:19:45.516037+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-002",
+      "description": "A ready finding must contain non-empty `affected_ac_ids` and non-empty `current_evidence_refs`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-004",
+        "AC-007",
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-QA-ABSORB-001",
+        "TC-SKEV-REPLAY-001",
+        "TC-SKEV-REPLAY-002",
+        "TC-QAED-BIND-006",
+        "TC-REL-SUPP-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-009",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-SKEV-REPLAY-001",
+        "TC-SKEV-REPLAY-002",
+        "TC-QA-ABSORB-001",
+        "TC-REL-SUPP-001",
+        "TC-QAED-BIND-006"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1",
+        ".beacon/auto-test-status.json",
+        "verify:review.accept",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123541983461/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T123541983461",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evo-deep-evidence-bound-ac-aware-closure.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/ac-closure.json",
+        ".beacon/qa/features/qa-evo-deep-evidence-bound-ac-aware-closure/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T123615265170/summary.json",
+        "verify:run-20260524T123615265170"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516044+00:00",
+      "completed_at": "2026-05-24T04:19:45.516046+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-003",
+      "description": "A finding without AC or evidence binding must fail validation with reason code `qa_evo_deep_empty_skeleton_finding` unless it is a blocked admission.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516052+00:00",
+      "completed_at": "2026-05-24T04:19:45.516053+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-003",
+      "description": "Blocked admissions must include source refs, blocked reason codes, and recommended route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516061+00:00",
+      "completed_at": "2026-05-24T04:19:45.516063+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-004",
+      "description": "Skill Eval Kit runs must produce replay traces that record expected route, actual route, boundary preservation, source anchor coverage, and pass/fail status.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516071+00:00",
+      "completed_at": "2026-05-24T04:19:45.516073+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-004",
+      "description": "Skill Eval Kit must fail a case when route decision, boundary preservation, or source anchoring cannot be replayed.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516081+00:00",
+      "completed_at": "2026-05-24T04:19:45.516082+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-005",
+      "description": "QA scorecard must record deep finding absorption status for each QA evo-deep finding: `absorbed`, `deferred`, `blocked`, or `not_applicable`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516088+00:00",
+      "completed_at": "2026-05-24T04:19:45.516089+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-006",
+      "description": "Release readiness must only treat absorbed deep findings as release supplement input; advisory-only or blocked findings must remain non-verdict evidence.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516095+00:00",
+      "completed_at": "2026-05-24T04:19:45.516096+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 AC-007",
+      "description": "QA evo-deep and Skill Eval outputs must fail closed if they claim canonical truth, formal QA verdict, release verdict, gate verdict, or freeze authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: source_evidence_state, finding_binding_state, blocked_admission_state, skill_eval_replay_state, deep_absorption_state, release_supplement_state, authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "source_evidence_state",
+        "finding_binding_state",
+        "blocked_admission_state",
+        "skill_eval_replay_state",
+        "deep_absorption_state",
+        "release_supplement_state",
+        "authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T041944Z-89e1"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_evo_deep.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/qa/evo-deep/qa-evo-deep-and-skill-eval-kit-v1410.md",
+        "tests/test_v1410_qa_evo_deep_skill_eval.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T04:19:45.516101+00:00",
+      "completed_at": "2026-05-24T04:19:45.516103+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "version": "v1.4.10",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 7,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "QA evo-deep and Skill Eval outputs cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::authority boundary::qa evo-deep and skill eval outputs cannot claim prd, user-story, test-case, qa verdict, release verdict, gate verdict, or freeze authority.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "empty skeleton block",
+        "text": "Empty skeleton findings fail closed unless represented as blocked admissions with explicit source gaps and route recommendations.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::empty skeleton block::empty skeleton findings fail closed unless represented as blocked admissions with explicit source gaps and route recommendations.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "finding evidence binding",
+        "text": "Every ready finding includes non-empty `affected_ac_ids` and non-empty `current_evidence_refs`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::finding evidence binding::every ready finding includes non-empty `affected_ac_ids` and non-empty `current_evidence_refs`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "formal QA absorption",
+        "text": "QA scorecard records whether each deep finding was absorbed, deferred, blocked, or not applicable.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::formal qa absorption::qa scorecard records whether each deep finding was absorbed, deferred, blocked, or not applicable.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release supplement boundary",
+        "text": "Release readiness treats only formally absorbed deep findings as release supplement input and keeps advisory-only or blocked findings out of pass evidence.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::release supplement boundary::release readiness treats only formally absorbed deep findings as release supplement input and keeps advisory-only or blocked findings out of pass evidence.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "required source reads",
+        "text": "QA evo-deep reads PRD, user-story, test-case, QA scorecard, and AC closure before producing a ready report.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::required source reads::qa evo-deep reads prd, user-story, test-case, qa scorecard, and ac closure before producing a ready report.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Skill Eval replay",
+        "text": "Skill Eval Kit validates route decision, boundary preservation, and source anchoring through replay traces instead of schema-only checks.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+        "signature": "ac::::skill eval replay::skill eval kit validates route decision, boundary preservation, and source anchoring through replay traces instead of schema-only checks.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:5dd1907cb644e00b1aa245d02d80c66fb7a0ecff53ca7262125f46574d5e1cf8",
+    "source_baseline_hash": "sha256:b623b4a374cdde5813a829ded03fdc7ca424fae2463eae912b8ac2d6335f0b54",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.json",
+    "generated_at": "2026-05-24T04:19:38.689511+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-qa-evo-deep-evidence-bound-ac-aware-closure.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-qa-evo-deep-evidence-bound-ac-aware-closure.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"qa-evo-deep-evidence-bound-ac-aware-closure\" --project-root . --version v1.4.10",
+    "run_command": "beacon implement team-run \"qa-evo-deep-evidence-bound-ac-aware-closure\" --project . --version v1.4.10",
+    "dev_run_command": "beacon implement dev-run \"qa-evo-deep-evidence-bound-ac-aware-closure\" --project . --version v1.4.10",
+    "ralph_command": "beacon implement run \"qa-evo-deep-evidence-bound-ac-aware-closure\" --project . --version v1.4.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"qa-evo-deep-evidence-bound-ac-aware-closure\" --project . --version v1.4.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "feature_slug": "qa-evo-deep-evidence-bound-ac-aware-closure",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-24T04:19:38.692146+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-evidence-bound-ac-aware-closure-R3",
+    "transaction_id": "tx-b11f796328637d6c2",
+    "source_hash": "sha256:0495c5b289b958a2bfe9a0de084ae4f26d3db15eae67efc42558a072ae2a3dfd",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.10/.machine/execution/git-workflow-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.10/execution/git-workflow-qa-evo-deep-evidence-bound-ac-aware-closure.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.10/prd/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/qa-evo-deep-evidence-bound-ac-aware-closure.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-evidence-bound-ac-aware-closure.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-evidence-bound-ac-aware-closure-R3",
+    "transaction_id": "tx-b11f796328637d6c2",
+    "source_hash": "sha256:0495c5b289b958a2bfe9a0de084ae4f26d3db15eae67efc42558a072ae2a3dfd",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-qa-evo-deep-evidence-bound-ac-aware-closure.json",
+  "generated_at": "2026-05-24T04:19:38.730730+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.10-qa-evo-deep-evidence-bound-ac-aware-closure-R3",
+  "transaction_id": "tx-b11f796328637d6c2",
+  "source_hash": "sha256:0495c5b289b958a2bfe9a0de084ae4f26d3db15eae67efc42558a072ae2a3dfd",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-24T04:36:21.978305+00:00",
+  "accepted_at": "2026-05-24T04:36:21.978291+00:00",
+  "accepted_by": "qa"
+}

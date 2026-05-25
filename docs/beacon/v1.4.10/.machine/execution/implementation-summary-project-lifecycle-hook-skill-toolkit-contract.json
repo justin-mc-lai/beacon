@@ -1,0 +1,975 @@
+{
+  "schema_version": "1.0",
+  "run_id": "run-20260524T032035Z-6b7c",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "mode": "single",
+  "host_runtime": "codex",
+  "runner": "native-single",
+  "adapter_type": "native",
+  "request_path": ".beacon/implement/run-20260524T032035Z-6b7c/request.json",
+  "result_path": ".beacon/implement/run-20260524T032035Z-6b7c/result.json",
+  "branch_preflight_path": ".beacon/implement/run-20260524T032035Z-6b7c/branch-preflight.json",
+  "plan_preflight_path": ".beacon/implement/run-20260524T032035Z-6b7c/plan-preflight.json",
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 9,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R4",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "admission and confirmation",
+        "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::admission and confirmation::hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::authority boundary::hooks cannot rewrite prd, user-story, test-case, freeze state, qa verdict, release verdict, or gate verdict.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "evidence topology",
+        "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::evidence topology::hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed safety",
+        "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::fail-closed safety::hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "finite hook code taxonomy",
+        "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::finite hook code taxonomy::hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fixture hooks",
+        "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::fixture hooks::the contract covers beacon post-release local install, rolo post-implement uat, and rolo qa debug lab as fixtures, not global defaults.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "human-facing toolkit",
+        "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::human-facing toolkit::operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "project-level hook truth",
+        "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::project-level hook truth::hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "single-file contract",
+        "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::single-file contract::each hook is a single markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+    "source_baseline_hash": "sha256:2dc23570ad424cf68fc6e436b281d34cfeecf962285dea141ed5e51105a08649",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/project-lifecycle-hook-skill-toolkit-contract.json",
+    "generated_at": "2026-05-24T03:20:19.223583+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.md"
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-24T03:20:35.099364+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-project-lifecycle-hook-skill-toolkit-contract-R4",
+    "transaction_id": "tx-faf8f5b8550b808ca",
+    "source_hash": "sha256:db82c333b26b743f1bd6cbc96c23e291088bd1113ae73b8838fb4a9bad8cbb77",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "generated_at": "2026-05-24T03:20:35.578789+00:00",
+  "status": "completed",
+  "subagent_prechecks": {
+    "required": false,
+    "host_runtime": "codex",
+    "runtime_readiness": {},
+    "delegation_readiness": {}
+  },
+  "semantic_layer": {
+    "artifacts": {
+      "semantic_contract": "docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-contract.json",
+      "semantic_dictionary": "docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-dictionary.md",
+      "semantic_usage_guidelines": "docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-usage-guidelines.md",
+      "semantic_review": "docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-review.json"
+    },
+    "default_design_bridge": {
+      "repo": "https://github.com/Leonxlnx/taste-skill",
+      "skill_id": "taste-skill",
+      "entry": "",
+      "detected": false,
+      "kind": "external-default-bridge",
+      "supported_stages": [
+        "prototype",
+        "implement"
+      ],
+      "capabilities": [
+        "prototype",
+        "implement",
+        "taste-design",
+        "semantic-normalization"
+      ],
+      "install_hint": "npx skills add https://github.com/Leonxlnx/taste-skill --skill taste-skill"
+    }
+  },
+  "design_truth": {
+    "schema_version": "1.0",
+    "status": "not_applicable",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "source_surface": "prototype-adapter",
+    "consumption_surface": "implement",
+    "mode": "design-result-adapter",
+    "required": false,
+    "allowed_inputs": [],
+    "blocked_human_inputs": [],
+    "refs": {},
+    "missing_refs": [],
+    "design_preset": "",
+    "canonical_design_preset": "",
+    "preset_source": "",
+    "preset_family": "",
+    "template_catalog_count": 0,
+    "anti_ai_ui_contract": {},
+    "template_layout_rules": [],
+    "interaction_discipline_rules": []
+  },
+  "skill_admission": {},
+  "delivery_contract": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.10",
+      "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R4",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+      ".beacon/implement/run-20260524T032035Z-6b7c/request.json",
+      ".beacon/implement/run-20260524T032035Z-6b7c/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "host_native_delivery": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "requested_mode": "single",
+    "effective_mode": "single",
+    "generator_mode": "single",
+    "execution_mode": "single",
+    "runner_mode": "native-single",
+    "host_runtime": "codex",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "skill_admission_status": "",
+      "skill_admission_mode": "",
+      "skill_id": "",
+      "skill_surface_kind": "",
+      "skill_non_code_supported": false,
+      "schema_version": "1.0",
+      "host_runtime": "codex",
+      "subagent_required": false,
+      "subagent_runtime_status": "",
+      "subagent_delegation_status": "",
+      "host_semantic_ready": false,
+      "provider_available": false
+    },
+    "subagent_prechecks": {
+      "required": false,
+      "host_runtime": "codex",
+      "runtime_readiness": {},
+      "delegation_readiness": {}
+    },
+    "requirement_binding": {
+      "source_of_truth_root": "docs/beacon/v1.4.10",
+      "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      "requirement_completeness_ref": "",
+      "requirement_completeness_verdict": "",
+      "revision_id": "R4",
+      "implemented_item_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "TASK-001"
+      ],
+      "implemented_task_ids": [],
+      "verified_task_ids": []
+    },
+    "traceability_refs": [
+      "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+      "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+      ".beacon/implement/run-20260524T032035Z-6b7c/request.json",
+      ".beacon/implement/run-20260524T032035Z-6b7c/result.json"
+    ],
+    "runner": "native-single",
+    "adapter_type": "native",
+    "execution_surface": "native-single",
+    "team_mode": false,
+    "qa_status": "",
+    "gate_status": "",
+    "release_ready": false,
+    "risk_flags": []
+  },
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "required": true,
+    "prompt": "Implement the scoped Beacon feature.\nFeature: project-lifecycle-hook-skill-toolkit-contract\nVersion: v1.4.10\nRead Beacon source of truth:\n- docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md\n- docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md\n- docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md\n- docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.json\nReuse Beacon semantic layer:\n- docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-contract.json\n- docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-dictionary.md\n- docs/beacon/v1.4.10/.machine/trace/semantic/project-lifecycle-hook-skill-toolkit-contract/semantic-usage-guidelines.md\nDefault design bridge (augmentation only): taste-skill @ https://github.com/Leonxlnx/taste-skill\nFollow Beacon boundary defaults:\n- Record explicit assumptions and ambiguity tradeoffs instead of silently picking one interpretation.\n- Prefer the smallest correct change; avoid speculative abstraction or future-facing config unless required.\n- Keep changes surgical; only touch files in the current scope and only clean up orphan artifacts you introduce.\n- Bind work to verification signals; include acceptance/test mapping or concrete evidence for non-trivial tasks.\n- For obvious typo or single-line copy fixes, stay lightweight but do not expand scope or touch unrelated files.\nImplement only against the frozen PRD, user-story, and test-case truth above.\nDo not invent new user stories, acceptance criteria, or test scope.\nIf the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.\nStructured result should include: assumptions, simplicity_notes, scope_guard, verification.\nFor changed revisions with cleanup obligation, structured result must also include: cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale.\nRun relevant verification.\nWrite structured result to .beacon/implement/run-20260524T032035Z-6b7c/result.json",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md"
+    ],
+    "surface": "task_prompt"
+  },
+  "skill": "",
+  "summary": "native-single implementation completed",
+  "changed_files": [
+    ".beacon/auto-test-status.json",
+    ".beacon/coverage-summary.json",
+    ".beacon/evidence-manifest.json",
+    ".beacon/evidence-signature-chain.json",
+    ".beacon/gate-report.json",
+    ".beacon/qa/status.json",
+    ".beacon/release-gate-report.json",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+    "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+    "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+    "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/source-architecture/index.md"
+  ],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "implemented_task_ids": [],
+  "verified_task_ids": [],
+  "blocked_task_ids": [],
+  "failed_task_ids": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "branch_preflight": {
+    "schema_version": "1.0",
+    "status": "pass",
+    "summary": "implement branch preflight passed on workspace branch main",
+    "blocked": false,
+    "version": "v1.4.10",
+    "expected_branch": "main",
+    "current_branch": "main",
+    "current_tag": "",
+    "branch_exists": true,
+    "dirty_worktree": true,
+    "require_clean_worktree_for_switch": true,
+    "recommended_command": "",
+    "recommended_commands": [],
+    "direct_delivery_services": [
+      "beacon"
+    ],
+    "service_scope": {
+      "status": "pass",
+      "direct_delivery_services": [
+        "beacon"
+      ],
+      "verified_roots": [
+        "/Users/apple/Developer/Personal/products/beacon"
+      ],
+      "unresolved_services": []
+    },
+    "reason_codes": [
+      "git_branch_prefix_mismatch"
+    ],
+    "git_alignment": {
+      "mode": "workspace",
+      "repo_detected": true,
+      "target_branch": "main",
+      "worktree_path": ".",
+      "workspace_repos": [
+        {
+          "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+          "relative_root": "/Users/apple/Developer/Personal/products/beacon",
+          "dirty_worktree": true,
+          "repo_url": "https://github.com/justin-mc-lai/beacon.git",
+          "base_branch": "main",
+          "target_branch": "main",
+          "current_branch": "main",
+          "current_commit": "587b4b0cab2b66c34926e7a44a628c3f6d5304a2",
+          "current_tag": "",
+          "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+          "version_ref": "v1.4.10",
+          "allowed_refs": [
+            "branch"
+          ],
+          "enforce_branch_prefix": "beacon/",
+          "branch_matches_target": true,
+          "branch_has_required_prefix": false,
+          "tag_matches_version": false,
+          "version_ref_satisfied": true,
+          "reason_codes": [
+            "git_branch_prefix_mismatch"
+          ],
+          "blocked": false,
+          "detached_head": false,
+          "repo_detected": true
+        }
+      ],
+      "blocked": false,
+      "reason_codes": [
+        "git_branch_prefix_mismatch"
+      ]
+    },
+    "run_id": "run-20260524T032035Z-6b7c",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "generated_at": "2026-05-24T03:20:35.485156+00:00",
+    "branch_governance": {
+      "schema_version": "1.0",
+      "tool_name": "beacon-toolkit-branch-governance",
+      "feature": "",
+      "version": "v1.4.10",
+      "template_name": "standard-feature",
+      "template_source": "project_metadata",
+      "service_key": "beacon",
+      "repo_root": "/Users/apple/Developer/Personal/products/beacon",
+      "base_branch": "main",
+      "current_branch": "main",
+      "target_branch": "main",
+      "worktree_mode": "branch-only",
+      "worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "current_worktree_path": "/Users/apple/Developer/Personal/products/beacon",
+      "previous_version_baseline_branch": "",
+      "next_version_feature_branch": "",
+      "hotfix_branch_naming_rule": "",
+      "allow_worktree_when_feature_dirty": false,
+      "merge_direction_policy": [],
+      "forbidden_directions": [],
+      "evidence_contract": [],
+      "evidence": {},
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": [],
+      "blocked_reason": "",
+      "recommended_action": "",
+      "missing_evidence_fields": [],
+      "evidence_contract_status": "pass",
+      "human_markdown": "## Branch Governance\n\n- toolkit: `beacon-toolkit-branch-governance`\n- template_name: `standard-feature`\n- template_source: `project_metadata`\n- service_key: `beacon`\n- repo_root: `/Users/apple/Developer/Personal/products/beacon`\n- base_branch: `main`\n- current_branch: `main`\n- target_branch: `main`\n- worktree_mode: `branch-only`\n- worktree_path: `/Users/apple/Developer/Personal/products/beacon`\n- evidence_contract_status: `pass`\n- blocked_reason: ``\n- recommended_action: ``\n\n### Flow Diagram\n```text\nmain [current]\n    -> main [current]\n    -> uat\n```\n\n### Allowed Paths\n- `base_branch->feature_branch`\n\n### Forbidden Paths\n- none\n\n### Evidence Contract\n- none\n"
+    },
+    "git_workflow": {
+      "schema_version": "1.0",
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "version": "v1.4.10",
+      "mode": "single-repo",
+      "expected_branch": "beacon/v1.4.10",
+      "branch_prefix": "beacon/",
+      "base_branch": "main",
+      "use_git_worktree": false,
+      "require_clean_worktree_for_switch": true,
+      "service_directories": [
+        "."
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "git_roots": [
+        "."
+      ],
+      "worktree_root": ".",
+      "implementation_preflight": [
+        "Before implementation, verify the target service belongs to: .",
+        "Before implementation, verify the current branch is beacon/v1.4.10.",
+        "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+      ],
+      "source": "technical_review_contract",
+      "generated_at": "2026-05-24T03:20:35.099364+00:00",
+      "baseline_id": "impl-delivery-baseline-v1.4.10-project-lifecycle-hook-skill-toolkit-contract-R4",
+      "transaction_id": "tx-faf8f5b8550b808ca",
+      "source_hash": "sha256:db82c333b26b743f1bd6cbc96c23e291088bd1113ae73b8838fb4a9bad8cbb77",
+      "projection_seq": 1,
+      "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+      "projection_source": "implementation_delivery_baseline_envelope"
+    },
+    "branch_preflight_path": ".beacon/implement/run-20260524T032035Z-6b7c/branch-preflight.json"
+  },
+  "plan_preflight": {
+    "schema_version": "1.0",
+    "run_id": "run-20260524T032035Z-6b7c",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "expected_plan": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.json",
+    "expected_revision_id": "R4",
+    "baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+    "recommended_command": "beacon implement plan \"project-lifecycle-hook-skill-toolkit-contract\" --project-root . --version v1.4.10",
+    "generated_at": "2026-05-24T03:20:35.486445+00:00",
+    "required": true,
+    "architecture_blueprint_projection_gate": {
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "version": "v1.4.10",
+      "issues": []
+    },
+    "material_gate_preflight": {
+      "schema_version": "1.0",
+      "version": "v1.4.10",
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "gates": {
+        "execution_host_required_surfaces": {
+          "schema_version": "1.0",
+          "version": "v1.4.10",
+          "feature": "project-lifecycle-hook-skill-toolkit-contract",
+          "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+          "required": true,
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "missing_surfaces": [],
+          "surfaces": {
+            "execution_index": {
+              "path": "docs/beacon/v1.4.10/execution/index.md",
+              "exists": true,
+              "required": true
+            },
+            "architecture_blueprint": {
+              "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+              "exists": true,
+              "required": true
+            },
+            "delivery_baseline": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+              "exists": true,
+              "required": true
+            },
+            "git_workflow": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/git-workflow-project-lifecycle-hook-skill-toolkit-contract.json",
+              "exists": true,
+              "required": true
+            },
+            "technical_review_contract": {
+              "path": "docs/beacon/v1.4.10/.machine/execution/deterministic-implementation-contract-project-lifecycle-hook-skill-toolkit-contract.json",
+              "exists": true,
+              "required": true
+            }
+          }
+        },
+        "architecture_blueprint_projection": {
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "path": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+          "feature": "project-lifecycle-hook-skill-toolkit-contract",
+          "version": "v1.4.10",
+          "issues": []
+        },
+        "explicit_delivery_facts": {
+          "schema_version": "1.0",
+          "version": "v1.4.10",
+          "feature": "project-lifecycle-hook-skill-toolkit-contract",
+          "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": [],
+          "repair_route": "beacon-toolkit-branch-governance"
+        },
+        "diagnostics": {
+          "schema_version": "1.0",
+          "status": "pass",
+          "blocked": false,
+          "reason_code": "",
+          "diagnostics": []
+        }
+      }
+    },
+    "status": "pass",
+    "blocked": false,
+    "plan_id": "plan-project-lifecycle-hook-skill-toolkit-contract-r4",
+    "plan_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.json",
+    "progress_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.progress.json"
+  },
+  "implementation_marker": ".beacon/state/implementation-project-lifecycle-hook-skill-toolkit-contract.json",
+  "technical_archive": {
+    "json": "docs/beacon/v1.4.10/.machine/execution/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.json",
+    "md": "docs/beacon/v1.4.10/.machine/trace/implementation/project-lifecycle-hook-skill-toolkit-contract/technical-implementation-project-lifecycle-hook-skill-toolkit-contract.md"
+  },
+  "implementation_plan": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.json",
+  "implementation_plan_progress": {
+    "schema_version": "1.0",
+    "plan_id": "plan-project-lifecycle-hook-skill-toolkit-contract-r4",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "revision_id": "R4",
+    "plan_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.json",
+    "progress_path": "docs/beacon/v1.4.10/.machine/execution/implementation-plan-project-lifecycle-hook-skill-toolkit-contract.progress.json",
+    "status": "completed",
+    "counts": {
+      "total": 10,
+      "draft": 0,
+      "planned": 0,
+      "in_progress": 0,
+      "blocked": 0,
+      "completed": 10
+    },
+    "blocked_task_ids": [],
+    "blocked_task_titles": [],
+    "completed_task_ids": [
+      "ITASK-001",
+      "ITASK-002",
+      "ITASK-003",
+      "ITASK-004",
+      "ITASK-005",
+      "ITASK-006",
+      "ITASK-007",
+      "ITASK-008",
+      "ITASK-009",
+      "ITASK-010"
+    ],
+    "next_task_id": "",
+    "next_task_title": "",
+    "task_states": [
+      {
+        "task_id": "ITASK-001",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-001",
+          "AC-002"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-001",
+          "TC-HOOK-002"
+        ],
+        "mapped_scenario_ids": [
+          "SC-001",
+          "SC-002"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-001",
+          "TC-HOOK-002"
+        ]
+      },
+      {
+        "task_id": "ITASK-002",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-004"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-004"
+        ],
+        "mapped_scenario_ids": [
+          "SC-004"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-004"
+        ]
+      },
+      {
+        "task_id": "ITASK-003",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-003"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-003"
+        ],
+        "mapped_scenario_ids": [
+          "SC-003"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-003"
+        ]
+      },
+      {
+        "task_id": "ITASK-004",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-005"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-005"
+        ],
+        "mapped_scenario_ids": [
+          "SC-005"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-005"
+        ]
+      },
+      {
+        "task_id": "ITASK-005",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-006"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-006"
+        ],
+        "mapped_scenario_ids": [
+          "SC-006"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-006"
+        ]
+      },
+      {
+        "task_id": "ITASK-006",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-009",
+          "AC-007"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-009",
+          "TC-HOOK-007"
+        ],
+        "mapped_scenario_ids": [
+          "SC-007",
+          "SC-009"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-007",
+          "TC-HOOK-009"
+        ]
+      },
+      {
+        "task_id": "ITASK-007",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [
+          "AC-008"
+        ],
+        "mapped_test_ids": [
+          "TC-HOOK-008"
+        ],
+        "mapped_scenario_ids": [
+          "SC-008"
+        ],
+        "mapped_qa_case_ids": [
+          "TC-HOOK-008"
+        ]
+      },
+      {
+        "task_id": "ITASK-008",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-009",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      },
+      {
+        "task_id": "ITASK-010",
+        "status": "completed",
+        "blocked_reason": "",
+        "mapped_ac_ids": [],
+        "mapped_test_ids": [],
+        "mapped_scenario_ids": [],
+        "mapped_qa_case_ids": []
+      }
+    ],
+    "updated_at": "2026-05-24T03:20:35.574762+00:00",
+    "task_ledger_path": "docs/beacon/v1.4.10/execution/tasks-project-lifecycle-hook-skill-toolkit-contract.md"
+  },
+  "implementation_order": {},
+  "requirement_traceability": {
+    "source_of_truth_root": "docs/beacon/v1.4.10",
+    "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+    "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+    "requirement_completeness_ref": "",
+    "requirement_completeness_verdict": "",
+    "revision_id": "R4",
+    "implemented_item_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-005",
+      "AC-006",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "TASK-001"
+    ],
+    "implemented_task_ids": [],
+    "verified_task_ids": []
+  },
+  "delivery_surfaces": {
+    "runtime_mode": "single",
+    "shipped_surfaces": [],
+    "partial_surfaces": [],
+    "deferred_surfaces": [],
+    "downgrade_rationale": ""
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
+    "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability_refs": [
+    "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+    "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+    ".beacon/implement/run-20260524T032035Z-6b7c/request.json",
+    ".beacon/implement/run-20260524T032035Z-6b7c/result.json"
+  ],
+  "implemented_items": [
+    "AC-001",
+    "AC-002",
+    "AC-003",
+    "AC-004",
+    "AC-005",
+    "AC-006",
+    "AC-007",
+    "AC-008",
+    "AC-009",
+    "TASK-001"
+  ],
+  "verified_items": [],
+  "blocked_items": [],
+  "runner_mode": "single",
+  "revision_id": "R4",
+  "artifact_writeback_obligations": ".beacon/state/artifact-update-obligations/project-lifecycle-hook-skill-toolkit-contract.json",
+  "artifact_writeback_open_count": 2,
+  "requirement_rewrite_input": "docs/beacon/v1.4.10/.machine/execution/requirement-rewrite-input-project-lifecycle-hook-skill-toolkit-contract.json",
+  "implement_to_qa_handoff": ".beacon/handoffs/implement-to-qa/project-lifecycle-hook-skill-toolkit-contract/run-20260524T032035Z-6b7c.json",
+  "auto_qa": {
+    "enabled": false,
+    "triggered": false,
+    "args": [],
+    "follow_handoff": false,
+    "max_rounds": 2
+  }
+}

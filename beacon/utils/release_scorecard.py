@@ -540,6 +540,60 @@ def _browser_release_reason_codes(
     return sorted(codes)
 
 
+def _qa_evo_deep_release_supplement_absorbed(feature_scorecard: dict[str, Any]) -> bool:
+    if not isinstance(feature_scorecard, dict):
+        return False
+    deep_absorption = feature_scorecard.get("deep_absorption") if isinstance(feature_scorecard.get("deep_absorption"), dict) else {}
+    release_supplement = (
+        feature_scorecard.get("release_supplement_input")
+        if isinstance(feature_scorecard.get("release_supplement_input"), dict)
+        else {}
+    )
+    return (
+        str(deep_absorption.get("status") or "").strip() == "absorbed"
+        and int(deep_absorption.get("absorbed_count") or 0) > 0
+        and bool(deep_absorption.get("eligible_for_release_supplement", False))
+        and bool(release_supplement.get("deep_findings_absorbed", False))
+        and str(release_supplement.get("policy") or "").strip() == "absorbed_deep_findings_only"
+    )
+
+
+def _apply_qa_evo_deep_release_supplement_bridge(
+    deep_release_supplement: dict[str, Any],
+    *,
+    feature_scorecard: dict[str, Any],
+) -> dict[str, Any]:
+    if not isinstance(deep_release_supplement, dict) or not deep_release_supplement:
+        return deep_release_supplement
+    reason_codes = [
+        str(item or "").strip()
+        for item in (deep_release_supplement.get("reason_codes") or [])
+        if str(item or "").strip()
+    ]
+    if not bool(deep_release_supplement.get("blocked", False)):
+        return deep_release_supplement
+    if not _qa_evo_deep_release_supplement_absorbed(feature_scorecard):
+        return deep_release_supplement
+    remaining_codes = [code for code in reason_codes if code != "deep_loop_unclosed"]
+    if remaining_codes:
+        return deep_release_supplement
+    bridged = dict(deep_release_supplement)
+    bridged.update(
+        {
+            "status": "pass",
+            "blocked": False,
+            "reason_codes": [],
+            "release_recommendation": "release_ready",
+            "qa_evo_deep_release_supplement_bridge": {
+                "status": "applied",
+                "reason_code": "qa_evo_deep_absorbed_release_supplement",
+                "policy": "absorbed_deep_findings_only",
+            },
+        }
+    )
+    return bridged
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -621,6 +675,16 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         if feature and deep_loop_supported(resolved_version)
         else {}
     )
+    if project_release_feature_enabled(
+        project_root,
+        "v1.4.10",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        deep_release_supplement = _apply_qa_evo_deep_release_supplement_bridge(
+            deep_release_supplement,
+            feature_scorecard=feature_scorecard,
+        )
     deep_release_supplement_pass = not bool(deep_release_supplement.get("blocked", False))
     test_contract_governance = (
         build_test_contract_gate_payload(project_root, version=resolved_version, feature=feature)
@@ -1049,6 +1113,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "acceptance_kit": acceptance_kit,
         "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
+        "qa_evo_deep_absorption": feature_scorecard.get("deep_absorption") if isinstance(feature_scorecard.get("deep_absorption"), dict) else {},
+        "qa_evo_deep_release_supplement": feature_scorecard.get("release_supplement_input") if isinstance(feature_scorecard.get("release_supplement_input"), dict) else {},
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
         "version_surface_governance": version_surface_governance,
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
@@ -1120,6 +1186,16 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         payload.get("deep_release_supplement")
         if isinstance(payload.get("deep_release_supplement"), dict)
         else {}
+    )
+    qa_evo_deep_absorption = (
+        payload.get("qa_evo_deep_absorption")
+        if isinstance(payload.get("qa_evo_deep_absorption"), dict)
+        else feature_scorecard.get("deep_absorption") if isinstance(feature_scorecard.get("deep_absorption"), dict) else {}
+    )
+    qa_evo_deep_release_supplement = (
+        payload.get("qa_evo_deep_release_supplement")
+        if isinstance(payload.get("qa_evo_deep_release_supplement"), dict)
+        else feature_scorecard.get("release_supplement_input") if isinstance(feature_scorecard.get("release_supplement_input"), dict) else {}
     )
     test_contract_governance = (
         payload.get("test_contract_governance")
@@ -1219,6 +1295,10 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "deep_release_supplement_reason_codes": list(deep_release_supplement.get("reason_codes") or []),
         "deep_release_supplement_recommendation": str(deep_release_supplement.get("release_recommendation") or ""),
         "deep_release_supplement_closure_verdict": str(deep_release_supplement.get("closure_verdict") or ""),
+        "qa_evo_deep_absorption_status": str(qa_evo_deep_absorption.get("status") or ""),
+        "qa_evo_deep_absorbed_count": int(qa_evo_deep_absorption.get("absorbed_count") or 0),
+        "qa_evo_deep_release_supplement_eligible": bool(qa_evo_deep_release_supplement.get("deep_findings_absorbed", False)),
+        "qa_evo_deep_release_supplement_policy": str(qa_evo_deep_release_supplement.get("policy") or ""),
         "test_contract_governance_status": str(test_contract_governance.get("status") or ""),
         "test_contract_governance_blocked": bool(test_contract_governance.get("blocked", False)),
         "test_contract_governance_reason_codes": list(test_contract_governance.get("reason_codes") or []),

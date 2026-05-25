@@ -1,16 +1,16 @@
 # beacon-ceo-review Transaction
 
-- feature: `qa-evo-deep-and-skill-eval-kit-v1410`
+- feature: `implement-mode-human-playbooks-and-routing-contract`
 - version: `v1.4.10`
 - status: `advisory`
 - decision: `hold`
-- truth_refs: `docs/beacon/v1.4.10/prd/qa-evo-deep-and-skill-eval-kit-v1410.md, docs/beacon/v1.4.10/user-story/qa-evo-deep-and-skill-eval-kit-v1410.md, docs/beacon/v1.4.10/qa/test-cases/qa-evo-deep-and-skill-eval-kit-v1410.md`
+- truth_refs: `docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md, docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md, docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md`
 
 ## Summary
 CEO review did not find a version-level reframing blocker after challenging default downside axes.
 
 ## Next Route
-- command: `beacon implement "qa-evo-deep-and-skill-eval-kit-v1410" --project . --version v1.4.10`
+- command: `beacon implement "implement-mode-human-playbooks-and-routing-contract" --project . --version v1.4.10`
 - why: Requirement framing is stable enough to continue implementation planning.
 
 ## Challenge Axes

@@ -1,0 +1,1473 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-project-lifecycle-hook-skill-toolkit-contract-r4",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "revision_id": "R4",
+  "baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+  "plan_hash": "sha256:e28dac042b8750b6839f0733d53d07d817c9953302a04cc05bb06675d837293a",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+    "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+    "revision_delta": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.10/.machine/user-story/project-lifecycle-hook-skill-toolkit-contract.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "hook_contract_state",
+      "hook_admission_state",
+      "trigger_policy_state",
+      "hook_run_state",
+      "hook_evidence_state",
+      "failure_route_state",
+      "truth_authority_boundary"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `hook_contract_state`",
+        "- `hook_admission_state`",
+        "- `trigger_policy_state`",
+        "- `hook_run_state`",
+        "- `hook_evidence_state`",
+        "- `failure_route_state`",
+        "- `truth_authority_boundary`"
+      ]
+    },
+    "generated_at": "2026-05-24T03:20:19.226840+00:00",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "prd_ref": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Hook 是 project-level extension，不是 version-level feature artifact。",
+        "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+        "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+        "Hook 必须有 contract、admission、dry-run 和 evidence。",
+        "项目特有动作不得硬编码成 Beacon 全局默认。",
+        "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+        "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+        "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+        "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Hook 是 project-level extension，不是 version-level feature artifact。",
+          "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+          "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+          "Hook 必须有 contract、admission、dry-run 和 evidence。",
+          "项目特有动作不得硬编码成 Beacon 全局默认。",
+          "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+          "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+          "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+          "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.10/.machine/user-story/project-lifecycle-hook-skill-toolkit-contract.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Beacon must discover hook contracts from `docs/beacon/hooks/<hook-id>.md` and must not require or create canonical hook truth under `docs/beacon/<version>/hooks/`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-001",
+        "TC-HOOK-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-001",
+        "TC-HOOK-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.513406+00:00",
+      "completed_at": "2026-05-24T03:20:35.574661+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "A hook contract must be a single Markdown file with frontmatter for hook id, hook code, project, enabled state, trigger policy, skill, command template, evidence outputs, and failure route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-004"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112512596067",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574676+00:00",
+      "completed_at": "2026-05-24T03:20:35.574678+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "Beacon must reject hook codes outside `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-003"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574685+00:00",
+      "completed_at": "2026-05-24T03:20:35.574687+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "Hook admission must validate enabled state, lifecycle binding, project applicability, skill availability, trigger policy, required evidence declaration, and failure route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-005"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574694+00:00",
+      "completed_at": "2026-05-24T03:20:35.574695+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-004",
+      "description": "Hook commands with side effects must require `manual_confirmed`; dry-run must not execute side-effect commands.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-006"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574705+00:00",
+      "completed_at": "2026-05-24T03:20:35.574706+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-005",
+      "description": "Hook runs must write runtime evidence under `.beacon/state/hooks/<hook-id>/<run-id>.json` and a latest read model under `docs/beacon/.machine/hooks/<hook-id>.latest.json`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-009",
+        "TC-HOOK-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-007",
+        "TC-HOOK-009"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574716+00:00",
+      "completed_at": "2026-05-24T03:20:35.574717+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-006",
+      "description": "The human-facing toolkit must support list, plan, run dry-run, run confirmed, disable, and status/explain behavior.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-HOOK-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-HOOK-008"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112056003729/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T112056003729",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T112512596067/summary.json",
+        "verify:run-20260524T112512596067",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574724+00:00",
+      "completed_at": "2026-05-24T03:20:35.574725+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-007",
+      "description": "Fixture coverage must include Beacon post-release local install, Rolo post-implement UAT delivery, and Rolo QA Debug Lab hook contracts without making them global defaults.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574732+00:00",
+      "completed_at": "2026-05-24T03:20:35.574733+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-008",
+      "description": "Hook output must be marked as support/runtime evidence and must not claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574740+00:00",
+      "completed_at": "2026-05-24T03:20:35.574741+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 AC-009",
+      "description": "Hidden auto-run, arbitrary shell hook, and unbounded hook code attempts must fail closed with explicit reason codes.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: hook_contract_state, hook_admission_state, trigger_policy_state, hook_run_state, hook_evidence_state, failure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "hook_contract_state",
+        "hook_admission_state",
+        "trigger_policy_state",
+        "hook_run_state",
+        "hook_evidence_state",
+        "failure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T032035Z-6b7c"
+      ],
+      "changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T03:20:35.574747+00:00",
+      "completed_at": "2026-05-24T03:20:35.574749+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 9,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R4",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "admission and confirmation",
+        "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::admission and confirmation::hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::authority boundary::hooks cannot rewrite prd, user-story, test-case, freeze state, qa verdict, release verdict, or gate verdict.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "evidence topology",
+        "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::evidence topology::hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed safety",
+        "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::fail-closed safety::hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "finite hook code taxonomy",
+        "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::finite hook code taxonomy::hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fixture hooks",
+        "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::fixture hooks::the contract covers beacon post-release local install, rolo post-implement uat, and rolo qa debug lab as fixtures, not global defaults.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "human-facing toolkit",
+        "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::human-facing toolkit::operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "project-level hook truth",
+        "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::project-level hook truth::hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "single-file contract",
+        "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+        "signature": "ac::::single-file contract::each hook is a single markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+    "source_baseline_hash": "sha256:2dc23570ad424cf68fc6e436b281d34cfeecf962285dea141ed5e51105a08649",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/project-lifecycle-hook-skill-toolkit-contract.json",
+    "generated_at": "2026-05-24T03:20:19.223583+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-project-lifecycle-hook-skill-toolkit-contract.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"project-lifecycle-hook-skill-toolkit-contract\" --project-root . --version v1.4.10",
+    "run_command": "beacon implement team-run \"project-lifecycle-hook-skill-toolkit-contract\" --project . --version v1.4.10",
+    "dev_run_command": "beacon implement dev-run \"project-lifecycle-hook-skill-toolkit-contract\" --project . --version v1.4.10",
+    "ralph_command": "beacon implement run \"project-lifecycle-hook-skill-toolkit-contract\" --project . --version v1.4.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"project-lifecycle-hook-skill-toolkit-contract\" --project . --version v1.4.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-24T03:20:19.227276+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-project-lifecycle-hook-skill-toolkit-contract-R4",
+    "transaction_id": "tx-faf8f5b8550b808ca",
+    "source_hash": "sha256:db82c333b26b743f1bd6cbc96c23e291088bd1113ae73b8838fb4a9bad8cbb77",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.10/.machine/execution/git-workflow-project-lifecycle-hook-skill-toolkit-contract.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.10/execution/git-workflow-project-lifecycle-hook-skill-toolkit-contract.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.10-project-lifecycle-hook-skill-toolkit-contract-R4",
+    "transaction_id": "tx-faf8f5b8550b808ca",
+    "source_hash": "sha256:db82c333b26b743f1bd6cbc96c23e291088bd1113ae73b8838fb4a9bad8cbb77",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-project-lifecycle-hook-skill-toolkit-contract.json",
+  "generated_at": "2026-05-24T03:20:19.271166+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.10-project-lifecycle-hook-skill-toolkit-contract-R4",
+  "transaction_id": "tx-faf8f5b8550b808ca",
+  "source_hash": "sha256:db82c333b26b743f1bd6cbc96c23e291088bd1113ae73b8838fb4a9bad8cbb77",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-24T03:26:19.810116+00:00",
+  "accepted_at": "2026-05-24T03:26:19.810103+00:00",
+  "accepted_by": "qa"
+}

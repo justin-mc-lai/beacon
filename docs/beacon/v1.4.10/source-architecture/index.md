@@ -56,3 +56,4 @@ human-facing skill or harness route
 ## Feature Architecture
 
 - `docs/beacon/v1.4.10/source-architecture/qa-evo-deep-and-skill-eval-kit-v1410.md`
+- `docs/beacon/v1.4.10/source-architecture/project-lifecycle-hook-skill-toolkit-contract.md`

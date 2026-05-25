@@ -243,6 +243,8 @@ def _feature_change_payloads(project_root: Path, version: str) -> list[dict]:
         for path in sorted(root.glob("*.json")):
             if path.name == f"{version}.json":
                 continue
+            if path.name.endswith(".refreeze-transaction.json") or path.name.endswith("-reconciliation.json"):
+                continue
             payload = _load_json(path)
             if not payload:
                 continue

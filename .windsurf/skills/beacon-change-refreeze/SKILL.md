@@ -85,7 +85,7 @@ It does not create a second refreeze implementation.
 Prefer:
 
 ```bash
-beacon change "<feature>" --project . --version v1.4.7 --reason "<accepted change>" --refreeze-chain
+beacon change "<feature>" --project . --version v1.4.10 --reason "<accepted change>" --refreeze-chain
 ```
 
 If the feature is already reopened, use the same route. The transaction must close the active refreshed requirement package before execution resumes.

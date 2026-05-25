@@ -685,6 +685,13 @@ def _status_impl(
             typer.echo(f"- execution.qa_mode: {execution_surface.get('qa_execution_mode') or 'N/A'}")
             typer.echo(f"- execution.qa_session: {execution_surface.get('qa_current_session_id') or 'N/A'}")
             typer.echo(f"- execution.qa_runner: {execution_surface.get('qa_runner_type') or 'N/A'}")
+        implement_mode = payload.get("implement_mode_recommendation", {}) if isinstance(payload.get("implement_mode_recommendation"), dict) else {}
+        if implement_mode:
+            typer.echo(f"- implement_mode.public_skill: {implement_mode.get('public_skill')}")
+            typer.echo(f"- implement_mode.recommended: {implement_mode.get('recommended_mode')}")
+            typer.echo(f"- implement_mode.reason: {implement_mode.get('reason')}")
+            typer.echo(f"- implement_mode.command: {implement_mode.get('canonical_command')}")
+            typer.echo(f"- implement_mode.playbook: {implement_mode.get('playbook_ref')}")
         minimal_hud = payload.get("minimal_hud", {}) if isinstance(payload.get("minimal_hud"), dict) else {}
         hud_lines = minimal_hud.get("lines", []) if isinstance(minimal_hud.get("lines"), list) else []
         if hud_lines:

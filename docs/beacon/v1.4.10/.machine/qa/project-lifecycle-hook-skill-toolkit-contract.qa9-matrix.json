@@ -1,0 +1,557 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-24T11:24:52.058599",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-24T11:24:52.057964",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --fallback-cmd \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --fallback-cmd \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-HOOK-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "topology",
+      "qa_type": "topology",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-001 :: Hook contracts are discovered from `docs/beacon/hooks/<hook-id>.md` and not from",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"project_level_hook_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hook contracts are discovered from `docs/beacon/hooks/<hook-id>.md` and not from `docs/beacon/<version>/hooks/`.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"project_level_hook_truth\"`",
+      "scenario": "Hook contracts are discovered from `docs/beacon/hooks/<hook-id>.md` and not from `docs/beacon/<version>/hooks/`.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-002 :: Hook Markdown frontmatter and body sections include required contract, admission",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"single_file_hook_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hook Markdown frontmatter and body sections include required contract, admission, evidence, and failure-route fields.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"single_file_hook_contract\"`",
+      "scenario": "Hook Markdown frontmatter and body sections include required contract, admission, evidence, and failure-route fields.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-003 :: Unknown hook codes fail closed; allowed hook codes pass.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"finite_hook_code_taxonomy\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Unknown hook codes fail closed; allowed hook codes pass.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"finite_hook_code_taxonomy\"`",
+      "scenario": "Unknown hook codes fail closed; allowed hook codes pass.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "gate",
+      "qa_type": "gate",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-004 :: Side-effect hooks require `manual_confirmed` and cannot execute through hidden a",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_admission_requires_manual_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Side-effect hooks require `manual_confirmed` and cannot execute through hidden auto-run.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_admission_requires_manual_confirmation\"`",
+      "scenario": "Side-effect hooks require `manual_confirmed` and cannot execute through hidden auto-run.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "topology",
+      "qa_type": "topology",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-005 :: Hook evidence writes to `.beacon/state/hooks/...` and latest read model writes t",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_evidence_topology\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hook evidence writes to `.beacon/state/hooks/...` and latest read model writes to `docs/beacon/.machine/hooks/...`.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_evidence_topology\"`",
+      "scenario": "Hook evidence writes to `.beacon/state/hooks/...` and latest read model writes to `docs/beacon/.machine/hooks/...`.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-006 :: Hook toolkit supports list, plan, dry-run, confirmed-run, disable, and status/ex",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"human_toolkit_commands\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hook toolkit supports list, plan, dry-run, confirmed-run, disable, and status/explain behavior.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"human_toolkit_commands\"`",
+      "scenario": "Hook toolkit supports list, plan, dry-run, confirmed-run, disable, and status/explain behavior.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "fixture",
+      "qa_type": "fixture",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-007 :: Beacon install, Rolo UAT, and Rolo Debug Lab fixtures validate as examples but a",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"fixture_hooks_are_not_global_defaults\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Beacon install, Rolo UAT, and Rolo Debug Lab fixtures validate as examples but are not global defaults.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"fixture_hooks_are_not_global_defaults\"`",
+      "scenario": "Beacon install, Rolo UAT, and Rolo Debug Lab fixtures validate as examples but are not global defaults.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "boundary",
+      "qa_type": "boundary",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-008 :: Hook output cannot claim PRD, user-story, test-case, QA, release, gate, or freez",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_authority_boundary\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hook output cannot claim PRD, user-story, test-case, QA, release, gate, or freeze authority.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"hook_authority_boundary\"`",
+      "scenario": "Hook output cannot claim PRD, user-story, test-case, QA, release, gate, or freeze authority.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-HOOK-009",
+      "ac_id": "AC-009",
+      "story_id": "",
+      "layer": "fail-closed",
+      "qa_type": "fail-closed",
+      "title": "project-lifecycle-hook-skill-toolkit-contract AC-009 :: Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with reason codes.",
+      "evidence_path": ".beacon/evidence/test-results/project-lifecycle-hook-skill-toolkit-contract/TC-HOOK-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\"`",
+      "scenario": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with reason codes.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md",
+    "row_count": 9,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-24T11:24:52.058643",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "project-lifecycle-hook-skill-toolkit-contract",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "Hook 是 project-level extension，不是 version-level feature artifact。",
+        "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+        "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+        "Hook 必须有 contract、admission、dry-run 和 evidence。",
+        "项目特有动作不得硬编码成 Beacon 全局默认。",
+        "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+        "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+        "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+        "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Hook 是 project-level extension，不是 version-level feature artifact。",
+          "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+          "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+          "Hook 必须有 contract、admission、dry-run 和 evidence。",
+          "项目特有动作不得硬编码成 Beacon 全局默认。",
+          "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+          "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+          "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+          "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+      }
+    ]
+  }
+}

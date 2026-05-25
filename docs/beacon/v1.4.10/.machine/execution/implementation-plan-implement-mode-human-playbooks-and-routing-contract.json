@@ -1,0 +1,1137 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-implement-mode-human-playbooks-and-routing-contract-r3",
+  "feature": "implement-mode-human-playbooks-and-routing-contract",
+  "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+  "version": "v1.4.10",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:800acefc5870b88f09e8896423cf259f248e72f6ddcf5cc090e93442c3039684",
+  "plan_hash": "sha256:151b6ae8c79beda3258a420074cd348f586da5e39ecf6e9d3f83d1f24ce64e7f",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+    "prd": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md",
+    "revision_delta": "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.10/.machine/user-story/implement-mode-human-playbooks-and-routing-contract.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.10",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "implement_request_state",
+      "mode_resolution_state",
+      "mode_admission_state",
+      "implementation_evidence_state",
+      "ralph_closure_route_state",
+      "truth_authority_boundary"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "- `implement_request_state`",
+        "- `mode_resolution_state`",
+        "- `mode_admission_state`",
+        "- `implementation_evidence_state`",
+        "- `ralph_closure_route_state`",
+        "- `truth_authority_boundary`"
+      ]
+    },
+    "generated_at": "2026-05-24T10:08:22.726494+00:00",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "prd_ref": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+    "present": true,
+    "section_count": 1,
+    "sections": {
+      "decision_priority": [
+        "`beacon-implement` remains the only public implementation skill.",
+        "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+        "Help/status recommendations must include the reason and canonical command.",
+        "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+        "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+        "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "`beacon-implement` remains the only public implementation skill.",
+          "Mode playbooks explain execution shape; they do not create public lifecycle stages.",
+          "Help/status recommendations must include the reason and canonical command.",
+          "Ralph routes next action and evidence; it does not replace QA, release, gate, or frozen truth.",
+          "Skill Eval Kit must preserve route stability and reject nonexistent public mode-specific skills.",
+          "Ralph Task Loop checkpoint/recovery and learn lifecycle injection remain separate backlog features."
+        ],
+        "source": "research:docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.10/.machine/user-story/implement-mode-human-playbooks-and-routing-contract.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "The skill catalog and agent surfaces must keep `beacon-implement` as the only public implementation skill.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-MODE-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-MODE-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T140302253332",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.900016+00:00",
+      "completed_at": "2026-05-24T05:58:17.946576+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "Human-facing mode playbooks must define purpose, admission conditions, command form, produced evidence, and boundary for `single`, `team`, and `ralph`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-MODE-002",
+        "TC-IMPL-MODE-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-MODE-002",
+        "TC-IMPL-MODE-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T140302253332",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946587+00:00",
+      "completed_at": "2026-05-24T05:58:17.946589+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "Mode recommendation must distinguish low-risk single work, complex/team work, and closure-control Ralph work.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006",
+        "AC-007",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-MODE-006",
+        "TC-IMPL-MODE-007",
+        "TC-IMPL-MODE-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-006",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-MODE-004",
+        "TC-IMPL-MODE-006",
+        "TC-IMPL-MODE-007"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T140302253332",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946597+00:00",
+      "completed_at": "2026-05-24T05:58:17.946598+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "Ralph guidance must state that Ralph routes next action and evidence, but cannot replace QA, release, gate, or frozen truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-MODE-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-MODE-008"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T140302253332",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946604+00:00",
+      "completed_at": "2026-05-24T05:58:17.946606+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005",
+      "description": "Help/status output that recommends an implementation mode must include the reason and the canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-MODE-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-MODE-005"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260524T140302253332/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260524T140302253332",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/implement-mode-human-playbooks-and-routing-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-human-playbooks-and-routing-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946619+00:00",
+      "completed_at": "2026-05-24T05:58:17.946620+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-006",
+      "description": "Skill Eval Kit must include route-stability cases for single/team/ralph prompts and expected route metadata.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946629+00:00",
+      "completed_at": "2026-05-24T05:58:17.946630+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-007",
+      "description": "Attempts to route to `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` as public skills must fail closed or redirect to `beacon-implement` with mode explanation.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946636+00:00",
+      "completed_at": "2026-05-24T05:58:17.946637+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-008",
+      "description": "No mode playbook or route recommendation may modify PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze state.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: implement_request_state, mode_resolution_state, mode_admission_state, implementation_evidence_state, ralph_closure_route_state, truth_authority_boundary"
+      ],
+      "diagram_state_axes": [
+        "implement_request_state",
+        "mode_resolution_state",
+        "mode_admission_state",
+        "implementation_evidence_state",
+        "ralph_closure_route_state",
+        "truth_authority_boundary"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260524T055817Z-97a0"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-implement/SKILL.md",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "beacon/utils/help_support.py",
+        "beacon/utils/skill_eval_kit.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/SUMMARY.md",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/execution/index.md",
+        "docs/beacon/v1.4.10/research/implement-mode-human-playbooks-and-routing-contract.md",
+        "skills/beacon/beacon-implement/SKILL.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-24T05:58:17.946643+00:00",
+      "completed_at": "2026-05-24T05:58:17.946644+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "authority boundary",
+        "text": "Mode playbooks and recommendations cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::authority boundary::mode playbooks and recommendations cannot rewrite prd, user-story, test-case, freeze state, qa verdict, release verdict, or gate verdict.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "explainable command",
+        "text": "Mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::explainable command::mode recommendations include the reason and canonical `beacon implement run \"<feature>\" --project . --version <version> --mode <mode>` command.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode playbooks",
+        "text": "Human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::mode playbooks::human-facing playbooks define purpose, admission, command, evidence, and boundary for `single`, `team`, and `ralph`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode recommendation",
+        "text": "Help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::mode recommendation::help/status can recommend `single`, `team`, or `ralph` based on scope, complexity, closure needs, and risk.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "nonexistent skill fail-closed",
+        "text": "Prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::nonexistent skill fail-closed::prompts implying `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` do not create or route to those public skills.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "one public entrypoint",
+        "text": "`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::one public entrypoint::`beacon-implement` remains the only public implementation skill; mode-specific public skills are not introduced.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Ralph boundary",
+        "text": "Ralph is documented as a closure controller that routes next action; it does not replace QA, release, gate, or frozen truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::ralph boundary::ralph is documented as a closure controller that routes next action; it does not replace qa, release, gate, or frozen truth.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "route stability eval",
+        "text": "Skill Eval Kit includes cases for normal implementation, team/subagent implementation, and Ralph closure prompts.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+        "signature": "ac::::route stability eval::skill eval kit includes cases for normal implementation, team/subagent implementation, and ralph closure prompts.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:800acefc5870b88f09e8896423cf259f248e72f6ddcf5cc090e93442c3039684",
+    "source_baseline_hash": "sha256:7642a798b5cab74216783ebb7bebde9634104537f753c01e208ccf7ddb6545ec",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/implement-mode-human-playbooks-and-routing-contract.json",
+    "generated_at": "2026-05-24T10:08:22.723499+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-implement-mode-human-playbooks-and-routing-contract.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"implement-mode-human-playbooks-and-routing-contract\" --project-root . --version v1.4.10",
+    "run_command": "beacon implement team-run \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10",
+    "dev_run_command": "beacon implement dev-run \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10",
+    "ralph_command": "beacon implement run \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-human-playbooks-and-routing-contract",
+    "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-24T10:08:22.726668+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-implement-mode-human-playbooks-and-routing-contract-R3",
+    "transaction_id": "tx-29e2af05b52fd8a8a",
+    "source_hash": "sha256:81f87d294c24eb3048483aeeee86862fb52cf498afae8c6f4b7d180399c70f01",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.10/.machine/execution/git-workflow-implement-mode-human-playbooks-and-routing-contract.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.10/execution/git-workflow-implement-mode-human-playbooks-and-routing-contract.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.10-implement-mode-human-playbooks-and-routing-contract-R3",
+    "transaction_id": "tx-29e2af05b52fd8a8a",
+    "source_hash": "sha256:81f87d294c24eb3048483aeeee86862fb52cf498afae8c6f4b7d180399c70f01",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-implement-mode-human-playbooks-and-routing-contract.json",
+  "generated_at": "2026-05-24T10:08:22.747271+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.10-implement-mode-human-playbooks-and-routing-contract-R3",
+  "transaction_id": "tx-29e2af05b52fd8a8a",
+  "source_hash": "sha256:81f87d294c24eb3048483aeeee86862fb52cf498afae8c6f4b7d180399c70f01",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-24T10:08:22.747287+00:00"
+}

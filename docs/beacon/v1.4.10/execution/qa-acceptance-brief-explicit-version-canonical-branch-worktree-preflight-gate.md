@@ -4,7 +4,7 @@
 - feature: `explicit-version-canonical-branch-worktree-preflight-gate`
 - revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-05-25T06:44:58.676469+00:00`
+- accepted_at: `2026-05-25T07:46:15.116689+00:00`
 - accepted_by: `qa`
 
 ## Summary

@@ -70,6 +70,27 @@ Beacon v1.4.9 已经有 project skill profile、skill admission、agent surface 
 - Rolo project skill: `rolo-dev-git-to-pipeline-uat`
 - Rolo project skill: `rolo-dev-debuglab`
 
+## 3. Architecture
+
+The frozen architecture is a project-level hook extension around existing Beacon lifecycle boundaries:
+
+```text
+Beacon lifecycle boundary
+  -> discover docs/beacon/hooks/<hook-id>.md
+  -> validate finite hook_code and project applicability
+  -> plan / dry-run / manual_confirmed run
+  -> write hook evidence
+  -> route back to implement / qa / release / blocked
+```
+
+Canonical hook truth is project-level:
+
+```text
+docs/beacon/hooks/<hook-id>.md
+```
+
+Versioned requirement materials may define and freeze the hook capability, but must not become the canonical hook directory. `docs/beacon/<version>/hooks/` is not allowed as hook truth.
+
 ## 3. 当前能力与缺口
 
 ### 3.1 已有能力
@@ -474,3 +495,11 @@ post_release
 ```
 
 这样 Beacon 源码项目可以在 release 后稳定安装 CLI / agent skill，Rolo 项目可以在 implement 后稳定调用 `rolo-dev-git-to-pipeline-uat` 送 UAT，并在 QA 诊断时稳定调用 `rolo-dev-debuglab`，而这些项目特有动作不会污染 Beacon 的通用生命周期。
+
+## 14. Truth Bindings
+
+- `prd_refs`: `docs/beacon/v1.4.10/prd/project-lifecycle-hook-skill-toolkit-contract.md`
+- `user_story_refs`: `docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md`
+- `test_case_refs`: `docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md`
+- `coverage_notes`: AC-001 through AC-009 cover project-level hook truth, single-file Markdown contract, finite hook code taxonomy, admission and manual confirmation, evidence topology, human-facing toolkit behavior, fixture hook contracts, authority boundaries, and fail-closed safety.
+- `out_of_scope_notes`: This research does not implement hidden automatic hooks, arbitrary shell hooks, version-level hook truth, hook authority over PRD/user-story/test-case/QA/release/freeze, or project-specific side effects as Beacon global defaults.

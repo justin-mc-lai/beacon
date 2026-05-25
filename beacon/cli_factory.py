@@ -78,6 +78,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.report import app as report_app
     from .commands.review import app as review_app
     from .commands.skill import app as skill_app
+    from .commands.hooks import app as hooks_app
     from .commands.automation import app as automation_app
     from .commands.profile import app as profile_app
     from .commands.board import app as board_app
@@ -152,6 +153,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(init_app, name="init")
     app.add_typer(profile_app, name="profile")
     app.add_typer(skill_app, name="skill")
+    app.add_typer(hooks_app, name="hooks")
     app.add_typer(run_app, name="run", hidden=True)
     app.command("freeze")(freeze_entry)
     app.command("reopen")(reopen_entry)

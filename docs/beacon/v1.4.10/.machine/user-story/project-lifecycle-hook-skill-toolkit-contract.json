@@ -1,0 +1,1469 @@
+{
+  "schema_version": "1.0",
+  "feature": "project-lifecycle-hook-skill-toolkit-contract",
+  "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+  "version": "v1.4.10",
+  "current_revision_id": "R4",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-24T03:26:19.808294+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:6bd2ad342ba01a8733a31ac901991ba2b260e8b5f149553045c90887ea10d6aa",
+      "superseded_by": "R2",
+      "created_at": "2026-05-24T02:25:58.872900+00:00",
+      "frozen_at": "2026-05-24T02:26:02.248205+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "source_revision_id": "R1",
+      "reason": "Freeze project-level lifecycle hook skill toolkit as an independent P1 feature from v1.4.10 research",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:6bd2ad342ba01a8733a31ac901991ba2b260e8b5f149553045c90887ea10d6aa",
+      "superseded_by": "R3",
+      "created_at": "2026-05-24T02:26:17.341098+00:00",
+      "frozen_at": "2026-05-24T02:26:19.731061+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "source_revision_id": "R2",
+      "reason": "Normalize PRD scope heading for requirement closure gate recognition",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:2dc23570ad424cf68fc6e436b281d34cfeecf962285dea141ed5e51105a08649",
+      "superseded_by": "R4",
+      "created_at": "2026-05-24T03:07:41.931259+00:00",
+      "frozen_at": "2026-05-24T03:07:44.420260+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R4",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "source_revision_id": "R3",
+      "reason": "Normalize TC-HOOK-004 layer to automated gate coverage",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:42b6cece42819287c2f0cb7447f7af330e19410907b4e1a5f55d3dcdd56145c8",
+      "superseded_by": null,
+      "created_at": "2026-05-24T03:19:07.510189+00:00",
+      "frozen_at": "2026-05-24T03:19:10.892347+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "project-lifecycle-hook-skill-toolkit-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "project-level hook truth",
+          "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "single-file contract",
+          "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "finite hook code taxonomy",
+          "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "admission and confirmation",
+          "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "evidence topology",
+          "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "human-facing toolkit",
+          "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fixture hooks",
+          "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed safety",
+          "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Hook 是 project-level extension，不是 version-level feature artifact。",
+            "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+            "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+            "Hook 必须有 contract、admission、dry-run 和 evidence。",
+            "项目特有动作不得硬编码成 Beacon 全局默认。",
+            "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+            "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+            "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+            "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Hook 是 project-level extension，不是 version-level feature artifact。",
+              "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+              "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+              "Hook 必须有 contract、admission、dry-run 和 evidence。",
+              "项目特有动作不得硬编码成 Beacon 全局默认。",
+              "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+              "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+              "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+              "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "project-lifecycle-hook-skill-toolkit-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "project-level hook truth",
+          "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "single-file contract",
+          "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "finite hook code taxonomy",
+          "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "admission and confirmation",
+          "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "evidence topology",
+          "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "human-facing toolkit",
+          "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fixture hooks",
+          "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed safety",
+          "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Hook 是 project-level extension，不是 version-level feature artifact。",
+            "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+            "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+            "Hook 必须有 contract、admission、dry-run 和 evidence。",
+            "项目特有动作不得硬编码成 Beacon 全局默认。",
+            "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+            "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+            "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+            "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Hook 是 project-level extension，不是 version-level feature artifact。",
+              "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+              "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+              "Hook 必须有 contract、admission、dry-run 和 evidence。",
+              "项目特有动作不得硬编码成 Beacon 全局默认。",
+              "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+              "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+              "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+              "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "project-lifecycle-hook-skill-toolkit-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "project-level hook truth",
+          "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "single-file contract",
+          "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "finite hook code taxonomy",
+          "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "admission and confirmation",
+          "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T031706Z-a810-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "evidence topology",
+          "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "human-facing toolkit",
+          "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fixture hooks",
+          "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed safety",
+          "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T031706Z-a810",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-24T03:17:15.586837+00:00",
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T031706Z-a810-tester",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260524T111813135307",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Hook 是 project-level extension，不是 version-level feature artifact。",
+            "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+            "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+            "Hook 必须有 contract、admission、dry-run 和 evidence。",
+            "项目特有动作不得硬编码成 Beacon 全局默认。",
+            "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+            "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+            "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+            "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Hook 是 project-level extension，不是 version-level feature artifact。",
+              "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+              "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+              "Hook 必须有 contract、admission、dry-run 和 evidence。",
+              "项目特有动作不得硬编码成 Beacon 全局默认。",
+              "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+              "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+              "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+              "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+          }
+        ]
+      },
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        ".beacon/evidence-manifest.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/project-lifecycle-hook-skill-toolkit-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/ac-closure.json",
+        ".beacon/qa/features/project-lifecycle-hook-skill-toolkit-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-24T03:18:20.471979+00:00",
+      "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R4",
+      "title": "project-lifecycle-hook-skill-toolkit-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "project-level hook truth",
+          "text": "Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "single-file contract",
+          "text": "Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "finite hook code taxonomy",
+          "text": "Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "admission and confirmation",
+          "text": "Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "evidence topology",
+          "text": "Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "human-facing toolkit",
+          "text": "Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fixture hooks",
+          "text": "The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed safety",
+          "text": "Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260524T032035Z-6b7c",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-24T03:21:02.393039+00:00",
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Hook contracts live under `docs/beacon/hooks/<hook-id>.md`; version directories only hold research and requirement material.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each hook is a single Markdown file with frontmatter and human-readable sections for purpose, admission, evidence, and failure route.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Hooks are limited to `post_implement_pre_qa`, `qa_diagnostics`, `post_qa_pre_release`, and `post_release`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Hook admission validates lifecycle binding, enabled state, skill availability, command template, trigger policy, required evidence, and failure route; side-effect hooks require manual confirmation.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Hook runs write `.beacon/state/hooks/<hook-id>/<run-id>.json` and `docs/beacon/.machine/hooks/<hook-id>.latest.json` as evidence/read models only.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Operators can list, plan, dry-run, confirmed-run, disable, and inspect hook status without editing machine projections directly.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — The contract covers Beacon post-release local install, Rolo post-implement UAT, and Rolo QA Debug Lab as fixtures, not global defaults.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hooks cannot rewrite PRD, user-story, test-case, freeze state, QA verdict, release verdict, or gate verdict.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Hidden auto-run, arbitrary shell hooks, unknown hook codes, and missing failure routes fail closed with explicit reason codes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/project-lifecycle-hook-skill-toolkit-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "project-lifecycle-hook-skill-toolkit-contract",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Hook 是 project-level extension，不是 version-level feature artifact。",
+            "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+            "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+            "Hook 必须有 contract、admission、dry-run 和 evidence。",
+            "项目特有动作不得硬编码成 Beacon 全局默认。",
+            "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+            "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+            "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+            "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Hook 是 project-level extension，不是 version-level feature artifact。",
+              "Hook contract 固定在 `docs/beacon/hooks/<hook-id>.md`。",
+              "Hook 必须绑定有限 hook code，不允许任意时机隐式触发。",
+              "Hook 必须有 contract、admission、dry-run 和 evidence。",
+              "项目特有动作不得硬编码成 Beacon 全局默认。",
+              "涉及全局安装、UAT 发布、pipeline、写数据的 hook 必须 `manual_confirmed`。",
+              "Hook 输出只能作为 runtime / delivery / QA support evidence，不能改 requirement truth。",
+              "Hook failure 必须有 failure family 和 route，不得静默跳过。",
+              "`beacon.config.yaml` 不能成为 hook truth 的第二份副本。"
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md"
+          }
+        ]
+      },
+      "feature": "project-lifecycle-hook-skill-toolkit-contract",
+      "feature_slug": "project-lifecycle-hook-skill-toolkit-contract",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/evidence-manifest.json",
+        ".beacon/evidence-signature-chain.json",
+        ".beacon/gate-report.json",
+        ".beacon/qa/status.json",
+        ".beacon/release-gate-report.json",
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.4.10/.machine/requirement/qa-evo-deep-and-skill-eval-kit-v1410.freeze-state.json",
+        "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+        "docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md",
+        "docs/beacon/v1.4.10/source-architecture/index.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json"
+      ],
+      "accepted_at": "2026-05-24T03:26:19.806351+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

@@ -354,10 +354,16 @@ def _qa_case_type_to_qa_type(case_type: str, execution: str) -> str:
 
 def _qa_case_automation(execution: str) -> str:
     mode = str(execution or "").strip().lower()
-    markers = [token for token in ("agent-browser", "api", "db", "manual", "doc review") if token in mode]
+    markers = [
+        token
+        for token in ("agent-browser", "api", "db", "doc review")
+        if token in mode
+    ]
+    if re.search(r"\bmanual\b", mode):
+        markers.append("manual")
     if len(markers) > 1 or "+" in mode:
         return "mixed"
-    if "manual" in mode or "doc review" in mode:
+    if "manual" in markers or "doc review" in markers:
         return "manual"
     return "auto"
 
