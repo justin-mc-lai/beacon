@@ -240,7 +240,7 @@ def test_beacon_source_release_hook_requires_confirmation(tmp_path: Path) -> Non
     assert payload["side_effect_executed"] is False
 
 
-def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:
+def test_beacon_source_release_hook_confirmed_followup(tmp_path: Path, monkeypatch) -> None:
     _copy_beacon_source_hook(tmp_path)
 
     def fake_followup(project_root: Path, *, version: str, feature: str) -> dict:
@@ -285,3 +285,7 @@ def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Pat
     assert followup["launcher_setup"]["status"] == "PASS"
     assert VERSION in followup["cli_versions"]["beacon"]["stdout"]
     assert VERSION in followup["cli_versions"]["beacon-cli"]["stdout"]
+
+
+def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:
+    test_beacon_source_release_hook_confirmed_followup(tmp_path, monkeypatch)

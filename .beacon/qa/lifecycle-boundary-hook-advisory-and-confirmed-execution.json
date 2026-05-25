@@ -1,0 +1,313 @@
+{
+  "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "version": "v1.4.10",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-LBH-001"
+    ],
+    "AC-002": [
+      "TC-LBH-002"
+    ],
+    "AC-003": [
+      "TC-LBH-003"
+    ],
+    "AC-004": [
+      "TC-LBH-004"
+    ],
+    "AC-005": [
+      "TC-LBH-005"
+    ],
+    "AC-006": [
+      "TC-LBH-006"
+    ],
+    "AC-007": [
+      "TC-LBH-007"
+    ],
+    "AC-008": [
+      "TC-LBH-008"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-LBH-001",
+      "tc_id": "TC-LBH-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Enabled project hooks matching `post_release` are discovered from `docs/beacon/hooks`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"discover_post_release_hooks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-LBH-002",
+      "tc_id": "TC-LBH-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "release",
+      "layer": "release",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Release readiness output includes hook advisory and a confirmed-run recommended command.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"release_check_surfaces_post_release_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-LBH-003",
+      "tc_id": "TC-LBH-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "safety",
+      "layer": "safety",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Automatic advisory planning does not execute side effects.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "safety",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"advisory_plan_has_no_side_effect\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-LBH-004",
+      "tc_id": "TC-LBH-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: `manual_confirmed` hook run without `--confirm` is blocked.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_requires_confirmation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-LBH-005",
+      "tc_id": "TC-LBH-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Confirmed hook run executes restricted follow-up and writes evidence.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"beacon_source_release_hook_confirmed_followup\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-LBH-006",
+      "tc_id": "TC-LBH-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Hook advisory/evidence is support/runtime evidence only and cannot modify lifecycle verdicts.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"hook_advisory_has_no_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-LBH-007",
+      "tc_id": "TC-LBH-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "support-surface",
+      "layer": "support-surface",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Help/status can expose hook advisory without creating a lifecycle stage.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "support-surface",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_lifecycle_hook_advisory.py -k \"help_status_can_project_hook_advisory\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-LBH-008",
+      "tc_id": "TC-LBH-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "fail-closed",
+      "layer": "fail-closed",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "fail-closed",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1410_project_lifecycle_hooks.py -k \"unsafe_hook_requests_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/lifecycle-boundary-hook-advisory-and-confirmed-execution/TC-LBH-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

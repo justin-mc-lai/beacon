@@ -30,6 +30,7 @@ from beacon.utils.project_skills import (
     resolve_profile_for_feature,
 )
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
+from beacon.utils.project_hooks import build_lifecycle_hook_advisory
 from beacon.utils.prototype_support import feature_requires_prototype
 from beacon.utils.qa_runtime import load_current_qa_session, load_qa_status
 from beacon.utils.qa_precision import load_feature_qa_scorecard
@@ -1333,6 +1334,14 @@ def build_help_payload(
         "source": str(release_research_projection.get("source") or ""),
         "source_artifact": str(release_research_projection.get("source_artifact") or ""),
     }
+    lifecycle_hook_advisory = build_lifecycle_hook_advisory(
+        project_root,
+        version=resolved_version,
+        feature=feature_name,
+        hook_code="post_release",
+        boundary_stage="release",
+        record_dry_run_evidence=False,
+    ) if feature_name else {}
     acceptance_kit = build_acceptance_kit_projection(project_root, version=resolved_version, feature=feature_name) if feature_name else {}
     discovery_state = load_skill_discovery(project_root) if _supports_skill_discover(resolved_version) else None
     discovery_hint = build_discovery_hint(project_root) if _supports_skill_discover(resolved_version) and feature_name else {}
@@ -1921,6 +1930,7 @@ def build_help_payload(
         "score_details": scores,
         "release_summary": release_summary,
         "release_research": release_research,
+        "lifecycle_hook_advisory": lifecycle_hook_advisory,
         "acceptance_kit": acceptance_kit,
         "control_plane": control_plane,
         "coverage": coverage,

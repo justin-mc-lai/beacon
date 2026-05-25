@@ -18,6 +18,7 @@ from beacon.utils.implementation_plan import load_implementation_plan_progress
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
+from beacon.utils.project_hooks import build_lifecycle_hook_advisory
 from beacon.utils.release_scorecard import build_ceo_challenge_coverage, build_release_scorecard
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
@@ -1248,6 +1249,32 @@ def check(
         )
 
     status = "pass" if all_passed else "blocked"
+    lifecycle_hook_advisory = (
+        build_lifecycle_hook_advisory(
+            project_root,
+            version=resolved_version,
+            feature=authoritative_feature,
+            hook_code="post_release",
+            boundary_stage="release",
+        )
+        if all_passed
+        else {
+            "schema_version": "1.0",
+            "status": "not_applicable",
+            "blocked": False,
+            "hook_code": "post_release",
+            "boundary_stage": "release",
+            "version": resolved_version,
+            "feature": authoritative_feature,
+            "hook_count": 0,
+            "hooks": [],
+            "side_effect_executed": False,
+            "truth_authority": False,
+            "runtime_evidence_only": True,
+            "verdict_authority": "none",
+            "support_evidence_only": True,
+        }
+    )
     payload = _with_release_surface({
         "version": resolved_version,
         "runtime_version": resolved_runtime,
@@ -1259,6 +1286,7 @@ def check(
         "checks": check_records,
         "browser_release_blockers": browser_release_blockers,
         "recommended_command": recommended_command,
+        "lifecycle_hook_advisory": lifecycle_hook_advisory,
     }, blocked=status == "blocked", recommended_command=recommended_command)
 
     if json_output:
@@ -1273,6 +1301,16 @@ def check(
             typer.echo("\n✓ Release conditions met")
             if warning_checks:
                 typer.echo(f"Warnings: {', '.join(warning_checks)}")
+            if lifecycle_hook_advisory.get("recommended_command"):
+                typer.echo("\nPost-release hook advisory:")
+                for item in lifecycle_hook_advisory.get("hooks", []):
+                    if not isinstance(item, dict):
+                        continue
+                    typer.echo(
+                        f"- {item.get('hook_id')}: plan={item.get('plan_status')} "
+                        f"policy={item.get('trigger_policy')} support_evidence_only=true"
+                    )
+                typer.echo(f"Recommended command: {lifecycle_hook_advisory.get('recommended_command')}")
         else:
             typer.echo("\n✗ Some checks failed")
             if browser_release_blockers:
