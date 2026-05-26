@@ -1,7 +1,8 @@
 """Browser-use adapter for Beacon auto-test runner policy.
 
 This adapter intentionally prefers explicit project commands to avoid false-positive passes.
-Use `--fallback-cmd` to run deterministic local tests when browser-use runtime is unavailable.
+Use `--deterministic-command` to run deterministic local tests when browser-use runtime is unavailable.
+`--fallback-cmd` remains a compatibility alias for older callers.
 """
 
 from __future__ import annotations
@@ -33,7 +34,25 @@ def _inject_pytest_junit_arg(command: str) -> str:
     return cmd
 
 
-def _run_fallback(command: str, cwd: Path) -> int:
+def _resolve_deterministic_command(args: argparse.Namespace) -> tuple[str, str, bool]:
+    current_arg = str(args.deterministic_command or args.explicit_project_command or "").strip()
+    if current_arg:
+        return current_arg, "", False
+    legacy_arg = str(args.fallback_cmd or "").strip()
+    if legacy_arg:
+        return legacy_arg, legacy_arg, True
+    current_env = str(
+        os.environ.get("BEACON_BROWSER_DETERMINISTIC_COMMAND", "")
+        or os.environ.get("BEACON_BROWSER_EXPLICIT_PROJECT_COMMAND", "")
+        or ""
+    ).strip()
+    if current_env:
+        return current_env, "", False
+    legacy = str(os.environ.get("BEACON_BROWSER_FALLBACK_CMD", "") or "").strip()
+    return legacy, legacy, bool(legacy)
+
+
+def _run_deterministic_command(command: str, cwd: Path) -> int:
     resolved_command = _inject_pytest_junit_arg(command)
     result = subprocess.run(
         resolved_command,
@@ -50,9 +69,19 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--task", default="", help="Natural language task for browser-use.")
     parser.add_argument("--task-file", default="", help="Compiled browser task json path.")
     parser.add_argument(
+        "--deterministic-command",
+        default="",
+        help="Current deterministic project command when browser-use runtime is unavailable.",
+    )
+    parser.add_argument(
+        "--explicit-project-command",
+        default="",
+        help="Alias for --deterministic-command.",
+    )
+    parser.add_argument(
         "--fallback-cmd",
         default="",
-        help="Deterministic fallback command when browser-use runtime is not configured.",
+        help="Compatibility alias for --deterministic-command.",
     )
     parser.add_argument("--project-root", default=".", help="Project root.")
     args = parser.parse_args(argv)
@@ -62,13 +91,16 @@ def main(argv: list[str] | None = None) -> int:
     layer_dir = Path(layer_dir_value) if layer_dir_value else None
     task_file = str(args.task_file or os.environ.get("BEACON_BROWSER_TASK_FILE", "")).strip()
     task, task_payload = load_task(str(args.task or ""), task_file)
-    fallback_cmd = str(args.fallback_cmd or os.environ.get("BEACON_BROWSER_FALLBACK_CMD", "")).strip()
+    deterministic_command, fallback_cmd, compat_alias_used = _resolve_deterministic_command(args)
+    command_label = "compatibility alias --fallback-cmd" if compat_alias_used else "deterministic command"
 
     try:
         import browser_use  # type: ignore # noqa: F401
+        browser_agent_available = True
     except Exception:
-        if fallback_cmd:
-            print(f"[browser-use-adapter] browser-use unavailable, fallback: {fallback_cmd}")
+        browser_agent_available = False
+        if deterministic_command:
+            print(f"[browser-use-adapter] browser-use unavailable, {command_label}: {deterministic_command}")
             write_runner_artifacts(
                 layer_dir=layer_dir,
                 project_root=project_root,
@@ -77,13 +109,19 @@ def main(argv: list[str] | None = None) -> int:
                 task_text=task,
                 task_payload=task_payload,
                 mode=args.mode,
-                status="fallback-browser-use-unavailable",
+                status="deterministic-command-browser-use-unavailable",
                 fallback_cmd=fallback_cmd,
+                deterministic_command=deterministic_command,
+                compat_alias_used=compat_alias_used,
+                browser_agent_available=False,
+                browser_agent_executed=False,
+                reason_code="browser_agent_unavailable_deterministic_command_executed",
+                repair_route="configure_browser_agent_runtime",
             )
-            return _run_fallback(fallback_cmd, cwd=project_root)
+            return _run_deterministic_command(deterministic_command, cwd=project_root)
         print(
-            "[browser-use-adapter] browser-use package is unavailable and no --fallback-cmd provided. "
-            "Provide --functional-command/--compatibility-command with a real executable command."
+            "[browser-use-adapter] browser-use package is unavailable and no --deterministic-command provided. "
+            "Repair browser setup or provide a deterministic project command."
         )
         write_runner_artifacts(
             layer_dir=layer_dir,
@@ -95,13 +133,19 @@ def main(argv: list[str] | None = None) -> int:
             mode=args.mode,
             status="browser-use-unavailable",
             fallback_cmd=fallback_cmd,
+            deterministic_command=deterministic_command,
+            compat_alias_used=compat_alias_used,
+            browser_agent_available=False,
+            browser_agent_executed=False,
+            reason_code="browser_agent_unavailable_deterministic_command_missing",
+            repair_route="configure_browser_agent_runtime_and_deterministic_command",
         )
         return 2
 
     # Keep default adapter conservative: require explicit task to avoid fake passes.
     if not task:
-        if fallback_cmd:
-            print(f"[browser-use-adapter] no task configured, fallback: {fallback_cmd}")
+        if deterministic_command:
+            print(f"[browser-use-adapter] no task configured, {command_label}: {deterministic_command}")
             write_runner_artifacts(
                 layer_dir=layer_dir,
                 project_root=project_root,
@@ -110,13 +154,19 @@ def main(argv: list[str] | None = None) -> int:
                 task_text="",
                 task_payload=task_payload,
                 mode=args.mode,
-                status="fallback-no-task",
+                status="deterministic-command-no-task",
                 fallback_cmd=fallback_cmd,
+                deterministic_command=deterministic_command,
+                compat_alias_used=compat_alias_used,
+                browser_agent_available=browser_agent_available,
+                browser_agent_executed=False,
+                reason_code="browser_task_missing_deterministic_command_executed",
+                repair_route="provide_browser_task",
             )
-            return _run_fallback(fallback_cmd, cwd=project_root)
+            return _run_deterministic_command(deterministic_command, cwd=project_root)
         print(
             "[browser-use-adapter] browser-use detected but --task missing. "
-            "Set BEACON_BROWSER_USE_TASK via custom command wrapper or pass deterministic fallback."
+            "Set --task/--task-file or pass --deterministic-command."
         )
         write_runner_artifacts(
             layer_dir=layer_dir,
@@ -128,13 +178,19 @@ def main(argv: list[str] | None = None) -> int:
             mode=args.mode,
             status="missing-task",
             fallback_cmd=fallback_cmd,
+            deterministic_command=deterministic_command,
+            compat_alias_used=compat_alias_used,
+            browser_agent_available=browser_agent_available,
+            browser_agent_executed=False,
+            reason_code="browser_task_missing_deterministic_command_missing",
+            repair_route="provide_browser_task_and_deterministic_command",
         )
         return 2
 
     # NOTE: real browser-use task execution should be project-defined due model/provider/runtime differences.
-    # To stay deterministic in Beacon core, we delegate to explicit fallback command when present.
-    if fallback_cmd:
-        print(f"[browser-use-adapter] task accepted ({args.mode}), delegated fallback: {fallback_cmd}")
+    # To stay deterministic in Beacon core, we delegate to explicit project command when present.
+    if deterministic_command:
+        print(f"[browser-use-adapter] task accepted ({args.mode}), delegated deterministic command: {deterministic_command}")
         write_runner_artifacts(
             layer_dir=layer_dir,
             project_root=project_root,
@@ -143,10 +199,16 @@ def main(argv: list[str] | None = None) -> int:
             task_text=task,
             task_payload=task_payload,
             mode=args.mode,
-            status="fallback-executed",
+            status="deterministic-command-executed",
             fallback_cmd=fallback_cmd,
+            deterministic_command=deterministic_command,
+            compat_alias_used=compat_alias_used,
+            browser_agent_available=browser_agent_available,
+            browser_agent_executed=False,
+            reason_code="browser_agent_not_executed_deterministic_command_executed",
+            repair_route="configure_browser_agent_execution_to_claim_browser_success",
         )
-        return _run_fallback(fallback_cmd, cwd=project_root)
+        return _run_deterministic_command(deterministic_command, cwd=project_root)
 
     write_runner_artifacts(
         layer_dir=layer_dir,
@@ -158,10 +220,16 @@ def main(argv: list[str] | None = None) -> int:
         mode=args.mode,
         status="task-only",
         fallback_cmd=fallback_cmd,
+        deterministic_command=deterministic_command,
+        compat_alias_used=compat_alias_used,
+        browser_agent_available=browser_agent_available,
+        browser_agent_executed=False,
+        reason_code="browser_task_present_deterministic_command_missing",
+        repair_route="configure_deterministic_command_or_project_browser_executor",
     )
     print(
         "[browser-use-adapter] task configured but no explicit runner command provided. "
-        "Use --fallback-cmd or pass --functional-command/--compatibility-command in Beacon."
+        "Use --deterministic-command or pass --functional-command/--compatibility-command in Beacon."
     )
     return 2
 

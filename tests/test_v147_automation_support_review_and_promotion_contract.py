@@ -19,8 +19,8 @@ from beacon.utils.runtime import write_json
 
 
 runner = CliRunner()
-implement_module = importlib.import_module("beacon.commands.implement")
-legacy_implement_cli = implement_module._legacy_cli
+implement_module = importlib.import_module("beacon.commands.implement.commands")
+legacy_implement_cli = implement_module
 
 
 def _write_json(path: Path, payload: dict) -> None:

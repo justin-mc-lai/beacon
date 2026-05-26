@@ -10,7 +10,7 @@ from beacon.main import app
 from beacon.utils.release_scorecard import build_release_scorecard
 from beacon.utils.story_scenarios import expand_story_scenarios
 
-implement_command = importlib.import_module("beacon.commands.implement")
+implement_command = importlib.import_module("beacon.commands.implement.commands")
 
 
 runner = CliRunner()
@@ -74,11 +74,10 @@ def _seed_project_local_skill(root: Path, *, skill_id: str, supported_hosts: lis
 def _prepare_project(root: Path, monkeypatch) -> None:
     (root / "docs" / "beacon" / VERSION / "execution").mkdir(parents=True, exist_ok=True)
     (root / "docs" / "beacon" / VERSION / ".machine" / "execution").mkdir(parents=True, exist_ok=True)
-    legacy = implement_command._legacy_cli
-    monkeypatch.setattr(legacy, "evaluate_takeover_baseline_gate", lambda *args, **kwargs: {"status": "pass"})
-    monkeypatch.setattr(legacy, "_run_branch_preflight", lambda *args, **kwargs: {"blocked": False, "current_branch": "beacon/v1.3.9"})
-    monkeypatch.setattr(legacy, "implementation_plan_supported", lambda *args, **kwargs: False)
-    monkeypatch.setattr(legacy, "load_or_build_semantic_layer", lambda *args, **kwargs: {})
+    monkeypatch.setattr(implement_command, "evaluate_takeover_baseline_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(implement_command, "_run_branch_preflight", lambda *args, **kwargs: {"blocked": False, "current_branch": "beacon/v1.3.9"})
+    monkeypatch.setattr(implement_command, "implementation_plan_supported", lambda *args, **kwargs: False)
+    monkeypatch.setattr(implement_command, "load_or_build_semantic_layer", lambda *args, **kwargs: {})
 
 
 def _prepare_delegation_ready_feature(root: Path, *, feature_slug: str) -> None:

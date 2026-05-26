@@ -89,6 +89,12 @@ def write_runner_artifacts(
     mode: str,
     status: str,
     fallback_cmd: str,
+    deterministic_command: str = "",
+    compat_alias_used: bool = False,
+    browser_agent_available: bool = False,
+    browser_agent_executed: bool = False,
+    reason_code: str = "",
+    repair_route: str = "",
 ) -> None:
     if not isinstance(layer_dir, Path):
         return
@@ -168,6 +174,40 @@ def write_runner_artifacts(
         ),
         encoding="utf-8",
     )
+    command = str(deterministic_command or fallback_cmd or "").strip()
+    execution_mode = "deterministic_command" if command else "task-only"
+    deterministic_command_configured = bool(command)
+    deterministic_command_executed = bool(command) and str(status or "").strip() in {
+        "deterministic-command-executed",
+        "fallback-executed",
+        "fallback-browser-use-unavailable",
+        "fallback-no-task",
+        "deterministic-command-browser-use-unavailable",
+        "deterministic-command-no-task",
+    }
+    compat_id = "browser-fallback-command-name" if compat_alias_used else ""
+    resolved_reason_code = str(reason_code or "").strip()
+    if not resolved_reason_code:
+        if deterministic_command_executed and not browser_agent_executed:
+            resolved_reason_code = "browser_agent_unavailable_deterministic_command_executed"
+        elif not command and not browser_agent_executed:
+            resolved_reason_code = "browser_agent_unavailable_deterministic_command_missing"
+        else:
+            resolved_reason_code = "browser_agent_execution_recorded"
+    resolved_repair_route = str(repair_route or "").strip()
+    if not resolved_repair_route:
+        resolved_repair_route = (
+            "configure_browser_agent_runtime_and_deterministic_command"
+            if not browser_agent_available and not command
+            else "configure_browser_agent_runtime"
+            if not browser_agent_available
+            else "configure_deterministic_command"
+            if not command
+            else "none"
+        )
+    browser_agent_repair_route = "configure_browser_agent_runtime" if not browser_agent_available else "none"
+    deterministic_command_repair_route = "configure_deterministic_command" if not command else "none"
+
     console_path = layer_dir / "browser-runner-console.log"
     console_path.write_text(
         "\n".join(
@@ -177,7 +217,17 @@ def write_runner_artifacts(
                 f"status={status}",
                 f"target_url={target_url}",
                 f"session_id={session.get('session_id', '')}",
-                f"execution_mode={'fallback' if fallback_cmd else 'task-only'}",
+                f"execution_mode={execution_mode}",
+                f"browser_agent_available={str(bool(browser_agent_available)).lower()}",
+                f"browser_agent_executed={str(bool(browser_agent_executed)).lower()}",
+                f"deterministic_command_configured={str(deterministic_command_configured).lower()}",
+                f"deterministic_command_executed={str(deterministic_command_executed).lower()}",
+                f"compat_alias_used={str(bool(compat_alias_used)).lower()}",
+                f"compat_id={compat_id}",
+                f"reason_code={resolved_reason_code}",
+                f"repair_route={resolved_repair_route}",
+                f"browser_agent_repair_route={browser_agent_repair_route}",
+                f"deterministic_command_repair_route={deterministic_command_repair_route}",
             ]
         )
         + "\n",
@@ -210,7 +260,19 @@ def write_runner_artifacts(
         "scenario_family": str(payload.get("scenario_family") or ""),
         "target_url": target_url,
         "fallback_cmd": fallback_cmd,
-        "execution_mode": "fallback" if fallback_cmd else "task-only",
+        "deterministic_command": command,
+        "execution_mode": execution_mode,
+        "browser_agent_requested": True,
+        "browser_agent_available": bool(browser_agent_available),
+        "browser_agent_executed": bool(browser_agent_executed),
+        "deterministic_command_configured": deterministic_command_configured,
+        "deterministic_command_executed": deterministic_command_executed,
+        "compat_alias_used": bool(compat_alias_used),
+        "compat_id": compat_id,
+        "reason_code": resolved_reason_code,
+        "repair_route": resolved_repair_route,
+        "browser_agent_repair_route": browser_agent_repair_route,
+        "deterministic_command_repair_route": deterministic_command_repair_route,
         "session": session,
         "actions": actions,
         "artifact_refs": {key: value for key, value in artifact_refs.items() if value},
@@ -228,6 +290,19 @@ def write_runner_artifacts(
                 "status": status,
                 "task": task_text,
                 "fallback_cmd": fallback_cmd,
+                "deterministic_command": command,
+                "execution_mode": execution_mode,
+                "browser_agent_requested": True,
+                "browser_agent_available": bool(browser_agent_available),
+                "browser_agent_executed": bool(browser_agent_executed),
+                "deterministic_command_configured": deterministic_command_configured,
+                "deterministic_command_executed": deterministic_command_executed,
+                "compat_alias_used": bool(compat_alias_used),
+                "compat_id": compat_id,
+                "reason_code": resolved_reason_code,
+                "repair_route": resolved_repair_route,
+                "browser_agent_repair_route": browser_agent_repair_route,
+                "deterministic_command_repair_route": deterministic_command_repair_route,
                 "target_url": target_url,
                 "session": session,
             },
@@ -243,6 +318,18 @@ def write_runner_artifacts(
                 "mode": mode,
                 "status": status,
                 "task": task_text,
+                "execution_mode": execution_mode,
+                "browser_agent_requested": True,
+                "browser_agent_available": bool(browser_agent_available),
+                "browser_agent_executed": bool(browser_agent_executed),
+                "deterministic_command_configured": deterministic_command_configured,
+                "deterministic_command_executed": deterministic_command_executed,
+                "compat_alias_used": bool(compat_alias_used),
+                "compat_id": compat_id,
+                "reason_code": resolved_reason_code,
+                "repair_route": resolved_repair_route,
+                "browser_agent_repair_route": browser_agent_repair_route,
+                "deterministic_command_repair_route": deterministic_command_repair_route,
                 "artifact_refs": {key: value for key, value in artifact_refs.items() if value},
             },
             ensure_ascii=False,

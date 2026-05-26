@@ -1,12 +1,110 @@
-"""Beacon design command - Design Thinking methodology"""
+"""Beacon design command - support-only design truth and route contracts."""
+from __future__ import annotations
+
+import json
 import typer
 from typing import Optional
 from pathlib import Path
 from datetime import datetime
 
+from beacon.utils.design_contract import (
+    bootstrap_design_capabilities,
+    build_design_plan,
+    build_design_route_payload,
+    design_route_contract,
+    design_truth_contract,
+    write_version_design_contracts,
+)
 from beacon.utils.versioning import resolve_target_version
 
-app = typer.Typer(name="design", help="Design Thinking methodology")
+app = typer.Typer(name="design", help="Support-only Beacon design capability routes and contracts")
+
+
+def _emit(payload: dict, *, json_output: bool) -> None:
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo(f"status: {payload.get('status', '')}")
+    if payload.get("route"):
+        typer.echo(f"route: {payload.get('route')}")
+    if payload.get("upstream"):
+        typer.echo(f"upstream: {payload.get('upstream')}")
+
+
+@app.command("contract")
+def contract(
+    feature: str = typer.Argument("", help="Optional feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Show Beacon design support route and truth contract."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = design_route_contract(project_root, resolved_version, feature=feature)
+    _emit(payload, json_output=json_output)
+
+
+@app.command("truth")
+def truth(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    write: bool = typer.Option(False, "--write", help="Create missing version-wide design truth drafts"),
+    force: bool = typer.Option(False, "--force", help="Overwrite version-wide design truth drafts when used with --write"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Show or create version-wide design truth draft surfaces."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = write_version_design_contracts(project_root, resolved_version, force=force) if write else {
+        **design_truth_contract(project_root, resolved_version),
+        "status": "ready",
+    }
+    _emit(payload, json_output=json_output)
+
+
+@app.command("route")
+def route(
+    intent: str = typer.Argument(..., help="Design intent: explore/system/review/polish/extract/library/bootstrap"),
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Resolve a Beacon design support route for a feature."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = build_design_route_payload(project_root, resolved_version, feature, intent=intent)
+    _emit(payload, json_output=json_output)
+    if payload.get("status") == "blocked":
+        raise typer.Exit(2)
+
+
+@app.command("plan")
+def plan(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Build a support-only design plan against Beacon truth contracts."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = build_design_plan(project_root, resolved_version, feature)
+    _emit(payload, json_output=json_output)
+
+
+@app.command("bootstrap")
+def bootstrap(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
+):
+    """Check Beacon design upstream skill/mirror availability."""
+    project_root = Path(project) if project else Path.cwd()
+    resolved_version = resolve_target_version(project_root, version)
+    payload = bootstrap_design_capabilities(project_root, resolved_version)
+    _emit(payload, json_output=json_output)
 
 
 @app.command()
@@ -15,7 +113,7 @@ def create(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
-    """Create a Design Thinking document"""
+    """Create a legacy Design Thinking document."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, None)
 
@@ -136,7 +234,7 @@ Design Thinking (第0轮，可选)
 def list(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
-    """List all Design Thinking documents"""
+    """List all legacy Design Thinking documents."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, None)
     design_dir = project_root / "docs" / "product" / resolved_version / "design"

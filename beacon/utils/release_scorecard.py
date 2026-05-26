@@ -422,6 +422,8 @@ def _resolve_acceptance_truth(
     qa_status_value = str(qa_payload.get("status") or "").strip().lower()
     qa_release_ready = bool(qa_payload.get("release_ready", False))
     qa_evidence_done = bool(qa_payload.get("evidence_done", False))
+    qa_status_source = str(qa_payload.get("qa_status_source") or "canonical").strip()
+    legacy_only_qa = qa_status_source == "legacy_admitted" and not acceptance_payload and not scorecard_payload and not qa_embedded_scorecard
     continue_decision = str(
         effective_scorecard.get("continue_decision")
         or qa_embedded_scorecard.get("continue_decision")
@@ -451,17 +453,17 @@ def _resolve_acceptance_truth(
         source = "feature_qa_scorecard"
     elif qa_embedded_scorecard:
         source = "qa_status_embedded_scorecard"
-    elif qa_release_ready:
+    elif qa_release_ready and not legacy_only_qa:
         source = "qa_status"
 
     acceptance_verdict = str(acceptance_payload.get("verdict") or "").strip().lower()
     acceptance_release_ready = acceptance_verdict == "passed"
-    legacy_qa_acceptance = qa_status_value == "passed" and qa_evidence_done
+    legacy_qa_acceptance = qa_status_value == "passed" and qa_evidence_done and not legacy_only_qa
     if source == "none" and legacy_qa_acceptance:
         source = "qa_status"
     release_ready_signal = (
         bool(effective_scorecard.get("release_ready", False))
-        or qa_release_ready
+        or (qa_release_ready and not legacy_only_qa)
         or acceptance_release_ready
         or legacy_qa_acceptance
     )
@@ -502,6 +504,8 @@ def _resolve_acceptance_truth(
         "acceptance_envelope_path": str(acceptance_payload.get("_machine_path") or ""),
         "acceptance_transaction_id": str(acceptance_payload.get("transaction_id") or ""),
         "acceptance_verdict": acceptance_verdict,
+        "qa_status_source": qa_status_source,
+        "legacy_only_qa_blocked": legacy_only_qa,
     }
 
 
@@ -810,6 +814,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
     project_gate_status = str(project_profile_gate.get("status") or "not_configured")
     qa_passed = str(qa_status.get("status") or "").strip().lower() == "passed"
     qa_evidence_done = bool(qa_status.get("evidence_done", False))
+    qa_status_source = str(qa_status.get("qa_status_source") or "canonical").strip()
     acceptance = _resolve_acceptance_truth(qa_status, feature_scorecard, acceptance_envelope)
     acceptance_transaction = (
         acceptance_projection_transaction_contract(
@@ -833,6 +838,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         gate_pass
         and qa_passed
         and qa_evidence_done
+        and qa_status_source != "legacy_admitted"
         and exhaustiveness_pass
         and gate_version_match
         and qa_version_match
@@ -853,6 +859,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         release_ready = (
             gate_pass
             and qa_passed
+            and qa_status_source != "legacy_admitted"
             and (qa_evidence_done or feature_scorecard_release_ready or feature_scorecard_continue_decision == "ready_for_release")
             and bool(acceptance.get("source") and acceptance.get("source") != "none")
             and feature_scorecard_release_ready

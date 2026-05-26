@@ -171,7 +171,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Planning & Analysis commands
     app.add_typer(analyze_app, name="analyze", hidden=True)
     app.add_typer(brainstorm_app, name="brainstorm", hidden=True)
-    app.add_typer(design_app, name="design", hidden=True)
+    app.add_typer(design_app, name="design")
     app.add_typer(jtbd_app, name="jtbd", hidden=True)
     app.add_typer(version_app, name="version")
     app.add_typer(roadmap_app, name="roadmap", hidden=True)

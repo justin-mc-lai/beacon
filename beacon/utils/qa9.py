@@ -131,13 +131,13 @@ def default_command_for_qa_type(qa_type: str, *, ui_runner: str = "playwright") 
         if runner == "browser-use":
             return (
                 "python3 -m beacon.adapters.browser_use_runner --mode functional "
-                '--fallback-cmd "python3 -m pytest -q -k functional '
+                '--deterministic-command "python3 -m pytest -q -k functional '
                 '--junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""'
             )
         if runner == "agent-browser":
             return (
                 "python3 -m beacon.adapters.agent_browser_runner --mode functional "
-                '--fallback-cmd "python3 -m pytest -q -k functional '
+                '--deterministic-command "python3 -m pytest -q -k functional '
                 '--junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""'
             )
         if runner == "midscene":
@@ -153,13 +153,13 @@ def default_command_for_qa_type(qa_type: str, *, ui_runner: str = "playwright") 
         if runner == "browser-use":
             return (
                 "python3 -m beacon.adapters.browser_use_runner --mode compatibility "
-                '--fallback-cmd "python3 -m pytest -q -k compatibility '
+                '--deterministic-command "python3 -m pytest -q -k compatibility '
                 '--junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""'
             )
         if runner == "agent-browser":
             return (
                 "python3 -m beacon.adapters.agent_browser_runner --mode compatibility "
-                '--fallback-cmd "python3 -m pytest -q -k compatibility '
+                '--deterministic-command "python3 -m pytest -q -k compatibility '
                 '--junitxml \\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\""'
             )
         if runner == "midscene":

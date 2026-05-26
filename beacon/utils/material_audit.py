@@ -293,6 +293,7 @@ def build_material_audit(
 
     revision_drift_by_feature: dict[str, dict[str, Any]] = {}
     prd_mirror_drift_by_feature: dict[str, dict[str, Any]] = {}
+    prd_compat_mirror_warnings_by_feature: dict[str, dict[str, Any]] = {}
     markdown_first_drift_by_feature: dict[str, dict[str, Any]] = {}
     if requires_change_loop_dual_write:
         for name in feature_names:
@@ -345,12 +346,27 @@ def build_material_audit(
                     )
                 )
                 if not legacy_ok:
-                    drift["legacy_machine_mirror_sync"] = {
+                    prd_compat_mirror_warnings_by_feature[name] = {
+                        "compat_mirror_stale": {
+                            "compat_id": "prd-legacy-machine-mirror",
+                            "path": str(legacy_path.relative_to(root)) if legacy_path.exists() else str(legacy_path),
+                            "exists": legacy_path.exists(),
+                            "mode": "markdown_first_state" if requires_markdown_first_freeze else "fulltext_mirror",
+                            "markdown_hash": legacy_hash,
+                            "expected_markdown_hash": stable_text_hash_uri(markdown_raw) if requires_markdown_first_freeze else "",
+                            "role": "compat_mirror",
+                            "blocking": False,
+                        }
+                    }
+                    drift["compat_mirror_stale"] = {
+                        "compat_id": "prd-legacy-machine-mirror",
                         "path": str(legacy_path.relative_to(root)) if legacy_path.exists() else str(legacy_path),
                         "exists": legacy_path.exists(),
                         "mode": "markdown_first_state" if requires_markdown_first_freeze else "fulltext_mirror",
                         "markdown_hash": legacy_hash,
                         "expected_markdown_hash": stable_text_hash_uri(markdown_raw) if requires_markdown_first_freeze else "",
+                        "role": "compat_mirror",
+                        "blocking": False,
                     }
                 canonical_path = root / "docs" / "beacon" / resolved_version / ".machine" / "prd" / f"{name}.canonical.json"
                 canonical_payload = _read_json(canonical_path)
@@ -407,8 +423,13 @@ def build_material_audit(
                         "latest_transaction_id": latest_tx_id,
                         "canonical_transaction_id": canonical_tx_id,
                     }
-                if drift:
-                    prd_mirror_drift_by_feature[name] = drift
+                blocking_drift = {
+                    key: value
+                    for key, value in drift.items()
+                    if key != "compat_mirror_stale"
+                }
+                if blocking_drift:
+                    prd_mirror_drift_by_feature[name] = blocking_drift
 
     if requires_markdown_first_freeze:
         for name in feature_names:
@@ -479,6 +500,17 @@ def build_material_audit(
                     "details": {
                         "feature_count": len(feature_names),
                         "drift_by_feature": prd_mirror_drift_by_feature,
+                    },
+                }
+            )
+            prd_compat_status = "pass" if not prd_compat_mirror_warnings_by_feature else "warn"
+            checks.append(
+                {
+                    "name": "prd_compat_mirror_sync",
+                    "status": prd_compat_status,
+                    "details": {
+                        "feature_count": len(feature_names),
+                        "warning_by_feature": prd_compat_mirror_warnings_by_feature,
                     },
                 }
             )

@@ -130,8 +130,8 @@ def test_compat_behavior_is_not_retired_by_this_slice():
     from beacon.utils import intent_router
 
     implement_command = importlib.import_module("beacon.commands.implement")
-    assert hasattr(implement_command, "_legacy_cli")
     assert hasattr(implement_command, "app")
+    assert callable(implement_command.run_implement_stage)
     assert callable(qa_runtime.legacy_auto_test_status_path)
     assert callable(qa_runtime.write_qa_status)
     assert callable(qa_runtime.load_qa_status)

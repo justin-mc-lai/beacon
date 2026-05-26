@@ -17,7 +17,7 @@ from beacon.utils.workflow_memory import compute_workflow_progress, load_lifecyc
 
 
 runner = CliRunner()
-implement_cmd = importlib.import_module("beacon.commands.implement")
+implement_cmd = importlib.import_module("beacon.commands.implement.commands")
 
 
 def _invoke(args: list[str]):
@@ -258,7 +258,7 @@ def test_implement_run_should_block_requirement_change_host_prompt_before_execut
     def _unexpected_run(**_kwargs):
         raise AssertionError("implement execution should not start for requirement change prompts")
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _unexpected_run)
 
     result = _invoke(
         [
@@ -291,7 +291,7 @@ def test_implement_run_should_block_truth_conflict_host_prompt_before_execution(
     def _unexpected_run(**_kwargs):
         raise AssertionError("implement execution should not start for truth-conflict prompts")
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _unexpected_run)
 
     result = _invoke(
         [
@@ -318,7 +318,7 @@ def test_implement_run_should_block_truth_conflict_host_prompt_before_execution(
 
 def test_implement_run_should_attach_in_scope_prompt_boundary_to_single_dry_run(monkeypatch, tmp_path: Path):
     _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
-    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+    monkeypatch.setattr(implement_cmd, "implementation_plan_supported", lambda _version: False)
 
     result = _invoke(
         [
@@ -348,7 +348,7 @@ def test_implement_run_should_attach_in_scope_prompt_boundary_to_single_dry_run(
 
 def test_implement_run_task_template_should_remain_additive_to_frozen_truth_prompt(monkeypatch, tmp_path: Path):
     _seed_feature_docs(tmp_path, version="v1.3.7", feature="My Feature")
-    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+    monkeypatch.setattr(implement_cmd, "implementation_plan_supported", lambda _version: False)
 
     result = _invoke(
         [
@@ -411,7 +411,7 @@ def test_implement_run_should_block_requirement_change_task_template_before_exec
     def _unexpected_run(**_kwargs):
         raise AssertionError("implement execution should not start for requirement-change task templates")
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _unexpected_run)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _unexpected_run)
 
     result = _invoke(
         [
@@ -446,10 +446,10 @@ def test_implement_run_ralph_dry_run_should_not_invoke_controller_or_materialize
     def _unexpected_controller(**_kwargs):
         raise AssertionError("ralph controller should not run during dry-run")
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _unexpected_controller)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "runtime_context_precheck_required", lambda **_kwargs: False)
+    monkeypatch.setattr(implement_cmd, "_run_ralph_controller", _unexpected_controller)
+    monkeypatch.setattr(implement_cmd, "runtime_context_precheck_required", lambda **_kwargs: False)
     monkeypatch.setattr(
-        implement_cmd._legacy_cli,
+        implement_cmd,
         "delegation_readiness_precheck",
         lambda *args, **kwargs: {
             "schema_version": "1.0",
@@ -500,7 +500,7 @@ def test_implement_plan_should_block_requirement_change_host_prompt_before_compi
     def _unexpected_compile(*_args, **_kwargs):
         raise AssertionError("implementation plan should not compile for requirement change prompts")
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "compile_implementation_plan", _unexpected_compile)
+    monkeypatch.setattr(implement_cmd, "compile_implementation_plan", _unexpected_compile)
 
     result = _invoke(
         [
@@ -526,11 +526,11 @@ def test_implement_run_should_block_when_v140_closure_preflight_requires_supplem
     _seed_v140_incomplete_closure_docs(tmp_path, feature="My Feature")
 
     monkeypatch.setattr(
-        implement_cmd._legacy_cli,
+        implement_cmd,
         "build_requirement_package_gate",
         lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
     )
-    monkeypatch.setattr(implement_cmd._legacy_cli, "implementation_plan_supported", lambda _version: False)
+    monkeypatch.setattr(implement_cmd, "implementation_plan_supported", lambda _version: False)
 
     result = _invoke(
         [
@@ -565,11 +565,11 @@ def test_implement_plan_should_block_when_v140_closure_preflight_requires_supple
         raise AssertionError("implementation plan should not compile when closure preflight is blocked")
 
     monkeypatch.setattr(
-        implement_cmd._legacy_cli,
+        implement_cmd,
         "build_requirement_package_gate",
         lambda *_args, **_kwargs: {"status": "pass", "reason_code": "", "recommended_command": ""},
     )
-    monkeypatch.setattr(implement_cmd._legacy_cli, "compile_implementation_plan", _unexpected_compile)
+    monkeypatch.setattr(implement_cmd, "compile_implementation_plan", _unexpected_compile)
 
     result = _invoke(
         [
@@ -1220,10 +1220,10 @@ def test_run_auto_qa_sequence_should_follow_supported_handoff_and_rerun(monkeypa
         calls.append(("handoff", command))
         return 0, {"status": "generated"}
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_auto_qa", _fake_run_auto_qa)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_beacon_json_command", _fake_run_beacon_json_command)
+    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
 
-    exit_code, payload = implement_cmd._legacy_cli._run_auto_qa_sequence(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
         tmp_path,
         feature="My Feature",
         version="v1.1.10",
@@ -1253,7 +1253,7 @@ def test_implement_team_run_should_forward_team_mode(monkeypatch, tmp_path: Path
             "team_surface": "implement-team",
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
 
     result = _invoke(
         [
@@ -1285,7 +1285,7 @@ def test_implement_run_ralph_should_forward_prompt_boundary_to_controller(monkey
             "mode": "ralph",
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _fake_ralph_controller)
+    monkeypatch.setattr(implement_cmd, "_run_ralph_controller", _fake_ralph_controller)
 
     result = _invoke(
         [
@@ -1374,8 +1374,8 @@ def test_ralph_summary_should_surface_v140_three_prd_implementation_order(monkey
             },
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_ralph_controller", _fake_ralph_controller)
-    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+    monkeypatch.setattr(implement_cmd, "_run_ralph_controller", _fake_ralph_controller)
+    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
         feature="Beacon v1.4.0 lightweight kernel and core surface refactor",
         project_root=tmp_path,
         version="v1.4.0",
@@ -1415,10 +1415,10 @@ def test_run_auto_qa_sequence_should_not_follow_handoff_when_disabled(monkeypatc
         calls.append("handoff")
         return 0, {"status": "generated"}
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_auto_qa", _fake_run_auto_qa)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_beacon_json_command", _fake_run_beacon_json_command)
+    monkeypatch.setattr(implement_cmd, "_run_auto_qa", _fake_run_auto_qa)
+    monkeypatch.setattr(implement_cmd, "_run_beacon_json_command", _fake_run_beacon_json_command)
 
-    exit_code, payload = implement_cmd._legacy_cli._run_auto_qa_sequence(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._run_auto_qa_sequence(  # type: ignore[attr-defined]
         tmp_path,
         feature="My Feature",
         version="v1.1.10",
@@ -1484,11 +1484,11 @@ def test_ralph_controller_should_keep_qa_single_round_and_write_round_artifact(m
             },
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "_run_gate_release_command", lambda *args, **kwargs: (0, {"status": "pass"}))
-    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "_run_gate_release_command", lambda *args, **kwargs: (0, {"status": "pass"}))
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    exit_code, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+    exit_code, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.2",
@@ -1531,10 +1531,10 @@ def test_ralph_controller_should_forward_prompt_boundary_to_child_runs(monkeypat
             "request_markdown": ".beacon/implement/run-ralph/request.md",
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.2",
@@ -1622,10 +1622,10 @@ def test_ralph_controller_should_ignore_text_completion_without_structured_qa_re
             },
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.2",
@@ -1686,10 +1686,10 @@ def test_ralph_controller_should_surface_requirement_completeness_handoff_when_q
             },
         }
 
-    monkeypatch.setattr(implement_cmd._legacy_cli, "run_implement_stage", _fake_run_implement_stage)
-    monkeypatch.setattr(implement_cmd._legacy_cli, "refresh_evidence_manifest", lambda *args, **kwargs: None)
+    monkeypatch.setattr(implement_cmd, "run_implement_stage", _fake_run_implement_stage)
+    monkeypatch.setattr(implement_cmd, "refresh_evidence_manifest", lambda *args, **kwargs: None)
 
-    _, payload = implement_cmd._legacy_cli._run_ralph_controller(  # type: ignore[attr-defined]
+    _, payload = implement_cmd._run_ralph_controller(  # type: ignore[attr-defined]
         feature="My Feature",
         project_root=tmp_path,
         version="v1.3.12",

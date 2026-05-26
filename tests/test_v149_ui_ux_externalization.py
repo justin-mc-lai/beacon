@@ -162,7 +162,7 @@ def test_v149_prototype_adapt_should_write_truth_binding(tmp_path: Path) -> None
 
 
 def test_v149_implement_should_block_when_required_adapter_binding_missing(tmp_path: Path, monkeypatch) -> None:
-    implement_module = importlib.import_module("beacon.commands.implement")._legacy_cli
+    implement_module = importlib.import_module("beacon.commands.implement.commands")
 
     _seed_requirement_docs(tmp_path, design_binding_required=True)
     monkeypatch.setattr(implement_module, "build_requirement_package_gate", lambda *_args, **_kwargs: {"status": "pass"})

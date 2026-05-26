@@ -6,9 +6,9 @@ from pathlib import Path
 import subprocess
 
 
-implement_cmd = importlib.import_module("beacon.commands.implement")
+implement_cmd = importlib.import_module("beacon.commands.implement.commands")
 qa_cmd = importlib.import_module("beacon.commands.qa")
-implement_legacy = implement_cmd._legacy_cli
+implement_legacy = implement_cmd
 
 
 def _patch_implement_execution_prereqs(monkeypatch, tmp_path: Path, *, adapter_type: str = "command", command: str = "fake-runner"):

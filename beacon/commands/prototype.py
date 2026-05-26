@@ -37,6 +37,18 @@ from beacon.utils.versioning import resolve_operational_docs_version, resolve_ta
 app = typer.Typer(name="prototype", help="Adapt accepted UI/UX results into Beacon truth bindings; read legacy wireframe freezes")
 
 
+def _json_safe(value):
+    if isinstance(value, Path):
+        return str(value)
+    if isinstance(value, dict):
+        return {str(key): _json_safe(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, tuple):
+        return [_json_safe(item) for item in value]
+    return value
+
+
 def _load_bridge_payload(payload_json: str = "") -> dict:
     raw = str(payload_json or "").strip()
     if not raw:
@@ -595,6 +607,7 @@ def status(
     feature: str = typer.Argument(..., help="Feature name"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Version (auto=largest docs semver)"),
+    include_legacy: bool = typer.Option(False, "--include-legacy", help="Include legacy wireframe migration details"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON status payload"),
 ):
     """Show prototype status including stale detection and review readiness."""
@@ -602,6 +615,15 @@ def status(
     resolved_version = _resolved_operational_version(project_root, version, "prototype status")
     if prototype_adapter_only_supported(resolved_version):
         payload = design_result_adapter_status(project_root, resolved_version, feature)
+        if include_legacy:
+            legacy = evaluate_prototype_status(project_root, resolved_version, feature)
+            legacy_status = str(legacy.get("status") or "")
+            payload["legacy_prototype"] = {
+                **_json_safe(legacy),
+                "migration_input_present": legacy_status == "legacy_source_only"
+                or str(legacy.get("legacy_source_status") or "") == "present",
+                "current_closure": False,
+            }
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
             return
@@ -614,6 +636,9 @@ def status(
         typer.echo(f"reason_code  : {payload.get('reason_code', '')}")
         typer.echo(f"binding_json : {(payload.get('paths') or {}).get('binding_json', '')}")
         typer.echo(f"binding_ready: {bool(payload.get('binding_ready'))}")
+        if include_legacy:
+            legacy = payload.get("legacy_prototype") if isinstance(payload.get("legacy_prototype"), dict) else {}
+            typer.echo(f"legacy_migration_input_present: {bool(legacy.get('migration_input_present'))}")
         if payload.get("recommended_command"):
             typer.echo(f"next_action  : {payload.get('recommended_command')}")
         return

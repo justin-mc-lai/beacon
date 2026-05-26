@@ -13,7 +13,7 @@ from beacon.utils.ralph_runtime import finalize_ralph_state
 
 
 runner = CliRunner()
-implement_module = importlib.import_module("beacon.commands.implement")
+implement_module = importlib.import_module("beacon.commands.implement.commands")
 
 
 def _write_ralph_state(tmp_path: Path, feature: str, payload: dict) -> Path:
@@ -47,7 +47,7 @@ def test_ralph_resume_should_promote_review_quality_gate_ready_to_release(monkey
     )
 
     monkeypatch.setattr(
-        implement_module._legacy_cli,
+        implement_module,
         "_run_beacon_json_command",
         lambda project_root, command: (0, {"status": "warn", "gate_ready": True}),
     )
@@ -86,7 +86,7 @@ def test_ralph_resume_should_mark_release_ready_after_gate_pass(monkeypatch, tmp
     )
 
     monkeypatch.setattr(
-        implement_module._legacy_cli,
+        implement_module,
         "_run_beacon_json_command",
         lambda project_root, command: (0, {"status": "pass"}),
     )
@@ -125,7 +125,7 @@ def test_ralph_resume_should_mark_gate_release_blocked_when_gate_fails(monkeypat
     )
 
     monkeypatch.setattr(
-        implement_module._legacy_cli,
+        implement_module,
         "_run_beacon_json_command",
         lambda project_root, command: (2, {"status": "Blocked"}),
     )
@@ -164,7 +164,7 @@ def test_ralph_resume_should_redirect_to_human_requirement_handoff_when_release_
     )
 
     monkeypatch.setattr(
-        implement_module._legacy_cli,
+        implement_module,
         "_run_beacon_json_command",
         lambda project_root, command: (
             2,
@@ -252,7 +252,7 @@ def test_ralph_status_should_reconcile_stale_gate_release_blocker_to_deep_releas
     )
 
     monkeypatch.setattr(
-        implement_module._legacy_cli,
+        implement_module,
         "build_release_scorecard",
         lambda *_args, **_kwargs: {
             "release_ready": False,

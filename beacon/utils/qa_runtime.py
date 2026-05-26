@@ -21,6 +21,10 @@ def legacy_auto_test_status_path(project_root: Path) -> Path:
     return project_root / ".beacon" / "auto-test-status.json"
 
 
+def qa_legacy_admission_path(project_root: Path) -> Path:
+    return qa_root(project_root) / "compatibility" / "legacy-auto-test-status-admission.json"
+
+
 def _qa_summary(payload: dict[str, Any]) -> dict[str, Any]:
     feature_scorecard = payload.get("feature_scorecard") if isinstance(payload.get("feature_scorecard"), dict) else {}
     reconciliation = payload.get("reconciliation") if isinstance(payload.get("reconciliation"), dict) else (
@@ -60,17 +64,56 @@ def write_qa_status(project_root: Path, payload: dict[str, Any]) -> dict[str, st
     }
 
 
-def load_qa_status(project_root: Path) -> dict[str, Any]:
-    """Load QA status preferring canonical v1.1.8 location."""
-    for path in (qa_status_path(project_root), legacy_auto_test_status_path(project_root)):
-        if not path.exists():
-            continue
-        try:
-            payload = json.loads(path.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
-            payload = {}
-        if isinstance(payload, dict):
-            return payload
+def _load_json_payload(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+    return payload if isinstance(payload, dict) else {}
+
+
+def write_qa_legacy_admission(project_root: Path, *, reason: str = "explicit_legacy_qa_admission") -> dict[str, Any]:
+    payload = {
+        "schema_version": "1.0",
+        "compat_id": "qa-auto-test-status-legacy-mirror",
+        "source": str(legacy_auto_test_status_path(project_root).relative_to(project_root)),
+        "role": "historical_evidence",
+        "reason": reason,
+        "admitted_at": now_iso(),
+    }
+    path = qa_legacy_admission_path(project_root)
+    write_json(path, payload)
+    return {
+        **payload,
+        "path": str(path.relative_to(project_root)),
+    }
+
+
+def load_qa_status(project_root: Path, *, allow_legacy: bool = False, admission_reason: str = "explicit_legacy_qa_admission") -> dict[str, Any]:
+    """Load current QA status.
+
+    By default this reads only the canonical v1.1.8+ QA status. Legacy
+    auto-test status is compatibility evidence and requires explicit admission.
+    """
+    canonical = _load_json_payload(qa_status_path(project_root))
+    if canonical:
+        canonical.setdefault("qa_status_source", "canonical")
+        return canonical
+    if not allow_legacy:
+        return {}
+    legacy = _load_json_payload(legacy_auto_test_status_path(project_root))
+    if legacy:
+        admission = write_qa_legacy_admission(project_root, reason=admission_reason)
+        legacy = dict(legacy)
+        legacy["qa_status_source"] = "legacy_admitted"
+        legacy["compatibility_evidence"] = {
+            "compat_id": "qa-auto-test-status-legacy-mirror",
+            "role": "historical_evidence",
+            "admission_ref": admission["path"],
+        }
+        return legacy
     return {}
 
 

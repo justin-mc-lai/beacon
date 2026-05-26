@@ -94,6 +94,9 @@ PLACEHOLDER_BROWSER_RUNNER_STATUSES = {
     "browser-use-unavailable",
     "fallback-browser-use-unavailable",
     "fallback-executed",
+    "deterministic-command-no-task",
+    "deterministic-command-browser-use-unavailable",
+    "deterministic-command-executed",
 }
 
 
@@ -1187,6 +1190,38 @@ def _load_runner_bundle(project_root: Path, layer_dir: Path) -> dict[str, Any]:
         "status": str(report.get("status") or meta.get("status") or result.get("status") or "").strip(),
         "task": str(report.get("task") or meta.get("task") or "").strip(),
         "target_url": str(report.get("target_url") or "").strip(),
+        "execution_mode": str(report.get("execution_mode") or meta.get("execution_mode") or result.get("execution_mode") or "").strip(),
+        "deterministic_command": str(report.get("deterministic_command") or meta.get("deterministic_command") or "").strip(),
+        "fallback_cmd": str(report.get("fallback_cmd") or meta.get("fallback_cmd") or "").strip(),
+        "browser_agent_requested": bool(report.get("browser_agent_requested") or meta.get("browser_agent_requested") or result.get("browser_agent_requested")),
+        "browser_agent_available": bool(report.get("browser_agent_available") or meta.get("browser_agent_available") or result.get("browser_agent_available")),
+        "browser_agent_executed": bool(report.get("browser_agent_executed") or meta.get("browser_agent_executed") or result.get("browser_agent_executed")),
+        "deterministic_command_configured": bool(
+            report.get("deterministic_command_configured")
+            or meta.get("deterministic_command_configured")
+            or result.get("deterministic_command_configured")
+        ),
+        "deterministic_command_executed": bool(
+            report.get("deterministic_command_executed")
+            or meta.get("deterministic_command_executed")
+            or result.get("deterministic_command_executed")
+        ),
+        "compat_alias_used": bool(report.get("compat_alias_used") or meta.get("compat_alias_used") or result.get("compat_alias_used")),
+        "compat_id": str(report.get("compat_id") or meta.get("compat_id") or result.get("compat_id") or "").strip(),
+        "reason_code": str(report.get("reason_code") or meta.get("reason_code") or result.get("reason_code") or "").strip(),
+        "repair_route": str(report.get("repair_route") or meta.get("repair_route") or result.get("repair_route") or "").strip(),
+        "browser_agent_repair_route": str(
+            report.get("browser_agent_repair_route")
+            or meta.get("browser_agent_repair_route")
+            or result.get("browser_agent_repair_route")
+            or ""
+        ).strip(),
+        "deterministic_command_repair_route": str(
+            report.get("deterministic_command_repair_route")
+            or meta.get("deterministic_command_repair_route")
+            or result.get("deterministic_command_repair_route")
+            or ""
+        ).strip(),
         "actions": [item for item in actions if isinstance(item, dict)],
         "session": session,
         "report_ref": _relative_project_ref(project_root, report_path) if report_path.exists() else "",
@@ -1338,6 +1373,19 @@ def _write_browser_evidence_pack(
         "explore_runner_report_ref": str(explore_bundle.get("report_ref") or ""),
         "explore_runner_meta_ref": str(explore_bundle.get("meta_ref") or ""),
         "explore_runner_result_ref": str(explore_bundle.get("result_ref") or ""),
+        "explore_execution_mode": str(explore_bundle.get("execution_mode") or ""),
+        "deterministic_command": str(explore_bundle.get("deterministic_command") or ""),
+        "browser_agent_requested": bool(explore_bundle.get("browser_agent_requested")),
+        "browser_agent_available": bool(explore_bundle.get("browser_agent_available")),
+        "browser_agent_executed": bool(explore_bundle.get("browser_agent_executed")),
+        "deterministic_command_configured": bool(explore_bundle.get("deterministic_command_configured")),
+        "deterministic_command_executed": bool(explore_bundle.get("deterministic_command_executed")),
+        "compat_alias_used": bool(explore_bundle.get("compat_alias_used")),
+        "compat_id": str(explore_bundle.get("compat_id") or ""),
+        "reason_code": str(explore_bundle.get("reason_code") or ""),
+        "repair_route": str(explore_bundle.get("repair_route") or ""),
+        "browser_agent_repair_route": str(explore_bundle.get("browser_agent_repair_route") or ""),
+        "deterministic_command_repair_route": str(explore_bundle.get("deterministic_command_repair_route") or ""),
         "explore_task_ref": str(explore_bundle.get("task_ref") or ""),
         "replay_runner_report_ref": str(replay_bundle.get("report_ref") or ""),
         "replay_runner_meta_ref": str(replay_bundle.get("meta_ref") or ""),
@@ -1639,7 +1687,7 @@ def _execute_qa9_tc_entries(
             extra_env.update(
                 {
                     "BEACON_BROWSER_TASK_FILE": str(task_path),
-                    "BEACON_BROWSER_FALLBACK_CMD": command,
+                    "BEACON_BROWSER_DETERMINISTIC_COMMAND": command,
                 }
             )
             extra_env.update(_browser_session_env(project_root, active_browser_session))
@@ -1660,18 +1708,24 @@ def _execute_qa9_tc_entries(
                 }
                 explore_payload = dict(run_payload)
             else:
-                explore_command = str(
-                    item.get("explore_command")
-                    or compiled_runner
-                    or command
-                    or (
+                if prefer_explicit_layer_overrides:
+                    explore_command = str(
                         explicit_layer_overrides.get(qa_type)
-                        if prefer_explicit_layer_overrides
-                        else ""
-                    )
-                    or commands.get(qa_type)
-                    or ""
-                ).strip()
+                        or item.get("explore_command")
+                        or compiled_runner
+                        or command
+                        or commands.get(qa_type)
+                        or ""
+                    ).strip()
+                else:
+                    explore_command = str(
+                        item.get("explore_command")
+                        or compiled_runner
+                        or command
+                        or explicit_layer_overrides.get(qa_type)
+                        or commands.get(qa_type)
+                        or ""
+                    ).strip()
                 explore_payload = _run_layer_command(
                     layer=qa_type,
                     command=explore_command,
@@ -1686,18 +1740,24 @@ def _execute_qa9_tc_entries(
                 )
                 run_payload = dict(explore_payload)
             if bool(item.get("replay_required")) and str(run_payload.get("status") or "").strip().lower() == "passed":
-                replay_command = str(
-                    item.get("replay_command")
-                    or compiled_runner
-                    or command
-                    or (
+                if prefer_explicit_layer_overrides:
+                    replay_command = str(
                         explicit_layer_overrides.get(qa_type)
-                        if prefer_explicit_layer_overrides
-                        else ""
-                    )
-                    or commands.get(qa_type)
-                    or ""
-                ).strip()
+                        or item.get("replay_command")
+                        or compiled_runner
+                        or command
+                        or commands.get(qa_type)
+                        or ""
+                    ).strip()
+                else:
+                    replay_command = str(
+                        item.get("replay_command")
+                        or compiled_runner
+                        or command
+                        or explicit_layer_overrides.get(qa_type)
+                        or commands.get(qa_type)
+                        or ""
+                    ).strip()
                 replay_payload = _run_layer_command(
                     layer=qa_type,
                     command=replay_command,
