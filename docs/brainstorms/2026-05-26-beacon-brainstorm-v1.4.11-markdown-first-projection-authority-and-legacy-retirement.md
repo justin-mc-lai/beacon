@@ -33,6 +33,7 @@ Markdown truth <-> machine truth
 - operator 听到的是 Markdown-first。
 - status / gate / policy surface 仍暴露 machine source of truth。
 - legacy fallback path 在 current-version 应显式的地方可能静默 pass。
+- P0 friction `friction:cd1809c3220a` 进一步证明：当 accepted `ui-ux-dev` UI/UX facts 未写回 `PRODUCT.md` / `DESIGN.md` / PRD / user-story / test-cases 时，automation 会按旧 frozen truth 回滚已验收前端事实。Markdown-first 不能等于“盲信旧 Markdown”，而应要求 accepted human facts 进入正确 truth surface，否则 implement / QA / release fail closed。
 
 这不只是文案问题。它会影响 gate trust、support surface 边界、QA closure 解释，以及后续源码清理工作的方向。
 
@@ -51,6 +52,7 @@ markdown-first-projection-authority-and-legacy-retirement-contract
 - compatibility registry。
 - `v1.4.11+` hidden fallback fail-closed defaults。
 - machine-as-truth wording regression tests。
+- accepted UI/UX facts 未写回 truth 的 blocker / gate 调研：`accepted_ui_ux_truth_gap_gate`。
 
 不要把它与新的 QA 扩容、Ralph loop、learn skill injection 合并。
 

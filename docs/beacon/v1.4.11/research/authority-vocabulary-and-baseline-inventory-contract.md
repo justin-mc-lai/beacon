@@ -156,3 +156,15 @@ Do not include Phase 2 or later behavior-changing work in this frozen slice.
 - QA and PRD legacy mirror behavior changes are out of scope.
 - Implement legacy loader migration is out of scope.
 - Prototype, browser, memory, and intent compatibility behavior changes are out of scope.
+
+## Deep Summary
+
+- source_skill: `beacon-deep`
+- updated_at: `2026-05-26T11:18:32.532312+00:00`
+- deep_artifact_root: `docs/beacon/v1.4.11/deep/authority-vocabulary-and-baseline-inventory-contract`
+- machine_artifact_root: `docs/beacon/v1.4.11/.machine/deep/authority-vocabulary-and-baseline-inventory-contract`
+- deep_requirement_state: `required`
+- status: `closed`
+- route_decision: `closed`
+- release_supplement_ref: `docs/beacon/v1.4.11/.machine/deep/authority-vocabulary-and-baseline-inventory-contract/release-supplement.json`
+- adoption_status: `route_only`

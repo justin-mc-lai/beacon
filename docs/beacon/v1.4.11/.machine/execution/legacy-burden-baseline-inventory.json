@@ -4,7 +4,7 @@
   "feature": "authority-vocabulary-and-baseline-inventory-contract",
   "status": "inventory_generated",
   "behavior_change_allowed": false,
-  "generated_at": "2026-05-26T09:22:44.788867+00:00",
+  "generated_at": "2026-05-26T12:22:02.956585+00:00",
   "required_fields": [
     "source_file",
     "symbol",
@@ -91,10 +91,10 @@
     {
       "compat_id": "implement-legacy-cli-loader",
       "source_file": "beacon/commands/implement/__init__.py",
-      "symbol": "_load_legacy_cli_module",
+      "symbol": "app / run_implement_stage package exports",
       "surface_category": "implement",
       "artifact_role": "evidence",
-      "current_behavior": "Loads sibling implement.py as an internal legacy CLI module so public beacon implement continues to work.",
+      "current_behavior": "Retains compatibility registry traceability after the implement package took ownership of the public app without the legacy dynamic loader.",
       "risk": "high",
       "proposed_owner": "implement-package-migration",
       "proposed_phase": "phase-6",

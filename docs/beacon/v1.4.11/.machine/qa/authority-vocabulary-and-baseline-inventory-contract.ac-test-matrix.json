@@ -42,7 +42,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"artifact_roles_are_defined\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Artifact roles include truth, projection, evidence, runtime state, compatibility mirror, and historical fixture.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-001.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-001/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -50,11 +50,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"artifact_roles_are_defined\"`",
       "scenario": "Artifact roles include truth, projection, evidence, runtime state, compatibility mirror, and historical fixture.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-001/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-002",
@@ -67,7 +69,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"forbidden_machine_truth_wording_is_rejected\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Current-facing wording does not claim `.machine` or machine-readable artifacts are requirement truth.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-002.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-002/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -75,11 +77,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"forbidden_machine_truth_wording_is_rejected\"`",
       "scenario": "Current-facing wording does not claim `.machine` or machine-readable artifacts are requirement truth.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-002/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-003",
@@ -92,7 +96,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"markdown_requirement_root_is_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Markdown requirement package under `docs/beacon/<version>/` is described as current requirement truth.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-003.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-003/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -100,11 +104,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"markdown_requirement_root_is_truth\"`",
       "scenario": "Markdown requirement package under `docs/beacon/<version>/` is described as current requirement truth.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-003/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-004",
@@ -117,7 +123,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"machine_root_is_projection_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "`.machine` remains available as projection, evidence, and read model.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-004.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-004/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -125,11 +131,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"machine_root_is_projection_not_truth\"`",
       "scenario": "`.machine` remains available as projection, evidence, and read model.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-004/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-005",
@@ -142,7 +150,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_artifacts_exist\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Baseline inventory markdown and JSON artifacts are generated before behavior-changing cleanup.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-005.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-005/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -150,11 +158,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_artifacts_exist\"`",
       "scenario": "Baseline inventory markdown and JSON artifacts are generated before behavior-changing cleanup.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-005/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-006",
@@ -167,7 +177,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_schema_is_complete\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Each inventory row includes source file, symbol or function, surface category, current behavior, risk, proposed owner, proposed phase, and required evidence.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-006.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-006/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -175,11 +185,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_schema_is_complete\"`",
       "scenario": "Each inventory row includes source file, symbol or function, surface category, current behavior, risk, proposed owner, proposed phase, and required evidence.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-006/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-007",
@@ -192,7 +204,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"compat_behavior_is_not_retired_by_this_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Compat commands, QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent legacy router remain behaviorally available.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-007.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-007/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -200,11 +212,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"compat_behavior_is_not_retired_by_this_slice\"`",
       "scenario": "Compat commands, QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent legacy router remain behaviorally available.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-007/command.txt"
     },
     {
       "tc_id": "TC-AUTH-INV-008",
@@ -217,7 +231,7 @@
       "automation": "auto",
       "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"required_hotspots_are_inventory_covered\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Required known hotspots are present in the inventory coverage and forbidden wording cannot return silently.",
-      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-008.json",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-008/command.txt",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -225,11 +239,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
       "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"required_hotspots_are_inventory_covered\"`",
       "scenario": "Required known hotspots are present in the inventory coverage and forbidden wording cannot return silently.",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260526T180040809108",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T180040809108/qa9-tc/TC-AUTH-INV-008/command.txt"
     }
   ],
   "research_projection": {

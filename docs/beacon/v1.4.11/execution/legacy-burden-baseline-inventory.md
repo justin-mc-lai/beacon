@@ -4,7 +4,7 @@
 - feature: `authority-vocabulary-and-baseline-inventory-contract`
 - status: `inventory_generated`
 - behavior_change_allowed: `False`
-- generated_at: `2026-05-26T09:22:44.788867+00:00`
+- generated_at: `2026-05-26T12:22:02.956585+00:00`
 
 ## Summary
 
@@ -19,7 +19,7 @@
 | `authority-artifact-language-renderer` | `beacon/utils/artifact_language.py` | `render_artifact_language_policy_markdown` | `authority` | `evidence` | `low` | `phase-1` | Renders the human-readable artifact language policy mirror. | render-snapshot-test |
 | `command-catalog-compat-deprecated-aliases` | `beacon/command_catalog.py` | `COMPAT_COMMANDS / DEPRECATED_COMMANDS` | `command` | `evidence` | `medium` | `phase-2` | Keeps compatibility and deprecated command names discoverable outside the default user surface. | catalog-coverage-test, help-snapshot-test |
 | `cli-factory-hidden-compat-registrations` | `beacon/cli_factory.py` | `build_app` | `command` | `evidence` | `medium` | `phase-3` | Registers hidden compatibility commands and deprecated aliases while keeping the mainline compact. | cli-command-registration-test, compat-registry-coverage-test |
-| `implement-legacy-cli-loader` | `beacon/commands/implement/__init__.py` | `_load_legacy_cli_module` | `implement` | `evidence` | `high` | `phase-6` | Loads sibling implement.py as an internal legacy CLI module so public beacon implement continues to work. | implement-cli-smoke-test, legacy-loader-static-scan |
+| `implement-legacy-cli-loader` | `beacon/commands/implement/__init__.py` | `app / run_implement_stage package exports` | `implement` | `evidence` | `high` | `phase-6` | Retains compatibility registry traceability after the implement package took ownership of the public app without the legacy dynamic loader. | implement-cli-smoke-test, legacy-loader-static-scan |
 | `qa-auto-test-status-legacy-mirror` | `beacon/utils/qa_runtime.py` | `write_qa_status / load_qa_status` | `qa` | `evidence` | `high` | `phase-4` | Writes canonical QA status and legacy auto-test status mirror; reads canonical first and legacy second. | canonical-qa-status-test, legacy-only-qa-blocking-test |
 | `prd-legacy-machine-mirror` | `beacon/utils/material_audit.py` | `legacy_machine_mirror_sync` | `prd` | `evidence` | `high` | `phase-5` | Audits legacy PRD mirror drift alongside Markdown-first material audit findings. | material-audit-projection-vs-compat-test |
 | `prototype-legacy-wireframe-source` | `beacon/utils/prototype_utils.py` | `evaluate_prototype_status` | `prototype` | `evidence` | `high` | `phase-7` | Reports legacy single-file prototype source when current prototype bundle is missing. | prototype-status-compat-test, release-gate-boundary-test |

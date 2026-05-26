@@ -1,0 +1,808 @@
+{
+  "schema_version": "1.0",
+  "feature": "compatibility-registry-and-command-catalog-contract",
+  "feature_slug": "compatibility-registry-and-command-catalog-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-26T11:44:18.411490+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "compatibility-registry-and-command-catalog-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:e76fc96fdfdbbf374ed9f09f9cffd5a08b08c5abdc183bd72e6dea6e9de0c6cb",
+      "superseded_by": "R2",
+      "created_at": "2026-05-26T11:28:53.863389+00:00",
+      "frozen_at": "2026-05-26T11:28:56.314554+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "compatibility-registry-and-command-catalog-contract",
+      "source_revision_id": "R1",
+      "reason": "freeze low-risk Phase 2 compatibility registry and Phase 3 command catalog validation contract from v1.4.11 legacy burden reduction research",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:e76fc96fdfdbbf374ed9f09f9cffd5a08b08c5abdc183bd72e6dea6e9de0c6cb",
+      "superseded_by": null,
+      "created_at": "2026-05-26T11:29:08.067906+00:00",
+      "frozen_at": "2026-05-26T11:29:10.740473+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "compatibility-registry-and-command-catalog-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "registry schema",
+          "text": "Beacon defines a compatibility registry schema with required fields for each compat, fallback, legacy, deprecated, or historical surface.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "inventory coverage",
+          "text": "The registry covers all required compatibility-governance surfaces from the v1.4.11 baseline inventory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "lifecycle metadata",
+          "text": "Each registry entry records owner, surface category, reason, current replacement, default behavior, allowed version range, retirement route, and required evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "command layering",
+          "text": "Command catalog entries are classified into current, support, advanced, labs, compat, deprecated, or internal layers.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "behavior preserved",
+          "text": "Existing compat and deprecated command behavior remains available during this slice.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "route discipline",
+          "text": "Default help, status, or next-route output does not promote compat or deprecated commands as normal current mainline routes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "validation fail-closed",
+          "text": "Unregistered compatibility, fallback, deprecated, or legacy surfaces fail registry or catalog validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no hidden retirement",
+          "text": "Tests prove QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent routing behavior are not changed by this slice.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon defines a compatibility registry schema with required fields for each compat, fallback, legacy, deprecated, or historical surface.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — The registry covers all required compatibility-governance surfaces from the v1.4.11 baseline inventory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Each registry entry records owner, surface category, reason, current replacement, default behavior, allowed version range, retirement route, and required evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Command catalog entries are classified into current, support, advanced, labs, compat, deprecated, or internal layers.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Existing compat and deprecated command behavior remains available during this slice.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Default help, status, or next-route output does not promote compat or deprecated commands as normal current mainline routes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Unregistered compatibility, fallback, deprecated, or legacy surfaces fail registry or catalog validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Tests prove QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent routing behavior are not changed by this slice.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "compatibility-registry-and-command-catalog-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md",
+        "present": true,
+        "section_count": 4,
+        "sections": {
+          "architecture": [
+            "compat id.",
+            "surface category.",
+            "owner.",
+            "reason.",
+            "introduced-before version.",
+            "allowed version range.",
+            "default behavior.",
+            "current replacement.",
+            "retirement route.",
+            "required evidence.",
+            "`current`",
+            "`support`",
+            "`advanced`",
+            "`labs`",
+            "`compat`",
+            "`deprecated`",
+            "`internal`",
+            "`docs/beacon/v1.4.11/research/markdown-first-projection-authority-and-legacy-retirement-contract.md`",
+            "`docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`",
+            "`docs/beacon/v1.4.11/execution/legacy-burden-baseline-inventory.md`",
+            "`docs/beacon/v1.4.11/.machine/execution/legacy-burden-baseline-inventory.json`"
+          ],
+          "business_flow": [
+            "what compatibility surface exists.",
+            "why it exists.",
+            "who owns it.",
+            "what replaces it.",
+            "what evidence keeps it valid.",
+            "which later feature may change it."
+          ],
+          "state_machine": [
+            "`inventory_available -> registry_required`: accepted by v1.4.11 Phase 2 scope decision.",
+            "`registry_required -> registry_defined`: implementation creates registry schema and entries.",
+            "`registry_defined -> catalog_layers_validated`: command catalog validation classifies current, support, advanced, labs, compat, deprecated, and internal entries.",
+            "`catalog_layers_validated -> behavior_change_ready_for_later_feature`: QA proves registry coverage and no behavior retirement.",
+            "`inventory_available -> behavior_retirement`: blocked because registry coverage does not exist yet.",
+            "`registry_defined -> command_removal`: blocked because this slice does not remove commands.",
+            "`registry_defined -> QA_legacy_policy_change`: blocked because QA mirror retirement is a later feature.",
+            "`registry_defined -> PRD_legacy_policy_change`: blocked because PRD mirror retirement is a later feature.",
+            "`catalog_layers_validated -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+          ],
+          "decision_priority": [
+            "Preserve Beacon QA, release, projection, evidence, git, metadata, version, and project hook gates.",
+            "Preserve existing compatibility behavior during this slice.",
+            "Register known compatibility, fallback, legacy, deprecated, and historical surfaces before changing defaults.",
+            "Keep the public mainline route compact and current-facing.",
+            "Classify compat and deprecated command surfaces explicitly.",
+            "Route behavior-changing cleanup into later frozen features."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "what compatibility surface exists.",
+              "why it exists.",
+              "who owns it.",
+              "what replaces it.",
+              "what evidence keeps it valid.",
+              "which later feature may change it."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          },
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`inventory_available -> registry_required`: accepted by v1.4.11 Phase 2 scope decision.",
+              "`registry_required -> registry_defined`: implementation creates registry schema and entries.",
+              "`registry_defined -> catalog_layers_validated`: command catalog validation classifies current, support, advanced, labs, compat, deprecated, and internal entries.",
+              "`catalog_layers_validated -> behavior_change_ready_for_later_feature`: QA proves registry coverage and no behavior retirement.",
+              "`inventory_available -> behavior_retirement`: blocked because registry coverage does not exist yet.",
+              "`registry_defined -> command_removal`: blocked because this slice does not remove commands.",
+              "`registry_defined -> QA_legacy_policy_change`: blocked because QA mirror retirement is a later feature.",
+              "`registry_defined -> PRD_legacy_policy_change`: blocked because PRD mirror retirement is a later feature.",
+              "`catalog_layers_validated -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Preserve Beacon QA, release, projection, evidence, git, metadata, version, and project hook gates.",
+              "Preserve existing compatibility behavior during this slice.",
+              "Register known compatibility, fallback, legacy, deprecated, and historical surfaces before changing defaults.",
+              "Keep the public mainline route compact and current-facing.",
+              "Classify compat and deprecated command surfaces explicitly.",
+              "Route behavior-changing cleanup into later frozen features."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "compatibility-registry-and-command-catalog-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "registry schema",
+          "text": "Beacon defines a compatibility registry schema with required fields for each compat, fallback, legacy, deprecated, or historical surface.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "inventory coverage",
+          "text": "The registry covers all required compatibility-governance surfaces from the v1.4.11 baseline inventory.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "lifecycle metadata",
+          "text": "Each registry entry records owner, surface category, reason, current replacement, default behavior, allowed version range, retirement route, and required evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "command layering",
+          "text": "Command catalog entries are classified into current, support, advanced, labs, compat, deprecated, or internal layers.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "behavior preserved",
+          "text": "Existing compat and deprecated command behavior remains available during this slice.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "route discipline",
+          "text": "Default help, status, or next-route output does not promote compat or deprecated commands as normal current mainline routes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "validation fail-closed",
+          "text": "Unregistered compatibility, fallback, deprecated, or legacy surfaces fail registry or catalog validation.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no hidden retirement",
+          "text": "Tests prove QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent routing behavior are not changed by this slice.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon defines a compatibility registry schema with required fields for each compat, fallback, legacy, deprecated, or historical surface.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — The registry covers all required compatibility-governance surfaces from the v1.4.11 baseline inventory.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Each registry entry records owner, surface category, reason, current replacement, default behavior, allowed version range, retirement route, and required evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Command catalog entries are classified into current, support, advanced, labs, compat, deprecated, or internal layers.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Existing compat and deprecated command behavior remains available during this slice.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Default help, status, or next-route output does not promote compat or deprecated commands as normal current mainline routes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Unregistered compatibility, fallback, deprecated, or legacy surfaces fail registry or catalog validation.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Tests prove QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent routing behavior are not changed by this slice.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-compat-registry-command-catalog-20260526",
+          "verified_by_run_id": "run-20260526T194410429653",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/compatibility-registry-and-command-catalog-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "compatibility-registry-and-command-catalog-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md",
+        "present": true,
+        "section_count": 4,
+        "sections": {
+          "architecture": [
+            "compat id.",
+            "surface category.",
+            "owner.",
+            "reason.",
+            "introduced-before version.",
+            "allowed version range.",
+            "default behavior.",
+            "current replacement.",
+            "retirement route.",
+            "required evidence.",
+            "`current`",
+            "`support`",
+            "`advanced`",
+            "`labs`",
+            "`compat`",
+            "`deprecated`",
+            "`internal`",
+            "`docs/beacon/v1.4.11/research/markdown-first-projection-authority-and-legacy-retirement-contract.md`",
+            "`docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`",
+            "`docs/beacon/v1.4.11/execution/legacy-burden-baseline-inventory.md`",
+            "`docs/beacon/v1.4.11/.machine/execution/legacy-burden-baseline-inventory.json`"
+          ],
+          "business_flow": [
+            "what compatibility surface exists.",
+            "why it exists.",
+            "who owns it.",
+            "what replaces it.",
+            "what evidence keeps it valid.",
+            "which later feature may change it."
+          ],
+          "state_machine": [
+            "`inventory_available -> registry_required`: accepted by v1.4.11 Phase 2 scope decision.",
+            "`registry_required -> registry_defined`: implementation creates registry schema and entries.",
+            "`registry_defined -> catalog_layers_validated`: command catalog validation classifies current, support, advanced, labs, compat, deprecated, and internal entries.",
+            "`catalog_layers_validated -> behavior_change_ready_for_later_feature`: QA proves registry coverage and no behavior retirement.",
+            "`inventory_available -> behavior_retirement`: blocked because registry coverage does not exist yet.",
+            "`registry_defined -> command_removal`: blocked because this slice does not remove commands.",
+            "`registry_defined -> QA_legacy_policy_change`: blocked because QA mirror retirement is a later feature.",
+            "`registry_defined -> PRD_legacy_policy_change`: blocked because PRD mirror retirement is a later feature.",
+            "`catalog_layers_validated -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+          ],
+          "decision_priority": [
+            "Preserve Beacon QA, release, projection, evidence, git, metadata, version, and project hook gates.",
+            "Preserve existing compatibility behavior during this slice.",
+            "Register known compatibility, fallback, legacy, deprecated, and historical surfaces before changing defaults.",
+            "Keep the public mainline route compact and current-facing.",
+            "Classify compat and deprecated command surfaces explicitly.",
+            "Route behavior-changing cleanup into later frozen features."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "what compatibility surface exists.",
+              "why it exists.",
+              "who owns it.",
+              "what replaces it.",
+              "what evidence keeps it valid.",
+              "which later feature may change it."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          },
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`inventory_available -> registry_required`: accepted by v1.4.11 Phase 2 scope decision.",
+              "`registry_required -> registry_defined`: implementation creates registry schema and entries.",
+              "`registry_defined -> catalog_layers_validated`: command catalog validation classifies current, support, advanced, labs, compat, deprecated, and internal entries.",
+              "`catalog_layers_validated -> behavior_change_ready_for_later_feature`: QA proves registry coverage and no behavior retirement.",
+              "`inventory_available -> behavior_retirement`: blocked because registry coverage does not exist yet.",
+              "`registry_defined -> command_removal`: blocked because this slice does not remove commands.",
+              "`registry_defined -> QA_legacy_policy_change`: blocked because QA mirror retirement is a later feature.",
+              "`registry_defined -> PRD_legacy_policy_change`: blocked because PRD mirror retirement is a later feature.",
+              "`catalog_layers_validated -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Preserve Beacon QA, release, projection, evidence, git, metadata, version, and project hook gates.",
+              "Preserve existing compatibility behavior during this slice.",
+              "Register known compatibility, fallback, legacy, deprecated, and historical surfaces before changing defaults.",
+              "Keep the public mainline route compact and current-facing.",
+              "Classify compat and deprecated command surfaces explicitly.",
+              "Route behavior-changing cleanup into later frozen features."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/compatibility-registry-and-command-catalog-contract.md"
+          }
+        ]
+      },
+      "feature": "compatibility-registry-and-command-catalog-contract",
+      "feature_slug": "compatibility-registry-and-command-catalog-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "beacon/compatibility/__init__.py",
+        "beacon/compatibility/registry.py",
+        "beacon/command_catalog.py",
+        "tests/test_v1411_compatibility_registry_and_command_catalog.py",
+        "SKILL.md",
+        "beacon",
+        "tests"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/compatibility-registry-and-command-catalog-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/compatibility-registry-and-command-catalog-contract/ac-closure.json",
+        ".beacon/qa/features/compatibility-registry-and-command-catalog-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-26T11:44:18.314835+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

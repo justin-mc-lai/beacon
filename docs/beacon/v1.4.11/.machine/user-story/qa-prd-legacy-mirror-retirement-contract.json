@@ -1,0 +1,757 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-prd-legacy-mirror-retirement-contract",
+  "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-26T12:04:09.067628+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5",
+      "superseded_by": "R2",
+      "created_at": "2026-05-26T11:56:30.592307+00:00",
+      "frozen_at": "2026-05-26T11:56:34.639243+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+      "source_revision_id": "R1",
+      "reason": "freeze Phase 4 QA legacy mirror policy and Phase 5 PRD legacy mirror policy from v1.4.11 legacy burden reduction research",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5",
+      "superseded_by": null,
+      "created_at": "2026-05-26T11:56:42.555208+00:00",
+      "frozen_at": "2026-05-26T11:56:47.587357+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "qa-prd-legacy-mirror-retirement-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "QA canonical authority",
+          "text": "Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "QA legacy admission",
+          "text": "Legacy QA status can be read only through explicit compatibility admission and must be labeled as historical evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "release fail closed",
+          "text": "Release checks and scorecards cannot pass from legacy-only QA status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "PRD Markdown truth",
+          "text": "Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "PRD projection blocking",
+          "text": "Current PRD projection drift remains blocking when the current projection is stale or inconsistent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "PRD compat warning",
+          "text": "Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "registry binding",
+          "text": "QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no unrelated retirement",
+          "text": "Tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Legacy QA status can be read only through explicit compatibility admission and must be labeled as historical evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Release checks and scorecards cannot pass from legacy-only QA status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Current PRD projection drift remains blocking when the current projection is stale or inconsistent.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-prd-legacy-mirror-retirement-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+        "present": true,
+        "section_count": 3,
+        "sections": {
+          "business_flow": [
+            "which QA status source has current authority.",
+            "when legacy QA status may be read.",
+            "how legacy QA admission is evidenced.",
+            "which PRD material remains truth.",
+            "how stale PRD legacy mirrors are reported.",
+            "why release cannot pass from legacy-only evidence."
+          ],
+          "state_machine": [
+            "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+            "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+            "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+            "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+            "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+            "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+            "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+            "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+          ],
+          "decision_priority": [
+            "Markdown PRD, user-story, and test-case remain requirement truth.",
+            "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+            "Legacy mirrors may remain compatibility evidence only.",
+            "Legacy-only evidence must fail closed for current QA and release.",
+            "Explicit compatibility admission must leave machine-readable evidence.",
+            "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "which QA status source has current authority.",
+              "when legacy QA status may be read.",
+              "how legacy QA admission is evidenced.",
+              "which PRD material remains truth.",
+              "how stale PRD legacy mirrors are reported.",
+              "why release cannot pass from legacy-only evidence."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          },
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+              "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+              "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+              "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+              "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+              "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+              "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+              "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Markdown PRD, user-story, and test-case remain requirement truth.",
+              "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+              "Legacy mirrors may remain compatibility evidence only.",
+              "Legacy-only evidence must fail closed for current QA and release.",
+              "Explicit compatibility admission must leave machine-readable evidence.",
+              "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "qa-prd-legacy-mirror-retirement-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "QA canonical authority",
+          "text": "Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "QA legacy admission",
+          "text": "Legacy QA status can be read only through explicit compatibility admission and must be labeled as historical evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "release fail closed",
+          "text": "Release checks and scorecards cannot pass from legacy-only QA status.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "PRD Markdown truth",
+          "text": "Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "PRD projection blocking",
+          "text": "Current PRD projection drift remains blocking when the current projection is stale or inconsistent.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "PRD compat warning",
+          "text": "Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "registry binding",
+          "text": "QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no unrelated retirement",
+          "text": "Tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Legacy QA status can be read only through explicit compatibility admission and must be labeled as historical evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Release checks and scorecards cannot pass from legacy-only QA status.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Current PRD projection drift remains blocking when the current projection is stale or inconsistent.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-prd-legacy-mirror-policy-20260526",
+          "verified_by_run_id": "run-20260526T200401412326",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-prd-legacy-mirror-retirement-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+        "present": true,
+        "section_count": 3,
+        "sections": {
+          "business_flow": [
+            "which QA status source has current authority.",
+            "when legacy QA status may be read.",
+            "how legacy QA admission is evidenced.",
+            "which PRD material remains truth.",
+            "how stale PRD legacy mirrors are reported.",
+            "why release cannot pass from legacy-only evidence."
+          ],
+          "state_machine": [
+            "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+            "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+            "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+            "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+            "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+            "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+            "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+            "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+          ],
+          "decision_priority": [
+            "Markdown PRD, user-story, and test-case remain requirement truth.",
+            "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+            "Legacy mirrors may remain compatibility evidence only.",
+            "Legacy-only evidence must fail closed for current QA and release.",
+            "Explicit compatibility admission must leave machine-readable evidence.",
+            "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "business_flow",
+            "text": "Business flow remains explicit",
+            "details": [
+              "which QA status source has current authority.",
+              "when legacy QA status may be read.",
+              "how legacy QA admission is evidenced.",
+              "which PRD material remains truth.",
+              "how stale PRD legacy mirrors are reported.",
+              "why release cannot pass from legacy-only evidence."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          },
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+              "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+              "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+              "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+              "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+              "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+              "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+              "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Markdown PRD, user-story, and test-case remain requirement truth.",
+              "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+              "Legacy mirrors may remain compatibility evidence only.",
+              "Legacy-only evidence must fail closed for current QA and release.",
+              "Explicit compatibility admission must leave machine-readable evidence.",
+              "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+          }
+        ]
+      },
+      "feature": "qa-prd-legacy-mirror-retirement-contract",
+      "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "beacon/utils/qa_runtime.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/utils/material_audit.py",
+        "tests/test_v1411_qa_prd_legacy_mirror_policy.py",
+        "beacon",
+        "tests"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/qa-prd-legacy-mirror-retirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-prd-legacy-mirror-retirement-contract/ac-closure.json",
+        ".beacon/qa/features/qa-prd-legacy-mirror-retirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-26T12:04:08.972504+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

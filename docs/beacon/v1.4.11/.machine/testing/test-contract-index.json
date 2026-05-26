@@ -1,0 +1,401 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.4.11",
+  "runtime_line": "v1.4.11",
+  "runtime_release_line": "v1.4.10",
+  "docs_line": "v1.4.11",
+  "feature": "browser-fallback-deterministic-command-contract",
+  "feature_slug": "browser-fallback-deterministic-command-contract",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "prd": "docs/beacon/v1.4.11/prd/browser-fallback-deterministic-command-contract.md",
+    "user_story": "docs/beacon/v1.4.11/user-story/browser-fallback-deterministic-command-contract.md",
+    "test_case": "docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+    "ac_matrix": "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json",
+    "story_state": "docs/beacon/v1.4.11/.machine/user-story/browser-fallback-deterministic-command-contract.json"
+  },
+  "source_hashes": {
+    "prd": "sha256:5faeb3c3a08c02536afe630d2ee6066814233f8f7ce5da6fed2b0966bb9e29a4",
+    "user_story": "sha256:f6371c9365ab05d314e019e2fe814b06852d99391f103ad99c15f2aa6627caa3",
+    "test_case": "sha256:ee5fdfa0b3f22d575a171c14325c28c39028091c0df832d744e5da4b75fac6e8",
+    "ac_matrix": "sha256:2131ced165a4f933bd38db37eefac072390e9fd9bc32119f5981a4a8a3c5e2d9",
+    "story_state": "sha256:46370eb0ea5e860df95eb7afe2ee41c54a316c8edf29e8cdd1fbe5d9b7de2fde"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-001",
+        "ac_id": "AC-001",
+        "ac_theme": "current syntax",
+        "lane": "feature_release_facing",
+        "layer": "cli",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_deterministic_command_option\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Browser adapter current syntax exposes deterministic command option.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-003",
+        "ac_id": "AC-003",
+        "ac_theme": "execution mode",
+        "lane": "feature_release_facing",
+        "layer": "evidence",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_execution_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Deterministic command evidence uses `execution_mode=deterministic_command`.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-004",
+        "ac_id": "AC-004",
+        "ac_theme": "evidence split",
+        "lane": "feature_release_facing",
+        "layer": "evidence",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"browser_agent_and_command_evidence_are_split\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Evidence separates browser availability from deterministic command execution.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-005",
+        "ac_id": "AC-005",
+        "ac_theme": "no false browser success",
+        "lane": "feature_release_facing",
+        "layer": "evidence",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_does_not_claim_browser_success\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Deterministic command success does not claim browser-agent success.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-008",
+        "ac_id": "AC-008",
+        "ac_theme": "fail closed",
+        "lane": "feature_release_facing",
+        "layer": "guardrail",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"missing_browser_and_command_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Missing browser agent and deterministic command fails closed with clear reason code.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-009",
+        "ac_id": "AC-009",
+        "ac_theme": "no unrelated behavior",
+        "lane": "feature_release_facing",
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Prototype/design, QA mirror, PRD mirror, implement, memory, intent, and marker behavior remain out of scope.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-010",
+        "ac_id": "AC-010",
+        "ac_theme": "repair route",
+        "lane": "feature_release_facing",
+        "layer": "readout",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"readout_distinguishes_browser_and_command_repair\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Readout distinguishes browser setup repair from deterministic command setup repair.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-002",
+        "ac_id": "AC-002",
+        "ac_theme": "compat alias",
+        "lane": "compatibility_contract",
+        "layer": "compatibility",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_cmd_remains_compat_alias\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "`--fallback-cmd` remains callable as compatibility alias.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "legacy_snapshot": [
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-006",
+        "ac_id": "AC-006",
+        "ac_theme": "compat evidence",
+        "lane": "legacy_snapshot",
+        "layer": "compatibility",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_alias_records_compatibility_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Legacy alias usage records compatibility evidence bound to `browser-fallback-command-name`.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-BROWSER-FALLBACK-007",
+        "ac_id": "AC-007",
+        "ac_theme": "generated commands",
+        "lane": "legacy_snapshot",
+        "layer": "generation",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_templates_prefer_deterministic_command\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Current generated QA/browser templates do not promote legacy fallback syntax.",
+        "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/command.txt",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      }
+    ],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 7,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 1,
+    "legacy_snapshot": 2,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-001",
+      "ac_id": "AC-001",
+      "ac_theme": "current syntax",
+      "lane": "feature_release_facing",
+      "layer": "cli",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_deterministic_command_option\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Browser adapter current syntax exposes deterministic command option.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-002",
+      "ac_id": "AC-002",
+      "ac_theme": "compat alias",
+      "lane": "compatibility_contract",
+      "layer": "compatibility",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_cmd_remains_compat_alias\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`--fallback-cmd` remains callable as compatibility alias.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-003",
+      "ac_id": "AC-003",
+      "ac_theme": "execution mode",
+      "lane": "feature_release_facing",
+      "layer": "evidence",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_execution_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Deterministic command evidence uses `execution_mode=deterministic_command`.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-004",
+      "ac_id": "AC-004",
+      "ac_theme": "evidence split",
+      "lane": "feature_release_facing",
+      "layer": "evidence",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"browser_agent_and_command_evidence_are_split\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Evidence separates browser availability from deterministic command execution.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-005",
+      "ac_id": "AC-005",
+      "ac_theme": "no false browser success",
+      "lane": "feature_release_facing",
+      "layer": "evidence",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_does_not_claim_browser_success\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Deterministic command success does not claim browser-agent success.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-006",
+      "ac_id": "AC-006",
+      "ac_theme": "compat evidence",
+      "lane": "legacy_snapshot",
+      "layer": "compatibility",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_alias_records_compatibility_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Legacy alias usage records compatibility evidence bound to `browser-fallback-command-name`.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-007",
+      "ac_id": "AC-007",
+      "ac_theme": "generated commands",
+      "lane": "legacy_snapshot",
+      "layer": "generation",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_templates_prefer_deterministic_command\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Current generated QA/browser templates do not promote legacy fallback syntax.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-008",
+      "ac_id": "AC-008",
+      "ac_theme": "fail closed",
+      "lane": "feature_release_facing",
+      "layer": "guardrail",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"missing_browser_and_command_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing browser agent and deterministic command fails closed with clear reason code.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-009",
+      "ac_id": "AC-009",
+      "ac_theme": "no unrelated behavior",
+      "lane": "feature_release_facing",
+      "layer": "regression",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prototype/design, QA mirror, PRD mirror, implement, memory, intent, and marker behavior remain out of scope.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-BROWSER-FALLBACK-010",
+      "ac_id": "AC-010",
+      "ac_theme": "repair route",
+      "lane": "feature_release_facing",
+      "layer": "readout",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"readout_distinguishes_browser_and_command_repair\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Readout distinguishes browser setup repair from deterministic command setup repair.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/command.txt",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-BROWSER-FALLBACK-001"
+    ],
+    "AC-002": [
+      "TC-BROWSER-FALLBACK-002"
+    ],
+    "AC-003": [
+      "TC-BROWSER-FALLBACK-003"
+    ],
+    "AC-004": [
+      "TC-BROWSER-FALLBACK-004"
+    ],
+    "AC-005": [
+      "TC-BROWSER-FALLBACK-005"
+    ],
+    "AC-006": [
+      "TC-BROWSER-FALLBACK-006"
+    ],
+    "AC-007": [
+      "TC-BROWSER-FALLBACK-007"
+    ],
+    "AC-008": [
+      "TC-BROWSER-FALLBACK-008"
+    ],
+    "AC-009": [
+      "TC-BROWSER-FALLBACK-009"
+    ],
+    "AC-010": [
+      "TC-BROWSER-FALLBACK-010"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.4.10",
+    "docs_default_line": "v1.4.10",
+    "current_runtime_release_line": "v1.4.10",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-05-26T15:17:53.249612+00:00",
+  "index_path": "docs/beacon/v1.4.11/.machine/testing/test-contract-index.json"
+}

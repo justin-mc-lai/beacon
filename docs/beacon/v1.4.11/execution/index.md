@@ -4,7 +4,9 @@
 
 - `v1.4.11` 已冻结低风险第一切片。
 - 当前 frozen feature：`authority-vocabulary-and-baseline-inventory-contract`。
-- 该 feature 尚未进入 implementation、QA 或 release。
+- 该 feature 已完成 implementation evidence binding 和 QA acceptance。
+- QA verdict：`passed`。
+- QA run id：`run-20260526T180040809108`。
 
 ## Research Inputs
 
@@ -23,6 +25,10 @@
 - Requirement Clarity: `docs/beacon/v1.4.11/execution/requirement-clarity-authority-vocabulary-and-baseline-inventory-contract.md`
 - Revision Delta: `docs/beacon/v1.4.11/execution/revision-delta-authority-vocabulary-and-baseline-inventory-contract.md`
 - Refreeze Summary: `docs/beacon/v1.4.11/change/authority-vocabulary-and-baseline-inventory-contract.refreeze-summary.md`
+- Implementation Evidence: `impl-f448e052-authority-inventory`
+- QA Acceptance Brief: `docs/beacon/v1.4.11/execution/qa-acceptance-brief-authority-vocabulary-and-baseline-inventory-contract.md`
+- QA Scorecard: `.beacon/qa/features/authority-vocabulary-and-baseline-inventory-contract/scorecard.json`
+- AC Closure: `.beacon/qa/features/authority-vocabulary-and-baseline-inventory-contract/ac-closure.json`
 
 ## Frozen Scope Boundary
 
@@ -65,10 +71,10 @@ Out of scope:
 推荐正式路由：
 
 ```bash
-beacon implement "authority-vocabulary-and-baseline-inventory-contract" --project . --version v1.4.11
+beacon release check --project . --version v1.4.11
 ```
 
-该路由只应实现已冻结的 Phase 0 + Phase 1。完整 legacy 减负计划见 `docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`。
+release check 只应评估已冻结并通过 QA 的 Phase 0 + Phase 1。完整 legacy 减负计划见 `docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`。
 
 如果 v1.4.11 先处理 v1.4.10 未纳入 aggregate package 的 QA carry-forward，则推荐路由：
 

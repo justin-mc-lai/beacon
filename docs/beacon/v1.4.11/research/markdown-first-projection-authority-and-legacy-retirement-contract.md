@@ -375,6 +375,20 @@ runtime_evidence_root: .beacon
 - v1.4.11+ release/gate 不应因为 legacy source present 而认为 prototype closure 可用。
 - 技能文档可保留 “v1.4.8 及更早可读”，但强调不可作为 current truth。
 
+### 5.7.1 P0 friction：accepted UI/UX facts 未写回 truth 导致自动化按旧冻结需求回滚
+
+独立记录：
+
+- `docs/beacon/v1.4.11/research/friction-cd1809c3220a-ui-ux-design-truth-writeback-incident.md`
+
+结论摘要：
+
+- `friction:cd1809c3220a` 证明 accepted `ui-ux-dev` UI/UX facts 未写回 Beacon truth 时，`beacon-implement` / `beacon-qa` 会按旧 frozen truth 回滚已验收前端事实。
+- 这是 Beacon 源码侧 truth intake / gate 问题，不是 Foghorn v0.0.1 问题。
+- Markdown-first 不能等于盲信旧 Markdown；当前 accepted human facts 必须进入 `PRODUCT.md` / `DESIGN.md` / PRD / user-story / test-cases 或 prototype adapt transaction。
+- 候选 gate：`accepted_ui_ux_truth_gap_gate`。
+- 候选 feature：`accepted-ui-ux-truth-writeback-gate-contract`。
+
 ### 5.8 compat / deprecated command surface：应注册化治理
 
 **Source**:

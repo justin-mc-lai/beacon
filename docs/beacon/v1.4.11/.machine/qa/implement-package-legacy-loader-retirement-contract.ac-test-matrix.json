@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-package-legacy-loader-retirement-contract",
+  "feature_slug": "implement-package-legacy-loader-retirement-contract",
+  "version": "v1.4.11",
+  "generated_at": "2026-05-26T20:12:51.426368",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "entries": [
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "implement-package-legacy-loader-retirement-contract AC-001 :: `beacon implement --help` remains routeable through the public app.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_entrypoint_remains_routeable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`beacon implement --help` remains routeable through the public app.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-001/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_entrypoint_remains_routeable\"`",
+      "scenario": "`beacon implement --help` remains routeable through the public app.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-001/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "smoke",
+      "qa_type": "smoke",
+      "title": "implement-package-legacy-loader-retirement-contract AC-002 :: Required public implement subcommands remain visible and callable.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_subcommands_remain_routeable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Required public implement subcommands remain visible and callable.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-002/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_subcommands_remain_routeable\"`",
+      "scenario": "Required public implement subcommands remain visible and callable.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-002/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "implement-package-legacy-loader-retirement-contract AC-003 :: The implement package exports `app` and required helpers without dynamic sibling",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_package_exports_current_app\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "The implement package exports `app` and required helpers without dynamic sibling loading.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-003/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_package_exports_current_app\"`",
+      "scenario": "The implement package exports `app` and required helpers without dynamic sibling loading.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-003/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "static",
+      "qa_type": "static",
+      "title": "implement-package-legacy-loader-retirement-contract AC-004 :: `_load_legacy_cli_module` is absent from current source.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_loader_function_is_absent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`_load_legacy_cli_module` is absent from current source.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-004/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_loader_function_is_absent\"`",
+      "scenario": "`_load_legacy_cli_module` is absent from current source.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-004/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "static",
+      "qa_type": "static",
+      "title": "implement-package-legacy-loader-retirement-contract AC-005 :: `_implement_legacy_cli` dynamic module loading is absent from current source.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_dynamic_module_name_is_absent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`_implement_legacy_cli` dynamic module loading is absent from current source.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-005/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_dynamic_module_name_is_absent\"`",
+      "scenario": "`_implement_legacy_cli` dynamic module loading is absent from current source.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-005/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "static",
+      "qa_type": "static",
+      "title": "implement-package-legacy-loader-retirement-contract AC-006 :: Tests do not import, monkeypatch, or assert `_legacy_cli`.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"tests_do_not_depend_on_legacy_cli\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Tests do not import, monkeypatch, or assert `_legacy_cli`.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-006/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"tests_do_not_depend_on_legacy_cli\"`",
+      "scenario": "Tests do not import, monkeypatch, or assert `_legacy_cli`.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-006/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "registry",
+      "qa_type": "registry",
+      "title": "implement-package-legacy-loader-retirement-contract AC-007 :: `implement-legacy-cli-loader` remains registered and points to this retirement f",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_loader_retirement_is_registry_bound\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`implement-legacy-cli-loader` remains registered and points to this retirement feature.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-007/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_loader_retirement_is_registry_bound\"`",
+      "scenario": "`implement-legacy-cli-loader` remains registered and points to this retirement feature.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-007/command.txt"
+    },
+    {
+      "tc_id": "TC-IMPLEMENT-LOADER-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "implement-package-legacy-loader-retirement-contract AC-008 :: QA, PRD, prototype, browser, memory, intent, and command alias behavior are not ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"no_unrelated_retirement_in_implement_loader_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA, PRD, prototype, browser, memory, intent, and command alias behavior are not changed by this slice.",
+      "evidence_path": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-008/command.txt",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"no_unrelated_retirement_in_implement_loader_slice\"`",
+      "scenario": "QA, PRD, prototype, browser, memory, intent, and command alias behavior are not changed by this slice.",
+      "steps": "",
+      "last_run_id": "run-20260526T202426297264",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260526T202426297264/qa9-tc/TC-IMPLEMENT-LOADER-008/command.txt"
+    }
+  ],
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-package-legacy-loader-retirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-package-legacy-loader-retirement-contract.md",
+    "present": true,
+    "section_count": 3,
+    "sections": {
+      "business_flow": [
+        "which implement entrypoint is current.",
+        "which public commands must remain callable.",
+        "which internal loader must disappear.",
+        "how tests prove the package owns implement behavior."
+      ],
+      "state_machine": [
+        "`legacy_loader_registered -> package_cli_required`: accepted by v1.4.11 Phase 6 scope decision.",
+        "`package_cli_required -> package_cli_exported`: implementation moves or exposes CLI commands through package modules.",
+        "`package_cli_exported -> legacy_loader_removed`: `_load_legacy_cli_module` and `_implement_legacy_cli` dynamic import are removed.",
+        "`legacy_loader_removed -> public_implement_surface_verified`: CLI smoke tests and static scans pass.",
+        "`legacy_loader_registered -> public_command_removal`: blocked because public implement UX must remain stable.",
+        "`package_cli_exported -> QA_or_PRD_policy_change`: blocked because QA and PRD mirror policies are separate completed slices.",
+        "`legacy_loader_removed -> prototype_browser_memory_intent_change`: blocked because those are later features.",
+        "`public_implement_surface_verified -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+      ],
+      "decision_priority": [
+        "Preserve `beacon implement` as the only public implementation entrypoint.",
+        "Preserve existing public implement subcommands and route semantics.",
+        "Prefer package-owned modules over dynamic sibling loading.",
+        "Tests must use public app/helper APIs, not `_legacy_cli`.",
+        "Static scan must fail if `_implement_legacy_cli` or `_load_legacy_cli_module` returns.",
+        "Do not expand this slice into QA, PRD, prototype, browser, memory, intent, or command alias behavior."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "which implement entrypoint is current.",
+          "which public commands must remain callable.",
+          "which internal loader must disappear.",
+          "how tests prove the package owns implement behavior."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/implement-package-legacy-loader-retirement-contract.md"
+      },
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`legacy_loader_registered -> package_cli_required`: accepted by v1.4.11 Phase 6 scope decision.",
+          "`package_cli_required -> package_cli_exported`: implementation moves or exposes CLI commands through package modules.",
+          "`package_cli_exported -> legacy_loader_removed`: `_load_legacy_cli_module` and `_implement_legacy_cli` dynamic import are removed.",
+          "`legacy_loader_removed -> public_implement_surface_verified`: CLI smoke tests and static scans pass.",
+          "`legacy_loader_registered -> public_command_removal`: blocked because public implement UX must remain stable.",
+          "`package_cli_exported -> QA_or_PRD_policy_change`: blocked because QA and PRD mirror policies are separate completed slices.",
+          "`legacy_loader_removed -> prototype_browser_memory_intent_change`: blocked because those are later features.",
+          "`public_implement_surface_verified -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/implement-package-legacy-loader-retirement-contract.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Preserve `beacon implement` as the only public implementation entrypoint.",
+          "Preserve existing public implement subcommands and route semantics.",
+          "Prefer package-owned modules over dynamic sibling loading.",
+          "Tests must use public app/helper APIs, not `_legacy_cli`.",
+          "Static scan must fail if `_implement_legacy_cli` or `_load_legacy_cli_module` returns.",
+          "Do not expand this slice into QA, PRD, prototype, browser, memory, intent, or command alias behavior."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/implement-package-legacy-loader-retirement-contract.md"
+      }
+    ]
+  },
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+    "row_count": 8,
+    "enrichment_disabled": true
+  }
+}

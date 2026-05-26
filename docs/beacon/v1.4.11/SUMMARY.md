@@ -3,7 +3,7 @@
 ## 状态
 
 - Version line: `v1.4.11`
-- Current status: `frozen_feature_ready_for_implementation`
+- Current status: `qa_passed_ready_for_release_check`
 - 初始调研主题：Markdown-first 投影权威清理与旧版兼容退场。
 - Carry-forward 调研主题：承接 v1.4.10 中已形成 feature 候选但未纳入当前 aggregate package，或仍停留在 research/backlog 的方向。
 - 减负重构主题：保留 Beacon 全功能能力，将固定流程下沉为工具 / gate / schema / test，并将 legacy / fallback / compat 历史包袱显式登记和逐步退场。
@@ -12,6 +12,7 @@
 ## 调研输入
 
 - `docs/beacon/v1.4.11/research/authority-vocabulary-and-baseline-inventory-contract.md`
+- `docs/beacon/v1.4.11/research/friction-cd1809c3220a-ui-ux-design-truth-writeback-incident.md`
 - `docs/beacon/v1.4.11/research/markdown-first-projection-authority-and-legacy-retirement-contract.md`
 - `docs/beacon/v1.4.11/research/v1410-feature-carry-forward-intake.md`
 - `docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`
@@ -30,6 +31,9 @@ authority-vocabulary-and-baseline-inventory-contract
 - Test Cases: `docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md`
 - Requirement clarity: `docs/beacon/v1.4.11/execution/requirement-clarity-authority-vocabulary-and-baseline-inventory-contract.md`
 - Refreeze summary: `docs/beacon/v1.4.11/change/authority-vocabulary-and-baseline-inventory-contract.refreeze-summary.md`
+- Implementation evidence: `impl-f448e052-authority-inventory`
+- QA acceptance: `docs/beacon/v1.4.11/execution/qa-acceptance-brief-authority-vocabulary-and-baseline-inventory-contract.md`
+- QA scorecard: `.beacon/qa/features/authority-vocabulary-and-baseline-inventory-contract/scorecard.json`
 
 冻结边界：
 
@@ -48,6 +52,7 @@ authority-vocabulary-and-baseline-inventory-contract
 - 任何把 machine artifacts 称为 source of truth 的源码文案或运行输出都需要修正。
 - legacy / compat / fallback path 必须被清点、版本有界，并且要么退场，要么以 fail-closed 方式显式 admission。
 - 固定流程不应长期依赖 Skill 反复解释执行；应下沉为 deterministic tools、gate registry、schema 和回归测试。
+- P0 friction `friction:cd1809c3220a` 已纳入 v1.4.11 调研：accepted `ui-ux-dev` UI/UX facts 未写回 `PRODUCT.md` / `DESIGN.md` / PRD / user-story / test-cases 时，implement / QA / release 应 fail closed，而不是按旧 frozen truth 回滚已验收前端事实。候选 gate：`accepted_ui_ux_truth_gap_gate`。
 
 ## 候选 Feature
 
@@ -81,4 +86,4 @@ beacon-skill-evolution-proposal-loop
 
 其中 `qa-multi-layer-real-browser-e2e-acceptance` 在 v1.4.10 已有 refreeze / QA acceptance 材料，但未纳入当前 8-feature aggregate change package；v1.4.11 必须显式决定是否接收、缩窄或拆分。
 
-本版本当前已有一个 frozen requirement package，但尚未进入 implementation、QA 或 release verdict。
+本版本当前首个 frozen requirement package 已完成 implementation evidence binding 和 QA acceptance。下一步应进入 release check；后续减负重构候选仍必须单独 refreeze，不得从本切片直接扩大 scope。

@@ -1,0 +1,574 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-prd-legacy-mirror-retirement-contract",
+  "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+  "version": "v1.4.11",
+  "generated_at": "2026-05-26T11:56:34.633141+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "QA canonical authority",
+      "text": "Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-QA-PRD-MIRROR-001",
+          "tc_id": "TC-QA-PRD-MIRROR-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "QA legacy admission",
+      "text_hash": "sha256:81cf5235be316e64fdccbed1787547ad091c812c37881cb0a25f51237aee956a",
+      "text_bytes": 118,
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-QA-PRD-MIRROR-002",
+          "tc_id": "TC-QA-PRD-MIRROR-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "functional",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "release fail closed",
+      "text": "Release checks and scorecards cannot pass from legacy-only QA status.",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-QA-PRD-MIRROR-003",
+          "tc_id": "TC-QA-PRD-MIRROR-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "release",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "PRD Markdown truth",
+      "text_hash": "sha256:e43c7cd8c9912713356b7a47083534ed6f41a0d478f5863faefe92e1ea8481a9",
+      "text_bytes": 80,
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-QA-PRD-MIRROR-004",
+          "tc_id": "TC-QA-PRD-MIRROR-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "PRD projection blocking",
+      "text_hash": "sha256:8b0c81337e072d83c99ada8736343d70a59fdee1e23ec5dd1cf6e50fb190e8ea",
+      "text_bytes": 99,
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-QA-PRD-MIRROR-005",
+          "tc_id": "TC-QA-PRD-MIRROR-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "gate",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "PRD compat warning",
+      "text": "Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-QA-PRD-MIRROR-006",
+          "tc_id": "TC-QA-PRD-MIRROR-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "functional",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "registry binding",
+      "text": "QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-QA-PRD-MIRROR-007",
+          "tc_id": "TC-QA-PRD-MIRROR-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "registry",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "no unrelated retirement",
+      "text_hash": "sha256:83b6dfe9caa962bda88426bea7b5fb7564977e2c61fb0fcf96cde8ffefeebc6d",
+      "text_bytes": 129,
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-QA-PRD-MIRROR-008",
+          "tc_id": "TC-QA-PRD-MIRROR-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "regression",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-QA-PRD-MIRROR-001",
+      "tc_id": "TC-QA-PRD-MIRROR-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: QA status helpers and current QA flows read canonical QA status by default and do not silently p",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"canonical_qa_status_is_default_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-QA-PRD-MIRROR-002",
+      "tc_id": "TC-QA-PRD-MIRROR-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Legacy QA status requires explicit compatibility admission and is labeled historical evidence wh",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"legacy_qa_status_requires_explicit_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-QA-PRD-MIRROR-003",
+      "tc_id": "TC-QA-PRD-MIRROR-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "release",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Release scorecard/check cannot pass when only legacy QA status reports pass.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"release_blocks_legacy_only_qa_pass\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-QA-PRD-MIRROR-004",
+      "tc_id": "TC-QA-PRD-MIRROR-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"markdown_prd_remains_requirement_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-QA-PRD-MIRROR-005",
+      "tc_id": "TC-QA-PRD-MIRROR-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Current PRD projection drift remains blocking.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"current_prd_projection_drift_still_blocks\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-QA-PRD-MIRROR-006",
+      "tc_id": "TC-QA-PRD-MIRROR-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "compatibility",
+      "layer": "compatibility",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Legacy PRD mirror mismatch is reported as compatibility warning by default, not current truth dr",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"legacy_prd_mirror_stale_is_compat_warning\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-QA-PRD-MIRROR-007",
+      "tc_id": "TC-QA-PRD-MIRROR-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "registry",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: QA and PRD mirror policies bind to registered compat IDs and fail validation if those IDs are mi",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "registry",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"mirror_policies_bind_to_compat_registry\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-QA-PRD-MIRROR-008",
+      "tc_id": "TC-QA-PRD-MIRROR-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: This slice does not delete legacy files or change implement, prototype, browser, memory, intent,",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_qa_prd_legacy_mirror_policy.py -k \"no_unrelated_legacy_retirement_in_mirror_policy_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/qa-prd-legacy-mirror-retirement-contract/TC-QA-PRD-MIRROR-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ],
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-prd-legacy-mirror-retirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+    "present": true,
+    "section_count": 3,
+    "sections": {
+      "business_flow": [
+        "which QA status source has current authority.",
+        "when legacy QA status may be read.",
+        "how legacy QA admission is evidenced.",
+        "which PRD material remains truth.",
+        "how stale PRD legacy mirrors are reported.",
+        "why release cannot pass from legacy-only evidence."
+      ],
+      "state_machine": [
+        "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+        "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+        "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+        "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+        "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+        "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+        "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+        "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+      ],
+      "decision_priority": [
+        "Markdown PRD, user-story, and test-case remain requirement truth.",
+        "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+        "Legacy mirrors may remain compatibility evidence only.",
+        "Legacy-only evidence must fail closed for current QA and release.",
+        "Explicit compatibility admission must leave machine-readable evidence.",
+        "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "which QA status source has current authority.",
+          "when legacy QA status may be read.",
+          "how legacy QA admission is evidenced.",
+          "which PRD material remains truth.",
+          "how stale PRD legacy mirrors are reported.",
+          "why release cannot pass from legacy-only evidence."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+      },
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`legacy_mirror_registered -> current_only_default_required`: accepted by the v1.4.11 Phase 4 and Phase 5 scope decision.",
+          "`current_only_default_required -> explicit_compat_admission_available`: implementation may preserve historical project support through explicit admission.",
+          "`explicit_compat_admission_available -> legacy_only_pass_authority_blocked`: QA and release checks prove legacy-only status cannot pass.",
+          "`legacy_only_pass_authority_blocked -> mirror_policy_release_ready`: all current authority and compatibility evidence paths are auditable.",
+          "`legacy_mirror_registered -> legacy_file_deletion`: blocked because this slice is policy-first, not deletion-first.",
+          "`legacy_mirror_registered -> implement_loader_migration`: blocked because implement package migration is a later feature.",
+          "`legacy_mirror_registered -> prototype_or_browser_policy_change`: blocked because prototype, browser, memory, and intent are later features.",
+          "`legacy_only_pass_authority_blocked -> release_ready`: blocked unless implementation, QA, and release evidence close normally."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Markdown PRD, user-story, and test-case remain requirement truth.",
+          "Canonical QA status and current `.machine` projection remain current authority surfaces.",
+          "Legacy mirrors may remain compatibility evidence only.",
+          "Legacy-only evidence must fail closed for current QA and release.",
+          "Explicit compatibility admission must leave machine-readable evidence.",
+          "No legacy file deletion or unrelated behavior retirement belongs in this slice."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+      }
+    ]
+  },
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.11/qa/test-cases/qa-prd-legacy-mirror-retirement-contract.md",
+    "row_count": 8,
+    "enrichment_disabled": true
+  }
+}

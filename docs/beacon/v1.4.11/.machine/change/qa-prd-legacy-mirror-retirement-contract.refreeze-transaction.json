@@ -1,0 +1,519 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-qa-prd-legacy-mirror-retirement-contract-20260526t115642z",
+  "feature": "qa-prd-legacy-mirror-retirement-contract",
+  "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+  "version": "v1.4.11",
+  "change_reason": "freeze Phase 4 QA legacy mirror policy and Phase 5 PRD legacy mirror policy from v1.4.11 legacy burden reduction research",
+  "touched_surfaces": [
+    "change",
+    "prd",
+    "user-story",
+    "test-case",
+    "requirement_clarity",
+    "freeze"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.4.11/change/qa-prd-legacy-mirror-retirement-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "prd": {
+      "path": "docs/beacon/v1.4.11/prd/qa-prd-legacy-mirror-retirement-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "user-story": {
+      "path": "docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "test-case": {
+      "path": "docs/beacon/v1.4.11/qa/test-cases/qa-prd-legacy-mirror-retirement-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.4.11/.machine/change/qa-prd-legacy-mirror-retirement-contract.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"qa-prd-legacy-mirror-retirement-contract\" --project . --version v1.4.11",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-05-26T11:56:42.554320+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.4.11",
+    "feature": "qa-prd-legacy-mirror-retirement-contract",
+    "status": "synced",
+    "story_path": "docs/beacon/v1.4.11/.machine/user-story/qa-prd-legacy-mirror-retirement-contract.json",
+    "qa_matrix_path": "docs/beacon/v1.4.11/.machine/qa/qa-prd-legacy-mirror-retirement-contract.ac-test-matrix.json",
+    "qa9_matrix_path": "docs/beacon/v1.4.11/.machine/qa/qa-prd-legacy-mirror-retirement-contract.qa9-matrix.json",
+    "story_scenario_map_path": "docs/beacon/v1.4.11/.machine/qa/qa-prd-legacy-mirror-retirement-contract.story-scenario-map.json",
+    "story_sync": {
+      "path": "docs/beacon/v1.4.11/.machine/user-story/qa-prd-legacy-mirror-retirement-contract.json",
+      "feature": "qa-prd-legacy-mirror-retirement-contract",
+      "version": "v1.4.11",
+      "revision_id": "R2",
+      "ac_count": 8,
+      "test_count": 8,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "qa-prd-legacy-mirror-retirement-contract",
+      "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+      "version": "v1.4.11",
+      "runtime_version": "v1.4.10",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json",
+      "report_markdown_path": "docs/beacon/v1.4.11/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.md",
+      "state_path": ".beacon/state/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.4.11",
+        "supported": true,
+        "required": true,
+        "ready": true,
+        "diagram_types": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority"
+        ],
+        "state_axes": [
+          "qa_status_source",
+          "canonical",
+          "legacy_admitted",
+          "legacy_only_blocked",
+          "prd_material_role",
+          "markdown_truth",
+          "current_projection",
+          "compat_mirror",
+          "legacy_admission_state",
+          "not_allowed",
+          "explicitly_admitted",
+          "historical_evidence_only",
+          "release_authority_state",
+          "current_evidence_ready",
+          "compat_warning_present"
+        ],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority",
+          "state axes",
+          "ownership",
+          "branch flow",
+          "state machine",
+          "decision priority"
+        ],
+        "review_gates": [
+          "implementation must cover the declared branch-flow split points",
+          "implementation must preserve the declared state-machine transitions",
+          "implementation must preserve decision-priority ordering",
+          "implementation must keep state axes explicit: qa_status_source, canonical, legacy_admitted, legacy_only_blocked, prd_material_role, markdown_truth, current_projection, compat_mirror, legacy_admission_state, not_allowed, explicitly_admitted, historical_evidence_only, release_authority_state, current_evidence_ready, compat_warning_present"
+        ],
+        "qa_coverage_hints": [
+          "cover primary and alternate branch-flow paths",
+          "cover state transitions, illegal transitions, and recovery paths",
+          "cover conflicting conditions using declared decision priority",
+          "cover axis combinations across: qa_status_source, canonical, legacy_admitted, legacy_only_blocked, prd_material_role, markdown_truth, current_projection, compat_mirror, legacy_admission_state, not_allowed, explicitly_admitted, historical_evidence_only, release_authority_state, current_evidence_ready, compat_warning_present"
+        ],
+        "evidence_lines": {
+          "branch-flow": [
+            "- `branch-flow`",
+            "```text",
+            "current QA / PRD decision",
+            "-> canonical QA status and Markdown PRD truth present",
+            "-> current flow may continue",
+            "-> canonical QA status missing but legacy QA status present",
+            "-> block current QA / release unless explicit compatibility admission is requested",
+            "-> Markdown PRD present but legacy PRD mirror differs"
+          ],
+          "state-machine": [
+            "- `state-machine`",
+            "```text",
+            "mirror_registered",
+            "-> current_only_default",
+            "-> explicit_compat_admission_optional",
+            "-> historical_evidence_recorded",
+            "-> release_authority_checked",
+            "```"
+          ],
+          "decision-priority": [
+            "- `decision-priority`",
+            "```text",
+            "Markdown PRD truth",
+            "> current machine projection",
+            "> canonical QA runtime status",
+            "> explicitly admitted compatibility evidence",
+            "> legacy mirror files without admission",
+            "```"
+          ],
+          "state-axes": [
+            "- `qa_status_source`: `canonical`, `legacy_admitted`, `legacy_only_blocked`",
+            "- `prd_material_role`: `markdown_truth`, `current_projection`, `compat_mirror`",
+            "- `legacy_admission_state`: `not_allowed`, `explicitly_admitted`, `historical_evidence_only`",
+            "- `release_authority_state`: `current_evidence_ready`, `legacy_only_blocked`, `compat_warning_present`"
+          ]
+        },
+        "generated_at": "2026-05-26T11:56:47.382899+00:00",
+        "feature": "qa-prd-legacy-mirror-retirement-contract",
+        "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+        "prd_ref": "docs/beacon/v1.4.11/prd/qa-prd-legacy-mirror-retirement-contract.md",
+        "user_story_ref": "docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md"
+      },
+      "human_closure_contract": {
+        "required": true,
+        "research_path": "docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.4.11/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow",
+          "state_machine",
+          "decision_priority"
+        ],
+        "missing_sections": [],
+        "diagram_types": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority"
+        ],
+        "complexity_signals": [
+          "branch-flow",
+          "state-machine",
+          "decision-priority",
+          "state axes",
+          "ownership",
+          "branch flow",
+          "state machine",
+          "decision priority"
+        ]
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": true,
+        "paths": {
+          "research": "docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+          "prd": "docs/beacon/v1.4.11/prd/qa-prd-legacy-mirror-retirement-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [
+          "architecture",
+          "business_flow",
+          "state_machine",
+          "decision_priority"
+        ],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": true,
+        "supported": true,
+        "projection_types": [
+          "business_flow",
+          "state_machine"
+        ],
+        "research_path": "docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": true,
+          "user_story_refs": true,
+          "test_case_refs": true,
+          "coverage_notes": true,
+          "out_of_scope_notes": true
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.4.11/prd/qa-prd-legacy-mirror-retirement-contract.md",
+          "user_story_refs": "docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+          "test_case_refs": "docs/beacon/v1.4.11/qa/test-cases/qa-prd-legacy-mirror-retirement-contract.md"
+        },
+        "missing_ref_targets": [],
+        "ready": true
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.4.11/prd/qa-prd-legacy-mirror-retirement-contract.md",
+        "docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "docs/beacon/v1.4.11/qa/test-cases/qa-prd-legacy-mirror-retirement-contract.md",
+        "docs/beacon/v1.4.11/research/qa-prd-legacy-mirror-retirement-contract.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json",
+      "markdown": "docs/beacon/v1.4.11/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "qa-prd-legacy-mirror-retirement-contract",
+      "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+      "version": "v1.4.11",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json",
+      "report_markdown_path": "docs/beacon/v1.4.11/execution/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-05-26T11:56:47.585570+00:00",
+      "state_path": ".beacon/state/requirement-clarity-qa-prd-legacy-mirror-retirement-contract.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "qa-prd-legacy-mirror-retirement-contract",
+    "feature_slug": "qa-prd-legacy-mirror-retirement-contract",
+    "version": "v1.4.11",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no unrelated retirement",
+        "text": "Tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::no unrelated retirement::tests prove this slice does not delete legacy files or change implement, prototype, browser, memory, intent, or command behavior.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "PRD compat warning",
+        "text": "Legacy PRD mirror mismatch is downgraded to compatibility warning by default.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::prd compat warning::legacy prd mirror mismatch is downgraded to compatibility warning by default.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "PRD Markdown truth",
+        "text": "Markdown PRD remains requirement truth and legacy PRD mirror cannot override it.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::prd markdown truth::markdown prd remains requirement truth and legacy prd mirror cannot override it.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "PRD projection blocking",
+        "text": "Current PRD projection drift remains blocking when the current projection is stale or inconsistent.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::prd projection blocking::current prd projection drift remains blocking when the current projection is stale or inconsistent.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "QA canonical authority",
+        "text": "Canonical QA status is the default current QA authority for v1.4.11+ flows.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::qa canonical authority::canonical qa status is the default current qa authority for v1.4.11+ flows.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "QA legacy admission",
+        "text": "Legacy QA status can be read only through explicit compatibility admission and must be labeled as historical evidence.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::qa legacy admission::legacy qa status can be read only through explicit compatibility admission and must be labeled as historical evidence.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "registry binding",
+        "text": "QA and PRD legacy mirror policies are bound to compatibility registry entries.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::registry binding::qa and prd legacy mirror policies are bound to compatibility registry entries.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release fail closed",
+        "text": "Release checks and scorecards cannot pass from legacy-only QA status.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/qa-prd-legacy-mirror-retirement-contract.md",
+        "signature": "ac::::release fail closed::release checks and scorecards cannot pass from legacy-only qa status.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5",
+    "source_baseline_hash": "sha256:dd44221318baf3ca69e46a56faafc5fe3e48743c90212797e748fced361a90e5",
+    "story_state_ref": "docs/beacon/v1.4.11/.machine/user-story/qa-prd-legacy-mirror-retirement-contract.json",
+    "generated_at": "2026-05-26T11:56:47.588852+00:00",
+    "json_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-qa-prd-legacy-mirror-retirement-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-qa-prd-legacy-mirror-retirement-contract.md"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.11",
+  "feature": "implement-package-legacy-loader-retirement-contract",
+  "feature_slug": "implement-package-legacy-loader-retirement-contract",
+  "summary": "Retired the internal implement dynamic legacy loader while preserving the public beacon implement surface.",
+  "status": "completed",
+  "accepted_at": "2026-05-26T12:24:34.640649+00:00",
+  "added": [
+    "Package-owned implement command module exports",
+    "Public implement command routing tests through the package entrypoint",
+    "Static regression coverage proving legacy loader names are absent from current source"
+  ],
+  "removed": [
+    "Internal _load_legacy_cli_module bridge",
+    "Dynamic _implement_legacy_cli module loading"
+  ],
+  "fixed": [
+    "Kept beacon implement and public subcommands routeable after package migration",
+    "Removed test coupling to private _legacy_cli imports"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.11/change/implement-package-legacy-loader-retirement-contract.md",
+    "docs/beacon/v1.4.11/prd/implement-package-legacy-loader-retirement-contract.md",
+    "docs/beacon/v1.4.11/user-story/implement-package-legacy-loader-retirement-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/implement-package-legacy-loader-retirement-contract.md",
+    "docs/beacon/v1.4.11/.machine/execution/implement-package-legacy-loader-retirement-contract.revision.json",
+    "docs/beacon/v1.4.11/.machine/execution/qa-acceptance-implement-package-legacy-loader-retirement-contract.json",
+    "docs/beacon/v1.4.11/execution/qa-acceptance-brief-implement-package-legacy-loader-retirement-contract.md"
+  ]
+}
