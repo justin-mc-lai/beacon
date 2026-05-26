@@ -1,17 +1,16 @@
 # beacon-ceo-review Transaction
 
-- feature: `implement-mode-human-playbooks-and-routing-contract`
+- feature: `qa-multi-layer-real-browser-e2e-acceptance`
 - version: `v1.4.10`
-- status: `advisory`
+- status: `blocked`
 - decision: `hold`
-- truth_refs: `docs/beacon/v1.4.10/prd/implement-mode-human-playbooks-and-routing-contract.md, docs/beacon/v1.4.10/user-story/implement-mode-human-playbooks-and-routing-contract.md, docs/beacon/v1.4.10/qa/test-cases/implement-mode-human-playbooks-and-routing-contract.md`
 
 ## Summary
-CEO review did not find a version-level reframing blocker after challenging default downside axes.
+CEO review is blocked because no bound PRD/user-story/test-case package was found.
 
 ## Next Route
-- command: `beacon implement "implement-mode-human-playbooks-and-routing-contract" --project . --version v1.4.10`
-- why: Requirement framing is stable enough to continue implementation planning.
+- command: `beacon help`
+- why: CEO review cannot bind to missing requirement truth.
 
 ## Challenge Axes
 - `too_smooth_path`: What meaningful variance, dependency, operator behavior, or runtime mismatch is being ignored?
@@ -20,3 +19,9 @@ CEO review did not find a version-level reframing blocker after challenging defa
 - `stage_boundary_sprawl`: Does this proposal accidentally turn a support surface into a shadow lifecycle stage?
 - `false_closure_signal`: Are local pass signals being mistaken for requirement closure or release readiness?
 - `operator_cost_underpricing`: Does the proposal create hidden maintenance, triage, or governance burden?
+
+## Reason Codes
+- `truth_refs_missing`
+
+## Blocked
+- blocked_reason: `truth_refs_missing`

@@ -128,3 +128,15 @@ QA evidence issue
 ## Conclusion
 
 The first governed adoption from EmbodiSkill/SkillEvolver research should be a QA evidence attribution layer, not automatic skill evolution. This preserves Beacon's single truth chain while improving QA route determinism and future skill evolution discipline.
+
+## Deep Summary
+
+- source_skill: `beacon-deep`
+- updated_at: `2026-05-25T11:46:29.005681+00:00`
+- deep_artifact_root: `docs/beacon/v1.4.10/deep/qa-evidence-attribution-layer`
+- machine_artifact_root: `docs/beacon/v1.4.10/.machine/deep/qa-evidence-attribution-layer`
+- deep_requirement_state: `required`
+- status: `closed`
+- route_decision: `closed`
+- release_supplement_ref: `docs/beacon/v1.4.10/.machine/deep/qa-evidence-attribution-layer/release-supplement.json`
+- adoption_status: `route_only`

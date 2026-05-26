@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "version": "v1.4.10",
   "status": "generated",
-  "feature_count": 6,
+  "feature_count": 8,
   "features": [
     {
       "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
@@ -29,6 +29,18 @@
       "status": "completed"
     },
     {
+      "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "summary": "Browser QA memory now admits only current evidence-bound runs, reuses memory as advisory execution influence, and emits SkillEvolver-style proposal-only improvements with independent audit and no QA/release/gate authority.",
+      "status": "completed"
+    },
+    {
+      "feature": "qa-evidence-attribution-layer",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "summary": "QA evidence attribution now classifies QA failures into finite routeable families, binds attribution to AC/evidence refs, fails closed on authority or evidence gaps, and keeps attribution as support evidence only for formal QA/release closure.",
+      "status": "completed"
+    },
+    {
       "feature": "qa-evo-deep-and-skill-eval-kit-v1410",
       "feature_slug": "qa-evo-deep-and-skill-eval-kit-v1410",
       "summary": "codex-subagents implementation completed via implement-team flow",
@@ -43,14 +55,16 @@
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 6,
+    "feature_count": 8,
     "ordered_feature_slugs": [
       "qa-evo-deep-and-skill-eval-kit-v1410",
       "project-lifecycle-hook-skill-toolkit-contract",
       "qa-evo-deep-evidence-bound-ac-aware-closure",
       "implement-mode-human-playbooks-and-routing-contract",
       "explicit-version-canonical-branch-worktree-preflight-gate",
-      "lifecycle-boundary-hook-advisory-and-confirmed-execution"
+      "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "qa-evidence-attribution-layer",
+      "qa-browser-memory-and-skill-evolution-advisory-loop"
     ],
     "waves": [
       {
@@ -164,11 +178,57 @@
             "reason_code": "shared_delivery_service_conflict"
           }
         ]
+      },
+      {
+        "wave": 6,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "qa-evidence-attribution-layer",
+            "feature_slug": "qa-evidence-attribution-layer",
+            "depends_on_features": [
+              "lifecycle-boundary-hook-advisory-and-confirmed-execution"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 7,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+            "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+            "depends_on_features": [
+              "qa-evidence-attribution-layer"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
   "added": [
-    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/execution_branch_contract.py"
+    "[explicit-version-canonical-branch-worktree-preflight-gate] beacon/utils/execution_branch_contract.py",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] beacon/utils/qa_browser_memory.py",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] tests/test_v1410_qa_browser_memory_skill_evolution.py",
+    "[qa-evidence-attribution-layer] beacon/utils/qa_attribution.py",
+    "[qa-evidence-attribution-layer] tests/test_v1410_qa_evidence_attribution.py"
   ],
   "removed": [],
   "fixed": [
@@ -208,6 +268,18 @@
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/execution/architecture-blueprint.md`",
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/research/project-lifecycle-hook-skill-toolkit-contract.md`",
     "[project-lifecycle-hook-skill-toolkit-contract] Updated `docs/beacon/v1.4.10/source-architecture/index.md`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `beacon/utils/browser_task_compiler.py`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `beacon/utils/release_scorecard.py`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `docs/beacon/v1.4.10/change/qa-browser-memory-and-skill-evolution-advisory-loop.md`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `docs/beacon/v1.4.10/prd/qa-browser-memory-and-skill-evolution-advisory-loop.md`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `docs/beacon/v1.4.10/user-story/qa-browser-memory-and-skill-evolution-advisory-loop.md`",
+    "[qa-browser-memory-and-skill-evolution-advisory-loop] Updated `docs/beacon/v1.4.10/qa/test-cases/qa-browser-memory-and-skill-evolution-advisory-loop.md`",
+    "[qa-evidence-attribution-layer] Updated `beacon/utils/qa_feature.py`",
+    "[qa-evidence-attribution-layer] Updated `beacon/utils/release_scorecard.py`",
+    "[qa-evidence-attribution-layer] Updated `docs/beacon/v1.4.10/change/qa-evidence-attribution-layer.md`",
+    "[qa-evidence-attribution-layer] Updated `docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md`",
+    "[qa-evidence-attribution-layer] Updated `docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md`",
+    "[qa-evidence-attribution-layer] Updated `docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md`",
     "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/auto-test-status.json`",
     "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/coverage-summary.json`",
     "[qa-evo-deep-and-skill-eval-kit-v1410] Updated `.beacon/evidence-manifest.json`",
@@ -259,6 +331,25 @@
     "docs/beacon/v1.4.10/execution/implementation-brief-project-lifecycle-hook-skill-toolkit-contract.md",
     "docs/beacon/v1.4.10/.machine/change/project-lifecycle-hook-skill-toolkit-contract.json",
     "docs/beacon/v1.4.10/change/project-lifecycle-hook-skill-toolkit-contract.md",
+    "docs/beacon/v1.4.10/change/qa-browser-memory-and-skill-evolution-advisory-loop.md",
+    "docs/beacon/v1.4.10/.machine/change/qa-browser-memory-and-skill-evolution-advisory-loop.refreeze-transaction.json",
+    "docs/beacon/v1.4.10/.machine/execution/deterministic-implementation-contract-qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-plan-qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-writeback-ledger-qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/.machine/execution/qa-acceptance-qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/execution/qa-acceptance-brief-qa-browser-memory-and-skill-evolution-advisory-loop.md",
+    ".beacon/transactions/qa-acceptance-qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/.machine/deep/qa-browser-memory-and-skill-evolution-advisory-loop/deep-closure-brief.json",
+    "docs/beacon/v1.4.10/.machine/change/qa-browser-memory-and-skill-evolution-advisory-loop.json",
+    "docs/beacon/v1.4.10/change/qa-evidence-attribution-layer.md",
+    "docs/beacon/v1.4.10/.machine/change/qa-evidence-attribution-layer.refreeze-transaction.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-writeback-ledger-qa-evidence-attribution-layer.json",
+    "docs/beacon/v1.4.10/.machine/execution/deterministic-implementation-contract-qa-evidence-attribution-layer.json",
+    "docs/beacon/v1.4.10/.machine/execution/implementation-plan-qa-evidence-attribution-layer.json",
+    "docs/beacon/v1.4.10/.machine/execution/qa-acceptance-qa-evidence-attribution-layer.json",
+    "docs/beacon/v1.4.10/execution/qa-acceptance-brief-qa-evidence-attribution-layer.md",
+    ".beacon/transactions/qa-acceptance-qa-evidence-attribution-layer.json",
+    "docs/beacon/v1.4.10/.machine/change/qa-evidence-attribution-layer.json",
     "docs/beacon/v1.4.10/.machine/execution/technical-implementation-qa-evo-deep-and-skill-eval-kit-v1410.json",
     "docs/beacon/v1.4.10/.machine/execution/implementation-summary-qa-evo-deep-and-skill-eval-kit-v1410.json",
     "docs/beacon/v1.4.10/execution/implementation-brief-qa-evo-deep-and-skill-eval-kit-v1410.md",
@@ -270,5 +361,5 @@
     "docs/beacon/v1.4.10/.machine/change/qa-evo-deep-evidence-bound-ac-aware-closure.json",
     "docs/beacon/v1.4.10/change/qa-evo-deep-evidence-bound-ac-aware-closure.md"
   ],
-  "generated_at": "2026-05-25 17:38"
+  "generated_at": "2026-05-26 07:15"
 }

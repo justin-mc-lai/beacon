@@ -21,6 +21,7 @@ from beacon.utils.implementation_plan import (
 from beacon.utils.learning_loop import load_latest_evo_experiment
 from beacon.utils.qa_precision import load_feature_qa_scorecard
 from beacon.utils.qa_runtime import load_qa_status
+from beacon.utils.qa_browser_memory import build_qa_memory_release_support
 from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
@@ -594,6 +595,46 @@ def _apply_qa_evo_deep_release_supplement_bridge(
     return bridged
 
 
+def _qa_attribution_release_support(feature_scorecard: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(feature_scorecard, dict):
+        return {}
+    attribution = feature_scorecard.get("qa_attribution") if isinstance(feature_scorecard.get("qa_attribution"), dict) else {}
+    if not attribution:
+        return {}
+    return {
+        "schema_version": "1.0",
+        "status": str(attribution.get("status") or "not_applicable"),
+        "support_evidence_only": True,
+        "runtime_evidence_only": True,
+        "truth_authority": False,
+        "verdict_authority": False,
+        "release_pass_evidence": False,
+        "formal_qa_source": "feature_qa_scorecard",
+        "attribution_count": int(attribution.get("attribution_count") or 0),
+        "release_blocking_count": int(attribution.get("release_blocking_count") or 0),
+        "proposal_count": int(attribution.get("proposal_count") or 0),
+        "family_counts": attribution.get("family_counts") if isinstance(attribution.get("family_counts"), dict) else {},
+        "route_counts": attribution.get("route_counts") if isinstance(attribution.get("route_counts"), dict) else {},
+    }
+
+
+def _qa_memory_release_support(feature_scorecard: dict[str, Any]) -> dict[str, Any]:
+    if not isinstance(feature_scorecard, dict):
+        return {}
+    support = feature_scorecard.get("qa_browser_memory_support")
+    if not isinstance(support, dict):
+        support = feature_scorecard.get("browser_memory_support")
+    if not isinstance(support, dict):
+        return {}
+    memories = support.get("memories") if isinstance(support.get("memories"), list) else []
+    proposals = support.get("proposals") if isinstance(support.get("proposals"), list) else []
+    formal_qa = {
+        "release_ready": bool(feature_scorecard.get("release_ready")),
+        "continue_decision": str(feature_scorecard.get("continue_decision") or ""),
+    }
+    return build_qa_memory_release_support(memories=memories, proposals=proposals, formal_qa_closure=formal_qa)
+
+
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -685,6 +726,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
             deep_release_supplement,
             feature_scorecard=feature_scorecard,
         )
+    qa_attribution_release_support = _qa_attribution_release_support(feature_scorecard)
+    qa_browser_memory_release_support = _qa_memory_release_support(feature_scorecard)
     deep_release_supplement_pass = not bool(deep_release_supplement.get("blocked", False))
     test_contract_governance = (
         build_test_contract_gate_payload(project_root, version=resolved_version, feature=feature)
@@ -1113,6 +1156,8 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "acceptance_kit": acceptance_kit,
         "acceptance_transaction": acceptance_transaction if isinstance(acceptance_transaction, dict) else {},
         "feature_qa_scorecard": feature_scorecard if isinstance(feature_scorecard, dict) else {},
+        "qa_attribution_release_support": qa_attribution_release_support,
+        "qa_browser_memory_release_support": qa_browser_memory_release_support,
         "qa_evo_deep_absorption": feature_scorecard.get("deep_absorption") if isinstance(feature_scorecard.get("deep_absorption"), dict) else {},
         "qa_evo_deep_release_supplement": feature_scorecard.get("release_supplement_input") if isinstance(feature_scorecard.get("release_supplement_input"), dict) else {},
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
@@ -1196,6 +1241,16 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         payload.get("qa_evo_deep_release_supplement")
         if isinstance(payload.get("qa_evo_deep_release_supplement"), dict)
         else feature_scorecard.get("release_supplement_input") if isinstance(feature_scorecard.get("release_supplement_input"), dict) else {}
+    )
+    qa_attribution_release_support = (
+        payload.get("qa_attribution_release_support")
+        if isinstance(payload.get("qa_attribution_release_support"), dict)
+        else {}
+    )
+    qa_browser_memory_release_support = (
+        payload.get("qa_browser_memory_release_support")
+        if isinstance(payload.get("qa_browser_memory_release_support"), dict)
+        else {}
     )
     test_contract_governance = (
         payload.get("test_contract_governance")
@@ -1299,6 +1354,16 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "qa_evo_deep_absorbed_count": int(qa_evo_deep_absorption.get("absorbed_count") or 0),
         "qa_evo_deep_release_supplement_eligible": bool(qa_evo_deep_release_supplement.get("deep_findings_absorbed", False)),
         "qa_evo_deep_release_supplement_policy": str(qa_evo_deep_release_supplement.get("policy") or ""),
+        "qa_attribution_status": str(qa_attribution_release_support.get("status") or ""),
+        "qa_attribution_count": int(qa_attribution_release_support.get("attribution_count") or 0),
+        "qa_attribution_release_blocking_count": int(qa_attribution_release_support.get("release_blocking_count") or 0),
+        "qa_attribution_release_pass_evidence": bool(qa_attribution_release_support.get("release_pass_evidence", False)),
+        "qa_browser_memory_status": str(qa_browser_memory_release_support.get("status") or ""),
+        "qa_browser_memory_count": int(qa_browser_memory_release_support.get("memory_count") or 0),
+        "qa_browser_memory_admitted_count": int(qa_browser_memory_release_support.get("admitted_memory_count") or 0),
+        "qa_skill_evolution_proposal_count": int(qa_browser_memory_release_support.get("proposal_count") or 0),
+        "qa_skill_evolution_proposal_blocked_count": int(qa_browser_memory_release_support.get("proposal_blocked_count") or 0),
+        "qa_browser_memory_release_pass_evidence": bool(qa_browser_memory_release_support.get("release_pass_evidence", False)),
         "test_contract_governance_status": str(test_contract_governance.get("status") or ""),
         "test_contract_governance_blocked": bool(test_contract_governance.get("blocked", False)),
         "test_contract_governance_reason_codes": list(test_contract_governance.get("reason_codes") or []),

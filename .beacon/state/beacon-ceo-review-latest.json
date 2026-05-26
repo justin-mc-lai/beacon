@@ -1,13 +1,15 @@
 {
   "surface": "beacon-ceo-review",
-  "feature": "implement-mode-human-playbooks-and-routing-contract",
-  "feature_slug": "implement-mode-human-playbooks-and-routing-contract",
+  "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+  "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
   "version": "v1.4.10",
-  "status": "advisory",
+  "status": "blocked",
   "decision": "hold",
-  "blocked": false,
-  "blocked_reason": "",
-  "reason_codes": [],
+  "blocked": true,
+  "blocked_reason": "truth_refs_missing",
+  "reason_codes": [
+    "truth_refs_missing"
+  ],
   "challenge_axis_codes": [
     "too_smooth_path",
     "buried_landmine",
@@ -17,15 +19,13 @@
     "operator_cost_underpricing"
   ],
   "next_route": {
-    "command": "beacon implement \"implement-mode-human-playbooks-and-routing-contract\" --project . --version v1.4.10",
-    "why": "Requirement framing is stable enough to continue implementation planning.",
-    "target_surface": "beacon-implement",
-    "priority": "medium",
-    "prerequisites": [
-      "frozen requirement package remains valid"
-    ]
+    "command": "beacon help",
+    "why": "CEO review cannot bind to missing requirement truth.",
+    "target_surface": "beacon-help",
+    "priority": "high",
+    "prerequisites": []
   },
-  "operator_visible_summary": "CEO review did not find a version-level reframing blocker after challenging default downside axes.",
-  "transaction_id": "tx-beacon-ceo-review-v1.4.10-implement-mode-human-playbooks-and-routing-contract-20260524t102849z",
+  "operator_visible_summary": "CEO review is blocked because no bound PRD/user-story/test-case package was found.",
+  "transaction_id": "tx-beacon-ceo-review-v1.4.10-qa-multi-layer-real-browser-e2e-acceptance-20260525t123627z",
   "state_path": ".beacon/state/beacon-ceo-review-latest.json"
 }

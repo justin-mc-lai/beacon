@@ -1,0 +1,1120 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+  "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+  "version": "v1.4.10",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-25T14:31:00.933514+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:70f6f4bd45284e4f98e07500b47a3d7070c6b36913bb16b2fd4a02b79229c81b",
+      "superseded_by": "R2",
+      "created_at": "2026-05-25T12:59:12.135722+00:00",
+      "frozen_at": "2026-05-25T13:46:37.461319+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+      "source_revision_id": "R1",
+      "reason": "promote Beacon QA into full-range dynamic QA orchestration with real browser function UI UX acceptance",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:70f6f4bd45284e4f98e07500b47a3d7070c6b36913bb16b2fd4a02b79229c81b",
+      "superseded_by": null,
+      "created_at": "2026-05-25T13:46:45.696132+00:00",
+      "frozen_at": "2026-05-25T13:46:48.421740+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "qa-multi-layer-real-browser-e2e-acceptance",
+      "priority": "high",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "AC-001",
+          "text": "QA recognizes the full layer taxonomy: unit, interface, contract, integration, smoke, functional, regression, exception, compatibility, and browser E2E.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "AC-002",
+          "text": "QA profiles distinguish `basic`, `complete`, `closure`, and `browser`, and report whether a run is partial or complete.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "AC-003",
+          "text": "Human-selected layers and commands are allowed, but partial runs are explicitly marked and cannot satisfy closure unless the selected scope matches the required profile.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "AC-004",
+          "text": "Non-browser features run or justify unit, interface, contract, integration, smoke, regression, exception, and compatibility coverage before closure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "AC-011",
+          "text": "Failure attribution routes gaps to implement, test-case, change/refreeze, QA rerun, or blocked admission based on evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "AC-005",
+          "text": "Browser features require real browser E2E evidence for function, UI, UX, compatibility, session, and state/data consistency.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "AC-006",
+          "text": "Project-native E2E scripts can be discovered or selected and bound to AC/test IDs.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "AC-010",
+          "text": "Browser-required scenarios without valid browser evidence block QA/release.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "AC-007",
+          "text": "Browser runner registry includes Playwright, Playwright CLI, Playwright CDP, browser-use, agent-browser, attached browser, web-access, and Obscura CDP.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "AC-008",
+          "text": "Listing commands, placeholder transcripts, and documentation-only pass notes cannot satisfy acceptance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "AC-009",
+          "text": "QA acceptance transactions include run ID, source commands, runner/browser identity, accepted test IDs, evidence refs, and failure attribution.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "AC-012",
+          "text": "Release consumes formal QA closure only; raw runner output or support evidence cannot directly become release pass evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA recognizes the full layer taxonomy: unit, interface, contract, integration, smoke, functional, regression, exception, compatibility, and browser E2E.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — QA profiles distinguish `basic`, `complete`, `closure`, and `browser`, and report whether a run is partial or complete.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Human-selected layers and commands are allowed, but partial runs are explicitly marked and cannot satisfy closure unless the selected scope matches the required profile.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Non-browser features run or justify unit, interface, contract, integration, smoke, regression, exception, and compatibility coverage before closure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Failure attribution routes gaps to implement, test-case, change/refreeze, QA rerun, or blocked admission based on evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Browser features require real browser E2E evidence for function, UI, UX, compatibility, session, and state/data consistency.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Project-native E2E scripts can be discovered or selected and bound to AC/test IDs.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Browser-required scenarios without valid browser evidence block QA/release.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Browser runner registry includes Playwright, Playwright CLI, Playwright CDP, browser-use, agent-browser, attached browser, web-access, and Obscura CDP.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Listing commands, placeholder transcripts, and documentation-only pass notes cannot satisfy acceptance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — QA acceptance transactions include run ID, source commands, runner/browser identity, accepted test IDs, evidence refs, and failure attribution.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — Release consumes formal QA closure only; raw runner output or support evidence cannot directly become release pass evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+      "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+      "version": "v1.4.10",
+      "compiler": {
+        "requested_mode": "rule",
+        "effective_mode": "rule",
+        "generator_mode": "rule",
+        "fallback_reason": "",
+        "capability_snapshot": {
+          "schema_version": "1.0",
+          "command_name": "user-story",
+          "host_runtime": "codex",
+          "host_runtime_supported": true,
+          "host_bridge_declared": true,
+          "host_bridge_command_available": true,
+          "host_bridge_command_source": "env_cmd",
+          "host_bridge_command_env": "BEACON_HOST_USER_STORY_BRIDGE_CMD",
+          "host_response_available": false,
+          "host_response_source": "none",
+          "host_response_path": "",
+          "host_transport": "command-bridge",
+          "host_semantic_ready": true,
+          "provider_available": false,
+          "provider_key_present": false,
+          "llm_disabled": false,
+          "disable_env": "BEACON_USER_STORY_DISABLE_LLM"
+        },
+        "model": "beacon-user-story-compiler"
+      },
+      "supplement_contract": {
+        "allowed_decisions": [
+          "accepted",
+          "rejected",
+          "deferred"
+        ],
+        "required_machine_trail": true,
+        "writeback_required": true
+      },
+      "story_candidates": [
+        {
+          "candidate_id": "SC-001",
+          "candidate_kind": "story",
+          "family": "primary_actor_goal",
+          "status": "candidate_missing",
+          "title": "primary actor goal story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit primary actor goal coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-002",
+          "candidate_kind": "story",
+          "family": "secondary_or_opposing_role",
+          "status": "candidate_missing",
+          "title": "secondary or opposing role story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit secondary or opposing role coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-003",
+          "candidate_kind": "story",
+          "family": "state_transition",
+          "status": "candidate_missing",
+          "title": "state transition story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit state transition coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-004",
+          "candidate_kind": "story",
+          "family": "exception_recovery",
+          "status": "candidate_missing",
+          "title": "exception recovery story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit exception recovery coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-005",
+          "candidate_kind": "story",
+          "family": "permission_or_constraint",
+          "status": "candidate_missing",
+          "title": "permission or constraint story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit permission or constraint coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-006",
+          "candidate_kind": "story",
+          "family": "governance_extension",
+          "status": "candidate_missing",
+          "title": "governance extension story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+          "rationale": "deepening requires explicit governance extension coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        }
+      ],
+      "requirement_deepening_refs": {
+        "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.envelope.json",
+        "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.candidate-ledger.json",
+        "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.supplement-decision-log.json",
+        "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.freeze-contract.json",
+        "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.completeness.json",
+        "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.supplement-task.json",
+        "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.re-freeze-transaction.json"
+      },
+      "requirement_completeness_verdict": "pass_with_downgrade",
+      "supplement_focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "supplement_recommended_command": "beacon user-story create \"qa-multi-layer-real-browser-e2e-acceptance\" --project <project-root> --version v1.4.10 --json",
+      "supplement_next_action": "human_review",
+      "supplement_task": {
+        "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+        "version": "v1.4.10",
+        "target_artifact": "user-story",
+        "candidate_kind": "story",
+        "candidate_families": [
+          "primary_actor_goal",
+          "secondary_or_opposing_role",
+          "state_transition",
+          "exception_recovery",
+          "permission_or_constraint",
+          "governance_extension"
+        ],
+        "candidate_payload": {
+          "focus_areas": [
+            "复核 requirement completeness 的补料方向"
+          ],
+          "open_questions": [
+            "primary_actor_goal 是否需要补成 machine-readable supplement candidate？",
+            "secondary_or_opposing_role 是否需要补成 machine-readable supplement candidate？",
+            "state_transition 是否需要补成 machine-readable supplement candidate？",
+            "exception_recovery 是否需要补成 machine-readable supplement candidate？"
+          ],
+          "missing_dimensions": [],
+          "high_risk_unresolved_categories": []
+        },
+        "source_truth_ref": "docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "writeback_target": "docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "pass_with_downgrade",
+        "confidence": "medium",
+        "human_decision": "pending",
+        "audit_trail_required": true,
+        "recommended_route": "beacon-user-story",
+        "recommended_command": "beacon user-story create \"qa-multi-layer-real-browser-e2e-acceptance\" --project <project-root> --version v1.4.10 --json",
+        "recommended_mode": "requirement-convergence"
+      },
+      "re_freeze_transaction": {
+        "schema_version": "1.0",
+        "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+        "version": "v1.4.10",
+        "revision_id": "R1",
+        "accepted_candidates": [
+          "GAP-001",
+          "GAP-002",
+          "GAP-003",
+          "GAP-004",
+          "GAP-005",
+          "GAP-006",
+          "GAP-007",
+          "GAP-008",
+          "GAP-009",
+          "GAP-010",
+          "GAP-011",
+          "GAP-012",
+          "GAP-013",
+          "GAP-014",
+          "GAP-015"
+        ],
+        "rejected_candidates": [],
+        "deferred_candidates": [],
+        "writeback_targets": [
+          "qa/test-cases.executable-matrix",
+          "user-story.acceptance-criteria"
+        ],
+        "machine_mirror_paths": {
+          "dir": "docs/beacon/v1.4.10/.machine/requirement",
+          "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.envelope.json",
+          "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.candidate-ledger.json",
+          "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.supplement-decision-log.json",
+          "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.freeze-contract.json",
+          "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.completeness.json",
+          "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.supplement-task.json",
+          "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-multi-layer-real-browser-e2e-acceptance.re-freeze-transaction.json"
+        },
+        "refreeze_required": true,
+        "revalidate_required": true,
+        "decision_count": 15,
+        "generated_at": "2026-05-25T12:59:12.133216+00:00"
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "qa-multi-layer-real-browser-e2e-acceptance",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "AC-001",
+          "text": "QA recognizes the full layer taxonomy: unit, interface, contract, integration, smoke, functional, regression, exception, compatibility, and browser E2E.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "AC-002",
+          "text": "QA profiles distinguish `basic`, `complete`, `closure`, and `browser`, and report whether a run is partial or complete.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "AC-003",
+          "text": "Human-selected layers and commands are allowed, but partial runs are explicitly marked and cannot satisfy closure unless the selected scope matches the required profile.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "AC-004",
+          "text": "Non-browser features run or justify unit, interface, contract, integration, smoke, regression, exception, and compatibility coverage before closure.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "AC-011",
+          "text": "Failure attribution routes gaps to implement, test-case, change/refreeze, QA rerun, or blocked admission based on evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "AC-005",
+          "text": "Browser features require real browser E2E evidence for function, UI, UX, compatibility, session, and state/data consistency.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "AC-006",
+          "text": "Project-native E2E scripts can be discovered or selected and bound to AC/test IDs.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "AC-010",
+          "text": "Browser-required scenarios without valid browser evidence block QA/release.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "AC-007",
+          "text": "Browser runner registry includes Playwright, Playwright CLI, Playwright CDP, browser-use, agent-browser, attached browser, web-access, and Obscura CDP.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "AC-008",
+          "text": "Listing commands, placeholder transcripts, and documentation-only pass notes cannot satisfy acceptance.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "AC-009",
+          "text": "QA acceptance transactions include run ID, source commands, runner/browser identity, accepted test IDs, evidence refs, and failure attribution.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "AC-012",
+          "text": "Release consumes formal QA closure only; raw runner output or support evidence cannot directly become release pass evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA recognizes the full layer taxonomy: unit, interface, contract, integration, smoke, functional, regression, exception, compatibility, and browser E2E.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — QA profiles distinguish `basic`, `complete`, `closure`, and `browser`, and report whether a run is partial or complete.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Human-selected layers and commands are allowed, but partial runs are explicitly marked and cannot satisfy closure unless the selected scope matches the required profile.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Non-browser features run or justify unit, interface, contract, integration, smoke, regression, exception, and compatibility coverage before closure.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Failure attribution routes gaps to implement, test-case, change/refreeze, QA rerun, or blocked admission based on evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Browser features require real browser E2E evidence for function, UI, UX, compatibility, session, and state/data consistency.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Project-native E2E scripts can be discovered or selected and bound to AC/test IDs.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Browser-required scenarios without valid browser evidence block QA/release.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Browser runner registry includes Playwright, Playwright CLI, Playwright CDP, browser-use, agent-browser, attached browser, web-access, and Obscura CDP.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Listing commands, placeholder transcripts, and documentation-only pass notes cannot satisfy acceptance.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — QA acceptance transactions include run ID, source commands, runner/browser identity, accepted test IDs, evidence refs, and failure attribution.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — Release consumes formal QA closure only; raw runner output or support evidence cannot directly become release pass evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-multi-layer-real-browser-e2e-acceptance-20260525T1351Z",
+          "verified_by_run_id": "run-20260525T223053102250",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+      "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        "beacon/utils/qa_acceptance.py",
+        "beacon/utils/qa_feature.py",
+        "tests/test_v1410_qa_multi_layer_browser_acceptance.py",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/qa-multi-layer-real-browser-e2e-acceptance.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-multi-layer-real-browser-e2e-acceptance/ac-closure.json",
+        ".beacon/qa/features/qa-multi-layer-real-browser-e2e-acceptance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-25T14:31:00.838905+00:00",
+      "accepted_by": "qa"
+    }
+  ],
+  "acceptance_criteria": {
+    "functionality": [
+      "主路径通过",
+      "文档与实现一致",
+      "All unit assertions pass",
+      "coverage family happy remains executable",
+      "coverage family negative remains executable",
+      "coverage family boundary remains executable",
+      "coverage family exception remains executable",
+      "coverage family recovery remains executable",
+      "coverage family compatibility remains executable",
+      "coverage family permission remains executable",
+      "coverage family stale-data-or-drift remains executable",
+      "coverage family downgrade-or-fallback remains executable"
+    ],
+    "data": [],
+    "ux": [],
+    "performance": [],
+    "security": [],
+    "compatibility": [],
+    "error_handling": [
+      "异常路径可恢复"
+    ]
+  },
+  "semantic_payload": {},
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "user-story",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_USER_STORY_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_USER_STORY_DISABLE_LLM"
+    }
+  },
+  "output_path": "docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-multi-layer-real-browser-e2e-acceptance.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

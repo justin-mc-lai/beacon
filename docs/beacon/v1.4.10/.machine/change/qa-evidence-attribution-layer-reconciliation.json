@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "qa-evidence-attribution-layer",
+  "feature_slug": "qa-evidence-attribution-layer",
+  "version": "v1.4.10",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-25T11:47:14.438645+00:00",
+  "detected_revision_id": "R5",
+  "source_revision_id": "R4",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R4",
+      "run_id": "impl-qa-evidence-attribution-layer-20260525",
+      "recorded_at": "2026-05-25T10:15:18.655827+00:00",
+      "implemented_item_ids": [
+        "TEST-001",
+        "TEST-006",
+        "AC-002",
+        "AC-004",
+        "AC-006",
+        "TASK-001",
+        "TEST-002",
+        "TEST-007",
+        "AC-005",
+        "TEST-004",
+        "AC-003",
+        "TEST-005",
+        "TEST-003",
+        "AC-001",
+        "AC-007"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_attribution.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "tests/test_v1410_qa_evidence_attribution.py",
+        "."
+      ]
+    },
+    {
+      "revision_id": "R4",
+      "run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+      "recorded_at": "2026-05-25T10:17:50.376512+00:00",
+      "implemented_item_ids": [
+        "AC-001",
+        "TEST-006",
+        "AC-002",
+        "TEST-007",
+        "TEST-005",
+        "TEST-004",
+        "AC-004",
+        "AC-005",
+        "AC-003",
+        "AC-007",
+        "TEST-001",
+        "TEST-003",
+        "AC-006",
+        "TEST-002",
+        "TASK-001"
+      ],
+      "changed_files": [
+        "beacon/utils/qa_attribution.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "tests/test_v1410_qa_evidence_attribution.py",
+        "."
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.10/prd/qa-evidence-attribution-layer.md",
+    "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+    "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md",
+    "docs/beacon/v1.4.10/qa/test-cases/qa-evidence-attribution-layer.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R5",
+    "current_delivery_status": "idle"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"qa-evidence-attribution-layer\" --project-root . --version v1.4.10 --reason \"implementation-first-reconciliation\""
+  }
+}

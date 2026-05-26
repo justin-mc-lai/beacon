@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.qa_browser_memory import apply_browser_memory_to_task
 from beacon.utils.qa9 import normalize_qa_type
 from beacon.utils.runtime import now_iso
 
@@ -21,6 +22,7 @@ def build_browser_task(
     mode: str,
     project_root: Path,
     session: dict[str, Any] | None = None,
+    browser_memory: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     normalized_qa = normalize_qa_type(qa_type)
     scenario_family = str(item.get("scenario_family") or "happy").strip().lower() or "happy"
@@ -82,7 +84,7 @@ def build_browser_task(
             }.items()
             if value is not None and value != "" and value != []
         }
-    return payload
+    return apply_browser_memory_to_task(payload, browser_memory)
 
 
 def write_browser_task(

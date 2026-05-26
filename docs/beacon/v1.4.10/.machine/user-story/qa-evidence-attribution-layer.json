@@ -3,9 +3,9 @@
   "feature": "qa-evidence-attribution-layer",
   "feature_slug": "qa-evidence-attribution-layer",
   "version": "v1.4.10",
-  "current_revision_id": "R2",
+  "current_revision_id": "R5",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-05-25T10:05:36.242194+00:00",
+  "updated_at": "2026-05-25T11:49:05.244560+00:00",
   "revisions": [
     {
       "revision_id": "R1",
@@ -26,12 +26,54 @@
       "feature_slug": "qa-evidence-attribution-layer",
       "source_revision_id": "R1",
       "reason": "promote EmbodiSkill/SkillEvolver research into QA failure attribution requirement truth",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:0f785ba476b51bf453b2c6fd58ef514178f9b50b837ec177a6ef21db83d1e87e",
-      "superseded_by": null,
+      "superseded_by": "R3",
       "created_at": "2026-05-25T10:05:36.240120+00:00",
       "frozen_at": "2026-05-25T10:05:38.722091+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "source_revision_id": "R2",
+      "reason": "complete scope definition before implementation planning",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:dc78df5387bf26676e3c0561f73594e67712980e69a0df28e6116897fbed8425",
+      "superseded_by": "R4",
+      "created_at": "2026-05-25T10:09:34.748785+00:00",
+      "frozen_at": "2026-05-25T10:09:38.244027+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R4",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "source_revision_id": "R3",
+      "reason": "normalize scope heading for implementation closure preflight",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:21f4ffd5a11e2c7f83ada424d6632f7483c28d499072036802494bc0afd0b1f3",
+      "superseded_by": "R5",
+      "created_at": "2026-05-25T10:10:05.052346+00:00",
+      "frozen_at": "2026-05-25T10:10:07.595421+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R5",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "source_revision_id": "R4",
+      "reason": "sync qa evidence attribution layer into v1.4.10 release change truth",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:21f4ffd5a11e2c7f83ada424d6632f7483c28d499072036802494bc0afd0b1f3",
+      "superseded_by": null,
+      "created_at": "2026-05-25T11:46:58.637676+00:00",
+      "frozen_at": "2026-05-25T11:47:02.363868+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -352,7 +394,7 @@
       "revision_id": "R2",
       "title": "qa-evidence-attribution-layer",
       "priority": "medium",
-      "status": "frozen",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -656,6 +698,978 @@
           }
         ]
       }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "qa-evidence-attribution-layer",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "finite taxonomy",
+          "text": "QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "evidence binding",
+          "text": "Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "deterministic route",
+          "text": "Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "fail closed",
+          "text": "Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "skill defect boundary",
+          "text": "Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "release consumption boundary",
+          "text": "Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-evidence-attribution-layer",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+        "present": true,
+        "section_count": 3,
+        "sections": {
+          "architecture": [
+            "`truth_drift`: requirement truth must reopen through `beacon-change`.",
+            "`implementation_gap`: implementation must route to `beacon-implement`.",
+            "`coverage_gap`: acceptance coverage must route to `beacon-test-case`.",
+            "`execution_lapse`: QA must rerun or continue through `beacon-qa`.",
+            "`skill_defect`: Beacon skill improvement must become research/change proposal input only.",
+            "`runner_admission_blocker`: runner or environment admission must block without becoming product failure.",
+            "`evidence_insufficient`: QA must continue gathering evidence and cannot pass release readiness."
+          ],
+          "state_machine": [
+            "`source_evidence_missing`: AC or evidence refs are missing.",
+            "`runner_admission_blocked`: runner never reached AC evaluation.",
+            "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+            "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+            "`source_evidence_missing` routes to `evidence_insufficient`.",
+            "`runner_admission_blocked` routes to `blocked`.",
+            "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+            "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+          ],
+          "decision_priority": [
+            "Authority boundary violation blocks first.",
+            "Proven `truth_drift` routes to `beacon-change`.",
+            "Proven `coverage_gap` routes to `beacon-test-case`.",
+            "Proven `implementation_gap` routes to `beacon-implement`.",
+            "Proven `runner_admission_blocker` routes to `blocked`.",
+            "Proven `execution_lapse` routes to `beacon-qa`.",
+            "Proven `skill_defect` becomes research/change proposal input only.",
+            "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+            "Release readiness consumes only formal QA closure after attribution is recorded."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`source_evidence_missing`: AC or evidence refs are missing.",
+              "`runner_admission_blocked`: runner never reached AC evaluation.",
+              "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+              "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+              "`source_evidence_missing` routes to `evidence_insufficient`.",
+              "`runner_admission_blocked` routes to `blocked`.",
+              "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+              "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Authority boundary violation blocks first.",
+              "Proven `truth_drift` routes to `beacon-change`.",
+              "Proven `coverage_gap` routes to `beacon-test-case`.",
+              "Proven `implementation_gap` routes to `beacon-implement`.",
+              "Proven `runner_admission_blocker` routes to `blocked`.",
+              "Proven `execution_lapse` routes to `beacon-qa`.",
+              "Proven `skill_defect` becomes research/change proposal input only.",
+              "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+              "Release readiness consumes only formal QA closure after attribution is recorded."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R4",
+      "title": "qa-evidence-attribution-layer",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "finite taxonomy",
+          "text": "QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "evidence binding",
+          "text": "Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "deterministic route",
+          "text": "Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "fail closed",
+          "text": "Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "skill defect boundary",
+          "text": "Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "release consumption boundary",
+          "text": "Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-25T10:18:01.485669+00:00",
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r2",
+          "verified_by_run_id": "run-20260525T193640381085",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-evidence-attribution-layer",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+        "present": true,
+        "section_count": 3,
+        "sections": {
+          "architecture": [
+            "`truth_drift`: requirement truth must reopen through `beacon-change`.",
+            "`implementation_gap`: implementation must route to `beacon-implement`.",
+            "`coverage_gap`: acceptance coverage must route to `beacon-test-case`.",
+            "`execution_lapse`: QA must rerun or continue through `beacon-qa`.",
+            "`skill_defect`: Beacon skill improvement must become research/change proposal input only.",
+            "`runner_admission_blocker`: runner or environment admission must block without becoming product failure.",
+            "`evidence_insufficient`: QA must continue gathering evidence and cannot pass release readiness."
+          ],
+          "state_machine": [
+            "`source_evidence_missing`: AC or evidence refs are missing.",
+            "`runner_admission_blocked`: runner never reached AC evaluation.",
+            "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+            "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+            "`source_evidence_missing` routes to `evidence_insufficient`.",
+            "`runner_admission_blocked` routes to `blocked`.",
+            "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+            "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+          ],
+          "decision_priority": [
+            "Authority boundary violation blocks first.",
+            "Proven `truth_drift` routes to `beacon-change`.",
+            "Proven `coverage_gap` routes to `beacon-test-case`.",
+            "Proven `implementation_gap` routes to `beacon-implement`.",
+            "Proven `runner_admission_blocker` routes to `blocked`.",
+            "Proven `execution_lapse` routes to `beacon-qa`.",
+            "Proven `skill_defect` becomes research/change proposal input only.",
+            "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+            "Release readiness consumes only formal QA closure after attribution is recorded."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`source_evidence_missing`: AC or evidence refs are missing.",
+              "`runner_admission_blocked`: runner never reached AC evaluation.",
+              "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+              "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+              "`source_evidence_missing` routes to `evidence_insufficient`.",
+              "`runner_admission_blocked` routes to `blocked`.",
+              "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+              "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Authority boundary violation blocks first.",
+              "Proven `truth_drift` routes to `beacon-change`.",
+              "Proven `coverage_gap` routes to `beacon-test-case`.",
+              "Proven `implementation_gap` routes to `beacon-implement`.",
+              "Proven `runner_admission_blocker` routes to `blocked`.",
+              "Proven `execution_lapse` routes to `beacon-qa`.",
+              "Proven `skill_defect` becomes research/change proposal input only.",
+              "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+              "Release readiness consumes only formal QA closure after attribution is recorded."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          }
+        ]
+      },
+      "feature": "qa-evidence-attribution-layer",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        "beacon/utils/qa_attribution.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "tests/test_v1410_qa_evidence_attribution.py",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evidence-attribution-layer.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evidence-attribution-layer/ac-closure.json",
+        ".beacon/qa/features/qa-evidence-attribution-layer/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-25T11:36:46.191925+00:00",
+      "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R5",
+      "title": "qa-evidence-attribution-layer",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "finite taxonomy",
+          "text": "QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "evidence binding",
+          "text": "Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "deterministic route",
+          "text": "Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "fail closed",
+          "text": "Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "skill defect boundary",
+          "text": "Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "authority boundary",
+          "text": "Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "release consumption boundary",
+          "text": "Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+          "changed_in_revision": "R5"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — QA attribution uses only the supported failure families: `implementation_gap`, `truth_drift`, `coverage_gap`, `execution_lapse`, `skill_defect`, `runner_admission_blocker`, and `evidence_insufficient`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Each attribution includes affected AC IDs and current evidence refs; runner blockers may omit AC IDs only when AC evaluation was not reached.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Each failure family maps to the correct route recommendation: implement, change, test-case, QA rerun/continue, blocked, or research/change proposal.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Ambiguous or missing evidence cannot pass release readiness and must fail closed as insufficient evidence or a proven blocker.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Skill defects create research/change proposal input only and never auto-modify Beacon skills or requirement truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Attribution output cannot claim PRD, user-story, test-case, QA verdict, release verdict, gate verdict, or freeze authority.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Release readiness consumes attribution only through formal QA closure; raw attribution remains support evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-qa-evidence-attribution-layer-20260525-r3",
+          "verified_by_run_id": "run-20260525T194859272001",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/qa-evidence-attribution-layer.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "qa-evidence-attribution-layer",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md",
+        "present": true,
+        "section_count": 3,
+        "sections": {
+          "architecture": [
+            "`truth_drift`: requirement truth must reopen through `beacon-change`.",
+            "`implementation_gap`: implementation must route to `beacon-implement`.",
+            "`coverage_gap`: acceptance coverage must route to `beacon-test-case`.",
+            "`execution_lapse`: QA must rerun or continue through `beacon-qa`.",
+            "`skill_defect`: Beacon skill improvement must become research/change proposal input only.",
+            "`runner_admission_blocker`: runner or environment admission must block without becoming product failure.",
+            "`evidence_insufficient`: QA must continue gathering evidence and cannot pass release readiness."
+          ],
+          "state_machine": [
+            "`source_evidence_missing`: AC or evidence refs are missing.",
+            "`runner_admission_blocked`: runner never reached AC evaluation.",
+            "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+            "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+            "`source_evidence_missing` routes to `evidence_insufficient`.",
+            "`runner_admission_blocked` routes to `blocked`.",
+            "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+            "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+          ],
+          "decision_priority": [
+            "Authority boundary violation blocks first.",
+            "Proven `truth_drift` routes to `beacon-change`.",
+            "Proven `coverage_gap` routes to `beacon-test-case`.",
+            "Proven `implementation_gap` routes to `beacon-implement`.",
+            "Proven `runner_admission_blocker` routes to `blocked`.",
+            "Proven `execution_lapse` routes to `beacon-qa`.",
+            "Proven `skill_defect` becomes research/change proposal input only.",
+            "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+            "Release readiness consumes only formal QA closure after attribution is recorded."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`source_evidence_missing`: AC or evidence refs are missing.",
+              "`runner_admission_blocked`: runner never reached AC evaluation.",
+              "`authority_boundary_violation`: attribution claims truth or verdict authority.",
+              "`ambiguous_failure_family`: evidence cannot distinguish failure type.",
+              "`source_evidence_missing` routes to `evidence_insufficient`.",
+              "`runner_admission_blocked` routes to `blocked`.",
+              "`authority_boundary_violation` fails closed and requires Beacon change/review.",
+              "`ambiguous_failure_family` fails closed as `evidence_insufficient` unless a specific blocker is proven."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Authority boundary violation blocks first.",
+              "Proven `truth_drift` routes to `beacon-change`.",
+              "Proven `coverage_gap` routes to `beacon-test-case`.",
+              "Proven `implementation_gap` routes to `beacon-implement`.",
+              "Proven `runner_admission_blocker` routes to `blocked`.",
+              "Proven `execution_lapse` routes to `beacon-qa`.",
+              "Proven `skill_defect` becomes research/change proposal input only.",
+              "Unproven or ambiguous evidence becomes `evidence_insufficient`.",
+              "Release readiness consumes only formal QA closure after attribution is recorded."
+            ],
+            "source": "research:docs/beacon/v1.4.10/research/qa-evidence-attribution-layer.md"
+          }
+        ]
+      },
+      "feature": "qa-evidence-attribution-layer",
+      "feature_slug": "qa-evidence-attribution-layer",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        "beacon/utils/qa_attribution.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/release_scorecard.py",
+        "tests/test_v1410_qa_evidence_attribution.py",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/qa-evidence-attribution-layer.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/qa-evidence-attribution-layer/ac-closure.json",
+        ".beacon/qa/features/qa-evidence-attribution-layer/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-25T11:49:05.153768+00:00",
+      "accepted_by": "qa"
     }
   ]
 }

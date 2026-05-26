@@ -1,12 +1,12 @@
 # Change Refreeze Summary: qa-evidence-attribution-layer
 
 - version: `v1.4.10`
-- change_reason: `promote EmbodiSkill/SkillEvolver research into QA failure attribution requirement truth`
+- change_reason: `sync qa evidence attribution layer into v1.4.10 release change truth`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R4`
+- revision_after: `R5`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.10/change/qa-evidence-attribution-layer.md)

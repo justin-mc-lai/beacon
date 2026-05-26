@@ -63,7 +63,15 @@ Skill defects may generate research or change proposal input. They must not sile
 
 The attribution layer can feed formal QA decisions, but cannot replace `beacon qa run` or produce release readiness by itself.
 
-## 5. Scope
+## Scope
+
+The implementation scope is limited to the existing Beacon Python runtime and tests:
+
+- QA attribution schema, validation, route recommendation, and support evidence behavior.
+- Formal QA and release-facing read models that may summarize attribution only as support evidence.
+- Regression tests for the frozen acceptance criteria.
+
+The implementation must not add new public lifecycle stages, auto-apply Beacon skill patches, mutate requirement truth from QA attribution, execute hidden side-effect hooks, or change release verdict rules directly.
 
 ### In Scope
 

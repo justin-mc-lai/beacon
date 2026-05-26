@@ -12,6 +12,7 @@ from beacon.commands.auto_test import LAYER_NAMES
 from beacon.utils.artifact_paths import qa_feature_evidence_contract_candidates, qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
 from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
+from beacon.utils.qa_acceptance import BROWSER_QA_LAYER, build_qa_acceptance_capability_summary
 from beacon.utils.qa_precision import (
     DEFAULT_AUTO_ACCEPT_THRESHOLD,
     DEFAULT_REVIEW_THRESHOLD,
@@ -19,6 +20,7 @@ from beacon.utils.qa_precision import (
     write_feature_qa_ac_closure,
     write_feature_qa_scorecard,
 )
+from beacon.utils.qa_attribution import summarize_qa_attributions
 from beacon.utils.qa_evo_deep import build_deep_absorption_status
 from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed
 from beacon.utils.revision_state import load_revision_state
@@ -67,6 +69,18 @@ PLACEHOLDER_COMMAND_TOKENS = (
     "placeholder",
     "tbd",
 )
+PLACEHOLDER_COMMAND_VALUES = {
+    "",
+    "-",
+    "n/a",
+    "na",
+    "none",
+    "todo",
+    "tbd",
+    "placeholder",
+    "implementation-pending",
+    "design-review",
+}
 
 
 def _real_project_qa_taxonomy_supported(version: str | None) -> bool:
@@ -326,7 +340,10 @@ def _normalize_entry_command(value: str) -> str:
     lowered = command.lower()
     if not command:
         return ""
-    if any(token in lowered for token in PLACEHOLDER_COMMAND_TOKENS):
+    stripped = lowered.strip("`'\" ")
+    if stripped in PLACEHOLDER_COMMAND_VALUES:
+        return ""
+    if any(stripped.startswith(f"{token}:") for token in PLACEHOLDER_COMMAND_TOKENS):
         return ""
     return command
 
@@ -1620,6 +1637,9 @@ def build_feature_qa_precision_artifacts(
             if isinstance(item, dict) and str(item.get("reason_code") or "").strip()
         }
     )
+    qa_attribution = summarize_qa_attributions(
+        qa_status.get("qa_attributions") if isinstance(qa_status.get("qa_attributions"), list) else []
+    )
     quality_stop_reasons = sorted(
         {
             str(reason).strip()
@@ -1864,6 +1884,70 @@ def build_feature_qa_precision_artifacts(
             )
         ),
     }
+    executed_acceptance_layers = sorted(
+        {
+            BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+            for item in scenario_results
+            if str(item.get("status") or "").strip().lower() in {"passed", "failed", "review_required"}
+            or bool(item.get("evidence_ref"))
+            or bool(str(item.get("browser_evidence_pack_ref") or "").strip())
+        }
+    )
+    blocked_acceptance_layers = sorted(
+        {
+            BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+            for item in scenario_results
+            if str(item.get("status") or "").strip().lower() in {"blocked"}
+        }
+    )
+    browser_evidence_item = next(
+        (
+            item
+            for item in scenario_results
+            if bool(item.get("browser_required")) and str(item.get("browser_evidence_pack_ref") or "").strip()
+        ),
+        {},
+    )
+    browser_evidence_refs = []
+    if isinstance(browser_evidence_item, dict):
+        browser_evidence_refs = [
+            *[str(ref).strip() for ref in (browser_evidence_item.get("evidence_ref") or []) if str(ref).strip()],
+            str(browser_evidence_item.get("browser_evidence_pack_ref") or "").strip(),
+            str(browser_evidence_item.get("replay_ref") or "").strip(),
+        ]
+    browser_required_for_acceptance = any(bool(item.get("browser_required")) for item in scenario_results) or any(
+        bool(item.get("browser_required")) for item in (plan.get("targeted_entries") or [])
+    )
+    qa_acceptance_capability = build_qa_acceptance_capability_summary(
+        profile="browser" if browser_required_for_acceptance else "closure",
+        browser_required=browser_required_for_acceptance,
+        executed_layers=[layer for layer in executed_acceptance_layers if layer],
+        blocked_layers=[layer for layer in blocked_acceptance_layers if layer],
+        browser_evidence={
+            "run_id": run_id,
+            "source_command": str(browser_evidence_item.get("command") or "") if isinstance(browser_evidence_item, dict) else "",
+            "runner": str(browser_evidence_item.get("exploratory_runner") or browser_evidence_item.get("deterministic_runner") or "playwright")
+            if isinstance(browser_evidence_item, dict)
+            else "playwright",
+            "target_url": str(browser_evidence_item.get("target_url") or browser_evidence_item.get("route") or "") if isinstance(browser_evidence_item, dict) else "",
+            "result_status": str(browser_evidence_item.get("status") or "") if isinstance(browser_evidence_item, dict) else "",
+            "accepted_test_ids": [
+                str(browser_evidence_item.get("tc_id") or "").strip(),
+                str(browser_evidence_item.get("source_tc_id") or "").strip(),
+            ]
+            if isinstance(browser_evidence_item, dict)
+            else [],
+            "evidence_refs": [ref for ref in browser_evidence_refs if ref],
+            "axes": [
+                axis
+                for axis in ("function", "ui", "ux", "compatibility", "session", "state_data")
+                if any(axis.replace("_", "-") in str(ref).lower() or axis in str(ref).lower() for ref in browser_evidence_refs)
+            ],
+            "notes": str(browser_evidence_item.get("reason_code") or "") if isinstance(browser_evidence_item, dict) else "",
+        }
+        if browser_required_for_acceptance
+        else {},
+    )
     feature_scorecard_payload = {
         "schema_version": "1.0",
         "feature": feature,
@@ -1904,6 +1988,8 @@ def build_feature_qa_precision_artifacts(
                 "truth_projection_gap",
             ],
         },
+        "qa_attribution": qa_attribution,
+        "qa_acceptance_capability": qa_acceptance_capability,
         "reconciliation": reconciliation_gate if isinstance(reconciliation_gate, dict) else {},
         "deep_absorption": deep_absorption,
         "release_supplement_input": {

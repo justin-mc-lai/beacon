@@ -1,0 +1,131 @@
+{
+  "schema_version": "1.0",
+  "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+  "feature_slug": "qa-multi-layer-real-browser-e2e-acceptance",
+  "version": "v1.4.10",
+  "generated_at": "2026-05-25T12:59:12.132385+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+    "user_story": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.10/qa/test-cases/qa-multi-layer-real-browser-e2e-acceptance.md",
+    "research": "research:docs/beacon/v1.4.10/research/qa-multi-layer-real-browser-e2e-acceptance.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.10/user-story/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": " 待补充：这条并行线解决的具体缺口。",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      },
+      {
+        "name": " 待补充：若该线不冻结，主线会出现什么漂移或落空。",
+        "source_truth_ref": "prd:docs/beacon/v1.4.10/prd/qa-multi-layer-real-browser-e2e-acceptance.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `qa-multi-layer-real-browser-e2e-acceptance`",
+      "Version**: `v1.4.10`",
+      "Date**: `2026-05-25`",
+      "Status**: `draft skeleton`",
+      "Track**: `parallel`",
+      "Scenario**: `general`",
+      "Template**: `并行 PRD / general`",
+      " Global boundaries: `docs/beacon/global-boundaries.md`",
+      " Version summary: `docs/beacon/v1.4.10/SUMMARY.md`",
+      " Execution index: `docs/beacon/v1.4.10/execution/index.md`",
+      " Existing PRDs in line: `explicit-version-canonical-branch-worktree-preflight-gate`, `implement-mode-human-playbooks-and-routing-contract`, `lifecycle-boundary-hook-advisory-and-confirmed-execution`, `project-lifecycle-hook-skill-toolkit-contract`, `qa-evidence-attribution-layer`, `qa-evo-deep-and-skill-eval-kit-v1410`, `qa-evo-deep-evidence-bound-ac-aware-closure`",
+      "本并行 PRD 依附主线 `explicit-version-canonical-branch-worktree-preflight-gate`，用于补齐一个必须单独冻结的实现/治理切面。",
+      " 待补充：这条并行线解决的具体缺口。",
+      " 待补充：若该线不冻结，主线会出现什么漂移或落空。"
+    ],
+    "user_story": [],
+    "qa": [
+      "Feature**: qa-multi-layer-real-browser-e2e-acceptance",
+      "Test Type**: ALL",
+      "Version**: v1.4.10",
+      "Generated**: 2026-05-25 20:58",
+      "Requested Mode**: rule",
+      "Effective Mode**: rule",
+      "Fallback Reason**: N/A",
+      "Memory Context**: N/A",
+      "AC Matrix JSON**: docs/beacon/v1.4.10/.machine/qa/qa-multi-layer-real-browser-e2e-acceptance.ac-test-matrix.json",
+      "QA9 Matrix JSON**: docs/beacon/v1.4.10/.machine/qa/qa-multi-layer-real-browser-e2e-acceptance.qa9-matrix.json"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "qa-multi-layer-real-browser-e2e-acceptance",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/qa-multi-layer-real-browser-e2e-acceptance.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}
