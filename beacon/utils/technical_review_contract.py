@@ -224,6 +224,18 @@ def technical_review_git_workflow_seed(contract: dict[str, Any]) -> dict[str, An
         "source": "technical_review_contract",
         "generated_at": now_iso(),
     }
+    if isinstance(contract.get("service_branch_map"), dict):
+        payload["service_branch_map"] = {
+            str(key): str(value)
+            for key, value in contract.get("service_branch_map", {}).items()
+            if str(key).strip() and str(value).strip()
+        }
+    if isinstance(contract.get("service_worktree_map"), dict):
+        payload["service_worktree_map"] = {
+            str(key): str(value)
+            for key, value in contract.get("service_worktree_map", {}).items()
+            if str(key).strip() and str(value).strip()
+        }
     for field in ("baseline_id", "transaction_id", "source_hash", "projection_seq", "canonical_envelope_ref", "projection_source"):
         if field in contract:
             payload[field] = contract.get(field)

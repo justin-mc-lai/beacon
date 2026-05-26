@@ -1,0 +1,157 @@
+{
+  "schema_version": "1.0",
+  "feature": "explicit-version-canonical-branch-worktree-preflight-gate",
+  "feature_slug": "explicit-version-canonical-branch-worktree-preflight-gate",
+  "version": "v1.4.10",
+  "revision_id": "R3",
+  "run_id": "run-20260525T064111Z-2f71",
+  "implemented_at": "2026-05-25T06:44:25.503594+00:00",
+  "runner": "import-evidence",
+  "skill": "beacon-implement",
+  "profile_id": "",
+  "git_commit": "02d0c86bdca50db9cb466fcc98a196bb6a50cc5c",
+  "services": [
+    "beacon/commands",
+    "beacon/utils",
+    "tests"
+  ],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "Explicit Beacon version implement preflight now binds branch governance, git workflow, and deterministic implementation contract materials before mutation; canonical branch/worktree validation cannot be satisfied by origin/master ancestry alone.",
+  "business_goal_summary": "Prevent explicit-version implementation from landing frontend/BFF changes on non-canonical service branches or worktrees.",
+  "acceptance_scope": [
+    "Explicit version material load before mutation",
+    "Branch governance, git workflow, and deterministic implementation contract source coverage",
+    "Canonical branch/worktree hard stop before edit/commit",
+    "Rolo v2.0.0 marketing_sys and marketing_primary_fe regression"
+  ],
+  "assumptions": [
+    "The implementation evidence import binds already committed work on beacon/v1.4.10 to the refrozen R3 requirement package.",
+    "v1.4.10 currently has feature-scoped git workflow and deterministic implementation contract docs; no branch-governance-* file is present in the version execution directory."
+  ],
+  "simplicity_notes": [
+    "Gate logic is centralized in execution_branch_contract and git_alignment rather than duplicating branch parsing in command code.",
+    "Regression tests cover the P0 Rolo branch/worktree mismatch directly."
+  ],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "Changes are limited to Beacon implement preflight branch/worktree governance and regression coverage for the accepted P0 friction.",
+    "allowed_paths": [
+      "beacon/commands",
+      "beacon/utils",
+      "tests",
+      "docs/beacon/v1.4.10",
+      ".beacon"
+    ]
+  },
+  "changed_files": [
+    "beacon/commands/implement.py",
+    "beacon/utils/execution_branch_contract.py",
+    "beacon/utils/git_alignment.py",
+    "beacon/utils/implementation_plan.py",
+    "tests/test_v1410_explicit_version_branch_preflight.py"
+  ],
+  "modules_touched": [
+    "beacon/commands",
+    "beacon/utils",
+    "tests/test_v1410_explicit_version_branch_preflight.py"
+  ],
+  "additions": [
+    "beacon/utils/execution_branch_contract.py"
+  ],
+  "modifications": [
+    "beacon/commands/implement.py",
+    "beacon/utils/git_alignment.py",
+    "beacon/utils/implementation_plan.py",
+    "tests/test_v1410_explicit_version_branch_preflight.py"
+  ],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "rtk python3 -m beacon.main qa run explicit-version-canonical-branch-worktree-preflight-gate --project . --version v1.4.10 --json",
+      "status": "passed",
+      "evidence": ".beacon/qa/features/explicit-version-canonical-branch-worktree-preflight-gate/status.json"
+    },
+    {
+      "command": "rtk python3 -m pytest -q tests/test_v1410_explicit_version_branch_preflight.py tests/test_v140_branch_governance_switch.py tests/test_v140_branch_governance_gate.py",
+      "status": "passed",
+      "evidence": "19 passed"
+    }
+  ],
+  "verification_signals": {
+    "count": 2,
+    "has_acceptance_scope": true,
+    "has_assumptions": true
+  },
+  "known_risks": [],
+  "rollback_notes": [
+    "Revert commits e0568bd7 and 02d0c86b if the canonical preflight blocks valid delivery paths unexpectedly."
+  ],
+  "compatibility_notes": [
+    "origin/master ancestry validation remains required but is ordered after or combined with canonical branch and worktree preflight."
+  ],
+  "artifact_updates": {},
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-explicit-version-canonical-branch-worktree-preflight-gate.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-explicit-version-canonical-branch-worktree-preflight-gate.md",
+    "cleanup_required": false,
+    "cleanup_review_completed": true,
+    "removed_requirement_surfaces": [],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": "R3 refreeze repaired baseline hash drift after generated markdown whitespace cleanup."
+  },
+  "traceability": {
+    "request_path": ".beacon/implement/run-20260525T064111Z-2f71/state.json",
+    "result_path": ".beacon/state/implementation-explicit-version-canonical-branch-worktree-preflight-gate.json",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

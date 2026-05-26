@@ -66,7 +66,9 @@ def _playwright_workspace_command(args: str = "") -> str:
         "app",
         "client",
     )
-    probes = []
+    probes = [
+        'if [ -f "tools/beacon/functional-layer.sh" ]; then bash tools/beacon/functional-layer.sh; exit $?; fi'
+    ]
     for candidate in candidates:
         prefix = "" if candidate == "." else f"{candidate}/"
         cd_clause = ":" if candidate == "." else f'cd "{candidate}"'
@@ -75,7 +77,7 @@ def _playwright_workspace_command(args: str = "") -> str:
             "exit $?; fi"
         )
     probes.append(f"npx playwright test{suffix}")
-    return " ".join(probes)
+    return "; ".join(probes)
 
 
 def parse_qa_types(raw: str | Iterable[str] | None, profile: str = "web-full") -> list[str]:

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
@@ -116,6 +117,212 @@ def list_hook_contracts(project_root: Path) -> list[dict[str, Any]]:
     for path in sorted(root.glob("*.md")):
         hooks.append(load_hook_contract(project_root, path.stem))
     return hooks
+
+
+def _command_project_arg(project_root: Path) -> str:
+    try:
+        if project_root.resolve() == Path.cwd().resolve():
+            return "."
+    except Exception:  # noqa: BLE001
+        pass
+    return str(project_root)
+
+
+def _hook_command(
+    project_root: Path,
+    hook_id: str,
+    *,
+    version: str = "",
+    feature: str = "",
+    hook_code: str = "",
+    confirm: bool = False,
+    dry_run: bool = False,
+) -> str:
+    parts = [
+        "beacon",
+        "hooks",
+        "run",
+        hook_id,
+        "--project",
+        _command_project_arg(project_root),
+    ]
+    if version:
+        parts.extend(["--version", version])
+    if feature:
+        parts.extend(["--feature", feature])
+    if hook_code:
+        parts.extend(["--hook-code", hook_code])
+    if dry_run:
+        parts.append("--dry-run")
+    if confirm:
+        parts.append("--confirm")
+    return " ".join(shlex.quote(part) for part in parts)
+
+
+def _advisory_command(project_root: Path, hook_id: str, *, version: str, feature: str, hook_code: str, trigger_policy: str) -> str:
+    if trigger_policy == "dry_run_only":
+        return _hook_command(
+            project_root,
+            hook_id,
+            version=version,
+            feature=feature,
+            hook_code=hook_code,
+            dry_run=True,
+        )
+    return _hook_command(
+        project_root,
+        hook_id,
+        version=version,
+        feature=feature,
+        hook_code=hook_code,
+        confirm=True,
+    )
+
+
+def discover_hooks_for_boundary(project_root: Path, hook_code: str, *, feature: str = "") -> dict[str, Any]:
+    """Discover project-local hooks for a finite lifecycle boundary."""
+    hooks: list[dict[str, Any]] = []
+    for item in list_hook_contracts(project_root):
+        frontmatter = item.get("frontmatter") if isinstance(item.get("frontmatter"), dict) else {}
+        declared_code = str(frontmatter.get("hook_code") or "").strip()
+        if hook_code and declared_code != hook_code:
+            continue
+        if frontmatter.get("enabled") is not True:
+            continue
+        hook_id = str(item.get("hook_id") or Path(str(item.get("path") or "")).stem)
+        admission = validate_hook_contract(project_root, hook_id, feature=feature, hook_code=hook_code)
+        hooks.append(
+            {
+                "hook_id": hook_id,
+                "hook_code": declared_code,
+                "path": str(item.get("path") or ""),
+                "status": "ready" if not admission.get("blocked") else "blocked",
+                "blocked": bool(admission.get("blocked")),
+                "reason_codes": list(admission.get("reason_codes") or []),
+                "trigger_policy": str((admission.get("contract") or {}).get("trigger_policy") or ""),
+                "failure_route": str((admission.get("contract") or {}).get("failure_route") or ""),
+                "admission": admission,
+            }
+        )
+    return {
+        "schema_version": "1.0",
+        "project_root": str(project_root),
+        "hook_code": hook_code,
+        "feature": feature,
+        "status": "ready" if hooks else "none",
+        "hook_count": len(hooks),
+        "hooks": hooks,
+        "truth_root": "docs/beacon/hooks",
+        "truth_authority": False,
+        "runtime_evidence_only": True,
+    }
+
+
+def build_lifecycle_hook_advisory(
+    project_root: Path,
+    *,
+    version: str = "",
+    feature: str = "",
+    hook_code: str,
+    boundary_stage: str = "",
+    record_dry_run_evidence: bool = True,
+) -> dict[str, Any]:
+    """Build lifecycle-boundary hook advice without executing side effects."""
+    discovery = discover_hooks_for_boundary(project_root, hook_code, feature=feature)
+    hook_items: list[dict[str, Any]] = []
+    for item in discovery.get("hooks", []) if isinstance(discovery.get("hooks"), list) else []:
+        if not isinstance(item, dict):
+            continue
+        hook_id = str(item.get("hook_id") or "")
+        if not hook_id:
+            continue
+        plan = plan_hook(project_root, hook_id, version=version, feature=feature, hook_code=hook_code)
+        dry_run_payload = (
+            run_hook(
+                project_root,
+                hook_id,
+                version=version,
+                feature=feature,
+                hook_code=hook_code,
+                dry_run=True,
+                confirm=False,
+            )
+            if record_dry_run_evidence and not bool(plan.get("blocked"))
+            else {}
+        )
+        trigger_policy = str(((plan.get("admission") or {}).get("contract") or {}).get("trigger_policy") or "")
+        recommended_command = "" if bool(plan.get("blocked")) else _advisory_command(
+            project_root,
+            hook_id,
+            version=version,
+            feature=feature,
+            hook_code=hook_code,
+            trigger_policy=trigger_policy,
+        )
+        dry_run_command = "" if bool(plan.get("blocked")) else _hook_command(
+            project_root,
+            hook_id,
+            version=version,
+            feature=feature,
+            hook_code=hook_code,
+            dry_run=True,
+        )
+        dry_run_evidence_paths = (
+            dry_run_payload.get("evidence_paths")
+            if isinstance(dry_run_payload.get("evidence_paths"), dict)
+            else {}
+        )
+        hook_items.append(
+            {
+                "hook_id": hook_id,
+                "hook_code": hook_code,
+                "boundary_stage": boundary_stage,
+                "trigger_policy": trigger_policy,
+                "plan_status": str(plan.get("status") or ""),
+                "blocked": bool(plan.get("blocked")),
+                "reason_codes": list(((plan.get("admission") or {}).get("reason_codes") or [])),
+                "evidence_paths": plan.get("evidence_paths", {}),
+                "dry_run": {
+                    "attempted": bool(dry_run_payload),
+                    "status": str(dry_run_payload.get("status") or ""),
+                    "blocked": bool(dry_run_payload.get("blocked", False)),
+                    "reason_code": str(dry_run_payload.get("reason_code") or ""),
+                    "evidence_paths": dry_run_evidence_paths,
+                    "side_effect_executed": bool(dry_run_payload.get("side_effect_executed", False)),
+                },
+                "dry_run_command": dry_run_command,
+                "recommended_command": recommended_command,
+                "manual_confirmation_required": trigger_policy == "manual_confirmed",
+                "side_effect_executed": False,
+                "truth_authority": False,
+                "runtime_evidence_only": True,
+                "admission": plan.get("admission", {}),
+            }
+        )
+    blocked_hooks = [item for item in hook_items if bool(item.get("blocked"))]
+    status = "none" if not hook_items else "blocked" if blocked_hooks else "ready"
+    return {
+        "schema_version": "1.0",
+        "status": status,
+        "blocked": bool(blocked_hooks),
+        "hook_code": hook_code,
+        "boundary_stage": boundary_stage,
+        "version": version,
+        "feature": feature,
+        "project_root": str(project_root),
+        "hook_count": len(hook_items),
+        "hooks": hook_items,
+        "discovery": discovery,
+        "recommended_command": next(
+            (str(item.get("recommended_command") or "") for item in hook_items if str(item.get("recommended_command") or "")),
+            "",
+        ),
+        "side_effect_executed": False,
+        "truth_authority": False,
+        "runtime_evidence_only": True,
+        "verdict_authority": "none",
+        "support_evidence_only": True,
+    }
 
 
 def _body_has_required_sections(body: str) -> list[str]:

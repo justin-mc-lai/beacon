@@ -1,0 +1,935 @@
+{
+  "schema_version": "1.0",
+  "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "version": "v1.4.10",
+  "current_revision_id": "R3",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-25T09:36:30.512476+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f",
+      "superseded_by": "R2",
+      "created_at": "2026-05-25T08:56:28.994543+00:00",
+      "frozen_at": "2026-05-25T08:58:28.542988+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "source_revision_id": "R1",
+      "reason": "accepted change: lifecycle boundary hook advisory with automatic discovery, plan, safe dry-run, recommended commands, support evidence only, and manual confirmation for side effects",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f",
+      "superseded_by": "R3",
+      "created_at": "2026-05-25T08:58:39.652164+00:00",
+      "frozen_at": "2026-05-25T08:58:42.194938+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "source_revision_id": "R2",
+      "reason": "sync frozen baseline after lifecycle hook advisory implementation evidence",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:7eb7a648db5f04cfe80a8baea2d00933af7690e4d7f59a33851a5acb1ec571da",
+      "superseded_by": null,
+      "created_at": "2026-05-25T09:23:03.303006+00:00",
+      "frozen_at": "2026-05-25T09:23:06.847069+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Boundary discovery",
+          "text": "Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Release follow-up advisory",
+          "text": "Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Safe automatic planning",
+          "text": "Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Manual confirmation guard",
+          "text": "Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Confirmed execution path",
+          "text": "Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Evidence authority boundary",
+          "text": "Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Help/status visibility",
+          "text": "Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Hidden auto-run fail closed",
+          "text": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Boundary discovery",
+          "text": "Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Release follow-up advisory",
+          "text": "Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Safe automatic planning",
+          "text": "Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Manual confirmation guard",
+          "text": "Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Confirmed execution path",
+          "text": "Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Evidence authority boundary",
+          "text": "Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Help/status visibility",
+          "text": "Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Hidden auto-run fail closed",
+          "text": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-20260525",
+          "verified_by_run_id": "run-20260525T170938472620",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-25T09:09:47.852601+00:00",
+      "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "Boundary discovery",
+          "text": "Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "Release follow-up advisory",
+          "text": "Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "Safe automatic planning",
+          "text": "Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "Manual confirmation guard",
+          "text": "Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "Confirmed execution path",
+          "text": "Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "Evidence authority boundary",
+          "text": "Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "Help/status visibility",
+          "text": "Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "Hidden auto-run fail closed",
+          "text": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+          "verified_by_run_id": "run-20260525T173622786842",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+        "version": "v1.4.10",
+        "source": "research:docs/beacon/v1.4.10/research/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "present": false,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+      "version": "v1.4.10",
+      "last_changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-25T09:36:30.425223+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

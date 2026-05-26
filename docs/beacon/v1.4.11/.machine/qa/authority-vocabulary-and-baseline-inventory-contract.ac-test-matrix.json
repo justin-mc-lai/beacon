@@ -1,0 +1,333 @@
+{
+  "schema_version": "1.0",
+  "feature": "authority-vocabulary-and-baseline-inventory-contract",
+  "feature_slug": "authority-vocabulary-and-baseline-inventory-contract",
+  "version": "v1.4.11",
+  "generated_at": "2026-05-26T17:10:36.546078",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "entries": [
+    {
+      "tc_id": "TC-AUTH-INV-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-001 :: Artifact roles include truth, projection, evidence, runtime state, compatibility",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"artifact_roles_are_defined\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Artifact roles include truth, projection, evidence, runtime state, compatibility mirror, and historical fixture.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"artifact_roles_are_defined\"`",
+      "scenario": "Artifact roles include truth, projection, evidence, runtime state, compatibility mirror, and historical fixture.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "static",
+      "qa_type": "static",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-002 :: Current-facing wording does not claim `.machine` or machine-readable artifacts a",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"forbidden_machine_truth_wording_is_rejected\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Current-facing wording does not claim `.machine` or machine-readable artifacts are requirement truth.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"forbidden_machine_truth_wording_is_rejected\"`",
+      "scenario": "Current-facing wording does not claim `.machine` or machine-readable artifacts are requirement truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-003 :: Markdown requirement package under `docs/beacon/<version>/` is described as curr",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"markdown_requirement_root_is_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown requirement package under `docs/beacon/<version>/` is described as current requirement truth.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"markdown_requirement_root_is_truth\"`",
+      "scenario": "Markdown requirement package under `docs/beacon/<version>/` is described as current requirement truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-004 :: `.machine` remains available as projection, evidence, and read model.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"machine_root_is_projection_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "`.machine` remains available as projection, evidence, and read model.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"machine_root_is_projection_not_truth\"`",
+      "scenario": "`.machine` remains available as projection, evidence, and read model.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "artifact",
+      "qa_type": "artifact",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-005 :: Baseline inventory markdown and JSON artifacts are generated before behavior-cha",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_artifacts_exist\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Baseline inventory markdown and JSON artifacts are generated before behavior-changing cleanup.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_artifacts_exist\"`",
+      "scenario": "Baseline inventory markdown and JSON artifacts are generated before behavior-changing cleanup.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "schema",
+      "qa_type": "schema",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-006 :: Each inventory row includes source file, symbol or function, surface category, c",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_schema_is_complete\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Each inventory row includes source file, symbol or function, surface category, current behavior, risk, proposed owner, proposed phase, and required evidence.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"baseline_inventory_schema_is_complete\"`",
+      "scenario": "Each inventory row includes source file, symbol or function, surface category, current behavior, risk, proposed owner, proposed phase, and required evidence.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-007 :: Compat commands, QA legacy mirror, PRD legacy mirror, implement legacy loader, p",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"compat_behavior_is_not_retired_by_this_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Compat commands, QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent legacy router remain behaviorally available.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"compat_behavior_is_not_retired_by_this_slice\"`",
+      "scenario": "Compat commands, QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser fallback, memory migration, and intent legacy router remain behaviorally available.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-AUTH-INV-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "authority-vocabulary-and-baseline-inventory-contract AC-008 :: Required known hotspots are present in the inventory coverage and forbidden word",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"required_hotspots_are_inventory_covered\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Required known hotspots are present in the inventory coverage and forbidden wording cannot return silently.",
+      "evidence_path": ".beacon/evidence/test-results/authority-vocabulary-and-baseline-inventory-contract/TC-AUTH-INV-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_authority_vocabulary_and_inventory.py -k \"required_hotspots_are_inventory_covered\"`",
+      "scenario": "Required known hotspots are present in the inventory coverage and forbidden wording cannot return silently.",
+      "steps": ""
+    }
+  ],
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "authority-vocabulary-and-baseline-inventory-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/authority-vocabulary-and-baseline-inventory-contract.md",
+    "present": true,
+    "section_count": 4,
+    "sections": {
+      "architecture": [
+        "`truth`",
+        "`projection`",
+        "`evidence`",
+        "`runtime_state`",
+        "`compat_mirror`",
+        "`historical_fixture`",
+        "`docs/beacon/v1.4.11/research/markdown-first-projection-authority-and-legacy-retirement-contract.md`",
+        "`docs/beacon/v1.4.11/research/legacy-burden-reduction-auditable-action-plan.md`",
+        "`.understand-anything/knowledge-graph.json`",
+        "`.understand-anything/graph-build-report.json`"
+      ],
+      "business_flow": [
+        "source file",
+        "symbol or function",
+        "current behavior",
+        "risk",
+        "proposed phase",
+        "proposed owner",
+        "required test evidence"
+      ],
+      "state_machine": [
+        "`research_input -> refreeze_input`: accepted by v1.4.11 scope decision.",
+        "`refreeze_input -> frozen_requirement`: PRD, user-story, test-case, clarity, and freeze are complete.",
+        "`frozen_requirement -> implementation_inventory_generated`: implementation produces markdown and JSON inventory.",
+        "`implementation_inventory_generated -> qa_verified`: tests verify schema, forbidden wording, and no behavior change.",
+        "`qa_verified -> downstream_registry_ready`: later v1.4.11 slices may begin compatibility registry work.",
+        "`research_input -> implementation`: blocked because requirement truth is not frozen.",
+        "`frozen_requirement -> behavior_retirement`: blocked because this slice does not retire behavior.",
+        "`inventory_generated -> release_ready`: blocked unless QA and release evidence close normally."
+      ],
+      "decision_priority": [
+        "Preserve Beacon QA, release, evidence, projection, git, metadata, and version gates.",
+        "Preserve existing user-visible behavior during this slice.",
+        "Correct authority vocabulary where it incorrectly describes machine artifacts as requirement truth.",
+        "Generate auditable inventory before any compatibility retirement.",
+        "Route any behavior-changing retirement into later frozen features."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "source file",
+          "symbol or function",
+          "current behavior",
+          "risk",
+          "proposed phase",
+          "proposed owner",
+          "required test evidence"
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/authority-vocabulary-and-baseline-inventory-contract.md"
+      },
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`research_input -> refreeze_input`: accepted by v1.4.11 scope decision.",
+          "`refreeze_input -> frozen_requirement`: PRD, user-story, test-case, clarity, and freeze are complete.",
+          "`frozen_requirement -> implementation_inventory_generated`: implementation produces markdown and JSON inventory.",
+          "`implementation_inventory_generated -> qa_verified`: tests verify schema, forbidden wording, and no behavior change.",
+          "`qa_verified -> downstream_registry_ready`: later v1.4.11 slices may begin compatibility registry work.",
+          "`research_input -> implementation`: blocked because requirement truth is not frozen.",
+          "`frozen_requirement -> behavior_retirement`: blocked because this slice does not retire behavior.",
+          "`inventory_generated -> release_ready`: blocked unless QA and release evidence close normally."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/authority-vocabulary-and-baseline-inventory-contract.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Preserve Beacon QA, release, evidence, projection, git, metadata, and version gates.",
+          "Preserve existing user-visible behavior during this slice.",
+          "Correct authority vocabulary where it incorrectly describes machine artifacts as requirement truth.",
+          "Generate auditable inventory before any compatibility retirement.",
+          "Route any behavior-changing retirement into later frozen features."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/authority-vocabulary-and-baseline-inventory-contract.md"
+      }
+    ]
+  },
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.11/qa/test-cases/authority-vocabulary-and-baseline-inventory-contract.md",
+    "row_count": 8,
+    "enrichment_disabled": true
+  }
+}

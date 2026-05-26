@@ -1,0 +1,1029 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-lifecycle-boundary-hook-advisory-and-confirmed-execution-r3",
+  "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+  "version": "v1.4.10",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:7eb7a648db5f04cfe80a8baea2d00933af7690e4d7f59a33851a5acb1ec571da",
+  "plan_hash": "sha256:4e8f298303bb5efaecf13b4b688af4ef8de09e772f324c86647cb4c00455cf4b",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "prd": "docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "test_case": "docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "revision_delta": "docs/beacon/v1.4.10/.machine/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "ac_matrix": "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.10/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.10",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-05-25T09:35:32.088408+00:00",
+    "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "prd_ref": "docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "user_story_ref": "docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "version": "v1.4.10",
+    "source": "research:docs/beacon/v1.4.10/research/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Beacon must provide a utility that selects enabled hook contracts for a requested finite hook code.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-LBH-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-LBH-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260525T173622786842",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722442+00:00",
+      "completed_at": "2026-05-25T09:36:13.722445+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "`release check` must include a release follow-up advisory when release readiness passes and an applicable `post_release` hook exists.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-LBH-002",
+        "TC-LBH-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-LBH-002",
+        "TC-LBH-003"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260525T173622786842",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722453+00:00",
+      "completed_at": "2026-05-25T09:36:13.722455+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-002",
+      "description": "The advisory must include hook id, hook code, trigger policy, plan status, blocked state, evidence paths, and a recommended confirmed-run command.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-LBH-005",
+        "TC-LBH-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-LBH-004",
+        "TC-LBH-005"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260525T173622786842",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722461+00:00",
+      "completed_at": "2026-05-25T09:36:13.722463+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-003",
+      "description": "Automatic planning must not execute side effects and must mark `side_effect_executed` as false.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008",
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-LBH-008",
+        "TC-LBH-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-LBH-006",
+        "TC-LBH-008"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260525T173622786842",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722469+00:00",
+      "completed_at": "2026-05-25T09:36:13.722470+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-003",
+      "description": "Automatic dry-run may write runtime hook evidence only when `dry_run` is true and must not run side-effect follow-up.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-LBH-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-LBH-007"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260525T173622786842/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260525T173622786842",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.10/.machine/qa/lifecycle-boundary-hook-advisory-and-confirmed-execution.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/ac-closure.json",
+        ".beacon/qa/features/lifecycle-boundary-hook-advisory-and-confirmed-execution/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722476+00:00",
+      "completed_at": "2026-05-25T09:36:13.722477+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-004",
+      "description": "Running a `manual_confirmed` hook without `--confirm` must remain blocked with `manual_confirmation_required`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722482+00:00",
+      "completed_at": "2026-05-25T09:36:13.722483+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-005",
+      "description": "Hook advisory and evidence must be marked `truth_authority: false` and `runtime_evidence_only: true`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722491+00:00",
+      "completed_at": "2026-05-25T09:36:13.722493+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-006",
+      "description": "Help/status surfaces may display hook advisory data but must not expose it as a lifecycle stage or verdict.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722498+00:00",
+      "completed_at": "2026-05-25T09:36:13.722499+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-007",
+      "description": "Hidden side-effect auto-run attempts must fail closed with `hidden_auto_run_not_allowed` or `manual_confirmation_required`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-lifecycle-boundary-hook-advisory-r3-reconcile-20260525-plan-sync"
+      ],
+      "changed_files": [
+        "beacon/utils/project_hooks.py",
+        "beacon/commands/release.py",
+        "beacon/utils/help_support.py",
+        "beacon/commands/help.py",
+        "beacon/commands/status.py",
+        "tests/test_v1410_lifecycle_hook_advisory.py",
+        "tests/test_v1410_project_lifecycle_hooks.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-25T09:36:13.722504+00:00",
+      "completed_at": "2026-05-25T09:36:13.722505+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "version": "v1.4.10",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Boundary discovery",
+        "text": "Given a lifecycle boundary such as `post_release`, Beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::boundary discovery::given a lifecycle boundary such as `post_release`, beacon discovers enabled project hooks from `docs/beacon/hooks/<hook-id>.md` whose hook code matches the boundary.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Confirmed execution path",
+        "text": "Given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::confirmed execution path::given the operator runs the recommended command with `--confirm`, the hook executes its restricted follow-up and writes hook evidence.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Evidence authority boundary",
+        "text": "Hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite QA, release, gate, freeze, PRD, user-story, or test-case truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::evidence authority boundary::hook advisory and hook evidence are marked as support/runtime evidence only and cannot advance or rewrite qa, release, gate, freeze, prd, user-story, or test-case truth.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Help/status visibility",
+        "text": "Help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::help/status visibility::help/status surfaces can show applicable hook advisory and latest hook evidence without presenting hooks as a new lifecycle stage.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Hidden auto-run fail closed",
+        "text": "Hidden side-effect auto-run attempts fail closed with explicit reason codes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::hidden auto-run fail closed::hidden side-effect auto-run attempts fail closed with explicit reason codes.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Manual confirmation guard",
+        "text": "Given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::manual confirmation guard::given a `manual_confirmed` hook is run without `--confirm`, the run is blocked with `manual_confirmation_required` and `side_effect_executed` remains false.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Release follow-up advisory",
+        "text": "Given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::release follow-up advisory::given `release check` passes and an applicable `post_release` hook exists, the release output includes a hook advisory with hook id, plan status, trigger policy, evidence paths, and a recommended confirmed-run command.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Safe automatic planning",
+        "text": "Automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+        "signature": "ac::::safe automatic planning::automatic hook advisory may plan hooks and may dry-run no-side-effect checks, but it does not execute side-effect follow-up.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:7eb7a648db5f04cfe80a8baea2d00933af7690e4d7f59a33851a5acb1ec571da",
+    "source_baseline_hash": "sha256:fcfeac67f8b2d031929013c297f52b48394dfbff3876433d66edfd10b2163f3f",
+    "story_state_ref": "docs/beacon/v1.4.10/.machine/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "generated_at": "2026-05-25T09:35:32.085996+00:00",
+    "json_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.10/.machine/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.10/execution/revision-delta-lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project-root . --version v1.4.10",
+    "run_command": "beacon implement team-run \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project . --version v1.4.10",
+    "dev_run_command": "beacon implement dev-run \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project . --version v1.4.10",
+    "ralph_command": "beacon implement run \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project . --version v1.4.10 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"lifecycle-boundary-hook-advisory-and-confirmed-execution\" --project . --version v1.4.10",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "feature_slug": "lifecycle-boundary-hook-advisory-and-confirmed-execution",
+    "version": "v1.4.10",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.10",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.10.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-25T09:35:32.088560+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.10-lifecycle-boundary-hook-advisory-and-confirmed-execution-R3",
+    "transaction_id": "tx-74b366f2b1a8fe3dc",
+    "source_hash": "sha256:cc975c9957e67eea1bb23ed3e6c512adb1ee94f1d84e1271052516c80f10ec8c",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.10/.machine/execution/git-workflow-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.10/execution/git-workflow-lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.10",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.10/prd/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+      "user_story": "docs/beacon/v1.4.10/user-story/lifecycle-boundary-hook-advisory-and-confirmed-execution.md",
+      "test_case": "docs/beacon/v1.4.10/qa/test-cases/lifecycle-boundary-hook-advisory-and-confirmed-execution.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.10-lifecycle-boundary-hook-advisory-and-confirmed-execution-R3",
+    "transaction_id": "tx-74b366f2b1a8fe3dc",
+    "source_hash": "sha256:cc975c9957e67eea1bb23ed3e6c512adb1ee94f1d84e1271052516c80f10ec8c",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.10/.machine/execution/implementation-delivery-baseline-lifecycle-boundary-hook-advisory-and-confirmed-execution.json",
+  "generated_at": "2026-05-25T09:35:32.130181+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.10-lifecycle-boundary-hook-advisory-and-confirmed-execution-R3",
+  "transaction_id": "tx-74b366f2b1a8fe3dc",
+  "source_hash": "sha256:cc975c9957e67eea1bb23ed3e6c512adb1ee94f1d84e1271052516c80f10ec8c",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-25T09:36:30.513771+00:00",
+  "accepted_at": "2026-05-25T09:36:30.513758+00:00",
+  "accepted_by": "qa"
+}

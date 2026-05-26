@@ -178,6 +178,23 @@ def _render_human(payload: dict[str, object]) -> str:
             f"- command  : {discovery.get('command', '')}",
             f"- templates: {', '.join(discovery.get('templates', [])) if isinstance(discovery.get('templates'), list) else ''}",
         ])
+    lifecycle_hook_advisory = payload.get("lifecycle_hook_advisory", {}) if isinstance(payload.get("lifecycle_hook_advisory"), dict) else {}
+    if lifecycle_hook_advisory.get("hook_count"):
+        lines.extend([
+            "",
+            "hook advisory",
+            f"- boundary : {lifecycle_hook_advisory.get('hook_code', '')}",
+            f"- status   : {lifecycle_hook_advisory.get('status', '')}",
+            f"- evidence : support/runtime only",
+        ])
+        for item in lifecycle_hook_advisory.get("hooks", []) if isinstance(lifecycle_hook_advisory.get("hooks"), list) else []:
+            if not isinstance(item, dict):
+                continue
+            lines.append(
+                f"- hook     : {item.get('hook_id', '')} plan={item.get('plan_status', '')} policy={item.get('trigger_policy', '')}"
+            )
+        if lifecycle_hook_advisory.get("recommended_command"):
+            lines.append(f"- command  : {lifecycle_hook_advisory.get('recommended_command', '')}")
     reasons = payload.get("blocking_reasons", []) if isinstance(payload.get("blocking_reasons"), list) else []
     support_reviews = payload.get("support_reviews", {}) if isinstance(payload.get("support_reviews"), dict) else {}
     lines.extend(["", "blocking reasons"])

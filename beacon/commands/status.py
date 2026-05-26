@@ -355,6 +355,7 @@ def _status_impl(
             "decision_engine_path": ".beacon/state/evo/decision-engine.json",
         },
         "release_scorecard": release_scorecard,
+        "lifecycle_hook_advisory": help_payload.get("lifecycle_hook_advisory", {}),
         "release_binding": release_scorecard.get("revision_binding", {}) if isinstance(release_scorecard, dict) else {},
         "version_context": {
             **version_context,
@@ -489,6 +490,15 @@ def _status_impl(
             )
         if release_summary.get("continue_decision"):
             typer.echo(f"- release.continue_decision: {release_summary.get('continue_decision')}")
+        lifecycle_hook_advisory = payload.get("lifecycle_hook_advisory", {}) if isinstance(payload.get("lifecycle_hook_advisory"), dict) else {}
+        if lifecycle_hook_advisory.get("hook_count"):
+            typer.echo(
+                f"- hook_advisory: boundary={lifecycle_hook_advisory.get('hook_code') or 'none'} "
+                f"status={lifecycle_hook_advisory.get('status') or 'none'} "
+                f"support_evidence_only={lifecycle_hook_advisory.get('support_evidence_only')}"
+            )
+            if lifecycle_hook_advisory.get("recommended_command"):
+                typer.echo(f"- hook_advisory.next: {lifecycle_hook_advisory.get('recommended_command')}")
         if release_summary.get("research_projection_present"):
             typer.echo(
                 f"- release.research: present sections={','.join(release_summary.get('research_projection_sections') or [])} count={release_summary.get('research_projection_section_count')}"
@@ -701,6 +711,14 @@ def _status_impl(
         if qa_status:
             typer.echo(f"- qa.status: {qa_status.get('status')}")
             typer.echo(f"- qa.evidence_done: {qa_status.get('evidence_done')}")
+        lifecycle_hook_advisory = payload.get("lifecycle_hook_advisory", {}) if isinstance(payload.get("lifecycle_hook_advisory"), dict) else {}
+        if lifecycle_hook_advisory.get("hook_count"):
+            typer.echo(
+                f"- hook_advisory.boundary: {lifecycle_hook_advisory.get('hook_code') or 'none'} "
+                f"status={lifecycle_hook_advisory.get('status') or 'none'}"
+            )
+            if lifecycle_hook_advisory.get("recommended_command"):
+                typer.echo(f"- hook_advisory.command: {lifecycle_hook_advisory.get('recommended_command')}")
         if workflow_progress.get("stages", {}).get("prototype"):
             typer.echo(f"- workflow.prototype: {workflow_progress.get('stages', {}).get('prototype', {}).get('status')}")
         if verbose:

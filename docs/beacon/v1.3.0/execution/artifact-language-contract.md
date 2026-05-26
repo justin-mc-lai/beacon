@@ -20,11 +20,11 @@
 | --- | --- | --- | --- | --- |
 | 人类主读需求材料 | 人类 | zh-CN | `["summary", "prd", "user-story", "qa/test-cases", "execution/index", "execution/contracts"]` | 面向人类的规划、需求与导航材料默认使用中文。 |
 | 机器主读契约与运行工件 | 机器 | en | `[".machine", "runtime_state", "json_contracts", "evidence_payloads"]` | 机器契约与运行工件优先保持英文键名与机器友好结构。 |
-| 机器契约的人类中文镜像 | 人类 | zh-CN | `["execution/*-contract.md"]` | 机器可读契约的人类中文镜像；机器 artifact 仍是事实源。 |
+| 机器契约的人类中文镜像 | 人类 | zh-CN | `["execution/*-contract.md"]` | 机器可读契约的人类中文镜像；源机器 artifact 是投影或证据读模型，不是需求真相。 |
 
 ## 镜像同步规则
 
-- source of truth: `机器可读 artifact`
+- 源 artifact 角色: `投影或证据 artifact`
 - 中文镜像: `人类可读中文 Markdown`
 - enforce:
   - source JSON artifact
