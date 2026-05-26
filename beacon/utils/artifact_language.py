@@ -27,11 +27,11 @@ _DEFAULT_RULE_ZH = {
 _CLASS_NOTES_ZH = {
     "human_requirement_docs": "面向人类的规划、需求与导航材料默认使用中文。",
     "machine_contracts": "机器契约与运行工件优先保持英文键名与机器友好结构。",
-    "human_mirrors_of_machine_contracts": "机器可读契约的人类中文镜像；机器 artifact 仍是事实源。",
+    "human_mirrors_of_machine_contracts": "机器可读契约的人类中文镜像；源机器 artifact 是投影或证据读模型，不是需求真相。",
 }
 
 _SYNC_VALUE_ZH = {
-    "machine-readable artifact": "机器可读 artifact",
+    "projection_or_evidence": "投影或证据 artifact",
     "human-readable Chinese markdown": "人类可读中文 Markdown",
     "source JSON artifact": "source JSON artifact",
     "Chinese mirror markdown": "中文镜像 Markdown",
@@ -78,11 +78,11 @@ def _default_artifact_language_policy() -> dict[str, Any]:
                 "scope": ["execution/*-contract.md"],
                 "audience": "human",
                 "language": "zh-CN",
-                "notes": "Chinese mirrors of machine-readable contracts; machine artifacts remain source of truth.",
+                "notes": "Chinese mirrors of machine-readable contracts; source machine artifacts are projection/evidence read models, not requirement truth.",
             },
         },
         "sync_contract": {
-            "source_of_truth": "machine-readable artifact",
+            "source_artifact_role": "projection_or_evidence",
             "mirror": "human-readable Chinese markdown",
             "enforcement": [
                 "shared renderer or deterministic transform",
@@ -174,7 +174,7 @@ def render_artifact_language_policy_markdown(policy: dict[str, Any], *, version:
             "",
             "## 镜像同步规则",
             "",
-            f"- source of truth: `{_SYNC_VALUE_ZH.get(str(sync_contract.get('source_of_truth', '')).strip(), str(sync_contract.get('source_of_truth', '')).strip())}`",
+            f"- 源 artifact 角色: `{_SYNC_VALUE_ZH.get(str(sync_contract.get('source_artifact_role', '')).strip(), str(sync_contract.get('source_artifact_role', '')).strip())}`",
             f"- 中文镜像: `{_SYNC_VALUE_ZH.get(str(sync_contract.get('mirror', '')).strip(), str(sync_contract.get('mirror', '')).strip())}`",
             "- enforce:",
         ]

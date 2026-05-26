@@ -62,7 +62,12 @@ def _seed_docs(root: Path, *, version: str = VERSION) -> None:
         encoding="utf-8",
     )
     (base / "qa" / "test-cases" / f"{SLUG}.md").write_text(
-        "# Test Cases\n\n## TC-001 Primary flow\n- verify requirement package alignment\n",
+        (
+            "# Test Cases\n\n"
+            "| TC ID | AC ID | Assertion |\n"
+            "| --- | --- | --- |\n"
+            "| TC-001 | AC-001 | verify requirement package alignment |\n"
+        ),
         encoding="utf-8",
     )
 
@@ -216,6 +221,19 @@ def test_v13010_stale_prd_machine_mirror_does_not_block_feature_gate(tmp_path: P
         ]
     )
     assert result.exit_code == 0, result.stdout
+    test_case = tmp_path / "docs" / "beacon" / version / "qa" / "test-cases" / f"{SLUG}.md"
+    test_case.write_text(
+        (
+            "# Test Cases\n\n"
+            "| TC ID | AC ID | Assertion |\n"
+            "| --- | --- | --- |\n"
+            "| TC-001 | AC-001 | verify requirement package alignment |\n"
+            "| TC-002 | AC-002 | cover generated PRD acceptance criteria |\n"
+            "| TC-003 | AC-003 | cover generated PRD acceptance criteria |\n"
+            "| TC-004 | AC-004 | cover generated PRD acceptance criteria |\n"
+        ),
+        encoding="utf-8",
+    )
     _freeze(tmp_path, version=version, feature=FEATURE)
     legacy_prd = tmp_path / ".beacon" / "prd" / f"{SLUG}.json"
     payload = json.loads(legacy_prd.read_text(encoding="utf-8"))

@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.11",
+  "feature": "authority-vocabulary-and-baseline-inventory-contract",
+  "status": "inventory_generated",
+  "behavior_change_allowed": false,
+  "generated_at": "2026-05-26T09:22:44.788867+00:00",
+  "required_fields": [
+    "source_file",
+    "symbol",
+    "surface_category",
+    "current_behavior",
+    "risk",
+    "proposed_owner",
+    "proposed_phase",
+    "required_evidence"
+  ],
+  "summary": {
+    "row_count": 11,
+    "missing_source_files": [],
+    "high_risk_count": 4
+  },
+  "items": [
+    {
+      "compat_id": "authority-artifact-language-policy",
+      "source_file": "beacon/artifact-language-policy.json",
+      "symbol": "artifact_classes.human_mirrors_of_machine_contracts",
+      "surface_category": "authority",
+      "artifact_role": "evidence",
+      "current_behavior": "Defines artifact language and mirror wording policy.",
+      "risk": "low",
+      "proposed_owner": "authority-vocabulary",
+      "proposed_phase": "phase-1",
+      "required_evidence": [
+        "forbidden-wording-test",
+        "artifact-language-render-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "authority-artifact-language-renderer",
+      "source_file": "beacon/utils/artifact_language.py",
+      "symbol": "render_artifact_language_policy_markdown",
+      "surface_category": "authority",
+      "artifact_role": "evidence",
+      "current_behavior": "Renders the human-readable artifact language policy mirror.",
+      "risk": "low",
+      "proposed_owner": "authority-vocabulary",
+      "proposed_phase": "phase-1",
+      "required_evidence": [
+        "render-snapshot-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "command-catalog-compat-deprecated-aliases",
+      "source_file": "beacon/command_catalog.py",
+      "symbol": "COMPAT_COMMANDS / DEPRECATED_COMMANDS",
+      "surface_category": "command",
+      "artifact_role": "evidence",
+      "current_behavior": "Keeps compatibility and deprecated command names discoverable outside the default user surface.",
+      "risk": "medium",
+      "proposed_owner": "compatibility-registry",
+      "proposed_phase": "phase-2",
+      "required_evidence": [
+        "catalog-coverage-test",
+        "help-snapshot-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "cli-factory-hidden-compat-registrations",
+      "source_file": "beacon/cli_factory.py",
+      "symbol": "build_app",
+      "surface_category": "command",
+      "artifact_role": "evidence",
+      "current_behavior": "Registers hidden compatibility commands and deprecated aliases while keeping the mainline compact.",
+      "risk": "medium",
+      "proposed_owner": "command-catalog",
+      "proposed_phase": "phase-3",
+      "required_evidence": [
+        "cli-command-registration-test",
+        "compat-registry-coverage-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "implement-legacy-cli-loader",
+      "source_file": "beacon/commands/implement/__init__.py",
+      "symbol": "_load_legacy_cli_module",
+      "surface_category": "implement",
+      "artifact_role": "evidence",
+      "current_behavior": "Loads sibling implement.py as an internal legacy CLI module so public beacon implement continues to work.",
+      "risk": "high",
+      "proposed_owner": "implement-package-migration",
+      "proposed_phase": "phase-6",
+      "required_evidence": [
+        "implement-cli-smoke-test",
+        "legacy-loader-static-scan"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "qa-auto-test-status-legacy-mirror",
+      "source_file": "beacon/utils/qa_runtime.py",
+      "symbol": "write_qa_status / load_qa_status",
+      "surface_category": "qa",
+      "artifact_role": "evidence",
+      "current_behavior": "Writes canonical QA status and legacy auto-test status mirror; reads canonical first and legacy second.",
+      "risk": "high",
+      "proposed_owner": "qa-legacy-mirror-policy",
+      "proposed_phase": "phase-4",
+      "required_evidence": [
+        "canonical-qa-status-test",
+        "legacy-only-qa-blocking-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "prd-legacy-machine-mirror",
+      "source_file": "beacon/utils/material_audit.py",
+      "symbol": "legacy_machine_mirror_sync",
+      "surface_category": "prd",
+      "artifact_role": "evidence",
+      "current_behavior": "Audits legacy PRD mirror drift alongside Markdown-first material audit findings.",
+      "risk": "high",
+      "proposed_owner": "prd-legacy-mirror-policy",
+      "proposed_phase": "phase-5",
+      "required_evidence": [
+        "material-audit-projection-vs-compat-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "prototype-legacy-wireframe-source",
+      "source_file": "beacon/utils/prototype_utils.py",
+      "symbol": "evaluate_prototype_status",
+      "surface_category": "prototype",
+      "artifact_role": "evidence",
+      "current_behavior": "Reports legacy single-file prototype source when current prototype bundle is missing.",
+      "risk": "high",
+      "proposed_owner": "prototype-legacy-inspector",
+      "proposed_phase": "phase-7",
+      "required_evidence": [
+        "prototype-status-compat-test",
+        "release-gate-boundary-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "browser-fallback-command-name",
+      "source_file": "beacon/adapters/browser_runner_common.py",
+      "symbol": "write_runner_artifacts",
+      "surface_category": "browser",
+      "artifact_role": "evidence",
+      "current_behavior": "Records fallback command execution mode for browser runner adapters.",
+      "risk": "medium",
+      "proposed_owner": "browser-adapter-boundary",
+      "proposed_phase": "phase-8",
+      "required_evidence": [
+        "browser-evidence-snapshot-test",
+        "compat-alias-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "memory-legacy-projection",
+      "source_file": "beacon/utils/memory.py",
+      "symbol": "_migrate_legacy_to_v1_if_needed",
+      "surface_category": "memory",
+      "artifact_role": "evidence",
+      "current_behavior": "Migrates older memory files into memory-v1 when the v1 file is absent.",
+      "risk": "medium",
+      "proposed_owner": "memory-migration-boundary",
+      "proposed_phase": "phase-9",
+      "required_evidence": [
+        "memory-migration-transaction-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    },
+    {
+      "compat_id": "intent-legacy-router",
+      "source_file": "beacon/utils/intent_router.py",
+      "symbol": "detect_intent / route_intent",
+      "surface_category": "intent",
+      "artifact_role": "evidence",
+      "current_behavior": "Preserves backward-compatible intent detection and routing facade for older importers.",
+      "risk": "medium",
+      "proposed_owner": "intent-compat-boundary",
+      "proposed_phase": "phase-9",
+      "required_evidence": [
+        "intent-current-route-test",
+        "legacy-router-admission-test"
+      ],
+      "exists": true,
+      "behavior_change_allowed_in_this_slice": false
+    }
+  ]
+}
