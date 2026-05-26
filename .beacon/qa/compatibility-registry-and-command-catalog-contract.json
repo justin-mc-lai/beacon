@@ -1,0 +1,313 @@
+{
+  "feature": "compatibility-registry-and-command-catalog-contract",
+  "feature_slug": "compatibility-registry-and-command-catalog-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-COMPAT-REG-001"
+    ],
+    "AC-002": [
+      "TC-COMPAT-REG-002"
+    ],
+    "AC-003": [
+      "TC-COMPAT-REG-003"
+    ],
+    "AC-004": [
+      "TC-COMPAT-REG-004"
+    ],
+    "AC-005": [
+      "TC-COMPAT-REG-005"
+    ],
+    "AC-006": [
+      "TC-COMPAT-REG-006"
+    ],
+    "AC-007": [
+      "TC-COMPAT-REG-007"
+    ],
+    "AC-008": [
+      "TC-COMPAT-REG-008"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-COMPAT-REG-001",
+      "tc_id": "TC-COMPAT-REG-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "schema",
+      "layer": "schema",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: The compatibility registry schema requires compat ID, surface, owner, reason, version range, def",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "schema",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"registry_schema_has_required_fields\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-COMPAT-REG-002",
+      "tc_id": "TC-COMPAT-REG-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Required Phase 2+ baseline inventory compat IDs are present in the registry.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"registry_covers_required_baseline_inventory_surfaces\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-COMPAT-REG-003",
+      "tc_id": "TC-COMPAT-REG-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "schema",
+      "layer": "schema",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Each registry entry records owner, surface category, reason, current replacement, default behavi",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "schema",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"registry_entries_include_lifecycle_metadata\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-COMPAT-REG-004",
+      "tc_id": "TC-COMPAT-REG-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Command catalog entries can be classified into current, support, advanced, labs, compat, depreca",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"command_catalog_layers_are_explicit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-COMPAT-REG-005",
+      "tc_id": "TC-COMPAT-REG-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Existing compat and deprecated command registration remains available during this slice.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"compat_and_deprecated_commands_remain_callable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-COMPAT-REG-006",
+      "tc_id": "TC-COMPAT-REG-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "snapshot",
+      "layer": "snapshot",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Default help, status, or route guidance does not promote compat/deprecated commands as current m",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "snapshot",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"default_routes_do_not_promote_compat_commands\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-COMPAT-REG-007",
+      "tc_id": "TC-COMPAT-REG-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "negative",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Registry or catalog validation fails when a known compat, fallback, deprecated, or legacy surfac",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "negative",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"unregistered_compat_surface_fails_validation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-COMPAT-REG-008",
+      "tc_id": "TC-COMPAT-REG-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: QA legacy mirror, PRD legacy mirror, implement legacy loader, prototype legacy source, browser f",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_compatibility_registry_and_command_catalog.py -k \"no_behavior_retirement_in_registry_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/compatibility-registry-and-command-catalog-contract/TC-COMPAT-REG-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

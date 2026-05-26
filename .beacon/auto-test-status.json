@@ -1,28 +1,29 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-26T07:10:55.685809",
+  "timestamp": "2026-05-26T23:14:23.742049",
   "project": "/Users/apple/Developer/Personal/products/beacon",
-  "version": "v1.4.10",
-  "run_id": "run-20260526T071055684222",
-  "spec_fingerprint_hash": "18858ef6a2bf0bd83642836c511b7c852e74cfd1462c047b8d17408dd83979b8",
+  "version": "v1.4.11",
+  "run_id": "run-20260526T231423741120",
+  "spec_fingerprint_hash": "f43592a90ab91ec491190444e01910d79dc659e4bf971408ffd6ecd541575313",
   "status": "passed",
   "selected_layers": [
+    "compatibility",
     "contract",
-    "integration"
+    "regression"
   ],
   "execution": {
-    "run_id": "run-20260526T071055684222",
-    "version": "v1.4.10",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260526T071055684222",
+    "run_id": "run-20260526T231423741120",
+    "version": "v1.4.11",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260526T231423741120",
     "spec_fingerprint": {
-      "fingerprint_hash": "18858ef6a2bf0bd83642836c511b7c852e74cfd1462c047b8d17408dd83979b8",
-      "version": "v1.4.10",
-      "generated_at": "2026-05-25T23:11:03.399026+00:00"
+      "fingerprint_hash": "f43592a90ab91ec491190444e01910d79dc659e4bf971408ffd6ecd541575313",
+      "version": "v1.4.11",
+      "generated_at": "2026-05-26T15:14:31.120557+00:00"
     },
     "layers": [
       {
-        "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"browser_memory_capture_requires_current_browser_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "compatibility",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_cmd_remains_compat_alias\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -34,22 +35,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "d29a8e32fafdada0339ac45312a4aa686647b6db20f5bbc6c4aa5d77b006a4fa",
-        "started_at": "2026-05-26T07:10:55.686102",
-        "ended_at": "2026-05-26T07:10:56.161215",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/contract/junit.xml",
+        "execution_fingerprint": "1ee9d77c2da62482ec56334ee3233d614ae3a30efd5bf1259de456b8cc572bb3",
+        "started_at": "2026-05-26T23:14:23.742492",
+        "ended_at": "2026-05-26T23:14:24.213673",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/result.json"
         ]
       },
       {
-        "layer": "integration",
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"admitted_memory_is_retrieved_for_matching_qa_context\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_deterministic_command_option\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -61,38 +62,66 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "aed8b6f2c03d4b335a2fac9daf5a49b0ae00f338b3eabf7ecf4e1a9193ca58b6",
-        "started_at": "2026-05-26T07:10:56.162144",
-        "ended_at": "2026-05-26T07:10:56.593678",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/integration/junit.xml",
+        "execution_fingerprint": "ab44f04d871b2d471fc64a5aba8547e9ddfa2b8ed3cc301bf6710d267a0f42e8",
+        "started_at": "2026-05-26T23:14:24.214639",
+        "ended_at": "2026-05-26T23:14:24.661685",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/integration/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/integration/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/integration/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/integration/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/integration/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/contract/result.json"
+        ]
+      },
+      {
+        "layer": "regression",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "exit_code": 0,
+        "status": "passed",
+        "assertion_count": 1,
+        "was_flaky": false,
+        "attempt_count": 1,
+        "attempts": [
+          {
+            "attempt": 1,
+            "exit_code": 0
+          }
+        ],
+        "execution_fingerprint": "a0f8e53944cd750d22c18d0478c25f10365b029fd70381e574ed458c1319f176",
+        "started_at": "2026-05-26T23:14:24.662443",
+        "ended_at": "2026-05-26T23:14:25.090472",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/regression/junit.xml",
+        "junit_valid": true,
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260526T231423741120/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
-    "matrix_report": {
-      "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
-      "evidence_generated": 12,
-      "entry_count": 12,
-      "freshness_violations": []
-    },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260526T071055684222/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260526T071055684222/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260526T071055684222/summary.json",
+      ".beacon/evidence/auto-test/run-20260526T231423741120/compatibility/pair-evidence.json",
+      ".beacon/evidence/auto-test/run-20260526T231423741120/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260526T231423741120/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260526T231423741120/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
+      "evidence_generated": 10,
+      "entry_count": 10,
+      "freshness_violations": []
+    },
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
-      "pass_count": 2,
+      "pass_count": 3,
       "flaky_pass_count": 0,
       "flaky_rate": 0.0,
       "max_flaky_rate": 0.02
@@ -101,10 +130,11 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
+      "compatibility",
       "contract",
-      "integration"
+      "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -117,23 +147,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 12,
-      "passed": 12,
+      "cases_total": 10,
+      "passed": 10,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 12,
-      "auto_cases_executed": 12,
+      "auto_cases_total": 10,
+      "auto_cases_executed": 10,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-QA-MEM-001",
+        "tc_id": "TC-BROWSER-FALLBACK-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-QA-MEM-001",
+        "source_tc_id": "TC-BROWSER-FALLBACK-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -143,20 +173,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"browser_memory_capture_requires_current_browser_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_deterministic_command_option\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/result.json"
         ],
-        "execution_fingerprint": "87c70efea164b9e654e27449a57bed55044e24dfea5847a1d98548202261f99f",
-        "started_at": "2026-05-26T07:10:56.597201",
-        "ended_at": "2026-05-26T07:10:57.039832",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/junit.xml",
+        "execution_fingerprint": "2cc19b7c03ab4938a98c021a8c2cae086cd0965385bd700c16fb2140ea775f4b",
+        "started_at": "2026-05-26T23:14:25.093906",
+        "ended_at": "2026-05-26T23:14:25.561483",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -169,35 +199,42 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-002",
+        "tc_id": "TC-BROWSER-FALLBACK-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-QA-MEM-002",
+        "source_tc_id": "TC-BROWSER-FALLBACK-002",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "compatibility",
+        "layer": "compatibility",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"browser_memory_admission_rejects_non_acceptance_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_cmd_remains_compat_alias\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/result.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/action-transcript.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/dom-snapshot.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/current-url.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/console-summary.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/network-summary.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-task.json"
         ],
-        "execution_fingerprint": "2920cbbf2135637eea4ef4473a9d619023a98ac3d0262824727cbddffe437f01",
-        "started_at": "2026-05-26T07:10:57.040614",
-        "ended_at": "2026-05-26T07:10:57.471727",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/junit.xml",
+        "execution_fingerprint": "2bd047e52aceda798c9d5057d4001d783067318a0161c800626bae401fdd3d5f",
+        "started_at": "2026-05-26T23:14:25.563122",
+        "ended_at": "2026-05-26T23:14:26.109612",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/junit.xml",
         "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
+        "browser_required": true,
+        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
         "browser_runner_learning_ref": "",
         "replay_required": false,
         "replay_ref": "",
@@ -207,32 +244,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-003",
+        "tc_id": "TC-BROWSER-FALLBACK-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-QA-MEM-003",
+        "source_tc_id": "TC-BROWSER-FALLBACK-003",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"admitted_memory_is_retrieved_for_matching_qa_context\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_execution_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/result.json"
         ],
-        "execution_fingerprint": "83e338c1feaba3f36f2f4f6df3de5dd14fe4a297af3e6b71951712564b93f0fa",
-        "started_at": "2026-05-26T07:10:57.472633",
-        "ended_at": "2026-05-26T07:10:57.910892",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/junit.xml",
+        "execution_fingerprint": "7edf337453642f4c575a0c8d95c9e3e24242a7fd2e7147a2e25f8dd7e10376e7",
+        "started_at": "2026-05-26T23:14:26.111485",
+        "ended_at": "2026-05-26T23:14:26.812569",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -245,32 +282,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-004",
+        "tc_id": "TC-BROWSER-FALLBACK-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-QA-MEM-004",
+        "source_tc_id": "TC-BROWSER-FALLBACK-004",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"memory_influence_guides_runner_session_selector_and_task_hints\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"browser_agent_and_command_evidence_are_split\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/result.json"
         ],
-        "execution_fingerprint": "f8a0d86a7940933f70e4eb52f30e5cb6ac6329e89de1df9db18e1c122d330935",
-        "started_at": "2026-05-26T07:10:57.911637",
-        "ended_at": "2026-05-26T07:10:58.359669",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/junit.xml",
+        "execution_fingerprint": "417dcd9e5ff41d131fbe9b9a8a6854155f10ffcff2c255e47d523f5b0c177169",
+        "started_at": "2026-05-26T23:14:26.813490",
+        "ended_at": "2026-05-26T23:14:27.292095",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -283,9 +320,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-005",
+        "tc_id": "TC-BROWSER-FALLBACK-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-QA-MEM-005",
+        "source_tc_id": "TC-BROWSER-FALLBACK-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -295,20 +332,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"memory_influence_has_no_truth_or_verdict_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_does_not_claim_browser_success\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/result.json"
         ],
-        "execution_fingerprint": "2ef7a89b6b5c6170affb3e7bcedd961a6fb6911e57395fdfdde55e72e4e197cc",
-        "started_at": "2026-05-26T07:10:58.360470",
-        "ended_at": "2026-05-26T07:10:58.800006",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/junit.xml",
+        "execution_fingerprint": "0fd9bfd1249b1d15101a157b8221e4bcecef19d8ad29a0e96e65a41a4be6e375",
+        "started_at": "2026-05-26T23:14:27.292872",
+        "ended_at": "2026-05-26T23:14:27.754970",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -321,35 +358,42 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-006",
+        "tc_id": "TC-BROWSER-FALLBACK-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-QA-MEM-006",
+        "source_tc_id": "TC-BROWSER-FALLBACK-006",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "integration",
-        "layer": "integration",
+        "qa_type": "compatibility",
+        "layer": "compatibility",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"stale_conflicting_or_mismatched_memory_downgrades_or_blocks_reuse\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_alias_records_compatibility_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/result.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/action-transcript.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/dom-snapshot.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/current-url.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/console-summary.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/network-summary.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-task.json"
         ],
-        "execution_fingerprint": "0568986f527ac44767c46d48217dd0429c4b5a73ae6f6749d9c3192ad9c86558",
-        "started_at": "2026-05-26T07:10:58.800813",
-        "ended_at": "2026-05-26T07:10:59.233406",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/junit.xml",
+        "execution_fingerprint": "2269ef955a7449c154f15e2aed5244e06d705ac65004193bddd623c4e893adb6",
+        "started_at": "2026-05-26T23:14:27.756025",
+        "ended_at": "2026-05-26T23:14:28.225516",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/junit.xml",
         "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
+        "browser_required": true,
+        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
         "browser_runner_learning_ref": "",
         "replay_required": false,
         "replay_ref": "",
@@ -359,9 +403,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-007",
+        "tc_id": "TC-BROWSER-FALLBACK-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-QA-MEM-007",
+        "source_tc_id": "TC-BROWSER-FALLBACK-007",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -371,20 +415,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"skill_evolution_classifies_reflection_family\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_templates_prefer_deterministic_command\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/result.json"
         ],
-        "execution_fingerprint": "0539ebb5cd0b0de4fbe26b2ceede776e08ba479a134ccc25d45cd79ff14c7a74",
-        "started_at": "2026-05-26T07:10:59.234191",
-        "ended_at": "2026-05-26T07:10:59.669413",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/junit.xml",
+        "execution_fingerprint": "dd3b12e1b203cdc8b54320b58a7952147930c70dab6b9bd84933e7686bfd959f",
+        "started_at": "2026-05-26T23:14:28.227537",
+        "ended_at": "2026-05-26T23:14:28.654548",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -397,9 +441,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-008",
+        "tc_id": "TC-BROWSER-FALLBACK-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-QA-MEM-008",
+        "source_tc_id": "TC-BROWSER-FALLBACK-008",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -409,20 +453,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"skill_evolution_outputs_proposal_only_without_mutation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-008/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"missing_browser_and_command_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/result.json"
         ],
-        "execution_fingerprint": "9b261fc1efcf184bc561201f8f4a4ef23a2fb3b094e7e72d5728d3625628d903",
-        "started_at": "2026-05-26T07:10:59.670171",
-        "ended_at": "2026-05-26T07:11:00.113317",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/junit.xml",
+        "execution_fingerprint": "a60ab5d88c42f7ca2c519e39798de4d5fa33cabba6c1bc42f1818d943833499e",
+        "started_at": "2026-05-26T23:14:28.655326",
+        "ended_at": "2026-05-26T23:14:29.095794",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -435,32 +479,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-009",
+        "tc_id": "TC-BROWSER-FALLBACK-009",
         "ac_id": "AC-009",
-        "source_tc_id": "TC-QA-MEM-009",
+        "source_tc_id": "TC-BROWSER-FALLBACK-009",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "regression",
+        "layer": "regression",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"skill_evolution_proposal_binds_trace_ac_test_evidence_route_and_risk\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-009/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/result.json"
         ],
-        "execution_fingerprint": "54a666267c2dc2e4f00d9785665b32c50fedf8bc3df1eb6964e56831bc7eba90",
-        "started_at": "2026-05-26T07:11:00.114072",
-        "ended_at": "2026-05-26T07:11:00.547076",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/junit.xml",
+        "execution_fingerprint": "15693424235c4563aa23453382bbc21501c3d3db38454b0a5c90b081ed5e26e9",
+        "started_at": "2026-05-26T23:14:29.096634",
+        "ended_at": "2026-05-26T23:14:29.535085",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -473,9 +517,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-QA-MEM-010",
+        "tc_id": "TC-BROWSER-FALLBACK-010",
         "ac_id": "AC-010",
-        "source_tc_id": "TC-QA-MEM-010",
+        "source_tc_id": "TC-BROWSER-FALLBACK-010",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -485,96 +529,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"independent_auditor_blocks_authority_bypass_and_overfit\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-010/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"readout_distinguishes_browser_and_command_repair\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260526T231423741120",
+        "evidence_path": ".beacon/evidence/qa-feature/browser-fallback-deterministic-command-contract/tc-browser-fallback-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/result.json"
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/result.json"
         ],
-        "execution_fingerprint": "fdca1cdf9f4b218cb62fb7c764980abb0784b85955e28ea673afdb5118649bc9",
-        "started_at": "2026-05-26T07:11:00.547809",
-        "ended_at": "2026-05-26T07:11:00.984379",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-QA-MEM-011",
-        "ac_id": "AC-011",
-        "source_tc_id": "TC-QA-MEM-011",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"accepted_proposals_route_to_change_refreeze_before_implementation\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-011/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/result.json"
-        ],
-        "execution_fingerprint": "c9bcfdbb1c8ea6ccfe73b2ed42488e153a4980c07685e0e87d00722d53dc9dce",
-        "started_at": "2026-05-26T07:11:00.985236",
-        "ended_at": "2026-05-26T07:11:01.413519",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-QA-MEM-012",
-        "ac_id": "AC-012",
-        "source_tc_id": "TC-QA-MEM-012",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1410_qa_browser_memory_skill_evolution.py -k \"release_consumes_formal_current_qa_closure_not_memory_or_proposals\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260526T071055684222",
-        "evidence_path": ".beacon/evidence/qa-feature/qa-browser-memory-and-skill-evolution-advisory-loop/tc-qa-mem-012/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/command.txt",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stdout.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stderr.log",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/junit.xml",
-          ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/result.json"
-        ],
-        "execution_fingerprint": "ef23cd80b24e4117e1c64ae4545ca48fab519d945dfdf41c2b34a696403187b0",
-        "started_at": "2026-05-26T07:11:01.414391",
-        "ended_at": "2026-05-26T07:11:01.848366",
-        "junit_path": ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/junit.xml",
+        "execution_fingerprint": "bac4a3891e52afc0e3e18fdfa2b124ff9e37888c65909bbde0b2e25df46d0a09",
+        "started_at": "2026-05-26T23:14:29.535861",
+        "ended_at": "2026-05-26T23:14:29.977646",
+        "junit_path": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -590,10 +558,10 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-25T23:11:02.748088+00:00",
+  "updated_at": "2026-05-26T15:14:30.407462+00:00",
   "summary": {
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "version": "v1.4.10",
+    "feature": "browser-fallback-deterministic-command-contract",
+    "version": "v1.4.11",
     "status": "passed",
     "release_ready": true,
     "continue_decision": "ready_for_release",
@@ -603,19 +571,20 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-browser-memory-and-skill-evolution-advisory-loop\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"browser-fallback-deterministic-command-contract\""
   },
-  "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-  "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+  "qa_status_source": "canonical",
+  "feature": "browser-fallback-deterministic-command-contract",
+  "feature_slug": "browser-fallback-deterministic-command-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "AC-001",
-      "text": "Browser QA site memory is captured from real current-run browser evidence with AC/test IDs, feature, route, host, browser, runner, auth/session mode, evidence refs, and outcome.",
+      "theme": "current syntax",
+      "text": "Browser adapter current syntax exposes `--deterministic-command` or `--explicit-project-command`.",
       "tc_ids": [
-        "TC-QA-MEM-001"
+        "TC-BROWSER-FALLBACK-001"
       ],
       "qa_types": [
         "contract"
@@ -623,43 +592,43 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "AC-002",
-      "text": "Browser memory admission rejects placeholder-only, listing-only, dry-run, documentation-only, stale, unscoped, or evidence-missing records.",
+      "theme": "compat alias",
+      "text": "Legacy `--fallback-cmd` remains callable as a compatibility alias.",
       "tc_ids": [
-        "TC-QA-MEM-002"
+        "TC-BROWSER-FALLBACK-002"
+      ],
+      "qa_types": [
+        "compatibility"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "execution mode",
+      "text": "Deterministic project command execution records `execution_mode=deterministic_command`.",
+      "tc_ids": [
+        "TC-BROWSER-FALLBACK-003"
       ],
       "qa_types": [
         "contract"
       ]
     },
     {
-      "ac_id": "AC-003",
-      "theme": "AC-003",
-      "text": "Admitted browser memory can be automatically retrieved for later QA planning and runner admission.",
-      "tc_ids": [
-        "TC-QA-MEM-003"
-      ],
-      "qa_types": [
-        "integration"
-      ]
-    },
-    {
       "ac_id": "AC-004",
-      "theme": "AC-004",
-      "text": "Memory influence can guide runner selection, session bridge recommendation, selector/action hints, repeated failure detection, and browser task compilation.",
+      "theme": "evidence split",
+      "text": "Evidence records browser agent availability separately from deterministic command execution.",
       "tc_ids": [
-        "TC-QA-MEM-004"
+        "TC-BROWSER-FALLBACK-004"
       ],
       "qa_types": [
-        "integration"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-005",
-      "theme": "AC-005",
-      "text": "Memory influence is recorded as advisory/runtime support evidence only and cannot satisfy QA pass, release pass, gate pass, or frozen truth.",
+      "theme": "no false browser success",
+      "text": "Evidence does not claim browser-agent success when only deterministic command execution happened.",
       "tc_ids": [
-        "TC-QA-MEM-005"
+        "TC-BROWSER-FALLBACK-005"
       ],
       "qa_types": [
         "contract"
@@ -667,21 +636,21 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "AC-006",
-      "text": "Memory conflict, expiry, host/version/browser/auth mismatch, or protected-surface mismatch must downgrade or block reuse with machine-readable reason codes.",
+      "theme": "compat evidence",
+      "text": "`--fallback-cmd` usage records compatibility evidence bound to `browser-fallback-command-name`.",
       "tc_ids": [
-        "TC-QA-MEM-006"
+        "TC-BROWSER-FALLBACK-006"
       ],
       "qa_types": [
-        "integration"
+        "compatibility"
       ]
     },
     {
       "ac_id": "AC-007",
-      "theme": "AC-007",
-      "text": "SkillEvolver-style trace analysis classifies observations as `Discovery`, `Optimization`, `SkillDefect`, or `ExecutionLapse`.",
+      "theme": "generated commands",
+      "text": "Current QA/browser command templates prefer deterministic command naming over legacy fallback naming.",
       "tc_ids": [
-        "TC-QA-MEM-007"
+        "TC-BROWSER-FALLBACK-007"
       ],
       "qa_types": [
         "contract"
@@ -689,10 +658,10 @@
     },
     {
       "ac_id": "AC-008",
-      "theme": "AC-008",
-      "text": "Skill evolution output is proposal-only and may include skill patch drafts, checklist updates, runner admission rules, or Skill Eval Kit cases, but must not mutate files automatically.",
+      "theme": "fail closed",
+      "text": "Missing browser agent and missing deterministic command fail closed with clear reason code.",
       "tc_ids": [
-        "TC-QA-MEM-008"
+        "TC-BROWSER-FALLBACK-008"
       ],
       "qa_types": [
         "contract"
@@ -700,43 +669,21 @@
     },
     {
       "ac_id": "AC-009",
-      "theme": "AC-009",
-      "text": "Each proposal must bind to trace refs, affected AC/test IDs, evidence refs, failure family, expected route, and risk.",
+      "theme": "no unrelated behavior",
+      "text": "Tests prove no prototype/design, QA mirror, PRD mirror, implement package, memory, intent, or test marker behavior changes.",
       "tc_ids": [
-        "TC-QA-MEM-009"
+        "TC-BROWSER-FALLBACK-009"
       ],
       "qa_types": [
-        "contract"
+        "regression"
       ]
     },
     {
       "ac_id": "AC-010",
-      "theme": "AC-010",
-      "text": "Independent auditor checks proposals for authority bypass, support evidence promoted to verdict, single-project overfitting, missing evidence binding, silent bypass, and lifecycle-stage sprawl.",
+      "theme": "repair route",
+      "text": "Help/status/report or evidence readout distinguishes browser setup repair from deterministic command setup repair.",
       "tc_ids": [
-        "TC-QA-MEM-010"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "theme": "AC-011",
-      "text": "Accepted proposals must route through Beacon change/refreeze before implementation; rejected/deferred proposals remain support evidence only.",
-      "tc_ids": [
-        "TC-QA-MEM-011"
-      ],
-      "qa_types": [
-        "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "theme": "AC-012",
-      "text": "Release and QA scorecards may summarize memory/proposal support evidence, but only formal current-run QA closure can produce release readiness.",
-      "tc_ids": [
-        "TC-QA-MEM-012"
+        "TC-BROWSER-FALLBACK-010"
       ],
       "qa_types": [
         "contract"
@@ -749,8 +696,9 @@
       "no_prior_feature_qa"
     ],
     "targeted_layers": [
+      "compatibility",
       "contract",
-      "integration"
+      "regression"
     ],
     "targeted_ac_ids": [
       "AC-001",
@@ -762,23 +710,19 @@
       "AC-007",
       "AC-008",
       "AC-009",
-      "AC-010",
-      "AC-011",
-      "AC-012"
+      "AC-010"
     ],
     "targeted_tc_ids": [
-      "TC-QA-MEM-001",
-      "TC-QA-MEM-002",
-      "TC-QA-MEM-003",
-      "TC-QA-MEM-004",
-      "TC-QA-MEM-005",
-      "TC-QA-MEM-006",
-      "TC-QA-MEM-007",
-      "TC-QA-MEM-008",
-      "TC-QA-MEM-009",
-      "TC-QA-MEM-010",
-      "TC-QA-MEM-011",
-      "TC-QA-MEM-012"
+      "TC-BROWSER-FALLBACK-001",
+      "TC-BROWSER-FALLBACK-002",
+      "TC-BROWSER-FALLBACK-003",
+      "TC-BROWSER-FALLBACK-004",
+      "TC-BROWSER-FALLBACK-005",
+      "TC-BROWSER-FALLBACK-006",
+      "TC-BROWSER-FALLBACK-007",
+      "TC-BROWSER-FALLBACK-008",
+      "TC-BROWSER-FALLBACK-009",
+      "TC-BROWSER-FALLBACK-010"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -788,15 +732,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 12
+    "verification_item_count": 10
   },
-  "feature_matrix_path": ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-QA-MEM-001",
-      "source_tc_id": "TC-QA-MEM-001",
+      "tc_id": "TC-BROWSER-FALLBACK-001",
+      "source_tc_id": "TC-BROWSER-FALLBACK-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -809,20 +753,50 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-QA-MEM-002",
-      "source_tc_id": "TC-QA-MEM-002",
+      "tc_id": "TC-BROWSER-FALLBACK-002",
+      "source_tc_id": "TC-BROWSER-FALLBACK-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
+      "status": "passed",
+      "reason_code": "",
+      "qa_type": "compatibility",
+      "browser_required": true,
+      "replay_required": false,
+      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
+      "browser_evidence_authenticity_status": "",
+      "replay_ref": "",
+      "evidence_ref": [
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/result.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/console-summary.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-task.json"
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-BROWSER-FALLBACK-003",
+      "source_tc_id": "TC-BROWSER-FALLBACK-003",
+      "scenario_id": "",
+      "scenario_family": "",
+      "test_item_id": "TEST-003",
       "status": "passed",
       "reason_code": "",
       "qa_type": "contract",
@@ -832,63 +806,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-003",
-      "tc_id": "TC-QA-MEM-003",
-      "source_tc_id": "TC-QA-MEM-003",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-003",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-QA-MEM-004",
-      "source_tc_id": "TC-QA-MEM-004",
+      "tc_id": "TC-BROWSER-FALLBACK-004",
+      "source_tc_id": "TC-BROWSER-FALLBACK-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
+      "qa_type": "contract",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-QA-MEM-005",
-      "source_tc_id": "TC-QA-MEM-005",
+      "tc_id": "TC-BROWSER-FALLBACK-005",
+      "source_tc_id": "TC-BROWSER-FALLBACK-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -901,40 +852,47 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-QA-MEM-006",
-      "source_tc_id": "TC-QA-MEM-006",
+      "tc_id": "TC-BROWSER-FALLBACK-006",
+      "source_tc_id": "TC-BROWSER-FALLBACK-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "integration",
-      "browser_required": false,
+      "qa_type": "compatibility",
+      "browser_required": true,
       "replay_required": false,
-      "browser_evidence_pack_ref": "",
+      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/result.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/console-summary.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-task.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-QA-MEM-007",
-      "source_tc_id": "TC-QA-MEM-007",
+      "tc_id": "TC-BROWSER-FALLBACK-007",
+      "source_tc_id": "TC-BROWSER-FALLBACK-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
@@ -947,17 +905,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-QA-MEM-008",
-      "source_tc_id": "TC-QA-MEM-008",
+      "tc_id": "TC-BROWSER-FALLBACK-008",
+      "source_tc_id": "TC-BROWSER-FALLBACK-008",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-008",
@@ -970,40 +928,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/result.json"
       ]
     },
     {
       "ac_id": "AC-009",
-      "tc_id": "TC-QA-MEM-009",
-      "source_tc_id": "TC-QA-MEM-009",
+      "tc_id": "TC-BROWSER-FALLBACK-009",
+      "source_tc_id": "TC-BROWSER-FALLBACK-009",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-009",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "regression",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/result.json"
       ]
     },
     {
       "ac_id": "AC-010",
-      "tc_id": "TC-QA-MEM-010",
-      "source_tc_id": "TC-QA-MEM-010",
+      "tc_id": "TC-BROWSER-FALLBACK-010",
+      "source_tc_id": "TC-BROWSER-FALLBACK-010",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-010",
@@ -1016,57 +974,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "tc_id": "TC-QA-MEM-011",
-      "source_tc_id": "TC-QA-MEM-011",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-012",
-      "tc_id": "TC-QA-MEM-012",
-      "source_tc_id": "TC-QA-MEM-012",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-012",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "contract",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/result.json"
       ]
     }
   ],
@@ -1094,262 +1006,230 @@
   "requirement_completeness_gate": {
     "schema_version": "1.0",
     "enabled": true,
-    "status": "pass_with_downgrade",
+    "status": "pass",
     "blocked": false,
-    "reason_code": "requirement_completeness_downgraded",
+    "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "version": "v1.4.10",
+    "feature": "browser-fallback-deterministic-command-contract",
+    "version": "v1.4.11",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.re-freeze-transaction.json"
     },
-    "unresolved_gap_count": 0,
-    "high_risk_unresolved_categories": [],
-    "downgrade_fallback_status": "none",
-    "coverage_families": [
-      "happy",
-      "negative",
-      "boundary",
-      "exception",
-      "recovery",
-      "compatibility",
-      "permission",
-      "stale-data-or-drift",
-      "downgrade-or-fallback"
-    ],
-    "decision_count": 15,
-    "candidate_count": 15,
-    "coverage_dimension_statuses": {
-      "actors": "covered",
-      "capability_differences": "covered",
-      "state_machine": "covered",
-      "happy_paths": "",
-      "negative_paths": "",
-      "boundary_conditions": "covered",
-      "exceptions": "covered",
-      "recovery_paths": "covered",
-      "risks": "covered",
-      "open_questions": ""
-    },
-    "missing_dimensions": [
-      "happy_paths",
-      "negative_paths",
-      "open_questions"
-    ],
+    "projection_status": "missing_nonblocking",
+    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"browser-fallback-deterministic-command-contract\" --single-feature",
+    "next_action": "qa",
     "stage_gates": {
       "artifact_read_model": {
         "status": "pass",
         "blocked": false,
-        "reason_code": "",
-        "summary": "requirement completeness artifacts are readable",
+        "reason_code": "requirement_completeness_projection_missing",
+        "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.re-freeze-transaction.json"
-          }
+            "envelope": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.re-freeze-transaction.json"
+          },
+          "projection_status": "missing_nonblocking"
         }
       },
       "decision_traceability": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "human supplement decisions remain auditable",
-        "details": {
-          "decision_count": 15,
-          "candidate_count": 15
-        }
+        "summary": "human requirement truth is carried by frozen Markdown surfaces",
+        "details": {}
       },
       "coverage_closure": {
-        "status": "blocked",
-        "blocked": true,
-        "reason_code": "requirement_coverage_closure_blocked",
-        "summary": "role/state/risk coverage closure is evaluated from machine materials",
-        "details": {
-          "coverage_family_count": 9,
-          "coverage_families": [
-            "happy",
-            "negative",
-            "boundary",
-            "exception",
-            "recovery",
-            "compatibility",
-            "permission",
-            "stale-data-or-drift",
-            "downgrade-or-fallback"
-          ],
-          "missing_dimensions": [
-            "happy_paths",
-            "negative_paths",
-            "open_questions"
-          ]
-        }
-      },
-      "unresolved_gap_governance": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "unresolved gaps are classified before downstream delivery",
+        "summary": "acceptance coverage is parseable from Markdown truth",
         "details": {
-          "unresolved_gap_count": 0,
-          "high_risk_unresolved_categories": []
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ]
         }
       },
       "downgrade_control": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "host fallback and downgrade state remain explicit",
-        "details": {
-          "downgrade_fallback_status": "none"
-        }
+        "summary": "missing completeness projection does not activate a truth downgrade",
+        "details": {}
       },
       "stage_admission": {
-        "status": "pass_with_downgrade",
+        "status": "pass",
         "blocked": false,
-        "reason_code": "requirement_completeness_downgraded",
-        "summary": "qa admission evaluated against completeness readiness",
+        "reason_code": "",
+        "summary": "qa admission uses frozen Markdown truth; projection sync is advisory",
         "details": {
           "target_stage": "qa",
           "stage_ready": true,
-          "stage_key": "implement_ready"
+          "stage_key": "markdown_first_truth"
         }
       }
     },
-    "recommended_command": "beacon qa run \"qa-browser-memory-and-skill-evolution-advisory-loop\"",
-    "next_action": "human_review",
     "human_loop_handoff": {
-      "action": "human_review",
-      "reason": "requirement_completeness_downgraded",
-      "recommended_command": "beacon qa run \"qa-browser-memory-and-skill-evolution-advisory-loop\"",
-      "focus_areas": [
-        "补齐 role/state/risk coverage missing dimensions"
-      ]
+      "action": "qa",
+      "reason": "markdown_first_truth_pass",
+      "recommended_command": "",
+      "focus_areas": []
     },
-    "completeness": {
-      "schema_version": "1.0",
-      "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
-      "version": "v1.4.10",
-      "revision_id": "R1",
-      "completeness_verdict": "pass_with_downgrade",
-      "unresolved_gap_count": 0,
-      "high_risk_unresolved_categories": [],
-      "downgrade_fallback_status": "none",
-      "role_state_risk_coverage": {
-        "actors": "covered",
-        "capability_differences": "covered",
-        "state_machine": "covered",
-        "boundary_conditions": "covered",
-        "exceptions": "covered",
-        "recovery_paths": "covered",
-        "risks": "covered",
-        "coverage_families": [
-          "happy",
-          "negative",
-          "boundary",
-          "exception",
-          "recovery",
-          "compatibility",
-          "permission",
-          "stale-data-or-drift",
-          "downgrade-or-fallback"
-        ]
+    "markdown_first_truth": {
+      "status": "pass",
+      "projection": {
+        "feature": "browser-fallback-deterministic-command-contract",
+        "version": "v1.4.11",
+        "source_paths": {
+          "prd": "docs/beacon/v1.4.11/prd/browser-fallback-deterministic-command-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/browser-fallback-deterministic-command-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+          "research": "docs/beacon/v1.4.11/research/browser-fallback-deterministic-command-contract.md",
+          "change": "docs/beacon/v1.4.11/change/browser-fallback-deterministic-command-contract.md"
+        },
+        "prd_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010"
+        ],
+        "user_story_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010"
+        ],
+        "test_case_ac_ids": [
+          "AC-001",
+          "AC-002",
+          "AC-003",
+          "AC-004",
+          "AC-005",
+          "AC-006",
+          "AC-007",
+          "AC-008",
+          "AC-009",
+          "AC-010"
+        ],
+        "diagnostics": [],
+        "status": "pass"
       },
-      "readiness": {
-        "freeze_ready": true,
-        "prototype_ready": true,
-        "implement_ready": true,
-        "release_ready": false
-      },
-      "generated_at": "2026-05-25T22:29:53.328977+00:00"
+      "freeze_state": {
+        "schema_version": "1.0",
+        "feature": "browser-fallback-deterministic-command-contract",
+        "feature_slug": "browser-fallback-deterministic-command-contract",
+        "version": "v1.4.11",
+        "revision_id": "R2",
+        "source_revision_id": "R1",
+        "status": "frozen",
+        "baseline_hash": "sha256:8323cb0454e8ef54c796243d82d3cb415a25aada543ccf0781410f59de8e4f93",
+        "source_paths": {
+          "prd": "docs/beacon/v1.4.11/prd/browser-fallback-deterministic-command-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/browser-fallback-deterministic-command-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/browser-fallback-deterministic-command-contract.md",
+          "research": "docs/beacon/v1.4.11/research/browser-fallback-deterministic-command-contract.md",
+          "change": "docs/beacon/v1.4.11/change/browser-fallback-deterministic-command-contract.md"
+        },
+        "diagnostics": [],
+        "transaction_ref": "docs/beacon/v1.4.11/.machine/change/browser-fallback-deterministic-command-contract.refreeze-transaction.json",
+        "generated_at": "2026-05-26T15:14:22.571625+00:00"
+      }
     },
-    "freeze_contract": {
-      "schema_version": "1.0",
-      "version": "v1.4.10",
-      "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-      "revision_id": "R1",
-      "status": "freeze-ready",
-      "human_supplement_contract": {
-        "allowed_decisions": [
-          "accepted",
-          "rejected",
-          "deferred"
-        ],
-        "required_fields": [
-          "gap_id",
-          "source_truth_ref",
-          "candidate_kind",
-          "rationale",
-          "human_decision",
-          "decision_reason",
-          "writeback_target",
-          "revision_id"
-        ],
-        "writeback_flow": [
-          "decision_log",
-          "writeback_projection",
-          "truth_refreeze"
-        ]
-      },
-      "blocking_rules": [
-        "high_severity_unresolved_gap",
-        "critical_coverage_family_missing",
-        "host_downgrade_without_explicit_fallback_contract",
-        "truth_writeback_without_machine_decision_trail"
-      ],
-      "freeze_verdict": "pass",
-      "implementation_verdict": "pending",
-      "qa_execution_verdict": "pending",
-      "updated_at": "2026-05-25T22:29:53.329343+00:00"
-    }
+    "completeness": {},
+    "freeze_contract": {}
   },
-  "requirement_completeness_verdict": "pass_with_downgrade",
-  "requirement_completeness_ref": "docs/beacon/v1.4.10/.machine/requirement/qa-browser-memory-and-skill-evolution-advisory-loop.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-browser-memory-and-skill-evolution-advisory-loop.ac-test-matrix.json",
+  "requirement_completeness_verdict": "pass",
+  "requirement_completeness_ref": "docs/beacon/v1.4.11/.machine/requirement/browser-fallback-deterministic-command-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "run_id": "run-20260526T071055684222",
-    "generated_at": "2026-05-25T23:11:03.076978+00:00",
+    "feature": "browser-fallback-deterministic-command-contract",
+    "feature_slug": "browser-fallback-deterministic-command-contract",
+    "run_id": "run-20260526T231423741120",
+    "generated_at": "2026-05-26T15:14:30.779301+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 12,
-    "browser_scenario_count": 0,
+    "scenario_count": 10,
+    "browser_scenario_count": 2,
     "required_families": [],
     "passed_families": [],
     "missing_axes": [],
     "missing_replay_scenarios": [],
     "missing_browser_evidence_scenarios": [],
     "scenario_pass_rate": 1.0,
-    "family_coverage_rate": 1.0,
+    "family_coverage_rate": 0.0,
     "replay_coverage_rate": 1.0,
     "browser_evidence_rate": 1.0,
-    "score": 1.0,
-    "threshold": 0.6,
-    "status": "passed",
+    "score": 0.75,
+    "threshold": 0.8,
+    "status": "blocked",
     "required_next_action": "continue_current_plan",
     "failure_streak": 0,
     "escalation_level": "E0"
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-QA-MEM-001",
-      "tc_id": "TC-QA-MEM-001",
-      "source_tc_id": "TC-QA-MEM-001",
+      "scenario_id": "TC-BROWSER-FALLBACK-001",
+      "tc_id": "TC-BROWSER-FALLBACK-001",
+      "source_tc_id": "TC-BROWSER-FALLBACK-001",
       "ac_id": "AC-001",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1373,19 +1253,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-001/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-002",
-      "tc_id": "TC-QA-MEM-002",
-      "source_tc_id": "TC-QA-MEM-002",
+      "scenario_id": "TC-BROWSER-FALLBACK-002",
+      "tc_id": "TC-BROWSER-FALLBACK-002",
+      "source_tc_id": "TC-BROWSER-FALLBACK-002",
       "ac_id": "AC-002",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1396,10 +1276,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": false,
+      "browser_required": true,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": "",
+      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
       "browser_evidence_authenticity_status": "",
       "judge_signals": {
         "status_score": 1.0,
@@ -1409,19 +1289,26 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-002/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/result.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/console-summary.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-task.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-003",
-      "tc_id": "TC-QA-MEM-003",
-      "source_tc_id": "TC-QA-MEM-003",
+      "scenario_id": "TC-BROWSER-FALLBACK-003",
+      "tc_id": "TC-BROWSER-FALLBACK-003",
+      "source_tc_id": "TC-BROWSER-FALLBACK-003",
       "ac_id": "AC-003",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1445,19 +1332,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-003/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-004",
-      "tc_id": "TC-QA-MEM-004",
-      "source_tc_id": "TC-QA-MEM-004",
+      "scenario_id": "TC-BROWSER-FALLBACK-004",
+      "tc_id": "TC-BROWSER-FALLBACK-004",
+      "source_tc_id": "TC-BROWSER-FALLBACK-004",
       "ac_id": "AC-004",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1481,19 +1368,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-004/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-005",
-      "tc_id": "TC-QA-MEM-005",
-      "source_tc_id": "TC-QA-MEM-005",
+      "scenario_id": "TC-BROWSER-FALLBACK-005",
+      "tc_id": "TC-BROWSER-FALLBACK-005",
+      "source_tc_id": "TC-BROWSER-FALLBACK-005",
       "ac_id": "AC-005",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1517,19 +1404,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-005/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-006",
-      "tc_id": "TC-QA-MEM-006",
-      "source_tc_id": "TC-QA-MEM-006",
+      "scenario_id": "TC-BROWSER-FALLBACK-006",
+      "tc_id": "TC-BROWSER-FALLBACK-006",
+      "source_tc_id": "TC-BROWSER-FALLBACK-006",
       "ac_id": "AC-006",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1540,10 +1427,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": false,
+      "browser_required": true,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": "",
+      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
       "browser_evidence_authenticity_status": "",
       "judge_signals": {
         "status_score": 1.0,
@@ -1553,19 +1440,26 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-006/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/explore/result.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-evidence-pack.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/action-transcript.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/dom-snapshot.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/current-url.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/console-summary.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/network-summary.json",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-006/browser-task.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-007",
-      "tc_id": "TC-QA-MEM-007",
-      "source_tc_id": "TC-QA-MEM-007",
+      "scenario_id": "TC-BROWSER-FALLBACK-007",
+      "tc_id": "TC-BROWSER-FALLBACK-007",
+      "source_tc_id": "TC-BROWSER-FALLBACK-007",
       "ac_id": "AC-007",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1589,19 +1483,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-007/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-008",
-      "tc_id": "TC-QA-MEM-008",
-      "source_tc_id": "TC-QA-MEM-008",
+      "scenario_id": "TC-BROWSER-FALLBACK-008",
+      "tc_id": "TC-BROWSER-FALLBACK-008",
+      "source_tc_id": "TC-BROWSER-FALLBACK-008",
       "ac_id": "AC-008",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1625,19 +1519,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-008/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-008/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-009",
-      "tc_id": "TC-QA-MEM-009",
-      "source_tc_id": "TC-QA-MEM-009",
+      "scenario_id": "TC-BROWSER-FALLBACK-009",
+      "tc_id": "TC-BROWSER-FALLBACK-009",
+      "source_tc_id": "TC-BROWSER-FALLBACK-009",
       "ac_id": "AC-009",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1661,19 +1555,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-009/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-009/result.json"
       ]
     },
     {
-      "scenario_id": "TC-QA-MEM-010",
-      "tc_id": "TC-QA-MEM-010",
-      "source_tc_id": "TC-QA-MEM-010",
+      "scenario_id": "TC-BROWSER-FALLBACK-010",
+      "tc_id": "TC-BROWSER-FALLBACK-010",
+      "source_tc_id": "TC-BROWSER-FALLBACK-010",
       "ac_id": "AC-010",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature_slug": "browser-fallback-deterministic-command-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1697,97 +1591,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-010/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-QA-MEM-011",
-      "tc_id": "TC-QA-MEM-011",
-      "source_tc_id": "TC-QA-MEM-011",
-      "ac_id": "AC-011",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-011/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-QA-MEM-012",
-      "tc_id": "TC-QA-MEM-012",
-      "source_tc_id": "TC-QA-MEM-012",
-      "ac_id": "AC-012",
-      "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/command.txt",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stdout.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/stderr.log",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/junit.xml",
-        ".beacon/evidence/auto-test/run-20260526T071055684222/qa9-tc/TC-QA-MEM-012/result.json"
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-010/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/browser-fallback-deterministic-command-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/browser-fallback-deterministic-command-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "feature_slug": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "run_id": "run-20260526T071055684222",
-    "ac_total": 12,
-    "ac_accepted": 12,
-    "scenario_total": 12,
-    "scenario_passed": 12,
+    "feature": "browser-fallback-deterministic-command-contract",
+    "feature_slug": "browser-fallback-deterministic-command-contract",
+    "run_id": "run-20260526T231423741120",
+    "ac_total": 10,
+    "ac_accepted": 10,
+    "scenario_total": 10,
+    "scenario_passed": 10,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1797,8 +1619,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 12,
-      "executed_scenarios": 12,
+      "required_scenarios": 10,
+      "executed_scenarios": 10,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1825,7 +1647,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 12,
+      "verification_item_count": 10,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1936,8 +1758,8 @@
       },
       "profile_completeness": {
         "schema_version": "1.0",
-        "profile": "closure",
-        "browser_required": false,
+        "profile": "browser",
+        "browser_required": true,
         "required_layers": [
           "unit",
           "interface",
@@ -1947,9 +1769,12 @@
           "functional",
           "regression",
           "exception",
-          "compatibility"
+          "compatibility",
+          "browser_e2e"
         ],
-        "executed_layers": [],
+        "executed_layers": [
+          "browser_e2e"
+        ],
         "skipped_layers": [],
         "blocked_layers": [],
         "not_applicable_layers": [],
@@ -1970,8 +1795,62 @@
         "status": "partial"
       },
       "browser_evidence_contract": {
-        "status": "not_required",
-        "blocked": false
+        "schema_version": "1.0",
+        "status": "invalid",
+        "blocked": true,
+        "runner": "playwright",
+        "runner_registered": true,
+        "browser_runner_registry": [
+          "playwright",
+          "playwright-cli",
+          "playwright-cdp",
+          "browser-use",
+          "agent-browser",
+          "attached-browser",
+          "web-access",
+          "obscura-cdp"
+        ],
+        "evidence_kind": "execution",
+        "non_acceptance_evidence": false,
+        "required_fields": {
+          "run_id": "run-20260526T231423741120",
+          "source_command": "",
+          "runner": "playwright",
+          "target": "",
+          "result_status": "passed"
+        },
+        "accepted_test_ids": [
+          "TC-BROWSER-FALLBACK-002",
+          "TC-BROWSER-FALLBACK-002"
+        ],
+        "evidence_refs": [
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/command.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stdout.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/stderr.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/junit.xml",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/explore/result.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/action-transcript.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/dom-snapshot.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/current-url.txt",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/console-summary.log",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/network-summary.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-task.json",
+          ".beacon/evidence/auto-test/run-20260526T231423741120/qa9-tc/TC-BROWSER-FALLBACK-002/browser-evidence-pack.json"
+        ],
+        "present_axes": [],
+        "missing_axes": [
+          "compatibility",
+          "function",
+          "session",
+          "state_data",
+          "ui",
+          "ux"
+        ],
+        "missing_fields": [
+          "source_command",
+          "target"
+        ]
       },
       "browser_runner_registry": [
         "playwright",
@@ -2028,24 +1907,24 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-browser-memory-and-skill-evolution-advisory-loop\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"browser-fallback-deterministic-command-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.10 --feature \"qa-browser-memory-and-skill-evolution-advisory-loop\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"browser-fallback-deterministic-command-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "version": "v1.4.10",
+    "feature": "browser-fallback-deterministic-command-contract",
+    "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
     "execution_mode": "feature-aware",
-    "runner_mode": "qa-team",
+    "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
     "capability_snapshot": {
@@ -2059,21 +1938,21 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-browser-memory-and-skill-evolution-advisory-loop.ac-test-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.11",
+      "feature_matrix_path": ".beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-browser-memory-and-skill-evolution-advisory-loop.ac-test-matrix.json",
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/ac-closure.json",
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/scorecard.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/ac-closure.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
-    "execution_surface": "qa-team",
-    "team_mode": true,
+    "execution_surface": "qa",
+    "team_mode": false,
     "qa_status": "passed",
     "gate_status": "",
     "release_ready": true,
@@ -2081,13 +1960,13 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
-    "version": "v1.4.10",
+    "feature": "browser-fallback-deterministic-command-contract",
+    "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
     "generator_mode": "feature-aware",
     "execution_mode": "feature-aware",
-    "runner_mode": "qa-team",
+    "runner_mode": "qa",
     "host_runtime": "codex",
     "fallback_reason": "",
     "capability_snapshot": {
@@ -2101,25 +1980,25 @@
     },
     "subagent_prechecks": {},
     "requirement_binding": {
-      "source_of_truth_root": "docs/beacon/v1.4.10",
-      "feature_matrix_path": ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.10/.machine/qa/qa-browser-memory-and-skill-evolution-advisory-loop.ac-test-matrix.json"
+      "source_of_truth_root": "docs/beacon/v1.4.11",
+      "feature_matrix_path": ".beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/matrix.qa9.json",
-      "docs/beacon/v1.4.10/.machine/qa/qa-browser-memory-and-skill-evolution-advisory-loop.ac-test-matrix.json",
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/ac-closure.json",
-      ".beacon/qa/features/qa-browser-memory-and-skill-evolution-advisory-loop/scorecard.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/browser-fallback-deterministic-command-contract.ac-test-matrix.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/ac-closure.json",
+      ".beacon/qa/features/browser-fallback-deterministic-command-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
     "adapter_type": "",
-    "execution_surface": "qa-team",
-    "team_mode": true,
+    "execution_surface": "qa",
+    "team_mode": false,
     "qa_status": "passed",
     "gate_status": "",
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "18858ef6a2bf0bd83642836c511b7c852e74cfd1462c047b8d17408dd83979b8"
+  "current_spec_fingerprint_hash": "f43592a90ab91ec491190444e01910d79dc659e4bf971408ffd6ecd541575313"
 }

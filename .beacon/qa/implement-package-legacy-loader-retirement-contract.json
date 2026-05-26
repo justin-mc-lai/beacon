@@ -1,0 +1,313 @@
+{
+  "feature": "implement-package-legacy-loader-retirement-contract",
+  "feature_slug": "implement-package-legacy-loader-retirement-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-IMPLEMENT-LOADER-001"
+    ],
+    "AC-002": [
+      "TC-IMPLEMENT-LOADER-002"
+    ],
+    "AC-003": [
+      "TC-IMPLEMENT-LOADER-003"
+    ],
+    "AC-004": [
+      "TC-IMPLEMENT-LOADER-004"
+    ],
+    "AC-005": [
+      "TC-IMPLEMENT-LOADER-005"
+    ],
+    "AC-006": [
+      "TC-IMPLEMENT-LOADER-006"
+    ],
+    "AC-007": [
+      "TC-IMPLEMENT-LOADER-007"
+    ],
+    "AC-008": [
+      "TC-IMPLEMENT-LOADER-008"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-001",
+      "tc_id": "TC-IMPLEMENT-LOADER-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: `beacon implement --help` remains routeable through the public app.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_entrypoint_remains_routeable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-002",
+      "tc_id": "TC-IMPLEMENT-LOADER-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Required public implement subcommands remain visible and callable.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_public_subcommands_remain_routeable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-003",
+      "tc_id": "TC-IMPLEMENT-LOADER-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: The implement package exports `app` and required helpers without dynamic sibling loading.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_package_exports_current_app\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-004",
+      "tc_id": "TC-IMPLEMENT-LOADER-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "static",
+      "layer": "static",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: `_load_legacy_cli_module` is absent from current source.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "static",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_loader_function_is_absent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-005",
+      "tc_id": "TC-IMPLEMENT-LOADER-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "static",
+      "layer": "static",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: `_implement_legacy_cli` dynamic module loading is absent from current source.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "static",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"legacy_dynamic_module_name_is_absent\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-006",
+      "tc_id": "TC-IMPLEMENT-LOADER-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "static",
+      "layer": "static",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Tests do not import, monkeypatch, or assert `_legacy_cli`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "static",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"tests_do_not_depend_on_legacy_cli\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-007",
+      "tc_id": "TC-IMPLEMENT-LOADER-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "registry",
+      "layer": "registry",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: `implement-legacy-cli-loader` remains registered and points to this retirement feature.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "registry",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"implement_loader_retirement_is_registry_bound\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-IMPLEMENT-LOADER-008",
+      "tc_id": "TC-IMPLEMENT-LOADER-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: QA, PRD, prototype, browser, memory, intent, and command alias behavior are not changed by this ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_package_legacy_loader_retirement.py -k \"no_unrelated_retirement_in_implement_loader_slice\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-package-legacy-loader-retirement-contract/TC-IMPLEMENT-LOADER-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

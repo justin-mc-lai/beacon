@@ -1,0 +1,769 @@
+{
+  "feature": "beacon-design-product-prototype-rebuild-contract",
+  "feature_slug": "beacon-design-product-prototype-rebuild-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-DESIGN-REBUILD-001"
+    ],
+    "AC-002": [
+      "TC-DESIGN-REBUILD-002"
+    ],
+    "AC-003": [
+      "TC-DESIGN-REBUILD-003"
+    ],
+    "AC-004": [
+      "TC-DESIGN-REBUILD-004"
+    ],
+    "AC-005": [
+      "TC-DESIGN-REBUILD-005"
+    ],
+    "AC-006": [
+      "TC-DESIGN-REBUILD-006"
+    ],
+    "AC-007": [
+      "TC-DESIGN-REBUILD-007"
+    ],
+    "AC-008": [
+      "TC-DESIGN-REBUILD-008"
+    ],
+    "AC-009": [
+      "TC-DESIGN-REBUILD-009"
+    ],
+    "AC-010": [
+      "TC-DESIGN-REBUILD-010"
+    ],
+    "AC-011": [
+      "TC-DESIGN-REBUILD-011"
+    ],
+    "AC-012": [
+      "TC-DESIGN-REBUILD-012"
+    ],
+    "AC-013": [
+      "TC-DESIGN-REBUILD-013"
+    ],
+    "AC-014": [
+      "TC-DESIGN-REBUILD-014"
+    ],
+    "AC-015": [
+      "TC-DESIGN-REBUILD-015"
+    ],
+    "AC-016": [
+      "TC-DESIGN-REBUILD-016"
+    ],
+    "AC-017": [
+      "TC-DESIGN-REBUILD-017"
+    ],
+    "AC-018": [
+      "TC-DESIGN-REBUILD-018"
+    ],
+    "AC-019": [
+      "TC-DESIGN-REBUILD-019"
+    ],
+    "AC-020": [
+      "TC-DESIGN-REBUILD-020"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-DESIGN-REBUILD-001",
+      "tc_id": "TC-DESIGN-REBUILD-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: `PRODUCT.md` and `DESIGN.md` participate in design/product truth discovery.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"product_and_design_truth_paths_are_defined\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-DESIGN-REBUILD-002",
+      "tc_id": "TC-DESIGN-REBUILD-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Version design style uses `docs/beacon/<version>/design/style.md` and not feature-local `design/",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"version_design_style_is_version_wide\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-DESIGN-REBUILD-003",
+      "tc_id": "TC-DESIGN-REBUILD-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "static",
+      "layer": "static",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: `.machine/design` is projection/evidence only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "static",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"machine_design_is_projection_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-DESIGN-REBUILD-004",
+      "tc_id": "TC-DESIGN-REBUILD-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "cli",
+      "layer": "cli",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: `beacon design` supports component-system planning or validation.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "cli",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"design_command_supports_component_system_contract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-DESIGN-REBUILD-005",
+      "tc_id": "TC-DESIGN-REBUILD-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Design output includes page, component, state, interaction, accessibility, and responsive axes.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"design_contract_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-DESIGN-REBUILD-006",
+      "tc_id": "TC-DESIGN-REBUILD-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Open-source component library choices are explicit and auditable.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"component_library_choices_are_source_bound\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-DESIGN-REBUILD-007",
+      "tc_id": "TC-DESIGN-REBUILD-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "evidence",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Accepted UI/UX result ledger records accepted facts and affected truth refs.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "evidence",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"accepted_ui_ux_ledger_records_truth_refs\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-DESIGN-REBUILD-008",
+      "tc_id": "TC-DESIGN-REBUILD-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Implement blocks with `accepted_ui_ux_truth_gap`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"implement_blocks_on_unbound_accepted_ui_ux_facts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-DESIGN-REBUILD-009",
+      "tc_id": "TC-DESIGN-REBUILD-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: QA blocks rather than validating stale UI truth.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"qa_blocks_on_stale_ui_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-DESIGN-REBUILD-010",
+      "tc_id": "TC-DESIGN-REBUILD-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "release",
+      "layer": "release",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Release treats unbound accepted UI/UX facts as P0 blocker.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"release_blocks_unbound_accepted_ui_ux_facts\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-DESIGN-REBUILD-011",
+      "tc_id": "TC-DESIGN-REBUILD-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "prototype",
+      "layer": "prototype",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: `beacon prototype` defaults to accepted design truth adapter behavior for v1.4.11+.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prototype",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"prototype_defaults_to_design_truth_adapter\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-DESIGN-REBUILD-012",
+      "tc_id": "TC-DESIGN-REBUILD-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "prototype",
+      "layer": "prototype",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: Legacy wireframe inspection requires include-legacy / compat behavior.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prototype",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"legacy_wireframe_requires_explicit_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-012-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-DESIGN-REBUILD-013",
+      "tc_id": "TC-DESIGN-REBUILD-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "static",
+      "layer": "static",
+      "scenario_family": "primary",
+      "title": "AC-013 primary path :: Current status no longer uses `legacy_source_only`; it uses `migration_input_present`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "static",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"legacy_source_only_is_retired\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-013-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-DESIGN-REBUILD-014",
+      "tc_id": "TC-DESIGN-REBUILD-014-PRIMARY",
+      "ac_id": "AC-014",
+      "qa_type": "gate",
+      "layer": "gate",
+      "scenario_family": "primary",
+      "title": "AC-014 primary path :: Legacy wireframe source cannot satisfy current prototype gate or UI/UX truth writeback.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "gate",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"legacy_wireframe_cannot_satisfy_current_gate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-014-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-DESIGN-REBUILD-015",
+      "tc_id": "TC-DESIGN-REBUILD-015-PRIMARY",
+      "ac_id": "AC-015",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-015 primary path :: `$beacon:beacon-design` exists as support-only and exposes `explore`, `system`, `review`, `polis",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_child_skill_exposes_stable_routes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-015-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-DESIGN-REBUILD-016",
+      "tc_id": "TC-DESIGN-REBUILD-016-PRIMARY",
+      "ac_id": "AC-016",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-016 primary path :: `beacon-design-explore` and `beacon-design-extract` preserve `vibe-to-ui` exploration and extrac",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_vibe_to_ui_routes_preserve_explore_and_extract\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-016-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-DESIGN-REBUILD-017",
+      "tc_id": "TC-DESIGN-REBUILD-017-PRIMARY",
+      "ac_id": "AC-017",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-017 primary path :: `beacon-design-system` preserves `ui-ux-pro-max` design-system and stack-aware component baselin",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_system_route_preserves_ui_ux_pro_max\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-017-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-DESIGN-REBUILD-018",
+      "tc_id": "TC-DESIGN-REBUILD-018-PRIMARY",
+      "ac_id": "AC-018",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-018 primary path :: `beacon-design-review` and `beacon-design-polish` preserve `impeccable` review, hardening, and p",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_review_and_polish_routes_preserve_impeccable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-018-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-DESIGN-REBUILD-019",
+      "tc_id": "TC-DESIGN-REBUILD-019-PRIMARY",
+      "ac_id": "AC-019",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-019 primary path :: `beacon-design-library` uses `awesome-design-md` only as reference source and not as execution o",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_library_is_reference_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-019-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-020",
+      "source_tc_id": "TC-DESIGN-REBUILD-020",
+      "tc_id": "TC-DESIGN-REBUILD-020-PRIMARY",
+      "ac_id": "AC-020",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-020 primary path :: `beacon-design-bootstrap` validates installed/mirrored/bootstrap availability without becoming t",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_product_prototype_rebuild.py -k \"beacon_design_bootstrap_is_capability_admission_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-product-prototype-rebuild-contract/TC-DESIGN-REBUILD-020-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

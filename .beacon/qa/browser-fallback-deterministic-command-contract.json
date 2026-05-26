@@ -1,0 +1,389 @@
+{
+  "feature": "browser-fallback-deterministic-command-contract",
+  "feature_slug": "browser-fallback-deterministic-command-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-BROWSER-FALLBACK-001"
+    ],
+    "AC-002": [
+      "TC-BROWSER-FALLBACK-002"
+    ],
+    "AC-003": [
+      "TC-BROWSER-FALLBACK-003"
+    ],
+    "AC-004": [
+      "TC-BROWSER-FALLBACK-004"
+    ],
+    "AC-005": [
+      "TC-BROWSER-FALLBACK-005"
+    ],
+    "AC-006": [
+      "TC-BROWSER-FALLBACK-006"
+    ],
+    "AC-007": [
+      "TC-BROWSER-FALLBACK-007"
+    ],
+    "AC-008": [
+      "TC-BROWSER-FALLBACK-008"
+    ],
+    "AC-009": [
+      "TC-BROWSER-FALLBACK-009"
+    ],
+    "AC-010": [
+      "TC-BROWSER-FALLBACK-010"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-BROWSER-FALLBACK-001",
+      "tc_id": "TC-BROWSER-FALLBACK-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "cli",
+      "layer": "cli",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Browser adapter current syntax exposes deterministic command option.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "cli",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_deterministic_command_option\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-BROWSER-FALLBACK-002",
+      "tc_id": "TC-BROWSER-FALLBACK-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: `--fallback-cmd` remains callable as compatibility alias.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_cmd_remains_compat_alias\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-BROWSER-FALLBACK-003",
+      "tc_id": "TC-BROWSER-FALLBACK-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "evidence",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Deterministic command evidence uses `execution_mode=deterministic_command`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "evidence",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_execution_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-BROWSER-FALLBACK-004",
+      "tc_id": "TC-BROWSER-FALLBACK-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "evidence",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Evidence separates browser availability from deterministic command execution.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "evidence",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"browser_agent_and_command_evidence_are_split\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-BROWSER-FALLBACK-005",
+      "tc_id": "TC-BROWSER-FALLBACK-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "evidence",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Deterministic command success does not claim browser-agent success.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "evidence",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"deterministic_command_does_not_claim_browser_success\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-BROWSER-FALLBACK-006",
+      "tc_id": "TC-BROWSER-FALLBACK-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Legacy alias usage records compatibility evidence bound to `browser-fallback-command-name`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"fallback_alias_records_compatibility_evidence\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-BROWSER-FALLBACK-007",
+      "tc_id": "TC-BROWSER-FALLBACK-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "generation",
+      "layer": "generation",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Current generated QA/browser templates do not promote legacy fallback syntax.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "generation",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"current_templates_prefer_deterministic_command\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-BROWSER-FALLBACK-008",
+      "tc_id": "TC-BROWSER-FALLBACK-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "guardrail",
+      "layer": "guardrail",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Missing browser agent and deterministic command fails closed with clear reason code.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "guardrail",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"missing_browser_and_command_fail_closed\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-BROWSER-FALLBACK-009",
+      "tc_id": "TC-BROWSER-FALLBACK-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Prototype/design, QA mirror, PRD mirror, implement, memory, intent, and marker behavior remain o",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-BROWSER-FALLBACK-010",
+      "tc_id": "TC-BROWSER-FALLBACK-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "readout",
+      "layer": "readout",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Readout distinguishes browser setup repair from deterministic command setup repair.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "readout",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_browser_fallback_deterministic_command.py -k \"readout_distinguishes_browser_and_command_repair\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/browser-fallback-deterministic-command-contract/TC-BROWSER-FALLBACK-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

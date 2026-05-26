@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "action": "run",
-  "run_id": "run-20260526T005514Z-507b",
+  "run_id": "run-20260526T152326Z-36bd",
   "hook_id": "beacon-post-release-local-install",
-  "version": "v1.4.10",
-  "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+  "version": "v1.4.11",
+  "feature": "browser-fallback-deterministic-command-contract",
   "dry_run": false,
   "confirmed": true,
   "status": "passed",
@@ -14,15 +14,15 @@
     "schema_version": "1.0",
     "action": "plan",
     "hook_id": "beacon-post-release-local-install",
-    "version": "v1.4.10",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+    "version": "v1.4.11",
+    "feature": "browser-fallback-deterministic-command-contract",
     "status": "planned",
     "blocked": false,
     "admission": {
       "schema_version": "1.0",
       "hook_id": "beacon-post-release-local-install",
       "hook_code": "post_release",
-      "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+      "feature": "browser-fallback-deterministic-command-contract",
       "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
       "status": "pass",
       "blocked": false,
@@ -56,12 +56,12 @@
   "side_effect_executed": true,
   "runtime_evidence_only": true,
   "truth_authority": false,
-  "written_at": "2026-05-26T00:55:14.989965+00:00",
+  "written_at": "2026-05-26T15:23:26.685326+00:00",
   "post_release_followup": {
     "schema_version": "1.0",
     "hook_id": "beacon-post-release-local-install",
-    "version": "v1.4.10",
-    "feature": "qa-browser-memory-and-skill-evolution-advisory-loop",
+    "version": "v1.4.11",
+    "feature": "browser-fallback-deterministic-command-contract",
     "status": "pass",
     "blocked": false,
     "reason_codes": [],
@@ -122,6 +122,12 @@
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-deep",
               "action": "unchanged",
               "source_hash": "2cd142d258267fa7df1147940c2ed4fe8181939ef65c4ecef7e33de6773f6152"
+            },
+            {
+              "id": "beacon-design",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design",
+              "action": "unchanged",
+              "source_hash": "6647dd8535e3097d5075bc76c5eb76c2208b683eefc3787836138bffd4eec2d0"
             },
             {
               "id": "beacon-design-review",
@@ -300,7 +306,7 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "codex",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
-          "runtime_version": "v1.4.10",
+          "runtime_version": "v1.4.11",
           "strict": true,
           "status": "pass",
           "ok": true,
@@ -333,6 +339,7 @@
                   "beacon-context-engineering",
                   "beacon-debug-recovery",
                   "beacon-deep",
+                  "beacon-design",
                   "beacon-design-review",
                   "beacon-doctor",
                   "beacon-documentation-adr",
@@ -438,6 +445,12 @@
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-deep",
               "action": "unchanged",
               "source_hash": "2cd142d258267fa7df1147940c2ed4fe8181939ef65c4ecef7e33de6773f6152"
+            },
+            {
+              "id": "beacon-design",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design",
+              "action": "unchanged",
+              "source_hash": "6647dd8535e3097d5075bc76c5eb76c2208b683eefc3787836138bffd4eec2d0"
             },
             {
               "id": "beacon-design-review",
@@ -616,7 +629,7 @@
           "project_root": "/Users/apple/Developer/Personal/products/beacon",
           "agent": "claude",
           "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
-          "runtime_version": "v1.4.10",
+          "runtime_version": "v1.4.11",
           "strict": true,
           "status": "pass",
           "ok": true,
@@ -649,6 +662,7 @@
                   "beacon-context-engineering",
                   "beacon-debug-recovery",
                   "beacon-deep",
+                  "beacon-design",
                   "beacon-design-review",
                   "beacon-doctor",
                   "beacon-documentation-adr",
@@ -722,7 +736,7 @@
         ],
         "path": "/Users/apple/.local/bin/beacon",
         "status": "pass",
-        "stdout": "Beacon CLI v1.4.10",
+        "stdout": "Beacon CLI v1.4.11",
         "stderr": "",
         "returncode": 0,
         "reason_code": ""
@@ -734,24 +748,24 @@
         ],
         "path": "/Users/apple/.local/bin/beacon-cli",
         "status": "pass",
-        "stdout": "Beacon CLI v1.4.10",
+        "stdout": "Beacon CLI v1.4.11",
         "stderr": "",
         "returncode": 0,
         "reason_code": ""
       }
     },
     "commands_confirmed": [
-      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.10 --agent codex --force --json",
-      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.10 --agent codex --strict --json",
-      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.10 --agent claude --force --json",
-      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.10 --agent claude --strict --json",
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.11 --agent codex --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.11 --agent codex --strict --json",
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.11 --agent claude --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.11 --agent claude --strict --json",
       "python3 -m beacon.main doctor setup --force --json",
       "beacon --version",
       "beacon-cli --version"
     ]
   },
   "evidence_paths": {
-    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260526T005514Z-507b.json",
+    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260526T152326Z-36bd.json",
     "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
   }
 }
