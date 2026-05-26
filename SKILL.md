@@ -1,22 +1,22 @@
 ---
 name: beacon
-version: 1.4.10
+version: 1.4.11
 description: Evidence-first Product Workflow Kernel for product thinking, user stories, PRDs, test cases, and release workflows
 ---
 
 # Beacon - Evidence-first Product Workflow Kernel
 
-> **Skill Version**: v1.4.10
-> **CLI Version**: v1.4.10
+> **Skill Version**: v1.4.11
+> **CLI Version**: v1.4.11
 > **Last Updated**: 2026-05-07
 
 Beacon 是 AI 产品工作流内核，把 requirement materials、实现证据、QA 结论和 release 决策统一到一个版本化系统。
 
 ## 当前版本 / 发布线
 
-- **当前发布线**：`v1.4.10`
-- **当前包版本**：`1.4.10`
-- **最新已接受文档线**：`v1.4.10`
+- **当前发布线**：`v1.4.11`
+- **当前包版本**：`1.4.11`
+- **最新已接受文档线**：`v1.4.11`
 - **标准打包入口**：`skills/beacon/`
 - **文档主源**：`docs/beacon/{version}/`
 - `beacon <subcommand>`（推荐）
@@ -146,6 +146,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 
 | 关键词 | 对应子命令 |
 |--------|------------|
+| `beacon automation` | `automation` |
 | `beacon ask` | `ask` |
 | `beacon analyze` | `analyze` |
 | `beacon archive` | `archive` |
@@ -164,6 +165,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 | `beacon friction-intake` | `friction-intake` |
 | `beacon freeze` | `freeze` |
 | `beacon help` | `help` |
+| `beacon hooks` | `hooks` |
 | `beacon gate` | `gate` |
 | `beacon implement` | `implement` |
 | `beacon init` | `init` |
@@ -208,6 +210,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 
 | 子命令 | 推荐触发 |
 |-------|----------|
+| `automation` | `beacon automation` |
 | `ask` | `beacon ask` |
 | `analyze` | `beacon analyze` |
 | `archive` | `beacon archive` |
@@ -226,6 +229,7 @@ beacon doctor verify-codex-hud-hook --project-root . --version v1.4.0 --json
 | `friction-intake` | `beacon friction-intake` |
 | `freeze` | `beacon freeze` |
 | `help` | `beacon help` |
+| `hooks` | `beacon hooks` |
 | `gate` | `beacon gate` |
 | `implement` | `beacon implement` |
 | `init` | `beacon init` |
