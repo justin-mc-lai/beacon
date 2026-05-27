@@ -1,0 +1,883 @@
+{
+  "schema_version": "1.0",
+  "feature": "memory-intent-historical-migration-boundary-contract",
+  "feature_slug": "memory-intent-historical-migration-boundary-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-27T01:03:30.506682+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:9cfb4b42a015d1109da83308e1d1a6a7fc943f7c8a219042728c2d3b1a109555",
+      "superseded_by": "R2",
+      "created_at": "2026-05-26T23:37:49.203157+00:00",
+      "frozen_at": "2026-05-26T23:37:52.816587+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "source_revision_id": "R1",
+      "reason": "freeze phase 9 memory and intent historical migration boundary after prototype/design rebuild and browser deterministic command rename",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:9cfb4b42a015d1109da83308e1d1a6a7fc943f7c8a219042728c2d3b1a109555",
+      "superseded_by": null,
+      "created_at": "2026-05-26T23:38:00.661222+00:00",
+      "frozen_at": "2026-05-26T23:38:03.067970+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "memory-intent-historical-migration-boundary-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "memory import",
+          "text": "Old memory rows remain importable into current `memory-v1`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "migration transaction",
+          "text": "First legacy memory migration writes an auditable migration transaction.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "current projection",
+          "text": "`memory-v1` is treated as the current memory projection after migration.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no default legacy write",
+          "text": "Current memory writes do not update legacy memory projection files by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "explicit compat projection",
+          "text": "Legacy memory projection writes require explicit compatibility mode or explicit migration/export command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "intent compat classification",
+          "text": "Legacy intent router usage is marked as compatibility routing.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "old intent callable",
+          "text": "Old intent APIs remain callable through explicit compatibility admission.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no false current route",
+          "text": "Current intent routing does not claim legacy router output as current route evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "memory registry binding",
+          "text": "Memory behavior binds to `memory-legacy-projection`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "intent registry binding",
+          "text": "Intent behavior binds to `intent-legacy-router`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "no unrelated behavior",
+          "text": "Tests prove no prototype/design, browser, QA/PRD mirror, implement package, command removal, release, or test marker behavior changes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Old memory rows remain importable into current `memory-v1`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — First legacy memory migration writes an auditable migration transaction.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `memory-v1` is treated as the current memory projection after migration.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Current memory writes do not update legacy memory projection files by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Legacy memory projection writes require explicit compatibility mode or explicit migration/export command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Legacy intent router usage is marked as compatibility routing.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Old intent APIs remain callable through explicit compatibility admission.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Current intent routing does not claim legacy router output as current route evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Memory behavior binds to `memory-legacy-projection`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Intent behavior binds to `intent-legacy-router`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — Tests prove no prototype/design, browser, QA/PRD mirror, implement package, command removal, release, or test marker behavior changes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "memory-intent-historical-migration-boundary-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "state_machine": [
+            "`current_memory_write_only -> silent_legacy_projection_write`: blocked because legacy projection must be explicit compat behavior.",
+            "`legacy_intent_api_called -> current_route_claim`: blocked because legacy API usage is compatibility evidence.",
+            "`migration_transaction_missing -> release_ready_for_migration_slice`: blocked because migration must be auditable."
+          ],
+          "decision_priority": [
+            "Preserve old memory importability.",
+            "Preserve old intent API callability under explicit compatibility admission.",
+            "Make current memory writes target `memory-v1` without default legacy projection writes.",
+            "Make first migration auditable through a migration transaction.",
+            "Make current intent routing boundary-aware and distinct from compatibility routing.",
+            "Do not change prototype/design, browser fallback naming, QA/PRD mirrors, implement package, command removal, or test marker relayering in this slice."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`current_memory_write_only -> silent_legacy_projection_write`: blocked because legacy projection must be explicit compat behavior.",
+              "`legacy_intent_api_called -> current_route_claim`: blocked because legacy API usage is compatibility evidence.",
+              "`migration_transaction_missing -> release_ready_for_migration_slice`: blocked because migration must be auditable."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Preserve old memory importability.",
+              "Preserve old intent API callability under explicit compatibility admission.",
+              "Make current memory writes target `memory-v1` without default legacy projection writes.",
+              "Make first migration auditable through a migration transaction.",
+              "Make current intent routing boundary-aware and distinct from compatibility routing.",
+              "Do not change prototype/design, browser fallback naming, QA/PRD mirrors, implement package, command removal, or test marker relayering in this slice."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "memory-intent-historical-migration-boundary-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "memory import",
+          "text": "Old memory rows remain importable into current `memory-v1`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "migration transaction",
+          "text": "First legacy memory migration writes an auditable migration transaction.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "current projection",
+          "text": "`memory-v1` is treated as the current memory projection after migration.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no default legacy write",
+          "text": "Current memory writes do not update legacy memory projection files by default.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "explicit compat projection",
+          "text": "Legacy memory projection writes require explicit compatibility mode or explicit migration/export command.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "intent compat classification",
+          "text": "Legacy intent router usage is marked as compatibility routing.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "old intent callable",
+          "text": "Old intent APIs remain callable through explicit compatibility admission.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no false current route",
+          "text": "Current intent routing does not claim legacy router output as current route evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "memory registry binding",
+          "text": "Memory behavior binds to `memory-legacy-projection`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "intent registry binding",
+          "text": "Intent behavior binds to `intent-legacy-router`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "no unrelated behavior",
+          "text": "Tests prove no prototype/design, browser, QA/PRD mirror, implement package, command removal, release, or test marker behavior changes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Old memory rows remain importable into current `memory-v1`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — First legacy memory migration writes an auditable migration transaction.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `memory-v1` is treated as the current memory projection after migration.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Current memory writes do not update legacy memory projection files by default.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Legacy memory projection writes require explicit compatibility mode or explicit migration/export command.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Legacy intent router usage is marked as compatibility routing.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Old intent APIs remain callable through explicit compatibility admission.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Current intent routing does not claim legacy router output as current route evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Memory behavior binds to `memory-legacy-projection`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Intent behavior binds to `intent-legacy-router`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — Tests prove no prototype/design, browser, QA/PRD mirror, implement package, command removal, release, or test marker behavior changes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T010309Z-5df4",
+          "verified_by_run_id": "run-20260527T090322522512",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "memory-intent-historical-migration-boundary-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "state_machine": [
+            "`current_memory_write_only -> silent_legacy_projection_write`: blocked because legacy projection must be explicit compat behavior.",
+            "`legacy_intent_api_called -> current_route_claim`: blocked because legacy API usage is compatibility evidence.",
+            "`migration_transaction_missing -> release_ready_for_migration_slice`: blocked because migration must be auditable."
+          ],
+          "decision_priority": [
+            "Preserve old memory importability.",
+            "Preserve old intent API callability under explicit compatibility admission.",
+            "Make current memory writes target `memory-v1` without default legacy projection writes.",
+            "Make first migration auditable through a migration transaction.",
+            "Make current intent routing boundary-aware and distinct from compatibility routing.",
+            "Do not change prototype/design, browser fallback naming, QA/PRD mirrors, implement package, command removal, or test marker relayering in this slice."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`current_memory_write_only -> silent_legacy_projection_write`: blocked because legacy projection must be explicit compat behavior.",
+              "`legacy_intent_api_called -> current_route_claim`: blocked because legacy API usage is compatibility evidence.",
+              "`migration_transaction_missing -> release_ready_for_migration_slice`: blocked because migration must be auditable."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Preserve old memory importability.",
+              "Preserve old intent API callability under explicit compatibility admission.",
+              "Make current memory writes target `memory-v1` without default legacy projection writes.",
+              "Make first migration auditable through a migration transaction.",
+              "Make current intent routing boundary-aware and distinct from compatibility routing.",
+              "Do not change prototype/design, browser fallback naming, QA/PRD mirrors, implement package, command removal, or test marker relayering in this slice."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md"
+          }
+        ]
+      },
+      "feature": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "beacon/utils/memory.py",
+        "beacon/utils/intent_router.py",
+        "beacon/commands/remember.py",
+        "tests/test_v1411_memory_intent_historical_migration_boundary.py",
+        "tests/test_memory_envelope.py",
+        "tests/test_feedback_memory_assimilation.py",
+        "tests/test_workflow_memory_lifecycle.py",
+        "tests/test_team_release_memory_trace.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/ac-closure.json",
+        ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

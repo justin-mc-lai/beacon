@@ -1,0 +1,427 @@
+{
+  "feature": "memory-intent-historical-migration-boundary-contract",
+  "feature_slug": "memory-intent-historical-migration-boundary-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-MEMORY-INTENT-001"
+    ],
+    "AC-002": [
+      "TC-MEMORY-INTENT-002"
+    ],
+    "AC-003": [
+      "TC-MEMORY-INTENT-003"
+    ],
+    "AC-004": [
+      "TC-MEMORY-INTENT-004"
+    ],
+    "AC-005": [
+      "TC-MEMORY-INTENT-005"
+    ],
+    "AC-006": [
+      "TC-MEMORY-INTENT-006"
+    ],
+    "AC-007": [
+      "TC-MEMORY-INTENT-007"
+    ],
+    "AC-008": [
+      "TC-MEMORY-INTENT-008"
+    ],
+    "AC-009": [
+      "TC-MEMORY-INTENT-009"
+    ],
+    "AC-010": [
+      "TC-MEMORY-INTENT-010"
+    ],
+    "AC-011": [
+      "TC-MEMORY-INTENT-011"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-MEMORY-INTENT-001",
+      "tc_id": "TC-MEMORY-INTENT-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "memory",
+      "layer": "memory",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Old memory rows can still be imported into `memory-v1`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "memory",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"old_memory_rows_remain_importable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-MEMORY-INTENT-002",
+      "tc_id": "TC-MEMORY-INTENT-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "evidence",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: First legacy memory migration writes an auditable migration transaction.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "evidence",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"first_migration_writes_transaction\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-MEMORY-INTENT-003",
+      "tc_id": "TC-MEMORY-INTENT-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "memory",
+      "layer": "memory",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: `memory-v1` is the current memory projection after migration.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "memory",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"memory_v1_is_current_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-MEMORY-INTENT-004",
+      "tc_id": "TC-MEMORY-INTENT-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "guardrail",
+      "layer": "guardrail",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Current memory writes do not silently update legacy projection files.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "guardrail",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"current_memory_write_does_not_write_legacy_projection_by_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-MEMORY-INTENT-005",
+      "tc_id": "TC-MEMORY-INTENT-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Legacy projection writes require explicit compatibility mode or explicit migration/export comman",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_projection_requires_explicit_compat_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-MEMORY-INTENT-006",
+      "tc_id": "TC-MEMORY-INTENT-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "intent",
+      "layer": "intent",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Legacy intent router usage is marked as compatibility routing.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "intent",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_intent_router_is_compat_classified\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-MEMORY-INTENT-007",
+      "tc_id": "TC-MEMORY-INTENT-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "functional",
+      "layer": "ui",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Old intent APIs remain callable through explicit compatibility admission.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "functional",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"old_intent_api_remains_callable_with_compat_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Web UI assertions and key actions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-MEMORY-INTENT-008",
+      "tc_id": "TC-MEMORY-INTENT-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "intent",
+      "layer": "intent",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Legacy router output is not claimed as current route evidence.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "intent",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_route_does_not_claim_current_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-MEMORY-INTENT-009",
+      "tc_id": "TC-MEMORY-INTENT-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "registry",
+      "layer": "registry",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Memory behavior binds to `memory-legacy-projection`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "registry",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"memory_registry_binding\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-MEMORY-INTENT-010",
+      "tc_id": "TC-MEMORY-INTENT-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "registry",
+      "layer": "registry",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Intent behavior binds to `intent-legacy-router`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "registry",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"intent_registry_binding\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-MEMORY-INTENT-011",
+      "tc_id": "TC-MEMORY-INTENT-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: Prototype/design, browser, QA/PRD mirror, implement, command removal, release, and test marker b",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/memory-intent-historical-migration-boundary-contract/TC-MEMORY-INTENT-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}
