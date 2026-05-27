@@ -1,0 +1,833 @@
+{
+  "schema_version": "1.0",
+  "feature": "test-directory-marker-relayering-contract",
+  "feature_slug": "test-directory-marker-relayering-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-27T01:37:58.998401+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "test-directory-marker-relayering-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:6964d2d6a4d03cd518e91a18cd3ae35c16ccc0a2d67859218bf133788b971934",
+      "superseded_by": "R2",
+      "created_at": "2026-05-27T01:17:13.410121+00:00",
+      "frozen_at": "2026-05-27T01:17:16.886422+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "test-directory-marker-relayering-contract",
+      "source_revision_id": "R1",
+      "reason": "Freeze Phase 10 test directory and marker relayering without runtime behavior changes",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:6964d2d6a4d03cd518e91a18cd3ae35c16ccc0a2d67859218bf133788b971934",
+      "superseded_by": null,
+      "created_at": "2026-05-27T01:17:52.757681+00:00",
+      "frozen_at": "2026-05-27T01:17:55.203082+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "test-directory-marker-relayering-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "marker registry",
+          "text": "Pytest markers exist for `current_contract`, `projection_integrity`, `compat_contract`, `historical_fixture`, `migration`, and `deprecated`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "test classification",
+          "text": "v1.4.11 retirement tests are classified with at least one deterministic marker.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "current boundary",
+          "text": "Current contract tests do not assert legacy fallback as default current behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "compat registry binding",
+          "text": "Compatibility tests bind to a compatibility registry id when they test registered compatibility behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "historical boundary",
+          "text": "Historical fixture tests cannot be used as current closure evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "migration evidence",
+          "text": "Migration tests expose required migration evidence or transaction assertions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "deprecated boundary",
+          "text": "Deprecated command/API tests prove callability only and do not promote default current routes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "Projection integrity tests are separate from human truth authority tests.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "validation output",
+          "text": "Marker validation produces a deterministic, CI-readable result.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "no runtime change",
+          "text": "This feature does not move broad test directories or change runtime behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Pytest markers exist for `current_contract`, `projection_integrity`, `compat_contract`, `historical_fixture`, `migration`, and `deprecated`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — v1.4.11 retirement tests are classified with at least one deterministic marker.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Current contract tests do not assert legacy fallback as default current behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Compatibility tests bind to a compatibility registry id when they test registered compatibility behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Historical fixture tests cannot be used as current closure evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Migration tests expose required migration evidence or transaction assertions.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Deprecated command/API tests prove callability only and do not promote default current routes.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Projection integrity tests are separate from human truth authority tests.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Marker validation produces a deterministic, CI-readable result.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — This feature does not move broad test directories or change runtime behavior.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "test-directory-marker-relayering-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "state_machine": [
+            "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+            "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+            "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+            "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+          ],
+          "decision_priority": [
+            "Current behavior must be easy to identify and run.",
+            "Compatibility behavior must remain covered before retirement.",
+            "Historical fixtures must remain useful without becoming current closure.",
+            "Migration behavior must be auditable.",
+            "Projection integrity must stay separate from human truth authority.",
+            "Marker governance must be lightweight and deterministic.",
+            "Do not move large test directories unless marker classification proves insufficient."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+              "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+              "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+              "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Current behavior must be easy to identify and run.",
+              "Compatibility behavior must remain covered before retirement.",
+              "Historical fixtures must remain useful without becoming current closure.",
+              "Migration behavior must be auditable.",
+              "Projection integrity must stay separate from human truth authority.",
+              "Marker governance must be lightweight and deterministic.",
+              "Do not move large test directories unless marker classification proves insufficient."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "test-directory-marker-relayering-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "marker registry",
+          "text": "Pytest markers exist for `current_contract`, `projection_integrity`, `compat_contract`, `historical_fixture`, `migration`, and `deprecated`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "test classification",
+          "text": "v1.4.11 retirement tests are classified with at least one deterministic marker.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "current boundary",
+          "text": "Current contract tests do not assert legacy fallback as default current behavior.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "compat registry binding",
+          "text": "Compatibility tests bind to a compatibility registry id when they test registered compatibility behavior.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "historical boundary",
+          "text": "Historical fixture tests cannot be used as current closure evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "migration evidence",
+          "text": "Migration tests expose required migration evidence or transaction assertions.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "deprecated boundary",
+          "text": "Deprecated command/API tests prove callability only and do not promote default current routes.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "Projection integrity tests are separate from human truth authority tests.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "validation output",
+          "text": "Marker validation produces a deterministic, CI-readable result.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "no runtime change",
+          "text": "This feature does not move broad test directories or change runtime behavior.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Pytest markers exist for `current_contract`, `projection_integrity`, `compat_contract`, `historical_fixture`, `migration`, and `deprecated`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — v1.4.11 retirement tests are classified with at least one deterministic marker.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Current contract tests do not assert legacy fallback as default current behavior.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Compatibility tests bind to a compatibility registry id when they test registered compatibility behavior.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Historical fixture tests cannot be used as current closure evidence.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Migration tests expose required migration evidence or transaction assertions.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Deprecated command/API tests prove callability only and do not promote default current routes.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Projection integrity tests are separate from human truth authority tests.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Marker validation produces a deterministic, CI-readable result.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — This feature does not move broad test directories or change runtime behavior.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T013617Z-8ba3",
+          "verified_by_run_id": "run-20260527T093750211417",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "test-directory-marker-relayering-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "state_machine": [
+            "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+            "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+            "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+            "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+          ],
+          "decision_priority": [
+            "Current behavior must be easy to identify and run.",
+            "Compatibility behavior must remain covered before retirement.",
+            "Historical fixtures must remain useful without becoming current closure.",
+            "Migration behavior must be auditable.",
+            "Projection integrity must stay separate from human truth authority.",
+            "Marker governance must be lightweight and deterministic.",
+            "Do not move large test directories unless marker classification proves insufficient."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "state_machine",
+            "text": "State machine transitions remain explicit",
+            "details": [
+              "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+              "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+              "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+              "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+          },
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Current behavior must be easy to identify and run.",
+              "Compatibility behavior must remain covered before retirement.",
+              "Historical fixtures must remain useful without becoming current closure.",
+              "Migration behavior must be auditable.",
+              "Projection integrity must stay separate from human truth authority.",
+              "Marker governance must be lightweight and deterministic.",
+              "Do not move large test directories unless marker classification proves insufficient."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+          }
+        ]
+      },
+      "feature": "test-directory-marker-relayering-contract",
+      "feature_slug": "test-directory-marker-relayering-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "pyproject.toml",
+        "beacon/utils/test_marker_governance.py",
+        "tests/test_v1411_test_directory_marker_relayering.py",
+        "tests/test_v1411_authority_vocabulary_and_inventory.py",
+        "tests/test_v1411_compatibility_registry_and_command_catalog.py",
+        "tests/test_v1411_qa_prd_legacy_mirror_policy.py",
+        "tests/test_v1411_implement_package_legacy_loader_retirement.py",
+        "tests/test_v1411_beacon_design_product_prototype_rebuild.py",
+        "tests/test_v1411_browser_fallback_deterministic_command.py",
+        "tests/test_v1411_memory_intent_historical_migration_boundary.py",
+        "tests",
+        "beacon/utils"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/test-directory-marker-relayering-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/test-directory-marker-relayering-contract/ac-closure.json",
+        ".beacon/qa/features/test-directory-marker-relayering-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

@@ -1,29 +1,29 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-27T09:03:22.523504",
+  "timestamp": "2026-05-27T11:18:29.720712",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.11",
-  "run_id": "run-20260527T090322522512",
-  "spec_fingerprint_hash": "85646a232960aa2b8a818f71b1663ea92fa9d1a5fa66cf9293de57b41124ce94",
+  "run_id": "run-20260527T111829719823",
+  "spec_fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8",
   "status": "passed",
   "selected_layers": [
-    "compatibility",
     "contract",
+    "exception",
     "regression"
   ],
   "execution": {
-    "run_id": "run-20260527T090322522512",
+    "run_id": "run-20260527T111829719823",
     "version": "v1.4.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260527T090322522512",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260527T111829719823",
     "spec_fingerprint": {
-      "fingerprint_hash": "85646a232960aa2b8a818f71b1663ea92fa9d1a5fa66cf9293de57b41124ce94",
+      "fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8",
       "version": "v1.4.11",
-      "generated_at": "2026-05-27T01:03:30.426529+00:00"
+      "generated_at": "2026-05-27T03:18:39.198892+00:00"
     },
     "layers": [
       {
-        "layer": "compatibility",
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_projection_requires_explicit_compat_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "contract",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_wording_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -35,22 +35,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "517c08fa66c4d6469968040e6c852d57472823c0a85ae7eb53b3b25bef91b57e",
-        "started_at": "2026-05-27T09:03:22.523845",
-        "ended_at": "2026-05-27T09:03:23.038656",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/junit.xml",
+        "execution_fingerprint": "00e730952e206e158e0a5180670feda99cbc0a8c60a16be691a5d5f60147d089",
+        "started_at": "2026-05-27T11:18:29.721015",
+        "ended_at": "2026-05-27T11:18:30.267012",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/result.json"
         ]
       },
       {
-        "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"old_memory_rows_remain_importable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "layer": "exception",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"guard_does_not_add_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -62,22 +62,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "5ea2a404f5f5bc5725ea2f53012c6e2a59daba89b3ef2b51a83bd7b79297bdc3",
-        "started_at": "2026-05-27T09:03:23.039515",
-        "ended_at": "2026-05-27T09:03:23.524718",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/contract/junit.xml",
+        "execution_fingerprint": "a677318cbe58375d1846d3d6925d17ee4b5d1646fd6f37f8d08892deed8becc6",
+        "started_at": "2026-05-27T11:18:30.267899",
+        "ended_at": "2026-05-27T11:18:30.914296",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/exception/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/result.json"
         ]
       },
       {
         "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_guard_regression_suite_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -89,36 +89,35 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "8f1616ab9e4f0806f8ccc75c1f51abc3db937b99b9c7a3c821e6add763d2c338",
-        "started_at": "2026-05-27T09:03:23.525447",
-        "ended_at": "2026-05-27T09:03:23.955825",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/regression/junit.xml",
+        "execution_fingerprint": "3f2710a2e6807e1f1fb0b7220877b8c60d0b35a8c412fa447344c7a12c158abd",
+        "started_at": "2026-05-27T11:18:30.915425",
+        "ended_at": "2026-05-27T11:18:31.535627",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
+    "matrix_report": {
+      "status": "ok",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "evidence_generated": 10,
+      "entry_count": 10,
+      "freshness_violations": []
+    },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260527T090322522512/compatibility/pair-evidence.json",
-      ".beacon/evidence/auto-test/run-20260527T090322522512/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260527T090322522512/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260527T090322522512/summary.json",
+      ".beacon/evidence/auto-test/run-20260527T111829719823/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260527T111829719823/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260527T111829719823/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
-    "matrix_report": {
-      "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
-      "evidence_generated": 11,
-      "entry_count": 11,
-      "freshness_violations": []
-    },
     "qa9_matrix_schema_version": "1.0",
     "flaky": {
       "pass_count": 3,
@@ -130,11 +129,11 @@
   "qa9": {
     "qa_profile": "web-full",
     "qa_types": [
-      "compatibility",
       "contract",
+      "exception",
       "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -147,23 +146,23 @@
       "executed_pairs": []
     },
     "summary": {
-      "cases_total": 11,
-      "passed": 11,
+      "cases_total": 10,
+      "passed": 10,
       "failed": 0,
       "blocked": 0,
       "pending": 0,
       "pass_rate": 1.0,
       "automation_rate": 1.0,
-      "auto_cases_total": 11,
-      "auto_cases_executed": 11,
+      "auto_cases_total": 10,
+      "auto_cases_executed": 10,
       "round_stop_triggered": false,
       "round_stop_reasons": []
     },
     "tc_results": [
       {
-        "tc_id": "TC-MEMORY-INTENT-001",
+        "tc_id": "TC-AGG-PROJ-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-MEMORY-INTENT-001",
+        "source_tc_id": "TC-AGG-PROJ-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -173,20 +172,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"old_memory_rows_remain_importable\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_wording_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
         ],
-        "execution_fingerprint": "289f47632651ebd547af4efdf1d819d77f496bb63f5dfc3dd4effae6298148c6",
-        "started_at": "2026-05-27T09:03:23.959783",
-        "ended_at": "2026-05-27T09:03:24.423243",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/junit.xml",
+        "execution_fingerprint": "e63b2a7970ee160cf5cb9c38427e684436ae17963da862718e224b75eb571c52",
+        "started_at": "2026-05-27T11:18:31.539408",
+        "ended_at": "2026-05-27T11:18:32.002028",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -199,9 +198,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-002",
+        "tc_id": "TC-AGG-PROJ-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-MEMORY-INTENT-002",
+        "source_tc_id": "TC-AGG-PROJ-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -211,20 +210,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"first_migration_writes_transaction\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"qa_accepted_feature_requires_feature_change_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
         ],
-        "execution_fingerprint": "4871ae2300b5b678da32ad083730ee5fb5176d402c546b238bb25fa7a3c0f7d5",
-        "started_at": "2026-05-27T09:03:24.424135",
-        "ended_at": "2026-05-27T09:03:24.869572",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/junit.xml",
+        "execution_fingerprint": "7dc6b4d65a94e06fa953a8387f421fcaa773290d804f582b362b8cbb48e728e9",
+        "started_at": "2026-05-27T11:18:32.002867",
+        "ended_at": "2026-05-27T11:18:32.523633",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -237,9 +236,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-003",
+        "tc_id": "TC-AGG-PROJ-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-MEMORY-INTENT-003",
+        "source_tc_id": "TC-AGG-PROJ-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -249,20 +248,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"memory_v1_is_current_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_create_rebuilds_version_projection_with_dependency_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
         ],
-        "execution_fingerprint": "6d7552253655e9060d94654501eb9d1787c01e505d4cff0fa2e8037d1dc367d0",
-        "started_at": "2026-05-27T09:03:24.870397",
-        "ended_at": "2026-05-27T09:03:25.311116",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/junit.xml",
+        "execution_fingerprint": "54408e0ecf7fc5988814cf1c3834ccfe97de0f2f85feb1345a8ad1d3707173ce",
+        "started_at": "2026-05-27T11:18:32.524605",
+        "ended_at": "2026-05-27T11:18:33.164764",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -275,9 +274,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-004",
+        "tc_id": "TC-AGG-PROJ-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-MEMORY-INTENT-004",
+        "source_tc_id": "TC-AGG-PROJ-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -287,20 +286,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"current_memory_write_does_not_write_legacy_projection_by_default\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_blocks_when_current_feature_missing_from_aggregate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
         ],
-        "execution_fingerprint": "3daf35644363d098977fd022153942bfe265e43e1315bb26809b52c037d3bce3",
-        "started_at": "2026-05-27T09:03:25.311896",
-        "ended_at": "2026-05-27T09:03:25.745789",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/junit.xml",
+        "execution_fingerprint": "83c7fc2fda55fd80ea9507335d741853f8bb9db77eb2927aec84a30e9a4a9e0c",
+        "started_at": "2026-05-27T11:18:33.165630",
+        "ended_at": "2026-05-27T11:18:33.862861",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -313,42 +312,35 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-005",
+        "tc_id": "TC-AGG-PROJ-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-MEMORY-INTENT-005",
+        "source_tc_id": "TC-AGG-PROJ-005",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_projection_requires_explicit_compat_mode\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_passes_when_current_feature_included\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/result.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/action-transcript.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/dom-snapshot.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/current-url.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/console-summary.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/network-summary.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-task.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
         ],
-        "execution_fingerprint": "541f6f541a1012a6b30365417aec9458df586d7b3aee7b3e1ea16b3ddddbb162",
-        "started_at": "2026-05-27T09:03:25.746860",
-        "ended_at": "2026-05-27T09:03:26.191775",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/junit.xml",
+        "execution_fingerprint": "12a4ac0c74ba4ddec27c3efbf53eda189b8e4abe3dd6a8d269c5edb08e578695",
+        "started_at": "2026-05-27T11:18:33.863892",
+        "ended_at": "2026-05-27T11:18:34.520625",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
         "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
         "browser_runner_learning_ref": "",
         "replay_required": false,
         "replay_ref": "",
@@ -358,9 +350,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-006",
+        "tc_id": "TC-AGG-PROJ-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-MEMORY-INTENT-006",
+        "source_tc_id": "TC-AGG-PROJ-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -370,20 +362,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_intent_router_is_compat_classified\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"doctor_repair_rebuilds_projection_without_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
         ],
-        "execution_fingerprint": "b9a2ac73dfa6d9db0d31fb3625fe32a366ebade0614dbacc518b7bd65d8613e7",
-        "started_at": "2026-05-27T09:03:26.194042",
-        "ended_at": "2026-05-27T09:03:26.644842",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/junit.xml",
+        "execution_fingerprint": "c4251b4ff2872d8f24dccab051f38dcf54f01342efd5ab6f0c58b1618c56edd3",
+        "started_at": "2026-05-27T11:18:34.521450",
+        "ended_at": "2026-05-27T11:18:35.057532",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -396,42 +388,35 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-007",
+        "tc_id": "TC-AGG-PROJ-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-MEMORY-INTENT-007",
+        "source_tc_id": "TC-AGG-PROJ-007",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "compatibility",
-        "layer": "compatibility",
+        "qa_type": "contract",
+        "layer": "contract",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"old_intent_api_remains_callable_with_compat_admission\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"test_contract_index_repair_clears_stale_index_risk\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/result.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/action-transcript.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/dom-snapshot.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/current-url.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/console-summary.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/network-summary.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-task.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
         ],
-        "execution_fingerprint": "4aeacbe1f5755dd08ca7af8d699464251e091b756049b009bf7efeec9655d86d",
-        "started_at": "2026-05-27T09:03:26.645945",
-        "ended_at": "2026-05-27T09:03:27.084934",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/junit.xml",
+        "execution_fingerprint": "ae25a0c66ffc6405ad4c0fd42afaba99a7dc5a886f79c1536d0cbca5889cebfb",
+        "started_at": "2026-05-27T11:18:35.058381",
+        "ended_at": "2026-05-27T11:18:35.579572",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
         "junit_valid": true,
-        "browser_required": true,
-        "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
         "browser_runner_learning_ref": "",
         "replay_required": false,
         "replay_ref": "",
@@ -441,32 +426,32 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-008",
+        "tc_id": "TC-AGG-PROJ-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-MEMORY-INTENT-008",
+        "source_tc_id": "TC-AGG-PROJ-008",
         "scenario_id": "",
         "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
+        "qa_type": "exception",
+        "layer": "exception",
         "automation": "auto",
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"legacy_route_does_not_claim_current_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-008/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"guard_does_not_add_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
         ],
-        "execution_fingerprint": "409789bef387cb957b69f6d7b47e8e068df18399f3561086f51db914e25e5cb5",
-        "started_at": "2026-05-27T09:03:27.087067",
-        "ended_at": "2026-05-27T09:03:27.546661",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/junit.xml",
+        "execution_fingerprint": "fd70a0482fbd0701275fea66618b7f9804809c6884a0f26b4589f6a05943bee7",
+        "started_at": "2026-05-27T11:18:35.580400",
+        "ended_at": "2026-05-27T11:18:36.193067",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -479,85 +464,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-MEMORY-INTENT-009",
+        "tc_id": "TC-AGG-PROJ-009",
         "ac_id": "AC-009",
-        "source_tc_id": "TC-MEMORY-INTENT-009",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"memory_registry_binding\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-009/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/result.json"
-        ],
-        "execution_fingerprint": "10aadc9b109fff817cb04b181d5d379e9514a4ce7b5dc76ff42d75b08df3be1c",
-        "started_at": "2026-05-27T09:03:27.547542",
-        "ended_at": "2026-05-27T09:03:27.978866",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-MEMORY-INTENT-010",
-        "ac_id": "AC-010",
-        "source_tc_id": "TC-MEMORY-INTENT-010",
-        "scenario_id": "",
-        "scenario_family": "",
-        "qa_type": "contract",
-        "layer": "contract",
-        "automation": "auto",
-        "status": "passed",
-        "layer_status": "passed",
-        "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"intent_registry_binding\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-010/__RUN_ID__.json",
-        "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/result.json"
-        ],
-        "execution_fingerprint": "11fb35ceb14df3e55fbac9045a4939b614b018a7882c348fc6c52c62fe74b5fa",
-        "started_at": "2026-05-27T09:03:27.979621",
-        "ended_at": "2026-05-27T09:03:28.425373",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/junit.xml",
-        "junit_valid": true,
-        "browser_required": false,
-        "browser_evidence_pack_ref": "",
-        "browser_runner_learning_ref": "",
-        "replay_required": false,
-        "replay_ref": "",
-        "stop_on_fail": false,
-        "round_stop_trigger": false,
-        "round_stop_reasons": [],
-        "round_stop_anchor": ""
-      },
-      {
-        "tc_id": "TC-MEMORY-INTENT-011",
-        "ac_id": "AC-011",
-        "source_tc_id": "TC-MEMORY-INTENT-011",
+        "source_tc_id": "TC-AGG-PROJ-009",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "regression",
@@ -567,20 +476,58 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_memory_intent_historical_migration_boundary.py -k \"no_unrelated_phase_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T090322522512",
-        "evidence_path": ".beacon/evidence/qa-feature/memory-intent-historical-migration-boundary-contract/tc-memory-intent-011/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_guard_regression_suite_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/result.json"
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
         ],
-        "execution_fingerprint": "fcaba2eed291a100a44de67a4b6bbf5f165872c4e4a3e0d9d2c2ae1125685554",
-        "started_at": "2026-05-27T09:03:28.426154",
-        "ended_at": "2026-05-27T09:03:28.855291",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/junit.xml",
+        "execution_fingerprint": "152fd06f364aabdb1f27a2c411fce85427aed4feb517ea930f6d136d2014bef4",
+        "started_at": "2026-05-27T11:18:36.193999",
+        "ended_at": "2026-05-27T11:18:36.654879",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
+        "junit_valid": true,
+        "browser_required": false,
+        "browser_evidence_pack_ref": "",
+        "browser_runner_learning_ref": "",
+        "replay_required": false,
+        "replay_ref": "",
+        "stop_on_fail": false,
+        "round_stop_trigger": false,
+        "round_stop_reasons": [],
+        "round_stop_anchor": ""
+      },
+      {
+        "tc_id": "TC-AGG-PROJ-010",
+        "ac_id": "AC-010",
+        "source_tc_id": "TC-AGG-PROJ-010",
+        "scenario_id": "",
+        "scenario_family": "",
+        "qa_type": "contract",
+        "layer": "contract",
+        "automation": "auto",
+        "status": "passed",
+        "layer_status": "passed",
+        "reason_code": "",
+        "assertion_count": 1,
+        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"blocked_release_output_includes_projection_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260527T111829719823",
+        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-010/__RUN_ID__.json",
+        "evidence_ref": [
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
+        ],
+        "execution_fingerprint": "f072a1e074a92e91f3511bf80c7ca378a896b96c330445c0ad42a132987d5010",
+        "started_at": "2026-05-27T11:18:36.655770",
+        "ended_at": "2026-05-27T11:18:37.221172",
+        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -596,9 +543,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-27T01:03:29.723380+00:00",
+  "updated_at": "2026-05-27T03:18:38.439929+00:00",
   "summary": {
-    "feature": "memory-intent-historical-migration-boundary-contract",
+    "feature": "version-aggregate-projection-guard-contract",
     "version": "v1.4.11",
     "status": "passed",
     "release_ready": true,
@@ -609,20 +556,20 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"memory-intent-historical-migration-boundary-contract\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\""
   },
   "qa_status_source": "canonical",
-  "feature": "memory-intent-historical-migration-boundary-contract",
-  "feature_slug": "memory-intent-historical-migration-boundary-contract",
+  "feature": "version-aggregate-projection-guard-contract",
+  "feature_slug": "version-aggregate-projection-guard-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "memory import",
-      "text": "Old memory rows remain importable into current `memory-v1`.",
+      "theme": "wording",
+      "text": "Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-001"
+        "TC-AGG-PROJ-001"
       ],
       "qa_types": [
         "contract"
@@ -630,10 +577,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "migration transaction",
-      "text": "First legacy memory migration writes an auditable migration transaction.",
+      "theme": "feature projection",
+      "text": "A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-002"
+        "TC-AGG-PROJ-002"
       ],
       "qa_types": [
         "contract"
@@ -641,10 +588,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "current projection",
-      "text": "`memory-v1` is treated as the current memory projection after migration.",
+      "theme": "release create",
+      "text": "`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-003"
+        "TC-AGG-PROJ-003"
       ],
       "qa_types": [
         "contract"
@@ -652,10 +599,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "no default legacy write",
-      "text": "Current memory writes do not update legacy memory projection files by default.",
+      "theme": "fail closed",
+      "text": "`release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-004"
+        "TC-AGG-PROJ-004"
       ],
       "qa_types": [
         "contract"
@@ -663,21 +610,21 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "explicit compat projection",
-      "text": "Legacy memory projection writes require explicit compatibility mode or explicit migration/export command.",
+      "theme": "inclusion pass",
+      "text": "`release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-005"
+        "TC-AGG-PROJ-005"
       ],
       "qa_types": [
-        "compatibility"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-006",
-      "theme": "intent compat classification",
-      "text": "Legacy intent router usage is marked as compatibility routing.",
+      "theme": "doctor repair",
+      "text": "Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-006"
+        "TC-AGG-PROJ-006"
       ],
       "qa_types": [
         "contract"
@@ -685,57 +632,46 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "old intent callable",
-      "text": "Old intent APIs remain callable through explicit compatibility admission.",
+      "theme": "test index",
+      "text": "test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-007"
+        "TC-AGG-PROJ-007"
       ],
       "qa_types": [
-        "compatibility"
+        "contract"
       ]
     },
     {
       "ac_id": "AC-008",
-      "theme": "no false current route",
-      "text": "Current intent routing does not claim legacy router output as current route evidence.",
+      "theme": "no lifecycle stage",
+      "text": "The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-008"
+        "TC-AGG-PROJ-008"
       ],
       "qa_types": [
-        "contract"
+        "exception"
       ]
     },
     {
       "ac_id": "AC-009",
-      "theme": "memory registry binding",
-      "text": "Memory behavior binds to `memory-legacy-projection`.",
+      "theme": "regression coverage",
+      "text": "Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-009"
+        "TC-AGG-PROJ-009"
       ],
       "qa_types": [
-        "contract"
+        "regression"
       ]
     },
     {
       "ac_id": "AC-010",
-      "theme": "intent registry binding",
-      "text": "Intent behavior binds to `intent-legacy-router`.",
+      "theme": "repair route",
+      "text": "Blocked release output gives actionable repair guidance for projection inclusion failure.",
       "tc_ids": [
-        "TC-MEMORY-INTENT-010"
+        "TC-AGG-PROJ-010"
       ],
       "qa_types": [
         "contract"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "theme": "no unrelated behavior",
-      "text": "Tests prove no prototype/design, browser, QA/PRD mirror, implement package, command removal, release, or test marker behavior changes.",
-      "tc_ids": [
-        "TC-MEMORY-INTENT-011"
-      ],
-      "qa_types": [
-        "regression"
       ]
     }
   ],
@@ -745,8 +681,8 @@
       "no_prior_feature_qa"
     ],
     "targeted_layers": [
-      "compatibility",
       "contract",
+      "exception",
       "regression"
     ],
     "targeted_ac_ids": [
@@ -759,21 +695,19 @@
       "AC-007",
       "AC-008",
       "AC-009",
-      "AC-010",
-      "AC-011"
+      "AC-010"
     ],
     "targeted_tc_ids": [
-      "TC-MEMORY-INTENT-001",
-      "TC-MEMORY-INTENT-002",
-      "TC-MEMORY-INTENT-003",
-      "TC-MEMORY-INTENT-004",
-      "TC-MEMORY-INTENT-005",
-      "TC-MEMORY-INTENT-006",
-      "TC-MEMORY-INTENT-007",
-      "TC-MEMORY-INTENT-008",
-      "TC-MEMORY-INTENT-009",
-      "TC-MEMORY-INTENT-010",
-      "TC-MEMORY-INTENT-011"
+      "TC-AGG-PROJ-001",
+      "TC-AGG-PROJ-002",
+      "TC-AGG-PROJ-003",
+      "TC-AGG-PROJ-004",
+      "TC-AGG-PROJ-005",
+      "TC-AGG-PROJ-006",
+      "TC-AGG-PROJ-007",
+      "TC-AGG-PROJ-008",
+      "TC-AGG-PROJ-009",
+      "TC-AGG-PROJ-010"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -783,15 +717,15 @@
     "assumption_capture_required": true,
     "goal_driven_verification_required": true,
     "targeted_scope_only": true,
-    "verification_item_count": 11
+    "verification_item_count": 10
   },
-  "feature_matrix_path": ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-MEMORY-INTENT-001",
-      "source_tc_id": "TC-MEMORY-INTENT-001",
+      "tc_id": "TC-AGG-PROJ-001",
+      "source_tc_id": "TC-AGG-PROJ-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -804,17 +738,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-MEMORY-INTENT-002",
-      "source_tc_id": "TC-MEMORY-INTENT-002",
+      "tc_id": "TC-AGG-PROJ-002",
+      "source_tc_id": "TC-AGG-PROJ-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -827,17 +761,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-MEMORY-INTENT-003",
-      "source_tc_id": "TC-MEMORY-INTENT-003",
+      "tc_id": "TC-AGG-PROJ-003",
+      "source_tc_id": "TC-AGG-PROJ-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -850,17 +784,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-MEMORY-INTENT-004",
-      "source_tc_id": "TC-MEMORY-INTENT-004",
+      "tc_id": "TC-AGG-PROJ-004",
+      "source_tc_id": "TC-AGG-PROJ-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -873,47 +807,40 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-MEMORY-INTENT-005",
-      "source_tc_id": "TC-MEMORY-INTENT-005",
+      "tc_id": "TC-AGG-PROJ-005",
+      "source_tc_id": "TC-AGG-PROJ-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
+      "qa_type": "contract",
+      "browser_required": false,
       "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/result.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/action-transcript.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/dom-snapshot.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/current-url.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/console-summary.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/network-summary.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-task.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-MEMORY-INTENT-006",
-      "source_tc_id": "TC-MEMORY-INTENT-006",
+      "tc_id": "TC-AGG-PROJ-006",
+      "source_tc_id": "TC-AGG-PROJ-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -926,93 +853,86 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-MEMORY-INTENT-007",
-      "source_tc_id": "TC-MEMORY-INTENT-007",
+      "tc_id": "TC-AGG-PROJ-007",
+      "source_tc_id": "TC-AGG-PROJ-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "compatibility",
-      "browser_required": true,
+      "qa_type": "contract",
+      "browser_required": false,
       "replay_required": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/result.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/action-transcript.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/dom-snapshot.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/current-url.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/console-summary.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/network-summary.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-task.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-MEMORY-INTENT-008",
-      "source_tc_id": "TC-MEMORY-INTENT-008",
+      "tc_id": "TC-AGG-PROJ-008",
+      "source_tc_id": "TC-AGG-PROJ-008",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-008",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "exception",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
       ]
     },
     {
       "ac_id": "AC-009",
-      "tc_id": "TC-MEMORY-INTENT-009",
-      "source_tc_id": "TC-MEMORY-INTENT-009",
+      "tc_id": "TC-AGG-PROJ-009",
+      "source_tc_id": "TC-AGG-PROJ-009",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-009",
       "status": "passed",
       "reason_code": "",
-      "qa_type": "contract",
+      "qa_type": "regression",
       "browser_required": false,
       "replay_required": false,
       "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
       ]
     },
     {
       "ac_id": "AC-010",
-      "tc_id": "TC-MEMORY-INTENT-010",
-      "source_tc_id": "TC-MEMORY-INTENT-010",
+      "tc_id": "TC-AGG-PROJ-010",
+      "source_tc_id": "TC-AGG-PROJ-010",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-010",
@@ -1025,34 +945,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/result.json"
-      ]
-    },
-    {
-      "ac_id": "AC-011",
-      "tc_id": "TC-MEMORY-INTENT-011",
-      "source_tc_id": "TC-MEMORY-INTENT-011",
-      "scenario_id": "",
-      "scenario_family": "",
-      "test_item_id": "TEST-011",
-      "status": "passed",
-      "reason_code": "",
-      "qa_type": "regression",
-      "browser_required": false,
-      "replay_required": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "replay_ref": "",
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
       ]
     }
   ],
@@ -1084,20 +981,20 @@
     "blocked": false,
     "reason_code": "requirement_completeness_projection_missing",
     "target_stage": "qa",
-    "feature": "memory-intent-historical-migration-boundary-contract",
+    "feature": "version-aggregate-projection-guard-contract",
     "version": "v1.4.11",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.re-freeze-transaction.json"
     },
     "projection_status": "missing_nonblocking",
-    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"memory-intent-historical-migration-boundary-contract\" --single-feature",
+    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\" --single-feature",
     "next_action": "qa",
     "stage_gates": {
       "artifact_read_model": {
@@ -1107,13 +1004,13 @@
         "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.re-freeze-transaction.json"
+            "envelope": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.re-freeze-transaction.json"
           },
           "projection_status": "missing_nonblocking"
         }
@@ -1141,8 +1038,7 @@
             "AC-007",
             "AC-008",
             "AC-009",
-            "AC-010",
-            "AC-011"
+            "AC-010"
           ],
           "user_story_ac_ids": [
             "AC-001",
@@ -1154,8 +1050,7 @@
             "AC-007",
             "AC-008",
             "AC-009",
-            "AC-010",
-            "AC-011"
+            "AC-010"
           ],
           "test_case_ac_ids": [
             "AC-001",
@@ -1167,8 +1062,7 @@
             "AC-007",
             "AC-008",
             "AC-009",
-            "AC-010",
-            "AC-011"
+            "AC-010"
           ]
         }
       },
@@ -1200,14 +1094,14 @@
     "markdown_first_truth": {
       "status": "pass",
       "projection": {
-        "feature": "memory-intent-historical-migration-boundary-contract",
+        "feature": "version-aggregate-projection-guard-contract",
         "version": "v1.4.11",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.11/prd/memory-intent-historical-migration-boundary-contract.md",
-          "user_story": "docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md",
-          "test_case": "docs/beacon/v1.4.11/qa/test-cases/memory-intent-historical-migration-boundary-contract.md",
-          "research": "docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md",
-          "change": "docs/beacon/v1.4.11/change/memory-intent-historical-migration-boundary-contract.md"
+          "prd": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
+          "research": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+          "change": "docs/beacon/v1.4.11/change/version-aggregate-projection-guard-contract.md"
         },
         "prd_ac_ids": [
           "AC-001",
@@ -1219,8 +1113,7 @@
           "AC-007",
           "AC-008",
           "AC-009",
-          "AC-010",
-          "AC-011"
+          "AC-010"
         ],
         "user_story_ac_ids": [
           "AC-001",
@@ -1232,8 +1125,7 @@
           "AC-007",
           "AC-008",
           "AC-009",
-          "AC-010",
-          "AC-011"
+          "AC-010"
         ],
         "test_case_ac_ids": [
           "AC-001",
@@ -1245,71 +1137,70 @@
           "AC-007",
           "AC-008",
           "AC-009",
-          "AC-010",
-          "AC-011"
+          "AC-010"
         ],
         "diagnostics": [],
         "status": "pass"
       },
       "freeze_state": {
         "schema_version": "1.0",
-        "feature": "memory-intent-historical-migration-boundary-contract",
-        "feature_slug": "memory-intent-historical-migration-boundary-contract",
+        "feature": "version-aggregate-projection-guard-contract",
+        "feature_slug": "version-aggregate-projection-guard-contract",
         "version": "v1.4.11",
         "revision_id": "R2",
         "source_revision_id": "R1",
         "status": "frozen",
-        "baseline_hash": "sha256:9cfb4b42a015d1109da83308e1d1a6a7fc943f7c8a219042728c2d3b1a109555",
+        "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
         "source_paths": {
-          "prd": "docs/beacon/v1.4.11/prd/memory-intent-historical-migration-boundary-contract.md",
-          "user_story": "docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md",
-          "test_case": "docs/beacon/v1.4.11/qa/test-cases/memory-intent-historical-migration-boundary-contract.md",
-          "research": "docs/beacon/v1.4.11/research/memory-intent-historical-migration-boundary-contract.md",
-          "change": "docs/beacon/v1.4.11/change/memory-intent-historical-migration-boundary-contract.md"
+          "prd": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
+          "research": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+          "change": "docs/beacon/v1.4.11/change/version-aggregate-projection-guard-contract.md"
         },
         "diagnostics": [],
-        "transaction_ref": "docs/beacon/v1.4.11/.machine/change/memory-intent-historical-migration-boundary-contract.refreeze-transaction.json",
-        "generated_at": "2026-05-27T01:03:21.402167+00:00"
+        "transaction_ref": "docs/beacon/v1.4.11/.machine/change/version-aggregate-projection-guard-contract.refreeze-transaction.json",
+        "generated_at": "2026-05-27T03:18:28.255099+00:00"
       }
     },
     "completeness": {},
     "freeze_contract": {}
   },
   "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.11/.machine/requirement/memory-intent-historical-migration-boundary-contract.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json",
+  "requirement_completeness_ref": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "memory-intent-historical-migration-boundary-contract",
-    "feature_slug": "memory-intent-historical-migration-boundary-contract",
-    "run_id": "run-20260527T090322522512",
-    "generated_at": "2026-05-27T01:03:30.075381+00:00",
+    "feature": "version-aggregate-projection-guard-contract",
+    "feature_slug": "version-aggregate-projection-guard-contract",
+    "run_id": "run-20260527T111829719823",
+    "generated_at": "2026-05-27T03:18:38.840433+00:00",
     "execution_mode": "feature-aware",
-    "scenario_count": 11,
-    "browser_scenario_count": 2,
+    "scenario_count": 10,
+    "browser_scenario_count": 0,
     "required_families": [],
     "passed_families": [],
     "missing_axes": [],
     "missing_replay_scenarios": [],
     "missing_browser_evidence_scenarios": [],
     "scenario_pass_rate": 1.0,
-    "family_coverage_rate": 0.0,
+    "family_coverage_rate": 1.0,
     "replay_coverage_rate": 1.0,
     "browser_evidence_rate": 1.0,
-    "score": 0.75,
-    "threshold": 0.8,
-    "status": "blocked",
+    "score": 1.0,
+    "threshold": 0.6,
+    "status": "passed",
     "required_next_action": "continue_current_plan",
     "failure_streak": 0,
     "escalation_level": "E0"
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-MEMORY-INTENT-001",
-      "tc_id": "TC-MEMORY-INTENT-001",
-      "source_tc_id": "TC-MEMORY-INTENT-001",
+      "scenario_id": "TC-AGG-PROJ-001",
+      "tc_id": "TC-AGG-PROJ-001",
+      "source_tc_id": "TC-AGG-PROJ-001",
       "ac_id": "AC-001",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1333,19 +1224,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-001/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-002",
-      "tc_id": "TC-MEMORY-INTENT-002",
-      "source_tc_id": "TC-MEMORY-INTENT-002",
+      "scenario_id": "TC-AGG-PROJ-002",
+      "tc_id": "TC-AGG-PROJ-002",
+      "source_tc_id": "TC-AGG-PROJ-002",
       "ac_id": "AC-002",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1369,19 +1260,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-002/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-003",
-      "tc_id": "TC-MEMORY-INTENT-003",
-      "source_tc_id": "TC-MEMORY-INTENT-003",
+      "scenario_id": "TC-AGG-PROJ-003",
+      "tc_id": "TC-AGG-PROJ-003",
+      "source_tc_id": "TC-AGG-PROJ-003",
       "ac_id": "AC-003",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1405,19 +1296,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-003/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-004",
-      "tc_id": "TC-MEMORY-INTENT-004",
-      "source_tc_id": "TC-MEMORY-INTENT-004",
+      "scenario_id": "TC-AGG-PROJ-004",
+      "tc_id": "TC-AGG-PROJ-004",
+      "source_tc_id": "TC-AGG-PROJ-004",
       "ac_id": "AC-004",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1441,19 +1332,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-004/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-005",
-      "tc_id": "TC-MEMORY-INTENT-005",
-      "source_tc_id": "TC-MEMORY-INTENT-005",
+      "scenario_id": "TC-AGG-PROJ-005",
+      "tc_id": "TC-AGG-PROJ-005",
+      "source_tc_id": "TC-AGG-PROJ-005",
       "ac_id": "AC-005",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1464,10 +1355,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "judge_signals": {
         "status_score": 1.0,
@@ -1477,26 +1368,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/result.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/action-transcript.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/dom-snapshot.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/current-url.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/console-summary.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/network-summary.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-task.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-006",
-      "tc_id": "TC-MEMORY-INTENT-006",
-      "source_tc_id": "TC-MEMORY-INTENT-006",
+      "scenario_id": "TC-AGG-PROJ-006",
+      "tc_id": "TC-AGG-PROJ-006",
+      "source_tc_id": "TC-AGG-PROJ-006",
       "ac_id": "AC-006",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1520,19 +1404,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-006/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-007",
-      "tc_id": "TC-MEMORY-INTENT-007",
-      "source_tc_id": "TC-MEMORY-INTENT-007",
+      "scenario_id": "TC-AGG-PROJ-007",
+      "tc_id": "TC-AGG-PROJ-007",
+      "source_tc_id": "TC-AGG-PROJ-007",
       "ac_id": "AC-007",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1543,10 +1427,10 @@
       "evidence_sufficiency": "strong",
       "root_cause_type": "none",
       "reason_code": "",
-      "browser_required": true,
+      "browser_required": false,
       "replay_required": false,
       "replay_present": false,
-      "browser_evidence_pack_ref": ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
+      "browser_evidence_pack_ref": "",
       "browser_evidence_authenticity_status": "",
       "judge_signals": {
         "status_score": 1.0,
@@ -1556,26 +1440,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/explore/result.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-evidence-pack.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/action-transcript.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/dom-snapshot.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/current-url.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/console-summary.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/network-summary.json",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-007/browser-task.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-008",
-      "tc_id": "TC-MEMORY-INTENT-008",
-      "source_tc_id": "TC-MEMORY-INTENT-008",
+      "scenario_id": "TC-AGG-PROJ-008",
+      "tc_id": "TC-AGG-PROJ-008",
+      "source_tc_id": "TC-AGG-PROJ-008",
       "ac_id": "AC-008",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1599,19 +1476,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-008/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-009",
-      "tc_id": "TC-MEMORY-INTENT-009",
-      "source_tc_id": "TC-MEMORY-INTENT-009",
+      "scenario_id": "TC-AGG-PROJ-009",
+      "tc_id": "TC-AGG-PROJ-009",
+      "source_tc_id": "TC-AGG-PROJ-009",
       "ac_id": "AC-009",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1635,19 +1512,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-009/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
       ]
     },
     {
-      "scenario_id": "TC-MEMORY-INTENT-010",
-      "tc_id": "TC-MEMORY-INTENT-010",
-      "source_tc_id": "TC-MEMORY-INTENT-010",
+      "scenario_id": "TC-AGG-PROJ-010",
+      "tc_id": "TC-AGG-PROJ-010",
+      "source_tc_id": "TC-AGG-PROJ-010",
       "ac_id": "AC-010",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1671,61 +1548,25 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-010/result.json"
-      ]
-    },
-    {
-      "scenario_id": "TC-MEMORY-INTENT-011",
-      "tc_id": "TC-MEMORY-INTENT-011",
-      "source_tc_id": "TC-MEMORY-INTENT-011",
-      "ac_id": "AC-011",
-      "feature_slug": "memory-intent-historical-migration-boundary-contract",
-      "scenario_family": "",
-      "status": "passed",
-      "closure_outcome": "accepted",
-      "confidence_raw": 1.0,
-      "confidence_calibrated": 1.0,
-      "confidence_band": "high",
-      "requires_human_review": false,
-      "evidence_sufficiency": "strong",
-      "root_cause_type": "none",
-      "reason_code": "",
-      "browser_required": false,
-      "replay_required": false,
-      "replay_present": false,
-      "browser_evidence_pack_ref": "",
-      "browser_evidence_authenticity_status": "",
-      "judge_signals": {
-        "status_score": 1.0,
-        "evidence_score": 1.0,
-        "replay_score": 1.0,
-        "trace_score": 1.0,
-        "flake_penalty": 0.0
-      },
-      "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-011/result.json"
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "memory-intent-historical-migration-boundary-contract",
-    "feature_slug": "memory-intent-historical-migration-boundary-contract",
-    "run_id": "run-20260527T090322522512",
-    "ac_total": 11,
-    "ac_accepted": 11,
-    "scenario_total": 11,
-    "scenario_passed": 11,
+    "feature": "version-aggregate-projection-guard-contract",
+    "feature_slug": "version-aggregate-projection-guard-contract",
+    "run_id": "run-20260527T111829719823",
+    "ac_total": 10,
+    "ac_accepted": 10,
+    "scenario_total": 10,
+    "scenario_passed": 10,
     "release_confidence_min": 1.0,
     "release_confidence_avg": 1.0,
     "review_required_count": 0,
@@ -1735,8 +1576,8 @@
     "project_profile_gate_status": "not_configured",
     "project_profile_id": "",
     "coverage_current": {
-      "required_scenarios": 11,
-      "executed_scenarios": 11,
+      "required_scenarios": 10,
+      "executed_scenarios": 10,
       "coverage_rate": 1.0,
       "required_scenario_families": [
         "boundary",
@@ -1763,7 +1604,7 @@
       "boundary_principles": [],
       "assumption_capture_required": true,
       "goal_driven_verification_required": true,
-      "verification_item_count": 11,
+      "verification_item_count": 10,
       "targeted_scope_only": true
     },
     "design_truth_verdict": {
@@ -1874,8 +1715,8 @@
       },
       "profile_completeness": {
         "schema_version": "1.0",
-        "profile": "browser",
-        "browser_required": true,
+        "profile": "closure",
+        "browser_required": false,
         "required_layers": [
           "unit",
           "interface",
@@ -1885,12 +1726,9 @@
           "functional",
           "regression",
           "exception",
-          "compatibility",
-          "browser_e2e"
+          "compatibility"
         ],
-        "executed_layers": [
-          "browser_e2e"
-        ],
+        "executed_layers": [],
         "skipped_layers": [],
         "blocked_layers": [],
         "not_applicable_layers": [],
@@ -1911,62 +1749,8 @@
         "status": "partial"
       },
       "browser_evidence_contract": {
-        "schema_version": "1.0",
-        "status": "invalid",
-        "blocked": true,
-        "runner": "playwright",
-        "runner_registered": true,
-        "browser_runner_registry": [
-          "playwright",
-          "playwright-cli",
-          "playwright-cdp",
-          "browser-use",
-          "agent-browser",
-          "attached-browser",
-          "web-access",
-          "obscura-cdp"
-        ],
-        "evidence_kind": "execution",
-        "non_acceptance_evidence": false,
-        "required_fields": {
-          "run_id": "run-20260527T090322522512",
-          "source_command": "",
-          "runner": "playwright",
-          "target": "",
-          "result_status": "passed"
-        },
-        "accepted_test_ids": [
-          "TC-MEMORY-INTENT-005",
-          "TC-MEMORY-INTENT-005"
-        ],
-        "evidence_refs": [
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/explore/result.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/action-transcript.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/dom-snapshot.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/current-url.txt",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/console-summary.log",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/network-summary.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-task.json",
-          ".beacon/evidence/auto-test/run-20260527T090322522512/qa9-tc/TC-MEMORY-INTENT-005/browser-evidence-pack.json"
-        ],
-        "present_axes": [],
-        "missing_axes": [
-          "compatibility",
-          "function",
-          "session",
-          "state_data",
-          "ui",
-          "ux"
-        ],
-        "missing_fields": [
-          "source_command",
-          "target"
-        ]
+        "status": "not_required",
+        "blocked": false
       },
       "browser_runner_registry": [
         "playwright",
@@ -2023,18 +1807,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"memory-intent-historical-migration-boundary-contract\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"memory-intent-historical-migration-boundary-contract\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "memory-intent-historical-migration-boundary-contract",
+    "feature": "version-aggregate-projection-guard-contract",
     "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -2055,14 +1839,14 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.11",
-      "feature_matrix_path": ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
-      "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json",
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/ac-closure.json",
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/scorecard.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -2076,7 +1860,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "memory-intent-historical-migration-boundary-contract",
+    "feature": "version-aggregate-projection-guard-contract",
     "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -2097,14 +1881,14 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.11",
-      "feature_matrix_path": ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/matrix.qa9.json",
-      "docs/beacon/v1.4.11/.machine/qa/memory-intent-historical-migration-boundary-contract.ac-test-matrix.json",
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/ac-closure.json",
-      ".beacon/qa/features/memory-intent-historical-migration-boundary-contract/scorecard.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
+      ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -2116,5 +1900,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "85646a232960aa2b8a818f71b1663ea92fa9d1a5fa66cf9293de57b41124ce94"
+  "current_spec_fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8"
 }

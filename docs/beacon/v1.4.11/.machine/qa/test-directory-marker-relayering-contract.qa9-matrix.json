@@ -1,0 +1,595 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "test-directory-marker-relayering-contract",
+  "feature_slug": "test-directory-marker-relayering-contract",
+  "version": "v1.4.11",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-27T09:17:16.880618",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-27T09:17:16.879940",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --deterministic-command \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --deterministic-command \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-MARKER-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "marker",
+      "qa_type": "marker",
+      "title": "test-directory-marker-relayering-contract AC-001 :: Required pytest markers are registered.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"marker_registry_contains_required_layers\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Required pytest markers are registered.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"marker_registry_contains_required_layers\"`",
+      "scenario": "Required pytest markers are registered.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "marker",
+      "qa_type": "marker",
+      "title": "test-directory-marker-relayering-contract AC-002 :: v1.4.11 retirement tests have deterministic marker classification.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"v1411_retirement_tests_are_marked\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.4.11 retirement tests have deterministic marker classification.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"v1411_retirement_tests_are_marked\"`",
+      "scenario": "v1.4.11 retirement tests have deterministic marker classification.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "current",
+      "qa_type": "current",
+      "title": "test-directory-marker-relayering-contract AC-003 :: Current contract tests do not make legacy fallback the default.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"current_contract_tests_do_not_assert_legacy_defaults\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Current contract tests do not make legacy fallback the default.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"current_contract_tests_do_not_assert_legacy_defaults\"`",
+      "scenario": "Current contract tests do not make legacy fallback the default.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "compatibility",
+      "qa_type": "compatibility",
+      "title": "test-directory-marker-relayering-contract AC-004 :: Compat tests reference registered compatibility ids.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"compat_tests_bind_to_registry_ids\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Compat tests reference registered compatibility ids.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"compat_tests_bind_to_registry_ids\"`",
+      "scenario": "Compat tests reference registered compatibility ids.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "historical",
+      "qa_type": "historical",
+      "title": "test-directory-marker-relayering-contract AC-005 :: Historical fixture tests cannot satisfy current closure.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"historical_fixture_tests_are_not_current_closure\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Historical fixture tests cannot satisfy current closure.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"historical_fixture_tests_are_not_current_closure\"`",
+      "scenario": "Historical fixture tests cannot satisfy current closure.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "migration",
+      "qa_type": "migration",
+      "title": "test-directory-marker-relayering-contract AC-006 :: Migration tests assert evidence or transaction behavior.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"migration_tests_assert_evidence_or_transactions\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Migration tests assert evidence or transaction behavior.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"migration_tests_assert_evidence_or_transactions\"`",
+      "scenario": "Migration tests assert evidence or transaction behavior.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "deprecated",
+      "qa_type": "deprecated",
+      "title": "test-directory-marker-relayering-contract AC-007 :: Deprecated tests do not promote default current routes.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"deprecated_tests_do_not_promote_default_routes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Deprecated tests do not promote default current routes.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"deprecated_tests_do_not_promote_default_routes\"`",
+      "scenario": "Deprecated tests do not promote default current routes.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "projection",
+      "qa_type": "projection",
+      "title": "test-directory-marker-relayering-contract AC-008 :: Projection integrity tests are separate from human truth authority.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"projection_tests_are_marked_separately\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Projection integrity tests are separate from human truth authority.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"projection_tests_are_marked_separately\"`",
+      "scenario": "Projection integrity tests are separate from human truth authority.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-009",
+      "ac_id": "AC-009",
+      "story_id": "",
+      "layer": "validation",
+      "qa_type": "validation",
+      "title": "test-directory-marker-relayering-contract AC-009 :: Marker validation emits deterministic pass/block payload.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"marker_validation_payload_is_deterministic\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Marker validation emits deterministic pass/block payload.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"marker_validation_payload_is_deterministic\"`",
+      "scenario": "Marker validation emits deterministic pass/block payload.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-MARKER-010",
+      "ac_id": "AC-010",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "test-directory-marker-relayering-contract AC-010 :: Runtime behavior is out of scope.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"no_runtime_behavior_changes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runtime behavior is out of scope.",
+      "evidence_path": ".beacon/evidence/test-results/test-directory-marker-relayering-contract/TC-MARKER-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_test_directory_marker_relayering.py -k \"no_runtime_behavior_changes\"`",
+      "scenario": "Runtime behavior is out of scope.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+    "row_count": 10,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-27T09:17:16.880661",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "test-directory-marker-relayering-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "state_machine": [
+        "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+        "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+        "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+        "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+      ],
+      "decision_priority": [
+        "Current behavior must be easy to identify and run.",
+        "Compatibility behavior must remain covered before retirement.",
+        "Historical fixtures must remain useful without becoming current closure.",
+        "Migration behavior must be auditable.",
+        "Projection integrity must stay separate from human truth authority.",
+        "Marker governance must be lightweight and deterministic.",
+        "Do not move large test directories unless marker classification proves insufficient."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "state_machine",
+        "text": "State machine transitions remain explicit",
+        "details": [
+          "`compat_behavior_test -> current_contract`: blocked because compatibility behavior must stay explicit.",
+          "`historical_fixture_test -> current_closure`: blocked because historical fixtures are not current truth.",
+          "`migration_test -> no_transaction_when_required`: blocked because migration must be auditable.",
+          "`deprecated_command_test -> default_surface_promotion`: blocked because deprecated behavior cannot become current route."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Current behavior must be easy to identify and run.",
+          "Compatibility behavior must remain covered before retirement.",
+          "Historical fixtures must remain useful without becoming current closure.",
+          "Migration behavior must be auditable.",
+          "Projection integrity must stay separate from human truth authority.",
+          "Marker governance must be lightweight and deterministic.",
+          "Do not move large test directories unless marker classification proves insufficient."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/test-directory-marker-relayering-contract.md"
+      }
+    ]
+  }
+}

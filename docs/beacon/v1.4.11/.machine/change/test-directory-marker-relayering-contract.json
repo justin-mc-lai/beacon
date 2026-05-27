@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.11",
+  "feature": "test-directory-marker-relayering-contract",
+  "feature_slug": "test-directory-marker-relayering-contract",
+  "summary": "Registered deterministic test role markers and separated current, projection, compatibility, historical, migration, and deprecated test semantics.",
+  "status": "completed",
+  "depends_on_features": [
+    "memory-intent-historical-migration-boundary-contract"
+  ],
+  "accepted_at": "2026-05-27T01:37:58.931854+00:00",
+  "added": [
+    "Pytest markers for current_contract, projection_integrity, compat_contract, historical_fixture, migration, and deprecated roles",
+    "Deterministic marker governance validation helper",
+    "Compatibility registry binding checks for compat tests",
+    "CI-readable marker validation coverage for v1.4.11 tests"
+  ],
+  "removed": [
+    "Legacy and historical tests counting as current closure by default"
+  ],
+  "fixed": [
+    "Classified v1.4.11 retirement tests by role marker",
+    "Kept deprecated command/API callability tests from promoting deprecated surfaces as current routes",
+    "Preserved runtime behavior while relayering test governance metadata"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.11/change/test-directory-marker-relayering-contract.md",
+    "docs/beacon/v1.4.11/prd/test-directory-marker-relayering-contract.md",
+    "docs/beacon/v1.4.11/user-story/test-directory-marker-relayering-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/test-directory-marker-relayering-contract.md",
+    "docs/beacon/v1.4.11/.machine/execution/test-directory-marker-relayering-contract.revision.json",
+    "docs/beacon/v1.4.11/.machine/execution/qa-acceptance-test-directory-marker-relayering-contract.json",
+    "docs/beacon/v1.4.11/execution/implementation-brief-test-directory-marker-relayering-contract.md",
+    "docs/beacon/v1.4.11/execution/qa-acceptance-brief-test-directory-marker-relayering-contract.md"
+  ]
+}

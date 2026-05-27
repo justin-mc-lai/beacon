@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "version": "v1.4.11",
+  "feature": "memory-intent-historical-migration-boundary-contract",
+  "feature_slug": "memory-intent-historical-migration-boundary-contract",
+  "summary": "Bound memory and intent historical migration so current memory-v1 and current intent routing stay separate from legacy compatibility output.",
+  "status": "completed",
+  "depends_on_features": [
+    "browser-fallback-deterministic-command-contract"
+  ],
+  "accepted_at": "2026-05-27T01:03:30.438085+00:00",
+  "added": [
+    "Auditable first-run legacy memory migration transaction evidence",
+    "Explicit compatibility export path for legacy memory projection writes",
+    "Current intent route evidence separated from legacy router compatibility evidence"
+  ],
+  "removed": [
+    "Default current memory writes to legacy projection files"
+  ],
+  "fixed": [
+    "Kept old memory rows importable into current memory-v1 without making legacy files current write targets",
+    "Marked legacy intent router output as compatibility evidence under intent-legacy-router",
+    "Kept old intent APIs callable only through explicit compatibility admission"
+  ],
+  "traceability_refs": [
+    "docs/beacon/v1.4.11/change/memory-intent-historical-migration-boundary-contract.md",
+    "docs/beacon/v1.4.11/prd/memory-intent-historical-migration-boundary-contract.md",
+    "docs/beacon/v1.4.11/user-story/memory-intent-historical-migration-boundary-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/memory-intent-historical-migration-boundary-contract.md",
+    "docs/beacon/v1.4.11/.machine/execution/memory-intent-historical-migration-boundary-contract.revision.json",
+    "docs/beacon/v1.4.11/.machine/execution/qa-acceptance-memory-intent-historical-migration-boundary-contract.json",
+    "docs/beacon/v1.4.11/execution/implementation-brief-memory-intent-historical-migration-boundary-contract.md",
+    "docs/beacon/v1.4.11/execution/qa-acceptance-brief-memory-intent-historical-migration-boundary-contract.md"
+  ]
+}

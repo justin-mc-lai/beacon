@@ -1,0 +1,389 @@
+{
+  "feature": "version-aggregate-projection-guard-contract",
+  "feature_slug": "version-aggregate-projection-guard-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-AGG-PROJ-001"
+    ],
+    "AC-002": [
+      "TC-AGG-PROJ-002"
+    ],
+    "AC-003": [
+      "TC-AGG-PROJ-003"
+    ],
+    "AC-004": [
+      "TC-AGG-PROJ-004"
+    ],
+    "AC-005": [
+      "TC-AGG-PROJ-005"
+    ],
+    "AC-006": [
+      "TC-AGG-PROJ-006"
+    ],
+    "AC-007": [
+      "TC-AGG-PROJ-007"
+    ],
+    "AC-008": [
+      "TC-AGG-PROJ-008"
+    ],
+    "AC-009": [
+      "TC-AGG-PROJ-009"
+    ],
+    "AC-010": [
+      "TC-AGG-PROJ-010"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-AGG-PROJ-001",
+      "tc_id": "TC-AGG-PROJ-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "wording",
+      "layer": "wording",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Aggregate change artifacts are described as projection/read model, not requirement truth.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "wording",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_wording_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-AGG-PROJ-002",
+      "tc_id": "TC-AGG-PROJ-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "projection",
+      "layer": "projection",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: QA accepted current feature has feature projection or repairable missing-projection finding.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "projection",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"qa_accepted_feature_requires_feature_change_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-AGG-PROJ-003",
+      "tc_id": "TC-AGG-PROJ-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "release-create",
+      "layer": "release-create",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Version aggregate projection includes expected feature count/list and explicit dependency waves.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release-create",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_create_rebuilds_version_projection_with_dependency_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-AGG-PROJ-004",
+      "tc_id": "TC-AGG-PROJ-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "release-check",
+      "layer": "release-check",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Release check fails closed when current QA accepted feature is missing from aggregate projection",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release-check",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_blocks_when_current_feature_missing_from_aggregate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-AGG-PROJ-005",
+      "tc_id": "TC-AGG-PROJ-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "release-check",
+      "layer": "release-check",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Release check aggregate inclusion passes when current QA accepted feature is included.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "release-check",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_passes_when_current_feature_included\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-AGG-PROJ-006",
+      "tc_id": "TC-AGG-PROJ-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "doctor",
+      "layer": "doctor",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Doctor repair-only path rebuilds projection artifacts and does not claim truth authority.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "doctor",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"doctor_repair_rebuilds_projection_without_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-AGG-PROJ-007",
+      "tc_id": "TC-AGG-PROJ-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "test-index",
+      "layer": "test-index",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: build + strict verify clears stale test-contract-index risk.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "test-index",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"test_contract_index_repair_clears_stale_index_risk\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-AGG-PROJ-008",
+      "tc_id": "TC-AGG-PROJ-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: No new lifecycle stage, mandatory human command, release publish, or post-release install is int",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"guard_does_not_add_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-AGG-PROJ-009",
+      "tc_id": "TC-AGG-PROJ-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Regression suite covers missing projection, repaired projection, feature count/list, dependency ",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_guard_regression_suite_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-AGG-PROJ-010",
+      "tc_id": "TC-AGG-PROJ-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "repair-route",
+      "layer": "repair-route",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Blocked release output includes actionable projection repair guidance.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "repair-route",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"blocked_release_output_includes_projection_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/version-aggregate-projection-guard-contract/TC-AGG-PROJ-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,743 @@
+{
+  "schema_version": "1.0",
+  "feature": "version-aggregate-projection-guard-contract",
+  "feature_slug": "version-aggregate-projection-guard-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-27T03:18:39.288952+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "version-aggregate-projection-guard-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
+      "superseded_by": "R2",
+      "created_at": "2026-05-27T02:40:30.410214+00:00",
+      "frozen_at": "2026-05-27T02:40:49.015541+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "version-aggregate-projection-guard-contract",
+      "source_revision_id": "R1",
+      "reason": "accepted brainstorm convergence: bind version aggregate projection guard into existing QA and release surfaces without adding lifecycle stage",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
+      "superseded_by": null,
+      "created_at": "2026-05-27T02:40:59.155939+00:00",
+      "frozen_at": "2026-05-27T02:41:01.676432+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "version-aggregate-projection-guard-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "wording",
+          "text": "Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "feature projection",
+          "text": "A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "release create",
+          "text": "`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "fail closed",
+          "text": "`release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "inclusion pass",
+          "text": "`release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "doctor repair",
+          "text": "Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "test index",
+          "text": "test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no lifecycle stage",
+          "text": "The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "regression coverage",
+          "text": "Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "repair route",
+          "text": "Blocked release output gives actionable repair guidance for projection inclusion failure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Blocked release output gives actionable repair guidance for projection inclusion failure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "version-aggregate-projection-guard-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "version-aggregate-projection-guard-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "wording",
+          "text": "Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "feature projection",
+          "text": "A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "release create",
+          "text": "`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "fail closed",
+          "text": "`release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "inclusion pass",
+          "text": "`release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "doctor repair",
+          "text": "Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "test index",
+          "text": "test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "no lifecycle stage",
+          "text": "The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "regression coverage",
+          "text": "Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "repair route",
+          "text": "Blocked release output gives actionable repair guidance for projection inclusion failure.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Blocked release output gives actionable repair guidance for projection inclusion failure.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T024500Z-version-aggregate-projection-guard",
+          "verified_by_run_id": "run-20260527T111829719823",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "version-aggregate-projection-guard-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "version-aggregate-projection-guard-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "beacon/utils/version_aggregate_projection.py",
+        "beacon/utils/release_scorecard.py",
+        "beacon/commands/release.py",
+        "beacon/utils/doctor_orchestrator.py",
+        "beacon/commands/doctor.py",
+        "tests/test_v1411_version_aggregate_projection_guard.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
+        ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-27T03:18:39.211006+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

@@ -1,0 +1,465 @@
+{
+  "feature": "beacon-design-human-subskills-closure-contract",
+  "feature_slug": "beacon-design-human-subskills-closure-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-DESIGN-SKILL-001"
+    ],
+    "AC-002": [
+      "TC-DESIGN-SKILL-002"
+    ],
+    "AC-003": [
+      "TC-DESIGN-SKILL-003"
+    ],
+    "AC-004": [
+      "TC-DESIGN-SKILL-004"
+    ],
+    "AC-005": [
+      "TC-DESIGN-SKILL-005"
+    ],
+    "AC-006": [
+      "TC-DESIGN-SKILL-006"
+    ],
+    "AC-007": [
+      "TC-DESIGN-SKILL-007"
+    ],
+    "AC-008": [
+      "TC-DESIGN-SKILL-008"
+    ],
+    "AC-009": [
+      "TC-DESIGN-SKILL-009"
+    ],
+    "AC-010": [
+      "TC-DESIGN-SKILL-010"
+    ],
+    "AC-011": [
+      "TC-DESIGN-SKILL-011"
+    ],
+    "AC-012": [
+      "TC-DESIGN-SKILL-012"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-DESIGN-SKILL-001",
+      "tc_id": "TC-DESIGN-SKILL-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Aggregate `beacon-design` is present and support-only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"aggregate_design_skill_remains_support_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-DESIGN-SKILL-002",
+      "tc_id": "TC-DESIGN-SKILL-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Explore subskill maps to `explore` and `vibe-to-ui`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"explore_subskill_maps_to_explore_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-DESIGN-SKILL-003",
+      "tc_id": "TC-DESIGN-SKILL-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Extract subskill maps to `extract` and `vibe-to-ui`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"extract_subskill_maps_to_extract_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-DESIGN-SKILL-004",
+      "tc_id": "TC-DESIGN-SKILL-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: System subskill maps to `system` and `ui-ux-pro-max`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"system_subskill_maps_to_system_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-DESIGN-SKILL-005",
+      "tc_id": "TC-DESIGN-SKILL-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Review subskill maps to `review` and `impeccable`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"review_subskill_maps_to_review_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-DESIGN-SKILL-006",
+      "tc_id": "TC-DESIGN-SKILL-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Polish subskill maps to `polish` and `impeccable`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"polish_subskill_maps_to_polish_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-DESIGN-SKILL-007",
+      "tc_id": "TC-DESIGN-SKILL-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Library subskill is reference-only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"library_subskill_is_reference_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-DESIGN-SKILL-008",
+      "tc_id": "TC-DESIGN-SKILL-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "skill",
+      "layer": "skill",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Bootstrap subskill is capability-admission-only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "skill",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"bootstrap_subskill_is_capability_admission_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-DESIGN-SKILL-009",
+      "tc_id": "TC-DESIGN-SKILL-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: All child skills declare not truth / not gate / not lifecycle.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"all_design_subskills_declare_support_boundaries\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-DESIGN-SKILL-010",
+      "tc_id": "TC-DESIGN-SKILL-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "truth-binding",
+      "layer": "truth-binding",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Accepted design facts have Beacon truth-binding next routes.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "truth-binding",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"accepted_design_facts_have_truth_binding_routes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-DESIGN-SKILL-011",
+      "tc_id": "TC-DESIGN-SKILL-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: Installed subskills match `beacon design contract` routes.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"installed_subskills_match_design_contract_routes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-011-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-DESIGN-SKILL-012",
+      "tc_id": "TC-DESIGN-SKILL-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: Runtime design route list remains unchanged.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_beacon_design_human_subskills_closure.py -k \"design_runtime_routes_are_not_expanded\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-design-human-subskills-closure-contract/TC-DESIGN-SKILL-012-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

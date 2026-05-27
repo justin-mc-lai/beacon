@@ -1,0 +1,455 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-version-aggregate-projection-guard-contract-20260527t024059z",
+  "feature": "version-aggregate-projection-guard-contract",
+  "feature_slug": "version-aggregate-projection-guard-contract",
+  "version": "v1.4.11",
+  "change_reason": "accepted brainstorm convergence: bind version aggregate projection guard into existing QA and release surfaces without adding lifecycle stage",
+  "touched_surfaces": [
+    "change",
+    "prd",
+    "user-story",
+    "test-case",
+    "requirement_clarity",
+    "freeze"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.4.11/change/version-aggregate-projection-guard-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "prd": {
+      "path": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "user-story": {
+      "path": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "test-case": {
+      "path": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-version-aggregate-projection-guard-contract.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.4.11/.machine/change/version-aggregate-projection-guard-contract.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"version-aggregate-projection-guard-contract\" --project . --version v1.4.11",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-05-27T02:40:59.155133+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.4.11",
+    "feature": "version-aggregate-projection-guard-contract",
+    "status": "synced",
+    "story_path": "docs/beacon/v1.4.11/.machine/user-story/version-aggregate-projection-guard-contract.json",
+    "qa_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
+    "qa9_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.qa9-matrix.json",
+    "story_scenario_map_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.story-scenario-map.json",
+    "story_sync": {
+      "path": "docs/beacon/v1.4.11/.machine/user-story/version-aggregate-projection-guard-contract.json",
+      "feature": "version-aggregate-projection-guard-contract",
+      "version": "v1.4.11",
+      "revision_id": "R2",
+      "ac_count": 10,
+      "test_count": 10,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "version-aggregate-projection-guard-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
+      "version": "v1.4.11",
+      "runtime_version": "v1.4.11",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-version-aggregate-projection-guard-contract.json",
+      "report_markdown_path": "docs/beacon/v1.4.11/execution/requirement-clarity-version-aggregate-projection-guard-contract.md",
+      "state_path": ".beacon/state/requirement-clarity-version-aggregate-projection-guard-contract.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.4.11",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-05-27T02:41:01.587454+00:00",
+        "feature": "version-aggregate-projection-guard-contract",
+        "feature_slug": "version-aggregate-projection-guard-contract",
+        "prd_ref": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+        "user_story_ref": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.4.11/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+          "prd": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+          "user_story": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+          "test_case": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+          "user_story_refs": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+          "test_case_refs": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
+        "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
+        "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-version-aggregate-projection-guard-contract.json",
+      "markdown": "docs/beacon/v1.4.11/execution/requirement-clarity-version-aggregate-projection-guard-contract.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "version-aggregate-projection-guard-contract",
+      "feature_slug": "version-aggregate-projection-guard-contract",
+      "version": "v1.4.11",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-version-aggregate-projection-guard-contract.json",
+      "report_markdown_path": "docs/beacon/v1.4.11/execution/requirement-clarity-version-aggregate-projection-guard-contract.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-05-27T02:41:01.675273+00:00",
+      "state_path": ".beacon/state/requirement-clarity-version-aggregate-projection-guard-contract.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "version-aggregate-projection-guard-contract",
+    "feature_slug": "version-aggregate-projection-guard-contract",
+    "version": "v1.4.11",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 10,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "doctor repair",
+        "text": "Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::doctor repair::doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail closed",
+        "text": "`release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::fail closed::`release check` fails closed when the current qa accepted feature is missing from version aggregate projection.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature projection",
+        "text": "A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::feature projection::a qa accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "inclusion pass",
+        "text": "`release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::inclusion pass::`release check` passes aggregate inclusion when the current qa accepted feature is included in version aggregate projection.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no lifecycle stage",
+        "text": "The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::no lifecycle stage::the guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "regression coverage",
+        "text": "Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::regression coverage::tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "release create",
+        "text": "`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::release create::`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "repair route",
+        "text": "Blocked release output gives actionable repair guidance for projection inclusion failure.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::repair route::blocked release output gives actionable repair guidance for projection inclusion failure.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "test index",
+        "text": "test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::test index::test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "wording",
+        "text": "Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
+        "signature": "ac::::wording::beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
+    "source_baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
+    "story_state_ref": "docs/beacon/v1.4.11/.machine/user-story/version-aggregate-projection-guard-contract.json",
+    "generated_at": "2026-05-27T02:41:01.677524+00:00",
+    "json_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-version-aggregate-projection-guard-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-version-aggregate-projection-guard-contract.md"
+  }
+}
