@@ -1,0 +1,855 @@
+{
+  "schema_version": "1.0",
+  "action": "run",
+  "run_id": "run-20260527T032714Z-017a",
+  "hook_id": "beacon-post-release-local-install",
+  "version": "v1.4.11",
+  "feature": "version-aggregate-projection-guard-contract",
+  "dry_run": false,
+  "confirmed": true,
+  "status": "passed",
+  "blocked": false,
+  "reason_code": "",
+  "plan": {
+    "schema_version": "1.0",
+    "action": "plan",
+    "hook_id": "beacon-post-release-local-install",
+    "version": "v1.4.11",
+    "feature": "version-aggregate-projection-guard-contract",
+    "status": "planned",
+    "blocked": false,
+    "admission": {
+      "schema_version": "1.0",
+      "hook_id": "beacon-post-release-local-install",
+      "hook_code": "post_release",
+      "feature": "version-aggregate-projection-guard-contract",
+      "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
+      "status": "pass",
+      "blocked": false,
+      "reason_codes": [],
+      "diagnostics": [],
+      "contract": {
+        "hook_id": "beacon-post-release-local-install",
+        "hook_code": "post_release",
+        "enabled": true,
+        "trigger_policy": "manual_confirmed",
+        "skill": "beacon-project-hooks",
+        "command_template": "beacon hooks run beacon-post-release-local-install --project . --version {version} --feature {feature} --confirm",
+        "produces_evidence": [
+          "codex_agent_surface_setup",
+          "codex_agent_surface_verify",
+          "claude_agent_surface_setup",
+          "claude_agent_surface_verify",
+          "global_beacon_cli_version",
+          "global_beacon_cli_launcher_path"
+        ],
+        "failure_route": "release"
+      }
+    },
+    "evidence_policy": "runtime_evidence_only",
+    "truth_authority": false,
+    "evidence_paths": {
+      "runtime_root": ".beacon/state/hooks/beacon-post-release-local-install",
+      "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
+    }
+  },
+  "side_effect_executed": true,
+  "runtime_evidence_only": true,
+  "truth_authority": false,
+  "written_at": "2026-05-27T03:27:14.056242+00:00",
+  "post_release_followup": {
+    "schema_version": "1.0",
+    "hook_id": "beacon-post-release-local-install",
+    "version": "v1.4.11",
+    "feature": "version-aggregate-projection-guard-contract",
+    "status": "pass",
+    "blocked": false,
+    "reason_codes": [],
+    "agent_surfaces": {
+      "codex": {
+        "setup_status": "PASS",
+        "verify_status": "PASS",
+        "setup_result": {
+          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "agent": "codex",
+          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+          "rules_path": "",
+          "installed": [
+            {
+              "id": "beacon-archive",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-archive",
+              "action": "unchanged",
+              "source_hash": "344754da1ad8237b95a343ab20979e9627ace2f1faddcc2c20ba7938444c2560"
+            },
+            {
+              "id": "beacon-brainstorm",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-brainstorm",
+              "action": "unchanged",
+              "source_hash": "511a35e37221c5756e7a2519df2e69e55a167a7bbad044c7d636a6981865d3a1"
+            },
+            {
+              "id": "beacon-ceo-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-ceo-review",
+              "action": "unchanged",
+              "source_hash": "d532bd42b324449326a2dfd68e44a211525808412609e871628f414af61f113e"
+            },
+            {
+              "id": "beacon-change",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-change",
+              "action": "unchanged",
+              "source_hash": "67a78cbbfb0b13a23212395201c4ca5465ef50575444b13a44081fba19b6983f"
+            },
+            {
+              "id": "beacon-change-refreeze",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-change-refreeze",
+              "action": "unchanged",
+              "source_hash": "f78e2e0f0c905114ce6c9e6d5fe02ad5098bbdbaf834f6c51009ef0836728821"
+            },
+            {
+              "id": "beacon-context-engineering",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-context-engineering",
+              "action": "unchanged",
+              "source_hash": "f1df055fc6820ad17070bcb7e0a39869958980e0d0753ba7ff90ba0c6a504ccc"
+            },
+            {
+              "id": "beacon-debug-recovery",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-debug-recovery",
+              "action": "unchanged",
+              "source_hash": "0ded6186b7cb65a302e393aa42b2d642219a35ca1395507790ab48865d6ac8ca"
+            },
+            {
+              "id": "beacon-deep",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-deep",
+              "action": "unchanged",
+              "source_hash": "2cd142d258267fa7df1147940c2ed4fe8181939ef65c4ecef7e33de6773f6152"
+            },
+            {
+              "id": "beacon-design",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design",
+              "action": "unchanged",
+              "source_hash": "6647dd8535e3097d5075bc76c5eb76c2208b683eefc3787836138bffd4eec2d0"
+            },
+            {
+              "id": "beacon-design-bootstrap",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-bootstrap",
+              "action": "unchanged",
+              "source_hash": "f317ec92f0f665facfb88f3a3837fcb2eed3f53d603dcf94716601680fc46a33"
+            },
+            {
+              "id": "beacon-design-explore",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-explore",
+              "action": "unchanged",
+              "source_hash": "8de753829507f85cefdf6bff73522690097d54810cd4b5df3092db3b12e9ea98"
+            },
+            {
+              "id": "beacon-design-extract",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-extract",
+              "action": "unchanged",
+              "source_hash": "6f9643254f9dbd879fbf8ca050863bed785c3e740e8f81484e31cb43a5ba358a"
+            },
+            {
+              "id": "beacon-design-library",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-library",
+              "action": "unchanged",
+              "source_hash": "168dedc79fbecd18fc97c6ffc37b776296b707bfc7852a882c4303dca4623ab3"
+            },
+            {
+              "id": "beacon-design-polish",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-polish",
+              "action": "unchanged",
+              "source_hash": "52807fdb84d5a5273e742e53fcb76872b035e1aad753083f36680940b3e69b19"
+            },
+            {
+              "id": "beacon-design-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-review",
+              "action": "unchanged",
+              "source_hash": "b9ae83da3f83628898f5699aec973e50141ad19e7af0b7226d1c31321e86baa7"
+            },
+            {
+              "id": "beacon-design-system",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-design-system",
+              "action": "unchanged",
+              "source_hash": "417934b57ea613915bb4fe76e87d12cb6963c2296ee9267bfafd6c8a6ca0c914"
+            },
+            {
+              "id": "beacon-doctor",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-doctor",
+              "action": "unchanged",
+              "source_hash": "498a6b5c8cb76609c70a4f56975d50d940ed703a5faebb69b7870943a91d9719"
+            },
+            {
+              "id": "beacon-documentation-adr",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-documentation-adr",
+              "action": "unchanged",
+              "source_hash": "d49ce4da236bfa3d440ccd616c8dbf8373f438d5dd395ed472d6fe3b7bd8606a"
+            },
+            {
+              "id": "beacon-doubt-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-doubt-review",
+              "action": "unchanged",
+              "source_hash": "da6a3ce01adc73998df68a94a564b300f0a3873bec4aa0ef814573cec7317fa4"
+            },
+            {
+              "id": "beacon-friction-intake",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-friction-intake",
+              "action": "unchanged",
+              "source_hash": "9acf2b9d3df7262eea3dfd48cc10172de432ffae57f287092b42eddc0877f709"
+            },
+            {
+              "id": "beacon-help",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-help",
+              "action": "unchanged",
+              "source_hash": "b7a42046bddfbe98741453f2d6aa38510dcf9994610a0f89a8f3b991e62cfa5f"
+            },
+            {
+              "id": "beacon-implement",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-implement",
+              "action": "unchanged",
+              "source_hash": "55fecaab75eabb11f64670619fcb45a41649165f8af52a203930855e170bf0cc"
+            },
+            {
+              "id": "beacon-learn",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-learn",
+              "action": "unchanged",
+              "source_hash": "2951a3af65b309802a4eab48cbd385a367ddcbdfe057bb7505a102ce64f6f148"
+            },
+            {
+              "id": "beacon-performance-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-performance-review",
+              "action": "unchanged",
+              "source_hash": "3b1552f2ea1cb3471814c347f1f04c7a0c43bde4572dfc63f122cfbb69247242"
+            },
+            {
+              "id": "beacon-prd",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-prd",
+              "action": "unchanged",
+              "source_hash": "1b9a8839caa22aa9df1780d61ad5bf84c86e8299c022c6fd38c9c5abc718af7b"
+            },
+            {
+              "id": "beacon-prd-bootstrap",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-prd-bootstrap",
+              "action": "unchanged",
+              "source_hash": "6b09ea0333d8cc9cd6e988d2011c6e3556907b335403d1f21281ae94c570749b"
+            },
+            {
+              "id": "beacon-project-hooks",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-project-hooks",
+              "action": "unchanged",
+              "source_hash": "f2b36dbe8b4986e33dbc9d29da39bb817369872a02dd8f48c266fbd8472424c9"
+            },
+            {
+              "id": "beacon-prototype",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-prototype",
+              "action": "unchanged",
+              "source_hash": "7ec1296aec18a0215acc8f5e85e29090c595c7cdf70dfe85a442043586787fb5"
+            },
+            {
+              "id": "beacon-qa",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-qa",
+              "action": "unchanged",
+              "source_hash": "d4330ee9cf0a05b1ce044296cb354be8f2c549f71981ea31237953d8c27a0f4c"
+            },
+            {
+              "id": "beacon-qa-evo-deep",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-qa-evo-deep",
+              "action": "unchanged",
+              "source_hash": "7cfaca78a2c5660df3e8ca60965d44fd79b5554b28896a4584632b308cbe41b1"
+            },
+            {
+              "id": "beacon-real-project-validation",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-real-project-validation",
+              "action": "unchanged",
+              "source_hash": "2e2e90f83ece02fbe553439ec932526b0894ef0a9c53c17b14210a3c1938a40b"
+            },
+            {
+              "id": "beacon-release",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-release",
+              "action": "unchanged",
+              "source_hash": "b975bc3fd712dc3f0e9b6219808a9b4630c87f0a8f09f22b0bc8149a015f9a0b"
+            },
+            {
+              "id": "beacon-security-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-security-review",
+              "action": "unchanged",
+              "source_hash": "09bb6f09625407cba038003a2edbb8328dfe5a1bb4e5949a0a4094c894578730"
+            },
+            {
+              "id": "beacon-source-driven",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-source-driven",
+              "action": "unchanged",
+              "source_hash": "fb138decb592024c5725dfc0b291c1a2135fb5a7b839b194ef7618e9efe76c5c"
+            },
+            {
+              "id": "beacon-status",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-status",
+              "action": "unchanged",
+              "source_hash": "d139b618c26845b540cfdf5de5b25feda570ebaaf96eab6fe3999f509a3cafd1"
+            },
+            {
+              "id": "beacon-test-case",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-test-case",
+              "action": "unchanged",
+              "source_hash": "6115f4351954e8568a25abe030eb1708ccc342c605aa3378b332478dbaaa196d"
+            },
+            {
+              "id": "beacon-toolkit-automation",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-toolkit-automation",
+              "action": "unchanged",
+              "source_hash": "89718699c44d500b01ebc3b886616d1643f15e7aeac470dd066373d8fca9509b"
+            },
+            {
+              "id": "beacon-toolkit-branch-governance",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-toolkit-branch-governance",
+              "action": "unchanged",
+              "source_hash": "2f3e226271e9166a8b04497bb9eaa83f81f2303e8ebf2908c97a0fabbade00a6"
+            },
+            {
+              "id": "beacon-toolkit-lighthouse",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-toolkit-lighthouse",
+              "action": "unchanged",
+              "source_hash": "a8aa6ce429a672e71794e0f8b68c9839da7fa1f0c4a31a8b98f174a0ed240c82"
+            },
+            {
+              "id": "beacon-toolkit-metadata",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-toolkit-metadata",
+              "action": "unchanged",
+              "source_hash": "d1fc1943c0ed2bd2720d156ee9c60f80c30abcf09e1124bc808c2f8368489085"
+            },
+            {
+              "id": "beacon-user-story",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-user-story",
+              "action": "unchanged",
+              "source_hash": "8ebec9317011ef5c4aed8769e6c96bd292aa68d5f2659c52f382ca58d4aaaf92"
+            },
+            {
+              "id": "using-beacon",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/using-beacon",
+              "action": "unchanged",
+              "source_hash": "830e24d9a0d0967de183eb485e7857bab1d71c12d562f5cb9f65158e8a412a64"
+            }
+          ],
+          "skipped": [],
+          "removed": [],
+          "warnings": [],
+          "state": {
+            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "action": "updated",
+            "changed": true
+          },
+          "rules": null
+        },
+        "verify_result": {
+          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "agent": "codex",
+          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+          "runtime_version": "v1.4.11",
+          "strict": true,
+          "status": "pass",
+          "ok": true,
+          "checks": [
+            {
+              "name": "agent_supported",
+              "status": "pass",
+              "details": {
+                "agent": "codex"
+              }
+            },
+            {
+              "name": "surface_root_present",
+              "status": "pass",
+              "details": {
+                "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills",
+                "exists": true
+              }
+            },
+            {
+              "name": "host_visible_skills_present",
+              "status": "pass",
+              "details": {
+                "expected": [
+                  "beacon-archive",
+                  "beacon-brainstorm",
+                  "beacon-ceo-review",
+                  "beacon-change",
+                  "beacon-change-refreeze",
+                  "beacon-context-engineering",
+                  "beacon-debug-recovery",
+                  "beacon-deep",
+                  "beacon-design",
+                  "beacon-design-bootstrap",
+                  "beacon-design-explore",
+                  "beacon-design-extract",
+                  "beacon-design-library",
+                  "beacon-design-polish",
+                  "beacon-design-review",
+                  "beacon-design-system",
+                  "beacon-doctor",
+                  "beacon-documentation-adr",
+                  "beacon-doubt-review",
+                  "beacon-friction-intake",
+                  "beacon-help",
+                  "beacon-implement",
+                  "beacon-learn",
+                  "beacon-performance-review",
+                  "beacon-prd",
+                  "beacon-prd-bootstrap",
+                  "beacon-project-hooks",
+                  "beacon-prototype",
+                  "beacon-qa",
+                  "beacon-qa-evo-deep",
+                  "beacon-real-project-validation",
+                  "beacon-release",
+                  "beacon-security-review",
+                  "beacon-source-driven",
+                  "beacon-status",
+                  "beacon-test-case",
+                  "beacon-toolkit-automation",
+                  "beacon-toolkit-branch-governance",
+                  "beacon-toolkit-lighthouse",
+                  "beacon-toolkit-metadata",
+                  "beacon-user-story",
+                  "using-beacon"
+                ],
+                "missing": []
+              }
+            },
+            {
+              "name": "host_visible_skills_drift",
+              "status": "pass",
+              "details": {
+                "drifted": []
+              }
+            },
+            {
+              "name": "agent_surface_state_projection",
+              "status": "pass",
+              "details": {
+                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "exists": true
+              }
+            }
+          ]
+        }
+      },
+      "claude": {
+        "setup_status": "PASS",
+        "verify_status": "PASS",
+        "setup_result": {
+          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "agent": "claude",
+          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+          "rules_path": "",
+          "installed": [
+            {
+              "id": "beacon-archive",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-archive",
+              "action": "unchanged",
+              "source_hash": "344754da1ad8237b95a343ab20979e9627ace2f1faddcc2c20ba7938444c2560"
+            },
+            {
+              "id": "beacon-brainstorm",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-brainstorm",
+              "action": "unchanged",
+              "source_hash": "511a35e37221c5756e7a2519df2e69e55a167a7bbad044c7d636a6981865d3a1"
+            },
+            {
+              "id": "beacon-ceo-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-ceo-review",
+              "action": "unchanged",
+              "source_hash": "d532bd42b324449326a2dfd68e44a211525808412609e871628f414af61f113e"
+            },
+            {
+              "id": "beacon-change",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-change",
+              "action": "unchanged",
+              "source_hash": "67a78cbbfb0b13a23212395201c4ca5465ef50575444b13a44081fba19b6983f"
+            },
+            {
+              "id": "beacon-change-refreeze",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-change-refreeze",
+              "action": "unchanged",
+              "source_hash": "f78e2e0f0c905114ce6c9e6d5fe02ad5098bbdbaf834f6c51009ef0836728821"
+            },
+            {
+              "id": "beacon-context-engineering",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-context-engineering",
+              "action": "unchanged",
+              "source_hash": "f1df055fc6820ad17070bcb7e0a39869958980e0d0753ba7ff90ba0c6a504ccc"
+            },
+            {
+              "id": "beacon-debug-recovery",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-debug-recovery",
+              "action": "unchanged",
+              "source_hash": "0ded6186b7cb65a302e393aa42b2d642219a35ca1395507790ab48865d6ac8ca"
+            },
+            {
+              "id": "beacon-deep",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-deep",
+              "action": "unchanged",
+              "source_hash": "2cd142d258267fa7df1147940c2ed4fe8181939ef65c4ecef7e33de6773f6152"
+            },
+            {
+              "id": "beacon-design",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design",
+              "action": "unchanged",
+              "source_hash": "6647dd8535e3097d5075bc76c5eb76c2208b683eefc3787836138bffd4eec2d0"
+            },
+            {
+              "id": "beacon-design-bootstrap",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-bootstrap",
+              "action": "created",
+              "source_hash": "f317ec92f0f665facfb88f3a3837fcb2eed3f53d603dcf94716601680fc46a33"
+            },
+            {
+              "id": "beacon-design-explore",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-explore",
+              "action": "created",
+              "source_hash": "8de753829507f85cefdf6bff73522690097d54810cd4b5df3092db3b12e9ea98"
+            },
+            {
+              "id": "beacon-design-extract",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-extract",
+              "action": "created",
+              "source_hash": "6f9643254f9dbd879fbf8ca050863bed785c3e740e8f81484e31cb43a5ba358a"
+            },
+            {
+              "id": "beacon-design-library",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-library",
+              "action": "created",
+              "source_hash": "168dedc79fbecd18fc97c6ffc37b776296b707bfc7852a882c4303dca4623ab3"
+            },
+            {
+              "id": "beacon-design-polish",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-polish",
+              "action": "created",
+              "source_hash": "52807fdb84d5a5273e742e53fcb76872b035e1aad753083f36680940b3e69b19"
+            },
+            {
+              "id": "beacon-design-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-review",
+              "action": "updated",
+              "source_hash": "b9ae83da3f83628898f5699aec973e50141ad19e7af0b7226d1c31321e86baa7"
+            },
+            {
+              "id": "beacon-design-system",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-design-system",
+              "action": "created",
+              "source_hash": "417934b57ea613915bb4fe76e87d12cb6963c2296ee9267bfafd6c8a6ca0c914"
+            },
+            {
+              "id": "beacon-doctor",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-doctor",
+              "action": "unchanged",
+              "source_hash": "498a6b5c8cb76609c70a4f56975d50d940ed703a5faebb69b7870943a91d9719"
+            },
+            {
+              "id": "beacon-documentation-adr",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-documentation-adr",
+              "action": "unchanged",
+              "source_hash": "d49ce4da236bfa3d440ccd616c8dbf8373f438d5dd395ed472d6fe3b7bd8606a"
+            },
+            {
+              "id": "beacon-doubt-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-doubt-review",
+              "action": "unchanged",
+              "source_hash": "da6a3ce01adc73998df68a94a564b300f0a3873bec4aa0ef814573cec7317fa4"
+            },
+            {
+              "id": "beacon-friction-intake",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-friction-intake",
+              "action": "unchanged",
+              "source_hash": "9acf2b9d3df7262eea3dfd48cc10172de432ffae57f287092b42eddc0877f709"
+            },
+            {
+              "id": "beacon-help",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-help",
+              "action": "unchanged",
+              "source_hash": "b7a42046bddfbe98741453f2d6aa38510dcf9994610a0f89a8f3b991e62cfa5f"
+            },
+            {
+              "id": "beacon-implement",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-implement",
+              "action": "unchanged",
+              "source_hash": "55fecaab75eabb11f64670619fcb45a41649165f8af52a203930855e170bf0cc"
+            },
+            {
+              "id": "beacon-learn",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-learn",
+              "action": "unchanged",
+              "source_hash": "2951a3af65b309802a4eab48cbd385a367ddcbdfe057bb7505a102ce64f6f148"
+            },
+            {
+              "id": "beacon-performance-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-performance-review",
+              "action": "unchanged",
+              "source_hash": "3b1552f2ea1cb3471814c347f1f04c7a0c43bde4572dfc63f122cfbb69247242"
+            },
+            {
+              "id": "beacon-prd",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-prd",
+              "action": "unchanged",
+              "source_hash": "1b9a8839caa22aa9df1780d61ad5bf84c86e8299c022c6fd38c9c5abc718af7b"
+            },
+            {
+              "id": "beacon-prd-bootstrap",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-prd-bootstrap",
+              "action": "unchanged",
+              "source_hash": "6b09ea0333d8cc9cd6e988d2011c6e3556907b335403d1f21281ae94c570749b"
+            },
+            {
+              "id": "beacon-project-hooks",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-project-hooks",
+              "action": "unchanged",
+              "source_hash": "f2b36dbe8b4986e33dbc9d29da39bb817369872a02dd8f48c266fbd8472424c9"
+            },
+            {
+              "id": "beacon-prototype",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-prototype",
+              "action": "unchanged",
+              "source_hash": "7ec1296aec18a0215acc8f5e85e29090c595c7cdf70dfe85a442043586787fb5"
+            },
+            {
+              "id": "beacon-qa",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-qa",
+              "action": "unchanged",
+              "source_hash": "d4330ee9cf0a05b1ce044296cb354be8f2c549f71981ea31237953d8c27a0f4c"
+            },
+            {
+              "id": "beacon-qa-evo-deep",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-qa-evo-deep",
+              "action": "unchanged",
+              "source_hash": "7cfaca78a2c5660df3e8ca60965d44fd79b5554b28896a4584632b308cbe41b1"
+            },
+            {
+              "id": "beacon-real-project-validation",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-real-project-validation",
+              "action": "unchanged",
+              "source_hash": "2e2e90f83ece02fbe553439ec932526b0894ef0a9c53c17b14210a3c1938a40b"
+            },
+            {
+              "id": "beacon-release",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-release",
+              "action": "unchanged",
+              "source_hash": "b975bc3fd712dc3f0e9b6219808a9b4630c87f0a8f09f22b0bc8149a015f9a0b"
+            },
+            {
+              "id": "beacon-security-review",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-security-review",
+              "action": "unchanged",
+              "source_hash": "09bb6f09625407cba038003a2edbb8328dfe5a1bb4e5949a0a4094c894578730"
+            },
+            {
+              "id": "beacon-source-driven",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-source-driven",
+              "action": "unchanged",
+              "source_hash": "fb138decb592024c5725dfc0b291c1a2135fb5a7b839b194ef7618e9efe76c5c"
+            },
+            {
+              "id": "beacon-status",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-status",
+              "action": "unchanged",
+              "source_hash": "d139b618c26845b540cfdf5de5b25feda570ebaaf96eab6fe3999f509a3cafd1"
+            },
+            {
+              "id": "beacon-test-case",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-test-case",
+              "action": "unchanged",
+              "source_hash": "6115f4351954e8568a25abe030eb1708ccc342c605aa3378b332478dbaaa196d"
+            },
+            {
+              "id": "beacon-toolkit-automation",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-toolkit-automation",
+              "action": "unchanged",
+              "source_hash": "89718699c44d500b01ebc3b886616d1643f15e7aeac470dd066373d8fca9509b"
+            },
+            {
+              "id": "beacon-toolkit-branch-governance",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-toolkit-branch-governance",
+              "action": "unchanged",
+              "source_hash": "2f3e226271e9166a8b04497bb9eaa83f81f2303e8ebf2908c97a0fabbade00a6"
+            },
+            {
+              "id": "beacon-toolkit-lighthouse",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-toolkit-lighthouse",
+              "action": "unchanged",
+              "source_hash": "a8aa6ce429a672e71794e0f8b68c9839da7fa1f0c4a31a8b98f174a0ed240c82"
+            },
+            {
+              "id": "beacon-toolkit-metadata",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-toolkit-metadata",
+              "action": "unchanged",
+              "source_hash": "d1fc1943c0ed2bd2720d156ee9c60f80c30abcf09e1124bc808c2f8368489085"
+            },
+            {
+              "id": "beacon-user-story",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-user-story",
+              "action": "unchanged",
+              "source_hash": "8ebec9317011ef5c4aed8769e6c96bd292aa68d5f2659c52f382ca58d4aaaf92"
+            },
+            {
+              "id": "using-beacon",
+              "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/using-beacon",
+              "action": "unchanged",
+              "source_hash": "830e24d9a0d0967de183eb485e7857bab1d71c12d562f5cb9f65158e8a412a64"
+            }
+          ],
+          "skipped": [],
+          "removed": [],
+          "warnings": [],
+          "state": {
+            "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+            "action": "updated",
+            "changed": true
+          },
+          "rules": null
+        },
+        "verify_result": {
+          "project_root": "/Users/apple/Developer/Personal/products/beacon",
+          "agent": "claude",
+          "surface_root": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+          "runtime_version": "v1.4.11",
+          "strict": true,
+          "status": "pass",
+          "ok": true,
+          "checks": [
+            {
+              "name": "agent_supported",
+              "status": "pass",
+              "details": {
+                "agent": "claude"
+              }
+            },
+            {
+              "name": "surface_root_present",
+              "status": "pass",
+              "details": {
+                "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills",
+                "exists": true
+              }
+            },
+            {
+              "name": "host_visible_skills_present",
+              "status": "pass",
+              "details": {
+                "expected": [
+                  "beacon-archive",
+                  "beacon-brainstorm",
+                  "beacon-ceo-review",
+                  "beacon-change",
+                  "beacon-change-refreeze",
+                  "beacon-context-engineering",
+                  "beacon-debug-recovery",
+                  "beacon-deep",
+                  "beacon-design",
+                  "beacon-design-bootstrap",
+                  "beacon-design-explore",
+                  "beacon-design-extract",
+                  "beacon-design-library",
+                  "beacon-design-polish",
+                  "beacon-design-review",
+                  "beacon-design-system",
+                  "beacon-doctor",
+                  "beacon-documentation-adr",
+                  "beacon-doubt-review",
+                  "beacon-friction-intake",
+                  "beacon-help",
+                  "beacon-implement",
+                  "beacon-learn",
+                  "beacon-performance-review",
+                  "beacon-prd",
+                  "beacon-prd-bootstrap",
+                  "beacon-project-hooks",
+                  "beacon-prototype",
+                  "beacon-qa",
+                  "beacon-qa-evo-deep",
+                  "beacon-real-project-validation",
+                  "beacon-release",
+                  "beacon-security-review",
+                  "beacon-source-driven",
+                  "beacon-status",
+                  "beacon-test-case",
+                  "beacon-toolkit-automation",
+                  "beacon-toolkit-branch-governance",
+                  "beacon-toolkit-lighthouse",
+                  "beacon-toolkit-metadata",
+                  "beacon-user-story",
+                  "using-beacon"
+                ],
+                "missing": []
+              }
+            },
+            {
+              "name": "host_visible_skills_drift",
+              "status": "pass",
+              "details": {
+                "drifted": []
+              }
+            },
+            {
+              "name": "agent_surface_state_projection",
+              "status": "pass",
+              "details": {
+                "path": "/Users/apple/Developer/Personal/products/beacon/.beacon/state/agent-surfaces.json",
+                "exists": true
+              }
+            }
+          ]
+        }
+      }
+    },
+    "launcher_setup": {
+      "schema_version": "2.0",
+      "action": "setup",
+      "status": "PASS",
+      "result": {
+        "installed": [],
+        "removed": [],
+        "skipped": [
+          "/Users/apple/.local/bin/beacon",
+          "/Users/apple/.local/bin/beacon-cli"
+        ],
+        "warnings": [],
+        "path_in_path": true
+      }
+    },
+    "cli_versions": {
+      "beacon": {
+        "command": [
+          "beacon",
+          "--version"
+        ],
+        "path": "/Users/apple/.local/bin/beacon",
+        "status": "pass",
+        "stdout": "Beacon CLI v1.4.11",
+        "stderr": "",
+        "returncode": 0,
+        "reason_code": ""
+      },
+      "beacon-cli": {
+        "command": [
+          "beacon-cli",
+          "--version"
+        ],
+        "path": "/Users/apple/.local/bin/beacon-cli",
+        "status": "pass",
+        "stdout": "Beacon CLI v1.4.11",
+        "stderr": "",
+        "returncode": 0,
+        "reason_code": ""
+      }
+    },
+    "commands_confirmed": [
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.11 --agent codex --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.11 --agent codex --strict --json",
+      "python3 -m beacon.main doctor setup-agent-surface --project-root . --version v1.4.11 --agent claude --force --json",
+      "python3 -m beacon.main doctor verify-agent-surface --project-root . --version v1.4.11 --agent claude --strict --json",
+      "python3 -m beacon.main doctor setup --force --json",
+      "beacon --version",
+      "beacon-cli --version"
+    ]
+  },
+  "evidence_paths": {
+    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260527T032714Z-017a.json",
+    "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
+  }
+}
