@@ -4,6 +4,8 @@ import json
 import importlib
 from pathlib import Path
 
+import pytest
+
 from beacon.command_catalog import COMPAT_COMMANDS, DEPRECATED_COMMANDS
 from beacon.utils.authority import ARTIFACT_ROLES, authority_roots, classify_artifact_role
 from beacon.utils.baseline_inventory import (
@@ -17,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 VERSION = "v1.4.11"
 FEATURE = "authority-vocabulary-and-baseline-inventory-contract"
 FORBIDDEN_MACHINE_TRUTH_WORDING = "machine artifacts remain source of truth"
+pytestmark = [pytest.mark.projection_integrity]
 
 REQUIRED_INVENTORY_FIELDS = {
     "source_file",
@@ -143,6 +146,7 @@ def test_compat_behavior_is_not_retired_by_this_slice():
     assert callable(intent_router.route_intent)
 
 
+@pytest.mark.compat_contract
 def test_required_hotspots_are_inventory_covered():
     generated = build_legacy_burden_baseline_inventory(ROOT, version=VERSION)
     generated_ids = {str(row.get("compat_id")) for row in generated["items"]}

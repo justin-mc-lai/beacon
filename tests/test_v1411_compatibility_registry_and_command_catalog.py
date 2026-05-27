@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib
 from pathlib import Path
 
+import pytest
 from typer.testing import CliRunner
 
 from beacon.command_catalog import (
@@ -41,8 +42,10 @@ REQUIRED_REGISTRY_IDS = {
 }
 
 runner = CliRunner()
+pytestmark = [pytest.mark.projection_integrity]
 
 
+@pytest.mark.compat_contract
 def test_registry_schema_has_required_fields():
     assert set(REQUIRED_REGISTRY_FIELDS) == {
         "compat_id",
@@ -61,6 +64,7 @@ def test_registry_schema_has_required_fields():
     assert result["issues"] == []
 
 
+@pytest.mark.compat_contract
 def test_registry_covers_required_baseline_inventory_surfaces():
     from_baseline = required_registry_ids_from_baseline(ROOT, version=VERSION)
     assert REQUIRED_REGISTRY_IDS <= from_baseline
@@ -68,6 +72,7 @@ def test_registry_covers_required_baseline_inventory_surfaces():
     assert from_baseline <= registry_ids
 
 
+@pytest.mark.compat_contract
 def test_registry_entries_include_lifecycle_metadata():
     valid_surfaces = {"command", "implement", "qa", "prd", "prototype", "browser", "memory", "intent"}
     for entry in COMPATIBILITY_REGISTRY:
@@ -105,6 +110,7 @@ def test_command_catalog_layers_are_explicit():
     assert validation["issues"] == []
 
 
+@pytest.mark.deprecated
 def test_compat_and_deprecated_commands_remain_callable():
     for command in ("think", "workflow", "gate", "verify", "auto-test", "prompt", "save"):
         result = runner.invoke(app, [command, "--help"])
@@ -129,6 +135,7 @@ def test_default_routes_do_not_promote_compat_commands():
         assert not any(f"│ {command} " in line for line in visible_command_lines)
 
 
+@pytest.mark.compat_contract
 def test_unregistered_compat_surface_fails_validation():
     entries = [entry for entry in COMPATIBILITY_REGISTRY if entry["compat_id"] != "intent-legacy-router"]
     result = validate_compatibility_registry(entries=entries, required_ids=REQUIRED_REGISTRY_IDS)
@@ -141,6 +148,7 @@ def test_unregistered_compat_surface_fails_validation():
     assert "missing_registry_command_alias:think" in alias_result["issues"]
 
 
+@pytest.mark.deprecated
 def test_no_behavior_retirement_in_registry_slice():
     from beacon.utils import intent_router, memory, prototype_utils, qa_runtime
     from beacon.adapters import browser_runner_common

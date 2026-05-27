@@ -79,6 +79,7 @@ def _run_browser_use(
     return code, report, console
 
 
+@pytest.mark.current_contract
 def test_current_deterministic_command_option(capsys: pytest.CaptureFixture[str]) -> None:
     with pytest.raises(SystemExit):
         browser_use_runner.main(["--help"])
@@ -88,15 +89,20 @@ def test_current_deterministic_command_option(capsys: pytest.CaptureFixture[str]
     assert "--explicit-project-command" in help_text
 
 
+@pytest.mark.compat_contract
+@pytest.mark.deprecated
 def test_fallback_cmd_remains_compat_alias(tmp_path: Path) -> None:
     code, report, _console = _run_browser_use(tmp_path, option="--fallback-cmd")
+    registry = registry_by_id()
 
     assert code == 0
+    assert "browser-fallback-command-name" in registry
     assert report["fallback_cmd"].startswith("sh ")
     assert report["deterministic_command"].startswith("sh ")
     assert report["compat_alias_used"] is True
 
 
+@pytest.mark.current_contract
 def test_deterministic_command_execution_mode(tmp_path: Path) -> None:
     code, report, console = _run_browser_use(tmp_path)
 
@@ -105,6 +111,7 @@ def test_deterministic_command_execution_mode(tmp_path: Path) -> None:
     assert "execution_mode=deterministic_command" in console
 
 
+@pytest.mark.current_contract
 def test_browser_agent_and_command_evidence_are_split(tmp_path: Path) -> None:
     code, report, _console = _run_browser_use(tmp_path)
 
@@ -115,6 +122,7 @@ def test_browser_agent_and_command_evidence_are_split(tmp_path: Path) -> None:
     assert report["deterministic_command_executed"] is True
 
 
+@pytest.mark.current_contract
 def test_deterministic_command_does_not_claim_browser_success(tmp_path: Path) -> None:
     code, report, _console = _run_browser_use(tmp_path)
 
@@ -123,6 +131,8 @@ def test_deterministic_command_does_not_claim_browser_success(tmp_path: Path) ->
     assert report["browser_agent_executed"] is False
 
 
+@pytest.mark.compat_contract
+@pytest.mark.deprecated
 def test_fallback_alias_records_compatibility_evidence(tmp_path: Path) -> None:
     code, report, _console = _run_browser_use(tmp_path, option="--fallback-cmd")
     registry = registry_by_id()
@@ -133,6 +143,7 @@ def test_fallback_alias_records_compatibility_evidence(tmp_path: Path) -> None:
     assert report["compat_id"] == "browser-fallback-command-name"
 
 
+@pytest.mark.current_contract
 def test_current_templates_prefer_deterministic_command() -> None:
     commands = [
         default_command_for_qa_type("functional", ui_runner="browser-use"),
@@ -145,6 +156,7 @@ def test_current_templates_prefer_deterministic_command() -> None:
     assert all("--fallback-cmd" not in command for command in commands)
 
 
+@pytest.mark.current_contract
 def test_missing_browser_and_command_fail_closed(tmp_path: Path) -> None:
     code, report, _console = _run_browser_use(tmp_path, command="", include_task=True)
 
@@ -157,6 +169,8 @@ def test_missing_browser_and_command_fail_closed(tmp_path: Path) -> None:
     }
 
 
+@pytest.mark.compat_contract
+@pytest.mark.deprecated
 def test_no_unrelated_phase_behavior_changes() -> None:
     from beacon.utils import intent_router, memory, prototype_support, qa_runtime
 
@@ -174,6 +188,7 @@ def test_no_unrelated_phase_behavior_changes() -> None:
     assert "intent-legacy-router" in registry
 
 
+@pytest.mark.current_contract
 def test_readout_distinguishes_browser_and_command_repair(tmp_path: Path) -> None:
     code, report, console = _run_browser_use(tmp_path, command="", include_task=False)
 
@@ -185,6 +200,7 @@ def test_readout_distinguishes_browser_and_command_repair(tmp_path: Path) -> Non
     assert "deterministic_command_repair_route=" in console
 
 
+@pytest.mark.current_contract
 def test_agent_browser_accepts_current_deterministic_command(tmp_path: Path) -> None:
     layer_dir = tmp_path / "evidence" / "agent"
     layer_dir.mkdir(parents=True, exist_ok=True)

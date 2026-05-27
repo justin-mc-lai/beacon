@@ -3,6 +3,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import pytest
+
 from beacon.compatibility.registry import registry_by_id, validate_compatibility_registry
 from beacon.utils.material_audit import build_material_audit
 from beacon.utils.qa_runtime import (
@@ -20,6 +22,7 @@ from beacon.utils.story_state import freeze_story_state, sync_story_state_from_d
 VERSION = "v1.4.11"
 FEATURE = "QA PRD Legacy Mirror Retirement Contract"
 SLUG = "qa-prd-legacy-mirror-retirement-contract"
+pytestmark = [pytest.mark.projection_integrity]
 
 
 def _write(root: Path, rel: str, content: str) -> None:
@@ -89,6 +92,8 @@ def test_canonical_qa_status_is_default_authority(tmp_path: Path) -> None:
     assert qa_status_path(tmp_path).exists()
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
 def test_legacy_qa_status_requires_explicit_admission(tmp_path: Path) -> None:
     write_json(tmp_path / ".beacon" / "auto-test-status.json", {"status": "passed", "version": VERSION, "evidence_done": True, "release_ready": True})
 
@@ -99,7 +104,10 @@ def test_legacy_qa_status_requires_explicit_admission(tmp_path: Path) -> None:
     assert qa_legacy_admission_path(tmp_path).exists()
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
 def test_release_blocks_legacy_only_qa_pass() -> None:
+    registry = registry_by_id()
     acceptance = _resolve_acceptance_truth(
         {
             "status": "passed",
@@ -112,11 +120,13 @@ def test_release_blocks_legacy_only_qa_pass() -> None:
         {},
     )
 
+    assert "qa-auto-test-status-legacy-mirror" in registry
     assert acceptance["status"] == "missing"
     assert acceptance["release_ready"] is False
     assert acceptance["legacy_only_qa_blocked"] is True
 
 
+@pytest.mark.current_contract
 def test_markdown_prd_remains_requirement_truth(tmp_path: Path) -> None:
     _seed_requirement_docs(tmp_path)
     write_json(tmp_path / ".beacon" / "prd" / f"{SLUG}.json", {"markdown": "# stale legacy mirror\n"})
@@ -128,6 +138,7 @@ def test_markdown_prd_remains_requirement_truth(tmp_path: Path) -> None:
     assert compat_check["details"]["warning_by_feature"][SLUG]["compat_mirror_stale"]["role"] == "compat_mirror"
 
 
+@pytest.mark.current_contract
 def test_current_prd_projection_drift_still_blocks(tmp_path: Path) -> None:
     _seed_requirement_docs(tmp_path)
     write_json(tmp_path / "docs" / "beacon" / VERSION / ".machine" / "prd" / f"{SLUG}.canonical.json", {"markdown_hash": "stale"})
@@ -139,7 +150,10 @@ def test_current_prd_projection_drift_still_blocks(tmp_path: Path) -> None:
     assert "canonical_machine_mirror_sync" in mirror_check["details"]["drift_by_feature"][SLUG]
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
 def test_legacy_prd_mirror_stale_is_compat_warning(tmp_path: Path) -> None:
+    registry = registry_by_id()
     _seed_requirement_docs(tmp_path)
     write_json(tmp_path / ".beacon" / "prd" / f"{SLUG}.json", {"markdown_hash": "stale"})
 
@@ -147,6 +161,7 @@ def test_legacy_prd_mirror_stale_is_compat_warning(tmp_path: Path) -> None:
     mirror_check = next(item for item in audit["checks"] if item["name"] == "prd_machine_mirror_sync")
     compat_check = next(item for item in audit["checks"] if item["name"] == "prd_compat_mirror_sync")
 
+    assert "prd-legacy-machine-mirror" in registry
     blocking_drift = mirror_check["details"]["drift_by_feature"].get(SLUG, {})
     assert "compat_mirror_stale" not in blocking_drift
     assert "legacy_machine_mirror_sync" not in blocking_drift
@@ -154,6 +169,7 @@ def test_legacy_prd_mirror_stale_is_compat_warning(tmp_path: Path) -> None:
     assert "compat_mirror_stale" in compat_check["details"]["warning_by_feature"][SLUG]
 
 
+@pytest.mark.compat_contract
 def test_mirror_policies_bind_to_compat_registry() -> None:
     registry = registry_by_id()
     assert registry["qa-auto-test-status-legacy-mirror"]["retirement_route"] == "qa-prd-legacy-mirror-retirement-contract"
@@ -163,10 +179,15 @@ def test_mirror_policies_bind_to_compat_registry() -> None:
     assert result["status"] == "pass"
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
 def test_no_unrelated_legacy_retirement_in_mirror_policy_slice(tmp_path: Path) -> None:
+    registry = registry_by_id()
     write_json(tmp_path / ".beacon" / "auto-test-status.json", {"status": "passed"})
     write_json(tmp_path / ".beacon" / "prd" / f"{SLUG}.json", {"markdown": "legacy"})
 
+    assert "qa-auto-test-status-legacy-mirror" in registry
+    assert "prd-legacy-machine-mirror" in registry
     assert (tmp_path / ".beacon" / "auto-test-status.json").exists()
     assert (tmp_path / ".beacon" / "prd" / f"{SLUG}.json").exists()
 

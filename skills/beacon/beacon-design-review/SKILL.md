@@ -1,86 +1,102 @@
 ---
 name: beacon-design-review
-description: Use when the user wants Beacon to challenge UI/UX direction and decide whether a feature should enter formal prototype freeze.
+description: Use when the user wants Beacon-owned support-only UX review through the deterministic `beacon design route review` contract while preserving Beacon truth binding.
 ---
 
 # Beacon Design Review
 
 ## Overview
 
-This is a host-visible support/review surface for UI/UX direction challenge.
+This is a host-visible child skill for the Beacon design `review` route.
 
-It separates design judgment from prototype freeze and routes outcomes back to `prototype`, `change`, `user-story`, `test-case`, or `implement` as needed.
+It preserves the `impeccable` review capability while keeping review output as support evidence until accepted facts are bound back to Beacon truth.
 
 ## When to Use
 
 - hierarchy review
-- state clarity review
-- interaction coherence review
-- prototype entry decision
+- copy and flow friction review
+- missing state review
+- accessibility review
+- UX finding prioritization
 
 ## Boundary
 
 - not a truth source
 - not a gate source
 - not a new lifecycle stage
+- not a release verdict
+- support-only design review
+- does not replace `beacon-design`
 - does not replace `beacon-prototype`
-- does not act as final UI authority
+- does not treat `impeccable` output as Beacon truth
 
 ## Workflow / Decision Loop
 
-- challenge hierarchy, state clarity, and interaction coherence
-- decide whether prototype entry is ready, not required, or revision is needed
-- route to `beacon-prototype`, `beacon-change`, `beacon-user-story`, `beacon-test-case`, or `beacon-implement`
-- leave the formal freeze to downstream truth or prototype surfaces
+- run or reason against `beacon design route review "<feature>" --project . --version auto --json`
+- produce prioritized UX findings and candidate design truth deltas
+- route accepted prototype input to `beacon prototype adapt`
+- route promise-changing facts to `beacon change ... --refreeze-chain`
+- hand off to `beacon implement` only after accepted facts are truth-bound
 
 ## Common Rationalizations
 
-- “design review 过了，就算 prototype freeze 了。” -> 不允许；它只做 entry judgment
-- “只是交互小问题，不用回 requirement surface。” -> 不允许；如果影响 acceptance/behavior 就要回主链
-- “视觉方向结论不需要 evidence 或 route。” -> 不允许；support result 必须有下一跳
+- “review output is accepted, so it is truth.” -> Not allowed; accepted facts still need Beacon truth binding.
+- “Small UX findings do not need requirement routing.” -> Not allowed when they change product promise, behavior, AC, or QA coverage.
+- “Review pass means release pass.” -> Not allowed; this is not a gate or release verdict.
 
 ## Red Flags
 
-- UI/UX verdict 没有明确 prototype/change/implement route
-- 设计 review 被当成最终 UI authority
-- 支持面输出没有说明它影响的是 design、truth 还是 execution
+- review output copied into implementation without truth refs
+- UX findings change acceptance behavior but skip change/refreeze
+- review is treated as final UI authority
 
 ## Verification
 
-- prototype entry judgment clear and auditable
-- mismatch between design and requirement truth routes back correctly
-- no silent promotion from review verdict to frozen prototype truth
+- route payload reports `route=beacon-design-review`, `intent=review`, and `upstream=impeccable`
+- route payload marks `support_only=true`, `truth_source=false`, `gate_source=false`, and `lifecycle_stage=false`
+- accepted design facts have a truth-binding route before implementation
 
 ## Evidence Produced
 
-- support-surface transaction
-- design verdict and issue summary
-- route decision and writeback targets when needed
+- route contract payload
+- UX finding summary
+- accepted design fact candidates
+- route decision and writeback targets
 
 ## State Updated
 
-- design-review transaction state
+- no lifecycle state directly
+- optional support/read model evidence only
 
 ## Gate Impact
 
 - no direct release gate verdict
-- may block prototype or implementation entry until design mismatch is resolved
+- may block downstream implementation only when accepted design facts remain unbound
 
 ## Operator rule
 
 Prefer:
 
 ```bash
-beacon review design "<feature>" --project . --version auto --json
+beacon design route review "<feature>" --project . --version auto --json
 ```
 
-If the result clears prototype entry, route to `beacon-prototype`.
-If the result exposes design or requirement mismatch, route to `beacon change run ...`, `beacon-user-story`, or `beacon-test-case`.
+If a design result is accepted:
+
+```bash
+beacon prototype adapt "<feature>" --project . --version auto --design-result-ref <accepted-design-result>
+```
+
+If design facts change product promise, behavior, AC, or QA coverage:
+
+```bash
+beacon change "<feature>" --project . --version auto --reason "accepted design truth changed requirement promise" --refreeze-chain
+```
 
 ## Examples
 
 - 适用例：
-  - “这个 UI/UX 方向是不是足够清楚，可以进入 prototype freeze。”
-  - “我想先 challenge 一下层级、状态和交互一致性。”
+  - “这个界面做一次 UX review，看看层级、状态、文案和可访问性问题。”
+  - “我想让 Beacon review UI，但不要把 review 直接当 truth。”
 - 不适用例：
   - “我要正式生成 prototype bundle。” -> 应去 `beacon-prototype`

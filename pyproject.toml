@@ -49,6 +49,12 @@ beacon = ["templates/skill_profiles/*.yaml", "team_roles/*.json"]
 [tool.pytest.ini_options]
 markers = [
     "smoke: Beacon smoke-path tests",
+    "current_contract: Beacon current default behavior contract tests",
+    "projection_integrity: Beacon machine projection and transaction integrity tests",
+    "compat_contract: Beacon explicit compatibility behavior tests",
+    "historical_fixture: Beacon historical artifact readability tests",
+    "migration: Beacon auditable migration behavior tests",
+    "deprecated: Beacon deprecated command/API callability tests",
 ]
 
 [tool.beacon]

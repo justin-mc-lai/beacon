@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from beacon.utils.artifact_paths import change_docs_file, change_file_output, machine_execution_dir, release_gate_report_file
+from beacon.utils.artifact_paths import change_file_output, machine_execution_dir, release_gate_report_file
 from beacon.utils.delivery_kernel import load_delivery_read_model
 from beacon.utils.deep_loop import build_deep_release_supplement_gate, deep_loop_supported
 from beacon.utils.evidence_manifest import validate_evidence_manifest
@@ -41,6 +41,7 @@ from beacon.utils.version_surface import (
     version_surface_manifest_path,
     version_surface_repair_commands,
 )
+from beacon.utils.version_aggregate_projection import version_aggregate_projection_status
 from beacon.utils.versioning import (
     project_release_feature_enabled,
     project_runtime_feature_enabled,
@@ -280,38 +281,11 @@ def _latest_release_ready_feature(project_root: Path, *, version: str) -> str:
 
 
 def _version_change_status(project_root: Path, *, version: str, current_feature: str) -> dict[str, Any]:
-    markdown_path = change_docs_file(project_root, version, f"{version}.md")
-    json_path = change_file_output(project_root, version, f"{version}.json")
-    payload = _load_json(json_path)
-    payload_version = str(payload.get("version") or "").strip()
-    features = payload.get("features") if isinstance(payload.get("features"), list) else []
-    feature_slugs = sorted(
-        {
-            str(item.get("feature_slug") or "").strip()
-            for item in features
-            if isinstance(item, dict) and str(item.get("feature_slug") or "").strip()
-        }
+    return version_aggregate_projection_status(
+        project_root,
+        version=version,
+        current_feature=current_feature,
     )
-    current_feature_slug = feature_slug(current_feature) if str(current_feature or "").strip() else ""
-    includes_current_feature = (not current_feature_slug) or current_feature_slug in feature_slugs
-    markdown_exists = markdown_path.exists()
-    json_exists = json_path.exists()
-    version_match = bool(payload) and payload_version == version
-    status = "pass" if markdown_exists and json_exists and version_match and includes_current_feature else "blocked"
-    if not markdown_exists and not json_exists and not payload:
-        status = "missing"
-    return {
-        "status": status,
-        "markdown_path": str(markdown_path.relative_to(project_root)),
-        "json_path": str(json_path.relative_to(project_root)),
-        "markdown_exists": markdown_exists,
-        "json_exists": json_exists,
-        "version_match": version_match,
-        "feature_count": int(payload.get("feature_count") or len(feature_slugs) or 0),
-        "feature_slugs": feature_slugs,
-        "current_feature_slug": current_feature_slug,
-        "includes_current_feature": includes_current_feature,
-    }
 
 
 def _feature_change_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:

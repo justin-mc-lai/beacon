@@ -517,6 +517,17 @@ def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
         "schema_version": "1.0",
         "version": version,
         "status": "generated",
+        "artifact_role": "version_aggregate_projection",
+        "projection_role": {
+            "artifact_role": "version_aggregate_projection",
+            "truth_source": False,
+            "gate_source": False,
+            "lifecycle_stage": False,
+            "release_publish_action": False,
+        },
+        "truth_authority": False,
+        "lifecycle_stage": False,
+        "release_publish_action": False,
         "feature_count": len(features),
         "features": features,
         "implementation_order": implementation_order,
@@ -557,6 +568,8 @@ def _render_version_change_markdown(payload: dict) -> str:
         "",
         f"**Version**: `{payload.get('version')}`",
         f"**Status**: `{payload.get('status')}`",
+        "**Artifact Role**: `version aggregate projection / release-facing read model`",
+        "**Truth Source**: `false`",
         f"**Generated**: {payload.get('generated_at')}",
         "",
         "## Scope",
@@ -1115,6 +1128,13 @@ def check(
     if enforce_change_documents:
         change_md_ref = str(change_documents.get("markdown_path") or "")
         change_json_ref = str(change_documents.get("json_path") or "")
+        projection_reason = str(change_documents.get("reason_code") or "-")
+        projection_repairs = [
+            str(item).strip()
+            for item in (change_documents.get("repair_commands") if isinstance(change_documents.get("repair_commands"), list) else [])
+            if str(item).strip()
+        ]
+        projection_repair = projection_repairs[0] if projection_repairs else ""
         if change_md_ref:
             evidence_refs.append(change_md_ref)
         if change_json_ref:
@@ -1144,7 +1164,10 @@ def check(
             (
                 "version change document includes current feature",
                 "pass" if bool(change_documents.get("includes_current_feature", False)) else "fail",
-                f"current_feature={change_documents.get('current_feature_slug') or 'none'}",
+                (
+                    f"current_feature={change_documents.get('current_feature_slug') or 'none'}, "
+                    f"reason={projection_reason}, repair={projection_repair or 'none'}"
+                ),
             )
         )
 
@@ -1247,6 +1270,11 @@ def check(
             version=resolved_version,
             feature=authoritative_feature,
         )
+    elif enforce_change_documents and any(
+        name.startswith("version change ") for name in failed_checks
+    ):
+        repair_commands = change_documents.get("repair_commands") if isinstance(change_documents.get("repair_commands"), list) else []
+        recommended_command = next((str(item).strip() for item in repair_commands if str(item).strip()), "")
 
     status = "pass" if all_passed else "blocked"
     lifecycle_hook_advisory = (
@@ -1320,6 +1348,8 @@ def check(
                     typer.echo(f"  repair: {item['repair']}")
                 if recommended_command:
                     typer.echo(f"Recommended command: {recommended_command}")
+            elif recommended_command:
+                typer.echo(f"Recommended command: {recommended_command}")
 
     append_memory_entry(
         project_root=project_root,

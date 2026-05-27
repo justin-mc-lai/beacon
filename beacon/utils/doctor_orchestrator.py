@@ -2,15 +2,21 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.artifact_paths import change_docs_file, change_file_output
 from beacon.utils.doctor_diagnostics import collect_runtime_info
 from beacon.utils.doctor_setup import resolve_bin_dir
 from beacon.utils.doctor_registry import get_doctor_handler
 from beacon.utils.test_contract_governance import build_test_contract_gate_payload, build_test_contract_index
 from beacon.utils.technical_review_contract import technical_review_contract_json_path, technical_review_contract_markdown_path
+from beacon.utils.version_aggregate_projection import (
+    PROJECTION_ROLE,
+    write_feature_change_projection,
+)
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.writeback import acceptance_projection_transaction_contract
 from beacon.utils.workflow_memory import backfill_workflow_memory
@@ -554,6 +560,78 @@ def run_test_contract_index_verify(
                 }
             ],
             "gate": result,
+        },
+    }
+    return DoctorExecutionResult(payload=output, exit_code=2 if blocked else 0)
+
+
+def run_version_aggregate_projection_repair(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    overwrite_feature_projection: bool,
+) -> DoctorExecutionResult:
+    ctx = build_doctor_execution_context(project_root, version=version)
+    resolved_version = resolve_target_version(ctx.project_root, version)
+    feature_projection = write_feature_change_projection(
+        ctx.project_root,
+        version=resolved_version,
+        feature=feature,
+        overwrite=overwrite_feature_projection,
+    )
+
+    from beacon.commands import release as release_command
+
+    version_payload = release_command._build_version_change_payload(ctx.project_root, version=resolved_version)
+    version_payload = release_command._stabilize_version_change_payload(
+        ctx.project_root,
+        version=resolved_version,
+        payload=version_payload,
+    )
+    version_change_md = change_docs_file(ctx.project_root, resolved_version, f"{resolved_version}.md")
+    version_change_json = change_file_output(ctx.project_root, resolved_version, f"{resolved_version}.json")
+    version_change_md.parent.mkdir(parents=True, exist_ok=True)
+    version_change_json.parent.mkdir(parents=True, exist_ok=True)
+    version_change_md.write_text(release_command._render_version_change_markdown(version_payload), encoding="utf-8")
+    version_change_json.write_text(
+        json.dumps(version_payload, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
+
+    test_index = build_test_contract_index(ctx.project_root, version=resolved_version, feature=feature, write=True)
+    test_gate = build_test_contract_gate_payload(ctx.project_root, version=resolved_version, feature=feature)
+    blocked = bool(test_index.get("blocked")) or str(test_gate.get("status") or "").lower() == "blocked"
+    output = {
+        "schema_version": "2.0",
+        "action": "repair-version-aggregate-projection",
+        "status": "BLOCKED" if blocked else "PASS",
+        "result": {
+            "schema_version": "1.0",
+            "action": "repair-version-aggregate-projection",
+            "project_root": str(ctx.project_root),
+            "version": resolved_version,
+            "feature": feature,
+            "projection_role": dict(PROJECTION_ROLE),
+            "truth_authority": False,
+            "lifecycle_stage": False,
+            "release_publish_action": False,
+            "feature_projection": feature_projection,
+            "version_aggregate_projection": {
+                "markdown_path": str(version_change_md.relative_to(ctx.project_root)),
+                "json_path": str(version_change_json.relative_to(ctx.project_root)),
+                "feature_count": int(version_payload.get("feature_count") or 0),
+                "feature_slugs": [
+                    str(item.get("feature_slug") or "")
+                    for item in version_payload.get("features", [])
+                    if isinstance(item, dict) and str(item.get("feature_slug") or "")
+                ],
+                "implementation_order": version_payload.get("implementation_order")
+                if isinstance(version_payload.get("implementation_order"), dict)
+                else {},
+            },
+            "test_contract_index": test_index,
+            "test_contract_verify": test_gate,
         },
     }
     return DoctorExecutionResult(payload=output, exit_code=2 if blocked else 0)

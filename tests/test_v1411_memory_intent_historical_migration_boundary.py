@@ -50,6 +50,7 @@ def _write_legacy_decision(project_root: Path, content: str = "Legacy decision r
     return path
 
 
+@pytest.mark.historical_fixture
 def test_old_memory_rows_remain_importable(tmp_path: Path) -> None:
     _write_legacy_decision(tmp_path)
 
@@ -59,6 +60,9 @@ def test_old_memory_rows_remain_importable(tmp_path: Path) -> None:
     assert memory_v1_path(tmp_path).exists()
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
+@pytest.mark.migration
 def test_first_migration_writes_transaction(tmp_path: Path) -> None:
     legacy_path = _write_legacy_decision(tmp_path)
 
@@ -77,6 +81,7 @@ def test_first_migration_writes_transaction(tmp_path: Path) -> None:
     assert transaction["compat_mode"] is False
 
 
+@pytest.mark.migration
 def test_memory_v1_is_current_projection(tmp_path: Path) -> None:
     _write_legacy_decision(tmp_path)
 
@@ -84,10 +89,12 @@ def test_memory_v1_is_current_projection(tmp_path: Path) -> None:
     rows = load_memory_entries(tmp_path, mem_type="decision")
 
     assert memory_v1_path(tmp_path).exists()
+    assert memory_migration_transaction_path(tmp_path).exists()
     assert any(row["memory_id"] == "legacy-decision-001" for row in rows)
     assert any(row["memory_id"] == first["memory_id"] for row in rows)
 
 
+@pytest.mark.current_contract
 def test_current_memory_write_does_not_write_legacy_projection_by_default(tmp_path: Path) -> None:
     legacy_path = tmp_path / ".beacon" / "memory" / "project-insights.json"
 
@@ -97,6 +104,8 @@ def test_current_memory_write_does_not_write_legacy_projection_by_default(tmp_pa
     assert not legacy_path.exists()
 
 
+@pytest.mark.compat_contract
+@pytest.mark.historical_fixture
 def test_legacy_projection_requires_explicit_compat_mode(tmp_path: Path) -> None:
     append_memory_entry(tmp_path, "decision", "Compat export decision")
 
@@ -112,6 +121,7 @@ def test_legacy_projection_requires_explicit_compat_mode(tmp_path: Path) -> None
     assert legacy_payload["decisions"][0]["decision"] == "Compat export decision"
 
 
+@pytest.mark.compat_contract
 def test_legacy_intent_router_is_compat_classified() -> None:
     result = route_intent("create prd", mode="rule")
 
@@ -121,6 +131,7 @@ def test_legacy_intent_router_is_compat_classified() -> None:
     assert result["compat_evidence"]["recommended_current_route"] == "optimize_prompt_to_plan"
 
 
+@pytest.mark.compat_contract
 def test_old_intent_api_remains_callable_with_compat_admission() -> None:
     with pytest.raises(PermissionError):
         route_legacy_intent_compat("create prd")
@@ -131,10 +142,13 @@ def test_old_intent_api_remains_callable_with_compat_admission() -> None:
     assert result["compat_id"] == "intent-legacy-router"
 
 
+@pytest.mark.compat_contract
 def test_legacy_route_does_not_claim_current_route(tmp_path: Path) -> None:
+    registry = registry_by_id()
     legacy = detect_intent("create prd")
     current = optimize_prompt_to_plan("create prd for checkout", project_root=tmp_path, router_mode="rule")
 
+    assert "intent-legacy-router" in registry
     assert legacy["current_route_claimed"] is False
     assert legacy_intent_router_compat_evidence()["current_route_claimed"] is False
     assert current["route_evidence"]["route_kind"] == "current_router"
@@ -142,6 +156,7 @@ def test_legacy_route_does_not_claim_current_route(tmp_path: Path) -> None:
     assert current["route_evidence"]["legacy_router_used"] is False
 
 
+@pytest.mark.compat_contract
 def test_memory_registry_binding() -> None:
     registry = registry_by_id()
 
@@ -151,6 +166,7 @@ def test_memory_registry_binding() -> None:
     assert "memory-migration-transaction-test" in entry["evidence_required"]
 
 
+@pytest.mark.compat_contract
 def test_intent_registry_binding() -> None:
     registry = registry_by_id()
 
@@ -160,6 +176,7 @@ def test_intent_registry_binding() -> None:
     assert "legacy-router-admission-test" in entry["evidence_required"]
 
 
+@pytest.mark.compat_contract
 def test_no_unrelated_phase_behavior_changes() -> None:
     registry = registry_by_id()
     unrelated_ids = {

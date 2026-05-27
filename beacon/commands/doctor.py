@@ -41,6 +41,7 @@ from beacon.utils.doctor_orchestrator import (
     run_technical_review_contract_sync,
     run_test_contract_index_build,
     run_test_contract_index_verify,
+    run_version_aggregate_projection_repair,
     run_version_surfaces_sync,
     run_version_surfaces_verify,
 )
@@ -861,6 +862,44 @@ def verify_test_contract_index(
         typer.echo(f"status: {gate.get('status', '')}")
         typer.echo(f"reason_codes: {gate.get('reason_codes', [])}")
         typer.echo(f"index: {gate.get('index_path', '')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("repair-version-aggregate-projection")
+def repair_version_aggregate_projection(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    overwrite_feature_projection: bool = typer.Option(False, "--overwrite-feature-projection", help="Overwrite existing feature projection"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Repair release-facing projection/read-model artifacts without changing requirement truth."""
+    execution = run_version_aggregate_projection_repair(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        overwrite_feature_projection=overwrite_feature_projection,
+    )
+    payload = execution.payload
+    result = payload.get("result", {}) if isinstance(payload.get("result"), dict) else {}
+    aggregate = (
+        result.get("version_aggregate_projection")
+        if isinstance(result.get("version_aggregate_projection"), dict)
+        else {}
+    )
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Version Aggregate Projection Repair")
+        typer.echo("=" * 50)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"version: {result.get('version', version)}")
+        typer.echo(f"status: {payload.get('status', '')}")
+        typer.echo(f"feature_projection: {result.get('feature_projection', {}).get('json_path', '')}")
+        typer.echo(f"version_projection: {aggregate.get('json_path', '')}")
+        typer.echo(f"feature_count: {aggregate.get('feature_count', 0)}")
+        typer.echo("truth_authority: false")
+        typer.echo("lifecycle_stage: false")
     raise typer.Exit(code=execution.exit_code)
 
 
