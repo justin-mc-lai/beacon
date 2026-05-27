@@ -61,7 +61,8 @@ def test_workflow_auto_should_create_lifecycle_memory_loop(tmp_path: Path):
         context_file = tmp_path / ".beacon" / "state" / "workflow-memory" / run_id / f"{stage}-context.json"
         assert context_file.exists(), f"missing context for {stage}"
 
-    # Writebacks should be reflected in envelope memories.
-    insights = tmp_path / ".beacon" / "memory" / "project-insights.json"
-    decisions = tmp_path / ".beacon" / "memory" / "decisions.json"
-    assert insights.exists() or decisions.exists()
+    # Writebacks should be reflected in the current memory-v1 projection.
+    memory_v1 = tmp_path / ".beacon" / "memory" / "memory-v1.json"
+    assert memory_v1.exists()
+    memory_payload = json.loads(memory_v1.read_text(encoding="utf-8"))
+    assert memory_payload.get("items")

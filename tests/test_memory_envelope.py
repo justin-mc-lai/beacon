@@ -41,13 +41,13 @@ def test_remember_add_should_write_envelope_fields(tmp_path: Path):
     )
     assert result.exit_code == 0
 
-    path = tmp_path / ".beacon" / "memory" / "decisions.json"
+    path = tmp_path / ".beacon" / "memory" / "memory-v1.json"
     assert path.exists()
     data = json.loads(path.read_text(encoding="utf-8"))
-    assert data.get("schema_version") == "3.0"
-    assert isinstance(data.get("decisions"), list) and len(data["decisions"]) == 1
+    assert data.get("schema_version") == "1.0"
+    assert isinstance(data.get("items"), list) and len(data["items"]) == 1
 
-    row = data["decisions"][0]
+    row = data["items"][0]
     for key in (
         "memory_id",
         "type",

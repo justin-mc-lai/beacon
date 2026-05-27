@@ -10,6 +10,7 @@ import typer
 
 from beacon.utils.memory import (
     append_memory_entry,
+    export_legacy_projection,
     load_memory_entries,
     normalize_memory_type,
     search_memory_entries,
@@ -68,6 +69,27 @@ def add(
     typer.echo(f"  type: {entry['type']}")
     if entry.get("tags"):
         typer.echo(f"  tags: {', '.join(entry['tags'])}")
+
+
+@app.command("export-legacy-projection")
+def export_legacy_projection_command(
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    compat_mode: bool = typer.Option(False, "--compat-mode", help="Explicitly admit legacy memory projection write"),
+    json_output: bool = typer.Option(False, "--json", help="JSON output"),
+):
+    """Export current memory-v1 into legacy memory files through explicit compatibility admission."""
+    project_root = Path(project) if project else Path.cwd()
+    try:
+        payload = export_legacy_projection(project_root, compat_mode=compat_mode)
+    except PermissionError as exc:
+        typer.echo(str(exc), err=True)
+        raise typer.Exit(code=2)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        return
+    typer.echo("✓ Legacy memory projection exported")
+    typer.echo(f"  compat_id: {payload['compat_id']}")
+    typer.echo(f"  exported_count: {payload['exported_count']}")
 
 
 @app.command()

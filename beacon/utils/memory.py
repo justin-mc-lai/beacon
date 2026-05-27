@@ -9,6 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+MEMORY_LEGACY_PROJECTION_COMPAT_ID = "memory-legacy-projection"
 MEMORY_FILE_MAP: dict[str, tuple[str, str, str]] = {
     "insight": ("project-insights.json", "insights", "content"),
     "decision": ("decisions.json", "decisions", "decision"),
@@ -46,6 +47,14 @@ def memory_dir(project_root: Path) -> Path:
 
 def memory_v1_path(project_root: Path) -> Path:
     return memory_dir(project_root) / MEMORY_V1_FILE
+
+
+def memory_migration_transaction_dir(project_root: Path) -> Path:
+    return project_root / ".beacon" / "state" / "memory-migration"
+
+
+def memory_migration_transaction_path(project_root: Path) -> Path:
+    return memory_migration_transaction_dir(project_root) / f"{MEMORY_LEGACY_PROJECTION_COMPAT_ID}.latest.json"
 
 
 def _read_json(path: Path, fallback: dict[str, Any]) -> dict[str, Any]:
@@ -98,23 +107,63 @@ def _save_memory_v1(project_root: Path, payload: dict[str, Any]) -> None:
 
 
 def _load_legacy_entries(project_root: Path, mem_type: str | None = None) -> list[dict[str, Any]]:
+    return _collect_legacy_entries(project_root, mem_type=mem_type)["rows"]
+
+
+def _collect_legacy_entries(project_root: Path, mem_type: str | None = None) -> dict[str, Any]:
     result: list[dict[str, Any]] = []
+    source_files: list[str] = []
+    skipped_count = 0
     target_types = [normalize_memory_type(mem_type)] if mem_type else list(MEMORY_FILE_MAP.keys())
     for t in target_types:
         filename, array_key, content_key = MEMORY_FILE_MAP[t]
         path = memory_dir(project_root) / filename
+        if path.exists():
+            source_files.append(str(path))
         data = _read_json(path, {"schema_version": "3.0", array_key: []})
         arr = data.get(array_key)
         if not isinstance(arr, list):
+            if path.exists():
+                skipped_count += 1
             continue
         for item in arr:
             if not isinstance(item, dict):
+                skipped_count += 1
                 continue
             normalized = dict(item)
             normalized["type"] = t
             normalized["content"] = str(normalized.get("content", normalized.get(content_key, "")))
             result.append(normalized)
-    return result
+    return {"rows": result, "source_files": source_files, "skipped_count": skipped_count}
+
+
+def _write_memory_migration_transaction(
+    project_root: Path,
+    *,
+    source_files: list[str],
+    imported_count: int,
+    skipped_count: int,
+    legacy_projection_written: bool,
+    compat_mode: bool,
+) -> dict[str, Any]:
+    transaction_id = f"tx-{MEMORY_LEGACY_PROJECTION_COMPAT_ID}-{uuid.uuid4().hex[:12]}"
+    payload = {
+        "schema_version": "1.0",
+        "migration_transaction_id": transaction_id,
+        "transaction_id": transaction_id,
+        "compat_id": MEMORY_LEGACY_PROJECTION_COMPAT_ID,
+        "source_files": source_files,
+        "imported_count": int(imported_count),
+        "skipped_count": int(skipped_count),
+        "current_projection": "memory-v1",
+        "legacy_projection_written": bool(legacy_projection_written),
+        "compat_mode": bool(compat_mode),
+        "created_at": now_iso(),
+    }
+    latest_path = memory_migration_transaction_path(project_root)
+    _write_json(latest_path, payload)
+    _write_json(memory_migration_transaction_dir(project_root) / f"{transaction_id}.json", payload)
+    return payload
 
 
 def _migrate_legacy_to_v1_if_needed(project_root: Path) -> dict[str, Any]:
@@ -122,7 +171,8 @@ def _migrate_legacy_to_v1_if_needed(project_root: Path) -> dict[str, Any]:
     if path.exists():
         return _load_memory_v1(project_root)
 
-    legacy_rows = _load_legacy_entries(project_root)
+    legacy_collection = _collect_legacy_entries(project_root)
+    legacy_rows = legacy_collection["rows"]
     payload = {"schema_version": "1.0", "items": [], "updated_at": now_iso()}
     for row in legacy_rows:
         content = str(row.get("content", "")).strip()
@@ -149,10 +199,21 @@ def _migrate_legacy_to_v1_if_needed(project_root: Path) -> dict[str, Any]:
             entry["superseded_by"] = str(row.get("superseded_by"))
         payload["items"].append(entry)
     _save_memory_v1(project_root, payload)
+    _write_memory_migration_transaction(
+        project_root,
+        source_files=list(legacy_collection.get("source_files") or []),
+        imported_count=len(payload["items"]),
+        skipped_count=int(legacy_collection.get("skipped_count") or 0),
+        legacy_projection_written=False,
+        compat_mode=False,
+    )
     return payload
 
 
-def _write_legacy_projection(project_root: Path, items: list[dict[str, Any]]) -> None:
+def _write_legacy_projection(project_root: Path, items: list[dict[str, Any]], *, compat_mode: bool = False) -> None:
+    if not compat_mode:
+        raise PermissionError("legacy memory projection writes require explicit compatibility mode")
+
     grouped: dict[str, list[dict[str, Any]]] = {key: [] for key in MEMORY_FILE_MAP}
     for item in items:
         if not isinstance(item, dict):
@@ -190,6 +251,28 @@ def _write_legacy_projection(project_root: Path, items: list[dict[str, Any]]) ->
             memory_dir(project_root) / filename,
             {"schema_version": "3.0", array_key: projected, "updated_at": now_iso()},
         )
+
+
+def export_legacy_projection(project_root: Path, *, compat_mode: bool = False) -> dict[str, Any]:
+    """Write legacy memory projection files only through explicit compatibility admission."""
+    if not compat_mode:
+        raise PermissionError("legacy memory projection export requires compat_mode=True")
+    payload = _migrate_legacy_to_v1_if_needed(project_root)
+    items = payload.get("items")
+    if not isinstance(items, list):
+        items = []
+    _write_legacy_projection(project_root, items, compat_mode=True)
+    source_files = [str(memory_dir(project_root) / value[0]) for value in MEMORY_FILE_MAP.values()]
+    return {
+        "schema_version": "1.0",
+        "compat_id": MEMORY_LEGACY_PROJECTION_COMPAT_ID,
+        "compat_mode": True,
+        "current_projection": "memory-v1",
+        "legacy_projection_written": True,
+        "source_files": source_files,
+        "exported_count": len(items),
+        "updated_at": now_iso(),
+    }
 
 
 def append_memory_entry(
@@ -251,7 +334,6 @@ def append_memory_entry(
                         continue
                     row[key] = value
             _save_memory_v1(project_root, payload)
-            _write_legacy_projection(project_root, payload["items"])
             return row
 
     created_at = now
@@ -293,7 +375,6 @@ def append_memory_entry(
 
     items.append(entry)
     _save_memory_v1(project_root, payload)
-    _write_legacy_projection(project_root, payload["items"])
     return entry
 
 

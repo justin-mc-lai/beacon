@@ -210,6 +210,7 @@ DOCTOR_UNINSTALL_KEYWORDS = ("uninstall", "卸载")
 
 ROUTER_CONFIG_FILE = "intent-router.json"
 DEFAULT_CONFIDENCE_THRESHOLD = 0.62
+INTENT_LEGACY_ROUTER_COMPAT_ID = "intent-legacy-router"
 
 DEFAULT_INTENT_COMMAND_TEMPLATES: dict[str, Any] = {
     "think": ["think", "start", "{feature}", "--project", "{project_root}", "--version", "{version}"],
@@ -1018,6 +1019,13 @@ def optimize_prompt_to_plan(
         "fallback": fallback,
         "execution_policy": execution_policy,
         "route_explanation": route_explanation,
+        "route_evidence": {
+            "route_kind": "current_router",
+            "current_route_claimed": True,
+            "compat_id": "",
+            "legacy_router_used": False,
+            "boundary_aware": True,
+        },
         "learning_disclosure": learning_disclosure,
         "router_config": {
             "config_loaded": bool(router_config.get("config_loaded")),
@@ -1136,6 +1144,21 @@ def _legacy_rule_route(user_input: str) -> dict[str, Any]:
     }
 
 
+def legacy_intent_router_compat_evidence(
+    *,
+    recommended_current_route: str | None = None,
+    current_router_available: bool = True,
+) -> dict[str, Any]:
+    """Evidence that separates legacy intent facade output from current route proof."""
+    return {
+        "compat_id": INTENT_LEGACY_ROUTER_COMPAT_ID,
+        "route_kind": "compat_router",
+        "current_route_claimed": False,
+        "current_router_available": bool(current_router_available),
+        "recommended_current_route": str(recommended_current_route or "optimize_prompt_to_plan"),
+    }
+
+
 def detect_intent(user_input: str, *, project_root: str | Path | None = None, version: str = "auto") -> dict[str, Any]:
     """Backward-compatible intent detector for older tests/importers."""
     del project_root, version
@@ -1145,6 +1168,12 @@ def detect_intent(user_input: str, *, project_root: str | Path | None = None, ve
         "confidence": round(float(result.get("confidence", 0.0) or 0.0), 2),
         "reason": str(result.get("reason") or "").strip(),
         "mode": "rule",
+        "compat_id": INTENT_LEGACY_ROUTER_COMPAT_ID,
+        "route_kind": "compat_router",
+        "current_route_claimed": False,
+        "current_router_available": True,
+        "recommended_current_route": "optimize_prompt_to_plan",
+        "compat_evidence": legacy_intent_router_compat_evidence(),
     }
 
 
@@ -1192,7 +1221,29 @@ def route_intent(
         "mode": mode_norm or "rule",
         "stage_hint": str(route.get("stage_hint") or "").strip(),
         "boundary": route.get("boundary", {}),
+        "compat_id": INTENT_LEGACY_ROUTER_COMPAT_ID,
+        "route_kind": "compat_router",
+        "current_route_claimed": False,
+        "current_router_available": True,
+        "recommended_current_route": "optimize_prompt_to_plan",
+        "compat_evidence": legacy_intent_router_compat_evidence(),
     }
+
+
+def route_legacy_intent_compat(
+    user_input: str,
+    *,
+    compat_mode: bool = False,
+    mode: str = "rule",
+    project_root: str | Path | None = None,
+    version: str = "auto",
+) -> dict[str, Any]:
+    """Explicit compatibility admission for older intent-router callers."""
+    if not compat_mode:
+        raise PermissionError("legacy intent router requires explicit compat_mode=True")
+    result = route_intent(user_input, mode=mode, project_root=project_root, version=version)
+    result["compat_mode"] = True
+    return result
 
 
 def render_command_template(template: str, context: dict[str, Any]) -> str:

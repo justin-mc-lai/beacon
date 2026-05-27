@@ -25,20 +25,14 @@ def _find_team_name(project_root: Path) -> str:
 
 
 def _load_memory_sources(project_root: Path) -> list[str]:
-    memory_root = project_root / ".beacon" / "memory"
+    memory_path = project_root / ".beacon" / "memory" / "memory-v1.json"
     sources: list[str] = []
-    for file_name, key in (
-        ("project-insights.json", "insights"),
-        ("decisions.json", "decisions"),
-        ("vocabulary.json", "terms"),
-    ):
-        path = memory_root / file_name
-        if not path.exists():
-            continue
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        for row in payload.get(key, []):
-            if isinstance(row, dict):
-                sources.append(str(row.get("source", "")))
+    if not memory_path.exists():
+        return sources
+    payload = json.loads(memory_path.read_text(encoding="utf-8"))
+    for row in payload.get("items", []):
+        if isinstance(row, dict):
+            sources.append(str(row.get("source", "")))
     return sources
 
 

@@ -38,12 +38,12 @@ def test_feedback_sync_should_assimilate_to_memory_and_dedupe(tmp_path: Path):
     feedback_file = tmp_path / ".beacon" / "state" / "requirement-feedback" / f"{run_id}.json"
     assert feedback_file.exists()
 
-    memory_path = tmp_path / ".beacon" / "memory" / "project-insights.json"
+    memory_path = tmp_path / ".beacon" / "memory" / "memory-v1.json"
     assert memory_path.exists()
     memory_payload = json.loads(memory_path.read_text(encoding="utf-8"))
     rows = [
         item
-        for item in memory_payload.get("insights", [])
+        for item in memory_payload.get("items", [])
         if item.get("source") == "feedback.sync" and item.get("source_session_id") == run_id
     ]
     assert len(rows) == 1, "feedback assimilation should avoid duplicate memory entries"
