@@ -1,17 +1,5 @@
 # Beacon v1.4.11 Architecture Blueprint
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.4.11`
-- feature_count: `1`
-- transaction_id: `tx-dee34874dcbb84161`
-- source_hash: `sha256:4606fdbedf391cb7a38dbe7b60f965d6a5ab11ef215529f6c4df045c901669ee`
-
-### Registered Feature Baselines
-- `test-directory-marker-relayering-contract` | revision=`R2` | branch=`beacon/v1.4.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-test-directory-marker-relayering-contract.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:test-directory-marker-relayering-contract:START -->
 ## Technical Delta Blueprint
 
@@ -80,3 +68,85 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:test-directory-marker-relayering-contract:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.4.11`
+- feature_count: `2`
+- transaction_id: `tx-fea3d6d77a3b5717b`
+- source_hash: `sha256:ac96370de2dc245ea3565a6336d557b78bed5d220a71bce824ea1e92151253d8`
+
+### Registered Feature Baselines
+- `design-project-truth-initialization-contract` | revision=`R4` | branch=`main` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-design-project-truth-initialization-contract.json`
+- `test-directory-marker-relayering-contract` | revision=`R2` | branch=`beacon/v1.4.11` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-test-directory-marker-relayering-contract.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:design-project-truth-initialization-contract:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `design-project-truth-initialization-contract`
+- version: `v1.4.11`
+
+### Source Refs
+- prd: `docs/beacon/v1.4.11/prd/design-project-truth-initialization-contract.md`
+- user_story: `docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md`
+- test_case: `docs/beacon/v1.4.11/qa/test-cases/design-project-truth-initialization-contract.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:design-project-truth-initialization-contract:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:design-project-truth-initialization-contract:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.4.11-design-project-truth-initialization-contract-R4`
+- transaction_id: `tx-3c2bb15bedd3786b2`
+- source_hash: `sha256:016cb1e94501df5980ba27f47aafa326c7a6a07f39b54d004c6d83560f128aa2`
+- projection_seq: `1`
+- version: `v1.4.11`
+- feature: `design-project-truth-initialization-contract`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `main`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:design-project-truth-initialization-contract:END -->

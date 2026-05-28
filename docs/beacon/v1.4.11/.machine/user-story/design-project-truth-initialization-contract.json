@@ -1,0 +1,1449 @@
+{
+  "schema_version": "1.0",
+  "feature": "design-project-truth-initialization-contract",
+  "feature_slug": "design-project-truth-initialization-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R4",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-27T06:51:20.216283+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "design-project-truth-initialization-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:bd5bea2e8f857260d30081d108a466390bf1220a36661a95831201c50d98f881",
+      "superseded_by": "R2",
+      "created_at": "2026-05-27T06:40:56.269550+00:00",
+      "frozen_at": "2026-05-27T06:40:59.815179+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "design-project-truth-initialization-contract",
+      "source_revision_id": "R1",
+      "reason": "accepted design truth gap: add explicit project-level PRODUCT.md and DESIGN.md initialization without default overwrite",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:bd5bea2e8f857260d30081d108a466390bf1220a36661a95831201c50d98f881",
+      "superseded_by": "R3",
+      "created_at": "2026-05-27T06:41:07.012539+00:00",
+      "frozen_at": "2026-05-27T06:41:09.540619+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "design-project-truth-initialization-contract",
+      "source_revision_id": "R2",
+      "reason": "add explicit implementation scope for design project truth initialization",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:212b4544918e5eca042648c3eecd01a96c1f9ec23161c3c8b3c1dccf4022b6bb",
+      "superseded_by": "R4",
+      "created_at": "2026-05-27T06:45:42.745628+00:00",
+      "frozen_at": "2026-05-27T06:45:46.472592+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R4",
+      "feature_slug": "design-project-truth-initialization-contract",
+      "source_revision_id": "R3",
+      "reason": "align PRD scope heading with implementation closure preflight",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4a4e149fb3c15700e4c3c4e09e64d9993c2b49d4a63b19aaad338f4551b9d08a",
+      "superseded_by": null,
+      "created_at": "2026-05-27T06:46:17.553418+00:00",
+      "frozen_at": "2026-05-27T06:46:19.966280+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "design-project-truth-initialization-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "backward compatibility",
+          "text": "`beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "product truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "design truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no overwrite by default",
+          "text": "Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "force overwrite",
+          "text": "With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "auditability",
+          "text": "JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "product template",
+          "text": "Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "design template",
+          "text": "Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "`.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "support boundary",
+          "text": "Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — `.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "design-project-truth-initialization-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/design-project-truth-initialization-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "design-project-truth-initialization-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "backward compatibility",
+          "text": "`beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "product truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "design truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no overwrite by default",
+          "text": "Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "force overwrite",
+          "text": "With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "auditability",
+          "text": "JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "product template",
+          "text": "Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "design template",
+          "text": "Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "`.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "support boundary",
+          "text": "Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — `.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "design-project-truth-initialization-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/design-project-truth-initialization-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "design-project-truth-initialization-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "backward compatibility",
+          "text": "`beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "product truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "design truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no overwrite by default",
+          "text": "Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "force overwrite",
+          "text": "With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "auditability",
+          "text": "JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "product template",
+          "text": "Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "design template",
+          "text": "Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "`.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "support boundary",
+          "text": "Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — JSON output reports per-path write status.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — `.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "design-project-truth-initialization-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/design-project-truth-initialization-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R4",
+      "title": "design-project-truth-initialization-contract",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "backward compatibility",
+          "text": "`beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "product truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "design truth",
+          "text": "`beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "no overwrite by default",
+          "text": "Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "force overwrite",
+          "text": "With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "auditability",
+          "text": "JSON output reports per-path write status.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "product template",
+          "text": "Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "design template",
+          "text": "Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "projection boundary",
+          "text": "`.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "support boundary",
+          "text": "Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `beacon design truth --write` keeps writing only version-wide design surfaces by default.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon design truth --write --include-project-truth` creates missing `PRODUCT.md`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — `beacon design truth --write --include-project-truth` creates missing `DESIGN.md`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Existing `PRODUCT.md` and `DESIGN.md` are reported as `exists` and are not overwritten without `--force`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — With `--force`, existing project-level truth files may be overwritten and reported as `overwritten`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — JSON output reports per-path write status.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Generated `PRODUCT.md` identifies itself as project-level product truth and includes required starter sections.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Generated `DESIGN.md` identifies itself as project-level design truth and includes required starter sections.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — `.machine/design/design-contract.projection.json` remains projection-only.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Design support outputs still require Beacon truth binding before implementation.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260527T064730Z-design-project-truth-init",
+          "verified_by_run_id": "run-20260527T145111852416",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/design-project-truth-initialization-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "design-project-truth-initialization-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/design-project-truth-initialization-contract.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "design-project-truth-initialization-contract",
+      "feature_slug": "design-project-truth-initialization-contract",
+      "version": "v1.4.11",
+      "last_changed_files": [
+        "beacon/commands/design.py",
+        "beacon/utils/design_contract.py",
+        "tests/test_v1411_design_project_truth_initialization.py",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/design-project-truth-initialization-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/design-project-truth-initialization-contract/ac-closure.json",
+        ".beacon/qa/features/design-project-truth-initialization-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-27T06:51:20.147774+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

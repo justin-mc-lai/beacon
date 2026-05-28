@@ -50,13 +50,23 @@ def truth(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
     version: str = typer.Option("auto", "--version", "-v", help="Docs version"),
     write: bool = typer.Option(False, "--write", help="Create missing version-wide design truth drafts"),
-    force: bool = typer.Option(False, "--force", help="Overwrite version-wide design truth drafts when used with --write"),
+    include_project_truth: bool = typer.Option(
+        False,
+        "--include-project-truth",
+        help="Also create missing root-level PRODUCT.md and DESIGN.md when used with --write",
+    ),
+    force: bool = typer.Option(False, "--force", help="Overwrite design truth drafts when used with --write"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON payload"),
 ):
     """Show or create version-wide design truth draft surfaces."""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, version)
-    payload = write_version_design_contracts(project_root, resolved_version, force=force) if write else {
+    payload = write_version_design_contracts(
+        project_root,
+        resolved_version,
+        force=force,
+        include_project_truth=include_project_truth,
+    ) if write else {
         **design_truth_contract(project_root, resolved_version),
         "status": "ready",
     }

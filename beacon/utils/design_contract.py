@@ -149,6 +149,66 @@ def design_truth_contract(project_root: Path, version: str) -> dict[str, Any]:
     }
 
 
+PRODUCT_TRUTH_TEMPLATE = """# Product Truth
+
+Status: draft
+
+This file is Beacon project-level product truth. It records durable product facts that apply across versions.
+
+## Product Purpose
+
+Describe what this product is for and what user outcome it protects.
+
+## Target Users
+
+Describe the primary users, operators, and stakeholders.
+
+## Core Product Promises
+
+List the stable product promises that implementation, QA, and release must preserve.
+
+## Non-Goals
+
+List explicit product boundaries and things this project should not promise.
+
+## Truth Update Policy
+
+Update this file only when accepted product facts become project-level truth. Promise-changing facts must route through Beacon change/refreeze before implementation.
+"""
+
+
+DESIGN_TRUTH_TEMPLATE = """# Design Truth
+
+Status: draft
+
+This file is Beacon project-level design truth. It records durable design facts that apply across versions.
+
+## Design Principles
+
+Describe the product-wide design principles and experience priorities.
+
+## Component System Baseline
+
+Describe the default component system, library choices, and reusable UI patterns.
+
+## Interaction Principles
+
+Describe navigation, feedback, recovery, and handoff expectations.
+
+## UI State Coverage
+
+Describe required loading, empty, error, success, blocked, stale, and recovery states.
+
+## Accessibility And Responsive Baseline
+
+Describe accessibility and responsive behavior expectations that apply across the product.
+
+## Truth Update Policy
+
+Update this file only when accepted design facts become project-level truth. Design support output is not truth until bound through Beacon truth routes.
+"""
+
+
 def design_route_contract(project_root: Path, version: str, *, feature: str = "") -> dict[str, Any]:
     resolved = resolve_target_version(project_root, version)
     routes: dict[str, dict[str, Any]] = {}
@@ -301,7 +361,22 @@ def bootstrap_design_capabilities(project_root: Path, version: str) -> dict[str,
     }
 
 
-def write_version_design_contracts(project_root: Path, version: str, *, force: bool = False) -> dict[str, Any]:
+def _write_design_truth_file(path: Path, content: str, *, force: bool) -> str:
+    existed = path.exists()
+    if existed and not force:
+        return "exists"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+    return "overwritten" if existed else "written"
+
+
+def write_version_design_contracts(
+    project_root: Path,
+    version: str,
+    *,
+    force: bool = False,
+    include_project_truth: bool = False,
+) -> dict[str, Any]:
     resolved = resolve_target_version(project_root, version)
     paths = design_truth_paths(project_root, resolved)
     writes: dict[str, str] = {}
@@ -314,13 +389,18 @@ def write_version_design_contracts(project_root: Path, version: str, *, force: b
     for key, rel in paths.items():
         if key not in templates:
             continue
-        path = project_root / rel
-        if path.exists() and not force:
-            writes[key] = "exists"
-            continue
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(templates[key], encoding="utf-8")
-        writes[key] = "written"
+        writes[key] = _write_design_truth_file(project_root / rel, templates[key], force=force)
+    if include_project_truth:
+        writes["product_truth"] = _write_design_truth_file(
+            project_root / paths["product_truth"],
+            PRODUCT_TRUTH_TEMPLATE,
+            force=force,
+        )
+        writes["design_truth"] = _write_design_truth_file(
+            project_root / paths["design_truth"],
+            DESIGN_TRUTH_TEMPLATE,
+            force=force,
+        )
     machine_dir = project_root / paths["machine_design_projection"]
     machine_dir.mkdir(parents=True, exist_ok=True)
     projection_path = machine_dir / "design-contract.projection.json"
