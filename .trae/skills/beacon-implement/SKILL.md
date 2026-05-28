@@ -109,9 +109,15 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 
 Use these lightweight references when implementation needs a tighter support frame before coding or repair:
 
+- `references/implement-single.md`
+- `references/implement-team.md`
+- `references/implement-ralph.md`
 - `../references/business-flow-checklist.md`
 - `../references/state-machine-checklist.md`
 - `../references/support-surface-routing-cheatsheet.md`
+
+Mode references explain execution shape only. They do not create `beacon-implement-single`, `beacon-implement-team`, or `beacon-implement-ralph` public skills.
+Ralph mode is a closure controller for next-action routing; it does not replace QA, release, gate, or frozen truth.
 
 When execution confusion is really context, source, performance, security, or blocker diagnosis, route through the matching support surface first, then come back to `implement`.
 

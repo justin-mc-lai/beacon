@@ -83,6 +83,7 @@ Prefer the installed CLI (works in any project directory once `beacon` is on `PA
 beacon brainstorm run "<prompt>" \
   --project-root . \
   --version auto \
+  --feature "<feature-or-contract-slug>" \
   --mode requirement-convergence \
   --json
 ```
@@ -101,8 +102,10 @@ bash skills/beacon/scripts/run_beacon.sh brainstorm run "<prompt>" \
 
 默认规则：
 
-- Beacon 自身 requirement / evolution 头暴默认写入 `docs/brainstorms/`
-- 外部项目或外部仓库分析会自动隔离到 `docs/brainstorms/external/`
+- Beacon runtime v1.4.9+ 的 feature / contract 头暴默认写入 `docs/beacon/<version>/research/<feature-slug>.md`
+- feature / contract 名称必须通过 `--feature` 显式传入；如果 prompt 中包含 `*-contract` 等稳定 slug，runtime 可推断，但不要依赖长句标题命名
+- 无 feature 的自由头暴才允许写入 `docs/brainstorms/`
+- 外部项目或外部仓库的无 feature 分析会自动隔离到 `docs/brainstorms/external/`
 - 如果需要写到明确目标位置，始终显式传 `--output`
 
 Supported modes:

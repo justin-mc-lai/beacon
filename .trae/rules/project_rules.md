@@ -19,7 +19,14 @@
 - `beacon-context-engineering`
 - `beacon-debug-recovery`
 - `beacon-deep`
+- `beacon-design`
+- `beacon-design-bootstrap`
+- `beacon-design-explore`
+- `beacon-design-extract`
+- `beacon-design-library`
+- `beacon-design-polish`
 - `beacon-design-review`
+- `beacon-design-system`
 - `beacon-doctor`
 - `beacon-documentation-adr`
 - `beacon-doubt-review`
@@ -47,3 +54,4 @@
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
