@@ -157,6 +157,21 @@ def test_ordinary_support_writes_feature_research(tmp_path: Path) -> None:
     assert "source_skill: `beacon-brainstorm`" in text
 
 
+def test_runtime_supported_brainstorm_infers_contract_slug_to_research(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+
+    payload = run_beacon_brainstorm(
+        tmp_path,
+        version=VERSION,
+        prompt=f"现在核实 {SLUG} 为何头暴文档写错目录，并收敛下一步。",
+    )
+
+    assert payload["feature_inferred"] is True
+    assert payload["feature"] == SLUG
+    assert payload["output_path"] == f"docs/beacon/{VERSION}/research/{SLUG}.md"
+    assert not (tmp_path / "docs/brainstorms").exists()
+
+
 def test_deep_writes_artifact_family_and_research_index(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
 

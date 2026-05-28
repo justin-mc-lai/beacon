@@ -33,7 +33,13 @@ def _seed_v137_docs(root: Path) -> None:
     slug = "beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking"
     (version_root / "prd" / f"{slug}.md").write_text("# PRD\nFR-001 brainstorm convergence\n", encoding="utf-8")
     (version_root / "user-story" / f"{slug}.md").write_text("# User Story\nAC-001 converge requirements\n", encoding="utf-8")
-    (version_root / "qa" / "test-cases" / f"{slug}.md").write_text("# Test Case\nTC-001 run brainstorm\n", encoding="utf-8")
+    (version_root / "qa" / "test-cases" / f"{slug}.md").write_text(
+        "# Test Case\n\n"
+        "| AC ID | TC ID | Layer | Command | Assertion | Evidence Path |\n"
+        "| --- | --- | --- | --- | --- | --- |\n"
+        "| AC-001 | TC-001 | contract | pytest | run brainstorm | evidence |\n",
+        encoding="utf-8",
+    )
 
 
 def _seed_project_metadata(root: Path, *, version: str, service: str, branch: str) -> None:
@@ -136,21 +142,18 @@ def test_v137_brainstorm_run_should_read_beacon_version_materials(tmp_path: Path
     assert any(path.endswith("/prd/beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md") for path in refs)
     output = tmp_path / payload["output_path"]
     assert output.exists()
-    assert payload["output_path"].startswith("docs/brainstorms/")
-    assert payload["output_path"].endswith(
-        "beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking-brainstorm.md"
+    assert payload["output_path"] == (
+        "docs/beacon/v1.3.7/research/"
+        "beacon-v1.3.7-beacon-brainstorm-built-in-convergence-and-evolution-thinking.md"
     )
     text = output.read_text(encoding="utf-8")
     for section in (
-        "## prompt_summary",
-        "## version_material_refs",
-        "## first_principles_breakdown",
-        "## socratic_questions",
-        "## redundancy_cuts",
-        "## convergence_contract",
-        "## converged_recommendation",
-        "## next_route",
-        "## human_closure_scaffold",
+        "## Architecture",
+        "## Business Flow",
+        "## State Machine",
+        "## Decision Priority",
+        "## Support Findings",
+        "source_skill: `beacon-brainstorm`",
     ):
         assert section in text
     research_path = tmp_path / payload["human_closure_scaffold"]["research_path"]
@@ -345,7 +348,8 @@ def test_v137_brainstorm_should_flatten_prompt_paths_in_output_slug(tmp_path: Pa
     payload = json.loads(result.stdout)
     assert payload["output_path"].startswith("docs/brainstorms/")
     assert "/docs/" not in payload["output_path"]
-    assert "docs-debug-01_relation_type_mismatch_fix.sql" in payload["output_path"]
+    assert "01_relation_type_mismatch_fix.sql" not in payload["output_path"]
+    assert len(Path(payload["output_path"]).name) <= 120
     output = tmp_path / payload["output_path"]
     assert output.exists()
 

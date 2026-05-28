@@ -5,6 +5,7 @@ from typing import Optional
 from pathlib import Path
 
 from beacon.utils.brainstorm import MODES, run_beacon_brainstorm
+from beacon.utils.brainstorm import compact_brainstorm_slug
 from beacon.utils.versioning import resolve_target_version
 
 app = typer.Typer(name="brainstorm", help="Divergent thinking exploration")
@@ -187,7 +188,7 @@ def create(
     output_path = (
         Path(output)
         if output
-        else project_root / "docs" / "product" / resolved_version / "brainstorm" / f"{topic.lower().replace(' ', '-')}.md"
+        else project_root / "docs" / "beacon" / resolved_version / "research" / f"{compact_brainstorm_slug(topic)}.md"
     )
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(md_content)
@@ -202,7 +203,7 @@ def list(
     """List all brainstorming documents"""
     project_root = Path(project) if project else Path.cwd()
     resolved_version = resolve_target_version(project_root, None)
-    brainstorm_dir = project_root / "docs" / "product" / resolved_version / "brainstorm"
+    brainstorm_dir = project_root / "docs" / "beacon" / resolved_version / "research"
 
     if not brainstorm_dir.exists():
         typer.echo("No brainstorming documents found")

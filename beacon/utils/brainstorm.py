@@ -150,6 +150,52 @@ def _path_safe_slug(text: str, *, fallback: str) -> str:
     return slug or fallback
 
 
+_FEATURE_CONTRACT_RE = re.compile(r"(?P<feature>[0-9a-zA-Z][0-9a-zA-Z._-]{6,}-(?:contract|feature|gate|closure|rebuild|retirement|boundary|guard))")
+
+
+def infer_brainstorm_feature(prompt: str) -> str:
+    text = str(prompt or "")
+    quoted = re.findall(r"`([^`]+)`", text)
+    for candidate in quoted + [text]:
+        match = _FEATURE_CONTRACT_RE.search(candidate)
+        if match:
+            return match.group("feature").strip("-._")
+    return ""
+
+
+def compact_brainstorm_slug(prompt: str, *, fallback: str = "beacon-brainstorm") -> str:
+    inferred = infer_brainstorm_feature(prompt)
+    if inferred:
+        return _path_safe_slug(inferred, fallback=fallback)[:72]
+    text = str(prompt or "")
+    text = re.sub(r"`[^`]*`", " ", text)
+    text = re.sub(r"[/\\][^\s，。；;：:、]+", " ", text)
+    text = re.sub(r"\b[a-zA-Z0-9_.-]+\.(?:md|json|py|sql|ts|tsx|js|jsx|yaml|yml)\b", " ", text)
+    text = re.sub(r"\b(v\d+\.\d+\.\d+)\b", r"\1", text)
+    chunks = re.findall(r"[\u4e00-\u9fff]{2,}|[a-zA-Z0-9][a-zA-Z0-9._-]*", text)
+    stopwords = {
+        "beacon",
+        "brainstorm",
+        "analysis",
+        "analyze",
+        "docs",
+        "target",
+        "goal",
+        "input",
+        "material",
+        "materials",
+    }
+    selected: list[str] = []
+    for chunk in chunks:
+        lowered = chunk.lower()
+        if lowered in stopwords:
+            continue
+        selected.append(chunk)
+        if len(selected) >= 8:
+            break
+    return _path_safe_slug("-".join(selected), fallback=fallback)[:72]
+
+
 def resolve_brainstorm_output_path(
     project_root: Path,
     *,
@@ -161,13 +207,14 @@ def resolve_brainstorm_output_path(
     if output:
         path = Path(output)
         return path if path.is_absolute() else project_root / path
-    if feature.strip() and support_research_topology_supported(version):
-        return project_root / "docs" / "beacon" / version / "research" / f"{feature_slug(feature)}.md"
+    resolved_feature = feature.strip() or infer_brainstorm_feature(prompt)
+    if resolved_feature and support_research_topology_supported(version):
+        return project_root / "docs" / "beacon" / version / "research" / f"{feature_slug(resolved_feature)}.md"
     date = now_iso()[:10]
-    if feature.strip():
-        slug = _path_safe_slug(feature, fallback="beacon-brainstorm")[:96]
+    if resolved_feature:
+        slug = _path_safe_slug(resolved_feature, fallback="beacon-brainstorm")[:72]
         return project_root / "docs" / "brainstorms" / f"{date}-{slug}-brainstorm.md"
-    slug = _path_safe_slug(prompt, fallback="beacon-brainstorm")[:80]
+    slug = compact_brainstorm_slug(prompt, fallback="beacon-brainstorm")
     if _prompt_targets_external_context(prompt):
         return project_root / "docs" / "brainstorms" / "external" / f"{date}-{slug}.md"
     return project_root / "docs" / "brainstorms" / f"{date}-beacon-brainstorm-{slug}.md"
@@ -320,18 +367,19 @@ def run_beacon_brainstorm(
     canonical_mode = _MODE_ALIASES.get(mode, mode)
     if canonical_mode not in MODES:
         raise ValueError(f"unsupported brainstorm mode: {mode}")
-    resolved_version = _resolve_brainstorm_version(project_root, version=version, feature=feature, prompt=prompt)
-    materials = collect_version_materials(project_root, version=resolved_version, feature=feature)
+    effective_feature = feature.strip() or infer_brainstorm_feature(prompt)
+    resolved_version = _resolve_brainstorm_version(project_root, version=version, feature=effective_feature, prompt=prompt)
+    materials = collect_version_materials(project_root, version=resolved_version, feature=effective_feature)
     source_text = _joined_excerpts(materials)
-    archive_boundary = load_archive_read_model(project_root, version=resolved_version, feature=feature) if feature else {}
-    diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature) if feature else {}
+    archive_boundary = load_archive_read_model(project_root, version=resolved_version, feature=effective_feature) if effective_feature else {}
+    diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=effective_feature) if effective_feature else {}
     resolved_metadata_view = resolve_project_metadata_view(project_root, version=resolved_version)
     metadata_path = metadata_machine_path(project_root)
     recommendation, next_route = _mode_recommendation(canonical_mode)
     convergence_contract = _load_convergence_contract(
         project_root,
         version=resolved_version,
-        feature=feature,
+        feature=effective_feature,
         prompt=prompt,
         requirement_gap_digest=requirement_gap_digest,
         brainstorm_hint=brainstorm_hint,
@@ -344,12 +392,12 @@ def run_beacon_brainstorm(
         "This sidecar is read-only against Beacon requirement truth.",
         "Frozen PRD, user-story, test-case, prototype, and .machine artifacts are not rewritten by brainstorm.",
     ]
-    if feature:
-        facts.append(f"Feature focus: {feature}.")
-    if feature and isinstance((archive_boundary or {}).get("feature"), dict):
+    if effective_feature:
+        facts.append(f"Feature focus: {effective_feature}.")
+    if effective_feature and isinstance((archive_boundary or {}).get("feature"), dict):
         archive_status = str((archive_boundary.get("feature") or {}).get("status", "") or "active")
         facts.append(f"Archive boundary status: {archive_status}.")
-    if feature and isinstance(diagram_truth, dict) and diagram_truth.get("required") and not diagram_truth.get("ready"):
+    if effective_feature and isinstance(diagram_truth, dict) and diagram_truth.get("required") and not diagram_truth.get("ready"):
         facts.append("Diagram truth layer is still incomplete for this complex feature.")
     topology_kind = str(resolved_metadata_view.get("topology_kind") or "").strip()
     if topology_kind:
@@ -389,13 +437,13 @@ def run_beacon_brainstorm(
         source_text,
         ("fr-", "ac-", "tc-", "non-goal", "boundary", "baseline", "brainstorm", "implement"),
     )
-    output_path = resolve_brainstorm_output_path(project_root, version=resolved_version, prompt=prompt, feature=feature, output=output)
+    output_path = resolve_brainstorm_output_path(project_root, version=resolved_version, prompt=prompt, feature=effective_feature, output=output)
     topology_gate = {}
-    if feature and support_research_topology_supported(resolved_version):
+    if effective_feature and support_research_topology_supported(resolved_version):
         topology_gate = assert_support_write_topology(
             project_root,
             version=resolved_version,
-            feature=feature,
+            feature=effective_feature,
             surface="beacon-brainstorm",
             actual_path=output_path,
         )
@@ -403,7 +451,7 @@ def run_beacon_brainstorm(
     human_closure_scaffold = _materialize_human_closure_scaffold(
         project_root,
         version=resolved_version,
-        feature=feature,
+        feature=effective_feature,
         canonical_mode=canonical_mode,
         diagram_truth=diagram_truth,
     )
@@ -414,8 +462,9 @@ def run_beacon_brainstorm(
         "mode": mode,
         "canonical_mode": canonical_mode,
         "prompt_summary": prompt.strip(),
-        "feature": feature,
-        "feature_slug": feature_slug(feature) if feature else "",
+        "feature": effective_feature,
+        "feature_slug": feature_slug(effective_feature) if effective_feature else "",
+        "feature_inferred": bool(effective_feature and not feature.strip()),
         "version_material_refs": [
             {key: item[key] for key in ("path", "exists", "required")}
             for item in materials["refs"]
@@ -463,11 +512,11 @@ def run_beacon_brainstorm(
         "support_write_topology": topology_gate,
         "generated_at": now_iso(),
     }
-    if feature and support_research_topology_supported(resolved_version):
+    if effective_feature and support_research_topology_supported(resolved_version):
         writeback = upsert_support_finding_section(
             project_root,
             version=resolved_version,
-            feature=feature,
+            feature=effective_feature,
             surface="beacon-brainstorm",
             finding_summary=str(payload.get("converged_recommendation") or prompt).strip(),
             source_refs=[

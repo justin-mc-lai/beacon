@@ -8,7 +8,7 @@ from typing import Any
 
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
-from beacon.utils.versioning import release_line_key, resolve_target_version
+from beacon.utils.versioning import release_line_key, resolve_target_version, runtime_feature_supported
 
 
 ORDINARY_SUPPORT_SURFACES = {
@@ -35,13 +35,14 @@ SURFACE_ALIASES = {
 
 def support_research_topology_supported(version: str | None) -> bool:
     normalized = release_line_key(version) or ""
-    if not normalized:
-        return False
-    try:
-        major, minor, patch = normalized.lstrip("v").split(".")
-        return (int(major), int(minor), int(patch)) >= (1, 4, 9)
-    except Exception:  # noqa: BLE001
-        return False
+    if normalized:
+        try:
+            major, minor, patch = normalized.lstrip("v").split(".")
+            if (int(major), int(minor), int(patch)) >= (1, 4, 9):
+                return True
+        except Exception:  # noqa: BLE001
+            pass
+    return runtime_feature_supported("v1.4.9")
 
 
 def normalize_support_surface(surface: str) -> str:
