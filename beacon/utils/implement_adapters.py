@@ -355,6 +355,7 @@ def build_default_task_prompt(
     *,
     feature: str,
     version: str,
+    project_root: str | Path = "",
     source_of_truth_root: str,
     feature_slug: str,
     result_file: str,
@@ -375,6 +376,23 @@ def build_default_task_prompt(
         f"- {source_of_truth_root}/prd/{feature_slug}.md",
         f"- {source_of_truth_root}/qa/test-cases/{feature_slug}.md",
     ]
+    root = Path(project_root) if str(project_root or "").strip() else None
+    project_truth_lines: list[str] = []
+    if root is not None:
+        product_md = root / "PRODUCT.md"
+        design_md = root / "DESIGN.md"
+        if product_md.exists():
+            project_truth_lines.append("- PRODUCT.md (project-level product truth)")
+        if design_md.exists():
+            project_truth_lines.append("- DESIGN.md (project-level design truth)")
+    if project_truth_lines:
+        lines.extend(
+            [
+                "Read project-level product/design truth when present:",
+                *project_truth_lines,
+                "Project-level truth complements frozen requirement truth; it does not replace PRD, user-story, or test-case truth.",
+            ]
+        )
     if str(implementation_plan_file or "").strip():
         lines.append(f"- {implementation_plan_file}")
     revision_cleanup_payload = revision_cleanup if isinstance(revision_cleanup, dict) else {}
@@ -438,9 +456,17 @@ def build_default_task_prompt(
             "Follow Beacon boundary defaults:",
             *[f"- {line}" for line in global_boundary_prompt_lines()],
             "Implement only against the frozen PRD, user-story, and test-case truth above.",
+            "Also align with project-level PRODUCT.md / DESIGN.md truth when those files are listed above.",
             "Do not invent new user stories, acceptance criteria, or test scope.",
             "If the work would require requirement change or conflicts with frozen truth, stop and route to beacon-change/refreeze instead of coding around it.",
-            "Structured result should include: assumptions, simplicity_notes, scope_guard, verification.",
+            (
+                "Structured result should include: assumptions, simplicity_notes, scope_guard, "
+                "ac_coverage_matrix, verification."
+            ),
+            (
+                "Before QA handoff, AC coverage matrix must list every frozen AC with "
+                "status pass | partial | blocked and evidence or blocking_note."
+            ),
             (
                 "For changed revisions with cleanup obligation, structured result must also include: "
                 "cleanup_review_completed, removed_surfaces, retained_legacy_surfaces, cleanup_rationale."

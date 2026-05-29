@@ -1,10 +1,10 @@
 {
   "scope": "qa9",
-  "timestamp": "2026-05-27T11:18:29.720712",
+  "timestamp": "2026-05-29T21:23:12.427240",
   "project": "/Users/apple/Developer/Personal/products/beacon",
   "version": "v1.4.11",
-  "run_id": "run-20260527T111829719823",
-  "spec_fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8",
+  "run_id": "run-20260529T212312426143",
+  "spec_fingerprint_hash": "f3330b71d2b4755d367fb10ee36088e11ccddad83dca60f7d122fcf397b92440",
   "status": "passed",
   "selected_layers": [
     "contract",
@@ -12,18 +12,18 @@
     "regression"
   ],
   "execution": {
-    "run_id": "run-20260527T111829719823",
+    "run_id": "run-20260529T212312426143",
     "version": "v1.4.11",
-    "evidence_dir": ".beacon/evidence/auto-test/run-20260527T111829719823",
+    "evidence_dir": ".beacon/evidence/auto-test/run-20260529T212312426143",
     "spec_fingerprint": {
-      "fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8",
+      "fingerprint_hash": "f3330b71d2b4755d367fb10ee36088e11ccddad83dca60f7d122fcf397b92440",
       "version": "v1.4.11",
-      "generated_at": "2026-05-27T03:18:39.198892+00:00"
+      "generated_at": "2026-05-29T13:23:20.196781+00:00"
     },
     "layers": [
       {
         "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_wording_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -35,22 +35,22 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "00e730952e206e158e0a5180670feda99cbc0a8c60a16be691a5d5f60147d089",
-        "started_at": "2026-05-27T11:18:29.721015",
-        "ended_at": "2026-05-27T11:18:30.267012",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/contract/junit.xml",
+        "execution_fingerprint": "b9e2440a1de1db54d5421f844aeba242a7610f50e60cf163d5e016c5ebbcb40d",
+        "started_at": "2026-05-29T21:23:12.427556",
+        "ended_at": "2026-05-29T21:23:12.978949",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/contract/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json"
         ]
       },
       {
         "layer": "exception",
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"guard_does_not_add_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"no_new_public_implement_mode_skill\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
         "assertion_count": 1,
@@ -62,25 +62,25 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "a677318cbe58375d1846d3d6925d17ee4b5d1646fd6f37f8d08892deed8becc6",
-        "started_at": "2026-05-27T11:18:30.267899",
-        "ended_at": "2026-05-27T11:18:30.914296",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/exception/junit.xml",
+        "execution_fingerprint": "c62d7fe27d57ae95d4acdc9cae55b53164cd678e6033c60dde4f8858520f9b7d",
+        "started_at": "2026-05-29T21:23:12.980717",
+        "ended_at": "2026-05-29T21:23:13.501101",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/exception/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json"
         ]
       },
       {
         "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_guard_regression_suite_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
         "exit_code": 0,
         "status": "passed",
-        "assertion_count": 1,
+        "assertion_count": 9,
         "was_flaky": false,
         "attempt_count": 1,
         "attempts": [
@@ -89,32 +89,32 @@
             "exit_code": 0
           }
         ],
-        "execution_fingerprint": "3f2710a2e6807e1f1fb0b7220877b8c60d0b35a8c412fa447344c7a12c158abd",
-        "started_at": "2026-05-27T11:18:30.915425",
-        "ended_at": "2026-05-27T11:18:31.535627",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/regression/junit.xml",
+        "execution_fingerprint": "599520a210bbe5b4c5e6ede69b9c9f1ce7ec0fad47842688ca355d532b5003b7",
+        "started_at": "2026-05-29T21:23:13.501910",
+        "ended_at": "2026-05-29T21:23:13.976034",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
         "junit_valid": true,
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/regression/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json"
         ]
       }
     ],
     "ui_action_evidence": {},
     "matrix_report": {
       "status": "ok",
-      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+      "matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
       "evidence_generated": 10,
       "entry_count": 10,
       "freshness_violations": []
     },
     "artifacts": [
-      ".beacon/evidence/auto-test/run-20260527T111829719823/qa9/tc-execution-map.json",
-      ".beacon/evidence/auto-test/run-20260527T111829719823/qa9/tc-results.json",
-      ".beacon/evidence/auto-test/run-20260527T111829719823/summary.json",
+      ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+      ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+      ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
       ".beacon/flaky-history.json",
       ".beacon/evidence-signature-chain.json"
     ],
@@ -133,7 +133,7 @@
       "exception",
       "regression"
     ],
-    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+    "qa_matrix_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
     "ui_runner": "playwright",
     "quality_requirements": {
       "require_junit": true,
@@ -160,9 +160,9 @@
     },
     "tc_results": [
       {
-        "tc_id": "TC-AGG-PROJ-001",
+        "tc_id": "TC-IMPL-TRUTH-001",
         "ac_id": "AC-001",
-        "source_tc_id": "TC-AGG-PROJ-001",
+        "source_tc_id": "TC-IMPL-TRUTH-001",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -172,20 +172,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_wording_not_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-001/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-001/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/result.json"
         ],
-        "execution_fingerprint": "e63b2a7970ee160cf5cb9c38427e684436ae17963da862718e224b75eb571c52",
-        "started_at": "2026-05-27T11:18:31.539408",
-        "ended_at": "2026-05-27T11:18:32.002028",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
+        "execution_fingerprint": "d32adc7c6e5afae7b3273227f9c036003b4d7cb8414890bc1fb60400698bed31",
+        "started_at": "2026-05-29T21:23:13.979212",
+        "ended_at": "2026-05-29T21:23:14.443867",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -198,9 +198,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-002",
+        "tc_id": "TC-IMPL-TRUTH-002",
         "ac_id": "AC-002",
-        "source_tc_id": "TC-AGG-PROJ-002",
+        "source_tc_id": "TC-IMPL-TRUTH-002",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -210,20 +210,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"qa_accepted_feature_requires_feature_change_projection\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-002/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"product_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-002/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/result.json"
         ],
-        "execution_fingerprint": "7dc6b4d65a94e06fa953a8387f421fcaa773290d804f582b362b8cbb48e728e9",
-        "started_at": "2026-05-27T11:18:32.002867",
-        "ended_at": "2026-05-27T11:18:32.523633",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
+        "execution_fingerprint": "4de45aa1a02d4d9c5514125d2d6205f0e1d7bfe52a9a54ff08002004e3e2038c",
+        "started_at": "2026-05-29T21:23:14.444747",
+        "ended_at": "2026-05-29T21:23:14.901708",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -236,9 +236,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-003",
+        "tc_id": "TC-IMPL-TRUTH-003",
         "ac_id": "AC-003",
-        "source_tc_id": "TC-AGG-PROJ-003",
+        "source_tc_id": "TC-IMPL-TRUTH-003",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -248,20 +248,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_create_rebuilds_version_projection_with_dependency_order\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-003/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"missing_project_truth_does_not_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-003/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/result.json"
         ],
-        "execution_fingerprint": "54408e0ecf7fc5988814cf1c3834ccfe97de0f2f85feb1345a8ad1d3707173ce",
-        "started_at": "2026-05-27T11:18:32.524605",
-        "ended_at": "2026-05-27T11:18:33.164764",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
+        "execution_fingerprint": "7072601e8a3eaf89096c672442024b5b354c5d6a6a6b3e558c64cbfb98f75dcf",
+        "started_at": "2026-05-29T21:23:14.902470",
+        "ended_at": "2026-05-29T21:23:15.359621",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -274,9 +274,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-004",
+        "tc_id": "TC-IMPL-TRUTH-004",
         "ac_id": "AC-004",
-        "source_tc_id": "TC-AGG-PROJ-004",
+        "source_tc_id": "TC-IMPL-TRUTH-004",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -286,20 +286,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_blocks_when_current_feature_missing_from_aggregate\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-004/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"project_truth_separated_from_frozen_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-004/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/result.json"
         ],
-        "execution_fingerprint": "83c7fc2fda55fd80ea9507335d741853f8bb9db77eb2927aec84a30e9a4a9e0c",
-        "started_at": "2026-05-27T11:18:33.165630",
-        "ended_at": "2026-05-27T11:18:33.862861",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
+        "execution_fingerprint": "b7ffb0ee32f783cf7d24bb4a656774dde275723c69f5bdcf33705b3b6dbb4f35",
+        "started_at": "2026-05-29T21:23:15.360375",
+        "ended_at": "2026-05-29T21:23:15.842460",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -312,9 +312,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-005",
+        "tc_id": "TC-IMPL-TRUTH-005",
         "ac_id": "AC-005",
-        "source_tc_id": "TC-AGG-PROJ-005",
+        "source_tc_id": "TC-IMPL-TRUTH-005",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -324,20 +324,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"release_check_passes_when_current_feature_included\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-005/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_matrix_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-005/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/result.json"
         ],
-        "execution_fingerprint": "12a4ac0c74ba4ddec27c3efbf53eda189b8e4abe3dd6a8d269c5edb08e578695",
-        "started_at": "2026-05-27T11:18:33.863892",
-        "ended_at": "2026-05-27T11:18:34.520625",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
+        "execution_fingerprint": "0055454550bd4d2936798f4f9032bb31e5179ef4efeecf0713e469b4594e9601",
+        "started_at": "2026-05-29T21:23:15.843330",
+        "ended_at": "2026-05-29T21:23:16.293911",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -350,9 +350,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-006",
+        "tc_id": "TC-IMPL-TRUTH-006",
         "ac_id": "AC-006",
-        "source_tc_id": "TC-AGG-PROJ-006",
+        "source_tc_id": "TC-IMPL-TRUTH-006",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -362,20 +362,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"doctor_repair_rebuilds_projection_without_truth_authority\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-006/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_statuses_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-006/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/result.json"
         ],
-        "execution_fingerprint": "c4251b4ff2872d8f24dccab051f38dcf54f01342efd5ab6f0c58b1618c56edd3",
-        "started_at": "2026-05-27T11:18:34.521450",
-        "ended_at": "2026-05-27T11:18:35.057532",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
+        "execution_fingerprint": "1f5cb3a03b4af4ebc7dafe0f9dfbf32f88bc10dac4e649d13d271607d808a74b",
+        "started_at": "2026-05-29T21:23:16.294733",
+        "ended_at": "2026-05-29T21:23:16.744581",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -388,9 +388,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-007",
+        "tc_id": "TC-IMPL-TRUTH-007",
         "ac_id": "AC-007",
-        "source_tc_id": "TC-AGG-PROJ-007",
+        "source_tc_id": "TC-IMPL-TRUTH-007",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -400,20 +400,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"test_contract_index_repair_clears_stale_index_risk\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-007/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_evidence_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-007/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/result.json"
         ],
-        "execution_fingerprint": "ae25a0c66ffc6405ad4c0fd42afaba99a7dc5a886f79c1536d0cbca5889cebfb",
-        "started_at": "2026-05-27T11:18:35.058381",
-        "ended_at": "2026-05-27T11:18:35.579572",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
+        "execution_fingerprint": "678dd6a0452ae9ac3a55385bce89ac4f44f22e0a4abaf9c634bef2471b62b795",
+        "started_at": "2026-05-29T21:23:16.745415",
+        "ended_at": "2026-05-29T21:23:17.195677",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -426,9 +426,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-008",
+        "tc_id": "TC-IMPL-TRUTH-008",
         "ac_id": "AC-008",
-        "source_tc_id": "TC-AGG-PROJ-008",
+        "source_tc_id": "TC-IMPL-TRUTH-008",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "exception",
@@ -438,20 +438,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"guard_does_not_add_lifecycle_stage\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-008/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"no_new_public_implement_mode_skill\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-008/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/result.json"
         ],
-        "execution_fingerprint": "fd70a0482fbd0701275fea66618b7f9804809c6884a0f26b4589f6a05943bee7",
-        "started_at": "2026-05-27T11:18:35.580400",
-        "ended_at": "2026-05-27T11:18:36.193067",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
+        "execution_fingerprint": "0084595e17528c8d3cb4d5a740848eb11388b732de5d4f1c0ffd31390cce0306",
+        "started_at": "2026-05-29T21:23:17.196482",
+        "ended_at": "2026-05-29T21:23:17.637912",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -464,9 +464,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-009",
+        "tc_id": "TC-IMPL-TRUTH-009",
         "ac_id": "AC-009",
-        "source_tc_id": "TC-AGG-PROJ-009",
+        "source_tc_id": "TC-IMPL-TRUTH-009",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "regression",
@@ -475,21 +475,21 @@
         "status": "passed",
         "layer_status": "passed",
         "reason_code": "",
-        "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"projection_guard_regression_suite_covers_required_axes\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-009/__RUN_ID__.json",
+        "assertion_count": 9,
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-009/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/result.json"
         ],
-        "execution_fingerprint": "152fd06f364aabdb1f27a2c411fce85427aed4feb517ea930f6d136d2014bef4",
-        "started_at": "2026-05-27T11:18:36.193999",
-        "ended_at": "2026-05-27T11:18:36.654879",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
+        "execution_fingerprint": "950bb6155e3a603e40fe003d059e3d162b09da2d437dead6c0c755bb3eb91d3a",
+        "started_at": "2026-05-29T21:23:17.638708",
+        "ended_at": "2026-05-29T21:23:18.099244",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -502,9 +502,9 @@
         "round_stop_anchor": ""
       },
       {
-        "tc_id": "TC-AGG-PROJ-010",
+        "tc_id": "TC-IMPL-TRUTH-010",
         "ac_id": "AC-010",
-        "source_tc_id": "TC-AGG-PROJ-010",
+        "source_tc_id": "TC-IMPL-TRUTH-010",
         "scenario_id": "",
         "scenario_family": "",
         "qa_type": "contract",
@@ -514,20 +514,20 @@
         "layer_status": "passed",
         "reason_code": "",
         "assertion_count": 1,
-        "command": "python3 -m pytest -q tests/test_v1411_version_aggregate_projection_guard.py -k \"blocked_release_output_includes_projection_repair_route\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "run_id": "run-20260527T111829719823",
-        "evidence_path": ".beacon/evidence/qa-feature/version-aggregate-projection-guard-contract/tc-agg-proj-010/__RUN_ID__.json",
+        "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"scope_stays_default_prompt_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "run_id": "run-20260529T212312426143",
+        "evidence_path": ".beacon/evidence/qa-feature/implement-mode-frozen-truth-requirement-contract/tc-impl-truth-010/__RUN_ID__.json",
         "evidence_ref": [
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
-          ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/command.txt",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stdout.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stderr.log",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/junit.xml",
+          ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/result.json"
         ],
-        "execution_fingerprint": "f072a1e074a92e91f3511bf80c7ca378a896b96c330445c0ad42a132987d5010",
-        "started_at": "2026-05-27T11:18:36.655770",
-        "ended_at": "2026-05-27T11:18:37.221172",
-        "junit_path": ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
+        "execution_fingerprint": "1f18be08d2eb5279a0b6c12e35bff5b8eb782fd58b36fd91939d60b66c94f805",
+        "started_at": "2026-05-29T21:23:18.100060",
+        "ended_at": "2026-05-29T21:23:18.550283",
+        "junit_path": ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/junit.xml",
         "junit_valid": true,
         "browser_required": false,
         "browser_evidence_pack_ref": "",
@@ -543,9 +543,9 @@
   },
   "quality_issues": [],
   "schema_version": "1.0",
-  "updated_at": "2026-05-27T03:18:38.439929+00:00",
+  "updated_at": "2026-05-29T13:23:19.411014+00:00",
   "summary": {
-    "feature": "version-aggregate-projection-guard-contract",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
     "version": "v1.4.11",
     "status": "passed",
     "release_ready": true,
@@ -556,20 +556,20 @@
     "reconciliation_artifact_path": "",
     "reconciliation_reprojection_targets": [],
     "repair_action": "qa-repair",
-    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\""
+    "repair_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"implement-mode-frozen-truth-requirement-contract\""
   },
   "qa_status_source": "canonical",
-  "feature": "version-aggregate-projection-guard-contract",
-  "feature_slug": "version-aggregate-projection-guard-contract",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
   "implementation_done": true,
   "evidence_done": true,
   "story_sequence": [
     {
       "ac_id": "AC-001",
-      "theme": "wording",
-      "text": "Beacon uses `version aggregate projection` wording and does not call aggregate change payloads requirement truth.",
+      "theme": "design truth injection",
+      "text": "The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
       "tc_ids": [
-        "TC-AGG-PROJ-001"
+        "TC-IMPL-TRUTH-001"
       ],
       "qa_types": [
         "contract"
@@ -577,10 +577,10 @@
     },
     {
       "ac_id": "AC-002",
-      "theme": "feature projection",
-      "text": "A QA accepted current feature has a deterministic feature change projection input or a repairable missing-projection finding.",
+      "theme": "product truth injection",
+      "text": "The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
       "tc_ids": [
-        "TC-AGG-PROJ-002"
+        "TC-IMPL-TRUTH-002"
       ],
       "qa_types": [
         "contract"
@@ -588,10 +588,10 @@
     },
     {
       "ac_id": "AC-003",
-      "theme": "release create",
-      "text": "`release create` rebuilds version aggregate projection from feature change projections and preserves explicit feature dependency order.",
+      "theme": "optional project truth",
+      "text": "Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
       "tc_ids": [
-        "TC-AGG-PROJ-003"
+        "TC-IMPL-TRUTH-003"
       ],
       "qa_types": [
         "contract"
@@ -599,10 +599,10 @@
     },
     {
       "ac_id": "AC-004",
-      "theme": "fail closed",
-      "text": "`release check` fails closed when the current QA accepted feature is missing from version aggregate projection.",
+      "theme": "truth separation",
+      "text": "The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
       "tc_ids": [
-        "TC-AGG-PROJ-004"
+        "TC-IMPL-TRUTH-004"
       ],
       "qa_types": [
         "contract"
@@ -610,10 +610,10 @@
     },
     {
       "ac_id": "AC-005",
-      "theme": "inclusion pass",
-      "text": "`release check` passes aggregate inclusion when the current QA accepted feature is included in version aggregate projection.",
+      "theme": "AC matrix required",
+      "text": "The prompt requires an AC coverage matrix before QA handoff.",
       "tc_ids": [
-        "TC-AGG-PROJ-005"
+        "TC-IMPL-TRUTH-005"
       ],
       "qa_types": [
         "contract"
@@ -621,10 +621,10 @@
     },
     {
       "ac_id": "AC-006",
-      "theme": "doctor repair",
-      "text": "Doctor exposes repair-only projection rebuild / verify behavior for feature projection, version aggregate projection, and test-contract-index.",
+      "theme": "AC statuses",
+      "text": "The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
       "tc_ids": [
-        "TC-AGG-PROJ-006"
+        "TC-IMPL-TRUTH-006"
       ],
       "qa_types": [
         "contract"
@@ -632,10 +632,10 @@
     },
     {
       "ac_id": "AC-007",
-      "theme": "test index",
-      "text": "test-contract-index refresh / verify is part of projection repair closure when stale index risk is reported.",
+      "theme": "AC evidence",
+      "text": "Each AC coverage row includes evidence or a blocking note.",
       "tc_ids": [
-        "TC-AGG-PROJ-007"
+        "TC-IMPL-TRUTH-007"
       ],
       "qa_types": [
         "contract"
@@ -643,10 +643,10 @@
     },
     {
       "ac_id": "AC-008",
-      "theme": "no lifecycle stage",
-      "text": "The guard does not add a new lifecycle stage, required human-facing command, release publish action, or post-release install action.",
+      "theme": "mode boundary",
+      "text": "Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
       "tc_ids": [
-        "TC-AGG-PROJ-008"
+        "TC-IMPL-TRUTH-008"
       ],
       "qa_types": [
         "exception"
@@ -655,9 +655,9 @@
     {
       "ac_id": "AC-009",
       "theme": "regression coverage",
-      "text": "Tests cover missing projection, repaired projection, aggregate feature count/list, dependency order, and wording boundaries.",
+      "text": "Tests cover project truth injection and AC coverage matrix wording.",
       "tc_ids": [
-        "TC-AGG-PROJ-009"
+        "TC-IMPL-TRUTH-009"
       ],
       "qa_types": [
         "regression"
@@ -665,10 +665,10 @@
     },
     {
       "ac_id": "AC-010",
-      "theme": "repair route",
-      "text": "Blocked release output gives actionable repair guidance for projection inclusion failure.",
+      "theme": "source-anchored scope",
+      "text": "This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
       "tc_ids": [
-        "TC-AGG-PROJ-010"
+        "TC-IMPL-TRUTH-010"
       ],
       "qa_types": [
         "contract"
@@ -678,7 +678,7 @@
   "targeted_rerun": {
     "required": true,
     "reason_codes": [
-      "no_prior_feature_qa"
+      "source_matrix_changed"
     ],
     "targeted_layers": [
       "contract",
@@ -698,16 +698,16 @@
       "AC-010"
     ],
     "targeted_tc_ids": [
-      "TC-AGG-PROJ-001",
-      "TC-AGG-PROJ-002",
-      "TC-AGG-PROJ-003",
-      "TC-AGG-PROJ-004",
-      "TC-AGG-PROJ-005",
-      "TC-AGG-PROJ-006",
-      "TC-AGG-PROJ-007",
-      "TC-AGG-PROJ-008",
-      "TC-AGG-PROJ-009",
-      "TC-AGG-PROJ-010"
+      "TC-IMPL-TRUTH-001",
+      "TC-IMPL-TRUTH-002",
+      "TC-IMPL-TRUTH-003",
+      "TC-IMPL-TRUTH-004",
+      "TC-IMPL-TRUTH-005",
+      "TC-IMPL-TRUTH-006",
+      "TC-IMPL-TRUTH-007",
+      "TC-IMPL-TRUTH-008",
+      "TC-IMPL-TRUTH-009",
+      "TC-IMPL-TRUTH-010"
     ],
     "targeted_scenario_ids": [],
     "targeted_scenario_families": []
@@ -719,13 +719,13 @@
     "targeted_scope_only": true,
     "verification_item_count": 10
   },
-  "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
+  "feature_matrix_path": ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
   "blocking_artifact_updates": [],
   "per_item_results": [
     {
       "ac_id": "AC-001",
-      "tc_id": "TC-AGG-PROJ-001",
-      "source_tc_id": "TC-AGG-PROJ-001",
+      "tc_id": "TC-IMPL-TRUTH-001",
+      "source_tc_id": "TC-IMPL-TRUTH-001",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-001",
@@ -738,17 +738,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/result.json"
       ]
     },
     {
       "ac_id": "AC-002",
-      "tc_id": "TC-AGG-PROJ-002",
-      "source_tc_id": "TC-AGG-PROJ-002",
+      "tc_id": "TC-IMPL-TRUTH-002",
+      "source_tc_id": "TC-IMPL-TRUTH-002",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-002",
@@ -761,17 +761,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/result.json"
       ]
     },
     {
       "ac_id": "AC-003",
-      "tc_id": "TC-AGG-PROJ-003",
-      "source_tc_id": "TC-AGG-PROJ-003",
+      "tc_id": "TC-IMPL-TRUTH-003",
+      "source_tc_id": "TC-IMPL-TRUTH-003",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-003",
@@ -784,17 +784,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/result.json"
       ]
     },
     {
       "ac_id": "AC-004",
-      "tc_id": "TC-AGG-PROJ-004",
-      "source_tc_id": "TC-AGG-PROJ-004",
+      "tc_id": "TC-IMPL-TRUTH-004",
+      "source_tc_id": "TC-IMPL-TRUTH-004",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-004",
@@ -807,17 +807,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/result.json"
       ]
     },
     {
       "ac_id": "AC-005",
-      "tc_id": "TC-AGG-PROJ-005",
-      "source_tc_id": "TC-AGG-PROJ-005",
+      "tc_id": "TC-IMPL-TRUTH-005",
+      "source_tc_id": "TC-IMPL-TRUTH-005",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-005",
@@ -830,17 +830,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/result.json"
       ]
     },
     {
       "ac_id": "AC-006",
-      "tc_id": "TC-AGG-PROJ-006",
-      "source_tc_id": "TC-AGG-PROJ-006",
+      "tc_id": "TC-IMPL-TRUTH-006",
+      "source_tc_id": "TC-IMPL-TRUTH-006",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-006",
@@ -853,17 +853,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/result.json"
       ]
     },
     {
       "ac_id": "AC-007",
-      "tc_id": "TC-AGG-PROJ-007",
-      "source_tc_id": "TC-AGG-PROJ-007",
+      "tc_id": "TC-IMPL-TRUTH-007",
+      "source_tc_id": "TC-IMPL-TRUTH-007",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-007",
@@ -876,17 +876,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/result.json"
       ]
     },
     {
       "ac_id": "AC-008",
-      "tc_id": "TC-AGG-PROJ-008",
-      "source_tc_id": "TC-AGG-PROJ-008",
+      "tc_id": "TC-IMPL-TRUTH-008",
+      "source_tc_id": "TC-IMPL-TRUTH-008",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-008",
@@ -899,17 +899,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/result.json"
       ]
     },
     {
       "ac_id": "AC-009",
-      "tc_id": "TC-AGG-PROJ-009",
-      "source_tc_id": "TC-AGG-PROJ-009",
+      "tc_id": "TC-IMPL-TRUTH-009",
+      "source_tc_id": "TC-IMPL-TRUTH-009",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-009",
@@ -922,17 +922,17 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/result.json"
       ]
     },
     {
       "ac_id": "AC-010",
-      "tc_id": "TC-AGG-PROJ-010",
-      "source_tc_id": "TC-AGG-PROJ-010",
+      "tc_id": "TC-IMPL-TRUTH-010",
+      "source_tc_id": "TC-IMPL-TRUTH-010",
       "scenario_id": "",
       "scenario_family": "",
       "test_item_id": "TEST-010",
@@ -945,11 +945,11 @@
       "browser_evidence_authenticity_status": "",
       "replay_ref": "",
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/result.json"
       ]
     }
   ],
@@ -977,204 +977,236 @@
   "requirement_completeness_gate": {
     "schema_version": "1.0",
     "enabled": true,
-    "status": "pass",
+    "status": "pass_with_downgrade",
     "blocked": false,
-    "reason_code": "requirement_completeness_projection_missing",
+    "reason_code": "requirement_completeness_downgraded",
     "target_stage": "qa",
-    "feature": "version-aggregate-projection-guard-contract",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
     "version": "v1.4.11",
     "stage_ready": true,
     "paths": {
-      "envelope": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.envelope.json",
-      "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.candidate-ledger.json",
-      "decision_log": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-decision-log.json",
-      "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.freeze-contract.json",
-      "completeness": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
-      "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-task.json",
-      "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.re-freeze-transaction.json"
+      "envelope": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.envelope.json",
+      "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.candidate-ledger.json",
+      "decision_log": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-decision-log.json",
+      "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.freeze-contract.json",
+      "completeness": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.completeness.json",
+      "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-task.json",
+      "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.re-freeze-transaction.json"
     },
-    "projection_status": "missing_nonblocking",
-    "recommended_command": "beacon doctor sync-materials --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\" --single-feature",
-    "next_action": "qa",
+    "unresolved_gap_count": 0,
+    "high_risk_unresolved_categories": [],
+    "downgrade_fallback_status": "none",
+    "coverage_families": [
+      "happy",
+      "negative",
+      "boundary",
+      "exception",
+      "recovery",
+      "compatibility",
+      "permission",
+      "stale-data-or-drift",
+      "downgrade-or-fallback"
+    ],
+    "decision_count": 15,
+    "candidate_count": 15,
+    "coverage_dimension_statuses": {
+      "actors": "covered",
+      "capability_differences": "covered",
+      "state_machine": "covered",
+      "happy_paths": "",
+      "negative_paths": "",
+      "boundary_conditions": "covered",
+      "exceptions": "covered",
+      "recovery_paths": "covered",
+      "risks": "covered",
+      "open_questions": ""
+    },
+    "missing_dimensions": [
+      "happy_paths",
+      "negative_paths",
+      "open_questions"
+    ],
     "stage_gates": {
       "artifact_read_model": {
         "status": "pass",
         "blocked": false,
-        "reason_code": "requirement_completeness_projection_missing",
-        "summary": "machine completeness projection is missing, but Markdown-first requirement truth is frozen and parseable",
+        "reason_code": "",
+        "summary": "requirement completeness artifacts are readable",
         "details": {
           "paths": {
-            "envelope": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.envelope.json",
-            "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.candidate-ledger.json",
-            "decision_log": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-decision-log.json",
-            "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.freeze-contract.json",
-            "completeness": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
-            "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.supplement-task.json",
-            "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.re-freeze-transaction.json"
-          },
-          "projection_status": "missing_nonblocking"
+            "envelope": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.envelope.json",
+            "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.candidate-ledger.json",
+            "decision_log": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-decision-log.json",
+            "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.freeze-contract.json",
+            "completeness": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.completeness.json",
+            "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-task.json",
+            "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.re-freeze-transaction.json"
+          }
         }
       },
       "decision_traceability": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "human requirement truth is carried by frozen Markdown surfaces",
-        "details": {}
+        "summary": "human supplement decisions remain auditable",
+        "details": {
+          "decision_count": 15,
+          "candidate_count": 15
+        }
       },
       "coverage_closure": {
+        "status": "blocked",
+        "blocked": true,
+        "reason_code": "requirement_coverage_closure_blocked",
+        "summary": "role/state/risk coverage closure is evaluated from machine materials",
+        "details": {
+          "coverage_family_count": 9,
+          "coverage_families": [
+            "happy",
+            "negative",
+            "boundary",
+            "exception",
+            "recovery",
+            "compatibility",
+            "permission",
+            "stale-data-or-drift",
+            "downgrade-or-fallback"
+          ],
+          "missing_dimensions": [
+            "happy_paths",
+            "negative_paths",
+            "open_questions"
+          ]
+        }
+      },
+      "unresolved_gap_governance": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "acceptance coverage is parseable from Markdown truth",
+        "summary": "unresolved gaps are classified before downstream delivery",
         "details": {
-          "prd_ac_ids": [
-            "AC-001",
-            "AC-002",
-            "AC-003",
-            "AC-004",
-            "AC-005",
-            "AC-006",
-            "AC-007",
-            "AC-008",
-            "AC-009",
-            "AC-010"
-          ],
-          "user_story_ac_ids": [
-            "AC-001",
-            "AC-002",
-            "AC-003",
-            "AC-004",
-            "AC-005",
-            "AC-006",
-            "AC-007",
-            "AC-008",
-            "AC-009",
-            "AC-010"
-          ],
-          "test_case_ac_ids": [
-            "AC-001",
-            "AC-002",
-            "AC-003",
-            "AC-004",
-            "AC-005",
-            "AC-006",
-            "AC-007",
-            "AC-008",
-            "AC-009",
-            "AC-010"
-          ]
+          "unresolved_gap_count": 0,
+          "high_risk_unresolved_categories": []
         }
       },
       "downgrade_control": {
         "status": "pass",
         "blocked": false,
         "reason_code": "",
-        "summary": "missing completeness projection does not activate a truth downgrade",
-        "details": {}
+        "summary": "host fallback and downgrade state remain explicit",
+        "details": {
+          "downgrade_fallback_status": "none"
+        }
       },
       "stage_admission": {
-        "status": "pass",
+        "status": "pass_with_downgrade",
         "blocked": false,
-        "reason_code": "",
-        "summary": "qa admission uses frozen Markdown truth; projection sync is advisory",
+        "reason_code": "requirement_completeness_downgraded",
+        "summary": "qa admission evaluated against completeness readiness",
         "details": {
           "target_stage": "qa",
           "stage_ready": true,
-          "stage_key": "markdown_first_truth"
+          "stage_key": "implement_ready"
         }
       }
     },
+    "recommended_command": "beacon qa run \"implement-mode-frozen-truth-requirement-contract\"",
+    "next_action": "human_review",
     "human_loop_handoff": {
-      "action": "qa",
-      "reason": "markdown_first_truth_pass",
-      "recommended_command": "",
-      "focus_areas": []
+      "action": "human_review",
+      "reason": "requirement_completeness_downgraded",
+      "recommended_command": "beacon qa run \"implement-mode-frozen-truth-requirement-contract\"",
+      "focus_areas": [
+        "补齐 role/state/risk coverage missing dimensions"
+      ]
     },
-    "markdown_first_truth": {
-      "status": "pass",
-      "projection": {
-        "feature": "version-aggregate-projection-guard-contract",
-        "version": "v1.4.11",
-        "source_paths": {
-          "prd": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
-          "user_story": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
-          "test_case": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
-          "research": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
-          "change": "docs/beacon/v1.4.11/change/version-aggregate-projection-guard-contract.md"
-        },
-        "prd_ac_ids": [
-          "AC-001",
-          "AC-002",
-          "AC-003",
-          "AC-004",
-          "AC-005",
-          "AC-006",
-          "AC-007",
-          "AC-008",
-          "AC-009",
-          "AC-010"
-        ],
-        "user_story_ac_ids": [
-          "AC-001",
-          "AC-002",
-          "AC-003",
-          "AC-004",
-          "AC-005",
-          "AC-006",
-          "AC-007",
-          "AC-008",
-          "AC-009",
-          "AC-010"
-        ],
-        "test_case_ac_ids": [
-          "AC-001",
-          "AC-002",
-          "AC-003",
-          "AC-004",
-          "AC-005",
-          "AC-006",
-          "AC-007",
-          "AC-008",
-          "AC-009",
-          "AC-010"
-        ],
-        "diagnostics": [],
-        "status": "pass"
+    "completeness": {
+      "schema_version": "1.0",
+      "feature": "implement-mode-frozen-truth-requirement-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+      "version": "v1.4.11",
+      "revision_id": "R1",
+      "completeness_verdict": "pass_with_downgrade",
+      "unresolved_gap_count": 0,
+      "high_risk_unresolved_categories": [],
+      "downgrade_fallback_status": "none",
+      "role_state_risk_coverage": {
+        "actors": "covered",
+        "capability_differences": "covered",
+        "state_machine": "covered",
+        "boundary_conditions": "covered",
+        "exceptions": "covered",
+        "recovery_paths": "covered",
+        "risks": "covered",
+        "coverage_families": [
+          "happy",
+          "negative",
+          "boundary",
+          "exception",
+          "recovery",
+          "compatibility",
+          "permission",
+          "stale-data-or-drift",
+          "downgrade-or-fallback"
+        ]
       },
-      "freeze_state": {
-        "schema_version": "1.0",
-        "feature": "version-aggregate-projection-guard-contract",
-        "feature_slug": "version-aggregate-projection-guard-contract",
-        "version": "v1.4.11",
-        "revision_id": "R2",
-        "source_revision_id": "R1",
-        "status": "frozen",
-        "baseline_hash": "sha256:b1ed7e18868c789326e2255806ee6a63d5bf92762856ee0e70473baab253bc46",
-        "source_paths": {
-          "prd": "docs/beacon/v1.4.11/prd/version-aggregate-projection-guard-contract.md",
-          "user_story": "docs/beacon/v1.4.11/user-story/version-aggregate-projection-guard-contract.md",
-          "test_case": "docs/beacon/v1.4.11/qa/test-cases/version-aggregate-projection-guard-contract.md",
-          "research": "docs/beacon/v1.4.11/research/version-aggregate-projection-guard-contract.md",
-          "change": "docs/beacon/v1.4.11/change/version-aggregate-projection-guard-contract.md"
-        },
-        "diagnostics": [],
-        "transaction_ref": "docs/beacon/v1.4.11/.machine/change/version-aggregate-projection-guard-contract.refreeze-transaction.json",
-        "generated_at": "2026-05-27T03:18:28.255099+00:00"
-      }
+      "readiness": {
+        "freeze_ready": true,
+        "prototype_ready": true,
+        "implement_ready": true,
+        "release_ready": false
+      },
+      "generated_at": "2026-05-29T12:52:35.640061+00:00"
     },
-    "completeness": {},
-    "freeze_contract": {}
+    "freeze_contract": {
+      "schema_version": "1.0",
+      "version": "v1.4.11",
+      "feature": "implement-mode-frozen-truth-requirement-contract",
+      "revision_id": "R1",
+      "status": "freeze-ready",
+      "human_supplement_contract": {
+        "allowed_decisions": [
+          "accepted",
+          "rejected",
+          "deferred"
+        ],
+        "required_fields": [
+          "gap_id",
+          "source_truth_ref",
+          "candidate_kind",
+          "rationale",
+          "human_decision",
+          "decision_reason",
+          "writeback_target",
+          "revision_id"
+        ],
+        "writeback_flow": [
+          "decision_log",
+          "writeback_projection",
+          "truth_refreeze"
+        ]
+      },
+      "blocking_rules": [
+        "high_severity_unresolved_gap",
+        "critical_coverage_family_missing",
+        "host_downgrade_without_explicit_fallback_contract",
+        "truth_writeback_without_machine_decision_trail"
+      ],
+      "freeze_verdict": "pass",
+      "implementation_verdict": "pending",
+      "qa_execution_verdict": "pending",
+      "updated_at": "2026-05-29T12:52:35.640260+00:00"
+    }
   },
-  "requirement_completeness_verdict": "pass",
-  "requirement_completeness_ref": "docs/beacon/v1.4.11/.machine/requirement/version-aggregate-projection-guard-contract.completeness.json",
-  "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
+  "requirement_completeness_verdict": "pass_with_downgrade",
+  "requirement_completeness_ref": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.completeness.json",
+  "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
   "exhaustiveness": {
     "schema_version": "1.0",
-    "feature": "version-aggregate-projection-guard-contract",
-    "feature_slug": "version-aggregate-projection-guard-contract",
-    "run_id": "run-20260527T111829719823",
-    "generated_at": "2026-05-27T03:18:38.840433+00:00",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "run_id": "run-20260529T212312426143",
+    "generated_at": "2026-05-29T13:23:19.774645+00:00",
     "execution_mode": "feature-aware",
     "scenario_count": 10,
     "browser_scenario_count": 0,
@@ -1196,11 +1228,11 @@
   },
   "scenario_results_v2": [
     {
-      "scenario_id": "TC-AGG-PROJ-001",
-      "tc_id": "TC-AGG-PROJ-001",
-      "source_tc_id": "TC-AGG-PROJ-001",
+      "scenario_id": "TC-IMPL-TRUTH-001",
+      "tc_id": "TC-IMPL-TRUTH-001",
+      "source_tc_id": "TC-IMPL-TRUTH-001",
       "ac_id": "AC-001",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1224,19 +1256,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-001/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-001/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-002",
-      "tc_id": "TC-AGG-PROJ-002",
-      "source_tc_id": "TC-AGG-PROJ-002",
+      "scenario_id": "TC-IMPL-TRUTH-002",
+      "tc_id": "TC-IMPL-TRUTH-002",
+      "source_tc_id": "TC-IMPL-TRUTH-002",
       "ac_id": "AC-002",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1260,19 +1292,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-002/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-002/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-003",
-      "tc_id": "TC-AGG-PROJ-003",
-      "source_tc_id": "TC-AGG-PROJ-003",
+      "scenario_id": "TC-IMPL-TRUTH-003",
+      "tc_id": "TC-IMPL-TRUTH-003",
+      "source_tc_id": "TC-IMPL-TRUTH-003",
       "ac_id": "AC-003",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1296,19 +1328,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-003/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-003/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-004",
-      "tc_id": "TC-AGG-PROJ-004",
-      "source_tc_id": "TC-AGG-PROJ-004",
+      "scenario_id": "TC-IMPL-TRUTH-004",
+      "tc_id": "TC-IMPL-TRUTH-004",
+      "source_tc_id": "TC-IMPL-TRUTH-004",
       "ac_id": "AC-004",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1332,19 +1364,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-004/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-004/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-005",
-      "tc_id": "TC-AGG-PROJ-005",
-      "source_tc_id": "TC-AGG-PROJ-005",
+      "scenario_id": "TC-IMPL-TRUTH-005",
+      "tc_id": "TC-IMPL-TRUTH-005",
+      "source_tc_id": "TC-IMPL-TRUTH-005",
       "ac_id": "AC-005",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1368,19 +1400,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-005/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-005/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-006",
-      "tc_id": "TC-AGG-PROJ-006",
-      "source_tc_id": "TC-AGG-PROJ-006",
+      "scenario_id": "TC-IMPL-TRUTH-006",
+      "tc_id": "TC-IMPL-TRUTH-006",
+      "source_tc_id": "TC-IMPL-TRUTH-006",
       "ac_id": "AC-006",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1404,19 +1436,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-006/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-006/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-007",
-      "tc_id": "TC-AGG-PROJ-007",
-      "source_tc_id": "TC-AGG-PROJ-007",
+      "scenario_id": "TC-IMPL-TRUTH-007",
+      "tc_id": "TC-IMPL-TRUTH-007",
+      "source_tc_id": "TC-IMPL-TRUTH-007",
       "ac_id": "AC-007",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1440,19 +1472,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-007/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-007/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-008",
-      "tc_id": "TC-AGG-PROJ-008",
-      "source_tc_id": "TC-AGG-PROJ-008",
+      "scenario_id": "TC-IMPL-TRUTH-008",
+      "tc_id": "TC-IMPL-TRUTH-008",
+      "source_tc_id": "TC-IMPL-TRUTH-008",
       "ac_id": "AC-008",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1476,19 +1508,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-008/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-008/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-009",
-      "tc_id": "TC-AGG-PROJ-009",
-      "source_tc_id": "TC-AGG-PROJ-009",
+      "scenario_id": "TC-IMPL-TRUTH-009",
+      "tc_id": "TC-IMPL-TRUTH-009",
+      "source_tc_id": "TC-IMPL-TRUTH-009",
       "ac_id": "AC-009",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1512,19 +1544,19 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-009/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-009/result.json"
       ]
     },
     {
-      "scenario_id": "TC-AGG-PROJ-010",
-      "tc_id": "TC-AGG-PROJ-010",
-      "source_tc_id": "TC-AGG-PROJ-010",
+      "scenario_id": "TC-IMPL-TRUTH-010",
+      "tc_id": "TC-IMPL-TRUTH-010",
+      "source_tc_id": "TC-IMPL-TRUTH-010",
       "ac_id": "AC-010",
-      "feature_slug": "version-aggregate-projection-guard-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
       "scenario_family": "",
       "status": "passed",
       "closure_outcome": "accepted",
@@ -1548,21 +1580,21 @@
         "flake_penalty": 0.0
       },
       "evidence_ref": [
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/command.txt",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stdout.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/stderr.log",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/junit.xml",
-        ".beacon/evidence/auto-test/run-20260527T111829719823/qa9-tc/TC-AGG-PROJ-010/result.json"
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9-tc/TC-IMPL-TRUTH-010/result.json"
       ]
     }
   ],
-  "ac_closure_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
-  "feature_scorecard_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
+  "ac_closure_path": ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+  "feature_scorecard_path": ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
   "feature_scorecard": {
     "schema_version": "1.0",
-    "feature": "version-aggregate-projection-guard-contract",
-    "feature_slug": "version-aggregate-projection-guard-contract",
-    "run_id": "run-20260527T111829719823",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "run_id": "run-20260529T212312426143",
     "ac_total": 10,
     "ac_accepted": 10,
     "scenario_total": 10,
@@ -1807,18 +1839,18 @@
     "continue_decision": "ready_for_release",
     "stop_reasons": [],
     "test_case_backfill_required": false,
-    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\"",
+    "resume_command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"implement-mode-frozen-truth-requirement-contract\"",
     "repair_handoff": {
       "action": "qa-repair",
       "reason": "qa_round_incomplete",
-      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"version-aggregate-projection-guard-contract\""
+      "command": "beacon help --project-root /Users/apple/Developer/Personal/products/beacon --version v1.4.11 --feature \"implement-mode-frozen-truth-requirement-contract\""
     },
     "release_ready": true
   },
   "release_ready": true,
   "delivery_contract": {
     "schema_version": "1.0",
-    "feature": "version-aggregate-projection-guard-contract",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
     "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1839,14 +1871,14 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.11",
-      "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
-      "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -1860,7 +1892,7 @@
   },
   "host_native_delivery": {
     "schema_version": "1.0",
-    "feature": "version-aggregate-projection-guard-contract",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
     "version": "v1.4.11",
     "requested_mode": "feature-aware",
     "effective_mode": "feature-aware",
@@ -1881,14 +1913,14 @@
     "subagent_prechecks": {},
     "requirement_binding": {
       "source_of_truth_root": "docs/beacon/v1.4.11",
-      "feature_matrix_path": ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
-      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json"
+      "feature_matrix_path": ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+      "canonical_matrix_path": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json"
     },
     "traceability_refs": [
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/matrix.qa9.json",
-      "docs/beacon/v1.4.11/.machine/qa/version-aggregate-projection-guard-contract.ac-test-matrix.json",
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/ac-closure.json",
-      ".beacon/qa/features/version-aggregate-projection-guard-contract/scorecard.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+      "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+      ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
       ".beacon/release-gate-report.json"
     ],
     "runner": "",
@@ -1900,5 +1932,5 @@
     "release_ready": true,
     "risk_flags": []
   },
-  "current_spec_fingerprint_hash": "e357ae2fd9d347233cdb25b7a38701b4c3d85fe0427a46aa87bd1c94358fbdb8"
+  "current_spec_fingerprint_hash": "f3330b71d2b4755d367fb10ee36088e11ccddad83dca60f7d122fcf397b92440"
 }

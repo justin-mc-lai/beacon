@@ -2728,6 +2728,7 @@ def run_implement_stage(  # noqa: PLR0913
     default_prompt = build_default_task_prompt(
         feature=feature,
         version=resolved_version,
+        project_root=project_root,
         source_of_truth_root=artifacts["source_of_truth_root"],
         feature_slug=feature_slug,
         result_file=str(result_path),

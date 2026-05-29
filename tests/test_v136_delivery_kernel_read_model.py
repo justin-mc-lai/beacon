@@ -180,6 +180,47 @@ def test_v136_delivery_read_model_should_merge_implement_and_qa_state(tmp_path: 
     assert payload["traceability"]["requirement_binding"]["prd"].endswith(f"{SLUG}.md")
 
 
+def test_v136_delivery_read_model_should_prefer_canonical_implementation_marker(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    write_json(
+        tmp_path / ".beacon" / "implement" / "run-blocked-later" / "state.json",
+        {
+            "schema_version": "1.0",
+            "run_id": "run-blocked-later",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "blocked",
+            "reason_code": "runner_not_configured",
+        },
+    )
+    write_json(
+        tmp_path / ".beacon" / "state" / f"implementation-{SLUG}.json",
+        {
+            "schema_version": "1.0",
+            "run_id": "run-imported-pass",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "status": "completed",
+            "runner": "import-evidence",
+            "prompt_boundary": {
+                "required": True,
+                "status": "pass",
+                "blocked": False,
+                "classification": "in_scope_implementation",
+                "surface": "import-evidence",
+            },
+        },
+    )
+
+    payload = load_delivery_read_model(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["implement"]["run_id"] == "run-imported-pass"
+    assert payload["implement"]["status"] == "completed"
+    assert "runner_not_configured" not in payload["risk_flags"]
+
+
 def test_v136_release_scorecard_should_include_host_native_delivery_aggregate(tmp_path: Path) -> None:
     _seed_docs(tmp_path)
     _seed_execution_state(tmp_path)

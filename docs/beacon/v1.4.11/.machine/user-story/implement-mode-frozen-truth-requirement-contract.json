@@ -1,0 +1,736 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-05-29T13:23:20.316093+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": null,
+      "superseded_by": "R2",
+      "created_at": "2026-05-29T12:49:30.494038+00:00",
+      "frozen_at": null,
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+      "source_revision_id": "R1",
+      "reason": "source-anchored implement frozen truth enforcement: inject PRODUCT/DESIGN and require AC coverage matrix",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4cb3ed79d53c7ab59761fde155d1b888fc1666b11ecfa27138dabf2b3efa17f3",
+      "superseded_by": null,
+      "created_at": "2026-05-29T12:49:30.494334+00:00",
+      "frozen_at": "2026-05-29T12:54:43.025689+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "implement-mode-frozen-truth-requirement-contract",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "general",
+          "text": "Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": ""
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Acceptance criteria TBD",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": ""
+        }
+      ]
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "implement-mode-frozen-truth-requirement-contract",
+      "priority": "high",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "design truth injection",
+          "text": "The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "product truth injection",
+          "text": "The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "optional project truth",
+          "text": "Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "truth separation",
+          "text": "The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "AC matrix required",
+          "text": "The prompt requires an AC coverage matrix before QA handoff.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "AC statuses",
+          "text": "The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "AC evidence",
+          "text": "Each AC coverage row includes evidence or a blocking note.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "mode boundary",
+          "text": "Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "regression coverage",
+          "text": "Tests cover project truth injection and AC coverage matrix wording.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "source-anchored scope",
+          "text": "This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-05-29T13:07:24.014902+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — The prompt requires an AC coverage matrix before QA handoff.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Each AC coverage row includes evidence or a blocking note.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Tests cover project truth injection and AC coverage matrix wording.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260529T130204Z-b43f",
+          "verified_by_run_id": "run-20260529T212312426143",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "implement-mode-frozen-truth-requirement-contract",
+        "version": "v1.4.11",
+        "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+        "present": true,
+        "section_count": 2,
+        "sections": {
+          "architecture": [
+            "`build_default_task_prompt` is the correct low-risk injection point because all modes share the default task prompt.",
+            "`PRODUCT.md` and `DESIGN.md` are project-level truth inputs when present.",
+            "PRD, user-story, and test-case files remain frozen requirement truth.",
+            "`.machine` outputs remain projections/evidence, not requirement truth."
+          ],
+          "decision_priority": [
+            "Global Beacon boundaries.",
+            "Frozen PRD/user-story/test-case requirement truth.",
+            "Existing project-level `PRODUCT.md` and `DESIGN.md`.",
+            "Version design contracts and architecture projections.",
+            "Local implementation convenience."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Global Beacon boundaries.",
+              "Frozen PRD/user-story/test-case requirement truth.",
+              "Existing project-level `PRODUCT.md` and `DESIGN.md`.",
+              "Version design contracts and architecture projections.",
+              "Local implementation convenience."
+            ],
+            "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md"
+          }
+        ]
+      },
+      "feature": "implement-mode-frozen-truth-requirement-contract",
+      "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+      "version": "v1.4.11",
+      "compiler": {
+        "requested_mode": "rule",
+        "effective_mode": "rule",
+        "generator_mode": "rule",
+        "fallback_reason": "",
+        "capability_snapshot": {
+          "schema_version": "1.0",
+          "command_name": "user-story",
+          "host_runtime": "codex",
+          "host_runtime_supported": true,
+          "host_bridge_declared": true,
+          "host_bridge_command_available": true,
+          "host_bridge_command_source": "env_cmd",
+          "host_bridge_command_env": "BEACON_HOST_USER_STORY_BRIDGE_CMD",
+          "host_response_available": false,
+          "host_response_source": "none",
+          "host_response_path": "",
+          "host_transport": "command-bridge",
+          "host_semantic_ready": true,
+          "provider_available": false,
+          "provider_key_present": false,
+          "llm_disabled": false,
+          "disable_env": "BEACON_USER_STORY_DISABLE_LLM"
+        },
+        "model": "beacon-user-story-compiler"
+      },
+      "supplement_contract": {
+        "allowed_decisions": [
+          "accepted",
+          "rejected",
+          "deferred"
+        ],
+        "required_machine_trail": true,
+        "writeback_required": true
+      },
+      "story_candidates": [
+        {
+          "candidate_id": "SC-001",
+          "candidate_kind": "story",
+          "family": "primary_actor_goal",
+          "status": "candidate_missing",
+          "title": "primary actor goal story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit primary actor goal coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-002",
+          "candidate_kind": "story",
+          "family": "secondary_or_opposing_role",
+          "status": "already_frozen",
+          "title": "secondary or opposing role story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit secondary or opposing role coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-003",
+          "candidate_kind": "story",
+          "family": "state_transition",
+          "status": "candidate_missing",
+          "title": "state transition story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit state transition coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-004",
+          "candidate_kind": "story",
+          "family": "exception_recovery",
+          "status": "candidate_missing",
+          "title": "exception recovery story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit exception recovery coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-005",
+          "candidate_kind": "story",
+          "family": "permission_or_constraint",
+          "status": "already_frozen",
+          "title": "permission or constraint story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit permission or constraint coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        },
+        {
+          "candidate_id": "SC-006",
+          "candidate_kind": "story",
+          "family": "governance_extension",
+          "status": "candidate_missing",
+          "title": "governance extension story",
+          "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+          "rationale": "deepening requires explicit governance extension coverage",
+          "writeback_target": "user-story.acceptance-criteria"
+        }
+      ],
+      "requirement_deepening_refs": {
+        "envelope": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.envelope.json",
+        "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.candidate-ledger.json",
+        "decision_log": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-decision-log.json",
+        "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.freeze-contract.json",
+        "completeness": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.completeness.json",
+        "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-task.json",
+        "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.re-freeze-transaction.json"
+      },
+      "requirement_completeness_verdict": "pass_with_downgrade",
+      "supplement_focus_areas": [
+        "复核 requirement completeness 的补料方向"
+      ],
+      "supplement_recommended_command": "beacon user-story create \"implement-mode-frozen-truth-requirement-contract\" --project <project-root> --version v1.4.11 --json",
+      "supplement_next_action": "human_review",
+      "supplement_task": {
+        "feature": "implement-mode-frozen-truth-requirement-contract",
+        "version": "v1.4.11",
+        "target_artifact": "user-story",
+        "candidate_kind": "story",
+        "candidate_families": [
+          "primary_actor_goal",
+          "secondary_or_opposing_role",
+          "state_transition",
+          "exception_recovery",
+          "permission_or_constraint",
+          "governance_extension"
+        ],
+        "candidate_payload": {
+          "focus_areas": [
+            "复核 requirement completeness 的补料方向"
+          ],
+          "open_questions": [
+            "primary_actor_goal 是否需要补成 machine-readable supplement candidate？",
+            "secondary_or_opposing_role 是否需要补成 machine-readable supplement candidate？",
+            "state_transition 是否需要补成 machine-readable supplement candidate？",
+            "exception_recovery 是否需要补成 machine-readable supplement candidate？"
+          ],
+          "missing_dimensions": [],
+          "high_risk_unresolved_categories": []
+        },
+        "source_truth_ref": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "writeback_target": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "pass_with_downgrade",
+        "confidence": "medium",
+        "human_decision": "pending",
+        "audit_trail_required": true,
+        "recommended_route": "beacon-user-story",
+        "recommended_command": "beacon user-story create \"implement-mode-frozen-truth-requirement-contract\" --project <project-root> --version v1.4.11 --json",
+        "recommended_mode": "requirement-convergence"
+      },
+      "re_freeze_transaction": {
+        "schema_version": "1.0",
+        "feature": "implement-mode-frozen-truth-requirement-contract",
+        "version": "v1.4.11",
+        "revision_id": "R1",
+        "accepted_candidates": [
+          "GAP-001",
+          "GAP-002",
+          "GAP-003",
+          "GAP-004",
+          "GAP-005",
+          "GAP-006",
+          "GAP-007",
+          "GAP-008",
+          "GAP-009",
+          "GAP-010",
+          "GAP-011",
+          "GAP-012",
+          "GAP-013",
+          "GAP-014",
+          "GAP-015"
+        ],
+        "rejected_candidates": [],
+        "deferred_candidates": [],
+        "writeback_targets": [
+          "qa/test-cases.executable-matrix",
+          "user-story.acceptance-criteria"
+        ],
+        "machine_mirror_paths": {
+          "dir": "docs/beacon/v1.4.11/.machine/requirement",
+          "envelope": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.envelope.json",
+          "candidate_ledger": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.candidate-ledger.json",
+          "decision_log": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-decision-log.json",
+          "freeze_contract": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.freeze-contract.json",
+          "completeness": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.completeness.json",
+          "supplement_task": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.supplement-task.json",
+          "re_freeze_transaction": "docs/beacon/v1.4.11/.machine/requirement/implement-mode-frozen-truth-requirement-contract.re-freeze-transaction.json"
+        },
+        "refreeze_required": true,
+        "revalidate_required": true,
+        "decision_count": 15,
+        "generated_at": "2026-05-29T12:52:35.640321+00:00"
+      },
+      "last_changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-05-29T13:23:20.227685+00:00",
+      "accepted_by": "qa"
+    }
+  ],
+  "acceptance_criteria": {
+    "functionality": [
+      "The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+      "The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+      "Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+      "The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+      "The prompt requires an AC coverage matrix before QA handoff.",
+      "The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
+      "Each AC coverage row includes evidence or a blocking note.",
+      "Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
+      "Tests cover project truth injection and AC coverage matrix wording.",
+      "This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
+      "Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "Prompt includes `PRODUCT.md` as project-level product truth when the file exists.",
+      "Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth.",
+      "Prompt requires AC coverage matrix before QA handoff.",
+      "Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "Prompt requires evidence or blocking note per AC row.",
+      "No new public implement mode skill is introduced for simple, team, or ralph.",
+      "Regression suite covers project truth injection and AC coverage matrix wording.",
+      "Tests and implementation stay anchored to default prompt injection, not team-worker or ralph hash mechanisms."
+    ],
+    "data": [],
+    "ux": [],
+    "performance": [],
+    "security": [],
+    "compatibility": [],
+    "error_handling": []
+  },
+  "semantic_payload": {},
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "user-story",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_USER_STORY_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_USER_STORY_DISABLE_LLM"
+    }
+  },
+  "output_path": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

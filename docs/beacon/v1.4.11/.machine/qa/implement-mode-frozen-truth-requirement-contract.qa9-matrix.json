@@ -1,0 +1,553 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "markdown",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "disabled",
+    "model": "none",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-05-29T20:52:39.426595",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "llm_auto_disabled",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-05-29T20:52:39.425861",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --deterministic-command \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --deterministic-command \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-IMPL-TRUTH-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-001 :: Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-001.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\"`",
+      "scenario": "Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-002 :: Prompt includes `PRODUCT.md` as project-level product truth when the file exists",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"product_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt includes `PRODUCT.md` as project-level product truth when the file exists.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-002.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"product_truth_injected_when_present\"`",
+      "scenario": "Prompt includes `PRODUCT.md` as project-level product truth when the file exists.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-003 :: Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"missing_project_truth_does_not_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-003.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"missing_project_truth_does_not_block\"`",
+      "scenario": "Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-004 :: Prompt separates project-level product/design truth from frozen PRD/user-story/t",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"project_truth_separated_from_frozen_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-004.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"project_truth_separated_from_frozen_truth\"`",
+      "scenario": "Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-005 :: Prompt requires AC coverage matrix before QA handoff.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_matrix_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt requires AC coverage matrix before QA handoff.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-005.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_matrix_required\"`",
+      "scenario": "Prompt requires AC coverage matrix before QA handoff.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-006 :: Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_statuses_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-006.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_statuses_required\"`",
+      "scenario": "Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "prompt",
+      "qa_type": "prompt",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-007 :: Prompt requires evidence or blocking note per AC row.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_evidence_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Prompt requires evidence or blocking note per AC row.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-007.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_evidence_required\"`",
+      "scenario": "Prompt requires evidence or blocking note per AC row.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "boundary",
+      "qa_type": "boundary",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-008 :: No new public implement mode skill is introduced for simple, team, or ralph.",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"no_new_public_implement_mode_skill\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No new public implement mode skill is introduced for simple, team, or ralph.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-008.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"no_new_public_implement_mode_skill\"`",
+      "scenario": "No new public implement mode skill is introduced for simple, team, or ralph.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-009",
+      "ac_id": "AC-009",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-009 :: Regression suite covers project truth injection and AC coverage matrix wording.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Regression suite covers project truth injection and AC coverage matrix wording.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-009.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py`",
+      "scenario": "Regression suite covers project truth injection and AC coverage matrix wording.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-IMPL-TRUTH-010",
+      "ac_id": "AC-010",
+      "story_id": "",
+      "layer": "scope",
+      "qa_type": "scope",
+      "title": "implement-mode-frozen-truth-requirement-contract AC-010 :: Tests and implementation stay anchored to default prompt injection, not team-wor",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"scope_stays_default_prompt_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Tests and implementation stay anchored to default prompt injection, not team-worker or ralph hash mechanisms.",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-010.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+      "execution_method": "`python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"scope_stays_default_prompt_only\"`",
+      "scenario": "Tests and implementation stay anchored to default prompt injection, not team-worker or ralph hash mechanisms.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+    "row_count": 10,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-05-29T20:52:39.426638",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

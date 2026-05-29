@@ -1,0 +1,389 @@
+{
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "ac_to_tc_mapping": {
+    "AC-001": [
+      "TC-IMPL-TRUTH-001"
+    ],
+    "AC-002": [
+      "TC-IMPL-TRUTH-002"
+    ],
+    "AC-003": [
+      "TC-IMPL-TRUTH-003"
+    ],
+    "AC-004": [
+      "TC-IMPL-TRUTH-004"
+    ],
+    "AC-005": [
+      "TC-IMPL-TRUTH-005"
+    ],
+    "AC-006": [
+      "TC-IMPL-TRUTH-006"
+    ],
+    "AC-007": [
+      "TC-IMPL-TRUTH-007"
+    ],
+    "AC-008": [
+      "TC-IMPL-TRUTH-008"
+    ],
+    "AC-009": [
+      "TC-IMPL-TRUTH-009"
+    ],
+    "AC-010": [
+      "TC-IMPL-TRUTH-010"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-IMPL-TRUTH-001",
+      "tc_id": "TC-IMPL-TRUTH-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-001-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-IMPL-TRUTH-002",
+      "tc_id": "TC-IMPL-TRUTH-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Prompt includes `PRODUCT.md` as project-level product truth when the file exists.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"product_truth_injected_when_present\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-002-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-IMPL-TRUTH-003",
+      "tc_id": "TC-IMPL-TRUTH-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"missing_project_truth_does_not_block\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-003-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-IMPL-TRUTH-004",
+      "tc_id": "TC-IMPL-TRUTH-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"project_truth_separated_from_frozen_truth\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-004-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-IMPL-TRUTH-005",
+      "tc_id": "TC-IMPL-TRUTH-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Prompt requires AC coverage matrix before QA handoff.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_matrix_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-005-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-IMPL-TRUTH-006",
+      "tc_id": "TC-IMPL-TRUTH-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_statuses_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-006-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-IMPL-TRUTH-007",
+      "tc_id": "TC-IMPL-TRUTH-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "prompt",
+      "layer": "prompt",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Prompt requires evidence or blocking note per AC row.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "prompt",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_evidence_required\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-007-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-IMPL-TRUTH-008",
+      "tc_id": "TC-IMPL-TRUTH-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "boundary",
+      "layer": "boundary",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: No new public implement mode skill is introduced for simple, team, or ralph.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "boundary",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"no_new_public_implement_mode_skill\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-008-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-IMPL-TRUTH-009",
+      "tc_id": "TC-IMPL-TRUTH-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Regression suite covers project truth injection and AC coverage matrix wording.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-009-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-IMPL-TRUTH-010",
+      "tc_id": "TC-IMPL-TRUTH-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "scope",
+      "layer": "scope",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Tests and implementation stay anchored to default prompt injection, not team-worker or ralph has",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "scope",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"scope_stays_default_prompt_only\" --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-010-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

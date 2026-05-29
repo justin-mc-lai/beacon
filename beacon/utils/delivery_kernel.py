@@ -188,10 +188,18 @@ def build_surface_explanation(
 
 
 def _load_latest_implement_state(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    slug = feature_slug(feature)
+    marker_path = project_root / ".beacon" / "state" / f"implementation-{slug}.json"
+    marker_payload = read_json(marker_path, {})
+    if isinstance(marker_payload, dict) and marker_payload:
+        marker_version = _clean_str(marker_payload.get("version"))
+        marker_slug = _clean_str(marker_payload.get("feature_slug")) or feature_slug(_clean_str(marker_payload.get("feature")))
+        if marker_slug == slug and (not marker_version or marker_version == version):
+            return marker_payload
+
     root = project_root / ".beacon" / "implement"
     if not root.exists():
         return {}
-    slug = feature_slug(feature)
     candidates: list[tuple[str, dict[str, Any]]] = []
     for state_path in sorted(root.glob("*/state.json"), reverse=True):
         payload = read_json(state_path, {})

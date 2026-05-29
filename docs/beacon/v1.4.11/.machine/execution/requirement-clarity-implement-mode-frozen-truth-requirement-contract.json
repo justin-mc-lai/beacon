@@ -1,0 +1,247 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "runtime_version": "v1.4.11",
+  "runtime_capability_line": "v1.3.3",
+  "required": true,
+  "reason_code": "",
+  "blocked": false,
+  "status": "pass",
+  "findings": [],
+  "report_json_path": "docs/beacon/v1.4.11/.machine/execution/requirement-clarity-implement-mode-frozen-truth-requirement-contract.json",
+  "report_markdown_path": "docs/beacon/v1.4.11/execution/requirement-clarity-implement-mode-frozen-truth-requirement-contract.md",
+  "state_path": ".beacon/state/requirement-clarity-implement-mode-frozen-truth-requirement-contract.json",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.11",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "mode_selection",
+      "simple",
+      "team",
+      "ralph",
+      "truth_injection",
+      "requirement_truth_only",
+      "project_truth_present",
+      "project_truth_absent",
+      "ac_verification",
+      "not_reported",
+      "pass",
+      "partial",
+      "blocked",
+      "design_alignment",
+      "not_applicable",
+      "aligned",
+      "relation"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "| Axis | States | Meaning |",
+        "| --- | --- | --- |",
+        "| `mode_selection` | `simple`, `team`, `ralph` | Implement mode selection remains existing behavior. |",
+        "| `truth_injection` | `requirement_truth_only`, `project_truth_present`, `project_truth_absent` | Whether project truth files are injected in addition to frozen requirement truth. |",
+        "| `ac_verification` | `not_reported`, `pass`, `partial`, `blocked` | AC-level implementation self-verification status. |",
+        "| `design_alignment` | `not_applicable`, `aligned`, `partial`, `blocked` | Implementation relationship to project design truth. |",
+        "- `mode_selection`",
+        "- `truth_injection`"
+      ]
+    },
+    "generated_at": "2026-05-29T13:21:46.706730+00:00",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "prd_ref": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+  },
+  "human_closure_contract": {
+    "required": true,
+    "research_path": "docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "research_exists": true,
+    "source_architecture_path": "docs/beacon/v1.4.11/source-architecture/implement-mode-frozen-truth-requirement-contract.md",
+    "source_architecture_exists": true,
+    "required_sections": [
+      "architecture",
+      "business_flow",
+      "state_machine",
+      "decision_priority"
+    ],
+    "missing_sections": [],
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ]
+  },
+  "requirement_closure_contract": {
+    "required": true,
+    "chain_order": [
+      "research",
+      "prd",
+      "user_story",
+      "test_case",
+      "requirement_clarity",
+      "freeze"
+    ],
+    "human_closure_required": true,
+    "paths": {
+      "research": "docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+      "prd": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+      "user_story": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+      "test_case": "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md"
+    },
+    "exists": {
+      "research": true,
+      "prd": true,
+      "user_story": true,
+      "test_case": true
+    },
+    "required_research_sections": [
+      "architecture",
+      "business_flow",
+      "state_machine",
+      "decision_priority"
+    ],
+    "missing_research_sections": [],
+    "ac_projection": {
+      "prd_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010"
+      ],
+      "user_story_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010"
+      ],
+      "test_case_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010"
+      ],
+      "upstream_ac_ids": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010"
+      ],
+      "missing_test_case_ac_ids": []
+    }
+  },
+  "version_projection_truth_contract": {
+    "required": true,
+    "supported": true,
+    "projection_types": [
+      "business_flow",
+      "state_machine"
+    ],
+    "research_path": "docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "research_exists": true,
+    "required_fields": [
+      "prd_refs",
+      "user_story_refs",
+      "test_case_refs",
+      "coverage_notes",
+      "out_of_scope_notes"
+    ],
+    "field_presence": {
+      "prd_refs": true,
+      "user_story_refs": true,
+      "test_case_refs": true,
+      "coverage_notes": true,
+      "out_of_scope_notes": true
+    },
+    "missing_fields": [],
+    "required_refs": {
+      "prd_refs": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+      "user_story_refs": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+      "test_case_refs": "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md"
+    },
+    "missing_ref_targets": [],
+    "ready": true
+  },
+  "support_write_topology_contract": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "diagnostics": []
+  },
+  "required_artifacts": [],
+  "scanned_files": [
+    "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+    "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+    "docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md"
+  ]
+}

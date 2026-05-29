@@ -1,0 +1,142 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "generated_at": "2026-05-29T12:52:35.639310+00:00",
+  "sources": {
+    "prd": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+    "user_story": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+    "qa": "qa:test-cases:docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+    "research": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md"
+  },
+  "dimensions": {
+    "actors": [
+      {
+        "name": "operator",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      },
+      {
+        "name": "user",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "derived from PRD and current requirement package"
+      }
+    ],
+    "capability_differences": [
+      {
+        "name": "role-specific capability differences",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "v1.3.12 requires role and capability variance discovery"
+      }
+    ],
+    "state_machine": [
+      {
+        "name": "draft -> supplemented -> refrozen -> delivery-consumed",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "requirement deepening adds explicit human-loop refreeze semantics"
+      }
+    ],
+    "happy_paths": [
+      {
+        "name": "PRD deepened into story/test-case and consumed by implement/qa",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "main requirement closure path"
+      }
+    ],
+    "negative_paths": [
+      {
+        "name": "host deepening unavailable and rule fallback used",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "downgrade path must stay auditable"
+      }
+    ],
+    "boundary_conditions": [
+      {
+        "name": "no new public lifecycle stage or command",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "global boundary constraint"
+      }
+    ],
+    "exceptions": [
+      {
+        "name": "manual markdown patch without decision trail",
+        "source_truth_ref": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "must fail closed for silent truth mutation"
+      }
+    ],
+    "recovery_paths": [
+      {
+        "name": "decision_log -> writeback_projection -> truth_refreeze",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "formal recovery/writeback contract"
+      }
+    ],
+    "risks": [
+      {
+        "name": "scope creep from uncontrolled LLM expansion",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "accepted/rejected/deferred decisions required"
+      }
+    ],
+    "open_questions": [
+      {
+        "name": "Requirement package must keep accepted/rejected/deferred decisions queryable.",
+        "source_truth_ref": "prd:docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+        "rationale": "carry unresolved clarification into machine-readable envelope"
+      }
+    ]
+  },
+  "source_excerpt": {
+    "prd": [
+      "Feature**: `implement-mode-frozen-truth-requirement-contract`",
+      "Version**: `v1.4.11`",
+      "Status**: `refreeze-input`",
+      "Date**: `2026-05-29`",
+      "Beacon implement must consume the same frozen truth that downstream QA expects it to satisfy. The current implementation prompt injects PRD, user-story, and test-case files, but it does not inject existing project-level `PRODUCT.md` or `DESIGN.md`, and it only asks for free-form verification.",
+      "This feature freezes a narrow implement contract: include existing project product/design truth in the default task prompt and require AC-by-AC implementation self-verification before QA handoff.",
+      "Source-driven research confirmed that `build_default_task_prompt` in `beacon/utils/implement_adapters.py` includes frozen PRD, user-story, and test-case paths but does not mention `PRODUCT.md` or `DESIGN.md`.",
+      "The implement design truth gate in `beacon/commands/implement/commands.py` is prototype-adapter oriented; it does not protect project-level design/product truth. The prompt boundary utility also focuses on PRD/user-story/test-case conflict patterns, not project truth files.",
+      "As a result, an implementation can drift from product/design truth while still appearing to follow frozen requirement files.",
+      " AC-001: The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+      " AC-002: The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+      " AC-003: Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+      " AC-004: The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+      " AC-005: The prompt requires an AC coverage matrix before QA handoff."
+    ],
+    "user_story": [
+      "Feature**: `implement-mode-frozen-truth-requirement-contract`",
+      "Version**: `v1.4.11`",
+      "Status**: `refreeze-input`",
+      "Date**: `2026-05-29`",
+      "As a Beacon operator, I want implement mode to receive existing project-level product and design truth along with frozen requirement truth, so implementation does not drift from `PRODUCT.md`, `DESIGN.md`, or acceptance criteria before QA.",
+      "| AC ID | Theme | Description |",
+      "| AC-001 | design truth injection | The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth. |",
+      "| AC-002 | product truth injection | The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth. |",
+      "| AC-003 | optional project truth | Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation. |",
+      "| AC-004 | truth separation | The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth. |"
+    ],
+    "qa": [
+      "Feature**: `implement-mode-frozen-truth-requirement-contract`",
+      "Version**: `v1.4.11`",
+      "Status**: `refreeze-input`",
+      "Date**: `2026-05-29`",
+      "| AC ID | TC ID | Layer | Planned Command | Assertion | Evidence Path |",
+      "| AC-001 | TC-IMPL-TRUTH-001 | prompt | `python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"design_truth_injected_when_present\"` | Prompt includes `DESIGN.md` as project-level design truth when the file exists. | `.beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-001.json` |",
+      "| AC-002 | TC-IMPL-TRUTH-002 | prompt | `python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"product_truth_injected_when_present\"` | Prompt includes `PRODUCT.md` as project-level product truth when the file exists. | `.beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-002.json` |",
+      "| AC-003 | TC-IMPL-TRUTH-003 | prompt | `python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"missing_project_truth_does_not_block\"` | Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent. | `.beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-003.json` |",
+      "| AC-004 | TC-IMPL-TRUTH-004 | prompt | `python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"project_truth_separated_from_frozen_truth\"` | Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth. | `.beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-004.json` |",
+      "| AC-005 | TC-IMPL-TRUTH-005 | prompt | `python3 -m pytest -q tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py -k \"ac_coverage_matrix_required\"` | Prompt requires AC coverage matrix before QA handoff. | `.beacon/evidence/test-results/implement-mode-frozen-truth-requirement-contract/TC-IMPL-TRUTH-005.json` |"
+    ]
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

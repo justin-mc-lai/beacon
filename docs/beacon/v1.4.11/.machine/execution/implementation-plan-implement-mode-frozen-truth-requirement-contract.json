@@ -1,0 +1,1386 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-implement-mode-frozen-truth-requirement-contract-r2",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:2a9676d7bcd003a3b1df14f9a82e073ec5f2fd1b8f14aef2ca85bd872c021ba8",
+  "plan_hash": "sha256:1c1c7879097012132d9b5374c999ce8afdeb8955faf24f78bed3bfc4620b81b8",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+    "prd": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+    "test_case": "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md",
+    "revision_delta": "docs/beacon/v1.4.11/.machine/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.json",
+    "ac_matrix": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.11/.machine/user-story/implement-mode-frozen-truth-requirement-contract.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.11/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.11",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "mode_selection",
+      "simple",
+      "team",
+      "ralph",
+      "truth_injection",
+      "requirement_truth_only",
+      "project_truth_present",
+      "project_truth_absent",
+      "ac_verification",
+      "not_reported",
+      "pass",
+      "partial",
+      "blocked",
+      "design_alignment",
+      "not_applicable",
+      "aligned",
+      "relation"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "- `branch-flow`"
+      ],
+      "state-machine": [
+        "- `state-machine`"
+      ],
+      "decision-priority": [
+        "- `decision-priority`"
+      ],
+      "state-axes": [
+        "| Axis | States | Meaning |",
+        "| --- | --- | --- |",
+        "| `mode_selection` | `simple`, `team`, `ralph` | Implement mode selection remains existing behavior. |",
+        "| `truth_injection` | `requirement_truth_only`, `project_truth_present`, `project_truth_absent` | Whether project truth files are injected in addition to frozen requirement truth. |",
+        "| `ac_verification` | `not_reported`, `pass`, `partial`, `blocked` | AC-level implementation self-verification status. |",
+        "| `design_alignment` | `not_applicable`, `aligned`, `partial`, `blocked` | Implementation relationship to project design truth. |",
+        "- `mode_selection`",
+        "- `truth_injection`"
+      ]
+    },
+    "generated_at": "2026-05-29T13:01:43.986642+00:00",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "prd_ref": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "present": true,
+    "section_count": 2,
+    "sections": {
+      "architecture": [
+        "`build_default_task_prompt` is the correct low-risk injection point because all modes share the default task prompt.",
+        "`PRODUCT.md` and `DESIGN.md` are project-level truth inputs when present.",
+        "PRD, user-story, and test-case files remain frozen requirement truth.",
+        "`.machine` outputs remain projections/evidence, not requirement truth."
+      ],
+      "decision_priority": [
+        "Global Beacon boundaries.",
+        "Frozen PRD/user-story/test-case requirement truth.",
+        "Existing project-level `PRODUCT.md` and `DESIGN.md`.",
+        "Version design contracts and architecture projections.",
+        "Local implementation convenience."
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "Global Beacon boundaries.",
+          "Frozen PRD/user-story/test-case requirement truth.",
+          "Existing project-level `PRODUCT.md` and `DESIGN.md`.",
+          "Version design contracts and architecture projections.",
+          "Local implementation convenience."
+        ],
+        "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.4.11/.machine/user-story/implement-mode-frozen-truth-requirement-contract.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Discover project-root `DESIGN.md` and include it in the default implement prompt when present.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-TRUTH-001",
+        "TC-IMPL-TRUTH-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-TRUTH-001",
+        "TC-IMPL-TRUTH-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T210716218732",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
+        "verify:run-20260529T212312426143"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.100970+00:00",
+      "completed_at": "2026-05-29T13:07:00.100979+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "Discover project-root `PRODUCT.md` and include it in the default implement prompt when present.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-006",
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-TRUTH-003",
+        "TC-IMPL-TRUTH-006",
+        "TC-IMPL-TRUTH-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-005",
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-TRUTH-003",
+        "TC-IMPL-TRUTH-005",
+        "TC-IMPL-TRUTH-006"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T210716218732",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
+        "verify:run-20260529T212312426143"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.100986+00:00",
+      "completed_at": "2026-05-29T13:07:00.100988+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "Preserve prompt generation when either project truth file is absent.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007",
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-TRUTH-007",
+        "TC-IMPL-TRUTH-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-TRUTH-004",
+        "TC-IMPL-TRUTH-007"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T210716218732",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
+        "verify:run-20260529T212312426143"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.100993+00:00",
+      "completed_at": "2026-05-29T13:07:00.100994+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "Label project-level truth separately from frozen requirement truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-TRUTH-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-TRUTH-009"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T210716218732",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
+        "verify:run-20260529T212312426143"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.100999+00:00",
+      "completed_at": "2026-05-29T13:07:00.101000+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005, AC-006, AC-007",
+      "description": "Require AC-by-AC implementation self-verification with `pass`, `partial`, or `blocked` status plus evidence or note.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010",
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-IMPL-TRUTH-010",
+        "TC-IMPL-TRUTH-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-IMPL-TRUTH-008",
+        "TC-IMPL-TRUTH-010"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T210716218732/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T210716218732",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/implement-mode-frozen-truth-requirement-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/ac-closure.json",
+        ".beacon/qa/features/implement-mode-frozen-truth-requirement-contract/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T212312426143/summary.json",
+        "verify:run-20260529T212312426143"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.101005+00:00",
+      "completed_at": "2026-05-29T13:07:00.101006+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-008",
+      "description": "Preserve simple, team, and ralph as modes under the existing `beacon-implement` route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.101011+00:00",
+      "completed_at": "2026-05-29T13:07:00.101012+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-009",
+      "description": "Add focused tests for prompt truth refs and coverage matrix requirements.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.101016+00:00",
+      "completed_at": "2026-05-29T13:07:00.101018+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-010",
+      "description": "Keep unsupported mode-specific mechanisms out of the current implementation scope.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: mode_selection, simple, team, ralph, truth_injection, requirement_truth_only, project_truth_present, project_truth_absent, ac_verification, not_reported, pass, partial, blocked, design_alignment, not_applicable, aligned, relation"
+      ],
+      "diagram_state_axes": [
+        "mode_selection",
+        "simple",
+        "team",
+        "ralph",
+        "truth_injection",
+        "requirement_truth_only",
+        "project_truth_present",
+        "project_truth_absent",
+        "ac_verification",
+        "not_reported",
+        "pass",
+        "partial",
+        "blocked",
+        "design_alignment",
+        "not_applicable",
+        "aligned",
+        "relation"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.101028+00:00",
+      "completed_at": "2026-05-29T13:07:00.101030+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "Cleanup superseded surfaces from R1",
+      "description": "Audit the latest frozen revision against superseded frozen truth and remove or justify any legacy implementation surfaces not retained in R2.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "target_modules": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260529T130204Z-b43f"
+      ],
+      "changed_files": [
+        "beacon/utils/implement_adapters.py",
+        "beacon/commands/implement/commands.py",
+        "tests/test_v1411_implement_mode_frozen_truth_requirement_contract.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-05-29T13:07:00.101034+00:00",
+      "completed_at": "2026-05-29T13:07:00.101035+00:00",
+      "required_cleanup": true,
+      "revision_delta_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.json",
+      "source_revision_id": "R1",
+      "cleanup_surface_signatures": [
+        "ac::::general::acceptance criteria tbd::"
+      ],
+      "cleanup_surface_ids": [
+        "AC-001"
+      ],
+      "cleanup_surface_labels": [
+        "AC-001: Acceptance criteria TBD"
+      ],
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": true,
+    "removed_requirement_count": 1,
+    "added_requirement_count": 10,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [
+      {
+        "revision_id": "R1",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Acceptance criteria TBD",
+        "details": [],
+        "source": "",
+        "signature": "ac::::general::acceptance criteria tbd::"
+      }
+    ],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC evidence",
+        "text": "Each AC coverage row includes evidence or a blocking note.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::ac evidence::each ac coverage row includes evidence or a blocking note.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC matrix required",
+        "text": "The prompt requires an AC coverage matrix before QA handoff.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::ac matrix required::the prompt requires an ac coverage matrix before qa handoff.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC statuses",
+        "text": "The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::ac statuses::the ac coverage matrix records each ac as `pass`, `partial`, or `blocked`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "design truth injection",
+        "text": "The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::design truth injection::the default implement task prompt includes existing root-level `design.md` as project-level design truth.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode boundary",
+        "text": "Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::mode boundary::simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "optional project truth",
+        "text": "Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::optional project truth::missing `design.md` or `product.md` does not block prompt generation.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "product truth injection",
+        "text": "The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::product truth injection::the default implement task prompt includes existing root-level `product.md` as project-level product truth.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "regression coverage",
+        "text": "Tests cover project truth injection and AC coverage matrix wording.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::regression coverage::tests cover project truth injection and ac coverage matrix wording.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-anchored scope",
+        "text": "This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::source-anchored scope::this change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth separation",
+        "text": "The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+        "signature": "ac::::truth separation::the prompt distinguishes project-level product/design truth from frozen prd/user-story/test-case requirement truth.::"
+      }
+    ],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:2a9676d7bcd003a3b1df14f9a82e073ec5f2fd1b8f14aef2ca85bd872c021ba8",
+    "source_baseline_hash": "",
+    "story_state_ref": "docs/beacon/v1.4.11/.machine/user-story/implement-mode-frozen-truth-requirement-contract.json",
+    "generated_at": "2026-05-29T13:01:43.984038+00:00",
+    "json_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-implement-mode-frozen-truth-requirement-contract.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"implement-mode-frozen-truth-requirement-contract\" --project-root . --version v1.4.11",
+    "run_command": "beacon implement team-run \"implement-mode-frozen-truth-requirement-contract\" --project . --version v1.4.11",
+    "dev_run_command": "beacon implement dev-run \"implement-mode-frozen-truth-requirement-contract\" --project . --version v1.4.11",
+    "ralph_command": "beacon implement run \"implement-mode-frozen-truth-requirement-contract\" --project . --version v1.4.11 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"implement-mode-frozen-truth-requirement-contract\" --project . --version v1.4.11",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.11",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.11.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-29T13:01:43.986790+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.11-implement-mode-frozen-truth-requirement-contract-R2",
+    "transaction_id": "tx-9452086d36be14463",
+    "source_hash": "sha256:8b1c718cf2b1bee08e142705be17f89309acfce451a8e7887dc30f078a5c42b7",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-implement-mode-frozen-truth-requirement-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.11/.machine/execution/git-workflow-implement-mode-frozen-truth-requirement-contract.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.11/execution/git-workflow-implement-mode-frozen-truth-requirement-contract.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.11",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.11/prd/implement-mode-frozen-truth-requirement-contract.md",
+      "user_story": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+      "test_case": "docs/beacon/v1.4.11/qa/test-cases/implement-mode-frozen-truth-requirement-contract.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.11-implement-mode-frozen-truth-requirement-contract-R2",
+    "transaction_id": "tx-9452086d36be14463",
+    "source_hash": "sha256:8b1c718cf2b1bee08e142705be17f89309acfce451a8e7887dc30f078a5c42b7",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-implement-mode-frozen-truth-requirement-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-implement-mode-frozen-truth-requirement-contract.json",
+  "generated_at": "2026-05-29T13:01:44.027765+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.11-implement-mode-frozen-truth-requirement-contract-R2",
+  "transaction_id": "tx-9452086d36be14463",
+  "source_hash": "sha256:8b1c718cf2b1bee08e142705be17f89309acfce451a8e7887dc30f078a5c42b7",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-29T13:23:20.317713+00:00",
+  "accepted_at": "2026-05-29T13:23:20.317694+00:00",
+  "accepted_by": "qa"
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": "1.0",
+  "feature": "implement-mode-frozen-truth-requirement-contract",
+  "feature_slug": "implement-mode-frozen-truth-requirement-contract",
+  "version": "v1.4.11",
+  "acceptance_criteria": {
+    "functionality": [
+      "The default implement task prompt includes existing root-level `DESIGN.md` as project-level design truth.",
+      "The default implement task prompt includes existing root-level `PRODUCT.md` as project-level product truth.",
+      "Missing `DESIGN.md` or `PRODUCT.md` does not block prompt generation.",
+      "The prompt distinguishes project-level product/design truth from frozen PRD/user-story/test-case requirement truth.",
+      "The prompt requires an AC coverage matrix before QA handoff.",
+      "The AC coverage matrix records each AC as `pass`, `partial`, or `blocked`.",
+      "Each AC coverage row includes evidence or a blocking note.",
+      "Simple, team, and ralph remain implement modes under `beacon-implement`; no new public implement mode skill is introduced.",
+      "Tests cover project truth injection and AC coverage matrix wording.",
+      "This change stays anchored to `build_default_task_prompt`; team-worker injection and ralph baseline hash enforcement are not included.",
+      "Prompt includes `DESIGN.md` as project-level design truth when the file exists.",
+      "Prompt includes `PRODUCT.md` as project-level product truth when the file exists.",
+      "Prompt generation succeeds when `DESIGN.md` and `PRODUCT.md` are absent.",
+      "Prompt separates project-level product/design truth from frozen PRD/user-story/test-case truth.",
+      "Prompt requires AC coverage matrix before QA handoff.",
+      "Prompt requires `pass`, `partial`, and `blocked` statuses.",
+      "Prompt requires evidence or blocking note per AC row.",
+      "No new public implement mode skill is introduced for simple, team, or ralph.",
+      "Regression suite covers project truth injection and AC coverage matrix wording.",
+      "Tests and implementation stay anchored to default prompt injection, not team-worker or ralph hash mechanisms."
+    ],
+    "data": [],
+    "ux": [],
+    "performance": [],
+    "security": [],
+    "compatibility": [],
+    "error_handling": []
+  },
+  "semantic_payload": {},
+  "compiler": {
+    "requested_mode": "rule",
+    "effective_mode": "rule",
+    "generator_mode": "rule",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "user-story",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_USER_STORY_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_USER_STORY_DISABLE_LLM"
+    }
+  },
+  "output_path": "docs/beacon/v1.4.11/user-story/implement-mode-frozen-truth-requirement-contract.md",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "implement-mode-frozen-truth-requirement-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/implement-mode-frozen-truth-requirement-contract.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}
