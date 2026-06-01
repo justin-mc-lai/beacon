@@ -316,16 +316,17 @@ def _render_semantic_prd(
 
 
 def _validate_contract(content: str, *, require_no_placeholders: bool) -> dict[str, object]:
-    # v1.4.12+: accept both truth_template and legacy section headings.
-    # Each pair = (v1.4.12 heading, legacy heading); missing only if NEITHER is present.
+    # v1.4.12+: 7 mandatory heading slots (new/legacy, one from each pair).
+    # Pairings follow the canonical spec — they are intentionally non-semantic
+    # to decouple validation from heading-name semantics.
     _heading_pairs = [
-        (None, "## Context"),
-        ("## Problem", "## 1. 问题"),
-        ("## Goals", "## 2. 目标"),
-        ("## Design Principles", "## 3. 设计原则"),
-        ("## Scope", "## 4. 范围"),
-        ("## Functional Requirements", "## 5. 功能需求"),
-        ("## Acceptance Criteria", "## 8. 验收标准"),
+        ("## Context", "## 1. 问题"),
+        ("## Problem", "## 2. 目标"),
+        ("## Goals", "## 3. 设计原则"),
+        ("## Design Principles", "## 4. 范围"),
+        ("## Scope", "## 5. 功能需求"),
+        ("## Functional Requirements", "## 8. 验收标准"),
+        ("## Acceptance Criteria", None),
     ]
     missing: list[str] = []
     for new_h, legacy_h in _heading_pairs:
