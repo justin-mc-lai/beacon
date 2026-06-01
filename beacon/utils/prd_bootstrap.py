@@ -13,12 +13,19 @@ from beacon.utils.change_surface import build_change_command
 from beacon.utils.context_files import verify_context_files
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
+from beacon.utils.truth_template import render_prd_template as _render_prd_template_v2
 
 PLACEHOLDER_PATTERNS = (
     re.compile(r"\bTBD\b", flags=re.IGNORECASE),
     re.compile(r"\bTODO\b", flags=re.IGNORECASE),
     re.compile(r"\?\?\?"),
     re.compile(r"\[[^\]]*(Describe|What|待补充|占位)[^\]]*\]", flags=re.IGNORECASE),
+    # v1.4.12 fix: rule-mode template outputs plain "待补充"/"占位" without brackets
+    # (e.g. "- 待补充：定义当前版本最关键的功能闭环。")
+    # These must be caught so the quality gate correctly blocks draft-skeleton PRDs.
+    re.compile(r"待补充"),
+    re.compile(r"占位", flags=re.IGNORECASE),
+    re.compile(r"(Describe|What)\s*[:：]", flags=re.IGNORECASE),
 )
 
 
@@ -162,6 +169,14 @@ def _minimal_prd_from_downstream(
     test_case_text: str,
     reverse_derived: bool,
 ) -> str:
+    # v1.4.12+: use fixed English template (Beacon version, not project version)
+    from beacon import __version__ as _bv
+    try:
+        _parts = _bv.lstrip("v").split(".")
+        if (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12):
+            return _render_prd_template_v2(feature_slug=feature.strip().lower().replace(" ", "-"), version=version, lang="en")
+    except Exception:
+        pass
     ac_ids = _extract_ac_ids(story_text or test_case_text)
     ac_rows = [
         {"id": ac_id, "theme": "derived", "desc": f"Derived acceptance anchor for {ac_id}."}
@@ -228,6 +243,38 @@ def _minimal_story_from_truth(
         notes.append("- 当前 story 含 downstream-derived 内容，必须进入 truth review。")
     if not prd_text.strip():
         notes.append("- 缺少原生 PRD truth。")
+    # v1.4.12+: truth_template-aligned format
+    from beacon import __version__ as _bv
+    use_v1412 = False
+    try:
+        _parts = _bv.lstrip("v").split(".")
+        use_v1412 = (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12)
+    except Exception:
+        pass
+
+    if use_v1412:
+        from datetime import datetime as _dt
+        slug = feature.strip().lower().replace(" ", "-")
+        return (
+            f"# User Story: {feature}\n\n"
+            f"**Feature**: `{slug}`\n"
+            f"**Version**: `{version}`\n"
+            f"**Status**: `{status}`\n"
+            f"**Date**: `{_dt.now().strftime('%Y-%m-%d')}`\n"
+            "**Language**: `zh`\n\n"
+            "## Story\n\n"
+            "作为目标用户，我希望系统能够形成可验证的需求闭环，以便进入正式实现。\n\n"
+            f"### 需求描述\n\n{description}\n\n"
+            "## Acceptance Criteria\n\n"
+            "| AC ID | Theme | Description |\n"
+            "|-------|-------|-------------|\n"
+            f"{table_rows}\n\n"
+            "## References\n\n"
+            f"- PRD: `docs/beacon/{version}/prd/{slug}.md`\n"
+            f"- Test cases: `docs/beacon/{version}/qa/test-cases/{slug}.md`\n"
+            + ("\n".join(notes) + "\n" if notes else "")
+        )
+
     return (
         f"# User Story: {feature}\n\n"
         "## Story\n\n"
@@ -263,6 +310,33 @@ def _minimal_test_case_from_truth(
         for index, row in enumerate(_ac_rows(feature, description), start=1):
             rows.append(f"| TC-{index:03d} | {row['id']} | {row['theme']} scenario | unit | {row['desc']} |")
     matrix = "\n".join(rows)
+    # v1.4.12+: truth_template-aligned format
+    from beacon import __version__ as _bv
+    use_v1412 = False
+    try:
+        _parts = _bv.lstrip("v").split(".")
+        use_v1412 = (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12)
+    except Exception:
+        pass
+
+    if use_v1412:
+        from datetime import datetime as _dt
+        slug = feature.strip().lower().replace(" ", "-")
+        return (
+            f"# Test Cases: {feature}\n\n"
+            f"**Feature**: `{slug}`\n"
+            f"**Version**: `{version}`\n"
+            f"**Status**: `bootstrap-generated / review-required / not-yet-frozen`\n"
+            f"**Date**: `{_dt.now().strftime('%Y-%m-%d')}`\n"
+            "**Language**: `zh`\n\n"
+            "## Coverage Matrix\n\n"
+            "| AC ID | TC ID | Layer | Planned Command | Assertion | Evidence Path |\n"
+            "|-------|-------|-------|-----------------|-----------|---------------|\n"
+            f"{matrix}\n\n"
+            "## Explicit Non Coverage\n\n"
+            "<!-- FILL: Scenarios intentionally not covered and why. -->\n"
+        )
+
     return (
         f"# Test Cases: {feature}\n\n"
         "## Coverage Matrix\n\n"
@@ -543,10 +617,52 @@ def _ac_rows(feature: str, description: str) -> list[dict[str, str]]:
 
 
 def _render_user_story(feature: str, description: str, version: str, ac_rows: list[dict[str, str]]) -> str:
+    from beacon import __version__ as _bv
+    use_v1412 = False
+    try:
+        _parts = _bv.lstrip("v").split(".")
+        use_v1412 = (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12)
+    except Exception:
+        pass
+
     table_rows = "\n".join(
         f"| {row['id']} | {row['theme']} | {row['desc']} |"
         for row in ac_rows
     )
+    if use_v1412:
+        slug = feature.strip().lower().replace(" ", "-")
+        from datetime import datetime as _dt
+        return (
+            f"# User Story: {feature}\n\n"
+            f"**Feature**: `{slug}`\n"
+            f"**Version**: `{version}`\n"
+            f"**Status**: `bootstrap-generated / review-required / not-yet-frozen`\n"
+            f"**Date**: `{_dt.now().strftime('%Y-%m-%d')}`\n"
+            f"**Language**: `zh`\n\n"
+            "## Story\n\n"
+            "作为目标用户，我希望系统能够稳定地完成该需求主流程，以便快速完成业务动作。\n\n"
+            f"### 需求描述\n\n{description}\n\n"
+            "## Outline\n\n"
+            "<!-- FILL: Mermaid diagram showing the user journey through key paths.\n"
+            "     Use flowchart LR for user journey. Each node maps to an AC. -->\n\n"
+            "```mermaid\n"
+            "flowchart LR\n"
+            "    A[User starts] --> B[Action 1]\n"
+            "    B --> C[Outcome]\n"
+            "```\n\n"
+            "## Acceptance Criteria\n\n"
+            "| AC ID | Theme | Description |\n"
+            "|-------|-------|-------------|\n"
+            f"{table_rows}\n\n"
+            "## Test Story Map\n\n"
+            "| Test ID | Covers | Scenario |\n"
+            "|---------|--------|----------|\n"
+            "<!-- FILL: TC-001 | AC-001 | <scenario> -->\n\n"
+            "## References\n\n"
+            f"- Research: `docs/beacon/{version}/research/{slug}.md`\n"
+            f"- PRD: `docs/beacon/{version}/prd/{slug}.md`\n"
+            f"- Test cases: `docs/beacon/{version}/qa/test-cases/{slug}.md`\n"
+        )
     return (
         f"# User Story: {feature}\n\n"
         "## Story\n\n"
@@ -565,6 +681,16 @@ def _render_user_story(feature: str, description: str, version: str, ac_rows: li
 
 
 def _render_prd(feature: str, description: str, version: str, ac_rows: list[dict[str, str]]) -> str:
+    # v1.4.12+: use truth_template-aligned structure without section numbering.
+    # Must use Beacon's own version, not the project version (which may be v1.0.0).
+    from beacon import __version__ as _beacon_version
+    use_v1412 = False
+    try:
+        _parts = _beacon_version.lstrip("v").split(".")
+        use_v1412 = (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12)
+    except Exception:
+        pass
+
     fr_rows = "\n".join(
         f"| FR-{index:03d} | {row['id']} | {row['desc']} |"
         for index, row in enumerate(ac_rows, start=1)
@@ -573,6 +699,49 @@ def _render_prd(feature: str, description: str, version: str, ac_rows: list[dict
         f"| {row['id']} | {row['theme']} | {row['desc']} |"
         for row in ac_rows
     )
+
+    if use_v1412:
+        from datetime import datetime as _dt
+        return (
+            f"# PRD: {feature}\n\n"
+            f"**Feature**: `{feature.strip().lower().replace(' ', '-')}`\n"
+            f"**Version**: `{version}`\n"
+            f"**Status**: `bootstrap-generated / review-required / not-yet-frozen`\n"
+            f"**Date**: `{_dt.now().strftime('%Y-%m-%d')}`\n"
+            "**Language**: `zh`\n\n"
+            "## Overview\n\n"
+            f"{description}\n\n"
+            "## Outline\n\n"
+            "<!-- FILL: Mermaid diagram showing the feature's core flow or state transitions.\n"
+            "     Use flowchart TD/LR for procedural features, stateDiagram-v2 for stateful features. -->\n\n"
+            "```mermaid\n"
+            "flowchart TD\n"
+            "    A[Start] --> B[Core Flow]\n"
+            "    B --> C[Outcome]\n"
+            "```\n\n"
+            "## Problem\n\n"
+            f"<!-- FILL: Specific problem this feature solves. -->\n\n"
+            "## Goals\n\n"
+            f"<!-- FILL: List of goals this feature must achieve. -->\n\n"
+            "## Scope\n\n"
+            "### In Scope\n\n"
+            f"- `{feature}` 的核心业务流程与必要风控校验。\n\n"
+            "### Out of Scope\n\n"
+            "- 与该需求无关的跨域重构或新增平台能力。\n\n"
+            "## Functional Requirements\n\n"
+            "| FR ID | Related AC | Requirement |\n"
+            "|-------|-----------|-------------|\n"
+            f"{fr_rows}\n\n"
+            "## Acceptance Criteria\n\n"
+            "| AC ID | Theme | Description |\n"
+            "|-------|-------|-------------|\n"
+            f"{ac_rows_text}\n\n"
+            "## Non-Goals\n\n"
+            "<!-- FILL: Explicitly excluded items beyond scope. -->\n\n"
+            "## Success Metrics\n\n"
+            "<!-- FILL: How to determine successful delivery. -->\n"
+        )
+
     return (
         f"# PRD: {feature}\n\n"
         "## 1. Overview\n\n"
@@ -598,6 +767,14 @@ def _render_prd(feature: str, description: str, version: str, ac_rows: list[dict
 
 
 def _render_test_cases(feature: str, version: str, ac_rows: list[dict[str, str]]) -> str:
+    from beacon import __version__ as _bv
+    use_v1412 = False
+    try:
+        _parts = _bv.lstrip("v").split(".")
+        use_v1412 = (int(_parts[0]), int(_parts[1]), int(_parts[2])) >= (1, 4, 12)
+    except Exception:
+        pass
+
     rows = []
     for index, row in enumerate(ac_rows, start=1):
         rows.append(
@@ -607,6 +784,31 @@ def _render_test_cases(feature: str, version: str, ac_rows: list[dict[str, str]]
             )
         )
     matrix = "\n".join(rows)
+    if use_v1412:
+        slug = feature.strip().lower().replace(" ", "-")
+        from datetime import datetime as _dt
+        return (
+            f"# Test Cases: {feature}\n\n"
+            f"**Feature**: `{slug}`\n"
+            f"**Version**: `{version}`\n"
+            f"**Status**: `bootstrap-generated / review-required / not-yet-frozen`\n"
+            f"**Date**: `{_dt.now().strftime('%Y-%m-%d')}`\n"
+            f"**Language**: `zh`\n\n"
+            "## Outline\n\n"
+            "<!-- FILL: Mermaid diagram showing test coverage layer paths.\n"
+            "     Use flowchart TD for test layers (unit -> integration -> e2e). -->\n\n"
+            "```mermaid\n"
+            "flowchart TD\n"
+            "    A[Unit Layer] --> B[Integration Layer]\n"
+            "    B --> C[End-to-End Layer]\n"
+            "```\n\n"
+            "## Coverage Matrix\n\n"
+            "| AC ID | TC ID | Layer | Planned Command | Assertion | Evidence Path |\n"
+            "|-------|-------|-------|-----------------|-----------|---------------|\n"
+            f"{matrix}\n\n"
+            "## Explicit Non Coverage\n\n"
+            "<!-- FILL: Scenarios intentionally not covered and why. -->\n"
+        )
     return (
         f"# Test Cases: {feature}\n\n"
         "## Coverage Matrix\n\n"
