@@ -1,0 +1,66 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-design-human-subskills-closure-contract",
+  "version": "v1.4.11",
+  "revision_id": "R3",
+  "review_status": "accepted",
+  "approved_by": "codex-implement-beacon-design-human-subskills-closure",
+  "reviewed_at": "2026-05-29T04:00:00Z",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.11",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "workspace_root": ".",
+  "environment_mode": "local-dev",
+  "isolation_strategy": "repo-local isolation",
+  "service_directories": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "direct_delivery_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "notes": [
+    "R3 scope: add simplify route to beacon/utils/design_contract.py DESIGN_ROUTES dict.",
+    "R3 scope: create skills/beacon/beacon-design-simplify/SKILL.md.",
+    "R3 scope: update skills/beacon/beacon-design/SKILL.md to mention simplify route.",
+    "R3 scope: update tests to cover simplify route.",
+    "No new CLI route, prototype adapter change, or release verdict change.",
+    "Simplify route has no upstream dependency (Beacon-native)."
+  ],
+  "feature_slug": "beacon-design-human-subskills-closure-contract",
+  "baseline_id": "impl-delivery-baseline-v1.4.11-beacon-design-human-subskills-closure-contract-R3",
+  "transaction_id": "tx-11fce8cd7b963e2fc",
+  "source_hash": "sha256:669dcb0e36c57182404009c2fdc380f68dd2efcedc3ac6575b24567d343aae2f",
+  "projection_seq": 1,
+  "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-beacon-design-human-subskills-closure-contract.json",
+  "projection_source": "implementation_delivery_baseline_envelope"
+}

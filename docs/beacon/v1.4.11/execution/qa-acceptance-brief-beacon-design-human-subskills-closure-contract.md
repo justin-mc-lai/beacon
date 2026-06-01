@@ -2,9 +2,9 @@
 
 - version: `v1.4.11`
 - feature: `beacon-design-human-subskills-closure-contract`
-- revision_id: `R2`
+- revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-05-27T02:21:12.492341+00:00`
+- accepted_at: `2026-05-29T04:08:11.964988+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -32,5 +32,5 @@
 ## Verdict Summary
 - required_ac_count: `12`
 - required_test_count: `0`
-- story_status: `verified`
-- revision_delivery_status: `verified`
+- story_status: `implemented`
+- revision_delivery_status: `implemented`

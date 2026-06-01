@@ -47,6 +47,11 @@ DESIGN_SUBSKILLS = {
         "upstream": "upstream-compatibility",
         "required_text": ["beacon design route bootstrap", "capability-admission-only", "release_verdict=false"],
     },
+    "simplify": {
+        "skill": "beacon-design-simplify",
+        "upstream": "beacon-native",
+        "required_text": ["beacon design route simplify", "lazy_user_axiom", "core_scenario_extraction", "no external upstream"],
+    },
 }
 
 
@@ -172,5 +177,54 @@ def test_installed_subskills_match_design_contract_routes() -> None:
 
 
 def test_design_runtime_routes_are_not_expanded() -> None:
-    assert set(DESIGN_ROUTES) == {"explore", "extract", "system", "review", "polish", "library", "bootstrap"}
-    assert len(DESIGN_ROUTES) == 7
+    assert set(DESIGN_ROUTES) == {"explore", "extract", "system", "review", "polish", "library", "bootstrap", "simplify"}
+    assert len(DESIGN_ROUTES) == 8
+
+def test_simplify_subskill_maps_to_simplify_route() -> None:
+    _assert_subskill("simplify")
+    payload = build_design_route_payload(Path("."), VERSION, FEATURE, intent="simplify")
+    assert payload["upstream"] == "beacon-native"
+
+
+def test_simplify_route_has_five_first_principles_capabilities() -> None:
+    payload = build_design_route_payload(Path("."), VERSION, FEATURE, intent="simplify")
+    expected = [
+        "lazy_user_axiom",
+        "core_scenario_extraction",
+        "engineer_abstraction_detection",
+        "information_deduplication",
+        "complexity_burden_score",
+    ]
+    assert payload["capabilities"] == expected
+    assert len(payload["capabilities"]) == 5
+
+
+def test_simplify_subskill_declares_support_boundaries() -> None:
+    required = [
+        "not a truth source",
+        "not a gate source",
+        "not a new lifecycle stage",
+        "not a release verdict",
+    ]
+    for root in (AGENT_SKILL_ROOT, PACKAGED_SKILL_ROOT):
+        text = _skill_text(root, "beacon-design-simplify")
+        for item in required:
+            assert item in text
+        assert "beacon-native" in text
+        assert "no external upstream" in text
+
+
+def test_simplify_skill_md_contains_operator_command() -> None:
+    for root in (AGENT_SKILL_ROOT, PACKAGED_SKILL_ROOT):
+        text = _skill_text(root, "beacon-design-simplify")
+        assert "beacon design route simplify" in text
+        assert "lazy_user_axiom" in text
+        assert "first principles" in text.lower() or "First Principles" in text
+
+
+def test_simplify_route_in_design_routes_and_subskill_installed() -> None:
+    assert "simplify" in DESIGN_ROUTES
+    assert DESIGN_ROUTES["simplify"]["route"] == "beacon-design-simplify"
+    assert DESIGN_ROUTES["simplify"]["upstream"] == "beacon-native"
+    _assert_skill_exists_in_both_roots("beacon-design-simplify")
+

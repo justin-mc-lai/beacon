@@ -16,7 +16,30 @@ from beacon.utils.versioning import resolve_target_version
 
 
 def _discover_features(project_root: Path, version: str) -> list[str]:
-    root = project_root / "docs" / "beacon" / version / "user-story"
+    """Discover features for a version.
+
+    v1.4.12+: uses manifest (load_manifest_or_fail), no glob fallback.
+    v1.4.11 and earlier: uses glob (legacy compat).
+    """
+    resolved_version = resolve_target_version(project_root, version)
+    from beacon.utils.versioning import normalize_version
+    normalized = normalize_version(resolved_version) or resolved_version
+    try:
+        parts = normalized.lstrip("v").split(".")
+        uses_manifest = (int(parts[0]), int(parts[1]), int(parts[2])) >= (1, 4, 12)
+    except Exception:
+        uses_manifest = False
+
+    if uses_manifest:
+        from beacon.utils.manifest import load_manifest_or_fail, ManifestMissingError
+        try:
+            manifest = load_manifest_or_fail(project_root, resolved_version)
+            return [f.get("slug", "") for f in manifest.get("features", []) if f.get("slug")]
+        except ManifestMissingError:
+            return []
+
+    # Legacy path for v1.4.11 and earlier
+    root = project_root / "docs" / "beacon" / resolved_version / "user-story"
     if not root.exists():
         return []
     return sorted(path.stem for path in root.glob("*.md") if path.is_file() and path.stem != "index")
@@ -83,7 +106,7 @@ def sync_feature_requirement_materials(
                     json_output=False,
                     ui_runner=ui_runner,
                 )
-            except typer.Exit as exc:  # pragma: no cover - defensive, command exits via Typer only on parameter errors
+            except typer.Exit as exc:  # pragma: no cover
                 raise RuntimeError(f"test_case_sync_failed:{exc.exit_code}") from exc
     finally:
         if previous_override is None:

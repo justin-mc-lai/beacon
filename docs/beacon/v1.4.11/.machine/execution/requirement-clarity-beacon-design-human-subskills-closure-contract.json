@@ -17,38 +17,86 @@
     "schema_version": "1.0",
     "version": "v1.4.11",
     "supported": true,
-    "required": false,
+    "required": true,
     "ready": true,
-    "diagram_types": [],
-    "state_axes": [],
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "beacon design route simplify",
+      "beacon-design-simplify/skill.md"
+    ],
     "missing_diagram_types": [],
     "missing_state_axes": false,
-    "complexity_signals": [],
-    "review_gates": [],
-    "qa_coverage_hints": [],
-    "evidence_lines": {},
-    "generated_at": "2026-05-27T02:00:36.731024+00:00",
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: beacon design route simplify, beacon-design-simplify/skill.md"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "**Branch-flow**: Simplify audit decision tree — Q1 check core scenario defined → Q2 check ≤ 5 inputs and ≤ 1.5 screens → Q3 check concept duplication → Q4 check engineer abstraction. Each branch terminates in pass/flag/block."
+      ],
+      "state-machine": [
+        "**State-machine**: idle → audit_requested → auditing → audit_complete \\| audit_blocked. Transitions driven by route resolution and capability check results."
+      ],
+      "decision-priority": [
+        "**Decision-priority**: Core scenario detection > complexity scoring > duplication check > abstraction detection. Block conditions: missing truth refs, missing DESIGN_ROUTES entry, operator has not defined core scenario."
+      ],
+      "state-axes": [
+        "| Axis | Values | Description |",
+        "| --- | --- | --- |",
+        "| route_resolution | resolved \\| blocked | Whether `beacon design route simplify` resolves. |",
+        "| skill_install | installed \\| missing | Whether `beacon-design-simplify/SKILL.md` exists. |",
+        "| audit_progress | idle \\| audit_requested \\| auditing \\| audit_complete \\| audit_blocked | Simplify audit lifecycle. |",
+        "| truth_binding | unbound \\| bound \\| refreeze_pending | Whether accepted simplify findings are truth-bound. |"
+      ]
+    },
+    "generated_at": "2026-05-29T03:59:05.702189+00:00",
     "feature": "beacon-design-human-subskills-closure-contract",
     "feature_slug": "beacon-design-human-subskills-closure-contract",
     "prd_ref": "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
     "user_story_ref": "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md"
   },
   "human_closure_contract": {
-    "required": false,
+    "required": true,
     "research_path": "docs/beacon/v1.4.11/research/beacon-design-human-subskills-closure-contract.md",
     "research_exists": true,
     "source_architecture_path": "docs/beacon/v1.4.11/source-architecture/index.md",
     "source_architecture_exists": true,
     "required_sections": [
       "architecture",
-      "business_flow"
+      "business_flow",
+      "state_machine",
+      "decision_priority"
     ],
-    "missing_sections": [
-      "architecture",
-      "business_flow"
+    "missing_sections": [],
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
     ],
-    "diagram_types": [],
-    "complexity_signals": []
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ]
   },
   "requirement_closure_contract": {
     "required": true,
@@ -60,7 +108,7 @@
       "requirement_clarity",
       "freeze"
     ],
-    "human_closure_required": false,
+    "human_closure_required": true,
     "paths": {
       "research": "docs/beacon/v1.4.11/research/beacon-design-human-subskills-closure-contract.md",
       "prd": "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
@@ -73,7 +121,12 @@
       "user_story": true,
       "test_case": true
     },
-    "required_research_sections": [],
+    "required_research_sections": [
+      "architecture",
+      "business_flow",
+      "state_machine",
+      "decision_priority"
+    ],
     "missing_research_sections": [],
     "ac_projection": {
       "prd_ac_ids": [
@@ -88,7 +141,12 @@
         "AC-009",
         "AC-010",
         "AC-011",
-        "AC-012"
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017"
       ],
       "user_story_ac_ids": [
         "AC-001",
@@ -102,7 +160,12 @@
         "AC-009",
         "AC-010",
         "AC-011",
-        "AC-012"
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017"
       ],
       "test_case_ac_ids": [
         "AC-001",
@@ -116,7 +179,12 @@
         "AC-009",
         "AC-010",
         "AC-011",
-        "AC-012"
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017"
       ],
       "upstream_ac_ids": [
         "AC-001",
@@ -130,15 +198,23 @@
         "AC-009",
         "AC-010",
         "AC-011",
-        "AC-012"
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017"
       ],
       "missing_test_case_ac_ids": []
     }
   },
   "version_projection_truth_contract": {
-    "required": false,
+    "required": true,
     "supported": true,
-    "projection_types": [],
+    "projection_types": [
+      "business_flow",
+      "state_machine"
+    ],
     "research_path": "docs/beacon/v1.4.11/research/beacon-design-human-subskills-closure-contract.md",
     "research_exists": true,
     "required_fields": [
@@ -149,11 +225,11 @@
       "out_of_scope_notes"
     ],
     "field_presence": {
-      "prd_refs": false,
-      "user_story_refs": false,
-      "test_case_refs": false,
-      "coverage_notes": false,
-      "out_of_scope_notes": false
+      "prd_refs": true,
+      "user_story_refs": true,
+      "test_case_refs": true,
+      "coverage_notes": true,
+      "out_of_scope_notes": true
     },
     "missing_fields": [],
     "required_refs": {
@@ -162,7 +238,7 @@
       "test_case_refs": "docs/beacon/v1.4.11/qa/test-cases/beacon-design-human-subskills-closure-contract.md"
     },
     "missing_ref_targets": [],
-    "ready": false
+    "ready": true
   },
   "support_write_topology_contract": {
     "schema_version": "1.0",

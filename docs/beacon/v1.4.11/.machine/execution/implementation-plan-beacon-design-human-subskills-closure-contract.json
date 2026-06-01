@@ -1,0 +1,1933 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-design-human-subskills-closure-contract-r3",
+  "feature": "beacon-design-human-subskills-closure-contract",
+  "feature_slug": "beacon-design-human-subskills-closure-contract",
+  "version": "v1.4.11",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:fa3ad06374e85aac1bf14b5da2013a7767bbb4e3a27a60d65326a8c9e96e886c",
+  "plan_hash": "sha256:d6cce9a3ed4e6b175c09f9274bd280517f7eb7d90ae252e637812652e2c95d63",
+  "status": "planned",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+    "prd": "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
+    "test_case": "docs/beacon/v1.4.11/qa/test-cases/beacon-design-human-subskills-closure-contract.md",
+    "revision_delta": "docs/beacon/v1.4.11/.machine/execution/revision-delta-beacon-design-human-subskills-closure-contract.json",
+    "ac_matrix": "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.4.11/.machine/user-story/beacon-design-human-subskills-closure-contract.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.4.11/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018",
+        "ITASK-019",
+        "ITASK-020",
+        "ITASK-021",
+        "ITASK-022",
+        "ITASK-023",
+        "ITASK-024",
+        "ITASK-025",
+        "ITASK-026",
+        "ITASK-027",
+        "ITASK-028",
+        "ITASK-029"
+      ]
+    }
+  ],
+  "task_mapping_source": "prd-sections",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.4.11",
+    "supported": true,
+    "required": true,
+    "ready": true,
+    "diagram_types": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority"
+    ],
+    "state_axes": [
+      "beacon design route simplify",
+      "beacon-design-simplify/skill.md"
+    ],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [
+      "branch-flow",
+      "state-machine",
+      "decision-priority",
+      "state axes"
+    ],
+    "review_gates": [
+      "implementation must cover the declared branch-flow split points",
+      "implementation must preserve the declared state-machine transitions",
+      "implementation must preserve decision-priority ordering",
+      "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+    ],
+    "qa_coverage_hints": [
+      "cover primary and alternate branch-flow paths",
+      "cover state transitions, illegal transitions, and recovery paths",
+      "cover conflicting conditions using declared decision priority",
+      "cover axis combinations across: beacon design route simplify, beacon-design-simplify/skill.md"
+    ],
+    "evidence_lines": {
+      "branch-flow": [
+        "**Branch-flow**: Simplify audit decision tree — Q1 check core scenario defined → Q2 check ≤ 5 inputs and ≤ 1.5 screens → Q3 check concept duplication → Q4 check engineer abstraction. Each branch terminates in pass/flag/block."
+      ],
+      "state-machine": [
+        "**State-machine**: idle → audit_requested → auditing → audit_complete \\| audit_blocked. Transitions driven by route resolution and capability check results."
+      ],
+      "decision-priority": [
+        "**Decision-priority**: Core scenario detection > complexity scoring > duplication check > abstraction detection. Block conditions: missing truth refs, missing DESIGN_ROUTES entry, operator has not defined core scenario."
+      ],
+      "state-axes": [
+        "| Axis | Values | Description |",
+        "| --- | --- | --- |",
+        "| route_resolution | resolved \\| blocked | Whether `beacon design route simplify` resolves. |",
+        "| skill_install | installed \\| missing | Whether `beacon-design-simplify/SKILL.md` exists. |",
+        "| audit_progress | idle \\| audit_requested \\| auditing \\| audit_complete \\| audit_blocked | Simplify audit lifecycle. |",
+        "| truth_binding | unbound \\| bound \\| refreeze_pending | Whether accepted simplify findings are truth-bound. |"
+      ]
+    },
+    "generated_at": "2026-05-29T04:03:46.785621+00:00",
+    "feature": "beacon-design-human-subskills-closure-contract",
+    "feature_slug": "beacon-design-human-subskills-closure-contract",
+    "prd_ref": "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
+    "user_story_ref": "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-design-human-subskills-closure-contract",
+    "version": "v1.4.11",
+    "source": "research:docs/beacon/v1.4.11/research/beacon-design-human-subskills-closure-contract.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.4.11/.machine/user-story/beacon-design-human-subskills-closure-contract.json"
+  },
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: beacon design route simplify, beacon-design-simplify/skill.md"
+  ],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "FR-001 AC-001",
+      "description": "Keep `beacon-design` as the aggregate design support route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-DESIGN-SKILL-001",
+        "TC-DESIGN-SKILL-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-DESIGN-SKILL-001",
+        "TC-DESIGN-SKILL-002"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T120804078672",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/ac-closure.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-29T04:08:11.604292+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "FR-002 AC-002",
+      "description": "Add `beacon-design-explore` with operator command `beacon design route explore`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003",
+        "AC-012",
+        "AC-016",
+        "AC-004",
+        "AC-010",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TC-DESIGN-SKILL-003",
+        "TC-DESIGN-SKILL-012",
+        "TEST-016",
+        "TC-DESIGN-SKILL-004",
+        "TC-DESIGN-SKILL-010",
+        "TC-DESIGN-SKILL-005",
+        "TC-DESIGN-SKILL-006",
+        "TC-DESIGN-SKILL-007",
+        "TC-DESIGN-SKILL-008",
+        "TC-DESIGN-SKILL-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008",
+        "SC-010",
+        "SC-011",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-DESIGN-SKILL-003",
+        "TC-DESIGN-SKILL-004",
+        "TC-DESIGN-SKILL-005",
+        "TC-DESIGN-SKILL-006",
+        "TC-DESIGN-SKILL-007",
+        "TC-DESIGN-SKILL-008",
+        "TC-DESIGN-SKILL-010",
+        "TC-DESIGN-SKILL-011",
+        "TC-DESIGN-SKILL-012"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T120804078672",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/ac-closure.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-29T04:08:11.604316+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "FR-003 AC-003",
+      "description": "Add `beacon-design-extract` with operator command `beacon design route extract`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-013",
+        "AC-017",
+        "AC-009",
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-013",
+        "TEST-017",
+        "TC-DESIGN-SKILL-009",
+        "TEST-015"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-DESIGN-SKILL-009"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/exception/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260529T120804078672/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260529T120804078672",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.4.11/.machine/qa/beacon-design-human-subskills-closure-contract.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/ac-closure.json",
+        ".beacon/qa/features/beacon-design-human-subskills-closure-contract/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-05-29T04:08:11.604328+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "FR-004 AC-004",
+      "description": "Add `beacon-design-system` with operator command `beacon design route system`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-014"
+      ],
+      "mapped_test_ids": [
+        "TEST-014"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "FR-005 AC-005",
+      "description": "Align `beacon-design-review` with operator command `beacon design route review`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "FR-006 AC-006",
+      "description": "Add `beacon-design-polish` with operator command `beacon design route polish`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "FR-007 AC-007",
+      "description": "Add `beacon-design-library` with reference-only boundary.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "FR-008 AC-008",
+      "description": "Add `beacon-design-bootstrap` with capability-admission-only boundary.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "FR-009 AC-009",
+      "description": "Ensure every child skill states support-only / non-truth / non-gate / non-stage boundaries.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "FR-010 AC-010",
+      "description": "Document next routes for accepted design facts.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "FR-011 AC-011",
+      "description": "Add regression coverage for host-visible skill family discoverability and route matching.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "FR-012 AC-012",
+      "description": "Keep runtime design CLI, prototype adapter, and release behavior unchanged.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "FR-001 AC-001",
+      "description": "Keep `beacon-design` as the aggregate design support route.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "FR-002 AC-002",
+      "description": "Add `beacon-design-explore` with operator command `beacon design route explore`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "FR-003 AC-003",
+      "description": "Add `beacon-design-extract` with operator command `beacon design route extract`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "FR-004 AC-004",
+      "description": "Add `beacon-design-system` with operator command `beacon design route system`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "FR-005 AC-005",
+      "description": "Align `beacon-design-review` with operator command `beacon design route review`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "FR-006 AC-006",
+      "description": "Add `beacon-design-polish` with operator command `beacon design route polish`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-019",
+      "title": "FR-007 AC-007",
+      "description": "Add `beacon-design-library` with reference-only boundary.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-018"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-020",
+      "title": "FR-008 AC-008",
+      "description": "Add `beacon-design-bootstrap` with capability-admission-only boundary.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-019"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-021",
+      "title": "FR-009 AC-009",
+      "description": "Ensure every child skill states support-only / non-truth / non-gate / non-stage boundaries.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-020"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-022",
+      "title": "FR-010 AC-010",
+      "description": "Document next routes for accepted design facts.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-021"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-023",
+      "title": "FR-011 AC-011",
+      "description": "Add regression coverage for host-visible skill family discoverability and route matching.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-022"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-024",
+      "title": "FR-012 AC-012",
+      "description": "Keep runtime design CLI, prototype adapter, and release behavior unchanged.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-023"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-025",
+      "title": "FR-013 AC-013",
+      "description": "Add `beacon-design-simplify` with operator command `beacon design route simplify` and no upstream dependency.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-024"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-026",
+      "title": "FR-014 AC-014",
+      "description": "Add `simplify` route to `DESIGN_ROUTES` in `beacon/utils/design_contract.py` with five first-principles capabilities.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-025"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-027",
+      "title": "FR-015 AC-015",
+      "description": "Ensure `beacon-design-simplify` states support-only boundary and no-upstream-dependency constraint.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-026"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-028",
+      "title": "FR-016 AC-016",
+      "description": "Write `beacon-design-simplify/SKILL.md` with first-principles simplicity audit guidance and operator command.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-027"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-029",
+      "title": "FR-017 AC-017",
+      "description": "Add regression test for simplify route existence and subskill matching.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-028"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [
+        "implementation must cover the declared branch-flow split points",
+        "implementation must preserve the declared state-machine transitions",
+        "implementation must preserve decision-priority ordering",
+        "implementation must keep state axes explicit: beacon design route simplify, beacon-design-simplify/skill.md"
+      ],
+      "diagram_state_axes": [
+        "beacon design route simplify",
+        "beacon-design-simplify/skill.md"
+      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-design-human-subskills-closure-contract",
+    "feature_slug": "beacon-design-human-subskills-closure-contract",
+    "version": "v1.4.11",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 5,
+    "retained_requirement_count": 12,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-015",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "simplify boundary",
+        "text": "`beacon-design-simplify` declares support-only boundaries and has no upstream skill dependency.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::simplify boundary::`beacon-design-simplify` declares support-only boundaries and has no upstream skill dependency.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-014",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "simplify capabilities",
+        "text": "The simplify route provides `lazy_user_axiom`, `core_scenario_extraction`, `engineer_abstraction_detection`, `information_deduplication`, and `complexity_burden_score`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::simplify capabilities::the simplify route provides `lazy_user_axiom`, `core_scenario_extraction`, `engineer_abstraction_detection`, `information_deduplication`, and `complexity_burden_score`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-013",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "simplify existence",
+        "text": "`beacon-design-simplify` exists and maps to route `simplify` with Beacon-native first-principles capabilities.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::simplify existence::`beacon-design-simplify` exists and maps to route `simplify` with beacon-native first-principles capabilities.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-017",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "simplify regression",
+        "text": "Tests verify `simplify` route exists in `DESIGN_ROUTES` and matches installed `beacon-design-simplify` subskill.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::simplify regression::tests verify `simplify` route exists in `design_routes` and matches installed `beacon-design-simplify` subskill.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-016",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "simplify SKILL.md",
+        "text": "`beacon-design-simplify/SKILL.md` describes the first-principles simplicity audit with operator command `beacon design route simplify`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::simplify skill.md::`beacon-design-simplify/skill.md` describes the first-principles simplicity audit with operator command `beacon design route simplify`.::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "aggregate entry",
+        "text": "`beacon-design` remains the support-only aggregate design entry.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::aggregate entry::`beacon-design` remains the support-only aggregate design entry.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "bootstrap",
+        "text": "`beacon-design-bootstrap` exists, maps to route `bootstrap`, and is capability-admission-only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::bootstrap::`beacon-design-bootstrap` exists, maps to route `bootstrap`, and is capability-admission-only.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "boundary",
+        "text": "Every child skill declares support-only / non-truth / non-gate / non-lifecycle boundaries.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::boundary::every child skill declares support-only / non-truth / non-gate / non-lifecycle boundaries.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "explore",
+        "text": "`beacon-design-explore` exists and maps only to route `explore` / upstream `vibe-to-ui`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::explore::`beacon-design-explore` exists and maps only to route `explore` / upstream `vibe-to-ui`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "extract",
+        "text": "`beacon-design-extract` exists and maps only to route `extract` / upstream `vibe-to-ui`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::extract::`beacon-design-extract` exists and maps only to route `extract` / upstream `vibe-to-ui`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "library",
+        "text": "`beacon-design-library` exists, maps to route `library`, and treats `awesome-design-md` as reference-only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::library::`beacon-design-library` exists, maps to route `library`, and treats `awesome-design-md` as reference-only.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no runtime change",
+        "text": "No new design route, prototype adapter change, or release verdict change is introduced.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::no runtime change::no new design route, prototype adapter change, or release verdict change is introduced.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "polish",
+        "text": "`beacon-design-polish` exists and maps only to route `polish` / upstream `impeccable`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::polish::`beacon-design-polish` exists and maps only to route `polish` / upstream `impeccable`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "review",
+        "text": "`beacon-design-review` exists and maps only to route `review` / upstream `impeccable`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::review::`beacon-design-review` exists and maps only to route `review` / upstream `impeccable`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "system",
+        "text": "`beacon-design-system` exists and maps only to route `system` / upstream `ui-ux-pro-max`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::system::`beacon-design-system` exists and maps only to route `system` / upstream `ui-ux-pro-max`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "testability",
+        "text": "Tests verify installed child skills match deterministic design routes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::testability::tests verify installed child skills match deterministic design routes.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth binding",
+        "text": "Accepted design facts route to truth binding, prototype adapter, or change/refreeze before implementation.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+        "signature": "ac::::truth binding::accepted design facts route to truth binding, prototype adapter, or change/refreeze before implementation.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:fa3ad06374e85aac1bf14b5da2013a7767bbb4e3a27a60d65326a8c9e96e886c",
+    "source_baseline_hash": "sha256:10fbc0931115ffaec9a77ff3736da9c182df2ad71f795d54d9fd52bfffde6ec3",
+    "story_state_ref": "docs/beacon/v1.4.11/.machine/user-story/beacon-design-human-subskills-closure-contract.json",
+    "generated_at": "2026-05-29T04:03:46.781221+00:00",
+    "json_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-beacon-design-human-subskills-closure-contract.json",
+    "markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-beacon-design-human-subskills-closure-contract.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.4.11/.machine/execution/revision-delta-beacon-design-human-subskills-closure-contract.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.4.11/execution/revision-delta-beacon-design-human-subskills-closure-contract.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-design-human-subskills-closure-contract\" --project-root . --version v1.4.11",
+    "run_command": "beacon implement team-run \"beacon-design-human-subskills-closure-contract\" --project . --version v1.4.11",
+    "dev_run_command": "beacon implement dev-run \"beacon-design-human-subskills-closure-contract\" --project . --version v1.4.11",
+    "ralph_command": "beacon implement run \"beacon-design-human-subskills-closure-contract\" --project . --version v1.4.11 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-design-human-subskills-closure-contract\" --project . --version v1.4.11",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-design-human-subskills-closure-contract",
+    "feature_slug": "beacon-design-human-subskills-closure-contract",
+    "version": "v1.4.11",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.4.11",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.4.11.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-05-29T04:03:46.786441+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.4.11-beacon-design-human-subskills-closure-contract-R3",
+    "transaction_id": "tx-11fce8cd7b963e2fc",
+    "source_hash": "sha256:669dcb0e36c57182404009c2fdc380f68dd2efcedc3ac6575b24567d343aae2f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-beacon-design-human-subskills-closure-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.4.11/.machine/execution/git-workflow-beacon-design-human-subskills-closure-contract.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.4.11/execution/git-workflow-beacon-design-human-subskills-closure-contract.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.4.11",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
+      "user_story": "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+      "test_case": "docs/beacon/v1.4.11/qa/test-cases/beacon-design-human-subskills-closure-contract.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.4.11-beacon-design-human-subskills-closure-contract-R3",
+    "transaction_id": "tx-11fce8cd7b963e2fc",
+    "source_hash": "sha256:669dcb0e36c57182404009c2fdc380f68dd2efcedc3ac6575b24567d343aae2f",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-beacon-design-human-subskills-closure-contract.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.4.11/.machine/execution/implementation-delivery-baseline-beacon-design-human-subskills-closure-contract.json",
+  "generated_at": "2026-05-29T04:03:46.843951+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.4.11-beacon-design-human-subskills-closure-contract-R3",
+  "transaction_id": "tx-11fce8cd7b963e2fc",
+  "source_hash": "sha256:669dcb0e36c57182404009c2fdc380f68dd2efcedc3ac6575b24567d343aae2f",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-05-29T04:08:12.033966+00:00",
+  "accepted_at": "2026-05-29T04:08:12.033953+00:00",
+  "accepted_by": "qa"
+}

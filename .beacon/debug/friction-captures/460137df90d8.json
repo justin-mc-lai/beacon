@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-05-30T10:56:12.932153+00:00",
+  "summary": "Rolo project branch governance bypass / branch bug. LLM bypassed branch governance and operated on erroneous duplicate branch `feature/v2.0.0-basic-health-dup-fix` instead of ca...",
+  "raw_note": "Rolo project branch governance bypass / branch bug. LLM bypassed branch governance and operated on erroneous duplicate branch `feature/v2.0.0-basic-health-dup-fix` instead of canonical branch `feature/kzfj-1623-msq-part1-dossier`. Correction completed: cherry-picked `60bf37c` to canonical branch, producing new commit `cb9fba1`; deleted the wrong branch `feature/v2.0.0-basic-health-dup-fix` from both local and remote; switched main worktree back to `uat` for integration acceptance role. Evidence docs from rolo project: `docs/beacon/v2.0.0/debug/friction-branch-governance-bypass.md` records LLM bypassing branch governance and recommends implement gate hard-check `branch-governance-*.md`; `docs/beacon/v2.0.0/debug/basic-health-dup-submit-500.md` records fix root cause and solution, updated to reference canonical branch; `docs/beacon/v2.0.0/execution/branch-governance-msq-part1-dossier.md` adds section 6 incremental fix record with commit hashes, correction process, and follow-up constraints. Category: process_drift. Stage: implement / git workflow / branch governance. Root cause: implement path did not enforce frozen branch governance truth before branch-sensitive git operations. Recommendation: implement gate must verify canonical branch and branch-governance material before commit/cherry-pick/push. Queue-only; do not auto-upgrade to requirement/change.",
+  "item_class": "blocking_bug",
+  "severity": "P1",
+  "domain": "branch-governance",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "evidence_abs_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/debug/friction-captures/460137df90d8.json"
+}

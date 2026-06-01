@@ -63,6 +63,24 @@ DESIGN_ROUTES: dict[str, dict[str, Any]] = {
         "truth_candidate_outputs": ["capability_admission_evidence"],
         "capability_admission_only": True,
     },
+    "simplify": {
+        "route": "beacon-design-simplify",
+        "upstream": "beacon-native",
+        "intent": "simplify",
+        "capabilities": [
+            "lazy_user_axiom",
+            "core_scenario_extraction",
+            "engineer_abstraction_detection",
+            "information_deduplication",
+            "complexity_burden_score",
+        ],
+        "truth_candidate_outputs": [
+            "simplicity_audit_findings",
+            "reduction_recommendations",
+            "core_scenario_map",
+            "complexity_burden_report",
+        ],
+    },
 }
 
 

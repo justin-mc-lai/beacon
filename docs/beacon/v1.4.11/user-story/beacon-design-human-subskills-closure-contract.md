@@ -7,7 +7,7 @@
 
 ## Story
 
-As a Beacon operator, I want each design intent to have a clear `beacon-design-*` child skill, so I can ask for exploration, extraction, component-system planning, review, polish, reference lookup, or bootstrap checks without relying on the AI to reinterpret one broad design skill every time.
+As a Beacon operator, I want each design intent to have a clear `beacon-design-*` child skill, so I can ask for exploration, extraction, component-system planning, review, polish, reference lookup, bootstrap checks, or first-principles simplicity audits without relying on the AI to reinterpret one broad design skill every time.
 
 ## Acceptance Criteria
 
@@ -25,6 +25,11 @@ As a Beacon operator, I want each design intent to have a clear `beacon-design-*
 | AC-010 | truth binding | Accepted design facts route to truth binding, prototype adapter, or change/refreeze before implementation. |
 | AC-011 | testability | Tests verify installed child skills match deterministic design routes. |
 | AC-012 | no runtime change | No new design route, prototype adapter change, or release verdict change is introduced. |
+| AC-013 | simplify existence | `beacon-design-simplify` exists and maps to route `simplify` with Beacon-native first-principles capabilities. |
+| AC-014 | simplify capabilities | The simplify route provides `lazy_user_axiom`, `core_scenario_extraction`, `engineer_abstraction_detection`, `information_deduplication`, and `complexity_burden_score`. |
+| AC-015 | simplify boundary | `beacon-design-simplify` declares support-only boundaries and has no upstream skill dependency. |
+| AC-016 | simplify SKILL.md | `beacon-design-simplify/SKILL.md` describes the first-principles simplicity audit with operator command `beacon design route simplify`. |
+| AC-017 | simplify regression | Tests verify `simplify` route exists in `DESIGN_ROUTES` and matches installed `beacon-design-simplify` subskill. |
 
 ## Test Story Map
 
@@ -42,3 +47,8 @@ As a Beacon operator, I want each design intent to have a clear `beacon-design-*
 | TEST-010 | AC-010 | Truth binding next-route text exists in child skill family. |
 | TEST-011 | AC-011 | Route list from `beacon design contract` and installed subskills match. |
 | TEST-012 | AC-012 | Runtime route list remains unchanged. |
+| TEST-013 | AC-013 | Simplify subskill exists and invokes/points to `beacon design route simplify`. |
+| TEST-014 | AC-014 | Simplify route payload includes five first-principles capabilities. |
+| TEST-015 | AC-015 | Simplify subskill states support-only boundary and no-upstream constraint. |
+| TEST-016 | AC-016 | Simplify SKILL.md contains operator command and first-principles axioms. |
+| TEST-017 | AC-017 | Installed subskills include `beacon-design-simplify` matching `simplify` route. |

@@ -110,6 +110,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.kano import app as kano_app
     from .commands.moscow import app as moscow_app
     from .commands.evolution_summary import app as evolution_summary_app
+    from .commands.manifest import app as manifest_app
+    from .commands.truth import app as truth_app
 
     # Testing & Release commands
     from .commands.auto_test import app as auto_test_app
@@ -147,6 +149,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(status_app, name="status")
     app.add_typer(automation_app, name="automation")
     app.add_typer(doctor_app, name="doctor")
+    app.add_typer(manifest_app, name="manifest")
+    app.add_typer(truth_app, name="truth")
     app.add_typer(archive_app, name="archive")
     app.command("change")(change_entry)
     app.add_typer(workflow_app, name="workflow", hidden=True)

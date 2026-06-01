@@ -241,10 +241,42 @@ def build_material_audit(
         }
     )
 
-    us_features = _feature_names(us_dir)
-    prd_features = _feature_names(prd_dir)
-    tc_features = _feature_names(tc_dir)
-    feature_names = sorted(us_features | prd_features | tc_features)
+    # v1.4.12+: use manifest-based feature discovery
+    from beacon.utils.versioning import normalize_version as _norm_v
+    from beacon.utils.manifest import load_manifest_or_fail as _load_mf, ManifestMissingError as _MFError
+    _mv = _norm_v(resolved_version) or resolved_version
+    try:
+        _major, _minor, _patch = _mv.lstrip("v").split(".")
+        _uses_manifest = (int(_major), int(_minor), int(_patch)) >= (1, 4, 12)
+    except Exception:
+        _uses_manifest = False
+    if _uses_manifest:
+        try:
+            _m = _load_mf(project_root, resolved_version)
+            feature_names = sorted(f.get("slug", "") for f in _m.get("features", []) if f.get("slug"))
+            # Derive per-directory feature sets from manifest truth_paths
+            us_features = set()
+            prd_features = set()
+            tc_features = set()
+            for _f in _m.get("features", []):
+                _slug = _f.get("slug", "")
+                _tp = _f.get("truth_paths", {})
+                if "prd" in _tp:
+                    prd_features.add(_slug)
+                if "user_story" in _tp:
+                    us_features.add(_slug)
+                if "test_case" in _tp:
+                    tc_features.add(_slug)
+        except _MFError:
+            feature_names = []
+            us_features = set()
+            prd_features = set()
+            tc_features = set()
+    else:
+        us_features = _feature_names(us_dir)
+        prd_features = _feature_names(prd_dir)
+        tc_features = _feature_names(tc_dir)
+        feature_names = sorted(us_features | prd_features | tc_features)
     target_feature = str(feature or "").strip().lower().replace(" ", "-")
     if target_feature:
         if target_feature in feature_names:
@@ -909,6 +941,35 @@ def build_requirement_package_gate(
             recommended_action = "doctor-verify-materials"
             recommended_reason = "version-line requirement package closure is incomplete and must be diagnosed before repair"
             recommended_command = f"beacon doctor verify-materials --project-root {root} --version {resolved_version} --strict"
+    # v1.4.12+: Check truth format compliance for frozen features
+    if str(feature or "").strip() and _parse_semver_tuple(resolved_version) >= (1, 4, 12):
+        from beacon.utils.truth_format import validate_prd_format, validate_user_story_format, validate_test_case_format
+        from beacon.utils.manifest import load_manifest_or_fail, ManifestMissingError as _MFErr_gate
+        _slug = str(feature or "").strip().lower().replace(" ", "-")
+        try:
+            _m = load_manifest_or_fail(root, resolved_version)
+            _f_entry = None
+            for _f in _m.get("features", []):
+                if _f.get("slug") == _slug:
+                    _f_entry = _f
+                    break
+            if _f_entry and str(_f_entry.get("status") or "").strip() in ("frozen", "template"):
+                _base = root / "docs" / "beacon" / resolved_version
+                for _kind, _validator in [("prd", validate_prd_format), ("user_story", validate_user_story_format), ("test_case", validate_test_case_format)]:
+                    _rel = _f_entry.get("truth_paths", {}).get(_kind, "")
+                    _path = root / _rel if _rel else _base / ("prd" if _kind == "prd" else ("user-story" if _kind == "user_story" else "qa/test-cases")) / f"{_slug}.md"
+                    if _path.exists():
+                        _content = _path.read_text(encoding="utf-8")
+                        _result = _validator(_content, strict=strict)
+                        if _result.get("status") != "pass":
+                            status = "blocked"
+                            failing_checks.append({"name": f"truth_format_{_kind}", "status": "fail", "reason_code": f"truth_format_non_compliant_{_kind}", "details": _result.get("issues", [])})
+                            failure_categories.append(f"truth_format_non_compliant_{_kind}")
+        except _MFErr_gate:
+            pass
+        except Exception:
+            pass
+
     return {
         "schema_version": "1.0",
         "status": "pass" if status == "pass" else "blocked",

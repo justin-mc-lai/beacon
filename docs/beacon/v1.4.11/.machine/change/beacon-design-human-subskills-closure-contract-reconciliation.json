@@ -1,0 +1,93 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "beacon-design-human-subskills-closure-contract",
+  "feature_slug": "beacon-design-human-subskills-closure-contract",
+  "version": "v1.4.11",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-05-29T04:08:11.612199+00:00",
+  "detected_revision_id": "R3",
+  "source_revision_id": "R2",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R2",
+      "run_id": "run-20260527T020000Z-design-human-subskills",
+      "recorded_at": "2026-05-27T02:15:05.219007+00:00",
+      "implemented_item_ids": [
+        "AC-005",
+        "TEST-009",
+        "TEST-003",
+        "TEST-010",
+        "TEST-006",
+        "AC-001",
+        "AC-007",
+        "TEST-004",
+        "AC-003",
+        "TEST-012",
+        "TEST-002",
+        "TEST-001",
+        "AC-004",
+        "AC-011",
+        "TEST-011",
+        "AC-010",
+        "AC-002",
+        "AC-009",
+        "TEST-008",
+        "AC-012",
+        "TEST-007",
+        "TEST-005",
+        "TASK-001",
+        "AC-008",
+        "AC-006"
+      ],
+      "changed_files": [
+        ".agents/skills/beacon-design-explore/SKILL.md",
+        ".agents/skills/beacon-design-extract/SKILL.md",
+        ".agents/skills/beacon-design-system/SKILL.md",
+        ".agents/skills/beacon-design-review/SKILL.md",
+        ".agents/skills/beacon-design-polish/SKILL.md",
+        ".agents/skills/beacon-design-library/SKILL.md",
+        ".agents/skills/beacon-design-bootstrap/SKILL.md",
+        "skills/beacon/beacon-design-explore/SKILL.md",
+        "skills/beacon/beacon-design-extract/SKILL.md",
+        "skills/beacon/beacon-design-system/SKILL.md",
+        "skills/beacon/beacon-design-review/SKILL.md",
+        "skills/beacon/beacon-design-polish/SKILL.md",
+        "skills/beacon/beacon-design-library/SKILL.md",
+        "skills/beacon/beacon-design-bootstrap/SKILL.md",
+        "tests/test_v1411_beacon_design_human_subskills_closure.py"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.4.11/prd/beacon-design-human-subskills-closure-contract.md",
+    "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/beacon-design-human-subskills-closure-contract.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.4.11/user-story/beacon-design-human-subskills-closure-contract.md",
+    "docs/beacon/v1.4.11/qa/test-cases/beacon-design-human-subskills-closure-contract.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R3",
+    "current_delivery_status": "accepted"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"beacon-design-human-subskills-closure-contract\" --project-root . --version v1.4.11 --reason \"implementation-first-reconciliation\""
+  }
+}

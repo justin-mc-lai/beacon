@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-design-human-subskills-closure-contract
 
 - version: `v1.4.11`
-- change_reason: `accepted brainstorm convergence: split Beacon design human surface into deterministic beacon-design-* child skills`
+- change_reason: `R3: add simplify first-principles route to design subskills`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R1`
-- revision_after: `R2`
+- revision_before: `R3`
+- revision_after: `R3`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.4.11/change/beacon-design-human-subskills-closure-contract.md)

@@ -91,9 +91,9 @@ def render_diagram_truth_section(*, include_diagrams: list[str], state_axes: lis
         return ""
     lines = [
         "",
-        "## 11. Diagram Truth Layer",
+        "## Diagram Truth Layer",
         "",
-        "### 11.1 Diagram Types",
+        "### Diagram Types",
     ]
     if diagram_types:
         lines.extend(f"- `{item}`" for item in diagram_types)
@@ -102,7 +102,7 @@ def render_diagram_truth_section(*, include_diagrams: list[str], state_axes: lis
     lines.extend(
         [
             "",
-            "### 11.2 State Axes",
+            "### State Axes",
         ]
     )
     if axes:
@@ -112,9 +112,11 @@ def render_diagram_truth_section(*, include_diagrams: list[str], state_axes: lis
     lines.extend(
         [
             "",
-            "### 11.3 Propagation Contract",
+            "### Propagation Contract",
             "- Diagram truth must stay explicit through freeze readiness, implementation planning, and QA coverage.",
             "- State axes must not be silently compressed into one implicit status field.",
+            "- User-story AC must declare which state axis transitions they cover.",
+            "- Test-case coverage must declare which diagram branches they cover.",
             "",
         ]
     )
