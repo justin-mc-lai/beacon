@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Fixed the host-native create-time dispatch path (`prd`, `user-story`, `test-case`, `prototype`) so that an injected `BEACON_HOST_<CMD>_RESPONSE_JSON` / `_FILE` response is honoured outright when present, instead of being silently shadowed by a failed bridge subprocess. The dispatcher now reports `effective_mode = "host-response"` and `response_used = true` whenever the response path produced the artifact; the bridge subprocess remains the documented fallback for `host_runtime_supported` projects that have not injected a response. Issue: [justin-mc-lai/beacon#3](https://github.com/justin-mc-lai/beacon/issues/3).
 - Aligned Beacon release/status read models for historical docs lines so projects pinned to older docs versions are no longer incorrectly blocked by newer runtime-era governance gates.
 - Limited release-facing enforcement of semantic, prompt-boundary, evidence-manifest, and test-contract blockers to docs lines that actually opted into those release contracts.
 - Fixed release scorecard version isolation so cross-version QA feature scorecards no longer leak into another version's release verdict.

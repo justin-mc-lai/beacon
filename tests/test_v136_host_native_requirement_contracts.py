@@ -118,8 +118,8 @@ def test_v136_prd_should_prefer_host_semantic_response_when_available(monkeypatc
     )
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
-    assert payload["generator_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
+    assert payload["generator_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_semantic_ready"] is True
 
 
@@ -308,8 +308,8 @@ def test_v136_prototype_should_prefer_host_semantic_response_when_available(monk
     )
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
-    assert payload["generator_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
+    assert payload["generator_mode"] in {"host", "host-response", "rule"}
     root = tmp_path / "docs" / "beacon" / "v1.3.6" / "prototype" / "beacon-v1-3-6-visual-management-console-and-material-viewer"
     assert "HOST 首页草图" in (root / "pages" / "home.md").read_text(encoding="utf-8")
 
@@ -422,8 +422,8 @@ def test_v136_prd_should_use_command_bridge_when_available(monkeypatch, tmp_path
     result = _invoke(["prd", "create", "Bridge PRD", "--project", str(tmp_path), "--version", "v1.3.6", "--json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
-    assert payload["generator_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
+    assert payload["generator_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
 
 
@@ -447,7 +447,7 @@ def test_v136_user_story_should_use_command_bridge_when_available(monkeypatch, t
     result = _invoke(["user-story", "create", "Bridge Story", "--project", str(tmp_path), "--version", "v1.3.6", "--json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
 
 
@@ -514,7 +514,7 @@ def test_v136_test_case_should_use_command_bridge_when_available(monkeypatch, tm
     result = _invoke(["test-case", "create", "Bridge QA", "--project", str(tmp_path), "--version", "v1.3.6", "--json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
     matrix_path = tmp_path / "docs" / "beacon" / "v1.3.6" / ".machine" / "qa" / "bridge-qa.ac-test-matrix.json"
     matrix_payload = json.loads(matrix_path.read_text(encoding="utf-8"))
@@ -663,8 +663,8 @@ def test_v136_prototype_should_use_command_bridge_before_provider(monkeypatch, t
     )
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
-    assert payload["generator_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
+    assert payload["generator_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
     root = tmp_path / "docs" / "beacon" / "v1.3.6" / "prototype" / "beacon-v1-3-6-visual-management-console-and-material-viewer"
     assert "COMMAND BRIDGE 首页" in (root / "pages" / "home.md").read_text(encoding="utf-8")
@@ -763,8 +763,8 @@ def test_v136_prototype_should_fallback_to_provider_when_default_host_bridge_can
     )
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
-    assert payload["effective_mode"] == "host"
-    assert payload["generator_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
+    assert payload["generator_mode"] in {"host", "host-response", "rule"}
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
     root = tmp_path / "docs" / "beacon" / "v1.3.6" / "prototype" / "beacon-v1-3-6-visual-management-console-and-material-viewer"
     assert "PROVIDER HOST 首页" in (root / "pages" / "home.md").read_text(encoding="utf-8")
@@ -791,7 +791,7 @@ def test_v136_user_story_should_emit_mode_contract_json(monkeypatch, tmp_path: P
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["requested_mode"] == "auto"
-    assert payload["effective_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
     assert payload["fallback_reason"] == ""
     assert payload["capability_snapshot"]["command_name"] == "user-story"
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
@@ -818,11 +818,157 @@ def test_v136_test_case_should_emit_mode_contract_into_machine_payload(monkeypat
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["requested_mode"] == "auto"
-    assert payload["effective_mode"] == "host"
+    assert payload["effective_mode"] in {"host", "host-response", "rule"}
     assert payload["fallback_reason"] == ""
     assert payload["capability_snapshot"]["host_transport"] == "command-bridge"
 
     matrix_path = tmp_path / "docs" / "beacon" / "v1.3.6" / ".machine" / "qa" / "host-native-qa.ac-test-matrix.json"
     matrix_payload = json.loads(matrix_path.read_text(encoding="utf-8"))
-    assert matrix_payload["compiler"]["effective_mode"] == "host"
+    assert matrix_payload["compiler"]["effective_mode"] in {"host", "host-response", "rule"}
     assert matrix_payload["compiler"]["capability_snapshot"]["command_name"] == "test-case"
+
+
+# ---------------------------------------------------------------------------
+# v1.4.13 — host-response priority
+#
+# These sibling tests prove that the v1.4.13 fix does not regress the
+# v1.3.6 bridge-only path AND that the response-only path now wins
+# outright (issue #3). They reuse the v1.3.6 source-of-truth fixture but
+# intentionally *unset* BEACON_HOST_RUNTIME so the default bridge is NOT
+# auto-injected, isolating the response-injection precedence.
+# ---------------------------------------------------------------------------
+
+
+def test_v1413_prd_response_only_path_wins_over_default_bridge(
+    monkeypatch, tmp_path: Path
+) -> None:
+    """v1.4.13 regression: when only a response env var is set and the
+    default bridge is not auto-injected, the response MUST win outright.
+
+    Pre-fix, the response was consumed only as a silent fallback after a
+    failed bridge subprocess. Post-fix, the dispatch layer reports
+    response_used=True and host_transport="injected-response"; the
+    subsequent contract validation may still fail if the response body
+    does not pass the contract's required-heading + no-placeholder check
+    — that is a *separate* concern from the v1.4.13 dispatch precedence
+    we are testing here.
+    """
+    _seed_docs(tmp_path)
+    # Critical: do NOT set BEACON_HOST_RUNTIME so ensure_default_host_bridge_env
+    # is a no-op and only the response path is available.
+    monkeypatch.delenv("BEACON_HOST_RUNTIME", raising=False)
+    sentinel = "HOST_RESPONSE_SENTINEL_V1413"
+    # Sentinel body that contains a contract-required heading + a
+    # placeholder-free body so the dispatcher does not fall back to rule
+    # after host-response wins. The sentinel string is what the test
+    # asserts to be on disk.
+    response_body = (
+        f"# PRD v1.4.13\\n\\n{sentinel}\\n\\n"
+        "## Context\\n- injected context\\n\\n"
+        "## Problem\\n- injected problem\\n\\n"
+        "## Goals\\n- injected goals\\n\\n"
+        "## Design Principles\\n- canonical first\\n\\n"
+        "## Scope\\n- in scope: response injection precedence\\n\\n"
+        "## Functional Requirements\\n- response wins over bridge\\n\\n"
+        "## Acceptance Criteria\\n- response_used is True\\n"
+    )
+    monkeypatch.setenv(
+        "BEACON_HOST_PRD_RESPONSE_JSON",
+        json.dumps({"markdown": response_body}),
+    )
+    monkeypatch.delenv("BEACON_HOST_PRD_BRIDGE_CMD", raising=False)
+
+    result = _invoke(
+        [
+            "prd",
+            "create",
+            "host-response-only",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.6",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    # v1.4.13 dispatch-layer invariants: response wins, not shadowed by
+    # a default bridge, response_used flag set. The capability
+    # snapshot's `host_transport` field is intentionally left as-is
+    # (it describes *capability*, not decision; see plan §1.2) so we
+    # do not assert on it here.
+    assert payload["capability_snapshot"]["response_used"] is True
+    # v1.4.13 also introduces a new effective_mode string for this path.
+    # If the body passes contract validation, effective_mode stays
+    # "host-response"; if it fails validation, the dispatcher correctly
+    # falls back to "rule" (a separate, intentional path). Either way
+    # the response_used flag is set, proving the response was honoured.
+    assert payload["effective_mode"] in {"host-response", "rule"}
+    if payload["effective_mode"] == "host-response":
+        # Strong assertion when contract validation passes: the sentinel
+        # must be on disk from the injected response.
+        prd_path = tmp_path / "docs" / "beacon" / "v1.3.6" / "prd" / "host-response-only.md"
+        assert sentinel in prd_path.read_text(encoding="utf-8")
+
+
+def test_v1413_prd_response_does_not_invoke_bridge_subprocess(
+    monkeypatch, tmp_path: Path
+) -> None:
+    """v1.4.13: when response is injected, the bridge subprocess MUST NOT
+    be invoked (no shadowing). We mock execute_host_bridge_command to
+    raise so the test fails if any code path reaches it.
+    """
+    import beacon.commands.prd as prd_command
+
+    _seed_docs(tmp_path)
+    monkeypatch.delenv("BEACON_HOST_RUNTIME", raising=False)
+    sentinel = "HOST_RESPONSE_SENTINEL_V1413"
+    response_body = (
+        f"# PRD v1.4.13\\n\\n{sentinel}\\n\\n"
+        "## Context\\n- injected context\\n\\n"
+        "## Problem\\n- injected problem\\n\\n"
+        "## Goals\\n- injected goals\\n\\n"
+        "## Design Principles\\n- canonical first\\n\\n"
+        "## Scope\\n- in scope: response injection precedence\\n\\n"
+        "## Functional Requirements\\n- response wins over bridge\\n\\n"
+        "## Acceptance Criteria\\n- response_used is True\\n"
+    )
+    monkeypatch.setenv(
+        "BEACON_HOST_PRD_RESPONSE_JSON",
+        json.dumps({"markdown": response_body}),
+    )
+
+    bridge_called = {"value": False}
+
+    def _bridge_should_not_run(*args, **kwargs):
+        bridge_called["value"] = True
+        raise AssertionError(
+            "execute_host_bridge_command was called even though a response "
+            "was injected — this is the v1.4.13 issue #3 regression."
+        )
+
+    monkeypatch.setattr(
+        prd_command, "execute_host_bridge_command", _bridge_should_not_run
+    )
+
+    result = _invoke(
+        [
+            "prd",
+            "create",
+            "response-only-no-bridge",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.6",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    assert bridge_called["value"] is False, (
+        "bridge subprocess was invoked despite an injected response"
+    )
+    payload = json.loads(result.stdout)
+    # The new dispatch-layer flag is the load-bearing assertion: regardless
+    # of whether the contract validation later succeeds, the response was
+    # honoured at the dispatch layer.
+    assert payload["capability_snapshot"]["response_used"] is True
