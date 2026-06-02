@@ -1,0 +1,896 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.5.1",
+  "runtime_line": "v1.5.1",
+  "runtime_release_line": "v1.5.1",
+  "docs_line": "v1.5.1",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "feature_line_status": "current_runtime_release",
+  "truth_refs": {
+    "prd": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+    "user_story": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+    "test_case": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+    "ac_matrix": "docs/beacon/v1.5.1/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+    "story_state": "docs/beacon/v1.5.1/.machine/user-story/beacon-truth-map-center-and-package-cutover.json"
+  },
+  "source_hashes": {
+    "prd": "sha256:e7cb700a4e737bd9ee20532ed0a43bd52066ebb79c4a6a7023ff4f2b2541d124",
+    "user_story": "sha256:49e29be29233a97a3645df040357e8a8aee9edf58e69c978fc6debe0de83aa1a",
+    "test_case": "sha256:09e8acee017fbb007b357ad3b35e14069a09d741681f3adbf0db6781620b5f95",
+    "ac_matrix": "sha256:bf57d8bde3837d54150f93b68127d303897c392a7c032b2b3dd060f452d354a4",
+    "story_state": "sha256:219d6feb022a8bcd23a66820c22a7700c8355a1d3e1b94073d8658bad0b7fa3d"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "resolver-center",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Resolver APIs and constants exist.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "no-json-authority",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_json_is_projection_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "JSON projection cannot be treated as authority.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "md-authority-ready",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_canonical_ready_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Package Markdown exposes v2 contract markers.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "static-contract",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_static_contract_constants -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Static contract constants are stable.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "source-read-unification",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_new_truth_consumers_use_resolver -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "New truth consumers route through resolver.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-006",
+        "ac_id": "AC-006",
+        "ac_theme": "skill-read-unification",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_truth_map_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Skills require truth-map-first reading.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-007",
+        "ac_id": "AC-007",
+        "ac_theme": "no-md-json-multiwrite",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_md_truth_does_not_require_json_twin -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Missing JSON twin does not fail canonical Markdown truth.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-008",
+        "ac_id": "AC-008",
+        "ac_theme": "doctor-rebuild-path",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_doctor_rebuild_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Doctor rebuild route exists or fails closed with explicit unsupported reason.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-009",
+        "ac_id": "AC-009",
+        "ac_theme": "change-absorb-path",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_change_absorb_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Change absorb route exists or fails closed with explicit unsupported reason.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-010",
+        "ac_id": "AC-010",
+        "ac_theme": "drift-prevention",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_verify_detects_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Verify detects resolver/package/rebuild drift.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-011",
+        "ac_id": "AC-011",
+        "ac_theme": "machine-json-rebuild",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_rebuilds_requirement_machine_json -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Rebuild generates requirement-derived `.machine` JSON from resolver-selected Markdown.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-012",
+        "ac_id": "AC-012",
+        "ac_theme": "machine-json-role-labels",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_role_labels_are_not_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Generated machine JSON carries generated-state role labels and is not accepted as authority.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-012/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-013",
+        "ac_id": "AC-013",
+        "ac_theme": "source-hash-freshness",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_source_hash_freshness -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Source paths, resolver contract, and source hashes are recorded and verified.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-013/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-014",
+        "ac_id": "AC-014",
+        "ac_theme": "runtime-json-exemption",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_runtime_json_is_exempt_from_markdown_twin_requirement -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Runtime/process JSON is allowed without Markdown twins and cannot become requirement authority.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-014/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-015",
+        "ac_id": "AC-015",
+        "ac_theme": "stale-machine-fail-closed",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_stale_machine_json_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Stale, non-resolver, or source-hash mismatched `.machine` JSON fails verify.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-015/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-016",
+        "ac_id": "AC-016",
+        "ac_theme": "version-governance-resolver",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_version_governance_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Resolver exposes version governance truth resolution.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-016/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-017",
+        "ac_id": "AC-017",
+        "ac_theme": "governance-authority-classification",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_authority_classification -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Resolver classifies feature truth, governance truth, generated state, and runtime records.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-017/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-018",
+        "ac_id": "AC-018",
+        "ac_theme": "manifest-index-not-truth",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_manifest_index_is_not_truth_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Manifest/index/cache JSON cannot be used as truth authority.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-018/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-020",
+        "ac_id": "AC-020",
+        "ac_theme": "qa-release-resolver-first",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_qa_release_status_read_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "QA, release, and status readers use resolver-first governance routes.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-020/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-021",
+        "ac_id": "AC-021",
+        "ac_theme": "governance-fail-closed",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_drift_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Missing governance truth or drifted generated governance state fails closed.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-021/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-022",
+        "ac_id": "AC-022",
+        "ac_theme": "no-feature-package-overload",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_does_not_contain_version_governance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Feature package is not overloaded with version governance materials.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-022/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-023",
+        "ac_id": "AC-023",
+        "ac_theme": "generated-governance-state-labels",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_generated_governance_state_labels -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Generated governance state carries non-authority labels or equivalent declarations.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-023/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-024",
+        "ac_id": "AC-024",
+        "ac_theme": "implement-governance-preflight",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_implement_version_governance_preflight_blocks_metadata_branch_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Implement plan/dev-run fail closed before execution when project metadata branch contract, current branch, and git workflow expected branch drift.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-024/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-025",
+        "ac_id": "AC-025",
+        "ac_theme": "truth-center-integration-sweep",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_integration_sweep_policy_boundary -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Normal truth read/write/gate/rebuild/absorb entrypoint APIs are routed through truth_center while v1.5.1 keeps `feature_package_authoritative_ready` and does not flip authority.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-025/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [
+      {
+        "tc_id": "TC-019",
+        "ac_id": "AC-019",
+        "ac_theme": "material-audit-resolver-first",
+        "lane": "legacy_snapshot",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_material_audit_reads_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "Material audit asks resolver before manifest or legacy paths.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-019/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-026",
+        "ac_id": "AC-026",
+        "ac_theme": "truth-center-entrypoint-inventory",
+        "lane": "legacy_snapshot",
+        "layer": "static-contract",
+        "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_entrypoint_inventory_covers_high_risk_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+        "assertion": "High-risk command, utility, packaged skill, and `.agents/skills` truth entrypoints are inventoried and each row is resolver/truth_center-routed or explicitly classified as a v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling.",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-026/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      }
+    ],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 24,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 2,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "resolver-center",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Resolver APIs and constants exist.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "no-json-authority",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_json_is_projection_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "JSON projection cannot be treated as authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "md-authority-ready",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_canonical_ready_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Package Markdown exposes v2 contract markers.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "static-contract",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_static_contract_constants -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Static contract constants are stable.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "source-read-unification",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_new_truth_consumers_use_resolver -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "New truth consumers route through resolver.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "ac_theme": "skill-read-unification",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_truth_map_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skills require truth-map-first reading.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "ac_theme": "no-md-json-multiwrite",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_md_truth_does_not_require_json_twin -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing JSON twin does not fail canonical Markdown truth.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "ac_theme": "doctor-rebuild-path",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_doctor_rebuild_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Doctor rebuild route exists or fails closed with explicit unsupported reason.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "ac_theme": "change-absorb-path",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_change_absorb_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Change absorb route exists or fails closed with explicit unsupported reason.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "ac_theme": "drift-prevention",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_verify_detects_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Verify detects resolver/package/rebuild drift.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-011",
+      "ac_theme": "machine-json-rebuild",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_rebuilds_requirement_machine_json -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Rebuild generates requirement-derived `.machine` JSON from resolver-selected Markdown.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-012",
+      "ac_theme": "machine-json-role-labels",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_role_labels_are_not_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Generated machine JSON carries generated-state role labels and is not accepted as authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-013",
+      "ac_theme": "source-hash-freshness",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_source_hash_freshness -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Source paths, resolver contract, and source hashes are recorded and verified.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-014",
+      "ac_theme": "runtime-json-exemption",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_runtime_json_is_exempt_from_markdown_twin_requirement -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Runtime/process JSON is allowed without Markdown twins and cannot become requirement authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-014/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-015",
+      "ac_theme": "stale-machine-fail-closed",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_stale_machine_json_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Stale, non-resolver, or source-hash mismatched `.machine` JSON fails verify.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-015/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-016",
+      "ac_theme": "version-governance-resolver",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_version_governance_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Resolver exposes version governance truth resolution.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-016/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-017",
+      "ac_theme": "governance-authority-classification",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_authority_classification -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Resolver classifies feature truth, governance truth, generated state, and runtime records.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-017/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-018",
+      "ac_theme": "manifest-index-not-truth",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_manifest_index_is_not_truth_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Manifest/index/cache JSON cannot be used as truth authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-018/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-019",
+      "ac_theme": "material-audit-resolver-first",
+      "lane": "legacy_snapshot",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_material_audit_reads_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Material audit asks resolver before manifest or legacy paths.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-019/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-020",
+      "ac_theme": "qa-release-resolver-first",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_qa_release_status_read_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "QA, release, and status readers use resolver-first governance routes.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-020/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-021",
+      "ac_theme": "governance-fail-closed",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_drift_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing governance truth or drifted generated governance state fails closed.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-021/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-022",
+      "ac_theme": "no-feature-package-overload",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_does_not_contain_version_governance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature package is not overloaded with version governance materials.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-022/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-023",
+      "ac_theme": "generated-governance-state-labels",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_generated_governance_state_labels -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Generated governance state carries non-authority labels or equivalent declarations.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-023/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-024",
+      "ac_theme": "implement-governance-preflight",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_implement_version_governance_preflight_blocks_metadata_branch_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Implement plan/dev-run fail closed before execution when project metadata branch contract, current branch, and git workflow expected branch drift.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-024/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-025",
+      "ac_theme": "truth-center-integration-sweep",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_integration_sweep_policy_boundary -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Normal truth read/write/gate/rebuild/absorb entrypoint APIs are routed through truth_center while v1.5.1 keeps `feature_package_authoritative_ready` and does not flip authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-025/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-026",
+      "ac_id": "AC-026",
+      "ac_theme": "truth-center-entrypoint-inventory",
+      "lane": "legacy_snapshot",
+      "layer": "static-contract",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_entrypoint_inventory_covers_high_risk_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "High-risk command, utility, packaged skill, and `.agents/skills` truth entrypoints are inventoried and each row is resolver/truth_center-routed or explicitly classified as a v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-026/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005"
+    ],
+    "AC-006": [
+      "TC-006"
+    ],
+    "AC-007": [
+      "TC-007"
+    ],
+    "AC-008": [
+      "TC-008"
+    ],
+    "AC-009": [
+      "TC-009"
+    ],
+    "AC-010": [
+      "TC-010"
+    ],
+    "AC-011": [
+      "TC-011"
+    ],
+    "AC-012": [
+      "TC-012"
+    ],
+    "AC-013": [
+      "TC-013"
+    ],
+    "AC-014": [
+      "TC-014"
+    ],
+    "AC-015": [
+      "TC-015"
+    ],
+    "AC-016": [
+      "TC-016"
+    ],
+    "AC-017": [
+      "TC-017"
+    ],
+    "AC-018": [
+      "TC-018"
+    ],
+    "AC-019": [
+      "TC-019"
+    ],
+    "AC-020": [
+      "TC-020"
+    ],
+    "AC-021": [
+      "TC-021"
+    ],
+    "AC-022": [
+      "TC-022"
+    ],
+    "AC-023": [
+      "TC-023"
+    ],
+    "AC-024": [
+      "TC-024"
+    ],
+    "AC-025": [
+      "TC-025"
+    ],
+    "AC-026": [
+      "TC-026"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.5.1",
+    "docs_default_line": "v1.5.1",
+    "current_runtime_release_line": "v1.5.1",
+    "feature_line_status": "current_runtime_release"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-06-02T08:54:55.070548+00:00",
+  "index_path": "docs/beacon/v1.5.1/.machine/testing/test-contract-index.json"
+}
