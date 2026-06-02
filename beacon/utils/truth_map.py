@@ -24,6 +24,7 @@ from beacon.utils.versioning import normalize_version
 
 TRUTH_MAP_CONTRACT = "beacon-truth-map-v1"
 TRUTH_SOURCE_MODEL = "feature_package_authoritative_ready"
+TRUTH_SOURCE_MODEL_AUTHORITATIVE = "feature_package_authoritative"
 TRUTH_PACKAGE_CONTRACT = "beacon-feature-package-v2"
 MACHINE_JSON_ROLE = "generated_state_not_truth"
 MACHINE_JSON_GENERATOR = "beacon.truth_map.resolver"
@@ -196,6 +197,14 @@ def truth_map_supported(version: str | None) -> bool:
     return _semver_tuple(version) >= (1, 5, 1)
 
 
+def truth_source_model_for_version(version: str | None) -> str:
+    return TRUTH_SOURCE_MODEL_AUTHORITATIVE if _semver_tuple(version) >= (1, 5, 2) else TRUTH_SOURCE_MODEL
+
+
+def feature_package_authoritative(version: str | None) -> bool:
+    return truth_source_model_for_version(version) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+
+
 def _rel(root: Path, path: Path) -> str:
     try:
         return str(path.relative_to(root))
@@ -248,7 +257,7 @@ def resolve_truth_surface(project_root: Path, *, version: str, feature: str, sur
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": truth_source_model_for_version(version),
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "feature": feature,
         "feature_slug": slug,
@@ -275,10 +284,11 @@ def resolve_feature_truth(project_root: Path, *, version: str, feature: str) -> 
         for surface in FEATURE_SURFACES
     }
     canonical_refs = frontmatter.get("canonical_refs") if isinstance(frontmatter.get("canonical_refs"), dict) else {}
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "feature": feature,
@@ -286,6 +296,8 @@ def resolve_feature_truth(project_root: Path, *, version: str, feature: str) -> 
         "version": version,
         "status": "resolved" if all(item["exists"] for item in sources.values()) else "blocked",
         "truth_authority": "markdown_feature_package",
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
         "json_authority": False,
         "frontmatter": frontmatter,
         "frontmatter_errors": frontmatter_errors,
@@ -306,7 +318,7 @@ def resolve_governance_surface(project_root: Path, *, version: str, surface: str
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": truth_source_model_for_version(version),
         "resolver_mode": GOVERNANCE_RESOLVER_MODE,
         "version": version,
         "surface": surface,
@@ -371,16 +383,18 @@ def resolve_version_governance(project_root: Path, *, version: str) -> dict[str,
     for payload in generated_surfaces.values():
         diagnostics.extend(_generated_governance_state_diagnostics(project_root, payload))
     has_errors = any(item.get("severity") == "error" for item in diagnostics)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "resolver_mode": GOVERNANCE_RESOLVER_MODE,
         "version": version,
         "status": "blocked" if has_errors else "pass",
         "blocked": has_errors,
         "authority_classification": {
             "feature_truth": "markdown_feature_package",
+            "feature_truth_model": model,
             "version_governance_truth": VERSION_GOVERNANCE_TRUTH_ROLE,
             "generated_governance_state": GENERATED_GOVERNANCE_STATE_ROLE,
             "runtime_process_record": RUNTIME_JSON_ROLE,
@@ -397,17 +411,18 @@ def resolve_truth_read_refs(project_root: Path, *, version: str, feature: str, c
     """Resolve normal truth read references through truth_center without flipping v1.5.1 authority."""
 
     slug = feature_slug(feature)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "feature": feature,
         "feature_slug": slug,
         "version": version,
         "consumer": consumer,
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
         "source_refs": _source_paths(project_root, version=version, feature=slug),
         "json_authority": False,
     }
@@ -424,10 +439,11 @@ def resolve_truth_write_target(
     """Resolve a truth write target through truth_center while keeping CLI validation authoritative."""
 
     resolved = resolve_truth_surface(project_root, version=version, feature=feature, surface=surface)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "feature": feature,
         "feature_slug": feature_slug(feature),
@@ -435,8 +451,8 @@ def resolve_truth_write_target(
         "producer": producer,
         "surface": surface,
         "target_path": resolved["path"],
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
         "requires_cli_validation": True,
         "json_authority": False,
     }
@@ -446,10 +462,11 @@ def resolve_gate_inputs(project_root: Path, *, version: str, feature: str, gate:
     """Resolve gate inputs through truth_center and include governance truth classification."""
 
     slug = feature_slug(feature)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "feature": feature,
         "feature_slug": slug,
@@ -457,8 +474,8 @@ def resolve_gate_inputs(project_root: Path, *, version: str, feature: str, gate:
         "gate": gate,
         "feature_truth": resolve_feature_truth(project_root, version=version, feature=slug),
         "version_governance": resolve_version_governance(project_root, version=version),
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
         "json_authority": False,
     }
 
@@ -468,17 +485,19 @@ def resolve_legacy_rebuild_targets(project_root: Path, *, version: str, feature:
 
     slug = feature_slug(feature)
     base = f"docs/beacon/{version}"
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "feature": feature,
         "feature_slug": slug,
         "version": version,
-        "status": "reserved_fail_closed",
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "status": "legacy_output_only" if feature_package_authoritative(version) else "reserved_fail_closed",
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
+        "legacy_authority": False,
         "source_refs": _source_paths(project_root, version=version, feature=slug),
         "targets": {
             "prd": f"{base}/prd/{slug}.md",
@@ -494,17 +513,19 @@ def resolve_legacy_absorb_targets(project_root: Path, *, version: str, feature: 
 
     slug = feature_slug(feature)
     base = f"docs/beacon/{version}"
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "feature": feature,
         "feature_slug": slug,
         "version": version,
-        "status": "reserved_fail_closed",
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "status": "package_truth_target_only" if feature_package_authoritative(version) else "reserved_fail_closed",
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
+        "legacy_authority": False,
         "source_refs": {
             "prd": f"{base}/prd/{slug}.md",
             "user_story": f"{base}/user-story/{slug}.md",
@@ -543,10 +564,24 @@ def _inventory_entry(project_root: Path, row: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _inventory_entry_for_version(project_root: Path, row: dict[str, Any], *, version: str) -> dict[str, Any]:
+    entry = _inventory_entry(project_root, row)
+    if not feature_package_authoritative(version):
+        return entry
+    if entry["classification"] == LEGACY_EXCEPTION_CLASSIFICATION:
+        entry["classification"] = "cutover_required"
+        entry["explicit_v151_exception"] = False
+        entry["truth_center_routed"] = False
+        entry["cutover_violation"] = True
+    else:
+        entry["cutover_violation"] = False
+    return entry
+
+
 def resolve_truth_entrypoint_inventory(project_root: Path, *, version: str) -> dict[str, Any]:
     """Resolve the AC-026 high-risk truth entrypoint inventory."""
 
-    entries = [_inventory_entry(project_root, dict(row)) for row in TRUTH_CENTER_ENTRYPOINT_INVENTORY]
+    entries = [_inventory_entry_for_version(project_root, dict(row), version=version) for row in TRUTH_CENTER_ENTRYPOINT_INVENTORY]
     diagnostics: list[dict[str, Any]] = []
     for entry in entries:
         if not entry["exists"]:
@@ -561,7 +596,9 @@ def resolve_truth_entrypoint_inventory(project_root: Path, *, version: str) -> d
             diagnostics.append(
                 {
                     "severity": "error",
-                    "code": "truth_entrypoint_inventory_unclassified",
+                    "code": "truth_entrypoint_legacy_exception_not_allowed"
+                    if entry.get("cutover_violation")
+                    else "truth_entrypoint_inventory_unclassified",
                     "path": entry["path"],
                     "classification": entry["classification"],
                 }
@@ -575,16 +612,17 @@ def resolve_truth_entrypoint_inventory(project_root: Path, *, version: str) -> d
                 }
             )
     has_errors = any(item.get("severity") == "error" for item in diagnostics)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "route_mode": TRUTH_CENTER_ROUTE_MODE,
         "version": version,
         "status": "blocked" if has_errors else "pass",
         "blocked": has_errors,
-        "authority_state": TRUTH_SOURCE_MODEL,
-        "authority_flip_allowed": False,
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
         "required_entrypoint_count": len(entries),
         "entries": entries,
         "diagnostics": diagnostics,
@@ -808,6 +846,7 @@ def resolve_machine_json_plan(project_root: Path, *, version: str, feature: str)
     """Return resolver-owned requirement-derived machine JSON outputs."""
 
     slug = feature_slug(feature)
+    model = truth_source_model_for_version(version)
     outputs = {
         "truth_map_projection": machine_requirement_file(project_root, version, f"{slug}.truth-map.json"),
         "requirement_package_state": machine_requirement_file(project_root, version, f"{slug}.requirement-package.json"),
@@ -816,7 +855,7 @@ def resolve_machine_json_plan(project_root: Path, *, version: str, feature: str)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "generated_by": MACHINE_JSON_GENERATOR,
@@ -833,11 +872,11 @@ def resolve_machine_json_plan(project_root: Path, *, version: str, feature: str)
         },
         "routes": {
             "doctor_rebuild": {
-                "status": "reserved_fail_closed",
+                "status": "legacy_output_only" if feature_package_authoritative(version) else "reserved_fail_closed",
                 "command": f"beacon truth-map rebuild-machine {slug} --version {version}",
             },
             "change_absorb": {
-                "status": "reserved_fail_closed",
+                "status": "package_truth_target_only" if feature_package_authoritative(version) else "reserved_fail_closed",
                 "command": f"beacon change {slug} --version {version} --reason absorb-legacy-truth-into-feature-package",
             },
         },
@@ -848,10 +887,11 @@ def resolve_truth_map(project_root: Path, *, version: str, feature: str | None =
     """Resolve truth-map metadata from static resolver code and Markdown sources."""
 
     slug = feature_slug(feature) if feature else ""
+    model = truth_source_model_for_version(version)
     payload: dict[str, Any] = {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "runtime_json_role": RUNTIME_JSON_ROLE,
@@ -862,6 +902,8 @@ def resolve_truth_map(project_root: Path, *, version: str, feature: str | None =
         "truth_map_json_authority": False,
         "json_authority": False,
         "authority_source": "cli_static_resolver_plus_markdown_feature_package",
+        "authority_state": model,
+        "authority_flip_allowed": feature_package_authoritative(version),
     }
     if slug:
         payload["feature"] = feature
@@ -883,10 +925,11 @@ def _requirement_package_state(project_root: Path, *, version: str, feature: str
     evidence_md = _read_text(paths["evidence"])
     frontmatter, _body, frontmatter_errors = _parse_frontmatter(truth_md)
     checkbox_rows, checkbox_errors = _parse_checkboxes(tasks_md)
+    model = truth_source_model_for_version(version)
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "generated_by": MACHINE_JSON_GENERATOR,
@@ -912,6 +955,7 @@ def rebuild_machine_json(project_root: Path, *, version: str, feature: str, stri
     """Regenerate requirement-derived machine JSON from resolver-selected Markdown."""
 
     slug = feature_slug(feature)
+    model = truth_source_model_for_version(version)
     plan = resolve_machine_json_plan(project_root, version=version, feature=slug)
     validation = validate_feature_package(project_root, version=version, feature=slug, write_report=True)
     if strict and validation.get("blocked"):
@@ -953,7 +997,7 @@ def rebuild_machine_json(project_root: Path, *, version: str, feature: str, stri
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "generated_by": MACHINE_JSON_GENERATOR,
@@ -1015,6 +1059,7 @@ def verify_truth_map(project_root: Path, *, version: str, feature: str, strict: 
     diagnostics: list[dict[str, Any]] = []
     resolved = resolve_feature_truth(project_root, version=version, feature=slug)
     validation = validate_feature_package(project_root, version=version, feature=slug, write_report=False)
+    model = truth_source_model_for_version(version)
 
     if not truth_map_supported(version):
         diagnostics.append({"severity": "error", "code": "truth_map_unsupported_version", "version": version})
@@ -1041,7 +1086,7 @@ def verify_truth_map(project_root: Path, *, version: str, feature: str, strict: 
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
-        "truth_source_model": TRUTH_SOURCE_MODEL,
+        "truth_source_model": model,
         "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
         "machine_json_role": MACHINE_JSON_ROLE,
         "feature": feature,

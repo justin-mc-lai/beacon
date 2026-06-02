@@ -1,14 +1,14 @@
 ---
 name: beacon-user-story
-description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from a Beacon PRD through Beacon's current v1.4.10 runtime surface.
+description: Use when the user wants to derive, refine, review, or freeze user stories and acceptance criteria from Beacon's current v1.5.2 package-authoritative feature truth.
 ---
 
 # Beacon User Story
 
 This skill routes story work through Beacon's `user-story` surface.
 
-The host-readable contract is aligned to the current `v1.4.10` docs line.
-Compatibility bridges may still exist, but the active requirement truth and acceptance framing should be read from `docs/beacon/v1.4.10/`.
+The host-readable contract is aligned to the current `v1.5.2` package-authoritative docs line.
+For v1.5.2 features, read resolver-selected `features/<slug>/truth.md` as the active requirement and acceptance framing. Legacy `prd / user-story / qa/test-cases` files are migration, rebuild, or archive material only.
 
 ## Use for
 
@@ -16,7 +16,7 @@ Compatibility bridges may still exist, but the active requirement truth and acce
 - acceptance criteria refinement
 - story boundary clarification
 - readiness checks before test-case or freeze
-- truth-projected story generation from frozen `prd / user-story / qa/test-cases` materials
+- story and AC refinement from frozen `features/<slug>/truth.md`
 
 ## Operator rule
 
@@ -34,8 +34,8 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - `project-root`
 - `version`
 - `feature`
-- upstream PRD truth
-- existing story truth when revising
+- resolver-selected `features/<slug>/truth.md`
+- existing package story/AC sections when revising
 - semantic / diagram inputs when the feature exposes stable states, routes, or official vocabulary
 
 ## Decision Protocol
@@ -68,6 +68,16 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - `beacon prd ...` when upstream truth is incomplete
 - `beacon change ...` for frozen-truth revisions
 
+## v1.5.2 Package-Authoritative Read Order
+
+For v1.5.2+ features, read the resolver output before consuming requirement material:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Then read and update the resolved `features/<slug>/truth.md`. Acceptance criteria in that file are the normal story authority. Generated `.machine` JSON is generated state, and legacy story files are not requirement truth.
+
 ## Examples
 
 - 适用例：
@@ -82,4 +92,4 @@ If the PRD is still incomplete, surface supplement targets and re-freeze intent 
 - `user-story` 不是 PRD 摘抄，而是把承诺面编译成可执行 acceptance truth。
 - 如果上游 PRD 不稳定，story 不能假装已经完成。
 - 如果官方术语、状态或页面名已经存在，应优先复用，而不是再造第二套命名。
-- `user-story` 的下游目标不是“看起来合理”，而是能继续进入 `test-case -> requirement_clarity -> freeze`。
+- `user-story` 的下游目标不是“看起来合理”，而是能继续进入 package `tests.md` 覆盖与冻结校验。

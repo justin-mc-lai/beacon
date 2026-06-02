@@ -1,14 +1,14 @@
 ---
 name: beacon-test-case
-description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.4.10 runtime surface.
+description: Use when the user wants to create, extend, or audit test cases and acceptance coverage for a Beacon feature through Beacon's current v1.5.2 package-authoritative runtime surface.
 ---
 
 # Beacon Test Case
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
-The active coverage contract is aligned to the current `v1.4.10` docs line.
-Compatibility bridges may still resolve older entrypoints, but the truth package should be read from `docs/beacon/v1.4.10/`.
+The active coverage contract is aligned to the current `v1.5.2` package-authoritative docs line.
+For v1.5.2 features, `features/<slug>/tests.md` is the normal coverage truth. Legacy `qa/test-cases/` and `.machine/qa/` outputs are migration, rebuild, generated state, or archive material only.
 
 ## Use for
 
@@ -16,7 +16,7 @@ Compatibility bridges may still resolve older entrypoints, but the truth package
 - acceptance coverage expansion
 - boundary and regression coverage review
 - QA preparation before implementation or verification
-- truth-projected case generation from frozen `user-story / prd / qa/test-cases` materials
+- truth-projected case generation from frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`
 
 ## Operator rule
 
@@ -34,8 +34,8 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - `project-root`
 - `version`
 - `feature`
-- upstream `user-story` and `prd`
-- existing `qa/test-cases` truth when revising
+- resolver-selected `features/<slug>/truth.md`
+- existing `features/<slug>/tests.md` coverage truth when revising
 - diagram / semantic inputs when route, state, or invariant coverage is required
 
 ## Decision Protocol
@@ -69,17 +69,17 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - `beacon user-story ...` when ACs are under-specified
 - `beacon prototype ...` when real UX/UI handoff is present
 
-## v1.5.1 Truth Map Read Order
+## v1.5.2 Package-Authoritative Read Order
 
-For v1.5.1+ features, read the resolver output before consuming package files:
+For v1.5.2+ features, read the resolver output before consuming coverage material:
 
 ```bash
-beacon truth-map resolve <feature> --project . --version v1.5.1 --json
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
 ```
 
-Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. Resolver output and generated `.machine` JSON are generated state, not truth authority.
+Then read `features/<slug>/truth.md` and `features/<slug>/tests.md` from the resolved paths. Markdown package files are the requirement and coverage authority; resolver output and generated `.machine` JSON are generated state, not truth authority.
 
-## v1.5.0 Feature Package Quick Template
+## v1.5.2 Feature Package Quick Template
 
 When writing `features/<slug>/tests.md`, keep the AC-to-test table deterministic:
 
@@ -90,10 +90,10 @@ When writing `features/<slug>/tests.md`, keep the AC-to-test table deterministic
 
 | AC ID | TC ID | Layer | Assertion |
 |-------|-------|-------|-----------|
-| AC-001 | TC-001 | integration | The feature package validates without replacing canonical truth. |
+| AC-001 | TC-001 | integration | The feature package validates as the authoritative coverage source. |
 ```
 
-The package test file is a read model. Canonical coverage truth remains under `qa/test-cases/` and `.machine/qa/` in v1.5.0.
+The package test file is coverage truth in v1.5.2. CLI-generated matrices under `.machine/qa/` are projections and must not become the authority.
 
 ## Examples
 
@@ -109,4 +109,4 @@ The package test file is a read model. Canonical coverage truth remains under `q
 - `test-case` 负责 coverage truth，不负责执行 verdict。
 - 只有 happy-path 的矩阵不算 coverage closure。
 - 如果 feature 有真实 UX/UI handoff，要显式判断 `prototype` 是否应先触发。
-- `test-case` 不是 freeze 后补写的说明文档；它是 `research -> prd -> user-story -> test-case -> requirement_clarity -> freeze` 合同链的一环。
+- `test-case` 不是 freeze 后补写的说明文档；在 v1.5.2 中它必须落到 resolver-selected `features/<slug>/tests.md`。

@@ -1,6 +1,6 @@
 ---
 name: beacon-release
-description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.4.10 runtime surface.
+description: Use when the user wants Beacon to judge release readiness, inspect final blocking conditions, or run the last release-facing checks through Beacon's current v1.5.2 package-authoritative runtime surface.
 ---
 
 # Beacon Release
@@ -10,8 +10,8 @@ description: Use when the user wants Beacon to judge release readiness, inspect 
 This skill routes final ship / release-readiness work through Beacon's `release` surface.
 
 Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
-The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
-Compatibility bridges may still exist for older entrypoints or wrappers, but release judgment must bind to the current docs/runtime truth line.
+The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+For v1.5.2 features, release judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`, layered QA proof, and version governance. Legacy truth files may be migration or archive inputs only.
 
 ## When to Use
 
@@ -101,6 +101,16 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but rel
 - `beacon release ...`
 - `beacon qa ...` when proof is incomplete
 - `beacon doctor verify-version-surfaces --project-root . --strict`
+
+## v1.5.2 Package-Authoritative Read Order
+
+For v1.5.2+ features, read the resolver output before judging release readiness:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Release may consume generated QA/release reports as evidence, but requirement truth must come from the resolved Markdown feature package. Generated `.machine` JSON, manifests, and gate reports are generated state, not requirement truth, and not requirement authority.
 
 ## Supporting References
 

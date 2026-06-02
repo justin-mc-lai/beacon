@@ -468,15 +468,16 @@ def validate_feature_package(
             MACHINE_JSON_ROLE,
             TRUTH_MAP_CONTRACT,
             TRUTH_PACKAGE_CONTRACT,
-            TRUTH_SOURCE_MODEL,
             resolve_feature_truth,
+            truth_source_model_for_version,
         )
 
         resolved_truth = resolve_feature_truth(project_root, version=version, feature=slug)
+        model = truth_source_model_for_version(version)
         payload.update(
             {
                 "truth_map_contract": TRUTH_MAP_CONTRACT,
-                "truth_source_model": TRUTH_SOURCE_MODEL,
+                "truth_source_model": model,
                 "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
                 "machine_json_role": MACHINE_JSON_ROLE,
                 "generated_by": MACHINE_JSON_GENERATOR,

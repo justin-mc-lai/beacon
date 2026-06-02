@@ -3,7 +3,7 @@ name: beacon
 description: Use when you need Beacon's evidence-first workflow as the host-level meta-protocol for deciding which truth, execution, gate, or support surface should run next.
 metadata:
   author: Beacon CLI
-  version: "1.4.10"
+  version: "1.5.2"
   organization: Beacon
   date: May 2026
   abstract: Compact meta-protocol for Beacon's human-facing workflow surface. It classifies the current decision surface, preserves hard boundaries, and routes to the right child skill without exposing runtime internals by default.
@@ -77,11 +77,12 @@ Legacy compatibility anchors that should remain discoverable from the packaged h
 These rules should remain true even when runtime details evolve:
 
 - main chain stays compact: `prd -> user-story -> test-case -> implement -> qa -> release`
+- v1.5.2 feature truth is resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; legacy triptych files are migration, rebuild, or archive material only
 - `prototype` is conditional, not a mandatory new stage for every feature
 - support surfaces stay advisory and do not become truth sources
 - support surfaces are not gate sources
 - support surfaces are not new lifecycle stages
-- canonical truth remains versioned under `docs/beacon/<version>/`
+- canonical truth remains versioned under `docs/beacon/<version>/`; for v1.5.2 features, canonical requirement truth is the Markdown feature package
 - QA prompt contract must follow first principles and bind claims back to evidence
 - if a scorecard or gate path says `stop_for_repair`, route to repair or truth recovery before continuing
 - browser-admitted or compatibility paths such as `browser-use` remain optional capability planes, not default lifecycle requirements
@@ -146,11 +147,21 @@ Beacon should absorb complexity into machine-readable surfaces first, then proje
 
 Keep only the minimum current anchors here:
 
-- current package version: `1.4.10`
-- current planning line for this evolution theme: `docs/beacon/v1.4.10/`
-- current public runtime/docs line: `docs/beacon/v1.4.10/`
-- previous runtime line: `docs/beacon/v1.4.9/`
+- current package version: `1.5.2`
+- current planning line for this evolution theme: `docs/beacon/v1.5.2/`
+- current public runtime/docs line: `docs/beacon/v1.5.2/`
+- previous runtime line: `docs/beacon/v1.5.1/`
 - if a target project pins another docs line, follow the pinned local truth instead of silently overriding it
+
+## v1.5.2 Truth Resolver Rule
+
+Before reading or writing feature truth, resolve the current truth map:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Then consume the resolved `features/<slug>/{truth,tests,tasks,evidence}.md`. Resolver output, `.machine` JSON, manifests, QA status, and release reports are generated state or evidence, not requirement authority.
 
 ## Lightweight References
 
@@ -169,18 +180,18 @@ When the user needs fast human-readable judgment support, start with:
 
 These references are non-canonical support material. They help humans scan and decide faster, but they do not replace versioned truth.
 
-For complex features, the minimum freeze-facing requirement chain remains:
+For complex v1.5.2 features, the minimum freeze-facing requirement chain is expressed inside the feature package:
 
-`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`
+`research/support -> truth.md -> tests.md -> requirement_clarity -> freeze`
 
 ## Deep References
 
 When versioned delivery context is needed, read progressively:
 
-1. [`../../docs/beacon/v1.4.10/SUMMARY.md`](../../docs/beacon/v1.4.10/SUMMARY.md)
-2. [`../../docs/beacon/v1.4.10/execution/index.md`](../../docs/beacon/v1.4.10/execution/index.md)
-3. [`../../docs/beacon/v1.4.10/release/checklist-v1.4.10.md`](../../docs/beacon/v1.4.10/release/checklist-v1.4.10.md)
-4. [`../../docs/beacon/v1.4.9/SUMMARY.md`](../../docs/beacon/v1.4.9/SUMMARY.md)
+1. [`../../docs/beacon/v1.5.2/SUMMARY.md`](../../docs/beacon/v1.5.2/SUMMARY.md)
+2. [`../../docs/beacon/v1.5.2/execution/index.md`](../../docs/beacon/v1.5.2/execution/index.md)
+3. [`../../docs/beacon/v1.5.2/release/v1.5.2.md`](../../docs/beacon/v1.5.2/release/v1.5.2.md)
+4. [`../../docs/beacon/v1.5.1/SUMMARY.md`](../../docs/beacon/v1.5.1/SUMMARY.md)
 
 Do not treat this wrapper as the full runtime manual or release note.
 

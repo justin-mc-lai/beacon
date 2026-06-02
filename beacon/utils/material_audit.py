@@ -200,7 +200,7 @@ def build_material_audit(
     requires_change_loop_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 10)
     requires_prd_mirror_dual_write = _parse_semver_tuple(resolved_version) >= (1, 3, 11)
     requires_requirement_deepening = _parse_semver_tuple(resolved_version) >= (1, 3, 12)
-    requires_markdown_first_freeze = markdown_first_freeze_supported(resolved_version)
+    requires_markdown_first_freeze = markdown_first_freeze_supported(resolved_version) and _parse_semver_tuple(resolved_version) < (1, 5, 2)
     source_root = root / "docs" / "beacon" / resolved_version
     research_dir = source_root / "research"
     us_dir = source_root / "user-story"
@@ -306,17 +306,22 @@ def build_material_audit(
                     resolved_truth = resolve_feature_truth(root, version=resolved_version, feature=_slug)
                     if str(resolved_truth.get("status") or "") != "resolved":
                         continue
-                    canonical_refs = resolved_truth.get("canonical_refs") if isinstance(resolved_truth.get("canonical_refs"), dict) else {}
                     feature_names.append(_slug)
-                    prd_ref = str(canonical_refs.get("prd") or "").strip()
-                    user_story_ref = str(canonical_refs.get("user_story") or "").strip()
-                    test_case_ref = str(canonical_refs.get("test_case") or "").strip()
-                    if prd_ref and (root / prd_ref).exists():
+                    if _parse_semver_tuple(resolved_version) >= (1, 5, 2):
                         prd_features.add(_slug)
-                    if user_story_ref and (root / user_story_ref).exists():
                         us_features.add(_slug)
-                    if test_case_ref and (root / test_case_ref).exists():
                         tc_features.add(_slug)
+                    else:
+                        canonical_refs = resolved_truth.get("canonical_refs") if isinstance(resolved_truth.get("canonical_refs"), dict) else {}
+                        prd_ref = str(canonical_refs.get("prd") or "").strip()
+                        user_story_ref = str(canonical_refs.get("user_story") or "").strip()
+                        test_case_ref = str(canonical_refs.get("test_case") or "").strip()
+                        if prd_ref and (root / prd_ref).exists():
+                            prd_features.add(_slug)
+                        if user_story_ref and (root / user_story_ref).exists():
+                            us_features.add(_slug)
+                        if test_case_ref and (root / test_case_ref).exists():
+                            tc_features.add(_slug)
                 feature_names = sorted(set(feature_names))
             except Exception:  # noqa: BLE001
                 pass
@@ -342,15 +347,16 @@ def build_material_audit(
             missing.append("prd")
         if name not in tc_features:
             missing.append("test-case")
-        if not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
+        package_authoritative = _parse_semver_tuple(resolved_version) >= (1, 5, 2)
+        if not package_authoritative and not any(path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "ac-test-matrix")):
             derived_missing.append("ac-test-matrix")
-        if requires_change_loop_dual_write and not machine_story_path(root, resolved_version, name).exists():
+        if requires_change_loop_dual_write and not package_authoritative and not machine_story_path(root, resolved_version, name).exists():
             derived_missing.append("machine-user-story")
-        if requires_change_loop_dual_write and not any(
+        if requires_change_loop_dual_write and not package_authoritative and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "story-scenario-map")
         ):
             derived_missing.append("story-scenario-map")
-        if requires_requirement_deepening:
+        if requires_requirement_deepening and not package_authoritative:
             deepening = requirement_paths(root, resolved_version, name)
             if not deepening["freeze_contract"].exists():
                 derived_missing.append("requirement-freeze-contract")
@@ -362,7 +368,7 @@ def build_material_audit(
                 derived_missing.append("candidate-ledger")
             if not deepening["decision_log"].exists():
                 derived_missing.append("supplement-decision-log")
-        if not requires_minimum_closure and not any(
+        if not requires_minimum_closure and not package_authoritative and not any(
             path.exists() for path in qa_matrix_candidates(root, resolved_version, name, "qa9-matrix")
         ):
             derived_missing.append("qa9-matrix")
@@ -375,7 +381,7 @@ def build_material_audit(
     prd_mirror_drift_by_feature: dict[str, dict[str, Any]] = {}
     prd_compat_mirror_warnings_by_feature: dict[str, dict[str, Any]] = {}
     markdown_first_drift_by_feature: dict[str, dict[str, Any]] = {}
-    if requires_change_loop_dual_write:
+    if requires_change_loop_dual_write and _parse_semver_tuple(resolved_version) < (1, 5, 2):
         for name in feature_names:
             revision_path = revision_state_file(root, resolved_version, name)
             if not revision_path.exists():

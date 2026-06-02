@@ -15,6 +15,7 @@ from beacon.utils.qa_acceptance import (
     validate_qa_layer_taxonomy,
 )
 from beacon.utils.qa_feature import _resolve_entry_command
+from beacon.utils.qa_feature import _qa_runtime_taxonomy
 
 
 def test_qa_layer_taxonomy() -> None:
@@ -211,6 +212,28 @@ def test_qa_failure_attribution_routes_deterministically() -> None:
     assert route_for_qa_failure("runner_admission_blocker") == "blocked"
     assert route_for_qa_failure("coverage_gap") == "beacon-test-case"
     assert route_for_qa_failure("truth_drift") == "beacon-change"
+
+
+def test_non_browser_taxonomy_text_does_not_create_auth_blocker() -> None:
+    payload = {
+        "qa9": {
+            "tc_results": [
+                {
+                    "tc_id": "TC-001",
+                    "status": "blocked",
+                    "qa_type": "contract",
+                    "browser_required": False,
+                    "reason_code": "coverage_gap",
+                    "stdout": "stable taxonomy includes auth_session_blocked as a known class",
+                }
+            ]
+        }
+    }
+
+    taxonomy = _qa_runtime_taxonomy(payload)
+
+    assert taxonomy["primary_class"] == "coverage_gap"
+    assert "auth_session_blocked" not in taxonomy["failure_classes"]
 
 
 def test_release_consumes_formal_qa_closure_only() -> None:

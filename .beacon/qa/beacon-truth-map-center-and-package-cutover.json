@@ -1,85 +1,31 @@
 {
   "feature": "beacon-truth-map-center-and-package-cutover",
   "feature_slug": "beacon-truth-map-center-and-package-cutover",
-  "version": "v1.5.1",
+  "version": "v1.5.2",
   "ac_to_tc_mapping": {
     "AC-001": [
-      "TC-001"
-    ],
-    "AC-002": [
-      "TC-002"
-    ],
-    "AC-003": [
-      "TC-003"
-    ],
-    "AC-004": [
-      "TC-004"
-    ],
-    "AC-005": [
-      "TC-005"
-    ],
-    "AC-006": [
-      "TC-006"
-    ],
-    "AC-007": [
-      "TC-007"
-    ],
-    "AC-008": [
-      "TC-008"
-    ],
-    "AC-009": [
-      "TC-009"
-    ],
-    "AC-010": [
       "TC-010"
     ],
-    "AC-011": [
-      "TC-011"
-    ],
-    "AC-012": [
-      "TC-012"
-    ],
-    "AC-013": [
+    "AC-002": [
       "TC-013"
     ],
-    "AC-014": [
-      "TC-014"
-    ],
-    "AC-015": [
+    "AC-003": [
       "TC-015"
     ],
-    "AC-016": [
+    "AC-004": [
       "TC-016"
     ],
-    "AC-017": [
+    "AC-005": [
       "TC-017"
     ],
-    "AC-018": [
-      "TC-018"
-    ],
-    "AC-019": [
+    "AC-006": [
       "TC-019"
     ],
-    "AC-020": [
-      "TC-020"
-    ],
-    "AC-021": [
-      "TC-021"
-    ],
-    "AC-022": [
-      "TC-022"
-    ],
-    "AC-023": [
+    "AC-007": [
       "TC-023"
     ],
-    "AC-024": [
-      "TC-024"
-    ],
-    "AC-025": [
+    "AC-008": [
       "TC-025"
-    ],
-    "AC-026": [
-      "TC-026"
     ]
   },
   "scenarios": [
@@ -88,10 +34,10 @@
       "source_tc_id": "TC-001",
       "tc_id": "TC-001-PRIMARY",
       "ac_id": "AC-001",
-      "qa_type": "unit",
-      "layer": "unit",
+      "qa_type": "integration",
+      "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-001 primary path :: Resolver APIs and constants exist.",
+      "title": "AC-001 primary path :: Feature package Markdown is authoritative.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -100,14 +46,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "integration",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_package_markdown_is_authoritative -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-001/__RUN_ID__.json",
       "required_files": [
@@ -120,13 +66,13 @@
     },
     {
       "scenario_id": "SC-002",
-      "source_tc_id": "TC-002",
-      "tc_id": "TC-002-PRIMARY",
-      "ac_id": "AC-002",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-001",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-002 primary path :: JSON projection cannot be treated as authority.",
+      "title": "AC-001 primary path :: v1.5.1 remains ready-only while v1.5.2 is authoritative.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -141,10 +87,10 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_json_is_projection_only -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_resolver_policy_is_version_aware -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-002/__RUN_ID__.json",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-009/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -155,13 +101,13 @@
     },
     {
       "scenario_id": "SC-003",
-      "source_tc_id": "TC-003",
-      "tc_id": "TC-003-PRIMARY",
-      "ac_id": "AC-003",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-PRIMARY",
+      "ac_id": "AC-001",
       "qa_type": "contract",
       "layer": "contract",
       "scenario_family": "primary",
-      "title": "AC-003 primary path :: Package Markdown exposes v2 contract markers.",
+      "title": "AC-001 primary path :: Package frontmatter and resolver model agree.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -176,7 +122,182 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_canonical_ready_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_truth_frontmatter_model_matches_resolver_policy -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Consumers resolve via truth map.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_consumers_require_truth_map_resolver -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: v1.5.1 legacy exceptions cannot pass v1.5.2 inventory.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: High-risk CLI entrypoints are package-routed or cutover-blocked.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Skills instruct package-first resolver usage for v1.5.2.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_package_authoritative_truth_map_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Legacy triptych has rebuild/absorb role only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_triptych_is_not_canonical -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-003/__RUN_ID__.json",
@@ -189,364 +310,14 @@
       ]
     },
     {
-      "scenario_id": "SC-004",
-      "source_tc_id": "TC-004",
-      "tc_id": "TC-004-PRIMARY",
-      "ac_id": "AC-004",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-004 primary path :: Static contract constants are stable.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_static_contract_constants -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-004/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-005",
-      "source_tc_id": "TC-005",
-      "tc_id": "TC-005-PRIMARY",
-      "ac_id": "AC-005",
-      "qa_type": "integration",
-      "layer": "integration",
-      "scenario_family": "primary",
-      "title": "AC-005 primary path :: New truth consumers route through resolver.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "integration",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_new_truth_consumers_use_resolver -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-005/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-006",
-      "source_tc_id": "TC-006",
-      "tc_id": "TC-006-PRIMARY",
-      "ac_id": "AC-006",
-      "qa_type": "contract",
-      "layer": "contract",
-      "scenario_family": "primary",
-      "title": "AC-006 primary path :: Skills require truth-map-first reading.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_truth_map_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-006/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-007",
-      "source_tc_id": "TC-007",
-      "tc_id": "TC-007-PRIMARY",
-      "ac_id": "AC-007",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-007 primary path :: Missing JSON twin does not fail canonical Markdown truth.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_md_truth_does_not_require_json_twin -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-007/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-008",
-      "source_tc_id": "TC-008",
-      "tc_id": "TC-008-PRIMARY",
-      "ac_id": "AC-008",
-      "qa_type": "contract",
-      "layer": "contract",
-      "scenario_family": "primary",
-      "title": "AC-008 primary path :: Doctor rebuild route exists or fails closed with explicit unsupported reason.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_doctor_rebuild_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-008/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
       "scenario_id": "SC-009",
-      "source_tc_id": "TC-009",
-      "tc_id": "TC-009-PRIMARY",
-      "ac_id": "AC-009",
-      "qa_type": "contract",
-      "layer": "contract",
-      "scenario_family": "primary",
-      "title": "AC-009 primary path :: Change absorb route exists or fails closed with explicit unsupported reason.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_change_absorb_route_declared -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-009/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-010",
-      "source_tc_id": "TC-010",
-      "tc_id": "TC-010-PRIMARY",
-      "ac_id": "AC-010",
-      "qa_type": "integration",
-      "layer": "integration",
-      "scenario_family": "primary",
-      "title": "AC-010 primary path :: Verify detects resolver/package/rebuild drift.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "integration",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_verify_detects_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-010/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-011",
-      "source_tc_id": "TC-011",
-      "tc_id": "TC-011-PRIMARY",
-      "ac_id": "AC-011",
-      "qa_type": "integration",
-      "layer": "integration",
-      "scenario_family": "primary",
-      "title": "AC-011 primary path :: Rebuild generates requirement-derived `.machine` JSON from resolver-selected Markdown.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "integration",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_map_rebuilds_requirement_machine_json -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-011/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-012",
-      "source_tc_id": "TC-012",
-      "tc_id": "TC-012-PRIMARY",
-      "ac_id": "AC-012",
-      "qa_type": "unit",
-      "layer": "unit",
-      "scenario_family": "primary",
-      "title": "AC-012 primary path :: Generated machine JSON carries generated-state role labels and is not accepted as authority.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "unit",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_role_labels_are_not_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-012/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-013",
-      "source_tc_id": "TC-013",
-      "tc_id": "TC-013-PRIMARY",
-      "ac_id": "AC-013",
-      "qa_type": "integration",
-      "layer": "integration",
-      "scenario_family": "primary",
-      "title": "AC-013 primary path :: Source paths, resolver contract, and source hashes are recorded and verified.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "integration",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_machine_json_source_hash_freshness -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-013/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-014",
       "source_tc_id": "TC-014",
       "tc_id": "TC-014-PRIMARY",
-      "ac_id": "AC-014",
-      "qa_type": "unit",
-      "layer": "unit",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-014 primary path :: Runtime/process JSON is allowed without Markdown twins and cannot become requirement authority.",
+      "title": "AC-003 primary path :: Material audit accepts complete package truth without old triptych files.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -555,14 +326,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "integration",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_runtime_json_is_exempt_from_markdown_twin_requirement -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_material_audit_package_complete_without_legacy_triptych -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-014/__RUN_ID__.json",
       "required_files": [
@@ -574,14 +345,14 @@
       ]
     },
     {
-      "scenario_id": "SC-015",
+      "scenario_id": "SC-010",
       "source_tc_id": "TC-015",
       "tc_id": "TC-015-PRIMARY",
-      "ac_id": "AC-015",
+      "ac_id": "AC-003",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-015 primary path :: Stale, non-resolver, or source-hash mismatched `.machine` JSON fails verify.",
+      "title": "AC-003 primary path :: Manifest cannot override resolver package paths.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -596,7 +367,7 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_stale_machine_json_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_manifest_truth_paths_are_generated_index_not_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-015/__RUN_ID__.json",
@@ -609,14 +380,14 @@
       ]
     },
     {
-      "scenario_id": "SC-016",
-      "source_tc_id": "TC-016",
-      "tc_id": "TC-016-PRIMARY",
-      "ac_id": "AC-016",
-      "qa_type": "unit",
-      "layer": "unit",
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
       "scenario_family": "primary",
-      "title": "AC-016 primary path :: Resolver exposes version governance truth resolution.",
+      "title": "AC-004 primary path :: Doctor rebuild route works or fails closed.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -625,14 +396,49 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "contract",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_version_governance_resolver_contract -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-016",
+      "tc_id": "TC-016-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Doctor rebuild writes legacy outputs from package sources only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-016/__RUN_ID__.json",
       "required_files": [
@@ -644,14 +450,14 @@
       ]
     },
     {
-      "scenario_id": "SC-017",
-      "source_tc_id": "TC-017",
-      "tc_id": "TC-017-PRIMARY",
-      "ac_id": "AC-017",
-      "qa_type": "unit",
-      "layer": "unit",
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
       "scenario_family": "primary",
-      "title": "AC-017 primary path :: Resolver classifies feature truth, governance truth, generated state, and runtime records.",
+      "title": "AC-005 primary path :: Change absorb route works or fails closed.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -660,14 +466,49 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "unit",
+        "contract",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_authority_classification -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "All unit assertions pass",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-014",
+      "source_tc_id": "TC-017",
+      "tc_id": "TC-017-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Change absorb promotes legacy text into package truth, not legacy authority.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-017/__RUN_ID__.json",
       "required_files": [
@@ -679,14 +520,14 @@
       ]
     },
     {
-      "scenario_id": "SC-018",
-      "source_tc_id": "TC-018",
-      "tc_id": "TC-018-PRIMARY",
-      "ac_id": "AC-018",
+      "scenario_id": "SC-015",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
       "qa_type": "unit",
       "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-018 primary path :: Manifest/index/cache JSON cannot be used as truth authority.",
+      "title": "AC-006 primary path :: Markdown truth validates without JSON twin.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -701,7 +542,42 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_manifest_index_is_not_truth_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_json_twin_not_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: Missing/stale generated JSON does not invalidate Markdown package truth.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_existing_machine_json_may_be_absent_or_stale_without_invalidating_markdown -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "All unit assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-018/__RUN_ID__.json",
@@ -714,14 +590,14 @@
       ]
     },
     {
-      "scenario_id": "SC-019",
+      "scenario_id": "SC-017",
       "source_tc_id": "TC-019",
       "tc_id": "TC-019-PRIMARY",
-      "ac_id": "AC-019",
-      "qa_type": "integration",
-      "layer": "integration",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
       "scenario_family": "primary",
-      "title": "AC-019 primary path :: Material audit asks resolver before manifest or legacy paths.",
+      "title": "AC-006 primary path :: Generated JSON that claims truth authority fails closed.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -730,14 +606,14 @@
       "replay_command": "",
       "coverage_axes": [
         "primary",
-        "integration",
+        "unit",
         "non-browser"
       ],
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_material_audit_reads_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Integration flow assertions pass",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_generated_json_claiming_truth_authority_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "All unit assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-019/__RUN_ID__.json",
       "required_files": [
@@ -749,14 +625,14 @@
       ]
     },
     {
-      "scenario_id": "SC-020",
-      "source_tc_id": "TC-020",
-      "tc_id": "TC-020-PRIMARY",
-      "ac_id": "AC-020",
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-020 primary path :: QA, release, and status readers use resolver-first governance routes.",
+      "title": "AC-007 primary path :: Gate/QA/release use package truth through resolver/parser.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -771,7 +647,42 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_qa_release_status_read_resolver_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Requirement and acceptance projections consume package AC/test rows.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-020/__RUN_ID__.json",
@@ -784,14 +695,14 @@
       ]
     },
     {
-      "scenario_id": "SC-021",
+      "scenario_id": "SC-020",
       "source_tc_id": "TC-021",
       "tc_id": "TC-021-PRIMARY",
-      "ac_id": "AC-021",
+      "ac_id": "AC-007",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-021 primary path :: Missing governance truth or drifted generated governance state fails closed.",
+      "title": "AC-007 primary path :: Acceptance kit traces package truth/tests instead of old defaults.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -806,7 +717,7 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_governance_drift_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-021/__RUN_ID__.json",
@@ -819,84 +730,14 @@
       ]
     },
     {
-      "scenario_id": "SC-022",
+      "scenario_id": "SC-021",
       "source_tc_id": "TC-022",
       "tc_id": "TC-022-PRIMARY",
-      "ac_id": "AC-022",
-      "qa_type": "contract",
-      "layer": "contract",
-      "scenario_family": "primary",
-      "title": "AC-022 primary path :: Feature package is not overloaded with version governance materials.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_feature_package_does_not_contain_version_governance -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-022/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-023",
-      "source_tc_id": "TC-023",
-      "tc_id": "TC-023-PRIMARY",
-      "ac_id": "AC-023",
-      "qa_type": "contract",
-      "layer": "contract",
-      "scenario_family": "primary",
-      "title": "AC-023 primary path :: Generated governance state carries non-authority labels or equivalent declarations.",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_generated_governance_state_labels -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "Provider/consumer contract assertions pass",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-023/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-024",
-      "source_tc_id": "TC-024",
-      "tc_id": "TC-024-PRIMARY",
-      "ac_id": "AC-024",
+      "ac_id": "AC-007",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-024 primary path :: Implement plan/dev-run fail closed before execution when project metadata branch contract, curre",
+      "title": "AC-007 primary path :: Release scorecard uses package authority model.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -911,7 +752,112 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_implement_version_governance_preflight_blocks_metadata_branch_drift -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-022/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-022",
+      "source_tc_id": "TC-023",
+      "tc_id": "TC-023-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Status reports package truth as authority.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_status_surface_reports_package_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-023/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-023",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Legacy drift is reported and package truth wins.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-024",
+      "source_tc_id": "TC-024",
+      "tc_id": "TC-024-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Legacy conflicts are drift, not competing truth.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-024/__RUN_ID__.json",
@@ -927,11 +873,11 @@
       "scenario_id": "SC-025",
       "source_tc_id": "TC-025",
       "tc_id": "TC-025-PRIMARY",
-      "ac_id": "AC-025",
+      "ac_id": "AC-008",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "AC-025 primary path :: Normal truth read/write/gate/rebuild/absorb entrypoint APIs are routed through truth_center whil",
+      "title": "AC-008 primary path :: Gate requires package surfaces even when old triptych exists.",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -946,45 +892,10 @@
       "depends_on": [],
       "stop_on_fail": false,
       "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_integration_sweep_policy_boundary -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_blocks_when_package_surfaces_are_missing_even_if_legacy_exists -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-025/__RUN_ID__.json",
-      "required_files": [
-        "command.txt",
-        "stdout.log",
-        "stderr.log",
-        "result.json",
-        "junit.xml"
-      ]
-    },
-    {
-      "scenario_id": "SC-026",
-      "source_tc_id": "TC-026",
-      "tc_id": "TC-026-PRIMARY",
-      "ac_id": "AC-026",
-      "qa_type": "static-contract",
-      "layer": "static-contract",
-      "scenario_family": "primary",
-      "title": "AC-026 primary path :: High-risk command, utility, packaged skill, and `.agents/skills` truth entrypoints are inventori",
-      "browser_required": false,
-      "replay_required": false,
-      "exploratory_runner": "native",
-      "deterministic_runner": "native",
-      "explore_command": "",
-      "replay_command": "",
-      "coverage_axes": [
-        "primary",
-        "static-contract",
-        "non-browser"
-      ],
-      "depends_on": [],
-      "stop_on_fail": false,
-      "automation": "auto",
-      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_truth_center_entrypoint_inventory_covers_high_risk_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "assertion defined",
-      "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-026/__RUN_ID__.json",
       "required_files": [
         "command.txt",
         "stdout.log",

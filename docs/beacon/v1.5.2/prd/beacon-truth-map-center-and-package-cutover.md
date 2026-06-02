@@ -4,9 +4,24 @@
 - feature: `beacon-truth-map-center-and-package-cutover`
 - status: `frozen`
 
-## Goal
+## Goals
 
 Complete the cutover so feature-package Markdown becomes Beacon's normal canonical truth source.
+
+## Scope
+
+In scope:
+
+- version-aware resolver authority policy for v1.5.2+;
+- package-first material audit, gate, QA, release, and status consumption;
+- legacy triptych demotion to doctor rebuild and change absorb routes;
+- generated JSON classification as non-authoritative state.
+
+Out of scope:
+
+- deleting historical legacy requirement files from disk;
+- treating generated JSON as a required Markdown truth twin;
+- using support-surface output as gate truth.
 
 ## Canonical Chain
 
@@ -39,4 +54,3 @@ The deprecated chain is not removed from disk by force, but it is no longer a no
 | AC-006 | no-json-twin-requirement | Release and QA cannot require JSON twins for Markdown truth documents. |
 | AC-007 | gate-consumption | Gate/QA/release consume package-derived truth through resolver/parser. |
 | AC-008 | drift-fail-closed | If a legacy rebuild artifact conflicts with package truth, package truth wins and drift is reported. |
-

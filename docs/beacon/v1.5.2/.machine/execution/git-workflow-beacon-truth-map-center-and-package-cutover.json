@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.2",
+  "mode": "single-repo",
+  "expected_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "base_branch": "main",
+  "use_git_worktree": false,
+  "require_clean_worktree_for_switch": true,
+  "service_directories": [
+    "."
+  ],
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "git_roots": [
+    "."
+  ],
+  "worktree_root": ".",
+  "implementation_preflight": [
+    "Before implementation, verify the target service belongs to: .",
+    "Before implementation, verify the current branch is beacon/v1.5.2.",
+    "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+  ],
+  "source": "technical_review_contract",
+  "generated_at": "2026-06-02T11:43:33.350907+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-map-center-and-package-cutover-R1",
+  "transaction_id": "tx-b90e0dbf85e1d9023",
+  "source_hash": "sha256:0e0609e2d0c483de7e9f1c4e48df63c97f22b000ae2b8e7f7bcb376d480962de",
+  "projection_seq": 1,
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json",
+  "projection_source": "implementation_delivery_baseline_envelope"
+}

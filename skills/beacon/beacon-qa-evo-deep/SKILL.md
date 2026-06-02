@@ -10,7 +10,7 @@ description: Use when the user wants deep QA support analysis for state, scenari
 This skill routes deep QA support analysis through Beacon's `qa evo-deep` surface.
 
 `qa-evo-deep` reads frozen requirement truth, QA materials, and available evidence to produce routeable findings for deeper QA exploration. It is a support surface, not a formal QA verdict surface.
-The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
+The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line. For v1.5.2 features, read resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; legacy triptych files are migration, rebuild, or archive inputs only.
 
 ## When to Use
 
@@ -30,7 +30,7 @@ The active human-facing contract is aligned to the current `v1.4.10` docs line (
 
 ## Workflow / Decision Loop
 
-- read frozen `prd / user-story / test-case` and QA evidence
+- read frozen feature package truth, package coverage, and QA evidence
 - identify routeable deep QA findings
 - route requirement truth drift to `beacon-change-refreeze`
 - route coverage gaps to `beacon-test-case`

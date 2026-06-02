@@ -1,0 +1,936 @@
+{
+  "schema_version": "1.0.2",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.2",
+  "compiler": {
+    "requested_mode": "auto",
+    "effective_mode": "markdown",
+    "generator_mode": "host",
+    "fallback_reason": "",
+    "capability_snapshot": {
+      "schema_version": "1.0",
+      "command_name": "test-case",
+      "host_runtime": "codex",
+      "host_runtime_supported": true,
+      "host_bridge_declared": true,
+      "host_bridge_command_available": true,
+      "host_bridge_command_source": "env_cmd",
+      "host_bridge_command_env": "BEACON_HOST_TEST_CASE_BRIDGE_CMD",
+      "host_response_available": false,
+      "host_response_source": "none",
+      "host_response_path": "",
+      "host_transport": "command-bridge",
+      "host_semantic_ready": true,
+      "response_used": false,
+      "host_mode_options": [
+        "host-response",
+        "host",
+        "host-provider",
+        "llm",
+        "rule"
+      ],
+      "provider_available": false,
+      "provider_key_present": false,
+      "llm_disabled": false,
+      "disable_env": "BEACON_TEST_CASE_DISABLE_LLM"
+    },
+    "model": "beacon-test-case-compiler"
+  },
+  "qa_profile": "web-full",
+  "qa_types": [
+    "unit",
+    "interface",
+    "contract",
+    "integration",
+    "smoke",
+    "functional",
+    "regression",
+    "exception",
+    "compatibility"
+  ],
+  "llm_plan": {
+    "mode": "rule",
+    "model": "beacon-rule-llm-v1",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "project_type": "ai-agent-skill",
+    "generated_at": "2026-06-02T20:03:46.311349",
+    "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
+    "skip_reason": "",
+    "qa_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ]
+  },
+  "qa_strategy": {
+    "schema_version": "1.0.2",
+    "generated_at": "2026-06-02T20:03:46.310286",
+    "project_type": "ai-agent-skill",
+    "project_scan": {
+      "language": "python",
+      "framework": "python-app",
+      "frontend": "unknown",
+      "api_spec_refs": [],
+      "risk_points": [
+        "authz/authn boundary",
+        "cross-browser ui behavior",
+        "api contract drift",
+        "exception handling and replay safety"
+      ]
+    },
+    "qa_applicability": {
+      "unit": "required",
+      "interface": "required",
+      "contract": "required",
+      "integration": "required",
+      "smoke": "required",
+      "functional": "conditional",
+      "regression": "required",
+      "exception": "required",
+      "compatibility": "conditional"
+    },
+    "qa_required_types": [
+      "unit",
+      "interface",
+      "contract",
+      "integration",
+      "smoke",
+      "functional",
+      "regression",
+      "exception",
+      "compatibility"
+    ],
+    "runner_policy": {
+      "functional": {
+        "primary": "browser-use",
+        "fallback": [
+          "playwright",
+          "cypress",
+          "agent-browser"
+        ]
+      },
+      "compatibility": {
+        "primary": "playwright",
+        "fallback": [
+          "cypress"
+        ]
+      },
+      "api_layers": {
+        "interface": "schemathesis/newman/pytest",
+        "contract": "schemathesis/pact",
+        "integration": "pytest+testcontainers"
+      }
+    },
+    "command_baseline": {
+      "unit": "python3 -m pytest -q -k unit --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "interface": "python3 -m pytest -q -k interface --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "contract": "python3 -m pytest -q -k contract --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "integration": "python3 -m pytest -q -k integration --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "smoke": "python3 -m pytest -q -m smoke --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "functional": "python3 -m beacon.adapters.browser_use_runner --mode functional --deterministic-command \"python3 -m pytest -q -k functional --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\"",
+      "regression": "python3 -m pytest -q -k regression --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "exception": "python3 -m pytest -q -k exception --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "compatibility": "python3 -m beacon.adapters.browser_use_runner --mode compatibility --deterministic-command \"python3 -m pytest -q -k compatibility --junitxml \\\"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\\\"\""
+    },
+    "ui_runner": "browser-use"
+  },
+  "qa_requirements": [
+    {
+      "qa_type": "unit",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "interface",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "contract",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "integration",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "smoke",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "functional",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "regression",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "exception",
+      "required": true,
+      "automation_required": true,
+      "min_cases": 1,
+      "applicability": "required",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    },
+    {
+      "qa_type": "compatibility",
+      "required": false,
+      "automation_required": false,
+      "min_cases": 0,
+      "applicability": "conditional",
+      "waiver": {
+        "ticket": "",
+        "approved_by": "",
+        "expires_at": ""
+      }
+    }
+  ],
+  "automation_target_rate": 0.85,
+  "entries": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-001 :: Feature package Markdown is authoritative.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_package_markdown_is_authoritative -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Feature package Markdown is authoritative.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_package_markdown_is_authoritative -q`",
+      "scenario": "Feature package Markdown is authoritative.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-002 :: Consumers resolve via truth map.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_consumers_require_truth_map_resolver -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Consumers resolve via truth map.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_consumers_require_truth_map_resolver -q`",
+      "scenario": "Consumers resolve via truth map.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-003 :: Legacy triptych has rebuild/absorb role only.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_triptych_is_not_canonical -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Legacy triptych has rebuild/absorb role only.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_triptych_is_not_canonical -q`",
+      "scenario": "Legacy triptych has rebuild/absorb role only.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-004 :: Doctor rebuild route works or fails closed.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Doctor rebuild route works or fails closed.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q`",
+      "scenario": "Doctor rebuild route works or fails closed.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-005 :: Change absorb route works or fails closed.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Change absorb route works or fails closed.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q`",
+      "scenario": "Change absorb route works or fails closed.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-truth-map-center-and-package-cutover AC-006 :: Markdown truth validates without JSON twin.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_json_twin_not_required -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Markdown truth validates without JSON twin.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_json_twin_not_required -q`",
+      "scenario": "Markdown truth validates without JSON twin.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-007 :: Gate/QA/release use package truth through resolver/parser.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Gate/QA/release use package truth through resolver/parser.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q`",
+      "scenario": "Gate/QA/release use package truth through resolver/parser.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-008 :: Legacy drift is reported and package truth wins.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Legacy drift is reported and package truth wins.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q`",
+      "scenario": "Legacy drift is reported and package truth wins.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-truth-map-center-and-package-cutover AC-001 :: v1.5.1 remains ready-only while v1.5.2 is authoritative.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_resolver_policy_is_version_aware -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.5.1 remains ready-only while v1.5.2 is authoritative.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_resolver_policy_is_version_aware -q`",
+      "scenario": "v1.5.1 remains ready-only while v1.5.2 is authoritative.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-001",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-001 :: Package frontmatter and resolver model agree.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_truth_frontmatter_model_matches_resolver_policy -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Package frontmatter and resolver model agree.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_truth_frontmatter_model_matches_resolver_policy -q`",
+      "scenario": "Package frontmatter and resolver model agree.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-002 :: v1.5.1 legacy exceptions cannot pass v1.5.2 inventory.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "v1.5.1 legacy exceptions cannot pass v1.5.2 inventory.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q`",
+      "scenario": "v1.5.1 legacy exceptions cannot pass v1.5.2 inventory.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-002 :: High-risk CLI entrypoints are package-routed or cutover-blocked.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "High-risk CLI entrypoints are package-routed or cutover-blocked.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152 -q`",
+      "scenario": "High-risk CLI entrypoints are package-routed or cutover-blocked.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-002",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-002 :: Skills instruct package-first resolver usage for v1.5.2.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_package_authoritative_truth_map_first -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Skills instruct package-first resolver usage for v1.5.2.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v151_truth_map.py::test_skill_guidance_points_to_package_authoritative_truth_map_first -q`",
+      "scenario": "Skills instruct package-first resolver usage for v1.5.2.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-003 :: Material audit accepts complete package truth without old triptych files.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_material_audit_package_complete_without_legacy_triptych -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Material audit accepts complete package truth without old triptych files.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-014/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_material_audit_package_complete_without_legacy_triptych -q`",
+      "scenario": "Material audit accepts complete package truth without old triptych files.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-003",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-003 :: Manifest cannot override resolver package paths.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_manifest_truth_paths_are_generated_index_not_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Manifest cannot override resolver package paths.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-015/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_manifest_truth_paths_are_generated_index_not_authority -q`",
+      "scenario": "Manifest cannot override resolver package paths.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-004",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-004 :: Doctor rebuild writes legacy outputs from package sources only.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Doctor rebuild writes legacy outputs from package sources only.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-016/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_doctor_rebuilds_legacy_from_package -q`",
+      "scenario": "Doctor rebuild writes legacy outputs from package sources only.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-005",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-truth-map-center-and-package-cutover AC-005 :: Change absorb promotes legacy text into package truth, not legacy authority.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Change absorb promotes legacy text into package truth, not legacy authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-017/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_change_absorbs_legacy_into_package -q`",
+      "scenario": "Change absorb promotes legacy text into package truth, not legacy authority.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-truth-map-center-and-package-cutover AC-006 :: Missing/stale generated JSON does not invalidate Markdown package truth.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_existing_machine_json_may_be_absent_or_stale_without_invalidating_markdown -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Missing/stale generated JSON does not invalidate Markdown package truth.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-018/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_existing_machine_json_may_be_absent_or_stale_without_invalidating_markdown -q`",
+      "scenario": "Missing/stale generated JSON does not invalidate Markdown package truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-006",
+      "story_id": "",
+      "layer": "unit",
+      "qa_type": "unit",
+      "title": "beacon-truth-map-center-and-package-cutover AC-006 :: Generated JSON that claims truth authority fails closed.",
+      "priority": "P0",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_generated_json_claiming_truth_authority_fails_closed -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Generated JSON that claims truth authority fails closed.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-019/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_generated_json_claiming_truth_authority_fails_closed -q`",
+      "scenario": "Generated JSON that claims truth authority fails closed.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-007 :: Requirement and acceptance projections consume package AC/test rows.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Requirement and acceptance projections consume package AC/test rows.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-020/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q`",
+      "scenario": "Requirement and acceptance projections consume package AC/test rows.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-007 :: Acceptance kit traces package truth/tests instead of old defaults.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Acceptance kit traces package truth/tests instead of old defaults.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-021/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_acceptance_kit_uses_package_refs_for_skill_scenario_trace -q`",
+      "scenario": "Acceptance kit traces package truth/tests instead of old defaults.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-007 :: Release scorecard uses package authority model.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Release scorecard uses package authority model.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-022/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_qa_release_consume_package_truth -q`",
+      "scenario": "Release scorecard uses package authority model.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-023",
+      "ac_id": "AC-007",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-007 :: Status reports package truth as authority.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_status_surface_reports_package_authority -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Status reports package truth as authority.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-023/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_status_surface_reports_package_authority -q`",
+      "scenario": "Status reports package truth as authority.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-024",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-008 :: Legacy conflicts are drift, not competing truth.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Legacy conflicts are drift, not competing truth.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-024/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_legacy_drift_fails_closed_package_wins -q`",
+      "scenario": "Legacy conflicts are drift, not competing truth.",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-025",
+      "ac_id": "AC-008",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-truth-map-center-and-package-cutover AC-008 :: Gate requires package surfaces even when old triptych exists.",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_blocks_when_package_surfaces_are_missing_even_if_legacy_exists -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "Gate requires package surfaces even when old triptych exists.",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-truth-map-center-and-package-cutover/tc-025/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "execution_method": "`python3 -m pytest tests/test_v152_package_authoritative.py::test_gate_blocks_when_package_surfaces_are_missing_even_if_legacy_exists -q`",
+      "scenario": "Gate requires package surfaces even when old triptych exists.",
+      "steps": ""
+    }
+  ],
+  "markdown_matrix_contract": {
+    "truth_mode": "markdown",
+    "fail_closed": true,
+    "source": "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+    "row_count": 25,
+    "enrichment_disabled": true
+  },
+  "compatibility_matrix": {
+    "browsers": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ],
+    "devices": [
+      "desktop",
+      "iphone14"
+    ],
+    "required_pairs": [
+      {
+        "browser": "chromium",
+        "device": "desktop"
+      },
+      {
+        "browser": "firefox",
+        "device": "desktop"
+      },
+      {
+        "browser": "webkit",
+        "device": "desktop"
+      }
+    ]
+  },
+  "generated_at": "2026-06-02T20:03:46.311440",
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "version": "v1.5.2",
+    "source": "research:docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": []
+  }
+}

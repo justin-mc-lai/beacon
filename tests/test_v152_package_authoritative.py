@@ -1,0 +1,380 @@
+from __future__ import annotations
+
+import json
+from pathlib import Path
+
+from typer.testing import CliRunner
+
+from beacon import app
+from beacon.utils.acceptance_kit import write_acceptance_kit_projection
+from beacon.utils.feature_package import validate_feature_package
+from beacon.utils.material_audit import build_material_audit
+from beacon.utils.requirement_deepening import build_requirement_completeness_gate
+from beacon.utils.runtime import write_json
+from beacon.utils.truth_map import (
+    TRUTH_SOURCE_MODEL,
+    TRUTH_SOURCE_MODEL_AUTHORITATIVE,
+    feature_package_authoritative,
+    rebuild_machine_json,
+    resolve_feature_truth,
+    resolve_legacy_absorb_targets,
+    resolve_legacy_rebuild_targets,
+    resolve_machine_json_plan,
+    resolve_truth_entrypoint_inventory,
+    resolve_truth_map,
+    truth_source_model_for_version,
+    verify_truth_entrypoint_inventory,
+    verify_truth_map,
+)
+
+VERSION = "v1.5.2"
+V151 = "v1.5.1"
+FEATURE = "Beacon Truth Map Center and Package Cutover"
+SLUG = "beacon-truth-map-center-and-package-cutover"
+
+
+def _write(root: Path, rel: str, content: str) -> None:
+    path = root / rel
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+
+
+def _seed_governance(root: Path, version: str = VERSION) -> None:
+    base = f"docs/beacon/{version}"
+    _write(root, "docs/beacon/global-boundaries.md", "# Global\n")
+    _write(root, f"{base}/SUMMARY.md", f"# {version}\n")
+    _write(root, f"{base}/execution/boundaries.md", "# Boundaries\n")
+    _write(root, f"{base}/execution/project-skill-qa-evolution-blueprint.md", "# Skill QA\n")
+    _write(root, f"{base}/source-architecture/index.md", "# Source Architecture\n")
+    _write(root, f"{base}/release/{version}.md", "# Release\n")
+
+
+def _seed_package(root: Path, *, version: str = VERSION, legacy: bool = False) -> None:
+    _seed_governance(root, version)
+    base = f"docs/beacon/{version}"
+    truth_model = truth_source_model_for_version(version)
+    _write(
+        root,
+        f"{base}/features/{SLUG}/truth.md",
+        "\n".join(
+            [
+                "---",
+                f"slug: {SLUG}",
+                f"version: {version}",
+                "status: frozen",
+                "language: zh",
+                "canonical_refs:",
+                f"  prd: {base}/features/{SLUG}/truth.md",
+                f"  user_story: {base}/features/{SLUG}/truth.md",
+                f"  test_case: {base}/features/{SLUG}/tests.md",
+                "parser_contract: beacon-feature-package-v1",
+                f"truth_source_model: {truth_model}",
+                "truth_map_contract: beacon-truth-map-v1",
+                "---",
+                "",
+                "# Feature Truth",
+                "",
+                "## Acceptance Criteria",
+                "",
+                "| AC ID | Theme | Description |",
+                "|---|---|---|",
+                "| AC-001 | package-authoritative | Package truth wins. |",
+                "| AC-002 | resolver-required | Resolver is required. |",
+                "| AC-003 | legacy-not-canonical | Legacy is not authority. |",
+                "| AC-004 | doctor-rebuild | Doctor rebuilds legacy outputs. |",
+                "| AC-005 | change-absorb | Change absorbs legacy inputs. |",
+                "| AC-006 | no-json-twin-requirement | JSON twin not required. |",
+                "| AC-007 | gate-consumption | Gates consume package truth. |",
+                "| AC-008 | drift-fail-closed | Legacy drift fails closed. |",
+            ]
+        )
+        + "\n",
+    )
+    _write(
+        root,
+        f"{base}/features/{SLUG}/tests.md",
+        "\n".join(
+            [
+                "# Tests",
+                "",
+                "| AC ID | TC ID | Layer | Planned Command | Assertion |",
+                "|---|---|---|---|---|",
+                "| AC-001 | TC-001 | unit | pytest | Package truth wins. |",
+                "| AC-002 | TC-002 | unit | pytest | Resolver required. |",
+                "| AC-003 | TC-003 | unit | pytest | Legacy not canonical. |",
+                "| AC-004 | TC-004 | unit | pytest | Doctor route. |",
+                "| AC-005 | TC-005 | unit | pytest | Change route. |",
+                "| AC-006 | TC-006 | unit | pytest | JSON not required. |",
+                "| AC-007 | TC-007 | unit | pytest | Gates use package. |",
+                "| AC-008 | TC-008 | unit | pytest | Drift fail closed. |",
+            ]
+        )
+        + "\n",
+    )
+    _write(
+        root,
+        f"{base}/features/{SLUG}/tasks.md",
+        "# Tasks\n\n- [ ] TASK-001 Route through resolver\n- [x] TASK-002 Validate package\n",
+    )
+    _write(
+        root,
+        f"{base}/features/{SLUG}/evidence.md",
+        "\n".join(
+            [
+                "# Evidence",
+                "",
+                "| Surface | Authority | Canonical Artifact | Status | Route |",
+                "|---|---|---|---|---|",
+                f"| feature-package | requirement_truth | {base}/features/{SLUG}/truth.md | frozen | change |",
+                f"| package-tests | test_truth | {base}/features/{SLUG}/tests.md | frozen | test-case |",
+            ]
+        )
+        + "\n",
+    )
+    if legacy:
+        _write(root, f"{base}/prd/{SLUG}.md", "# PRD\n\nlegacy drift\n")
+        _write(root, f"{base}/user-story/{SLUG}.md", "# User Story\n\nlegacy drift\n")
+        _write(root, f"{base}/qa/test-cases/{SLUG}.md", "# Test Cases\n\nlegacy drift\n")
+
+
+def test_package_markdown_is_authoritative(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = resolve_truth_map(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["truth_source_model"] == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert payload["authority_flip_allowed"] is True
+    assert payload["feature_truth"]["truth_authority"] == "markdown_feature_package"
+
+
+def test_consumers_require_truth_map_resolver(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = verify_truth_entrypoint_inventory(tmp_path, version=VERSION, strict=True)
+    codes = {item["code"] for item in payload["diagnostics"]}
+
+    assert payload["status"] == "blocked"
+    assert "truth_entrypoint_legacy_exception_not_allowed" in codes
+
+
+def test_legacy_triptych_is_not_canonical(tmp_path: Path) -> None:
+    _seed_package(tmp_path, legacy=True)
+
+    rebuild = resolve_legacy_rebuild_targets(tmp_path, version=VERSION, feature=FEATURE)
+    absorb = resolve_legacy_absorb_targets(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert rebuild["legacy_authority"] is False
+    assert absorb["legacy_authority"] is False
+    assert rebuild["status"] == "legacy_output_only"
+    assert absorb["status"] == "package_truth_target_only"
+
+
+def test_doctor_rebuilds_legacy_from_package(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    plan = resolve_machine_json_plan(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert plan["routes"]["doctor_rebuild"]["status"] == "legacy_output_only"
+    assert plan["source_paths"]["truth"].endswith(f"features/{SLUG}/truth.md")
+
+
+def test_change_absorbs_legacy_into_package(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    plan = resolve_machine_json_plan(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert plan["routes"]["change_absorb"]["status"] == "package_truth_target_only"
+    assert "absorb-legacy-truth-into-feature-package" in plan["routes"]["change_absorb"]["command"]
+
+
+def test_json_twin_not_required(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = verify_truth_map(tmp_path, version=VERSION, feature=FEATURE, strict=True)
+
+    assert payload["status"] == "pass"
+    assert payload["checked_machine_json"] == []
+    assert payload["json_authority"] is False
+
+
+def test_gate_qa_release_consume_package_truth(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    write_json(tmp_path / ".beacon" / "qa" / "status.json", {"version": VERSION, "status": "passed"})
+
+    from beacon.utils.release_scorecard import build_release_scorecard
+
+    scorecard = build_release_scorecard(tmp_path, version=VERSION)
+
+    assert scorecard["truth_map_governance"]["truth_source_model"] == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert scorecard["truth_map_governance"]["json_authority"] is False
+
+
+def test_legacy_drift_fails_closed_package_wins(tmp_path: Path) -> None:
+    _seed_package(tmp_path, legacy=True)
+
+    payload = resolve_feature_truth(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["source_paths"]["truth"].endswith(f"features/{SLUG}/truth.md")
+    assert payload["truth_source_model"] == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert "legacy drift" not in json.dumps(payload, ensure_ascii=False)
+
+
+def test_resolver_policy_is_version_aware() -> None:
+    assert truth_source_model_for_version(V151) == TRUTH_SOURCE_MODEL
+    assert truth_source_model_for_version(VERSION) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert feature_package_authoritative(V151) is False
+    assert feature_package_authoritative(VERSION) is True
+
+
+def test_truth_frontmatter_model_matches_resolver_policy(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    validation = validate_feature_package(tmp_path, version=VERSION, feature=FEATURE)
+    resolved = resolve_feature_truth(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert validation["truth_frontmatter"]["truth_source_model"] == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert resolved["truth_source_model"] == validation["truth_frontmatter"]["truth_source_model"]
+
+
+def test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    for rel in (
+        "beacon/commands/prd.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/test_case.py",
+        "beacon/commands/workflow.py",
+        "beacon/commands/truth.py",
+        "beacon/commands/gate.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/requirement_deepening.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/acceptance_kit.py",
+        "skills/beacon/demo/SKILL.md",
+        ".agents/skills/demo/SKILL.md",
+    ):
+        _write(tmp_path, rel, "ok\n")
+
+    payload = resolve_truth_entrypoint_inventory(tmp_path, version=VERSION)
+
+    violations = [entry for entry in payload["entries"] if entry.get("cutover_violation")]
+    assert violations
+    assert payload["status"] == "blocked"
+
+
+def test_material_audit_package_complete_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = build_material_audit(tmp_path, version=VERSION, strict=True, feature=SLUG)
+    main_chain = next(item for item in payload["checks"] if item["name"] == "main_chain_feature_completeness")
+
+    assert main_chain["status"] == "pass"
+    assert main_chain["details"]["missing_by_feature"] == {}
+
+
+def test_manifest_truth_paths_are_generated_index_not_authority(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    write_json(
+        tmp_path / f"docs/beacon/{VERSION}/.machine/manifest/version-features.json",
+        {
+            "version": VERSION,
+            "truth_authority": False,
+            "json_authority": False,
+            "features": [
+                {
+                    "slug": SLUG,
+                    "truth_paths": {
+                        "prd": f"docs/beacon/{VERSION}/prd/{SLUG}.md",
+                        "user_story": f"docs/beacon/{VERSION}/user-story/{SLUG}.md",
+                        "test_case": f"docs/beacon/{VERSION}/qa/test-cases/{SLUG}.md",
+                    },
+                }
+            ],
+        },
+    )
+
+    payload = build_material_audit(tmp_path, version=VERSION, strict=True, feature=SLUG)
+
+    assert payload["truth_map_governance"]["generated_state_surfaces"]["version_feature_manifest"]["truth_authority"] is False
+    assert payload["status"] == "pass"
+
+
+def test_generated_json_claiming_truth_authority_fails_closed(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    rebuild = rebuild_machine_json(tmp_path, version=VERSION, feature=FEATURE)
+    path = tmp_path / rebuild["plan"]["outputs"]["requirement_package_state"]
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    payload["truth_authority"] = True
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    verify = verify_truth_map(tmp_path, version=VERSION, feature=FEATURE, strict=True)
+    codes = {item["code"] for item in verify["diagnostics"]}
+
+    assert verify["status"] == "blocked"
+    assert "machine_json_claims_truth_authority" in codes
+
+
+def test_existing_machine_json_may_be_absent_or_stale_without_invalidating_markdown(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    validation = validate_feature_package(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert validation["status"] == "pass"
+    assert validation["runtime_json_requires_markdown_twin"] is False
+
+
+def test_acceptance_kit_uses_package_refs_for_skill_scenario_trace(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = write_acceptance_kit_projection(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        acceptance_envelope={"feature": FEATURE, "version": VERSION, "verdict": "passed"},
+    )
+
+    assert payload["layers"]["skill-contract"]["source_truth_ref"].endswith(f"features/{SLUG}/truth.md")
+    assert payload["layers"]["trace-scorecard"]["source_truth_ref"].endswith(f"features/{SLUG}/tests.md")
+
+
+def test_status_surface_reports_package_authority(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(app, ["status", "--project-root", str(tmp_path), "--version", VERSION])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["truth_map_governance"]["truth_source_model"] == TRUTH_SOURCE_MODEL_AUTHORITATIVE
+    assert payload["source_of_truth"]["json_authority"] is False
+
+
+def test_gate_blocks_when_package_surfaces_are_missing_even_if_legacy_exists(tmp_path: Path) -> None:
+    _seed_governance(tmp_path)
+    base = f"docs/beacon/{VERSION}"
+    _write(tmp_path, f"{base}/prd/{SLUG}.md", "# PRD\n")
+    _write(tmp_path, f"{base}/user-story/{SLUG}.md", "# User Story\n")
+    _write(tmp_path, f"{base}/qa/test-cases/{SLUG}.md", "# Test Cases\n")
+
+    payload = validate_feature_package(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert payload["status"] == "blocked"
+    codes = {item["code"] for item in payload["diagnostics"]}
+    assert {"missing_truth", "missing_tests", "missing_tasks", "missing_evidence"} <= codes
+
+
+def test_requirement_completeness_gate_accepts_authoritative_package_without_legacy_projection(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    gate = build_requirement_completeness_gate(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        target_stage="qa",
+    )
+
+    assert gate["status"] == "pass"
+    assert gate["blocked"] is False
+    assert gate["projection_status"] == "package_authoritative"
+    assert gate["package_authoritative_truth"]["validation"]["status"] == "pass"
+    assert gate["recommended_command"] == ""

@@ -182,21 +182,44 @@ def _qa_outcome_taxonomy(reason_codes: list[str], *, plan_status: str) -> dict[s
 
 
 def _classify_qa_failure_item(item: dict[str, Any]) -> str:
+    reason_code = str(item.get("reason_code") or "").strip().lower()
+    command_text = str(item.get("command") or "").lower()
+    stderr_text = str(item.get("stderr") or "").lower()
+    stdout_text = str(item.get("stdout") or "").lower()
+    evidence_text = " ".join(str(ref) for ref in (item.get("evidence_ref") or []) if str(ref).strip()).lower()
     text = " ".join(
         [
-            str(item.get("reason_code") or ""),
-            str(item.get("command") or ""),
-            str(item.get("stderr") or ""),
-            str(item.get("stdout") or ""),
-            " ".join(str(ref) for ref in (item.get("evidence_ref") or []) if str(ref).strip()),
+            reason_code,
+            command_text,
+            stderr_text,
+            stdout_text,
+            evidence_text,
         ]
-    ).lower()
+    )
     if any(token in text for token in ("docker", "testcontainers", "connection refused", "econnrefused", "timeout", "mysql", "postgres")):
         return "environment_blocked"
     if any(token in text for token in ("command not found", "script missing", "missing script", "no such file", "qa9_command_missing", "layer_command_missing")):
         return "runner_admission_blocked"
-    if any(token in text for token in ("401", "403", "unauthorized", "forbidden", "login", "session", "cookie", "jwt", "auth")):
+    auth_reason_codes = {
+        "auth_session_blocked",
+        "auth_session_invalid",
+        "auth_session_missing",
+        "protected_surface_session_bridge_missing",
+        "vercel_sso_redirect_no_session_bridge",
+    }
+    auth_evidence_text = " ".join([command_text, stderr_text, stdout_text, evidence_text])
+    browser_or_http_surface = bool(item.get("browser_required")) or any(
+        token in auth_evidence_text
+        for token in ("http://", "https://", "playwright", "browser", "vercel", "sso")
+    )
+    has_auth_failure_evidence = any(
+        token in auth_evidence_text
+        for token in ("401", "403", "unauthorized", "forbidden", "login", "cookie", "jwt")
+    )
+    if reason_code in auth_reason_codes or (browser_or_http_surface and has_auth_failure_evidence):
         return "auth_session_blocked"
+    if reason_code in {"coverage_gap", "evidence_binding_missing", "truth_projection_gap"}:
+        return reason_code
     status = str(item.get("status") or item.get("layer_status") or "").strip().lower()
     if status == "blocked":
         return "runner_admission_blocked"

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.feature_package import validate_feature_package
 from beacon.utils.markdown_first_freeze import (
     build_minimal_freeze_state,
     markdown_first_freeze_supported,
@@ -17,6 +18,7 @@ from beacon.utils.markdown_first_freeze import (
 from beacon.utils.requirement_parsing import build_research_projection
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import TRUTH_SOURCE_MODEL_AUTHORITATIVE, truth_source_model_for_version
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
 _DIMENSION_ORDER = [
@@ -605,6 +607,69 @@ def build_requirement_completeness_gate(
     candidate_ledger = read_json(paths["candidate_ledger"], {})
     if not completeness:
         missing_paths = {key: str(path.relative_to(project_root)) for key, path in paths.items() if key != "dir"}
+        if truth_source_model_for_version(resolved_version) == TRUTH_SOURCE_MODEL_AUTHORITATIVE:
+            package_validation = validate_feature_package(project_root, version=resolved_version, feature=feature)
+            if str(package_validation.get("status") or "").strip().lower() == "pass":
+                stage_gates = {
+                    "artifact_read_model": _status_payload(
+                        status="pass",
+                        reason_code="requirement_completeness_projection_missing",
+                        summary=(
+                            "machine completeness projection is missing, but v1.5.2 package "
+                            "truth and coverage are valid authority"
+                        ),
+                        details={"paths": missing_paths, "projection_status": "package_authoritative"},
+                    ),
+                    "decision_traceability": _status_payload(
+                        status="pass",
+                        summary="human requirement truth is carried by the authoritative feature package",
+                    ),
+                    "coverage_closure": _status_payload(
+                        status="pass",
+                        summary="acceptance coverage is parseable from package tests",
+                        details={
+                            "ac_count": int(package_validation.get("ac_count") or 0),
+                            "test_count": int(package_validation.get("test_count") or 0),
+                        },
+                    ),
+                    "downgrade_control": _status_payload(
+                        status="pass",
+                        summary="legacy completeness projection absence does not downgrade package authority",
+                    ),
+                    "stage_admission": _status_payload(
+                        status="pass",
+                        summary=f"{target_stage} admission uses authoritative package truth",
+                        details={"target_stage": target_stage, "stage_ready": True, "stage_key": "package_authoritative_truth"},
+                    ),
+                }
+                return {
+                    "schema_version": "1.0",
+                    "enabled": True,
+                    "status": "pass",
+                    "blocked": False,
+                    "reason_code": "requirement_completeness_projection_missing",
+                    "target_stage": target_stage,
+                    "feature": feature,
+                    "version": resolved_version,
+                    "stage_ready": True,
+                    "paths": missing_paths,
+                    "projection_status": "package_authoritative",
+                    "recommended_command": "",
+                    "next_action": target_stage,
+                    "stage_gates": stage_gates,
+                    "human_loop_handoff": {
+                        "action": target_stage,
+                        "reason": "package_authoritative_truth_pass",
+                        "recommended_command": "",
+                        "focus_areas": [],
+                    },
+                    "package_authoritative_truth": {
+                        "status": "pass",
+                        "validation": package_validation,
+                    },
+                    "completeness": {},
+                    "freeze_contract": freeze_contract,
+                }
         if markdown_first_freeze_supported(resolved_version):
             markdown_projection = parse_markdown_truth_projection(
                 project_root,

@@ -11,6 +11,26 @@ from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
 
 
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    normalized = str(version or "").strip().lower().lstrip("v")
+    try:
+        major, minor, patch = normalized.split(".")
+        return int(major), int(minor), int(patch)
+    except Exception:  # noqa: BLE001
+        return 0, 0, 0
+
+
+def _default_requirement_refs(version: str, slug: str) -> tuple[str, str, str]:
+    if _semver_tuple(version) >= (1, 5, 2):
+        base = f"docs/beacon/{version}/features/{slug}"
+        return f"{base}/truth.md", f"{base}/truth.md", f"{base}/tests.md"
+    return (
+        f"docs/beacon/{version}/prd/{slug}.md",
+        f"docs/beacon/{version}/user-story/{slug}.md",
+        f"docs/beacon/{version}/qa/test-cases/{slug}.md",
+    )
+
+
 _KIT_LAYER_ORDER = ["skill-contract", "scenario-suite", "trace-scorecard", "real-project-proof"]
 
 
@@ -142,9 +162,10 @@ def write_acceptance_kit_projection(
     machine_ref = str(envelope.get("canonical_envelope_ref") or "").strip()
     slug = feature_slug(feature)
 
-    skill_ref = requirement_refs[0] if requirement_refs else f"docs/beacon/{version}/prd/{slug}.md"
-    scenario_ref = requirement_refs[1] if len(requirement_refs) > 1 else f"docs/beacon/{version}/user-story/{slug}.md"
-    trace_ref = requirement_refs[2] if len(requirement_refs) > 2 else f"docs/beacon/{version}/qa/test-cases/{slug}.md"
+    default_skill_ref, default_scenario_ref, default_trace_ref = _default_requirement_refs(version, slug)
+    skill_ref = requirement_refs[0] if requirement_refs else default_skill_ref
+    scenario_ref = requirement_refs[1] if len(requirement_refs) > 1 else default_scenario_ref
+    trace_ref = requirement_refs[2] if len(requirement_refs) > 2 else default_trace_ref
     real_project_refs = [ref for ref in [runtime_ref, markdown_ref, machine_ref, *evidence_refs] if ref]
 
     payload = {

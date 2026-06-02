@@ -1,0 +1,1233 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-truth-map-center-and-package-cutover-r1",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.2",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:1d0b9715183aab32b8598743578e797f0902b044bfb93c82473a2d4418323823",
+  "plan_hash": "sha256:58d5dee2d49f582beb5d60869bbf0ce43f09603f977f25d21c3f1b27eb74c23c",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md",
+    "prd": "docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md",
+    "test_case": "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+    "ac_matrix": "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-map-center-and-package-cutover.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-02T11:43:33.350725+00:00",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "feature_slug": "beacon-truth-map-center-and-package-cutover",
+    "prd_ref": "docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "version": "v1.5.2",
+    "source": "research:docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-map-center-and-package-cutover.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 `features/<slug>/*.md` is authoritative for normal production and con...",
+      "description": "`features/<slug>/*.md` is authoritative for normal production and consumption.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001",
+        "TC-009",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001",
+        "TC-009",
+        "TC-010"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T11:46:48.422299+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 Commands and skills must call truth-map resolver before reading truth.",
+      "description": "Commands and skills must call truth-map resolver before reading truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002",
+        "TC-011",
+        "TC-012",
+        "TC-013"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T12:05:32.097534+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 Legacy triptych is not a canonical source in v1.5.2.",
+      "description": "Legacy triptych is not a canonical source in v1.5.2.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003",
+        "TC-014",
+        "TC-015"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008",
+        "SC-009",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003",
+        "TC-014",
+        "TC-015"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T11:46:48.422328+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 `doctor` can rebuild legacy triptych from package truth.",
+      "description": "`doctor` can rebuild legacy triptych from package truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004",
+        "TC-016"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011",
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004",
+        "TC-016"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T12:05:32.097587+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 `change` can absorb legacy triptych into package truth.",
+      "description": "`change` can absorb legacy triptych into package truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-005",
+        "TC-017"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013",
+        "SC-014"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005",
+        "TC-017"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T12:05:32.097609+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 Missing JSON twins do not block Markdown truth validity.",
+      "description": "Missing JSON twins do not block Markdown truth validity.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-006",
+        "TC-018",
+        "TC-019"
+      ],
+      "mapped_scenario_ids": [
+        "SC-015",
+        "SC-016",
+        "SC-017"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-006",
+        "TC-018",
+        "TC-019"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T11:46:48.422354+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 QA/release/gate use resolver and parser outputs from package truth.",
+      "description": "QA/release/gate use resolver and parser outputs from package truth.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-007",
+        "TC-020",
+        "TC-021",
+        "TC-022",
+        "TC-023"
+      ],
+      "mapped_scenario_ids": [
+        "SC-018",
+        "SC-019",
+        "SC-020",
+        "SC-021",
+        "SC-022"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-007",
+        "TC-020",
+        "TC-021",
+        "TC-022",
+        "TC-023"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T12:05:32.097650+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "AC-008 Drift against package truth is reported; package truth remains author...",
+      "description": "Drift against package truth is reported; package truth remains authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-008",
+        "TC-024",
+        "TC-025"
+      ],
+      "mapped_scenario_ids": [
+        "SC-023",
+        "SC-024",
+        "SC-025"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-008",
+        "TC-024",
+        "TC-025"
+      ],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T194631567579/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260602T194631567579",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200112150723/summary.json",
+        "verify:run-20260602T200112150723",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260602T200514823024/summary.json",
+        "verify:run-20260602T200514823024",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-02T12:05:32.097671+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-truth-map-center-and-package-cutover\" --project-root . --version v1.5.2",
+    "run_command": "beacon implement team-run \"beacon-truth-map-center-and-package-cutover\" --project . --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"beacon-truth-map-center-and-package-cutover\" --project . --version v1.5.2",
+    "ralph_command": "beacon implement run \"beacon-truth-map-center-and-package-cutover\" --project . --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-truth-map-center-and-package-cutover\" --project . --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "feature_slug": "beacon-truth-map-center-and-package-cutover",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-02T11:43:33.350907+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-map-center-and-package-cutover-R1",
+    "transaction_id": "tx-b90e0dbf85e1d9023",
+    "source_hash": "sha256:0e0609e2d0c483de7e9f1c4e48df63c97f22b000ae2b8e7f7bcb376d480962de",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-beacon-truth-map-center-and-package-cutover.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-beacon-truth-map-center-and-package-cutover.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "prd": "docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md",
+      "user_story": "docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md",
+      "test_case": "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-map-center-and-package-cutover-R1",
+    "transaction_id": "tx-b90e0dbf85e1d9023",
+    "source_hash": "sha256:0e0609e2d0c483de7e9f1c4e48df63c97f22b000ae2b8e7f7bcb376d480962de",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json",
+  "generated_at": "2026-06-02T11:43:33.399060+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-map-center-and-package-cutover-R1",
+  "transaction_id": "tx-b90e0dbf85e1d9023",
+  "source_hash": "sha256:0e0609e2d0c483de7e9f1c4e48df63c97f22b000ae2b8e7f7bcb376d480962de",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-02T12:05:32.587773+00:00",
+  "accepted_at": "2026-06-02T12:05:32.587757+00:00",
+  "accepted_by": "qa"
+}
