@@ -107,6 +107,34 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `beacon brainstorm ...` for read-only convergence
 - `beacon change ...` for frozen-truth revision
 
+## v1.5.0 Feature Package Quick Template
+
+When writing `features/<slug>/truth.md`, keep it parser-friendly and explicit that `.machine` remains authoritative:
+
+```markdown
+---
+slug: example-feature
+version: v1.5.0
+status: draft
+language: en
+canonical_refs:
+  prd: docs/beacon/v1.5.0/prd/example-feature.md
+  user_story: docs/beacon/v1.5.0/user-story/example-feature.md
+  test_case: docs/beacon/v1.5.0/qa/test-cases/example-feature.md
+parser_contract: beacon-feature-package-v1
+---
+
+# Feature: Example Feature
+
+## Acceptance Criteria
+
+| AC ID | Theme | Description |
+|-------|-------|-------------|
+| AC-001 | example | The package is generated without replacing canonical truth. |
+```
+
+This template is authoring support only. CLI validation decides whether the package is accepted as a read model.
+
 ## Supporting References
 
 Use these lightweight references when they reduce ambiguity faster than free-form prompting:

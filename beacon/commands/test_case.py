@@ -31,9 +31,13 @@ from beacon.utils.requirement_deepening import (
     sync_requirement_deepening_artifacts,
 )
 from beacon.utils.semantic_runtime import (
+    HOST_MODE_BRIDGE,
+    HOST_MODE_RESPONSE,
     build_mode_contract,
     build_semantic_capability_snapshot,
+    ensure_default_host_bridge_env,
     execute_host_bridge_command,
+    host_dispatch_decision,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -718,6 +722,21 @@ def _extract_host_test_case_payload() -> dict[str, Any]:
     return {}
 
 
+def _extract_host_test_case_payload_from_response_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """v1.4.13: extract a test-case dict from an already-parsed response payload."""
+    if not isinstance(payload, dict) or not payload:
+        return {}
+    for candidate in (payload.get("test_case"), payload.get("payload"), payload):
+        if isinstance(candidate, dict):
+            return candidate
+    return {}
+
+
+def _extract_host_test_case_payload_from_bridge_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    """v1.4.13: extract a test-case dict from an already-parsed bridge payload."""
+    return _extract_host_test_case_payload_from_response_payload(payload)
+
+
 def _load_bridge_payload(payload_json: str = "") -> dict[str, Any]:
     raw = str(payload_json or "").strip()
     if not raw:
@@ -1292,10 +1311,21 @@ def create(
         "test-case",
         disable_env="BEACON_TEST_CASE_DISABLE_LLM",
     )
+    # v1.4.13: wire host bridge transport before capability snapshot
+    # so that host_runtime_supported projects get the default bridge wired
+    # up even when the user only sets BEACON_HOST_RUNTIME. Mirrors the
+    # prd / user_story parity fix from issue #3.
+    ensure_default_host_bridge_env("test-case", host_runtime=capability_snapshot.get("host_runtime"))
+    capability_snapshot = build_semantic_capability_snapshot(
+        "test-case",
+        disable_env="BEACON_TEST_CASE_DISABLE_LLM",
+    )
     fallback_reason = ""
     effective_mode = requested_mode
+    generator_mode = requested_mode
     host_payload: dict[str, Any] = {}
     host_requested = False
+    response_used = False
     if requested_mode == "rule":
         effective_mode = "rule"
     elif bool(capability_snapshot.get("llm_disabled")):
@@ -1408,17 +1438,51 @@ def create(
     )
 
     if host_requested:
-        host_payload = _extract_host_test_case_payload_with_bridge(
-            _build_test_case_host_bridge_request(feature, feature_slug, ac_items, qa_case_rows, ui_runner, project_root)
+        # v1.4.13: response injection wins over bridge subprocess.
+        # See justin-mc-lai/beacon#3 and host_dispatch_decision().
+        decision = host_dispatch_decision(
+            "test-case",
+            request_payload=_build_test_case_host_bridge_request(
+                feature, feature_slug, ac_items, qa_case_rows, ui_runner, project_root
+            ),
+            capability_snapshot=capability_snapshot,
         )
-        if host_payload:
-            effective_mode = "host"
-        elif requested_mode == "llm":
-            typer.echo("Test case semantic compile requires host semantic response.", err=True)
-            raise typer.Exit(2)
+        if decision["response_used"] and decision["response_payload"]:
+            host_payload = _extract_host_test_case_payload_from_response_payload(
+                decision["response_payload"]
+            )
+            if host_payload:
+                effective_mode = HOST_MODE_RESPONSE
+                response_used = True
+            elif requested_mode == "llm":
+                typer.echo("Test case semantic compile requires host semantic response.", err=True)
+                raise typer.Exit(2)
+            else:
+                effective_mode = "rule"
+                fallback_reason = "host_compile_failed"
+        elif decision["mode"] == HOST_MODE_BRIDGE and decision["bridge_payload"]:
+            host_payload = _extract_host_test_case_payload_from_bridge_payload(
+                decision["bridge_payload"]
+            )
+            if host_payload:
+                effective_mode = HOST_MODE_BRIDGE
+            elif requested_mode == "llm":
+                typer.echo("Test case semantic compile requires host semantic response.", err=True)
+                raise typer.Exit(2)
+            else:
+                effective_mode = "rule"
+                fallback_reason = "host_compile_failed"
         else:
+            if requested_mode == "llm":
+                typer.echo("Test case semantic compile requires host semantic response.", err=True)
+                raise typer.Exit(2)
             effective_mode = "rule"
             fallback_reason = "host_compile_failed"
+        # v1.4.13: persist response_used into the snapshot so downstream
+        # contract / machine mirror carries the flag.
+        capability_snapshot = {**capability_snapshot, "response_used": response_used}
+    # v1.4.13: track generator_mode alongside effective_mode.
+    generator_mode = effective_mode
     compiler = build_mode_contract(
         requested_mode=requested_mode,
         effective_mode=effective_mode,
@@ -1463,7 +1527,7 @@ def create(
         )
         compiler["effective_mode"] = "markdown"
         compiler["fallback_reason"] = ""
-    elif effective_mode == "host" and host_matrix_entries:
+    elif effective_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE} and host_matrix_entries:
         entries = _normalize_host_matrix_entries(
             feature=feature,
             feature_slug=feature_slug,
@@ -1608,7 +1672,7 @@ def create(
                 }
             )
 
-    if (effective_mode == "host" or qa_case_rows) and not markdown_matrix_truth_mode:
+    if (effective_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE} or qa_case_rows) and not markdown_matrix_truth_mode:
         synthetic_idx = len(entries)
         ac_anchor = ac_items[0]["ac_id"] if ac_items else "AC-001"
         for jump in prototype_navigation.get("jump_map", []) or []:
@@ -1822,7 +1886,7 @@ def create(
             ac_items=ac_items,
             ui_runner=resolved_ui_runner,
         )
-    elif effective_mode == "host" and host_qa9_entries:
+    elif effective_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE} and host_qa9_entries:
         qa9_entries = _normalize_existing_qa9_entries(
             feature=feature,
             feature_slug=feature_slug,
@@ -1830,7 +1894,7 @@ def create(
             ac_items=ac_items,
             ui_runner=resolved_ui_runner,
         )
-    elif effective_mode == "host" and host_matrix_entries:
+    elif effective_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE} and host_matrix_entries:
         qa9_entries = _normalize_existing_qa9_entries(
             feature=feature,
             feature_slug=feature_slug,
@@ -2042,7 +2106,7 @@ def create(
         for x in entries
     )
     result_rows = "\n".join(f"| {x['tc_id']} | Pending | from {x['ac_id']} |" for x in entries)
-    host_markdown = str(host_payload.get("markdown") or "").strip() if effective_mode == "host" else ""
+    host_markdown = str(host_payload.get("markdown") or "").strip() if effective_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE} else ""
     md_content = host_markdown or f"""# Test Cases: {feature}
 
 ## Overview

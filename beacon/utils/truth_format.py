@@ -119,18 +119,31 @@ def _extract_body_text(content: str) -> str:
 
 
 def detect_content_language(content: str) -> str:
-    """Detect content language by counting Chinese character ratio.
-    
-    Returns "zh" if Chinese characters > 30%, otherwise "en".
+    """Detect content language from human prose signals.
+
+    Beacon truth docs contain stable English headings, IDs, paths, commands, and
+    parser column names even when the human-facing prose is Chinese. Treat a
+    meaningful amount of CJK prose as `zh` instead of dividing by all markdown
+    structure characters.
+
+    Returns "zh" when Chinese prose is present at document scale, otherwise "en".
     """
     body = _extract_body_text(content)
     if not body:
         return "en"
-    chinese_count = sum(1 for ch in body if "\u4e00" <= ch <= "\u9fff")
-    total = len(body)
-    if total == 0:
+    without_code_spans = re.sub(r"`[^`]*`", " ", body)
+    without_paths = re.sub(r"\b[a-zA-Z0-9_.-]+/[a-zA-Z0-9_./<>-]+\b", " ", without_code_spans)
+    without_ids = re.sub(r"\b(?:AC|TC|FR|TASK)-\d+\b", " ", without_paths)
+    chinese_count = sum(1 for ch in without_ids if "\u4e00" <= ch <= "\u9fff")
+    latin_letters = sum(1 for ch in without_ids if ("A" <= ch <= "Z") or ("a" <= ch <= "z"))
+    signal_total = chinese_count + latin_letters
+    if signal_total == 0:
         return "en"
-    ratio = chinese_count / total
+    ratio = chinese_count / signal_total
+    if chinese_count >= 80:
+        return "zh"
+    if chinese_count >= 12 and ratio >= 0.03:
+        return "zh"
     return "zh" if ratio > 0.3 else "en"
 
 

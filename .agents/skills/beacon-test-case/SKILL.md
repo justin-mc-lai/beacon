@@ -69,6 +69,22 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - `beacon user-story ...` when ACs are under-specified
 - `beacon prototype ...` when real UX/UI handoff is present
 
+## v1.5.0 Feature Package Quick Template
+
+When writing `features/<slug>/tests.md`, keep the AC-to-test table deterministic:
+
+```markdown
+# Tests: Example Feature
+
+## Coverage Matrix
+
+| AC ID | TC ID | Layer | Assertion |
+|-------|-------|-------|-----------|
+| AC-001 | TC-001 | integration | The feature package validates without replacing canonical truth. |
+```
+
+The package test file is a read model. Canonical coverage truth remains under `qa/test-cases/` and `.machine/qa/` in v1.5.0.
+
 ## Examples
 
 - 适用例：

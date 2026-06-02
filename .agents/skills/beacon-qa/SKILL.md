@@ -108,6 +108,23 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - `beacon implement ...` for repair handoff
 - `beacon release ...` only after layered evidence is sufficient
 
+## v1.5.0 Feature Package Quick Template
+
+When writing `features/<slug>/evidence.md`, keep evidence as an index with explicit authority labels:
+
+```markdown
+# Evidence Index: Example Feature
+
+## Evidence Index
+
+| Surface | Authority | Canonical Artifact | Status | Route |
+|---------|-----------|--------------------|--------|-------|
+| beacon-deep | support_advisory | docs/beacon/v1.5.0/research/example.md | indexed | change |
+| qa | qa_verdict | docs/beacon/v1.5.0/.machine/qa/example.qa9-matrix.json | linked | qa |
+```
+
+Do not add final verdict, gate truth, or release readiness fields to `evidence.md`.
+
 ## Supporting References
 
 Use these lightweight references when verification needs a faster human-readable closure frame:

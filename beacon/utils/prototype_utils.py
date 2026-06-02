@@ -18,9 +18,13 @@ from urllib import request
 from beacon.utils.runtime_projection_store import runtime_ledger_root
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.semantic_runtime import (
+    HOST_MODE_BRIDGE,
+    HOST_MODE_PROVIDER,
+    HOST_MODE_RESPONSE,
     build_semantic_capability_snapshot,
     build_mode_contract,
     execute_host_bridge_command,
+    host_dispatch_decision,
     llm_unavailable_message,
     load_or_build_semantic_layer,
     load_host_response_json,
@@ -4998,6 +5002,10 @@ def _compile_prototype_plan_host(
     inference = {}
     inference_mode = "host-bridge"
     parser_mode = "host-wireframe-compiler"
+    # v1.4.13: response injection wins over bridge subprocess.
+    # See justin-mc-lai/beacon#3 and host_dispatch_decision(). The previous
+    # implementation did the opposite (bridge first, response as fallback)
+    # which was the only dispatcher doing it right *by accident*.
     bridge_request = _build_prototype_host_bridge_request(
         feature=feature,
         version=version,
@@ -5005,10 +5013,20 @@ def _compile_prototype_plan_host(
         model=model,
         semantic_layer=semantic_layer,
     )
-    inference, _ = execute_host_bridge_command("prototype", bridge_request)
-    if not inference:
-        inference, _ = load_host_response_json("prototype")
-    if not inference:
+    decision = host_dispatch_decision(
+        "prototype",
+        request_payload=bridge_request,
+        capability_snapshot=capability_snapshot,
+    )
+    if decision["response_used"] and decision["response_payload"]:
+        inference = decision["response_payload"]
+        inference_mode = "host-response"
+        parser_mode = "host-response-wireframe-compiler"
+    elif decision["mode"] == HOST_MODE_BRIDGE and decision["bridge_payload"]:
+        inference = decision["bridge_payload"]
+        inference_mode = "host-bridge"
+        parser_mode = "host-wireframe-compiler"
+    else:
         if not bool(capability_snapshot.get("provider_available")):
             raise PrototypeLLMCompileError("prototype host response missing or provider-backed host compile unavailable")
         inference = _real_prototype_llm_inference(
@@ -5018,15 +5036,27 @@ def _compile_prototype_plan_host(
             model=model,
             semantic_layer=semantic_layer,
         )
-        inference_mode = "host-provider"
+        inference_mode = HOST_MODE_PROVIDER
         parser_mode = "host-provider-wireframe-compiler"
+    # v1.4.13: surface which host transport produced output via effective_mode
+    # so the machine mirror / on-disk contract carries the new mode strings.
+    if inference_mode == "host-response":
+        effective_mode = HOST_MODE_RESPONSE
+    elif inference_mode == HOST_MODE_PROVIDER:
+        effective_mode = HOST_MODE_PROVIDER
+    else:
+        effective_mode = HOST_MODE_BRIDGE
+    # v1.4.13: propagate response_used into the capability snapshot for the
+    # contract / machine mirror.
+    response_used = bool(decision.get("response_used"))
+    capability_snapshot = {**capability_snapshot, "response_used": response_used}
     return _compile_prototype_plan_from_inference(
         version=version,
         feature=feature,
         docs=docs,
         inference=inference,
         requested_mode=requested_mode,
-        effective_mode="host",
+        effective_mode=effective_mode,
         model=model,
         capability_snapshot=capability_snapshot,
         inference_mode=inference_mode,

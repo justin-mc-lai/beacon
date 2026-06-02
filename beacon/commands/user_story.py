@@ -15,9 +15,13 @@ from beacon.utils.requirement_deepening import (
     sync_requirement_deepening_artifacts,
 )
 from beacon.utils.semantic_runtime import (
+    HOST_MODE_BRIDGE,
+    HOST_MODE_RESPONSE,
     build_mode_contract,
     build_semantic_capability_snapshot,
+    ensure_default_host_bridge_env,
     execute_host_bridge_command,
+    host_dispatch_decision,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -80,6 +84,31 @@ def _extract_host_story_payload() -> dict:
         if isinstance(candidate, dict):
             return candidate
     return {}
+
+
+def _extract_host_story_payload_from_response_payload(payload: dict) -> dict:
+    """Extract story dict from an already-parsed response-injection payload.
+
+    v1.4.13: the response helper already parsed the JSON envelope; this walks
+    the same candidate traversal as ``_extract_host_story_payload`` but
+    accepts the dict directly so the dispatch site is explicit.
+    """
+    if not isinstance(payload, dict) or not payload:
+        return {}
+    for candidate in (payload.get("story"), payload.get("payload"), payload):
+        if isinstance(candidate, dict):
+            return candidate
+    return {}
+
+
+def _extract_host_story_payload_from_bridge_payload(payload: dict) -> dict:
+    """Extract story dict from an already-parsed bridge-subprocess payload.
+
+    v1.4.13: the bridge subprocess returns a dict with the same shape as a
+    response injection envelope (``story`` / ``payload`` / top-level dict).
+    We reuse the same traversal.
+    """
+    return _extract_host_story_payload_from_response_payload(payload)
 
 
 def _load_bridge_payload(payload_json: str = "") -> dict:
@@ -300,6 +329,15 @@ def create(
         "user-story",
         disable_env="BEACON_USER_STORY_DISABLE_LLM",
     )
+    # v1.4.13: wire host bridge transport before capability snapshot
+    # so that host_runtime_supported projects get the default bridge wired
+    # up even when the user only sets BEACON_HOST_RUNTIME. Mirrors the
+    # prd / test_case parity fix from issue #3.
+    ensure_default_host_bridge_env("user-story", host_runtime=capability_snapshot.get("host_runtime"))
+    capability_snapshot = build_semantic_capability_snapshot(
+        "user-story",
+        disable_env="BEACON_USER_STORY_DISABLE_LLM",
+    )
     slug = feature_slug(feature)
     fallback_reason = ""
     effective_mode = requested_mode
@@ -318,22 +356,56 @@ def create(
         effective_mode = "rule"
         fallback_reason = "llm_disabled"
     elif bool(capability_snapshot.get("host_semantic_ready")):
-        semantic_payload = _extract_host_story_payload_with_bridge(
-            _build_story_host_bridge_request(feature, resolved_version, project_root)
+        # v1.4.13: response injection wins over bridge subprocess.
+        decision = host_dispatch_decision(
+            "user-story",
+            request_payload=_build_story_host_bridge_request(feature, resolved_version, project_root),
+            capability_snapshot=capability_snapshot,
         )
-        if semantic_payload:
-            effective_mode = "host"
-        elif requested_mode == "llm":
-            typer.echo("User story semantic compile requires host semantic response.", err=True)
-            raise typer.Exit(2)
+        if decision["response_used"] and decision["response_payload"]:
+            semantic_payload = _extract_host_story_payload_from_response_payload(
+                decision["response_payload"]
+            )
+            if semantic_payload:
+                effective_mode = HOST_MODE_RESPONSE
+            else:
+                # Response was injected but didn't carry a parseable story;
+                # treat as a host compile failure (don't silently fall through
+                # to the bridge subprocess, which would shadow the response).
+                if requested_mode == "llm":
+                    typer.echo("User story semantic compile requires host semantic response.", err=True)
+                    raise typer.Exit(2)
+                effective_mode = "rule"
+                fallback_reason = "host_compile_failed"
+        elif decision["mode"] == HOST_MODE_BRIDGE and decision["bridge_payload"]:
+            semantic_payload = _extract_host_story_payload_from_bridge_payload(
+                decision["bridge_payload"]
+            )
+            if semantic_payload:
+                effective_mode = HOST_MODE_BRIDGE
+            elif requested_mode == "llm":
+                typer.echo("User story semantic compile requires host semantic response.", err=True)
+                raise typer.Exit(2)
+            else:
+                effective_mode = "rule"
+                fallback_reason = "host_compile_failed"
         else:
+            if requested_mode == "llm":
+                typer.echo("User story semantic compile requires host semantic response.", err=True)
+                raise typer.Exit(2)
             effective_mode = "rule"
             fallback_reason = "host_compile_failed"
+        # Record response_used flag back into the snapshot for downstream contract.
+        response_used = bool(decision.get("response_used"))
+        capability_snapshot = {**capability_snapshot, "response_used": response_used}
     else:
         effective_mode = "rule"
         fallback_reason = "llm_unavailable"
         if semantic and fallback_semantic_payload:
             semantic_payload = dict(fallback_semantic_payload)
+    # v1.4.13: track generator_mode so downstream machine mirrors see it
+    # consistently with prd / test_case.
+    generator_mode = effective_mode
 
     user_story_text, prd_text, qa_text, research_text = _read_requirement_truth(project_root, resolved_version, feature)
     story = generate_user_story(feature, project_root, semantic_payload=semantic_payload)

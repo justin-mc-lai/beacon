@@ -11,6 +11,8 @@ description: Use when the user wants Beacon-owned support-only design exploratio
 
 It preserves the useful intent split from `ui-ux-dev` while adding Beacon truth boundaries:
 
+- `simplify` is Beacon-native with no upstream dependency.
+
 - `explore` and `extract` preserve `vibe-to-ui`.
 - `system` preserves `ui-ux-pro-max`.
 - `review` and `polish` preserve `impeccable`.
@@ -19,6 +21,7 @@ It preserves the useful intent split from `ui-ux-dev` while adding Beacon truth 
 
 ## When to Use
 
+- A feature needs a first-principles simplicity audit before design exploration.
 - UI direction is unclear and needs exploration.
 - A screenshot or reference needs structure extraction.
 - A version-wide component system or design baseline is needed.
@@ -38,7 +41,7 @@ It preserves the useful intent split from `ui-ux-dev` while adding Beacon truth 
 
 ## Workflow / Decision Loop
 
-- normalize the request into `explore`, `system`, `review`, `polish`, `extract`, `library`, or `bootstrap`
+- normalize the request into `explore`, `system`, `review`, `polish`, `extract`, `library`, `bootstrap`, or `simplify`
 - use `beacon design route <intent> "<feature>" --project . --version auto --json` to resolve the deterministic contract
 - draft design truth candidates under Beacon version-wide design surfaces when needed
 - route accepted UI/UX facts to `beacon prototype adapt`

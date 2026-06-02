@@ -197,3 +197,22 @@ class TestTruthFormat:
 
     def test_detect_zh(self):
         assert detect_content_language("这是一个测试内容，用于检测语言") == "zh"
+
+    def test_detect_zh_with_beacon_technical_structure(self):
+        content = """
+# Test Cases: Example
+
+**Language**: `zh`
+
+## Coverage Matrix
+
+| AC ID | TC ID | Layer | Planned Command | Assertion | Evidence Path |
+|-------|-------|-------|-----------------|-----------|---------------|
+| AC-001 | TC-001 | integration | `beacon validate-feature-package <feature>` | 创建 `features/<slug>/truth.md`，并保持 canonical triptych 不变。 | `docs/beacon/v1.5.0/features/<slug>/` |
+
+## Explicit Non Coverage
+
+- deep、CEO review、QA verdict、release readiness authority 不能迁移到 `evidence.md`。
+- checkbox-only 不能完成 implement、QA 或 release gates。
+"""
+        assert detect_content_language(content) == "zh"

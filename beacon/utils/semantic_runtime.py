@@ -20,6 +20,18 @@ from beacon.utils.workflow_memory import build_stage_context, normalize_workflow
 
 _SUPPORTED_HOSTS = {"codex", "claude"}
 _SUPPORTED_REQUESTED_MODES = {"auto", "llm", "rule"}
+# v1.4.13: explicit effective-mode strings for host-dispatch decisions.
+# "host-response" wins over "host" (bridge) over "host-provider" (LLM-backed)
+# when multiple transports are configured. The capability snapshot's
+# `host_transport` field still reports the *configured* transport using its
+# own precedence (command-bridge > injected-response > provider-bridge) —
+# that field describes capability, not the decision this dispatcher makes.
+HOST_MODE_RESPONSE = "host-response"
+HOST_MODE_BRIDGE = "host"
+HOST_MODE_PROVIDER = "host-provider"
+HOST_MODE_LLM = "llm"
+HOST_MODE_RULE = "rule"
+_HOST_MODE_VALUES = (HOST_MODE_RESPONSE, HOST_MODE_BRIDGE, HOST_MODE_PROVIDER, HOST_MODE_LLM, HOST_MODE_RULE)
 _SEMANTIC_SCHEMA_VERSION = "1.0"
 _SEMANTIC_STAGE_ORDER = ("prd", "user-story", "test-case", "prototype", "implement", "qa", "release")
 _DEFAULT_TASTE_SKILL_REPO = "https://github.com/Leonxlnx/taste-skill"
@@ -261,11 +273,124 @@ def build_semantic_capability_snapshot(
         "host_transport": host_transport,
         "host_semantic_ready": host_runtime_supported
         and (host_bridge_command_available or host_response_available or provider_available),
+        # v1.4.13: response_used is flipped to True by `host_dispatch_decision`
+        # after a successful response-injection path. Snapshot default is False
+        # because the snapshot itself does not consume the response — it
+        # only describes whether the response is *available*. The
+        # `host_mode_options` list is informational; consumers should not
+        # branch on its presence.
+        "response_used": False,
+        "host_mode_options": list(_HOST_MODE_VALUES),
         "provider_available": provider_available,
         "provider_key_present": provider_available,
         "llm_disabled": llm_disabled,
         "disable_env": disable_env,
     }
+
+
+def host_dispatch_decision(
+    command_name: str,
+    *,
+    request_payload: dict[str, Any] | None = None,
+    capability_snapshot: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Resolve which host transport actually produced output for ``command_name``.
+
+    v1.4.13: this helper centralises the response-vs-bridge precedence that
+    the four create-time dispatchers (prd, user-story, test-case, prototype)
+    used to do ad-hoc. The previous behaviour silently shadowed an injected
+    ``BEACON_HOST_<CMD>_RESPONSE_JSON`` / ``_FILE`` response with a (failing)
+    bridge subprocess whenever ``host_runtime_supported`` was true. See
+    justin-mc-lai/beacon#3.
+
+    Precedence (must be enforced, in this order):
+
+      1. Response injection wins. The parsed response payload is returned
+         alongside ``mode="host-response"`` and ``response_used=True``.
+         The bridge subprocess is **not** invoked in this branch.
+      2. Bridge subprocess is the fallback when no response is available.
+         The subprocess is invoked only when the capability snapshot reports
+         ``host_bridge_command_available=True``. On a non-empty payload,
+         ``mode="host"`` and ``response_used=False`` are returned.
+      3. Otherwise ``mode="none"`` and the dispatcher falls through to
+         provider (LLM) or rule-template, depending on ``requested_mode``
+         and ``provider_available``.
+
+    The provider call itself is owned by the dispatcher (it requires
+    feature / version / request payload assembly that differs per command).
+    When the caller reports a successful provider invocation, it should set
+    ``effective_mode = HOST_MODE_PROVIDER`` (prototype) or
+    ``HOST_MODE_LLM`` (prd / user-story / test-case) in the mode contract.
+
+    Return shape::
+
+        {
+            "mode": "host-response" | "host" | "none",
+            "response_used": bool,
+            "host_transport": "injected-response" | "command-bridge" | "none",
+            "response_payload": dict,   # {} if not used
+            "response_source": dict,     # host_response_source() result
+            "bridge_meta": dict,         # execute_host_bridge_command() meta
+            "bridge_payload": dict,      # {} if bridge not used / failed
+        }
+    """
+    snapshot = capability_snapshot or {}
+    empty = {
+        "mode": "none",
+        "response_used": False,
+        "host_transport": "none",
+        "response_payload": {},
+        "response_source": {},
+        "bridge_meta": {},
+        "bridge_payload": {},
+    }
+
+    # 1) Response injection wins outright.
+    response_source = host_response_source(command_name)
+    if bool(response_source.get("available")):
+        try:
+            response_payload, _ = load_host_response_json(command_name)
+        except Exception:  # noqa: BLE001 — response injection must never crash the dispatcher
+            response_payload = {}
+        if response_payload:
+            return {
+                "mode": HOST_MODE_RESPONSE,
+                "response_used": True,
+                "host_transport": "injected-response",
+                "response_payload": response_payload,
+                "response_source": response_source,
+                "bridge_meta": {},
+                "bridge_payload": {},
+            }
+
+    # 2) Bridge subprocess is the documented fallback.
+    if bool(snapshot.get("host_bridge_command_available")):
+        bridge_payload, bridge_meta = execute_host_bridge_command(
+            command_name, request_payload or {}
+        )
+        if bridge_payload:
+            return {
+                "mode": HOST_MODE_BRIDGE,
+                "response_used": False,
+                "host_transport": "command-bridge",
+                "response_payload": {},
+                "response_source": response_source,
+                "bridge_meta": bridge_meta,
+                "bridge_payload": bridge_payload,
+            }
+        # Bridge failed; surface the failure mode so the dispatcher can
+        # record a precise `fallback_reason` if it chooses to.
+        return {
+            "mode": "none",
+            "response_used": False,
+            "host_transport": "command-bridge",
+            "response_payload": {},
+            "response_source": response_source,
+            "bridge_meta": bridge_meta,
+            "bridge_payload": {},
+        }
+
+    return empty
 
 
 def build_mode_contract(

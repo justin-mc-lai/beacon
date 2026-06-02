@@ -92,6 +92,22 @@ def qa_docs_file(project_root: Path, version: str, filename: str) -> Path:
     return qa_docs_dir(project_root, version) / filename
 
 
+def feature_package_dir(project_root: Path, version: str, feature_slug: str) -> Path:
+    return version_root(project_root, version) / "features" / feature_slug
+
+
+def feature_package_file(project_root: Path, version: str, feature_slug: str, filename: str) -> Path:
+    return feature_package_dir(project_root, version, feature_slug) / filename
+
+
+def machine_requirement_dir(project_root: Path, version: str) -> Path:
+    return machine_root(project_root, version) / "requirement"
+
+
+def machine_requirement_file(project_root: Path, version: str, filename: str) -> Path:
+    return machine_requirement_dir(project_root, version) / filename
+
+
 def machine_qa_dir(project_root: Path, version: str) -> Path:
     return machine_root(project_root, version) / "qa"
 

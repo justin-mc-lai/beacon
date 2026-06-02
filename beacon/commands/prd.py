@@ -26,9 +26,12 @@ from beacon.utils.markdown_first_freeze import (
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.semantic_runtime import (
+    HOST_MODE_BRIDGE,
+    HOST_MODE_RESPONSE,
     build_mode_contract,
     build_semantic_capability_snapshot,
     execute_host_bridge_command,
+    host_dispatch_decision,
     load_host_response_json,
     normalize_requested_mode,
 )
@@ -373,6 +376,38 @@ def _extract_host_prd_markdown() -> str:
         if text:
             return text
     return ""
+
+
+def _host_prd_markdown_from_response_payload(payload: dict) -> str:
+    """Extract markdown from an already-parsed response-injection payload.
+
+    v1.4.13: mirrors the candidate traversal of ``_extract_host_prd_markdown``
+    but accepts the dict directly (the response helper already parsed it).
+    Kept as a separate function so the dispatch site is explicit about
+    which path produced the markdown.
+    """
+    if not isinstance(payload, dict) or not payload:
+        return ""
+    candidates = [payload.get("markdown"), payload.get("content")]
+    nested = payload.get("payload")
+    if isinstance(nested, dict):
+        candidates.extend([nested.get("markdown"), nested.get("content")])
+    for item in candidates:
+        text = str(item or "").strip()
+        if text:
+            return text
+    return ""
+
+
+def _host_prd_markdown_from_bridge_payload(payload: dict) -> str:
+    """Extract markdown from an already-parsed bridge-subprocess payload.
+
+    v1.4.13: the bridge subprocess returns a dict; the dispatcher passes
+    that dict to ``_compile_prototype_plan_from_inference``-style helpers
+    depending on the command. For prd the payload shape is identical to
+    the response shape, so we reuse the response extractor.
+    """
+    return _host_prd_markdown_from_response_payload(payload)
 
 
 def _load_bridge_payload(payload_json: str = "") -> dict[str, object]:
@@ -1494,22 +1529,41 @@ def create(
             )
             contract = _validate_contract(md_content, require_no_placeholders=False)
         else:
+            # v1.4.13: response injection wins over bridge subprocess.
+            # See justin-mc-lai/beacon#3 and host_dispatch_decision().
             host_markdown = ""
+            response_used = False
             if bool(capability_snapshot.get("host_semantic_ready")):
-                host_markdown = _extract_host_prd_markdown_with_bridge(
-                    _build_prd_host_bridge_request(
+                decision = host_dispatch_decision(
+                    "prd",
+                    request_payload=_build_prd_host_bridge_request(
                         feature=feature,
                         version=resolved_version,
                         track=template["track"],
                         family=template["family"],
                         existing_prds=existing_prds,
                         slug=slug,
-                    )
+                    ),
+                    capability_snapshot=capability_snapshot,
                 )
-                if host_markdown:
-                    effective_mode = "host"
-                else:
+                if decision["response_used"] and decision["response_payload"]:
+                    host_markdown = _host_prd_markdown_from_response_payload(
+                        decision["response_payload"]
+                    )
+                    if host_markdown:
+                        effective_mode = HOST_MODE_RESPONSE
+                        response_used = True
+                elif decision["mode"] == HOST_MODE_BRIDGE and decision["bridge_payload"]:
+                    host_markdown = _host_prd_markdown_from_bridge_payload(
+                        decision["bridge_payload"]
+                    )
+                    if host_markdown:
+                        effective_mode = HOST_MODE_BRIDGE
+                if not host_markdown and decision["mode"] in {HOST_MODE_BRIDGE, "none"} and decision.get("bridge_meta"):
                     fallback_reason = "host_compile_failed"
+            # Record the response_used flag back into the snapshot so the
+            # contract / transaction metadata carries it.
+            capability_snapshot = {**capability_snapshot, "response_used": response_used}
             if host_markdown:
                 md_content = host_markdown
             else:
@@ -1533,7 +1587,7 @@ def create(
                 generator_mode = "rule"
                 fallback_reason = (
                     "host_contract_validation_failed"
-                    if failed_mode == "host"
+                    if failed_mode in {HOST_MODE_BRIDGE, HOST_MODE_RESPONSE}
                     else "llm_contract_validation_failed"
                 )
                 md_content = _render_prd(

@@ -1,0 +1,30 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.1",
+  "status": "frozen",
+  "verdict": "requirement_truth_frozen",
+  "scope": "truth-map resolver center; feature package canonical-ready; no MD-to-JSON truth twin requirement",
+  "authority_model": {
+    "resolver_contract": "beacon-truth-map-v1",
+    "package_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative_ready",
+    "json_role": "projection_diagnostic_evidence_or_rebuild_metadata_only",
+    "legacy_role": "doctor_rebuild_or_change_absorb_only"
+  },
+  "validated_artifacts": {
+    "feature_package_validation": "docs/beacon/v1.5.1/.machine/requirement/feature-package-validation.json",
+    "truth": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/truth.md",
+    "tests": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/tests.md",
+    "tasks": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/tasks.md",
+    "evidence": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/evidence.md"
+  },
+  "current_cli_limitations": [
+    "validate-feature-package still reports gate_authority=canonical_surfaces_preserved because the v1.5.0 validator treats feature packages as a parallel read model",
+    "change --refreeze-chain still closes prd/user-story/test-case/requirement_clarity/freeze and is not the v1.5.1 truth-map resolver freeze path",
+    "legacy markdown-first freeze-state does not understand truth-map resolver semantics"
+  ],
+  "implementation_entry": "Implement beacon.utils.truth_map and route new truth readers through it before promoting package authority in v1.5.2.",
+  "generated_at": "2026-06-02T02:39:36Z"
+}
