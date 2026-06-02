@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.2",
+  "status": "frozen",
+  "verdict": "requirement_truth_frozen",
+  "scope": "feature package Markdown becomes the normal authoritative truth source; legacy triptych is rebuild/absorb only",
+  "authority_model": {
+    "resolver_contract": "beacon-truth-map-v1",
+    "package_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "canonical_package": "docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/{truth,tests,tasks,evidence}.md",
+    "json_role": "optional_diagnostic_or_evidence_only",
+    "legacy_role": "doctor_rebuild_or_change_absorb_only"
+  },
+  "validated_artifacts": {
+    "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+    "truth": "docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/evidence.md"
+  },
+  "cutover_requirements": [
+    "All normal truth reads go through truth-map resolver",
+    "QA, gate, release, implement, status, material audit, and agent surfaces consume package truth through resolver/parser",
+    "JSON twins are not required for Markdown truth validity",
+    "Legacy drift is reported fail-closed while package truth remains authority"
+  ],
+  "current_cli_limitations": [
+    "validate-feature-package still reports gate_authority=canonical_surfaces_preserved until v1.5.1 resolver/parser work lands",
+    "doctor rebuild and change absorb are required cutover routes and must be implemented before v1.5.2 can be released"
+  ],
+  "generated_at": "2026-06-02T02:39:36Z"
+}

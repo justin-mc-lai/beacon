@@ -39,6 +39,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - “代码先做，后面再补 truth。” -> 不允许；truth 漂移要先回 `change`
 - “只是顺手改旁边一点逻辑，不用看冻结范围。” -> 不允许；实现必须受冻结边界约束
 - “prototype 还没补齐，但先写代码问题不大。” -> 不允许；真实 UX/UI handoff 不能跳过
+- “PRODUCT.md / DESIGN.md 只是参考文档，我先按通用直觉做。” -> 不允许；当项目存在 DESIGN.md 时，实现必须将其作为视觉基线读取和对齐。通用设计直觉不能覆盖项目特定的设计系统。
 
 ## Red Flags
 
@@ -49,6 +50,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 ## Verification
 
 - execution 入口明确绑定 frozen `prd / user-story / test-case`
+- 当 `PRODUCT.md` / `DESIGN.md` 存在时，实现产物必须对齐其中的设计基线（颜色、间距、圆角、阴影、组件规范）
 - blocked reason、gate context、branch/execution governance 可解释
 - prototype 条件触发时，不会被静默跳过
 
@@ -76,11 +78,16 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - frozen `prd / user-story / test-case`
 - conditionally required `prototype` when the feature has real UX/UI handoff
 - current gate / blocked reason / branch or execution governance context when present
+- `PRODUCT.md` — project-level product truth; must-read when the file exists at the project root
+- `DESIGN.md` — project-level design truth (colors, typography, spacing, tokens, Do's & Don'ts); must-read when the file exists at the project root
+- `docs/beacon/<version>/design/*` — version-wide design contracts (style, component-system, interaction-contract, state-matrix); must-read when they exist
+- `src/App.vue` or equivalent global CSS variable root — for projects with a design system, implement must reference existing CSS variables instead of hardcoding visual values
 
 ## Decision Protocol
 
 - Enter `implement` only after requirement truth is frozen enough for execution.
 - Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.
+- When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.
 - Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.
 - Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.
 - When dual-read or compatibility windows exist, fail closed on mismatch.
@@ -91,6 +98,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `goal`, task ledgers, or partial execution progress do not define completion truth.
 - If the feature needs UX/UI handoff and prototype is triggered, do not skip straight into coding.
 - Team/runtime internals stay internal unless the user explicitly asks for them.
+- When `PRODUCT.md` or `DESIGN.md` exists at the project root, `implement` must read them before building any UI. Skipping design truth is a process drift that produces implementation-to-design mismatch.
 - `implement` cannot rewrite frozen truth or override gate truth by itself.
 
 ## Learning Notes
@@ -104,6 +112,22 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `beacon implement ...`
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
+
+## v1.5.0 Feature Package Quick Template
+
+When writing `features/<slug>/tasks.md`, use stable checkbox rows. These rows are a task ledger, not gate truth:
+
+```markdown
+# Tasks: Example Feature
+
+## Task Ledger
+
+- [ ] TASK-001 Materialize feature package
+- [x] TASK-002 Validate frontmatter
+- [-] TASK-003 Repair blocked package diagnostics
+```
+
+Do not treat checked rows as implement, QA, or release completion. Existing gates remain authoritative.
 
 ## Supporting References
 

@@ -1230,6 +1230,34 @@ def collect_verification_writeback(
     return sorted(verified), sorted(failed), per_item
 
 
+def _executed_acceptance_layers(*, scenario_results: list[dict[str, Any]], qa_status: dict[str, Any]) -> list[str]:
+    layers: set[str] = set()
+    for item in scenario_results:
+        if not isinstance(item, dict):
+            continue
+        if not (
+            str(item.get("status") or "").strip().lower() in {"passed", "failed", "review_required"}
+            or bool(item.get("evidence_ref"))
+            or bool(str(item.get("browser_evidence_pack_ref") or "").strip())
+        ):
+            continue
+        layer = BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+        if layer:
+            layers.add(layer)
+
+    qa9 = qa_status.get("qa9") if isinstance(qa_status.get("qa9"), dict) else {}
+    tc_results = qa9.get("tc_results") if isinstance(qa9.get("tc_results"), list) else []
+    for item in tc_results:
+        if not isinstance(item, dict):
+            continue
+        if str(item.get("status") or "").strip().lower() not in {"passed", "failed", "review_required"} and not bool(item.get("evidence_ref")):
+            continue
+        layer = BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+        if layer:
+            layers.add(layer)
+    return sorted(layers)
+
+
 def _clamp_confidence(value: float) -> float:
     return round(max(0.0, min(1.0, float(value))), 4)
 
@@ -1884,15 +1912,7 @@ def build_feature_qa_precision_artifacts(
             )
         ),
     }
-    executed_acceptance_layers = sorted(
-        {
-            BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
-            for item in scenario_results
-            if str(item.get("status") or "").strip().lower() in {"passed", "failed", "review_required"}
-            or bool(item.get("evidence_ref"))
-            or bool(str(item.get("browser_evidence_pack_ref") or "").strip())
-        }
-    )
+    executed_acceptance_layers = _executed_acceptance_layers(scenario_results=scenario_results, qa_status=qa_status)
     blocked_acceptance_layers = sorted(
         {
             BROWSER_QA_LAYER if bool(item.get("browser_required")) else normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())

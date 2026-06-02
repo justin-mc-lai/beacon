@@ -8,7 +8,7 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.commands.qa import _browser_blocker_lines
-from beacon.utils.qa_feature import build_feature_qa_plan, materialize_feature_qa_matrix, writeback_feature_matrix_evidence
+from beacon.utils.qa_feature import _executed_acceptance_layers, build_feature_qa_plan, materialize_feature_qa_matrix, writeback_feature_matrix_evidence
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 
 
@@ -20,6 +20,23 @@ SLUG = "closure-feature"
 
 def _invoke(args: list[str]):
     return runner.invoke(app, args)
+
+
+def test_v119_executed_acceptance_layers_should_read_qa9_tc_results() -> None:
+    layers = _executed_acceptance_layers(
+        scenario_results=[],
+        qa_status={
+            "qa9": {
+                "tc_results": [
+                    {"tc_id": "TC-001", "status": "passed", "qa_type": "integration", "evidence_ref": ["evidence.json"]},
+                    {"tc_id": "TC-002", "status": "passed", "layer": "contract", "evidence_ref": ["evidence.json"]},
+                    {"tc_id": "TC-003", "status": "passed", "qa_type": "unit", "evidence_ref": ["evidence.json"]},
+                ]
+            }
+        },
+    )
+
+    assert layers == ["contract", "integration", "unit"]
 
 
 def _init_git_repo(root: Path) -> None:

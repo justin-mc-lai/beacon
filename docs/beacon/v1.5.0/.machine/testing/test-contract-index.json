@@ -1,0 +1,586 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.5.0",
+  "runtime_line": "v1.5.0",
+  "runtime_release_line": "v1.5.0",
+  "docs_line": "v1.5.0",
+  "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "feature_line_status": "current_runtime_release",
+  "truth_refs": {
+    "prd": "docs/beacon/v1.5.0/prd/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+    "user_story": "docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+    "test_case": "docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+    "ac_matrix": "docs/beacon/v1.5.0/.machine/qa/beacon-v1.5.0-parallel-plan-b-document-capability.ac-test-matrix.json",
+    "story_state": "docs/beacon/v1.5.0/.machine/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.json"
+  },
+  "source_hashes": {
+    "prd": "sha256:8098d56ddde36f699b5090f3ec1c20acac62cac68bf7b191f1fe7523c7b9a4cb",
+    "user_story": "sha256:c2d0b73c1acf50d35cbfc158beb35763590619ab636c97740cdadb4f92a81b4c",
+    "test_case": "sha256:3388f3b13b74149b087bf3cf221b597a372c6ccd23913795170f1dfcb3a6e5e9",
+    "ac_matrix": "sha256:dd4dbc1ace8e8cac26cccddd375901b74fbcab50ec73c2a59c8a97a81c335703",
+    "story_state": "sha256:59958b49f2a04ba99c7282322aa8b8ca68fa2aaed87c66e0cfbd42c9aaba68d1"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "parallel-package",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_materialize_feature_package_should_create_parallel_package_without_machine_replacement -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "创建 `features/<slug>/truth.md`、`tests.md`、`tasks.md`、`evidence.md`，不删除 triptych。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "old-chain-preserved",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_materials_should_preserve_canonical_chain -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Freeze 和 package validation 仍绑定 canonical PRD、user-story、test-case chain。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "evidence-index",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_evidence_index_read_model_only -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "文件包含 canonical artifact links 且无 final verdict field。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "support-boundary",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_support_surfaces_advisory -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Support rows 被标记为 `support_advisory`，不能成为 gate truth。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-006",
+        "ac_id": "AC-006",
+        "ac_theme": "gate-boundary",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_release_authority_should_remain_on_canonical_surfaces -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "QA/release verdicts 从现有 canonical outputs 读取。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-007",
+        "ac_id": "AC-007",
+        "ac_theme": "authority-labels",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_evidence_index_read_model_only -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Index 包含 `Surface`、`Authority`、`Canonical Artifact`、`Status`、`Route` columns。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-008",
+        "ac_id": "AC-008",
+        "ac_theme": "drift-check",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Drift 或 malformed package diagnostics 返回 blocked，不 silent pass。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-009",
+        "ac_id": "AC-009",
+        "ac_theme": "global-boundary-preserved",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_materials_should_preserve_canonical_chain -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Canonical projection 与 transaction consistency 未削弱。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-010",
+        "ac_id": "AC-010",
+        "ac_theme": "retirement-deferred",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_release_authority_should_remain_on_canonical_surfaces -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "旧体系退役不属于 v1.5.0，旧 surfaces 保持可用。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-011",
+        "ac_id": "AC-011",
+        "ac_theme": "truth-frontmatter",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "YAML frontmatter 包含 required fields，且被报告为 parallel metadata。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-012",
+        "ac_id": "AC-012",
+        "ac_theme": "checkbox-ledger",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "CLI 报告 task ledger state，但不标记 implement/QA gate complete。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-012/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-013",
+        "ac_id": "AC-013",
+        "ac_theme": "deterministic-parser",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Validator 输出 deterministic diagnostics 并阻断或告警。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-013/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-014",
+        "ac_id": "AC-014",
+        "ac_theme": "llm-write-boundary",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Lifecycle state 在 CLI validation 通过前保持 draft/read-model。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-014/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-015",
+        "ac_id": "AC-015",
+        "ac_theme": "evidence-no-gate-truth",
+        "lane": "feature_release_facing",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Validator reject 或 flag gate-truth 字段。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-015/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-016",
+        "ac_id": "AC-016",
+        "ac_theme": "skill-template-examples",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_skill_templates_should_include_v150_package_examples -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "Templates 包含 required fields 并通过 parser validation。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-016/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [],
+    "legacy_snapshot": [
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "cli-preserved",
+        "lane": "legacy_snapshot",
+        "layer": "unit",
+        "command": "python3 -m pytest tests/test_v150_feature_package.py::test_legacy_cli_surfaces_should_remain_available -q --junitxml \"$BEACON_JUNIT_PATH\"",
+        "assertion": "旧命令存在并返回 help。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "release_blocking": false,
+        "mapping_status": "pass"
+      }
+    ],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 15,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 0,
+    "legacy_snapshot": 1,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "parallel-package",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_materialize_feature_package_should_create_parallel_package_without_machine_replacement -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "创建 `features/<slug>/truth.md`、`tests.md`、`tasks.md`、`evidence.md`，不删除 triptych。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "old-chain-preserved",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_materials_should_preserve_canonical_chain -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Freeze 和 package validation 仍绑定 canonical PRD、user-story、test-case chain。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "cli-preserved",
+      "lane": "legacy_snapshot",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_legacy_cli_surfaces_should_remain_available -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "旧命令存在并返回 help。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": false,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "evidence-index",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_evidence_index_read_model_only -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "文件包含 canonical artifact links 且无 final verdict field。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "support-boundary",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_support_surfaces_advisory -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Support rows 被标记为 `support_advisory`，不能成为 gate truth。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "ac_theme": "gate-boundary",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_release_authority_should_remain_on_canonical_surfaces -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "QA/release verdicts 从现有 canonical outputs 读取。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "ac_theme": "authority-labels",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_package_should_keep_evidence_index_read_model_only -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Index 包含 `Surface`、`Authority`、`Canonical Artifact`、`Status`、`Route` columns。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "ac_theme": "drift-check",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Drift 或 malformed package diagnostics 返回 blocked，不 silent pass。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "ac_theme": "global-boundary-preserved",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_materials_should_preserve_canonical_chain -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Canonical projection 与 transaction consistency 未削弱。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "ac_theme": "retirement-deferred",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_release_authority_should_remain_on_canonical_surfaces -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "旧体系退役不属于 v1.5.0，旧 surfaces 保持可用。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-011",
+      "ac_theme": "truth-frontmatter",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "YAML frontmatter 包含 required fields，且被报告为 parallel metadata。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-012",
+      "ac_theme": "checkbox-ledger",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "CLI 报告 task ledger state，但不标记 implement/QA gate complete。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-013",
+      "ac_theme": "deterministic-parser",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Validator 输出 deterministic diagnostics 并阻断或告警。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-014",
+      "ac_theme": "llm-write-boundary",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_current_v150_feature_package_validation_should_pass -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Lifecycle state 在 CLI validation 通过前保持 draft/read-model。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-014/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-015",
+      "ac_theme": "evidence-no-gate-truth",
+      "lane": "feature_release_facing",
+      "layer": "unit",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_validate_feature_package_should_reject_gate_truth_and_malformed_checkbox -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Validator reject 或 flag gate-truth 字段。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-015/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-016",
+      "ac_theme": "skill-template-examples",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py::test_skill_templates_should_include_v150_package_examples -q --junitxml \"$BEACON_JUNIT_PATH\"",
+      "assertion": "Templates 包含 required fields 并通过 parser validation。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-v1.5.0-parallel-plan-b-document-capability/tc-016/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "qa:test-cases:docs/beacon/v1.5.0/qa/test-cases/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005"
+    ],
+    "AC-006": [
+      "TC-006"
+    ],
+    "AC-007": [
+      "TC-007"
+    ],
+    "AC-008": [
+      "TC-008"
+    ],
+    "AC-009": [
+      "TC-009"
+    ],
+    "AC-010": [
+      "TC-010"
+    ],
+    "AC-011": [
+      "TC-011"
+    ],
+    "AC-012": [
+      "TC-012"
+    ],
+    "AC-013": [
+      "TC-013"
+    ],
+    "AC-014": [
+      "TC-014"
+    ],
+    "AC-015": [
+      "TC-015"
+    ],
+    "AC-016": [
+      "TC-016"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.5.0",
+    "docs_default_line": "v1.5.0",
+    "current_runtime_release_line": "v1.5.0",
+    "feature_line_status": "current_runtime_release"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-06-01T15:26:46.149487+00:00",
+  "index_path": "docs/beacon/v1.5.0/.machine/testing/test-contract-index.json"
+}

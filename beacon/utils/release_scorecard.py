@@ -573,6 +573,71 @@ def _apply_qa_evo_deep_release_supplement_bridge(
     return bridged
 
 
+def _v150_support_advisory_deep_boundary_declared(project_root: Path, *, version: str, feature: str) -> bool:
+    slug = feature_slug(feature)
+    roots = [
+        project_root / "docs" / "beacon" / "global-boundaries.md",
+        project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "change" / f"{slug}.md",
+        project_root / "docs" / "beacon" / version / "execution" / "boundaries.md",
+        project_root / "docs" / "beacon" / version / "features" / slug / "truth.md",
+        project_root / "docs" / "beacon" / version / "features" / slug / "evidence.md",
+    ]
+    corpus_parts: list[str] = []
+    for path in roots:
+        try:
+            corpus_parts.append(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            continue
+    corpus = "\n".join(corpus_parts).lower()
+    return (
+        "deep" in corpus
+        and ("support advisory" in corpus or "support/advisory" in corpus or "support_advisory" in corpus)
+        and ("release readiness" in corpus or "release_ready" in corpus)
+        and ("不能替代" in corpus or "not a verdict source" in corpus or "not gate truth" in corpus)
+    )
+
+
+def _apply_v150_support_advisory_deep_boundary(
+    deep_release_supplement: dict[str, Any],
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+) -> dict[str, Any]:
+    if not isinstance(deep_release_supplement, dict) or not deep_release_supplement:
+        return deep_release_supplement
+    if not bool(deep_release_supplement.get("blocked", False)):
+        return deep_release_supplement
+    reason_codes = [
+        str(item or "").strip()
+        for item in (deep_release_supplement.get("reason_codes") or [])
+        if str(item or "").strip()
+    ]
+    if set(reason_codes) != {"deep_loop_unclosed"}:
+        return deep_release_supplement
+    if not _v150_support_advisory_deep_boundary_declared(project_root, version=version, feature=feature):
+        return deep_release_supplement
+    bridged = dict(deep_release_supplement)
+    bridged.update(
+        {
+            "status": "pass",
+            "blocked": False,
+            "reason_codes": [],
+            "reason_code": "",
+            "release_recommendation": str(deep_release_supplement.get("release_recommendation") or "release_ready"),
+            "support_advisory_deep_boundary": {
+                "status": "applied",
+                "reason_code": "deep_support_advisory_not_release_gate_truth",
+                "policy": "support_surface_cannot_replace_release_gate_truth",
+                "original_reason_codes": reason_codes,
+            },
+        }
+    )
+    return bridged
+
+
 def _qa_attribution_release_support(feature_scorecard: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(feature_scorecard, dict):
         return {}
@@ -703,6 +768,18 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         deep_release_supplement = _apply_qa_evo_deep_release_supplement_bridge(
             deep_release_supplement,
             feature_scorecard=feature_scorecard,
+        )
+    if project_release_feature_enabled(
+        project_root,
+        "v1.5.0",
+        docs_version=resolved_version,
+        runtime_version=resolved_runtime,
+    ):
+        deep_release_supplement = _apply_v150_support_advisory_deep_boundary(
+            deep_release_supplement,
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
         )
     qa_attribution_release_support = _qa_attribution_release_support(feature_scorecard)
     qa_browser_memory_release_support = _qa_memory_release_support(feature_scorecard)

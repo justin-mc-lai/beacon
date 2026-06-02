@@ -113,6 +113,22 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
 
+## v1.5.0 Feature Package Quick Template
+
+When writing `features/<slug>/tasks.md`, use stable checkbox rows. These rows are a task ledger, not gate truth:
+
+```markdown
+# Tasks: Example Feature
+
+## Task Ledger
+
+- [ ] TASK-001 Materialize feature package
+- [x] TASK-002 Validate frontmatter
+- [-] TASK-003 Repair blocked package diagnostics
+```
+
+Do not treat checked rows as implement, QA, or release completion. Existing gates remain authoritative.
+
 ## Supporting References
 
 Use these lightweight references when implementation needs a tighter support frame before coding or repair:

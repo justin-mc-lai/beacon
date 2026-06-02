@@ -1,9 +1,9 @@
 ---
-description: Beacon v1.4.11 agent skill surface and routing
+description: Beacon v1.5.0 agent skill surface and routing
 ---
 <!-- BEACON:AGENT_SURFACE:START -->
-<!-- BEACON:VERSION:v1.4.11 -->
-<!-- BEACON:DOCS_VERSION:v1.4.11 -->
+<!-- BEACON:VERSION:v1.5.0 -->
+<!-- BEACON:DOCS_VERSION:v1.5.0 -->
 # Beacon Windsurf Agent Surface
 
 Use this workflow to discover and route to project-local Beacon skills.
@@ -31,6 +31,7 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-design-library`
 - `beacon-design-polish`
 - `beacon-design-review`
+- `beacon-design-simplify`
 - `beacon-design-system`
 - `beacon-doctor`
 - `beacon-documentation-adr`
@@ -59,4 +60,6 @@ Use this workflow to discover and route to project-local Beacon skills.
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
+
 

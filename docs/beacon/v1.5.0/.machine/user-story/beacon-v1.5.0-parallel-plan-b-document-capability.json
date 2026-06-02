@@ -1,0 +1,2697 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "version": "v1.5.0",
+  "current_revision_id": "R5",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-01T15:26:00.132004+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:8114a532f80284fc1b2f4b79c4ef2f86a8cf50331dd5f2aa5f368a6ee56d4a1a",
+      "superseded_by": "R2",
+      "created_at": "2026-06-01T14:02:24.911247+00:00",
+      "frozen_at": "2026-06-01T14:02:28.639849+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "source_revision_id": "R1",
+      "reason": "freeze accepted v1.5.0 parallel Plan B boundary",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:05866dc7307731f8b76d56b8721dbd5bff7c1d64569da812c91a37330b25471b",
+      "superseded_by": "R3",
+      "created_at": "2026-06-01T14:02:47.973820+00:00",
+      "frozen_at": "2026-06-01T14:19:41.872937+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "source_revision_id": "R2",
+      "reason": "accepted OpenSpec bounded subset: YAML frontmatter, checkbox ledger, deterministic CLI validation, LLM template examples",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:39e249fc7df27f13933ceaac67fd6bae993efcf2e34cc41b69391be79f66436d",
+      "superseded_by": "R4",
+      "created_at": "2026-06-01T14:20:01.081334+00:00",
+      "frozen_at": "2026-06-01T14:38:48.892575+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R4",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "source_revision_id": "R3",
+      "reason": "中文需求重冻结：确认 v1.5.0 feature package 与 OpenSpec bounded subset 对齐",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:af8920e9fd7f231044ef470dd614173d44e3ef8e36efa1950d0e5bea70ee8aa0",
+      "superseded_by": "R5",
+      "created_at": "2026-06-01T14:39:06.524905+00:00",
+      "frozen_at": "2026-06-01T15:06:16.835993+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R5",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "source_revision_id": "R4",
+      "reason": "QA 修复：将 v1.5.0 test-case matrix 改为可执行命令并补齐 evidence authority rows",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:af8920e9fd7f231044ef470dd614173d44e3ef8e36efa1950d0e5bea70ee8aa0",
+      "superseded_by": null,
+      "created_at": "2026-06-01T15:06:57.546194+00:00",
+      "frozen_at": "2026-06-01T15:07:00.305742+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "parallel-package",
+          "text": "v1.5.0 supports `features/<slug>/{truth,tests,tasks,evidence}.md` as a parallel package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "old-chain-preserved",
+          "text": "Existing `prd`, `user-story`, `qa/test-cases`, `execution`, and `.machine` surfaces remain canonical and operational.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "cli-preserved",
+          "text": "Legacy CLI commands remain available and do not fail as removed commands.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "evidence-index",
+          "text": "`features/<slug>/evidence.md` is an index/read model, not a source of final verdict authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "support-boundary",
+          "text": "Deep and CEO review remain advisory support surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "gate-boundary",
+          "text": "QA verdict and release readiness remain on existing gate/release authority surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "authority-labels",
+          "text": "Evidence index rows label `support_advisory`, `qa_verdict`, and `release_verdict` distinctly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-check",
+          "text": "Drift between feature-centric files and canonical triptych is detectable and cannot silently pass.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "global-boundary-preserved",
+          "text": "v1.5.0 does not weaken canonical projection or transaction consistency principles.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "retirement-deferred",
+          "text": "Old-system retirement is deferred to v1.6+ after real-project validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.5.0 supports `features/<slug>/{truth,tests,tasks,evidence}.md` as a parallel package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Existing `prd`, `user-story`, `qa/test-cases`, `execution`, and `.machine` surfaces remain canonical and operational.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Legacy CLI commands remain available and do not fail as removed commands.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `features/<slug>/evidence.md` is an index/read model, not a source of final verdict authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Deep and CEO review remain advisory support surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — QA verdict and release readiness remain on existing gate/release authority surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Evidence index rows label `support_advisory`, `qa_verdict`, and `release_verdict` distinctly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Drift between feature-centric files and canonical triptych is detectable and cannot silently pass.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — v1.5.0 does not weaken canonical projection or transaction consistency principles.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Old-system retirement is deferred to v1.6+ after real-project validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+        "version": "v1.5.0",
+        "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Existing Beacon truth/gate/release boundaries remain authoritative in v1.5.0.",
+            "Feature-centric documents improve inspection and future migration readiness.",
+            "New documents must fail closed when they drift from the canonical triptych.",
+            "Support-surface advisory output must not become gate truth by being placed in `evidence.md`.",
+            "Old-system retirement is explicitly out of scope until v1.6+ real-project validation."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Existing Beacon truth/gate/release boundaries remain authoritative in v1.5.0.",
+              "Feature-centric documents improve inspection and future migration readiness.",
+              "New documents must fail closed when they drift from the canonical triptych.",
+              "Support-surface advisory output must not become gate truth by being placed in `evidence.md`.",
+              "Old-system retirement is explicitly out of scope until v1.6+ real-project validation."
+            ],
+            "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "parallel-package",
+          "text": "v1.5.0 supports `features/<slug>/{truth,tests,tasks,evidence}.md` as a parallel package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "old-chain-preserved",
+          "text": "Existing `prd`, `user-story`, `qa/test-cases`, `execution`, and `.machine` surfaces remain canonical and operational.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "cli-preserved",
+          "text": "Legacy CLI commands remain available and do not fail as removed commands.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "evidence-index",
+          "text": "`features/<slug>/evidence.md` is an index/read model, not a source of final verdict authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "support-boundary",
+          "text": "Deep and CEO review remain advisory support surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "gate-boundary",
+          "text": "QA verdict and release readiness remain on existing gate/release authority surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "authority-labels",
+          "text": "Evidence index rows label `support_advisory`, `qa_verdict`, and `release_verdict` distinctly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-check",
+          "text": "Drift between feature-centric files and canonical triptych is detectable and cannot silently pass.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "global-boundary-preserved",
+          "text": "v1.5.0 does not weaken canonical projection or transaction consistency principles.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "retirement-deferred",
+          "text": "Old-system retirement is deferred to v1.6+ after real-project validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "truth-frontmatter",
+          "text": "`features/<slug>/truth.md` includes YAML frontmatter as parallel metadata, not as a `.machine` replacement.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "checkbox-ledger",
+          "text": "`features/<slug>/tasks.md` includes checkbox task rows, but checkboxes cannot bypass implement or QA gates.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "deterministic-parser",
+          "text": "CLI validation reads frontmatter, AC tables, checkbox rows, and evidence authority labels deterministically.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "llm-write-boundary",
+          "text": "LLMs may write markdown body content and checklist rows, but lifecycle state advances only after CLI validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "evidence-no-gate-truth",
+          "text": "`features/<slug>/evidence.md` remains an index/read model and does not carry gate truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "skill-template-examples",
+          "text": "Beacon skills provide compact LLM-readable templates for valid `truth.md`, `tests.md`, `tasks.md`, and `evidence.md` files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.5.0 supports `features/<slug>/{truth,tests,tasks,evidence}.md` as a parallel package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Existing `prd`, `user-story`, `qa/test-cases`, `execution`, and `.machine` surfaces remain canonical and operational.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Legacy CLI commands remain available and do not fail as removed commands.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `features/<slug>/evidence.md` is an index/read model, not a source of final verdict authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Deep and CEO review remain advisory support surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — QA verdict and release readiness remain on existing gate/release authority surfaces.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Evidence index rows label `support_advisory`, `qa_verdict`, and `release_verdict` distinctly.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Drift between feature-centric files and canonical triptych is detectable and cannot silently pass.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — v1.5.0 does not weaken canonical projection or transaction consistency principles.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Old-system retirement is deferred to v1.6+ after real-project validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `features/<slug>/truth.md` includes YAML frontmatter as parallel metadata, not as a `.machine` replacement.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — `features/<slug>/tasks.md` includes checkbox task rows, but checkboxes cannot bypass implement or QA gates.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — CLI validation reads frontmatter, AC tables, checkbox rows, and evidence authority labels deterministically.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — LLMs may write markdown body content and checklist rows, but lifecycle state advances only after CLI validation.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — `features/<slug>/evidence.md` remains an index/read model and does not carry gate truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — Beacon skills provide compact LLM-readable templates for valid `truth.md`, `tests.md`, `tasks.md`, and `evidence.md` files.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+        "version": "v1.5.0",
+        "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "Existing Beacon truth/gate/release boundaries remain authoritative in v1.5.0.",
+            "Feature-centric documents improve inspection and future migration readiness.",
+            "New documents must fail closed when they drift from the canonical triptych.",
+            "Support-surface advisory output must not become gate truth by being placed in `evidence.md`.",
+            "Old-system retirement is explicitly out of scope until v1.6+ real-project validation."
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "Existing Beacon truth/gate/release boundaries remain authoritative in v1.5.0.",
+              "Feature-centric documents improve inspection and future migration readiness.",
+              "New documents must fail closed when they drift from the canonical triptych.",
+              "Support-surface advisory output must not become gate truth by being placed in `evidence.md`.",
+              "Old-system retirement is explicitly out of scope until v1.6+ real-project validation."
+            ],
+            "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "parallel-package",
+          "text": "v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "old-chain-preserved",
+          "text": "现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "cli-preserved",
+          "text": "旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "evidence-index",
+          "text": "`features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "support-boundary",
+          "text": "Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "gate-boundary",
+          "text": "QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "authority-labels",
+          "text": "Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-check",
+          "text": "Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "global-boundary-preserved",
+          "text": "v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "retirement-deferred",
+          "text": "旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "truth-frontmatter",
+          "text": "`features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "checkbox-ledger",
+          "text": "`features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "deterministic-parser",
+          "text": "CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "llm-write-boundary",
+          "text": "LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "evidence-no-gate-truth",
+          "text": "`features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "skill-template-examples",
+          "text": "Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — `features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — `features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+        "version": "v1.5.0",
+        "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+            "Feature package 是并行文档能力，不是旧体系退役。",
+            "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+            "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+            "`evidence.md` 是索引，不是 final verdict source。",
+            "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+              "Feature package 是并行文档能力，不是旧体系退役。",
+              "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+              "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+              "`evidence.md` 是索引，不是 final verdict source。",
+              "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+            ],
+            "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+          }
+        ]
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R4",
+      "title": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "parallel-package",
+          "text": "v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "old-chain-preserved",
+          "text": "现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "cli-preserved",
+          "text": "旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "verified",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "evidence-index",
+          "text": "`features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "support-boundary",
+          "text": "Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "gate-boundary",
+          "text": "QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "authority-labels",
+          "text": "Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-check",
+          "text": "Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "global-boundary-preserved",
+          "text": "v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "retirement-deferred",
+          "text": "旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "truth-frontmatter",
+          "text": "`features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "checkbox-ledger",
+          "text": "`features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "deterministic-parser",
+          "text": "CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "llm-write-boundary",
+          "text": "LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "evidence-no-gate-truth",
+          "text": "`features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "skill-template-examples",
+          "text": "Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "failed",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": "run-20260601T225512189207",
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — `features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — `features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260601T145455Z-3b5c",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+        "version": "v1.5.0",
+        "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+            "Feature package 是并行文档能力，不是旧体系退役。",
+            "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+            "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+            "`evidence.md` 是索引，不是 final verdict source。",
+            "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+              "Feature package 是并行文档能力，不是旧体系退役。",
+              "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+              "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+              "`evidence.md` 是索引，不是 final verdict source。",
+              "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+            ],
+            "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+          }
+        ]
+      },
+      "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "version": "v1.5.0",
+      "last_changed_files": [
+        "beacon/utils/feature_package.py",
+        "beacon/commands/feature_package.py",
+        "beacon/cli_factory.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/truth_format.py",
+        "tests/test_v150_feature_package.py",
+        "tests/test_manifest_and_truth.py",
+        "tests/test_entrypoint_parity.py"
+      ],
+      "verification_evidence": [
+        ".beacon/qa/features/beacon-v1.5.0-parallel-plan-b-document-capability/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260601T225512189207/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json"
+      ]
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R5",
+      "title": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "parallel-package",
+          "text": "v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "old-chain-preserved",
+          "text": "现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "cli-preserved",
+          "text": "旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "evidence-index",
+          "text": "`features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "support-boundary",
+          "text": "Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "gate-boundary",
+          "text": "QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "authority-labels",
+          "text": "Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-check",
+          "text": "Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "global-boundary-preserved",
+          "text": "v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "retirement-deferred",
+          "text": "旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "truth-frontmatter",
+          "text": "`features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "checkbox-ledger",
+          "text": "`features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "deterministic-parser",
+          "text": "CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "llm-write-boundary",
+          "text": "LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "evidence-no-gate-truth",
+          "text": "`features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "skill-template-examples",
+          "text": "Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-01T15:10:31.342840+00:00",
+          "changed_in_revision": "R5"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — v1.5.0 支持 `features/<slug>/{truth,tests,tasks,evidence}.md` 并行文档包。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 现有 `prd`、`user-story`、`qa/test-cases`、`execution`、`.machine` surfaces 保持 canonical 和 operational。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 旧 CLI commands 保持可用，不能变成 removed-command failure。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `features/<slug>/evidence.md` 是 index/read model，不是 final verdict authority。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Deep 和 CEO review 仍是 advisory support surfaces。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — QA verdict 和 release readiness 保持在现有 gate/release authority surfaces。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Evidence index rows 明确区分 `support_advisory`、`qa_verdict`、`release_verdict`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Feature-centric files 与 canonical triptych 的 drift 可检测且不能 silent pass。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — v1.5.0 不削弱 canonical projection 或 transaction consistency。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — 旧体系退役推迟到 v1.6+ 真实项目验证后。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — `features/<slug>/truth.md` 包含 YAML frontmatter，且仅作为 parallel metadata，不替代 `.machine`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — `features/<slug>/tasks.md` 包含 checkbox task rows，但 checkbox 不能绕过 implement 或 QA gates。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — CLI validation 确定性读取 frontmatter、AC tables、checkbox rows、evidence authority labels。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — LLM 可以写 markdown 正文和 checklist rows，但 lifecycle state 只能在 CLI validation 后推进。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — `features/<slug>/evidence.md` 继续是 index/read model，不承载 gate truth。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — Beacon skills 提供 compact LLM-readable templates，覆盖有效 `truth.md`、`tests.md`、`tasks.md`、`evidence.md`。",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "run-20260601T151003Z-493a",
+          "verified_by_run_id": "run-20260601T232548137750",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.0/user-story/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+        "version": "v1.5.0",
+        "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md",
+        "present": true,
+        "section_count": 1,
+        "sections": {
+          "decision_priority": [
+            "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+            "Feature package 是并行文档能力，不是旧体系退役。",
+            "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+            "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+            "`evidence.md` 是索引，不是 final verdict source。",
+            "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+          ]
+        },
+        "derived_items": [
+          {
+            "theme": "decision_priority",
+            "text": "Decision priority remains deterministic",
+            "details": [
+              "v1.5.0 中现有 truth/gate/release surfaces 仍然 authoritative。",
+              "Feature package 是并行文档能力，不是旧体系退役。",
+              "CLI validation 是 LLM-authored markdown 影响状态前的必要边界。",
+              "Checkbox row 只是 task ledger，不能绕过 implement / QA gate。",
+              "`evidence.md` 是索引，不是 final verdict source。",
+              "旧体系退役只能在 v1.6+ 经真实项目验证后再讨论。"
+            ],
+            "source": "research:docs/beacon/v1.5.0/research/beacon-v1.5.0-parallel-plan-b-document-capability.md"
+          }
+        ]
+      },
+      "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+      "version": "v1.5.0",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.5.0/.machine/qa/beacon-v1.5.0-parallel-plan-b-document-capability.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-v1.5.0-parallel-plan-b-document-capability/ac-closure.json",
+        ".beacon/qa/features/beacon-v1.5.0-parallel-plan-b-document-capability/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-01T15:26:00.060934+00:00",
+      "accepted_by": "qa",
+      "last_changed_files": [
+        "beacon/utils/feature_package.py",
+        "beacon/commands/feature_package.py",
+        "beacon/cli_factory.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/truth_format.py",
+        "tests/test_v150_feature_package.py",
+        "tests/test_manifest_and_truth.py",
+        "tests/test_entrypoint_parity.py"
+      ]
+    }
+  ]
+}

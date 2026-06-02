@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "feature_slug": "beacon-v1.5.0-parallel-plan-b-document-capability",
+  "version": "v1.5.0",
+  "revision_id": "R4",
+  "created_at": "2026-06-01T14:40:42Z",
+  "qa_status": "scoped_pass_with_admission_blocker",
+  "release_ready": false,
+  "release_ready_reason": "Formal beacon qa run is blocked by project_metadata_contract_blocked; scoped deterministic QA passed but this is not a release verdict.",
+  "formal_qa_run": {
+    "command": "python3 -m beacon.main qa run beacon-v1.5.0-parallel-plan-b-document-capability --project . --version v1.5.0 --json",
+    "status": "blocked",
+    "reason_code": "project_metadata_contract_blocked",
+    "recommended_command": "beacon doctor metadata verify --project-root /Users/apple/Developer/Personal/products/beacon --version v1.5.0"
+  },
+  "scoped_evidence": [
+    {
+      "name": "targeted_pytest",
+      "command": "python3 -m pytest tests/test_v150_feature_package.py tests/test_entrypoint_parity.py -q",
+      "status": "pass",
+      "summary": "6 passed in 0.91s",
+      "covers": [
+        "AC-001",
+        "AC-003",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-015",
+        "AC-016"
+      ]
+    },
+    {
+      "name": "feature_package_validation",
+      "command": "python3 -m beacon.main validate-feature-package beacon-v1.5.0-parallel-plan-b-document-capability --project . --version v1.5.0 --json",
+      "status": "pass",
+      "report_path": "docs/beacon/v1.5.0/.machine/requirement/feature-package-validation.json",
+      "observed": {
+        "ac_count": 16,
+        "test_count": 16,
+        "checkbox_count": 5,
+        "evidence_row_count": 5,
+        "gate_authority": "canonical_surfaces_preserved",
+        "checkbox_gate_bypass": false,
+        "evidence_gate_truth": false,
+        "diagnostics": []
+      },
+      "covers": [
+        "AC-001",
+        "AC-004",
+        "AC-007",
+        "AC-011",
+        "AC-012",
+        "AC-013",
+        "AC-014",
+        "AC-015"
+      ]
+    },
+    {
+      "name": "canonical_freeze",
+      "command": "python3 -m beacon.main freeze beacon-v1.5.0-parallel-plan-b-document-capability --project . --version v1.5.0 --json",
+      "status": "pass",
+      "report_path": "docs/beacon/v1.5.0/.machine/execution/requirement-clarity-beacon-v1.5.0-parallel-plan-b-document-capability.json",
+      "observed": {
+        "requirement_clarity_status": "pass",
+        "ac_count": 16,
+        "test_count": 16
+      },
+      "covers": [
+        "AC-002",
+        "AC-008",
+        "AC-009"
+      ]
+    },
+    {
+      "name": "change_refreeze",
+      "command": "python3 -m beacon.main change beacon-v1.5.0-parallel-plan-b-document-capability --project . --version v1.5.0 --reason \"中文需求重冻结：确认 v1.5.0 feature package 与 OpenSpec bounded subset 对齐\" --refreeze-chain --json",
+      "status": "pass",
+      "report_path": "docs/beacon/v1.5.0/.machine/change/beacon-v1.5.0-parallel-plan-b-document-capability.refreeze-transaction.json",
+      "observed": {
+        "refreeze_status": "complete",
+        "truth_revision_after": "R4"
+      },
+      "covers": [
+        "AC-002",
+        "AC-009",
+        "AC-010"
+      ]
+    },
+    {
+      "name": "syntax_compile",
+      "command": "python3 -m py_compile beacon/utils/feature_package.py beacon/commands/feature_package.py beacon/cli_factory.py beacon/utils/artifact_paths.py",
+      "status": "pass",
+      "covers": [
+        "AC-013"
+      ]
+    },
+    {
+      "name": "legacy_cli_help",
+      "command": "python3 -m beacon.main prd --help; user-story --help; test-case --help; prototype --help",
+      "status": "pass",
+      "covers": [
+        "AC-003"
+      ]
+    }
+  ],
+  "coverage_summary": {
+    "mapped_ac_count": 16,
+    "scoped_pass_ac_ids": [
+      "AC-001",
+      "AC-002",
+      "AC-003",
+      "AC-004",
+      "AC-007",
+      "AC-008",
+      "AC-009",
+      "AC-010",
+      "AC-011",
+      "AC-012",
+      "AC-013",
+      "AC-014",
+      "AC-015",
+      "AC-016"
+    ],
+    "advisory_or_indirect_ac_ids": [
+      "AC-005",
+      "AC-006"
+    ],
+    "notes": [
+      "AC-005 and AC-006 are boundary assertions verified indirectly through evidence authority labels and gate_authority preservation.",
+      "Formal QA remains blocked until project metadata version_contract is repaired."
+    ]
+  }
+}
