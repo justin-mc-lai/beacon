@@ -1,0 +1,712 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-beacon-truth-map-center-and-package-cutover-20260602t075657z",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.1",
+  "change_reason": "freeze AC-026 truth_center entrypoint inventory for high-risk commands utilities and skills; every row must route through truth_center/resolver or be classified as v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling",
+  "touched_surfaces": [
+    "change",
+    "prd",
+    "user-story",
+    "test-case",
+    "requirement_clarity",
+    "freeze"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.1/change/beacon-truth-map-center-and-package-cutover.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "prd": {
+      "path": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "user-story": {
+      "path": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "test-case": {
+      "path": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "exists": true,
+      "status": "present",
+      "required": true
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.1/.machine/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.1/.machine/change/beacon-truth-map-center-and-package-cutover.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R7",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:d518088ff8791f726bcf3c0e44352e78ebce6167732c6320d294eb7a924f063a"
+  },
+  "truth_revision_after": {
+    "revision_id": "R8",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:b3b506183d36c4c14991da1ac578d9fac62e0d6f2ca1737e08de9474c4fa6980"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"beacon-truth-map-center-and-package-cutover\" --project . --version v1.5.1",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-02T07:56:57.808564+00:00",
+  "previous_revision": {
+    "revision_id": "R7",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:d518088ff8791f726bcf3c0e44352e78ebce6167732c6320d294eb7a924f063a"
+  },
+  "opened_revision": {
+    "revision_id": "R8",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R8",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.5.1",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "status": "synced",
+    "story_path": "docs/beacon/v1.5.1/.machine/user-story/beacon-truth-map-center-and-package-cutover.json",
+    "qa_matrix_path": "docs/beacon/v1.5.1/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+    "qa9_matrix_path": "docs/beacon/v1.5.1/.machine/qa/beacon-truth-map-center-and-package-cutover.qa9-matrix.json",
+    "story_scenario_map_path": "docs/beacon/v1.5.1/.machine/qa/beacon-truth-map-center-and-package-cutover.story-scenario-map.json",
+    "story_sync": {
+      "path": "docs/beacon/v1.5.1/.machine/user-story/beacon-truth-map-center-and-package-cutover.json",
+      "feature": "beacon-truth-map-center-and-package-cutover",
+      "version": "v1.5.1",
+      "revision_id": "R8",
+      "ac_count": 26,
+      "test_count": 26,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-map-center-and-package-cutover",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "version": "v1.5.1",
+      "runtime_version": "v1.5.1",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.1/.machine/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.json",
+      "report_markdown_path": "docs/beacon/v1.5.1/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-truth-map-center-and-package-cutover.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.1",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-02T07:57:01.657779+00:00",
+        "feature": "beacon-truth-map-center-and-package-cutover",
+        "feature_slug": "beacon-truth-map-center-and-package-cutover",
+        "prd_ref": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+        "user_story_ref": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.1/research/beacon-truth-map-center-and-package-cutover.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.5.1/source-architecture/beacon-truth-map-center-and-package-cutover.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.1/research/beacon-truth-map-center-and-package-cutover.md",
+          "prd": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+          "user_story": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+          "test_case": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016",
+            "AC-017",
+            "AC-018",
+            "AC-019",
+            "AC-020",
+            "AC-021",
+            "AC-022",
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016",
+            "AC-017",
+            "AC-018",
+            "AC-019",
+            "AC-020",
+            "AC-021",
+            "AC-022",
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016",
+            "AC-017",
+            "AC-018",
+            "AC-019",
+            "AC-020",
+            "AC-021",
+            "AC-022",
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012",
+            "AC-013",
+            "AC-014",
+            "AC-015",
+            "AC-016",
+            "AC-017",
+            "AC-018",
+            "AC-019",
+            "AC-020",
+            "AC-021",
+            "AC-022",
+            "AC-023",
+            "AC-024",
+            "AC-025",
+            "AC-026"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.5.1/research/beacon-truth-map-center-and-package-cutover.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+          "user_story_refs": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+          "test_case_refs": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+        "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+        "docs/beacon/v1.5.1/research/beacon-truth-map-center-and-package-cutover.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.1/.machine/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.json",
+      "markdown": "docs/beacon/v1.5.1/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-map-center-and-package-cutover",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "version": "v1.5.1",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.1/.machine/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.json",
+      "report_markdown_path": "docs/beacon/v1.5.1/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T144925508224",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-02T07:57:01.839454+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-truth-map-center-and-package-cutover.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-map-center-and-package-cutover",
+    "feature_slug": "beacon-truth-map-center-and-package-cutover",
+    "version": "v1.5.1",
+    "revision_id": "R8",
+    "source_revision_id": "R7",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 1,
+    "retained_requirement_count": 25,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R8",
+        "id": "AC-026",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-center-entrypoint-inventory",
+        "text": "v1.5.1 tracks high-risk truth read/write entrypoints, including PRD/user-story/test-case/workflow/truth/gate commands, PRD bootstrap, requirement clarity/deepening, manifest, acceptance kit, packaged skills, and `.agents/skills`; each entrypoint routes through truth_center/resolver or is explicitly classified as a v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::truth-center-entrypoint-inventory::v1.5.1 tracks high-risk truth read/write entrypoints, including prd/user-story/test-case/workflow/truth/gate commands, prd bootstrap, requirement clarity/deepening, manifest, acceptance kit, packaged skills, and `.agents/skills`; each entrypoint routes through truth_center/resolver or is explicitly classified as a v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling.::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R8",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "change-absorb-path",
+        "text": "Change route can absorb legacy triptych into feature package or reports unsupported gaps explicitly.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::change-absorb-path::change route can absorb legacy triptych into feature package or reports unsupported gaps explicitly.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "doctor-rebuild-path",
+        "text": "Doctor route can rebuild legacy triptych from feature package or reports unsupported gaps explicitly.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::doctor-rebuild-path::doctor route can rebuild legacy triptych from feature package or reports unsupported gaps explicitly.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "drift-prevention",
+        "text": "Verify command fails or warns when resolver output disagrees with package files or rebuild metadata.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::drift-prevention::verify command fails or warns when resolver output disagrees with package files or rebuild metadata.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-023",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "generated-governance-state-labels",
+        "text": "Generated governance JSON/state carries non-authority labels or equivalent declarations.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::generated-governance-state-labels::generated governance json/state carries non-authority labels or equivalent declarations.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-017",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "governance-authority-classification",
+        "text": "Resolver classifies feature truth, version governance truth, generated governance state, and runtime/process records.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::governance-authority-classification::resolver classifies feature truth, version governance truth, generated governance state, and runtime/process records.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-021",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "governance-fail-closed",
+        "text": "Missing governance truth or drifted generated governance state fails closed.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::governance-fail-closed::missing governance truth or drifted generated governance state fails closed.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-024",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implement-governance-preflight",
+        "text": "Implement plan/dev-run surfaces verify version governance metadata branch contract before planning or execution, and fail closed when metadata, current branch, and git workflow expected branch disagree.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::implement-governance-preflight::implement plan/dev-run surfaces verify version governance metadata branch contract before planning or execution, and fail closed when metadata, current branch, and git workflow expected branch disagree.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "machine-json-rebuild",
+        "text": "Truth-map route can rebuild requirement-derived `.machine` JSON from resolver-selected Markdown.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::machine-json-rebuild::truth-map route can rebuild requirement-derived `.machine` json from resolver-selected markdown.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "machine-json-role-labels",
+        "text": "Generated machine JSON is labeled as generated state/evidence, not truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::machine-json-role-labels::generated machine json is labeled as generated state/evidence, not truth.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-018",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "manifest-index-not-truth",
+        "text": "Manifest/index/cache JSON is never accepted as truth authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::manifest-index-not-truth::manifest/index/cache json is never accepted as truth authority.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-019",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "material-audit-resolver-first",
+        "text": "Material audit reads through resolver before using manifest or old paths.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::material-audit-resolver-first::material audit reads through resolver before using manifest or old paths.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "md-authority-ready",
+        "text": "Feature package Markdown carries enough contract markers for v1.5.2 canonical promotion.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::md-authority-ready::feature package markdown carries enough contract markers for v1.5.2 canonical promotion.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-022",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-feature-package-overload",
+        "text": "Version governance materials are not moved into `features/<slug>/`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::no-feature-package-overload::version governance materials are not moved into `features/<slug>/`.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-json-authority",
+        "text": "Generated truth-map JSON is marked projection/diagnostic and cannot be accepted as authoritative input.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::no-json-authority::generated truth-map json is marked projection/diagnostic and cannot be accepted as authoritative input.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-md-json-multiwrite",
+        "text": "QA must not require an equivalent JSON projection for every Markdown truth document.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::no-md-json-multiwrite::qa must not require an equivalent json projection for every markdown truth document.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-020",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-release-resolver-first",
+        "text": "QA, release, and status read governance truth through resolver-first routes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::qa-release-resolver-first::qa, release, and status read governance truth through resolver-first routes.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resolver-center",
+        "text": "`beacon.utils.truth_map` exists and exposes resolver APIs for feature truth package paths.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::resolver-center::`beacon.utils.truth_map` exists and exposes resolver apis for feature truth package paths.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-014",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "runtime-json-exemption",
+        "text": "Runtime/process JSON is allowed without Markdown twins and is not requirement authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::runtime-json-exemption::runtime/process json is allowed without markdown twins and is not requirement authority.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "skill-read-unification",
+        "text": "Skill templates instruct LLMs to read truth map and feature package before legacy artifacts.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::skill-read-unification::skill templates instruct llms to read truth map and feature package before legacy artifacts.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-013",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-hash-freshness",
+        "text": "Generated machine JSON records resolver contract, source paths, and source hashes.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::source-hash-freshness::generated machine json records resolver contract, source paths, and source hashes.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-read-unification",
+        "text": "New truth consumers call resolver APIs instead of constructing legacy truth paths.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::source-read-unification::new truth consumers call resolver apis instead of constructing legacy truth paths.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-015",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "stale-machine-fail-closed",
+        "text": "Verify fails closed when `.machine` JSON is stale, non-resolver-generated, or source-hash mismatched.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::stale-machine-fail-closed::verify fails closed when `.machine` json is stale, non-resolver-generated, or source-hash mismatched.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "static-contract",
+        "text": "Resolver exposes stable constants for source model and parser contracts.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::static-contract::resolver exposes stable constants for source model and parser contracts.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-025",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-center-integration-sweep",
+        "text": "v1.5.1 may route normal truth reads, write-target resolution, gate input resolution, legacy rebuild targets, and legacy absorb targets through truth_center; it must not switch truth authority from `feature_package_authoritative_ready` to `feature_package_authoritative` until v1.5.2 policy flip.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::truth-center-integration-sweep::v1.5.1 may route normal truth reads, write-target resolution, gate input resolution, legacy rebuild targets, and legacy absorb targets through truth_center; it must not switch truth authority from `feature_package_authoritative_ready` to `feature_package_authoritative` until v1.5.2 policy flip.::"
+      },
+      {
+        "revision_id": "R8",
+        "id": "AC-016",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "version-governance-resolver",
+        "text": "Resolver resolves version governance truth in addition to feature package truth.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+        "signature": "ac::::version-governance-resolver::resolver resolves version governance truth in addition to feature package truth.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:b3b506183d36c4c14991da1ac578d9fac62e0d6f2ca1737e08de9474c4fa6980",
+    "source_baseline_hash": "sha256:d518088ff8791f726bcf3c0e44352e78ebce6167732c6320d294eb7a924f063a",
+    "story_state_ref": "docs/beacon/v1.5.1/.machine/user-story/beacon-truth-map-center-and-package-cutover.json",
+    "generated_at": "2026-06-02T07:57:01.939192+00:00",
+    "json_ref": "docs/beacon/v1.5.1/.machine/execution/revision-delta-beacon-truth-map-center-and-package-cutover.json",
+    "markdown_ref": "docs/beacon/v1.5.1/execution/revision-delta-beacon-truth-map-center-and-package-cutover.md"
+  }
+}

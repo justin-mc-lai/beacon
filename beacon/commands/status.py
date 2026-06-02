@@ -17,6 +17,7 @@ from beacon.utils.material_audit import build_material_audit, build_requirement_
 from beacon.utils.qa_runtime import load_qa_status
 from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload, load_requirement_clarity_state
 from beacon.utils.release_scorecard import build_release_scorecard, summarize_release_scorecard
+from beacon.utils.truth_map import resolve_version_governance
 from beacon.utils.runtime_projection import build_runtime_projection
 from beacon.utils.runtime_projection_store import list_projects, load_project_detail, sync_projection
 from beacon.utils.runtime import newest_run_id, read_json
@@ -160,6 +161,7 @@ def _status_impl(
         or str(workflow_progress.get("version", "") or "").strip()
         or resolve_target_version(root, None)
     )
+    truth_map_governance = resolve_version_governance(root, version=coverage_version)
     coverage_metrics = compute_coverage_metrics(
         root,
         version=coverage_version,
@@ -182,6 +184,10 @@ def _status_impl(
             else ""
         ),
         "runtime_state_root": ".beacon",
+        "truth_map_governance_resolver": truth_map_governance.get("resolver_mode", ""),
+        "truth_map_governance_status": truth_map_governance.get("status", ""),
+        "manifest_authority": bool(truth_map_governance.get("manifest_authority", True)),
+        "json_authority": bool(truth_map_governance.get("json_authority", True)),
         "formal_package_closure": material_audit.get("status", "unknown"),
         "requirement_package_gate": requirement_package_gate.get("status", "pass"),
         "requirement_package_failure_categories": requirement_package_gate.get("failure_categories", []),
@@ -362,6 +368,7 @@ def _status_impl(
             "docs_version": coverage_version,
             "runtime_version": str(version_context.get("runtime_version", "") or help_payload.get("runtime_version", "")),
         },
+        "truth_map_governance": truth_map_governance,
         "version_semantics": help_payload.get("version_semantics", {}) or version_context.get("version_semantics", {}),
         "source_of_truth": source_of_truth,
         "workflow_progress": workflow_progress,

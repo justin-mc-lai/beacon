@@ -69,6 +69,16 @@ If coverage is incomplete, surface the supplement task and re-freeze transaction
 - `beacon user-story ...` when ACs are under-specified
 - `beacon prototype ...` when real UX/UI handoff is present
 
+## v1.5.1 Truth Map Read Order
+
+For v1.5.1+ features, read the resolver output before consuming package files:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.1 --json
+```
+
+Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. Resolver output and generated `.machine` JSON are generated state, not truth authority.
+
 ## v1.5.0 Feature Package Quick Template
 
 When writing `features/<slug>/tests.md`, keep the AC-to-test table deterministic:

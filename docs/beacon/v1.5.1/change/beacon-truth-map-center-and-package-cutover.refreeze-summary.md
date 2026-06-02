@@ -1,0 +1,27 @@
+# Change Refreeze Summary: beacon-truth-map-center-and-package-cutover
+
+- version: `v1.5.1`
+- change_reason: `freeze AC-026 truth_center entrypoint inventory for high-risk commands utilities and skills; every row must route through truth_center/resolver or be classified as v1.5.1 legacy/generated/runtime exception with fail-closed or v1.5.2 cutover handling`
+- refreeze_status: `complete`
+- blocked_reason: ``
+- next_route: `beacon-implement`
+- revision_before: `R7`
+- revision_after: `R8`
+
+## Surface Statuses
+- `change`: `present` (docs/beacon/v1.5.1/change/beacon-truth-map-center-and-package-cutover.md)
+- `prd`: `present` (docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md)
+- `user-story`: `present` (docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md)
+- `test-case`: `present` (docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md)
+- `requirement_clarity`: `passed` (docs/beacon/v1.5.1/.machine/execution/requirement-clarity-beacon-truth-map-center-and-package-cutover.json)
+- `freeze`: `complete` (docs/beacon/v1.5.1/.machine/change/beacon-truth-map-center-and-package-cutover.refreeze-transaction.json)
+
+## Refreshed Surfaces
+
+- change, prd, user-story, test-case, requirement_clarity, freeze
+
+## Boundary
+
+- This transaction only refreshes and refreezes requirement truth.
+- It does not execute implementation, QA, or release.
+- Partial refresh keeps the feature blocked.

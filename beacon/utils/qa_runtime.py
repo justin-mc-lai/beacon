@@ -100,6 +100,10 @@ def load_qa_status(project_root: Path, *, allow_legacy: bool = False, admission_
     canonical = _load_json_payload(qa_status_path(project_root))
     if canonical:
         canonical.setdefault("qa_status_source", "canonical")
+        canonical.setdefault("governance_state_role", "generated_governance_state_not_truth")
+        canonical.setdefault("truth_authority", False)
+        canonical.setdefault("json_authority", False)
+        canonical.setdefault("resolver_mode", "resolver_first")
         return canonical
     if not allow_legacy:
         return {}

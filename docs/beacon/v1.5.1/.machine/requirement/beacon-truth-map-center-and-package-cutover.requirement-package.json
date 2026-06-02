@@ -1,0 +1,491 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative_ready",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-02T08:04:12.494725+00:00",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.1",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/truth.md",
+    "tests": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/tests.md",
+    "tasks": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/tasks.md",
+    "evidence": "docs/beacon/v1.5.1/features/beacon-truth-map-center-and-package-cutover/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "7b58c938739c6b0b4e20422a628b69878101ea9a10022a1047b72d662fc008b6",
+    "tests": "82a806a33dee4123b346d19a44a60589f5bf2bd642fb40ca73dd2c0b476b2270",
+    "tasks": "d32a929fdeeb3d482beb5094f3c6d01482114b3ec62d5241383f020252d02dca",
+    "evidence": "58ad74babd60c976c1bdc3a81790ba1311d8b331a588f4b20df7f1dbca0e9d76"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-truth-map-center-and-package-cutover",
+    "version": "v1.5.1",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+      "user_story": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+      "test_case": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative_ready",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "resolver-center",
+      "description": "提供 `beacon.utils.truth_map` 作为唯一 truth resolver 中心。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "no-json-authority",
+      "description": "`truth-map.json` 只能由 resolver 生成，不能作为 truth authority 输入。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "md-authority-ready",
+      "description": "`features/<slug>/truth.md`、`tests.md`、`tasks.md`、`evidence.md` 被定义为 v1.5.2 canonical-ready source。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "static-contract",
+      "description": "resolver 暴露固定 contract constants，例如 truth source model、package contract、resolver contract。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "source-read-unification",
+      "description": "新增或改造的 CLI 真相读取必须通过 truth-map resolver，不允许新增硬编码旧路径。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "skill-read-unification",
+      "description": "LLM skill 指南必须要求先读取 truth map，再读取 feature package。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "no-md-json-multiwrite",
+      "description": "v1.5.1 不再把 Markdown 到 JSON 的多写投影作为验收目标。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "doctor-rebuild-path",
+      "description": "doctor 提供或预留从 feature package 重建旧 triptych 的路径。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "change-absorb-path",
+      "description": "change 提供或预留把旧 triptych 吸收到 feature package 的路径。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "drift-prevention",
+      "description": "truth-map verify 能发现 resolver、feature package、旧 rebuild artifact 之间的漂移。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "machine-json-rebuild",
+      "description": "truth-map 提供 requirement-derived `.machine` JSON 全量再生成计划和命令入口。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "machine-json-role-labels",
+      "description": "生成的机器面 JSON 必须标记 `machine_json_role = generated_state_not_truth` 或等价角色。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "source-hash-freshness",
+      "description": "再生成的机器面 JSON 必须记录 resolver contract、source paths 和 source hashes，并能验证 stale 状态。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "runtime-json-exemption",
+      "description": "runtime/process JSON 保留为运行记录，不需要 Markdown twin，也不能作为 requirement authority。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "stale-machine-fail-closed",
+      "description": "stale、非 resolver 生成或 source hash 不匹配的 `.machine` JSON 必须在 verify 中 fail closed。"
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "version-governance-resolver",
+      "description": "truth-map resolver 必须解析版本级治理真相，不只解析 `features/<slug>` feature truth。"
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "governance-authority-classification",
+      "description": "resolver 必须区分 feature truth、version governance truth、generated governance state、runtime/process record。"
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "manifest-index-not-truth",
+      "description": "manifest、index、cache JSON 只能是 resolver 生成或校验的索引/缓存，不能作为 truth authority 输入。"
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "material-audit-resolver-first",
+      "description": "material-audit 必须先询问 resolver，再读取 manifest 或旧路径；manifest 只能作为辅助索引。"
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "qa-release-resolver-first",
+      "description": "QA、release、status 等版本治理消费面必须 resolver-first，不能直接拼接旧版本级路径。"
+    },
+    {
+      "ac_id": "AC-021",
+      "theme": "governance-fail-closed",
+      "description": "resolver 找不到必须的版本治理真相或发现 manifest/source hash 漂移时，治理消费面必须 fail closed。"
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "no-feature-package-overload",
+      "description": "不允许把 global boundaries、summary、release、source architecture、metadata 等版本治理材料塞进 feature package。"
+    },
+    {
+      "ac_id": "AC-023",
+      "theme": "generated-governance-state-labels",
+      "description": "QA/release/material-audit/manifest 等生成治理状态必须带有非 authority 角色标签或等价声明。"
+    },
+    {
+      "ac_id": "AC-024",
+      "theme": "implement-governance-preflight",
+      "description": "`implement plan`、`compile-plan`、`team-plan`、`dev-run` 必须 resolver-first 校验 version governance metadata branch contract；metadata、当前 git branch、git workflow expected branch 不一致时必须在 implement 前 fail closed。"
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "truth-center-integration-sweep",
+      "description": "v1.5.1 可把正常真相读取、写入目标解析、gate input 解析、legacy rebuild target、legacy absorb target 等入口统一接到 truth_center；但不得在 v1.5.1 切换真相权威，`feature_package_authoritative_ready` 必须保持为准备态，v1.5.2 仅在 sweep 验证后做 policy flip。"
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "truth-center-entrypoint-inventory",
+      "description": "v1.5.1 必须维护高风险真相读写入口 inventory，至少覆盖 `beacon/commands/prd.py`、`beacon/commands/user_story.py`、`beacon/commands/test_case.py`、`beacon/commands/workflow.py`、`beacon/commands/truth.py`、`beacon/commands/gate.py`、`beacon/utils/prd_bootstrap.py`、`beacon/utils/requirement_clarity.py`、`beacon/utils/requirement_deepening.py`、`beacon/utils/manifest.py`、`beacon/utils/acceptance_kit.py`、packaged skills、`.agents/skills`；每项必须接入 truth_center/resolver，或明确声明为 v1.5.1 legacy/generated/runtime 例外并给出 fail-closed 或 v1.5.2 cutover 处理路径。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "assertion": "Resolver APIs and constants exist."
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "assertion": "JSON projection cannot be treated as authority."
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "assertion": "Package Markdown exposes v2 contract markers."
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "assertion": "Static contract constants are stable."
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "integration",
+      "assertion": "New truth consumers route through resolver."
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "contract",
+      "assertion": "Skills require truth-map-first reading."
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "assertion": "Missing JSON twin does not fail canonical Markdown truth."
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "contract",
+      "assertion": "Doctor rebuild route exists or fails closed."
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "contract",
+      "assertion": "Change absorb route exists or fails closed."
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "assertion": "Verify detects resolver/package/rebuild drift."
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "integration",
+      "assertion": "Rebuild generates requirement-derived `.machine` JSON from resolver-selected Markdown."
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "unit",
+      "assertion": "Generated machine JSON carries generated-state role labels and is not accepted as authority."
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "integration",
+      "assertion": "Source paths, resolver contract, and source hashes are recorded and verified."
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "unit",
+      "assertion": "Runtime/process JSON is allowed without Markdown twins and cannot become requirement authority."
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "integration",
+      "assertion": "Stale, non-resolver, or source-hash mismatched `.machine` JSON fails verify."
+    },
+    {
+      "ac_id": "AC-016",
+      "tc_id": "TC-016",
+      "layer": "unit",
+      "assertion": "Resolver exposes version governance truth resolution."
+    },
+    {
+      "ac_id": "AC-017",
+      "tc_id": "TC-017",
+      "layer": "unit",
+      "assertion": "Resolver classifies feature truth, governance truth, generated state, and runtime records."
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-018",
+      "layer": "unit",
+      "assertion": "Manifest/index/cache JSON cannot be used as truth authority."
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-019",
+      "layer": "integration",
+      "assertion": "Material audit asks resolver before manifest or legacy paths."
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-020",
+      "layer": "integration",
+      "assertion": "QA, release, and status readers use resolver-first governance routes."
+    },
+    {
+      "ac_id": "AC-021",
+      "tc_id": "TC-021",
+      "layer": "integration",
+      "assertion": "Missing governance truth or drifted generated governance state fails closed."
+    },
+    {
+      "ac_id": "AC-022",
+      "tc_id": "TC-022",
+      "layer": "contract",
+      "assertion": "Feature package is not overloaded with version governance materials."
+    },
+    {
+      "ac_id": "AC-023",
+      "tc_id": "TC-023",
+      "layer": "contract",
+      "assertion": "Generated governance state carries non-authority labels or equivalent declarations."
+    },
+    {
+      "ac_id": "AC-024",
+      "tc_id": "TC-024",
+      "layer": "integration",
+      "assertion": "Implement plan/dev-run fail closed before execution when metadata branch truth and git workflow projection drift."
+    },
+    {
+      "ac_id": "AC-025",
+      "tc_id": "TC-025",
+      "layer": "integration",
+      "assertion": "Normal truth read/write/gate/rebuild/absorb entrypoint APIs route through truth_center while v1.5.1 keeps authority in ready state."
+    },
+    {
+      "ac_id": "AC-026",
+      "tc_id": "TC-026",
+      "layer": "static-contract",
+      "assertion": "High-risk command, utility, packaged skill, and `.agents/skills` truth entrypoints are inventoried and classified as resolver/truth_center-routed or explicit v1.5.1 exceptions."
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Define truth-map resolver module and constants",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Add truth-map CLI commands",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Add feature package canonical-ready contract checks",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Route new truth consumers through resolver",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Update skill guidance to read truth map first",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Add doctor rebuild route declaration",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Add change absorb route declaration",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Add drift verification",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Add resolver-owned machine JSON rebuild plan",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Add machine JSON role labels and source hashes",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Rebuild requirement-derived `.machine` JSON from resolver-selected Markdown",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Keep runtime/process JSON exempt from Markdown twin requirements",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "Fail closed on stale or non-resolver machine JSON",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "Add version governance resolver APIs or reserved API contract",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "Add governance authority classification for feature truth, version governance truth, generated governance state, and runtime/process records",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "Ensure manifest/index/cache JSON is labeled as non-authority generated governance state",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-017",
+      "title": "Route material-audit through resolver before manifest or legacy paths",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-018",
+      "title": "Route QA, release, and status governance readers through resolver-first paths",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-019",
+      "title": "Fail closed when required governance truth is missing or generated governance state drifts",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-020",
+      "title": "Keep version governance materials out of `features/<slug>` feature package",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-021",
+      "title": "Add labels or equivalent declarations for generated governance state",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-022",
+      "title": "Add implement version governance preflight for plan, compile-plan, team-plan, and dev-run",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-023",
+      "title": "Add truth_center integration sweep APIs for read/write/gate/rebuild/absorb entrypoints without v1.5.1 authority flip",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-024",
+      "title": "Add truth_center entrypoint inventory covering high-risk commands, utilities, packaged skills, and `.agents/skills`",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.1/research/beacon-truth-map-center-and-package-cutover.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-source-driven",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.1/execution/machine-json-convergence-source-map.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "prd",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.1/prd/beacon-truth-map-center-and-package-cutover.md",
+      "status": "frozen",
+      "route": "change"
+    },
+    {
+      "surface": "user-story",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.1/user-story/beacon-truth-map-center-and-package-cutover.md",
+      "status": "frozen",
+      "route": "change"
+    },
+    {
+      "surface": "test-case",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.1/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+      "status": "frozen",
+      "route": "test-case"
+    }
+  ]
+}

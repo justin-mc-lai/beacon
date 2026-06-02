@@ -20,6 +20,7 @@ from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
 from beacon.utils.project_hooks import build_lifecycle_hook_advisory
 from beacon.utils.release_scorecard import build_ceo_challenge_coverage, build_release_scorecard
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.runtime_projection_store import runtime_projection_transaction_contract
 from beacon.utils.story_state import feature_slug
@@ -773,6 +774,24 @@ def check(
         version=resolved_version,
         feature="",
         strict=True,
+    )
+    requirement_evidence_refs = [
+        "docs/beacon/"
+        f"{resolved_version}/.machine/requirement/feature-package-validation.json",
+    ]
+    for package in requirement_package_gate.get("packages", []) if isinstance(requirement_package_gate.get("packages"), list) else []:
+        if not isinstance(package, dict):
+            continue
+        feature_slug_value = str(package.get("slug") or package.get("feature_slug") or "").strip()
+        if feature_slug_value:
+            requirement_evidence_refs.append(
+                "docs/beacon/"
+                f"{resolved_version}/.machine/requirement/{feature_slug_value}.freeze-state.json"
+            )
+    refresh_evidence_manifest(
+        project_root,
+        refs=requirement_evidence_refs,
+        version=resolved_version,
     )
     requirement_package_gate_blocked = str(requirement_package_gate.get("status") or "").lower() == "blocked"
     if requirement_package_gate_blocked and json_output:

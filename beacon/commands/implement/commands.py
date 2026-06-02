@@ -100,6 +100,7 @@ from beacon.utils.subagent_readiness import (
     runtime_readiness_precheck,
 )
 from beacon.utils.team_surface import write_implement_to_qa_handoff
+from beacon.utils.truth_map import evaluate_implement_version_governance_preflight, truth_map_supported
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 from beacon.utils.workflow_memory import (
@@ -129,6 +130,54 @@ def _with_implement_surface(
         recommended_command=recommended_command or str(payload.get("recommended_command", "") or ""),
         blocked=blocked_value,
         dual_read_required=True,
+    )
+
+
+def _implement_version_governance_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    if not truth_map_supported(version):
+        return {
+            "schema_version": "1.0",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": version,
+            "status": "not_applicable",
+            "blocked": False,
+            "reason_code": "",
+        }
+    git_workflow = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
+    return evaluate_implement_version_governance_preflight(
+        project_root,
+        version=version,
+        feature=feature,
+        git_workflow=git_workflow,
+    )
+
+
+def _blocked_implement_version_governance_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    preflight: dict[str, Any],
+) -> dict[str, Any]:
+    reason_code = str(preflight.get("reason_code") or "implement_metadata_contract_blocked")
+    recommended_command = str(preflight.get("recommended_command") or "")
+    return _with_implement_surface(
+        {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": reason_code,
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": version,
+            "implement_version_governance_preflight": preflight,
+            "recommended_command": recommended_command,
+            "repair_commands": list(preflight.get("repair_commands") or []),
+            "project_root": str(project_root),
+        },
+        reason_code=reason_code,
+        recommended_command=recommended_command,
+        blocked=True,
     )
 
 
@@ -4213,6 +4262,35 @@ def dev_run(
             typer.echo("Beacon implement dev-run blocked: takeover baseline required")
         raise typer.Exit(code=2)
 
+    governance_preflight = _implement_version_governance_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    preflight_resolution["steps"].append(
+        {
+            "gate": "implement_version_governance_preflight",
+            "status": "pass" if not governance_preflight.get("blocked") else "blocked",
+            "reason_code": str(governance_preflight.get("reason_code") or ""),
+        }
+    )
+    if bool(governance_preflight.get("blocked")):
+        payload = _blocked_implement_version_governance_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            preflight=governance_preflight,
+        )
+        payload["preflight_resolution"] = {
+            **preflight_resolution,
+            "status": "blocked",
+        }
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement dev-run blocked: {payload.get('reason_code')}")
+        raise typer.Exit(code=2)
+
     branch_guard_inputs = _branch_guard_inputs(project_root, version=resolved_version, feature=feature)
     preflight_run_id = generate_run_id(project_root)
     branch_preflight = _run_branch_preflight(
@@ -4400,6 +4478,23 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
         else:
             typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
         return 2
+    governance_preflight = _implement_version_governance_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(governance_preflight.get("blocked")):
+        payload = _blocked_implement_version_governance_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            preflight=governance_preflight,
+        )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
     closure_preflight = _requirement_closure_preflight(
         project_root,
         version=resolved_version,
@@ -4541,6 +4636,23 @@ def _team_plan_impl(feature: str, project: Optional[str], version: str, json_out
                 mapped_command=f'beacon implement team-plan "{feature}" --project-root {project_root} --version {resolved_version}',
                 payload=payload,
             )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implement team-plan blocked: {payload.get('reason_code')}")
+        return 2
+    governance_preflight = _implement_version_governance_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+    )
+    if bool(governance_preflight.get("blocked")):
+        payload = _blocked_implement_version_governance_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            preflight=governance_preflight,
+        )
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
