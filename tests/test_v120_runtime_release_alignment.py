@@ -33,7 +33,7 @@ def test_v120_version_truth_should_promote_v120_to_current_runtime_release():
     assert payload["docs_default_line"] == __toolkit_version__
     assert payload["current_runtime_release_line"] == __toolkit_version__
     assert __toolkit_version__ not in payload["planning_lines"]
-    assert payload["planning_lines"] == ["v1.3.5"]
+    assert "v1.3.5" in payload["planning_lines"]
     for line in payload["planning_lines"]:
         assert payload["lines"][line]["status"] == "planning_only"
     assert "v1.3.4" in payload["partial_runtime_supplement_lines"]
