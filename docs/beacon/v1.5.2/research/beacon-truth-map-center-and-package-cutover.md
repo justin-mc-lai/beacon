@@ -144,3 +144,15 @@ The recommended next route is `beacon-test-case` before implementation, because 
 - route_decision: beacon-test-case
 - finding_summary: Converge missing or ambiguous requirement points into explicit questions and candidate decisions before editing frozen truth.
 - source_refs: `docs/beacon/global-boundaries.md`, `docs/beacon/v1.5.2/SUMMARY.md`, `docs/beacon/v1.5.2/execution/index.md`, `docs/beacon/v1.5.2/execution/architecture-blueprint.md`, `docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md`, `docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md`, `docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md`
+
+## Deep Summary
+
+- source_skill: `beacon-deep`
+- updated_at: `2026-06-02T13:26:51.983426+00:00`
+- deep_artifact_root: `docs/beacon/v1.5.2/deep/beacon-truth-map-center-and-package-cutover`
+- machine_artifact_root: `docs/beacon/v1.5.2/.machine/deep/beacon-truth-map-center-and-package-cutover`
+- deep_requirement_state: `required`
+- status: `closed`
+- route_decision: `closed`
+- release_supplement_ref: `docs/beacon/v1.5.2/.machine/deep/beacon-truth-map-center-and-package-cutover/release-supplement.json`
+- adoption_status: `route_only`
