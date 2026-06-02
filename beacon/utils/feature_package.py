@@ -14,12 +14,26 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.versioning import normalize_version
 
 REQUIRED_TRUTH_FRONTMATTER = ("slug", "version", "status", "language", "canonical_refs", "parser_contract")
 PARSER_CONTRACT = "beacon-feature-package-v1"
 ALLOWED_EVIDENCE_AUTHORITIES = {"support_advisory", "qa_verdict", "release_verdict"}
 FORBIDDEN_EVIDENCE_FIELDS = ("final_verdict", "gate_truth", "release_ready", "qa_passed", "source_of_truth")
 CHECKBOX_RE = re.compile(r"^\s*-\s+\[(?P<mark>[ xX-])\]\s+`?(?P<id>[A-Z]+-\d{3,})`?\s+(?P<title>.+?)\s*$")
+
+
+def _semver_tuple(version: str | None) -> tuple[int, int, int]:
+    normalized = normalize_version(version) or "v0.0.0"
+    try:
+        major, minor, patch = normalized.lstrip("v").split(".")
+        return int(major), int(minor), int(patch)
+    except Exception:  # noqa: BLE001
+        return 0, 0, 0
+
+
+def _canonical_ready_supported(version: str | None) -> bool:
+    return _semver_tuple(version) >= (1, 5, 1)
 
 
 def _rel(root: Path, path: Path) -> str:
@@ -448,6 +462,31 @@ def validate_feature_package(
         "evidence_gate_truth": False,
         "diagnostics": diagnostics,
     }
+    if _canonical_ready_supported(version):
+        from beacon.utils.truth_map import (
+            MACHINE_JSON_GENERATOR,
+            MACHINE_JSON_ROLE,
+            TRUTH_MAP_CONTRACT,
+            TRUTH_PACKAGE_CONTRACT,
+            TRUTH_SOURCE_MODEL,
+            resolve_feature_truth,
+        )
+
+        resolved_truth = resolve_feature_truth(project_root, version=version, feature=slug)
+        payload.update(
+            {
+                "truth_map_contract": TRUTH_MAP_CONTRACT,
+                "truth_source_model": TRUTH_SOURCE_MODEL,
+                "truth_package_contract": TRUTH_PACKAGE_CONTRACT,
+                "machine_json_role": MACHINE_JSON_ROLE,
+                "generated_by": MACHINE_JSON_GENERATOR,
+                "truth_authority": "markdown_feature_package",
+                "json_authority": False,
+                "source_paths": resolved_truth.get("source_paths", {}),
+                "source_hashes": resolved_truth.get("source_hashes", {}),
+                "runtime_json_requires_markdown_twin": False,
+            }
+        )
     if write_report:
         report_path = machine_requirement_file(project_root, version, "feature-package-validation.json")
         write_json(report_path, payload)

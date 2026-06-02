@@ -4982,6 +4982,12 @@ def check_release(
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
     force: bool = typer.Option(False, "--force", help="Force pass with risk logging"),
     project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: Optional[str] = typer.Option(
+        None,
+        "--version",
+        "-v",
+        help="Target docs version (default: resolve from env/latest)",
+    ),
 ):
     """Flat syntax compatibility for `gate release`."""
     raise typer.Exit(
@@ -4993,6 +4999,7 @@ def check_release(
             json_output=json_output,
             force=force,
             project_root=project_root,
+            version=version,
         )
     )
 

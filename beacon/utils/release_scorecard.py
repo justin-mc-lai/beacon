@@ -31,6 +31,7 @@ from beacon.utils.semantic_runtime import evaluate_semantic_contract
 from beacon.utils.story_state import feature_slug
 from beacon.utils.technical_review_contract import build_technical_review_gate_payload, load_technical_review_state
 from beacon.utils.test_contract_governance import build_test_contract_gate_payload
+from beacon.utils.truth_map import resolve_version_governance
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.prototype_support import prototype_status
 from beacon.utils.support_surface_transactions import load_support_surface_summary
@@ -681,6 +682,7 @@ def _qa_memory_release_support(feature_scorecard: dict[str, Any]) -> dict[str, A
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
+    version_governance_truth = resolve_version_governance(project_root, version=resolved_version)
     gate_report = _resolve_release_gate_report(project_root, version=resolved_version)
     evidence_manifest = validate_evidence_manifest(project_root)
     qa_status = load_qa_status(project_root)
@@ -1220,6 +1222,7 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "qa_evo_deep_release_supplement": feature_scorecard.get("release_supplement_input") if isinstance(feature_scorecard.get("release_supplement_input"), dict) else {},
         "prototype_projection": prototype_projection if isinstance(prototype_projection, dict) else {},
         "version_surface_governance": version_surface_governance,
+        "truth_map_governance": version_governance_truth,
         "implementation_plan": implementation_plan if isinstance(implementation_plan, dict) else {},
         "research_projection": implementation_research_projection if isinstance(implementation_research_projection, dict) else {},
         "git_workflow": {

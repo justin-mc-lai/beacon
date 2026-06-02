@@ -211,6 +211,24 @@ def build_material_audit(
     project_skill_blueprint = source_root / "execution" / "project-skill-qa-evolution-blueprint.md"
     source_arch_index = source_root / "source-architecture" / "index.md"
     summary_file = source_root / "SUMMARY.md"
+    governance_truth = {}
+    if _parse_semver_tuple(resolved_version) >= (1, 5, 1):
+        try:
+            from beacon.utils.truth_map import resolve_version_governance
+
+            governance_truth = resolve_version_governance(root, version=resolved_version)
+        except Exception:  # noqa: BLE001
+            governance_truth = {
+                "status": "blocked",
+                "blocked": True,
+                "resolver_mode": "resolver_first",
+                "diagnostics": [
+                    {
+                        "severity": "error",
+                        "code": "version_governance_resolver_unavailable",
+                    }
+                ],
+            }
 
     checks: list[dict[str, Any]] = []
     research_docs = sorted(str(path.relative_to(root)) for path in research_dir.glob("*.md")) if research_dir.exists() else []
@@ -272,6 +290,36 @@ def build_material_audit(
             us_features = set()
             prd_features = set()
             tc_features = set()
+        if _parse_semver_tuple(resolved_version) >= (1, 5, 1):
+            try:
+                from beacon.utils.truth_map import FEATURE_SURFACES, resolve_feature_truth
+
+                package_dir = source_root / "features"
+                resolver_slugs = {
+                    path.name
+                    for path in package_dir.iterdir()
+                    if path.is_dir() and all((path / f"{surface}.md").exists() for surface in FEATURE_SURFACES)
+                } if package_dir.exists() else set()
+                if target_feature := str(feature or "").strip().lower().replace(" ", "-"):
+                    resolver_slugs.add(target_feature)
+                for _slug in sorted(resolver_slugs):
+                    resolved_truth = resolve_feature_truth(root, version=resolved_version, feature=_slug)
+                    if str(resolved_truth.get("status") or "") != "resolved":
+                        continue
+                    canonical_refs = resolved_truth.get("canonical_refs") if isinstance(resolved_truth.get("canonical_refs"), dict) else {}
+                    feature_names.append(_slug)
+                    prd_ref = str(canonical_refs.get("prd") or "").strip()
+                    user_story_ref = str(canonical_refs.get("user_story") or "").strip()
+                    test_case_ref = str(canonical_refs.get("test_case") or "").strip()
+                    if prd_ref and (root / prd_ref).exists():
+                        prd_features.add(_slug)
+                    if user_story_ref and (root / user_story_ref).exists():
+                        us_features.add(_slug)
+                    if test_case_ref and (root / test_case_ref).exists():
+                        tc_features.add(_slug)
+                feature_names = sorted(set(feature_names))
+            except Exception:  # noqa: BLE001
+                pass
     else:
         us_features = _feature_names(us_dir)
         prd_features = _feature_names(prd_dir)
@@ -563,7 +611,12 @@ def build_material_audit(
         {
             "name": "formal_summary_present",
             "status": "pass" if summary_file.exists() else "fail",
-            "details": {"path": str(summary_file.relative_to(root)), "exists": summary_file.exists()},
+            "details": {
+                "path": str(summary_file.relative_to(root)),
+                "exists": summary_file.exists(),
+                "resolver_first": bool(governance_truth),
+                "governance_surface": "summary",
+            },
         }
     )
     checks.append(
@@ -577,6 +630,25 @@ def build_material_audit(
             },
         }
     )
+    if governance_truth:
+        governance_errors = [
+            item
+            for item in (governance_truth.get("diagnostics") if isinstance(governance_truth.get("diagnostics"), list) else [])
+            if isinstance(item, dict) and str(item.get("severity") or "") == "error"
+        ]
+        checks.append(
+            {
+                "name": "version_governance_resolver_first",
+                "status": "pass" if not governance_errors else "fail",
+                "details": {
+                    "resolver_mode": governance_truth.get("resolver_mode", ""),
+                    "manifest_authority": bool(governance_truth.get("manifest_authority", True)),
+                    "json_authority": bool(governance_truth.get("json_authority", True)),
+                    "authority_classification": governance_truth.get("authority_classification", {}),
+                    "diagnostics": governance_truth.get("diagnostics", []),
+                },
+            }
+        )
     if _parse_semver_tuple(resolved_version) >= (1, 1, 10):
         checks.append(
             {
@@ -615,6 +687,7 @@ def build_material_audit(
         "project_root": str(root),
         "version": resolved_version,
         "strict": strict,
+        "truth_map_governance": governance_truth if isinstance(governance_truth, dict) else {},
         "status": overall,
         "ok": overall == "pass",
         "checks": checks,
