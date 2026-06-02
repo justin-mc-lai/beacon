@@ -10,6 +10,7 @@ from beacon.utils.artifact_paths import human_execution_file, machine_execution_
 from beacon.utils.diagram_truth import diagram_truth_findings, load_feature_diagram_truth
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.support_research_topology import support_topology_diagnostics
 from beacon.utils.versioning import (
     normalize_version,
@@ -99,6 +100,23 @@ def _version_root(project_root: Path, version: str, feature: str) -> list[Path]:
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
     base = project_root / "docs" / "beacon" / resolved_version
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=slug,
+            consumer="requirement-clarity",
+        )["requirement_refs"]
+        paths = [
+            project_root / refs["truth"],
+            project_root / refs["tests"],
+            project_root / refs["tasks"],
+            project_root / refs["evidence"],
+        ]
+        research_path = base / "research" / f"{slug}.md"
+        if research_path.exists():
+            paths.append(research_path)
+        return paths
     paths = [
         base / "prd" / f"{slug}.md",
         base / "user-story" / f"{slug}.md",
@@ -275,6 +293,19 @@ def _feature_requirement_paths(project_root: Path, version: str, feature: str) -
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
     base = project_root / "docs" / "beacon" / resolved_version
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=slug,
+            consumer="requirement-clarity",
+        )["requirement_refs"]
+        return {
+            "prd": project_root / refs["prd"],
+            "user_story": project_root / refs["user_story"],
+            "test_case": project_root / refs["test_case"],
+            "research": base / "research" / f"{slug}.md",
+        }
     return {
         "prd": base / "prd" / f"{slug}.md",
         "user_story": base / "user-story" / f"{slug}.md",

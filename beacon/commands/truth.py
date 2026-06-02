@@ -9,11 +9,13 @@ from typing import Optional
 import typer
 
 from beacon.utils.manifest import add_feature, load_manifest_or_fail, ManifestMissingError
+from beacon.utils.feature_package import materialize_feature_package, validate_feature_package
 from beacon.utils.truth_format import (
     validate_prd_format,
     validate_test_case_format,
     validate_user_story_format,
 )
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.truth_template import (
     render_prd_template,
     render_test_case_template,
@@ -51,7 +53,7 @@ def init_cmd(
     force: bool = typer.Option(False, "--force", help="Overwrite existing files"),
     project: Optional[str] = typer.Option(None, "--project", "-p", "--project-root", help="Project root"),
 ) -> None:
-    """Initialize truth triptych template files."""
+    """Initialize truth files."""
     project_root = _resolve_root(project)
     resolved = resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
@@ -60,8 +62,21 @@ def init_cmd(
         typer.echo(f"Invalid --lang: {lang}. Must be 'en' or 'zh'.", err=True)
         raise typer.Exit(2)
 
-    base = project_root / "docs" / "beacon" / resolved
+    if feature_package_authoritative(resolved):
+        if kind not in {"all", "package"}:
+            typer.echo(
+                f"v1.5.2+ truth init writes the authoritative feature package; unsupported kind: {kind}",
+                err=True,
+            )
+            raise typer.Exit(2)
+        payload = materialize_feature_package(project_root, version=resolved, feature=feature, force=force)
+        for path in payload.get("written", []):
+            typer.echo(f"✓ Created package truth: {path}")
+        for path in payload.get("skipped", []):
+            typer.echo(f"- Preserved package truth: {path}")
+        return
 
+    base = project_root / "docs" / "beacon" / resolved
     kinds = ["prd", "user-story", "test-case"] if kind == "all" else [kind]
     written: list[str] = []
 
@@ -99,11 +114,22 @@ def verify_cmd(
     strict: bool = typer.Option(False, "--strict", help="Fail on any non-compliance"),
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ) -> None:
-    """Verify truth triptych format compliance."""
+    """Verify truth format compliance."""
     project_root = _resolve_root(project)
     resolved = resolve_target_version(project_root, version)
     slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
     base = project_root / "docs" / "beacon" / resolved
+
+    if feature_package_authoritative(resolved):
+        payload = validate_feature_package(project_root, version=resolved, feature=feature, write_report=True)
+        status = str(payload.get("status") or "unknown")
+        if status != "pass":
+            typer.echo(f"✗ feature package: {status}", err=True)
+            for issue in payload.get("diagnostics", []):
+                typer.echo(f"  - {issue.get('code', 'unknown')}", err=True)
+            raise typer.Exit(2)
+        typer.echo(f"✓ Feature package truth passes validation for feature '{slug}'")
+        return
 
     # Try to get paths from manifest first, fall back to fixed paths
     try:

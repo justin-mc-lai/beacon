@@ -42,6 +42,7 @@ from beacon.utils.semantic_runtime import (
     normalize_requested_mode,
 )
 from beacon.utils.story_scenarios import expand_story_scenarios, write_story_scenario_map
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.versioning import discover_versions, normalize_version, resolve_operational_docs_version, resolve_target_version
 
 app = typer.Typer(name="test-case", help="Generate test cases")
@@ -63,6 +64,28 @@ def _research_truth_enabled(version: str) -> bool:
 
 def _candidate_doc_paths(project_root: Path, version: str, category: str, slug: str) -> list[Path]:
     return [project_root / "docs" / "beacon" / version / category / f"{slug}.md"]
+
+
+def _requirement_doc_paths(project_root: Path, version: str, slug: str) -> dict[str, Path]:
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=slug,
+            consumer="test-case",
+        )["requirement_refs"]
+        return {
+            "prd": project_root / refs["prd"],
+            "user_story": project_root / refs["user_story"],
+            "test_case": project_root / refs["test_case"],
+            "research": project_root / "docs" / "beacon" / version / "research" / f"{slug}.md",
+        }
+    return {
+        "prd": project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
+        "user_story": project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
+        "test_case": project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+        "research": project_root / "docs" / "beacon" / version / "research" / f"{slug}.md",
+    }
 
 
 def _read_first_existing(paths: list[Path]) -> tuple[Path | None, str]:
@@ -1342,19 +1365,12 @@ def create(
             raise typer.Exit(2)
         effective_mode = "rule"
         fallback_reason = "llm_unavailable"
-    # Read ACs from existing user-story/prd docs
-    us_path, us_content = _read_first_existing(
-        _candidate_doc_paths(project_root, resolved_version, "user-story", feature_slug)
-    )
-    prd_path, prd_content = _read_first_existing(
-        _candidate_doc_paths(project_root, resolved_version, "prd", feature_slug)
-    )
-    qa_path, qa_content = _read_first_existing(
-        _candidate_doc_paths(project_root, resolved_version, "qa/test-cases", feature_slug)
-    )
-    research_path, research_content = _read_first_existing(
-        _candidate_doc_paths(project_root, resolved_version, "research", feature_slug)
-    )
+    # Read ACs through the truth-map resolver for v1.5.2+ package authority.
+    requirement_doc_paths = _requirement_doc_paths(project_root, resolved_version, feature_slug)
+    us_path, us_content = _read_first_existing([requirement_doc_paths["user_story"]])
+    prd_path, prd_content = _read_first_existing([requirement_doc_paths["prd"]])
+    qa_path, qa_content = _read_first_existing([requirement_doc_paths["test_case"]])
+    research_path, research_content = _read_first_existing([requirement_doc_paths["research"]])
     legacy_story_path = project_root / ".beacon" / "user-story" / f"{feature_slug}.json"
     docs_story_dir = project_root / "docs" / "beacon" / resolved_version / "user-story"
     legacy_story_dir = project_root / ".beacon" / "user-story"
@@ -1499,9 +1515,9 @@ def create(
             user_story_content=us_content,
             qa_content=qa_content,
             research_content=research_content,
-            prd_source=f"prd:docs/beacon/{resolved_version}/prd/{feature_slug}.md",
-            user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{feature_slug}.md",
-            qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{feature_slug}.md",
+            prd_source=f"prd:{prd_path.relative_to(project_root) if prd_path else 'missing'}",
+            user_story_source=f"user-story:{us_path.relative_to(project_root) if us_path else 'missing'}",
+            qa_source=f"qa:test-cases:{qa_path.relative_to(project_root) if qa_path else 'missing'}",
             research_source=f"research:docs/beacon/{resolved_version}/research/{feature_slug}.md",
             compiler=compiler,
             target_artifact="test-case",

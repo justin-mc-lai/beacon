@@ -1,0 +1,85 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "beacon-truth-map-center-and-package-cutover",
+  "feature_slug": "beacon-truth-map-center-and-package-cutover",
+  "version": "v1.5.2",
+  "status": "completed",
+  "reason_code": "",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-06-02T15:13:35.731110+00:00",
+  "detected_revision_id": "R3",
+  "source_revision_id": "R2",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R1",
+      "run_id": "impl-v152-package-authority-cutover-20260602",
+      "recorded_at": "2026-06-02T13:26:38.762040+00:00",
+      "implemented_item_ids": [
+        "AC-003",
+        "TEST-007",
+        "TEST-006",
+        "AC-005",
+        "AC-007",
+        "AC-002",
+        "TEST-008",
+        "TEST-002",
+        "TEST-001",
+        "AC-008",
+        "TEST-004",
+        "TASK-001",
+        "AC-001",
+        "TEST-005",
+        "TEST-003",
+        "AC-006",
+        "AC-004"
+      ],
+      "changed_files": [
+        "beacon/utils/acceptance_kit.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/material_audit.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/requirement_deepening.py",
+        "beacon/utils/truth_map.py",
+        "tests/test_v152_package_authoritative.py"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md",
+    "docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md",
+    "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md",
+    "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R3",
+    "current_delivery_status": "accepted"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"beacon-truth-map-center-and-package-cutover\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.5.2 --reason \"implementation-first-reconciliation\""
+  },
+  "completion_reason_code": "implementation_first_reconciliation_completed",
+  "completed_at": "2026-06-02T16:02:44.166996+00:00",
+  "resolution": {
+    "resolved_by": "change_refreeze_transaction",
+    "refreeze_transaction_ref": "docs/beacon/v1.5.2/.machine/change/beacon-truth-map-center-and-package-cutover.refreeze-transaction.json",
+    "current_revision_id": "R3",
+    "preserve_drift_history": true
+  }
+}

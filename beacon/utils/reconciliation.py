@@ -76,6 +76,55 @@ def load_reconciliation_artifact(project_root: Path, *, version: str, feature: s
     return payload if isinstance(payload, dict) else {}
 
 
+def _change_refreeze_transaction_path(project_root: Path, *, version: str, feature: str) -> Path:
+    return machine_change_file(project_root, version, f"{feature_slug(feature)}.refreeze-transaction.json")
+
+
+def _completed_implementation_first_refreeze(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    current_revision_id: str,
+) -> dict[str, Any]:
+    path = _change_refreeze_transaction_path(project_root, version=version, feature=feature)
+    payload = read_json(path, {})
+    if not isinstance(payload, dict):
+        return {"completed": False, "transaction_path": str(path.relative_to(project_root)), "transaction": {}}
+    after = payload.get("truth_revision_after") if isinstance(payload.get("truth_revision_after"), dict) else {}
+    completed = (
+        str(payload.get("change_reason", "") or "") == "implementation-first-reconciliation"
+        and str(payload.get("refreeze_status", "") or "") == "complete"
+        and str(after.get("revision_id", "") or "") == str(current_revision_id or "")
+    )
+    return {
+        "completed": completed,
+        "transaction_path": str(path.relative_to(project_root)),
+        "transaction": payload if completed else {},
+    }
+
+
+def _implementation_artifacts_for_prior_revisions(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    current_revision_id: str,
+) -> list[dict[str, Any]]:
+    ledger = load_implementation_writeback_ledger(project_root, version=version, feature=feature)
+    return [
+        {
+            "revision_id": str(item.get("revision_id", "") or ""),
+            "run_id": str(item.get("run_id", "") or ""),
+            "recorded_at": str(item.get("recorded_at", "") or ""),
+            "implemented_item_ids": [str(v) for v in (item.get("implemented_item_ids") or []) if str(v).strip()],
+            "changed_files": [str(v) for v in (item.get("changed_files") or []) if str(v).strip()],
+        }
+        for item in (ledger.get("entries") or [])
+        if isinstance(item, dict) and str(item.get("revision_id", "") or "") and str(item.get("revision_id", "") or "") != current_revision_id
+    ]
+
+
 def build_reconciliation_payload(
     project_root: Path,
     *,
@@ -143,19 +192,13 @@ def record_implementation_first_reconciliation(
     revision_state: dict[str, Any],
 ) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    ledger = load_implementation_writeback_ledger(project_root, version=resolved_version, feature=feature)
     current_revision_id = str(revision_state.get("revision_id", "") or "")
-    implementation_artifacts = [
-        {
-            "revision_id": str(item.get("revision_id", "") or ""),
-            "run_id": str(item.get("run_id", "") or ""),
-            "recorded_at": str(item.get("recorded_at", "") or ""),
-            "implemented_item_ids": [str(v) for v in (item.get("implemented_item_ids") or []) if str(v).strip()],
-            "changed_files": [str(v) for v in (item.get("changed_files") or []) if str(v).strip()],
-        }
-        for item in (ledger.get("entries") or [])
-        if isinstance(item, dict) and str(item.get("revision_id", "") or "") and str(item.get("revision_id", "") or "") != current_revision_id
-    ]
+    implementation_artifacts = _implementation_artifacts_for_prior_revisions(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        current_revision_id=current_revision_id,
+    )
     existing = load_reconciliation_artifact(project_root, version=resolved_version, feature=feature)
     payload = build_reconciliation_payload(
         project_root,
@@ -165,6 +208,45 @@ def record_implementation_first_reconciliation(
         implementation_artifacts=implementation_artifacts,
         detected_at=str(existing.get("drift_detected_at", "") or now_iso()),
     )
+    write_json(reconciliation_artifact_path(project_root, version=resolved_version, feature=feature), payload)
+    return payload
+
+
+def record_completed_implementation_first_reconciliation(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    revision_state: dict[str, Any],
+    completion: dict[str, Any],
+) -> dict[str, Any]:
+    resolved_version = resolve_target_version(project_root, version)
+    current_revision_id = str(revision_state.get("revision_id", "") or "")
+    existing = load_reconciliation_artifact(project_root, version=resolved_version, feature=feature)
+    payload = build_reconciliation_payload(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        revision_state=revision_state,
+        implementation_artifacts=_implementation_artifacts_for_prior_revisions(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            current_revision_id=current_revision_id,
+        ),
+        detected_at=str(existing.get("drift_detected_at", "") or now_iso()),
+    )
+    payload["status"] = "completed"
+    payload["reason_code"] = ""
+    payload["completion_reason_code"] = "implementation_first_reconciliation_completed"
+    payload["completed_at"] = str(existing.get("completed_at", "") or now_iso())
+    payload["re_freeze_status"] = "completed"
+    payload["resolution"] = {
+        "resolved_by": "change_refreeze_transaction",
+        "refreeze_transaction_ref": str(completion.get("transaction_path", "") or ""),
+        "current_revision_id": current_revision_id,
+        "preserve_drift_history": True,
+    }
     write_json(reconciliation_artifact_path(project_root, version=resolved_version, feature=feature), payload)
     return payload
 
@@ -204,6 +286,28 @@ def detect_implementation_first_reconciliation_needed(
     )
     if not has_prior_implementation:
         return {"required": False, "reason_code": "", "artifact_path": "", "artifact": {}}
+
+    completion = _completed_implementation_first_refreeze(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        current_revision_id=current_revision_id,
+    )
+    if bool(completion.get("completed")):
+        artifact = record_completed_implementation_first_reconciliation(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            revision_state=revision_state,
+            completion=completion,
+        )
+        path = reconciliation_artifact_path(project_root, version=resolved_version, feature=feature)
+        return {
+            "required": False,
+            "reason_code": "",
+            "artifact_path": str(path.relative_to(project_root)),
+            "artifact": artifact,
+        }
 
     artifact = record_implementation_first_reconciliation(
         project_root,

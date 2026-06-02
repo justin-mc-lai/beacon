@@ -27,6 +27,7 @@ from beacon.utils.semantic_runtime import (
 )
 from beacon.utils.runtime import write_json
 from beacon.utils.story_state import feature_slug, load_story_state, machine_story_path, save_story_state, sync_story_state_from_docs
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 
 app = typer.Typer(name="user-story", help="Generate user stories")
 
@@ -174,9 +175,20 @@ def host_bridge(
 def _read_requirement_truth(project_root: Path, version: str, feature: str) -> tuple[str, str, str, str]:
     resolved_version = resolve_target_version(project_root, version)
     slug = feature_slug(feature)
-    prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
-    user_story_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
-    test_case_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{slug}.md"
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=slug,
+            consumer="user-story",
+        )["requirement_refs"]
+        prd_path = project_root / refs["prd"]
+        user_story_path = project_root / refs["user_story"]
+        test_case_path = project_root / refs["test_case"]
+    else:
+        prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{slug}.md"
+        user_story_path = project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{slug}.md"
+        test_case_path = project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{slug}.md"
     research_path = project_root / "docs" / "beacon" / resolved_version / "research" / f"{slug}.md"
     prd_text = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
     user_story_text = user_story_path.read_text(encoding="utf-8") if user_story_path.exists() else ""
@@ -427,6 +439,16 @@ def create(
     )
     deepening_payload: dict = {}
     if requirement_deepening_supported(resolved_version):
+        truth_refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=slug,
+            consumer="user-story",
+        )["requirement_refs"] if feature_package_authoritative(resolved_version) else {
+            "prd": f"docs/beacon/{resolved_version}/prd/{slug}.md",
+            "user_story": f"docs/beacon/{resolved_version}/user-story/{slug}.md",
+            "test_case": f"docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
+        }
         deepening_payload = sync_requirement_deepening_artifacts(
             project_root,
             version=resolved_version,
@@ -435,9 +457,9 @@ def create(
             user_story_content=user_story_text,
             qa_content=qa_text,
             research_content=research_text,
-            prd_source=f"prd:docs/beacon/{resolved_version}/prd/{slug}.md",
-            user_story_source=f"user-story:docs/beacon/{resolved_version}/user-story/{slug}.md",
-            qa_source=f"qa:test-cases:docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
+            prd_source=f"prd:{truth_refs['prd']}",
+            user_story_source=f"user-story:{truth_refs['user_story']}",
+            qa_source=f"qa:test-cases:{truth_refs['test_case']}",
             research_source=f"research:docs/beacon/{resolved_version}/research/{slug}.md",
             compiler=compiler,
             target_artifact="user-story",

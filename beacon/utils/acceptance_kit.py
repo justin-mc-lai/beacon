@@ -9,6 +9,7 @@ from typing import Any
 from beacon.utils.artifact_paths import machine_execution_dir
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 
 
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
@@ -118,6 +119,25 @@ def build_acceptance_kit_projection(project_root: Path, *, version: str, feature
             "links": [],
             "reason_code": "acceptance_kit_missing",
         }
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=feature,
+            consumer="acceptance-kit",
+        )["requirement_refs"]
+        source_by_layer = {
+            "skill-contract": refs["prd"],
+            "scenario-suite": refs["user_story"],
+            "trace-scorecard": refs["test_case"],
+        }
+        layer_details = summary.get("layer_details") if isinstance(summary.get("layer_details"), list) else []
+        for item in layer_details:
+            if not isinstance(item, dict):
+                continue
+            layer = str(item.get("name") or "")
+            if layer in source_by_layer:
+                item["source_truth_ref"] = source_by_layer[layer]
     links = [
         {
             "layer": item["name"],
@@ -162,7 +182,16 @@ def write_acceptance_kit_projection(
     machine_ref = str(envelope.get("canonical_envelope_ref") or "").strip()
     slug = feature_slug(feature)
 
-    default_skill_ref, default_scenario_ref, default_trace_ref = _default_requirement_refs(version, slug)
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=slug,
+            consumer="acceptance-kit",
+        )["requirement_refs"]
+        default_skill_ref, default_scenario_ref, default_trace_ref = refs["prd"], refs["user_story"], refs["test_case"]
+    else:
+        default_skill_ref, default_scenario_ref, default_trace_ref = _default_requirement_refs(version, slug)
     skill_ref = requirement_refs[0] if requirement_refs else default_skill_ref
     scenario_ref = requirement_refs[1] if len(requirement_refs) > 1 else default_scenario_ref
     trace_ref = requirement_refs[2] if len(requirement_refs) > 2 else default_trace_ref

@@ -2,9 +2,9 @@
 
 - version: `v1.5.2`
 - feature: `beacon-truth-map-center-and-package-cutover`
-- revision_id: `R1`
+- revision_id: `R3`
 - verdict: `passed`
-- accepted_at: `2026-06-02T12:05:32.513407+00:00`
+- accepted_at: `2026-06-02T16:02:44.562978+00:00`
 - accepted_by: `qa`
 
 ## Summary

@@ -47,6 +47,7 @@ from beacon.utils.runtime import (
     save_run_state,
     write_json,
 )
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.versioning import resolve_operational_docs_version, resolve_target_version
 from beacon.utils.v110_baseline import record_baseline_snapshot
 from beacon.utils.workflow_memory import (
@@ -395,18 +396,26 @@ def _write_external_implementation_marker(
     command_source: str,
 ) -> None:
     slug = _slug(feature)
-    source_root = f"docs/beacon/{version}"
-    requirement_refs = {
-        "source_of_truth_root": source_root,
-        "prd": f"{source_root}/prd/{slug}.md",
-        "user_story": f"{source_root}/user-story/{slug}.md",
-        "test_case": f"{source_root}/qa/test-cases/{slug}.md",
-    }
+    if feature_package_authoritative(version):
+        requirement_refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=slug,
+            consumer="workflow",
+        )["requirement_refs"]
+    else:
+        source_root = f"docs/beacon/{version}"
+        requirement_refs = {
+            "source_of_truth_root": source_root,
+            "prd": f"{source_root}/prd/{slug}.md",
+            "user_story": f"{source_root}/user-story/{slug}.md",
+            "test_case": f"{source_root}/qa/test-cases/{slug}.md",
+        }
     prompt = "\n".join(
         [
             "Implement the scoped Beacon feature.",
-            f"Read Beacon source of truth under {source_root}.",
-            "Implement only against the frozen PRD, user-story, and test-case truth above.",
+            f"Read Beacon source of truth under {requirement_refs['source_of_truth_root']}.",
+            "Implement only against the frozen resolver-selected requirement truth above.",
             f"External implementation command source: {command_source}.",
             f"External implementation command: {command}",
         ]

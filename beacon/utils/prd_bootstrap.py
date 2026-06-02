@@ -11,7 +11,9 @@ from typing import Any
 
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.context_files import verify_context_files
+from beacon.utils.feature_package import materialize_feature_package
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.versioning import resolve_runtime_version, resolve_target_version
 from beacon.utils.truth_template import render_prd_template as _render_prd_template_v2
 
@@ -1085,6 +1087,21 @@ def run_prd_bootstrap(
                         if any(item[0] == path for item in replaced_paths)
                         else "",
                     }
+                )
+
+            if feature_package_authoritative(resolved_version):
+                package_payload = materialize_feature_package(
+                    project_root,
+                    version=resolved_version,
+                    feature=feature,
+                    force=True,
+                )
+                payload["feature_package"] = package_payload
+                payload["truth_read_refs"] = resolve_truth_read_refs(
+                    project_root,
+                    version=resolved_version,
+                    feature=feature,
+                    consumer="prd-bootstrap",
                 )
 
         rollback: list[dict[str, str]] = []

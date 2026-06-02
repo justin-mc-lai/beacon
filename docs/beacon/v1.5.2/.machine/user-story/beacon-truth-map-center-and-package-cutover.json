@@ -3,21 +3,49 @@
   "feature": "beacon-truth-map-center-and-package-cutover",
   "feature_slug": "beacon-truth-map-center-and-package-cutover",
   "version": "v1.5.2",
-  "current_revision_id": "R1",
+  "current_revision_id": "R3",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-06-02T13:26:38.760500+00:00",
+  "updated_at": "2026-06-02T16:02:44.639776+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "beacon-truth-map-center-and-package-cutover",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:1d0b9715183aab32b8598743578e797f0902b044bfb93c82473a2d4418323823",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-06-02T11:41:41.534933+00:00",
       "frozen_at": "2026-06-02T11:41:45.603109+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "source_revision_id": "R1",
+      "reason": "complete normal Beacon production and consumption truth-source cutover through truth-map resolver",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:d37a0d6a45bafb3f0c0ab8d2d4cf4d1c83447422f42f9d84ff03394ed850a01d",
+      "superseded_by": "R3",
+      "created_at": "2026-06-02T14:33:26.849071+00:00",
+      "frozen_at": "2026-06-02T14:33:31.025707+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "source_revision_id": "R2",
+      "reason": "implementation-first-reconciliation",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:ebbcc836aecd81a2f8376ce155c1ef60de953a724ccc5864299237033730d09f",
+      "superseded_by": null,
+      "created_at": "2026-06-02T15:57:50.290287+00:00",
+      "frozen_at": "2026-06-02T15:57:54.397627+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +56,7 @@
       "revision_id": "R1",
       "title": "beacon-truth-map-center-and-package-cutover",
       "priority": "medium",
-      "status": "implemented",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -323,6 +351,590 @@
         "beacon/utils/truth_map.py",
         "tests/test_v152_package_authoritative.py"
       ]
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-truth-map-center-and-package-cutover",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "package-authoritative",
+          "text": "`features/<slug>/*.md` is authoritative for normal production and consumption.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "resolver-required",
+          "text": "Commands and skills must call truth-map resolver before reading truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "legacy-not-canonical",
+          "text": "Legacy triptych is not a canonical source in v1.5.2.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "doctor-rebuild",
+          "text": "`doctor` can rebuild legacy triptych from package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "change-absorb",
+          "text": "`change` can absorb legacy triptych into package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-json-twin-requirement",
+          "text": "Missing JSON twins do not block Markdown truth validity.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "gate-consumption",
+          "text": "QA/release/gate use resolver and parser outputs from package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-fail-closed",
+          "text": "Drift against package truth is reported; package truth remains authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `features/<slug>/*.md` is authoritative for normal production and consumption.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Commands and skills must call truth-map resolver before reading truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Legacy triptych is not a canonical source in v1.5.2.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `doctor` can rebuild legacy triptych from package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `change` can absorb legacy triptych into package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Missing JSON twins do not block Markdown truth validity.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — QA/release/gate use resolver and parser outputs from package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Drift against package truth is reported; package truth remains authority.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260602T231319713675",
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-truth-map-center-and-package-cutover",
+        "version": "v1.5.2",
+        "source": "research:docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-truth-map-center-and-package-cutover",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "version": "v1.5.2",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-02T15:13:36.157794+00:00",
+      "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-truth-map-center-and-package-cutover",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "package-authoritative",
+          "text": "`features/<slug>/*.md` is authoritative for normal production and consumption.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "resolver-required",
+          "text": "Commands and skills must call truth-map resolver before reading truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "legacy-not-canonical",
+          "text": "Legacy triptych is not a canonical source in v1.5.2.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "doctor-rebuild",
+          "text": "`doctor` can rebuild legacy triptych from package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "change-absorb",
+          "text": "`change` can absorb legacy triptych into package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-json-twin-requirement",
+          "text": "Missing JSON twins do not block Markdown truth validity.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "gate-consumption",
+          "text": "QA/release/gate use resolver and parser outputs from package truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "drift-fail-closed",
+          "text": "Drift against package truth is reported; package truth remains authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — `features/<slug>/*.md` is authoritative for normal production and consumption.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Commands and skills must call truth-map resolver before reading truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Legacy triptych is not a canonical source in v1.5.2.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `doctor` can rebuild legacy triptych from package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — `change` can absorb legacy triptych into package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Missing JSON twins do not block Markdown truth validity.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — QA/release/gate use resolver and parser outputs from package truth.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — Drift against package truth is reported; package truth remains authority.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "run-20260603T000228544498",
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-truth-map-center-and-package-cutover",
+        "version": "v1.5.2",
+        "source": "research:docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-truth-map-center-and-package-cutover",
+      "feature_slug": "beacon-truth-map-center-and-package-cutover",
+      "version": "v1.5.2",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.5.2/.machine/qa/beacon-truth-map-center-and-package-cutover.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/ac-closure.json",
+        ".beacon/qa/features/beacon-truth-map-center-and-package-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-02T16:02:44.562978+00:00",
+      "accepted_by": "qa"
     }
   ]
 }

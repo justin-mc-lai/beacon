@@ -21,6 +21,7 @@ from beacon.utils.truth_map import (
     resolve_legacy_rebuild_targets,
     resolve_machine_json_plan,
     resolve_truth_entrypoint_inventory,
+    resolve_truth_read_refs,
     resolve_truth_map,
     truth_source_model_for_version,
     verify_truth_entrypoint_inventory,
@@ -149,12 +150,33 @@ def test_package_markdown_is_authoritative(tmp_path: Path) -> None:
 
 def test_consumers_require_truth_map_resolver(tmp_path: Path) -> None:
     _seed_package(tmp_path)
+    for rel in (
+        "beacon/commands/prd.py",
+        "beacon/commands/user_story.py",
+        "beacon/commands/test_case.py",
+        "beacon/commands/workflow.py",
+        "beacon/commands/truth.py",
+        "beacon/commands/gate.py",
+        "beacon/utils/prd_bootstrap.py",
+        "beacon/utils/requirement_clarity.py",
+        "beacon/utils/requirement_deepening.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/acceptance_kit.py",
+        "skills/beacon/demo/SKILL.md",
+        ".agents/skills/demo/SKILL.md",
+    ):
+        _write(tmp_path, rel, "ok\n")
 
     payload = verify_truth_entrypoint_inventory(tmp_path, version=VERSION, strict=True)
-    codes = {item["code"] for item in payload["diagnostics"]}
 
-    assert payload["status"] == "blocked"
-    assert "truth_entrypoint_legacy_exception_not_allowed" in codes
+    assert payload["status"] == "pass"
+    assert not payload["diagnostics"]
+    assert all(entry["truth_center_routed"] for entry in payload["entries"] if entry["classification"] != "generated_state_exception")
+
+    refs = resolve_truth_read_refs(tmp_path, version=VERSION, feature=FEATURE, consumer="test")
+    assert refs["requirement_refs"]["prd"].endswith(f"features/{SLUG}/truth.md")
+    assert refs["requirement_refs"]["user_story"].endswith(f"features/{SLUG}/truth.md")
+    assert refs["requirement_refs"]["test_case"].endswith(f"features/{SLUG}/tests.md")
 
 
 def test_legacy_triptych_is_not_canonical(tmp_path: Path) -> None:
@@ -258,8 +280,12 @@ def test_entrypoint_inventory_rejects_v151_legacy_exceptions_for_v152(tmp_path: 
     payload = resolve_truth_entrypoint_inventory(tmp_path, version=VERSION)
 
     violations = [entry for entry in payload["entries"] if entry.get("cutover_violation")]
-    assert violations
-    assert payload["status"] == "blocked"
+    assert not violations
+    assert payload["status"] == "pass"
+    assert all(
+        entry["truth_center_routed"] or entry["classification"] == "generated_state_exception"
+        for entry in payload["entries"]
+    )
 
 
 def test_material_audit_package_complete_without_legacy_triptych(tmp_path: Path) -> None:

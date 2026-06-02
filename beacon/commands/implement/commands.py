@@ -100,7 +100,12 @@ from beacon.utils.subagent_readiness import (
     runtime_readiness_precheck,
 )
 from beacon.utils.team_surface import write_implement_to_qa_handoff
-from beacon.utils.truth_map import evaluate_implement_version_governance_preflight, truth_map_supported
+from beacon.utils.truth_map import (
+    evaluate_implement_version_governance_preflight,
+    feature_package_authoritative,
+    resolve_truth_read_refs,
+    truth_map_supported,
+)
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 from beacon.utils.workflow_memory import (
@@ -196,6 +201,26 @@ def _impl_root(project_root: Path, run_id: str) -> Path:
 def _artifacts(project_root: Path, version: str, feature: str) -> dict[str, str]:
     slug = _slug(feature)
     base = project_root / "docs" / "beacon" / version
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=slug,
+            consumer="implement",
+        )["requirement_refs"]
+        return {
+            "source_of_truth_root": refs["source_of_truth_root"],
+            "user_story": refs["user_story"],
+            "prd": refs["prd"],
+            "test_case": refs["test_case"],
+            "truth": refs["truth"],
+            "tests": refs["tests"],
+            "tasks": refs["tasks"],
+            "evidence": refs["evidence"],
+            "ac_matrix": str(qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0].relative_to(project_root)),
+            "prototype_dir": str((base / "prototype" / slug).relative_to(project_root)),
+            "execution_dir": str((base / "execution").relative_to(project_root)),
+        }
     return {
         "source_of_truth_root": f"docs/beacon/{version}",
         "user_story": str((base / "user-story" / f"{slug}.md").relative_to(project_root)),

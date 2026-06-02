@@ -6,6 +6,7 @@ from pathlib import Path
 
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.reconciliation import detect_implementation_first_reconciliation_needed, reconciliation_artifact_path
+from beacon.utils.runtime import write_json
 from beacon.utils.revision_state import freeze_revision_state, reopen_revision_state
 from beacon.utils.writeback import record_implementation_writeback
 
@@ -137,3 +138,48 @@ def test_reconciliation_closes_when_current_revision_has_implementation_writebac
     )
 
     assert detection["required"] is False
+
+
+def test_reconciliation_closes_when_implementation_first_refreeze_completed(tmp_path: Path) -> None:
+    result = _seed_reconciliation_scenario(tmp_path)
+    revision = result["revision"]
+
+    write_json(
+        tmp_path
+        / "docs"
+        / "beacon"
+        / VERSION
+        / ".machine"
+        / "change"
+        / f"{SLUG}.refreeze-transaction.json",
+        {
+            "schema_version": "1.0",
+            "feature": FEATURE,
+            "feature_slug": SLUG,
+            "version": VERSION,
+            "change_reason": "implementation-first-reconciliation",
+            "refreeze_status": "complete",
+            "truth_revision_before": {
+                "revision_id": str(revision.get("source_revision_id") or ""),
+                "doc_status": "frozen",
+            },
+            "truth_revision_after": {
+                "revision_id": str(revision.get("revision_id") or ""),
+                "doc_status": "frozen",
+            },
+        },
+    )
+
+    detection = detect_implementation_first_reconciliation_needed(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        revision_state=revision,
+    )
+    artifact = detection["artifact"]
+
+    assert detection["required"] is False
+    assert artifact["status"] == "completed"
+    assert artifact["completion_reason_code"] == "implementation_first_reconciliation_completed"
+    assert artifact["resolution"]["resolved_by"] == "change_refreeze_transaction"
+    assert artifact["implementation_artifacts"][0]["revision_id"] == "R1"

@@ -19,9 +19,9 @@
 - chain_order: research -> prd -> user_story -> test_case -> requirement_clarity -> freeze
 - human_closure_required: `False`
 - research_path: `docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md` exists=`True`
-- prd_path: `docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md` exists=`True`
-- user_story_path: `docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md` exists=`True`
-- test_case_path: `docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md` exists=`True`
+- prd_path: `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/truth.md` exists=`True`
+- user_story_path: `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/truth.md` exists=`True`
+- test_case_path: `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/tests.md` exists=`True`
 - upstream_ac_ids: AC-001, AC-002, AC-003, AC-004, AC-005, AC-006, AC-007, AC-008
 - missing_test_case_ac_ids: 
 
@@ -38,9 +38,10 @@
 - diagnostic_count: `0`
 
 ## Scanned Files
-- `docs/beacon/v1.5.2/prd/beacon-truth-map-center-and-package-cutover.md`
-- `docs/beacon/v1.5.2/user-story/beacon-truth-map-center-and-package-cutover.md`
-- `docs/beacon/v1.5.2/qa/test-cases/beacon-truth-map-center-and-package-cutover.md`
+- `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/truth.md`
+- `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/tests.md`
+- `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/tasks.md`
+- `docs/beacon/v1.5.2/features/beacon-truth-map-center-and-package-cutover/evidence.md`
 - `docs/beacon/v1.5.2/research/beacon-truth-map-center-and-package-cutover.md`
 
 ## Findings
