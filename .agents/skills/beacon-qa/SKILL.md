@@ -108,6 +108,16 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - `beacon implement ...` for repair handoff
 - `beacon release ...` only after layered evidence is sufficient
 
+## v1.5.1 Truth Map Read Order
+
+For v1.5.1+ features, read the resolver output before consuming package files:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.1 --json
+```
+
+Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. Resolver output and generated `.machine` JSON are generated state, not truth authority.
+
 ## v1.5.0 Feature Package Quick Template
 
 When writing `features/<slug>/evidence.md`, keep evidence as an index with explicit authority labels:
