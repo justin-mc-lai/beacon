@@ -7,8 +7,10 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.qa_precision import feature_qa_ac_closure_path, feature_qa_scorecard_path
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -64,12 +66,16 @@ def _rel(project_root: Path, path: Path) -> str:
 
 
 def _required_source_paths(project_root: Path, *, version: str, feature: str) -> dict[str, Path]:
-    slug = feature_slug(feature)
-    docs_root = project_root / "docs" / "beacon" / version
+    refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="qa-evo-deep",
+    )
     return {
-        "prd": docs_root / "prd" / f"{slug}.md",
-        "user_story": docs_root / "user-story" / f"{slug}.md",
-        "test_case": docs_root / "qa" / "test-cases" / f"{slug}.md",
+        "prd": refs["prd"],
+        "user_story": refs["user_story"],
+        "test_case": refs["test_case"],
         "qa_scorecard": feature_qa_scorecard_path(project_root, feature=feature),
         "ac_closure": feature_qa_ac_closure_path(project_root, feature=feature),
     }
@@ -176,17 +182,33 @@ def default_qa_evo_deep_findings(*, feature: str, version: str, source_materials
     ac_ids = _ac_ids_from_source_materials(source_materials)
     evidence_refs = _current_evidence_refs(source_materials)
     findings: list[dict[str, Any]] = []
+    materials = source_materials.get("materials") if isinstance(source_materials.get("materials"), dict) else {}
+    source_refs = [
+        str((materials.get(name) or {}).get("path") or "").strip()
+        for name in ("prd", "user_story", "test_case")
+        if isinstance(materials.get(name), dict) and str((materials.get(name) or {}).get("path") or "").strip()
+    ]
+    if not source_refs:
+        slug = feature_slug(feature)
+        if feature_package_authoritative(version):
+            source_refs = [
+                f"docs/beacon/{version}/features/{slug}/truth.md",
+                f"docs/beacon/{version}/features/{slug}/truth.md",
+                f"docs/beacon/{version}/features/{slug}/tests.md",
+            ]
+        else:
+            source_refs = [
+                f"docs/beacon/{version}/prd/{slug}.md",
+                f"docs/beacon/{version}/user-story/{slug}.md",
+                f"docs/beacon/{version}/qa/test-cases/{slug}.md",
+            ]
     for index, family in enumerate(FINDING_FAMILIES, start=1):
         findings.append(
             {
                 "finding_id": f"QED-{index:03d}",
                 "feature": feature,
                 "version": version,
-                "source_refs": [
-                    f"docs/beacon/{version}/prd/{feature_slug(feature)}.md",
-                    f"docs/beacon/{version}/user-story/{feature_slug(feature)}.md",
-                    f"docs/beacon/{version}/qa/test-cases/{feature_slug(feature)}.md",
-                ],
+                "source_refs": source_refs,
                 "finding_family": family,
                 "risk": "medium",
                 "affected_ac_ids": ac_ids,

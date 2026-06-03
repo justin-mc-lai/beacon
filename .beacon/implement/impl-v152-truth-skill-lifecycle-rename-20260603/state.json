@@ -1,0 +1,447 @@
+{
+  "schema_version": "1.0",
+  "run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+  "import_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "version": "v1.5.2",
+  "runner": "import-evidence",
+  "skill": "beacon-implement",
+  "status": "completed",
+  "imported": true,
+  "source_refs": [
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+  ],
+  "changed_files": [
+    "skills/beacon/beacon-truth/SKILL.md",
+    ".agents/skills/beacon-truth/SKILL.md",
+    "skills/beacon/SKILL.md",
+    ".agents/skills/beacon-brainstorm/SKILL.md",
+    "beacon/utils/feature_package.py",
+    "beacon/utils/qa_feature.py",
+    "beacon/utils/test_contract_governance.py",
+    "tests/test_v152_truth_skill_lifecycle.py",
+    "tests/test_v152_package_authoritative.py"
+  ],
+  "service_dirs": [
+    "."
+  ],
+  "summary_ref": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+  "approved_by": "codex",
+  "prompt_boundary": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "required": true,
+    "prompt": "Import externally produced implementation evidence for the scoped Beacon feature. Read Beacon source of truth and bind the imported evidence to the frozen PRD, user-story, and test-case truth. Implement only against the frozen PRD, user-story, and test-case truth above. Evidence refs: docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md. Changed files or service directories: skills/beacon/beacon-truth/SKILL.md, .agents/skills/beacon-truth/SKILL.md, skills/beacon/SKILL.md, .agents/skills/beacon-brainstorm/SKILL.md, beacon/utils/feature_package.py, beacon/utils/qa_feature.py, beacon/utils/test_contract_governance.py, tests/test_v152_truth_skill_lifecycle.py, tests/test_v152_package_authoritative.py, ..",
+    "classification": "in_scope_implementation",
+    "blocked": false,
+    "status": "pass",
+    "reason_code": "",
+    "next_action": "",
+    "recommended_command": "",
+    "matched_signals": [],
+    "frozen_refs": [
+      "docs/beacon/v1.5.2/prd/beacon-truth-skill-lifecycle-rename.md",
+      "docs/beacon/v1.5.2/user-story/beacon-truth-skill-lifecycle-rename.md",
+      "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-skill-lifecycle-rename.md"
+    ],
+    "surface": "import-evidence"
+  },
+  "created_at": "2026-06-03T03:18:45.888019+00:00",
+  "generated_at": "2026-06-03T03:18:45.888348+00:00",
+  "implementation_marker": ".beacon/state/implementation-beacon-truth-skill-lifecycle-rename.json",
+  "writeback": {
+    "updated_items": 17,
+    "story": {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "beacon-truth-skill-lifecycle-rename",
+      "priority": "medium",
+      "status": "implemented",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "truth-umbrella",
+          "text": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "mode-separation",
+          "text": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "compatibility-aliases",
+          "text": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "lifecycle-language",
+          "text": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "no-stage-inflation",
+          "text": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "coverage-boundary",
+          "text": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "closure-trace",
+          "text": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-truth-skill-lifecycle-rename",
+        "version": "v1.5.2",
+        "source": "research:docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "last_changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        ".agents/skills/beacon-brainstorm/SKILL.md",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py",
+        "."
+      ]
+    },
+    "revision": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "revision_id": "R3",
+      "source_revision_id": "R2",
+      "reason": "freeze",
+      "doc_status": "frozen",
+      "delivery_status": "implemented",
+      "lifecycle_status": "idle",
+      "baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+      "superseded_by": "",
+      "created_at": "2026-06-03T02:25:47.653313+00:00",
+      "frozen_at": "2026-06-03T02:25:47.916774+00:00",
+      "accepted_at": "",
+      "last_implementation_run_id": "impl-v152-truth-skill-lifecycle-rename-20260603",
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        ".agents/skills/beacon-brainstorm/SKILL.md",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py",
+        "."
+      ]
+    },
+    "implementation_plan": {}
+  },
+  "next_route": {
+    "target_surface": "beacon-qa",
+    "command": "beacon qa run \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2"
+  },
+  "decision_surface": {
+    "stage": "implement",
+    "skill_ref": "skills/beacon/beacon-implement/SKILL.md",
+    "inputs_contract": [
+      "`project-root`",
+      "`version`",
+      "`feature`",
+      "frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`",
+      "conditionally required `prototype` when the feature has real UX/UI handoff",
+      "current gate / blocked reason / branch or execution governance context when present",
+      "`PRODUCT.md` — project-level product truth; must-read when the file exists at the project root",
+      "`DESIGN.md` — project-level design truth (colors, typography, spacing, tokens, Do's & Don'ts); must-read when the file exists at the project root",
+      "`docs/beacon/<version>/design/*` — version-wide design contracts (style, component-system, interaction-contract, state-matrix); must-read when they exist",
+      "`src/App.vue` or equivalent global CSS variable root — for projects with a design system, implement must reference existing CSS variables instead of hardcoding visual values"
+    ],
+    "decision_protocol": [
+      "Enter `implement` only after requirement truth is frozen enough for execution.",
+      "Block when frozen truth requires `change`, when cutover guardrails fail, or when a conditionally triggered prototype is still missing.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, read both before starting any implementation that touches UI, visual design, or user-facing behavior. Treat them as binding design contracts, not optional reference material.",
+      "Keep `implement` as the only execution entry; `ask --execute` and support surfaces may route here but must not replace it.",
+      "Prefer explanation and routing logic in skill surface; keep final schema, contract, and gate writes in Python guardrails.",
+      "When dual-read or compatibility windows exist, fail closed on mismatch."
+    ],
+    "anti_inertia_notes": [
+      "`implement` is not permission to rewrite requirement truth.",
+      "`goal`, task ledgers, or partial execution progress do not define completion truth.",
+      "If the feature needs UX/UI handoff and prototype is triggered, do not skip straight into coding.",
+      "Team/runtime internals stay internal unless the user explicitly asks for them.",
+      "When `PRODUCT.md` or `DESIGN.md` exists at the project root, `implement` must read them before building any UI. Skipping design truth is a process drift that produces implementation-to-design mismatch.",
+      "`implement` cannot rewrite frozen truth or override gate truth by itself."
+    ],
+    "learning_notes": [
+      "Reuse implementation learning to avoid repeated blocked paths or flaky cutovers.",
+      "Learning may shape route explanation and caution, but cannot override gate truth.",
+      "Downgrade stale learning instead of silently trusting it."
+    ],
+    "backstop_cli": [
+      "`beacon implement ...`",
+      "`beacon change ...` when truth must reopen",
+      "`beacon qa ...` after implementation evidence is ready"
+    ],
+    "primary_reason": "Enter `implement` only after requirement truth is frozen enough for execution.",
+    "recommended_command": "`beacon implement ...`",
+    "reason_code": ""
+  },
+  "guardrail_contract": {
+    "stage": "implement",
+    "decision_owner": "skill_surface",
+    "enforcement_owner": "python_guardrail",
+    "blocked": false,
+    "reason_code": "",
+    "dual_read_required_before_cutover": true,
+    "fail_closed": true
+  },
+  "mode": "import-evidence",
+  "adapter_type": "external-evidence",
+  "request_path": "",
+  "result_path": ""
+}

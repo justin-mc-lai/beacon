@@ -11,6 +11,7 @@ This skill routes final ship / release-readiness work through Beacon's `release`
 
 Release consumes layered QA proof and version-surface governance, then makes the go/no-go judgment. It does not invent acceptance truth or finish implementation.
 The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
 For v1.5.2 features, release judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`, layered QA proof, and version governance. Legacy truth files may be migration or archive inputs only.
 
 ## When to Use

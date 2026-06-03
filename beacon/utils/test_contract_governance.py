@@ -9,6 +9,7 @@ from beacon.utils.artifact_paths import machine_root, qa_matrix_candidates
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug, machine_story_path
 from beacon.utils.technical_review_contract import feature_is_aggregation_contract
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.version_surface import get_version_surface_governance_payload
 from beacon.utils.versioning import load_version_truth, release_truth_status, resolve_runtime_version, resolve_target_version
 
@@ -319,6 +320,21 @@ def _qa9_evidence_status(project_root: Path, *, feature: str = "", tc_id: str = 
 
 def _source_paths(project_root: Path, version: str, slug: str) -> dict[str, Path | None]:
     base = project_root / "docs" / "beacon" / version
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=slug,
+            consumer="test-contract-governance",
+        )["requirement_refs"]
+        return {
+            "truth": project_root / refs["truth"],
+            "tests": project_root / refs["tests"],
+            "tasks": project_root / refs["tasks"],
+            "evidence": project_root / refs["evidence"],
+            "ac_matrix": project_root / refs["tests"],
+            "story_state": machine_story_path(project_root, version, slug),
+        }
     return {
         "prd": base / "prd" / f"{slug}.md",
         "user_story": base / "user-story" / f"{slug}.md",
@@ -326,6 +342,39 @@ def _source_paths(project_root: Path, version: str, slug: str) -> dict[str, Path
         "ac_matrix": _first_existing(qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")),
         "story_state": machine_story_path(project_root, version, slug),
     }
+
+
+def _package_matrix_entries(project_root: Path, *, version: str, feature: str) -> tuple[Path | None, list[dict[str, Any]]]:
+    from beacon.utils.feature_package import _extract_test_rows, validate_feature_package
+
+    validation = validate_feature_package(project_root, version=version, feature=feature)
+    if bool(validation.get("blocked")):
+        return None, []
+    source_paths = validation.get("source_paths") if isinstance(validation.get("source_paths"), dict) else {}
+    tests_rel = str(source_paths.get("tests") or "").strip()
+    tests_path = project_root / tests_rel if tests_rel else None
+    if tests_path is None or not tests_path.exists():
+        return tests_path, []
+    rows = _extract_test_rows(tests_path.read_text(encoding="utf-8"))
+    entries: list[dict[str, Any]] = []
+    for index, row in enumerate(rows, start=1):
+        if not isinstance(row, dict):
+            continue
+        ac_id = str(row.get("ac_id") or f"AC-{index:03d}").strip()
+        tc_id = str(row.get("tc_id") or f"TC-{index:03d}").strip()
+        entries.append(
+            {
+                "ac_id": ac_id,
+                "tc_id": tc_id,
+                "layer": str(row.get("layer") or "contract").strip() or "contract",
+                "command": str(row.get("command") or "").strip().strip("`"),
+                "assertion": str(row.get("assertion") or "").strip(),
+                "evidence_path": str(row.get("evidence_path") or f".beacon/evidence/qa-feature/{feature_slug(feature)}/{tc_id.lower()}/__RUN_ID__.json").strip(),
+                "status": "planned",
+                "source": f"feature-package:{tests_rel}",
+            }
+        )
+    return tests_path, entries
 
 
 def _truth_refs(project_root: Path, paths: dict[str, Path | None]) -> dict[str, str]:
@@ -401,6 +450,12 @@ def build_test_contract_index(project_root: Path, *, version: str, feature: str,
     story_payload = _read_dict(paths.get("story_state"))
     ac_by_id = _ac_items(story_payload)
     entries = ac_matrix.get("entries") if isinstance(ac_matrix.get("entries"), list) else []
+    if feature_package_authoritative(resolved_version):
+        tests_path, package_entries = _package_matrix_entries(project_root, version=resolved_version, feature=feature)
+        if package_entries:
+            entries = package_entries
+        if tests_path is not None:
+            paths["ac_matrix"] = tests_path
     lanes: dict[str, list[dict[str, Any]]] = {lane: [] for lane in CANONICAL_TEST_CONTRACT_LANES}
     test_refs: list[dict[str, Any]] = []
     ac_to_test_refs: dict[str, list[str]] = {}

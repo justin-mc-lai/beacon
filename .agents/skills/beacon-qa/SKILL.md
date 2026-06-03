@@ -11,6 +11,7 @@ This skill routes verification work through Beacon's `qa` surface.
 
 QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
 The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
 For v1.5.2 features, QA judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`. Legacy truth files may be rebuilt, absorbed, or archived, but they are not the normal QA authority.
 
 ## When to Use

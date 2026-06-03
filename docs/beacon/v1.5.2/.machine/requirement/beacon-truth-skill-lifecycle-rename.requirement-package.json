@@ -1,0 +1,229 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-03T03:43:57.543763+00:00",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "cee88d6730b1f7d43ff300e88ea3b210fbe937ece2d4f8f31357a3356f305877",
+    "tests": "1b6c74db92e966d77f76a3cc87eb4d2b1eb8f42ef2e2e8022a518a109e91e569",
+    "tasks": "5794c1bc08082e0fd9ddfc62f1f324d05461cb0de5ca7efe2e7e6861647e4d7f",
+    "evidence": "7bec8eb0170006b836a5300d83559c650f1b7a2912ef39aafde84c137876f0d5"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "truth-umbrella",
+      "description": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "mode-separation",
+      "description": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "package-authority",
+      "description": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "compatibility-aliases",
+      "description": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "lifecycle-language",
+      "description": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-stage-inflation",
+      "description": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "coverage-boundary",
+      "description": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices."
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "closure-trace",
+      "description": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_beacon_truth_skill_exists_in_packaged_and_agent_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Public skill guidance exposes `beacon-truth` and the preferred truth modes.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_beacon_truth_preserves_distinct_modes_and_change_route -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "The umbrella keeps separate modes for definition, acceptance, coverage, and change.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_beacon_truth_is_resolver_first_and_package_authoritative -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Truth authoring guidance remains resolver-first for v1.5.2.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_legacy_truth_skills_are_marked_compatibility_aliases -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` are documented as compatibility aliases.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_root_and_brainstorm_prefer_truth_mode_lifecycle_language -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Root and brainstorm guidance use the new preferred lifecycle language.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_beacon_truth_does_not_inflate_support_or_gate_surfaces -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "The umbrella does not inflate support, QA, release, or refreeze into truth stages.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_beacon_truth_is_resolver_first_and_package_authoritative -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "Guidance keeps requirement/acceptance truth in `truth.md` and coverage truth in `tests.md`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_v152_truth_skill_lifecycle.py::test_validate_feature_package_cli_for_truth_skill_lifecycle_package -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "The frozen package validates as v1.5.2 feature-package authoritative truth.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Add `beacon-truth` skill as the preferred v1.5.2+ truth umbrella.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Define `truth.define`, `truth.acceptance`, `truth.coverage`, and `truth.change` mode routing.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Document resolver-first package authority inside the new truth umbrella.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Mark `beacon-prd`, `beacon-user-story`, and `beacon-test-case` as compatibility aliases.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Update root Beacon and brainstorm lifecycle language to prefer truth modes.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Preserve support/gate boundaries so the umbrella does not become a new gate or support stage.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Keep coverage authority in `features/<slug>/tests.md`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Validate package closure before implementation starts.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+      "status": "adopted",
+      "route": "change"
+    },
+    {
+      "surface": "version-summary",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/SUMMARY.md",
+      "status": "indexed",
+      "route": "truth"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "existing-skills",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/SKILL.md; skills/beacon/beacon-prd/SKILL.md; skills/beacon/beacon-user-story/SKILL.md; skills/beacon/beacon-test-case/SKILL.md",
+      "status": "indexed",
+      "route": "truth"
+    }
+  ]
+}

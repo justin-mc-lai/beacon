@@ -1,6 +1,6 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.4.13 -->
-<!-- BEACON:DOCS_VERSION:v1.4.13 -->
+<!-- BEACON:VERSION:v1.5.2 -->
+<!-- BEACON:DOCS_VERSION:v1.5.2 -->
 # CLAUDE.md
 
 This file is Beacon-managed runtime guidance.
@@ -19,18 +19,20 @@ This file is Beacon-managed runtime guidance.
 - `beacon skill list`
 - `beacon implement list-runners --json`
 - `beacon implement run "<feature>" --version <version> --runner <runner>`
+- `beacon truth-map resolve <feature> --project . --version <version> --json`
+- `beacon truth-map entrypoint-inventory --project . --version <version> --json`
 - `beacon workflow --help`
 - `beacon status --verbose`
 
 ## Requirement materials and docs paths
-- Runtime target version: `v1.4.13`
-- Docs target version: `v1.4.13`
+- Runtime target version: `v1.5.2`
+- Docs target version: `v1.5.2`
 - `docs/beacon/global-boundaries.md` is the canonical cross-version global constraint source.
 - `docs/beacon/<version>/` is the canonical source of truth.
 - `docs/beacon/<version>/SUMMARY.md`
-- `docs/beacon/<version>/prd/`
-- `docs/beacon/<version>/user-story/`
-- `docs/beacon/<version>/qa/test-cases/`
+- `docs/beacon/<version>/features/<slug>/truth.md` (requirement authority)
+- `docs/beacon/<version>/features/<slug>/tests.md` (coverage authority)
+- `docs/beacon/<version>/features/<slug>/tasks.md` (task ledger)
 - `docs/beacon/<version>/execution/`
 <!-- BEACON:END -->
 

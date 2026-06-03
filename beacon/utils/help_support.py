@@ -38,6 +38,7 @@ from beacon.utils.release_scorecard import build_release_scorecard, summarize_re
 from beacon.utils.acceptance_kit import build_acceptance_kit_projection
 from beacon.utils.guidance_family import build_guidance_family_contract, build_guidance_surface_projection
 from beacon.utils.ralph_runtime import load_ralph_state
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.requirement_deepening import (
     build_requirement_completeness_gate,
     load_requirement_completeness,
@@ -58,6 +59,7 @@ from beacon.utils.scoring import (
 from beacon.utils.story_state import feature_slug, load_story_state, summarize_story_items
 from beacon.utils.subagent_readiness import delegation_readiness_precheck, detect_host_runtime, runtime_readiness_precheck
 from beacon.utils.support_surface_projection import build_support_surface_projection
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.versioning import describe_project_version_context, normalize_version, release_line_key, resolve_docs_version
 from beacon.utils.workflow_memory import compute_workflow_progress, resolve_workflow_run_id
 
@@ -87,6 +89,13 @@ def _preferred_plan_or_dev_command(*, feature: str, project_root: Path, version:
     if _semver_tuple(version) >= (1, 3, 0):
         return f"beacon implement dev-run {quoted_feature} --project {project_root} --version {version}"
     return f"beacon implement plan {quoted_feature} --project-root {project_root} --version {version}"
+
+
+def _rel(project_root: Path, path: Path) -> str:
+    try:
+        return str(path.relative_to(project_root))
+    except ValueError:
+        return str(path)
 
 
 def _preferred_qa_command(*, feature: str, project_root: Path, version: str, base: str) -> str:
@@ -301,6 +310,15 @@ def _dedupe_strings(values: list[str]) -> list[str]:
     return ordered
 
 
+def _default_requirement_truth_ref(*, version: str, feature: str) -> str:
+    if not feature:
+        return ""
+    slug = feature_slug(feature)
+    if feature_package_authoritative(version):
+        return f"docs/beacon/{version}/features/{slug}/truth.md"
+    return f"docs/beacon/{version}/prd/{slug}.md"
+
+
 def _build_requirement_gap_digest(
     *,
     feature: str,
@@ -354,7 +372,7 @@ def _build_requirement_gap_digest(
         "feature": feature,
         "version": version,
         "revision_id": revision_id,
-        "source_truth_ref": f"docs/beacon/{version}/prd/{feature_slug(feature)}.md" if feature else "",
+        "source_truth_ref": _default_requirement_truth_ref(version=version, feature=feature),
         "gap_id": f"gap-{feature_slug(feature) or 'feature'}-{str(completeness.get('reason_code') or 'none').replace('_', '-')}",
         "gap_type": gap_type,
         "gap_severity": gap_severity,
@@ -1632,22 +1650,35 @@ def build_help_payload(
         deepening_completeness = load_requirement_completeness(project_root, resolved_version, feature_name)
         handoff = requirement_completeness.get("human_loop_handoff", {}) if isinstance(requirement_completeness.get("human_loop_handoff"), dict) else {}
         if handoff.get("recommended_command") or deepening_completeness:
+            refs = requirement_truth_paths(
+                project_root,
+                version=resolved_version,
+                feature=feature_name,
+                consumer="help-support",
+            )
+            target_artifact = "test-case" if "test-case" in str(handoff.get("recommended_command") or "").lower() else "user-story"
+            if feature_package_authoritative(resolved_version):
+                writeback_target = _rel(project_root, refs["test_case"] if target_artifact == "test-case" else refs["truth"])
+                recommended_route = "beacon-truth"
+            else:
+                writeback_target = ""
+                recommended_route = "beacon-test-case" if target_artifact == "test-case" else "beacon-user-story"
             supplement_task = {
                 "feature": feature_name,
                 "version": resolved_version,
-                "target_artifact": "test-case" if "test-case" in str(handoff.get("recommended_command") or "").lower() else "user-story",
-                "writeback_target": "",
+                "target_artifact": target_artifact,
+                "writeback_target": writeback_target,
                 "candidate_kind": "supplement_task",
                 "candidate_payload": {
                     "focus_areas": list(handoff.get("focus_areas") or []),
                     "open_questions": [],
                 },
-                "source_truth_ref": f"docs/beacon/{resolved_version}/prd/{feature_slug(feature_name)}.md",
+                "source_truth_ref": _rel(project_root, refs["truth"] if "truth" in refs else refs["prd"]),
                 "rationale": str(handoff.get("reason") or requirement_completeness.get("reason_code") or "requirement supplement required"),
                 "confidence": "low",
                 "human_decision": "pending",
                 "audit_trail_required": True,
-                "recommended_route": "beacon-test-case" if "test-case" in str(handoff.get("recommended_command") or "").lower() else "beacon-user-story",
+                "recommended_route": recommended_route,
             }
     requirement_gap_digest = _build_requirement_gap_digest(
         feature=feature_name,

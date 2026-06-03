@@ -31,6 +31,7 @@ from beacon.utils.story_scenarios import (
     scenario_map_path as docs_story_scenario_map_path,
 )
 from beacon.utils.story_state import feature_slug, load_story_state
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.v110_baseline import load_latest_spec_fingerprint
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
@@ -300,6 +301,47 @@ def _load_json(path: Path) -> dict[str, Any]:
 def _load_source_matrix(project_root: Path, *, version: str, feature: str, story: dict[str, Any]) -> tuple[Path, dict[str, Any]]:
     slug = feature_slug(feature)
     normalized_version = normalize_version(version) or ""
+    if feature_package_authoritative(normalized_version):
+        from beacon.utils.feature_package import _extract_test_rows, validate_feature_package
+
+        validation = validate_feature_package(project_root, version=version, feature=feature)
+        source_paths = validation.get("source_paths") if isinstance(validation.get("source_paths"), dict) else {}
+        tests_rel = str(source_paths.get("tests") or "").strip()
+        tests_path = project_root / tests_rel if tests_rel else project_root / "docs" / "beacon" / version / "features" / slug / "tests.md"
+        if tests_path.exists() and not bool(validation.get("blocked")):
+            rows = _extract_test_rows(tests_path.read_text(encoding="utf-8"))
+            entries = [
+                {
+                    "ac_id": str(row.get("ac_id") or f"AC-{index:03d}").strip(),
+                    "tc_id": str(row.get("tc_id") or f"TC-{index:03d}").strip(),
+                    "layer": str(row.get("layer") or "contract").strip() or "contract",
+                    "command": str(row.get("command") or "").strip().strip("`"),
+                    "assertion": str(row.get("assertion") or "").strip(),
+                    "evidence_path": str(row.get("evidence_path") or "").strip(),
+                    "status": "planned",
+                    "source": f"feature-package:{tests_rel or tests_path}",
+                }
+                for index, row in enumerate(rows, start=1)
+                if isinstance(row, dict)
+            ]
+            if entries:
+                synthetic = {
+                    "schema_version": FEATURE_QA_SCHEMA,
+                    "feature": feature,
+                    "feature_slug": slug,
+                    "version": version,
+                    "generated_at": now_iso(),
+                    "entries": entries,
+                    "synthetic": True,
+                    "source_truth_ref": tests_rel,
+                    "markdown_matrix_contract": {
+                        "truth_mode": "markdown",
+                        "source": tests_rel,
+                        "package_authoritative": True,
+                        "enrichment_disabled": True,
+                    },
+                }
+                return qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0], synthetic
     if _real_project_qa_taxonomy_supported(normalized_version):
         for candidate in qa_matrix_candidates(project_root, version, slug, "ac-test-matrix"):
             if candidate.exists():

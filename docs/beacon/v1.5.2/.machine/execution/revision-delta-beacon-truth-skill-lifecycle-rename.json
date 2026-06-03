@@ -1,0 +1,111 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "version": "v1.5.2",
+  "revision_id": "R3",
+  "source_revision_id": "R2",
+  "status": "ready",
+  "cleanup_required": false,
+  "removed_requirement_count": 0,
+  "added_requirement_count": 0,
+  "retained_requirement_count": 8,
+  "removed_requirement_surfaces": [],
+  "added_requirement_surfaces": [],
+  "retained_requirement_surfaces": [
+    {
+      "revision_id": "R3",
+      "id": "AC-008",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "closure-trace",
+      "text": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::closure-trace::the new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, qa, and release.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "compatibility-aliases",
+      "text": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::compatibility-aliases::existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-007",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "coverage-boundary",
+      "text": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::coverage-boundary::coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "lifecycle-language",
+      "text": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::lifecycle-language::root beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "mode-separation",
+      "text": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::mode-separation::`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-006",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "no-stage-inflation",
+      "text": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::no-stage-inflation::`beacon-truth` must not turn brainstorm, change-refreeze, qa, or release into truth authoring stages.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "package-authority",
+      "text": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::package-authority::every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.::"
+    },
+    {
+      "revision_id": "R3",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "truth-umbrella",
+      "text": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "signature": "ac::::truth-umbrella::beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.::"
+    }
+  ],
+  "current_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+  "source_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+  "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json",
+  "generated_at": "2026-06-03T03:32:41.882480+00:00",
+  "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-beacon-truth-skill-lifecycle-rename.json",
+  "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-beacon-truth-skill-lifecycle-rename.md"
+}

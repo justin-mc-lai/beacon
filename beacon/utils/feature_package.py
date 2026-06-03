@@ -94,6 +94,7 @@ def _extract_ac_rows(markdown: str) -> list[dict[str, str]]:
 def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
     rows: list[dict[str, str]] = []
     in_table = False
+    headers: list[str] = []
     for line in markdown.splitlines():
         stripped = line.strip()
         if not stripped.startswith("|"):
@@ -104,16 +105,29 @@ def _extract_test_rows(markdown: str) -> list[dict[str, str]]:
         lowered = [cell.lower() for cell in cells]
         if "ac id" in lowered and "tc id" in lowered:
             in_table = True
+            headers = [cell.lower().replace(" ", "_") for cell in cells]
             continue
         if in_table and all(set(cell) <= {"-"} for cell in cells if cell):
             continue
         if in_table and cells and re.match(r"AC-\d{3}", cells[0]):
+            if headers and len(cells) > len(headers) and ("command" in headers or "planned_command" in headers):
+                command_index = headers.index("command") if "command" in headers else headers.index("planned_command")
+                tail_count = len(headers) - command_index - 1
+                command_end = len(cells) - tail_count if tail_count else len(cells)
+                cells = [
+                    *cells[:command_index],
+                    "|".join(cells[command_index:command_end]).strip(),
+                    *cells[command_end:],
+                ]
+            row = {headers[index]: cells[index] if index < len(cells) else "" for index in range(len(headers))}
             rows.append(
                 {
-                    "ac_id": cells[0],
-                    "tc_id": cells[1] if len(cells) > 1 else "",
-                    "layer": cells[2] if len(cells) > 2 else "",
-                    "assertion": cells[4] if len(cells) > 4 else "",
+                    "ac_id": row.get("ac_id") or cells[0],
+                    "tc_id": row.get("tc_id") or (cells[1] if len(cells) > 1 else ""),
+                    "layer": row.get("layer") or (cells[2] if len(cells) > 2 else ""),
+                    "command": row.get("command") or row.get("planned_command") or "",
+                    "assertion": row.get("assertion") or (cells[4] if len(cells) > 4 else ""),
+                    "evidence_path": row.get("evidence_path") or "",
                 }
             )
     return rows

@@ -11,8 +11,10 @@ from beacon.utils.diagram_truth import load_feature_diagram_truth
 from beacon.utils.guidance_family import build_guidance_surface_projection
 from beacon.utils.help_support import build_help_payload
 from beacon.utils.project_metadata import metadata_machine_path, resolve_project_metadata_view
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.support_research_topology import (
     assert_support_write_topology,
     support_research_topology_supported,
@@ -77,11 +79,17 @@ def collect_version_materials(project_root: Path, *, version: str, feature: str 
         _material_entry(project_root, base / "execution" / "architecture-blueprint.md", required=False),
     ]
     if slug:
+        requirement_refs = requirement_truth_paths(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="brainstorm",
+        )
         refs.extend(
             [
-                _material_entry(project_root, base / "prd" / f"{slug}.md", required=True),
-                _material_entry(project_root, base / "user-story" / f"{slug}.md", required=True),
-                _material_entry(project_root, base / "qa" / "test-cases" / f"{slug}.md", required=True),
+                _material_entry(project_root, requirement_refs["prd"], required=True),
+                _material_entry(project_root, requirement_refs["user_story"], required=True),
+                _material_entry(project_root, requirement_refs["test_case"], required=True),
             ]
         )
     else:
@@ -315,12 +323,18 @@ def _load_convergence_contract(
             recommended_route = "beacon-user-story"
             route_reason = "gap dimensions indicate missing product behavior or role detail"
 
-    source_truth_ref = str(digest.get("source_truth_ref") or f"docs/beacon/{version}/prd/{feature_slug(feature)}.md")
-    writeback_target = (
-        f"docs/beacon/{version}/{target_artifact}/{feature_slug(feature)}.md"
-        if target_artifact
-        else ""
-    )
+    slug = feature_slug(feature)
+    package_authority = feature_package_authoritative(version)
+    default_truth_ref = f"docs/beacon/{version}/features/{slug}/truth.md" if package_authority else f"docs/beacon/{version}/prd/{slug}.md"
+    source_truth_ref = str(digest.get("source_truth_ref") or default_truth_ref)
+    if not target_artifact:
+        writeback_target = ""
+    elif package_authority and target_artifact == "test-case":
+        writeback_target = f"docs/beacon/{version}/features/{slug}/tests.md"
+    elif package_authority:
+        writeback_target = f"docs/beacon/{version}/features/{slug}/truth.md"
+    else:
+        writeback_target = f"docs/beacon/{version}/{target_artifact}/{slug}.md"
     supplement_task = {
         "feature": feature,
         "version": version,

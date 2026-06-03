@@ -2,9 +2,10 @@
   "schema_version": "1.0",
   "artifact": "implementation_delivery_host",
   "version": "v1.5.2",
-  "feature_count": 1,
+  "feature_count": 2,
   "feature_slugs": [
-    "beacon-truth-map-center-and-package-cutover"
+    "beacon-truth-map-center-and-package-cutover",
+    "beacon-truth-skill-lifecycle-rename"
   ],
   "features": [
     {
@@ -29,14 +30,38 @@
       ],
       "depends_on_features": [],
       "updated_at": "2026-06-02T11:43:33.352604+00:00"
+    },
+    {
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "revision_id": "R3",
+      "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-skill-lifecycle-rename-R3",
+      "transaction_id": "tx-6cb84bcab7d559b21",
+      "source_hash": "sha256:baea00c080fda17f6104b7fc1d8d049e2aede594a78a7d42d879abddd4c6c785",
+      "baseline_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json",
+      "default_target_branch": "beacon/v1.5.2",
+      "worktree_root": ".",
+      "workspace_root": ".",
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "depends_on_features": [],
+      "updated_at": "2026-06-03T03:32:41.886331+00:00"
     }
   ],
   "services_map": {
     ".": [
-      "beacon-truth-map-center-and-package-cutover"
+      "beacon-truth-map-center-and-package-cutover",
+      "beacon-truth-skill-lifecycle-rename"
     ]
   },
-  "source_hash": "sha256:fddfc0df23aa1fb515924bcc5c03c93e35f4be45d773c33257ecaf929a9879f8",
-  "transaction_id": "tx-80a1ce26050eafa3e",
-  "generated_at": "2026-06-02T11:43:33.353690+00:00"
+  "source_hash": "sha256:74461e3659ccfd20eb8505b8de3bf99bda85dfd901ff81ee0eecff778a869f95",
+  "transaction_id": "tx-ac4f00c694343e1ad",
+  "generated_at": "2026-06-03T03:32:41.887443+00:00"
 }

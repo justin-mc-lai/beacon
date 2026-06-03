@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import execution_file_candidates, qa_matrix_candidates
 from beacon.utils.requirement_parsing import build_feature_ac_items, extract_explicit_ac_items
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.revision_delta import load_revision_delta, revision_delta_json_path, revision_delta_supported
 from beacon.utils.revision_state import load_revision_state
 from beacon.utils.versioning import normalize_version
@@ -88,12 +89,18 @@ def _normalize_cleanup_list(value: Any) -> list[str]:
 def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, Any]:
     slug = _slug(feature)
     base = project_root / "docs" / "beacon" / version
+    refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="requirement-closure",
+    )
     return {
         "slug": slug,
         "base": base,
-        "user_story": base / "user-story" / f"{slug}.md",
-        "prd": base / "prd" / f"{slug}.md",
-        "test_case": base / "qa" / "test-cases" / f"{slug}.md",
+        "user_story": refs["user_story"],
+        "prd": refs["prd"],
+        "test_case": refs["test_case"],
         "ac_matrix_candidates": qa_matrix_candidates(project_root, version, slug, "ac-test-matrix"),
         "implementation_summary_candidates": execution_file_candidates(project_root, version, f"implementation-summary-{slug}.json"),
     }

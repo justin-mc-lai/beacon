@@ -16,6 +16,7 @@ from typing import Any
 from urllib import request
 
 from beacon.utils.runtime_projection_store import runtime_ledger_root
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.semantic_runtime import (
     HOST_MODE_BRIDGE,
@@ -894,11 +895,16 @@ def _has_named_artifact(directory: Path, name: str, suffix: str) -> bool:
 
 
 def source_doc_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
-    base = project_root / "docs" / "beacon" / version
+    refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="prototype",
+    )
     return {
-        "user-story": _resolve_feature_doc_path(base / "user-story", feature),
-        "prd": _resolve_feature_doc_path(base / "prd", feature),
-        "test-case": _resolve_feature_doc_path(base / "qa" / "test-cases", feature),
+        "user-story": refs["user-story"],
+        "prd": refs["prd"],
+        "test-case": refs["test-case"],
     }
 
 

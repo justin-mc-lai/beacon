@@ -46,6 +46,7 @@ from beacon.utils.technical_review_contract import (
     materialize_technical_review_contract,
     technical_review_git_workflow_seed,
 )
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 
@@ -1033,6 +1034,25 @@ def _extract_prd_task_candidates(content: str) -> list[dict[str, str]]:
     return candidates
 
 
+def _package_authoritative_source_refs(project_root: Path, *, version: str, feature: str) -> dict[str, str]:
+    refs = resolve_truth_read_refs(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="implementation-plan",
+    )["requirement_refs"]
+    return {
+        "user_story": str(refs["user_story"]),
+        "prd": str(refs["prd"]),
+        "test_case": str(refs["test_case"]),
+        "truth": str(refs["truth"]),
+        "tests": str(refs["tests"]),
+        "tasks": str(refs["tasks"]),
+        "evidence": str(refs["evidence"]),
+        "source_of_truth_root": str(refs["source_of_truth_root"]),
+    }
+
+
 def _tokenize_for_match(text: str) -> set[str]:
     lowered = str(text or "").lower()
     tokens = {token for token in re.split(r"[^a-z0-9\u4e00-\u9fff]+", lowered) if len(token) >= 2}
@@ -1732,11 +1752,18 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "revision_delta": revision_delta,
             }
             return 2, payload
-    source_refs = {
-        "user_story": str((project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{feature_slug(feature)}.md").relative_to(project_root)),
-        "prd": str((project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md").relative_to(project_root)),
-        "test_case": str((project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug(feature)}.md").relative_to(project_root)),
-    }
+    if feature_package_authoritative(resolved_version):
+        source_refs = _package_authoritative_source_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+        )
+    else:
+        source_refs = {
+            "user_story": str((project_root / "docs" / "beacon" / resolved_version / "user-story" / f"{feature_slug(feature)}.md").relative_to(project_root)),
+            "prd": str((project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md").relative_to(project_root)),
+            "test_case": str((project_root / "docs" / "beacon" / resolved_version / "qa" / "test-cases" / f"{feature_slug(feature)}.md").relative_to(project_root)),
+        }
     research_projection = load_machine_research_projection(project_root, version=resolved_version, feature=feature)
     existing_plan = load_implementation_plan(project_root, version=resolved_version, feature=feature)
     if revision_delta:
@@ -1753,7 +1780,11 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
     research_projection_ref = str(research_projection.get("source_artifact") or "").strip()
     if research_projection_ref:
         source_refs["research_projection"] = research_projection_ref
-    missing_refs = [path for path in source_refs.values() if not (project_root / path).exists()]
+    missing_refs = [
+        path
+        for key, path in source_refs.items()
+        if key != "source_of_truth_root" and not (project_root / path).exists()
+    ]
     if missing_refs:
         payload = {
             "schema_version": "1.0",
@@ -1828,6 +1859,15 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         return 2, payload
 
     prd_content = _read_text(project_root / source_refs["prd"])
+    if feature_package_authoritative(resolved_version):
+        prd_content = "\n\n".join(
+            part
+            for part in (
+                prd_content,
+                _read_text(project_root / source_refs.get("tasks", "")),
+            )
+            if part.strip()
+        )
     prd_candidates = _extract_prd_task_candidates(prd_content)
     diagram_task_projection = {
         "diagram_types": list(diagram_truth.get("diagram_types", [])),

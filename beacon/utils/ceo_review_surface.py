@@ -9,7 +9,9 @@ from typing import Any
 
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.guidance_family import build_guidance_surface_projection
+from beacon.utils.requirement_refs import existing_requirement_truth_refs
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.support_surface_transactions import build_support_surface_transaction, write_support_surface_transaction
 from beacon.utils.versioning import resolve_target_version
 
@@ -53,6 +55,13 @@ def _doc_path(project_root: Path, version: str, feature: str, folder: str) -> Pa
 
 
 def _feature_truth_refs(project_root: Path, version: str, feature: str) -> list[Path]:
+    if feature_package_authoritative(version):
+        return existing_requirement_truth_refs(
+            project_root,
+            version=version,
+            feature=feature,
+            consumer="ceo-review",
+        )
     prd = _doc_path(project_root, version, feature, "prd")
     story = _doc_path(project_root, version, feature, "user-story")
     test_case = _doc_path(project_root, version, feature, "qa/test-cases")
@@ -152,14 +161,14 @@ def run_ceo_review(
             gate_impact={"blocks_execution": True, "gate_owner": "support-route-only"},
             blocked=True,
             blocked_reason="truth_refs_missing",
-            operator_visible_summary="CEO review is blocked because no bound PRD/user-story/test-case package was found.",
+            operator_visible_summary="CEO review is blocked because no bound requirement truth package was found.",
         )
         receipts = write_support_surface_transaction(project_root, version=resolved_version, payload=payload)
         payload["artifacts"] = receipts
         payload["guidance_family"] = build_guidance_surface_projection(
             "ceo-review",
             current_loop_layer="challenge",
-            missing_evidence=["prd", "user-story", "test-case"],
+            missing_evidence=["requirement-truth-package"],
             target_surface="beacon-help",
             recommended_route="beacon help",
         )
@@ -190,7 +199,7 @@ def run_ceo_review(
             "prerequisites": ["accepted ceo-review decision"],
         }
         status = "accepted_for_writeback"
-        writebacks = ["beacon-change", "beacon-prd", "beacon-user-story", "beacon-test-case"]
+        writebacks = ["beacon-change", "beacon-truth"]
     payload = build_support_surface_transaction(
         surface="beacon-ceo-review",
         mode=focus or "full",

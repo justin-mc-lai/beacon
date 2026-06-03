@@ -6,6 +6,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import release_line_key, resolve_target_version, runtime_feature_supported
@@ -383,9 +384,17 @@ def support_topology_diagnostics(project_root: Path, *, version: str, feature: s
     research_path = feature_research_path(project_root, version=resolved_version, feature=feature)
     diagnostics: list[dict[str, Any]] = []
     expected_research = _rel(project_root, research_path)
-    prd_ref = f"docs/beacon/{resolved_version}/prd/{slug}.md"
-    user_story_ref = f"docs/beacon/{resolved_version}/user-story/{slug}.md"
-    test_case_ref = f"docs/beacon/{resolved_version}/qa/test-cases/{slug}.md"
+    truth_refs = requirement_truth_paths(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        consumer="support-research-topology",
+    )
+    requirement_refs = {
+        _rel(project_root, path)
+        for path in (truth_refs.get("prd"), truth_refs.get("user_story"), truth_refs.get("test_case"))
+        if path is not None
+    }
 
     brainstorm_root = project_root / "docs" / "brainstorms"
     if brainstorm_root.exists():
@@ -395,7 +404,7 @@ def support_topology_diagnostics(project_root: Path, *, version: str, feature: s
             feature_line_match = re.search(r"^- feature:\s*`([^`]*)`\s*$", text, flags=re.MULTILINE)
             declared_feature = feature_line_match.group(1).strip() if feature_line_match else ""
             explicit_feature_match = declared_feature == feature or slug in path.name
-            canonical_truth_ref_match = any(ref in text for ref in (prd_ref, user_story_ref, test_case_ref))
+            canonical_truth_ref_match = any(ref in text for ref in requirement_refs)
             if explicit_feature_match or (declared_feature and canonical_truth_ref_match):
                 diagnostics.append(
                     {

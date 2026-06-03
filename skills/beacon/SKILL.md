@@ -33,6 +33,7 @@ The public Codex / Claude surfaces are:
 - host entry:
   - `using-beacon`
 - truth:
+  - `beacon-truth`
   - `beacon-prd`
   - `beacon-user-story`
   - `beacon-test-case`
@@ -76,7 +77,8 @@ Legacy compatibility anchors that should remain discoverable from the packaged h
 
 These rules should remain true even when runtime details evolve:
 
-- main chain stays compact: `prd -> user-story -> test-case -> implement -> qa -> release`
+- main chain stays compact: `truth.define -> truth.acceptance -> truth.coverage -> implement -> qa -> release`
+- `beacon-truth` is the preferred v1.5.2+ truth umbrella; `beacon-prd`, `beacon-user-story`, and `beacon-test-case` remain compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`
 - v1.5.2 feature truth is resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; legacy triptych files are migration, rebuild, or archive material only
 - `prototype` is conditional, not a mandatory new stage for every feature
 - support surfaces stay advisory and do not become truth sources
@@ -91,7 +93,8 @@ These rules should remain true even when runtime details evolve:
 
 Use these defaults:
 
-- promise, scope, ambiguity, or acceptance still open -> `beacon-prd`, `beacon-user-story`, or `beacon-test-case`
+- promise, scope, ambiguity, or acceptance still open -> `beacon-truth` mode `truth.define`, `truth.acceptance`, or `truth.coverage`
+- compatibility aliases remain valid: `beacon-prd` for `truth.define`, `beacon-user-story` for `truth.acceptance`, and `beacon-test-case` for `truth.coverage`
 - frozen truth must change -> `beacon-change`
 - accepted post-freeze one-shot refreeze closure -> `beacon-change-refreeze`
 - coding or implementation execution against frozen truth -> `beacon-implement`
@@ -149,8 +152,10 @@ Keep only the minimum current anchors here:
 
 - current package version: `1.5.2`
 - current planning line for this evolution theme: `docs/beacon/v1.5.2/`
+- current planning line for this evolution theme: `docs/beacon/v1.4.7/` (compatibility reference only)
 - current public runtime/docs line: `docs/beacon/v1.5.2/`
 - previous runtime line: `docs/beacon/v1.5.1/`
+- compatibility reference line: `docs/beacon/v1.4.7/`
 - if a target project pins another docs line, follow the pinned local truth instead of silently overriding it
 
 ## v1.5.2 Truth Resolver Rule
@@ -182,7 +187,11 @@ These references are non-canonical support material. They help humans scan and d
 
 For complex v1.5.2 features, the minimum freeze-facing requirement chain is expressed inside the feature package:
 
-`research/support -> truth.md -> tests.md -> requirement_clarity -> freeze`
+`research/support -> truth.define -> truth.acceptance -> truth.coverage -> requirement_clarity -> freeze`
+
+Compatibility mapping for older host-skill tests and operators:
+
+`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`
 
 ## Deep References
 

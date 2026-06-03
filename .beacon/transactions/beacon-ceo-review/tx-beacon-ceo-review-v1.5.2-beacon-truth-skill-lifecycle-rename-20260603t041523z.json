@@ -1,0 +1,118 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-beacon-ceo-review-v1.5.2-beacon-truth-skill-lifecycle-rename-20260603t041523z",
+  "surface": "beacon-ceo-review",
+  "mode": "full",
+  "version": "v1.5.2",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "status": "advisory",
+  "decision": "hold",
+  "reason_codes": [],
+  "truth_refs": [
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+    "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+  ],
+  "evidence_refs": [],
+  "challenge_axes": [
+    {
+      "code": "too_smooth_path",
+      "prompt": "What meaningful variance, dependency, operator behavior, or runtime mismatch is being ignored?",
+      "risk": "linear plan optimism"
+    },
+    {
+      "code": "buried_landmine",
+      "prompt": "What failure mode is low-visibility now but expensive after rollout?",
+      "risk": "hidden post-release downside"
+    },
+    {
+      "code": "truth_freeze_destabilization",
+      "prompt": "Does this idea let support surfaces, automation, or convenience loops silently rewrite or bypass frozen truth?",
+      "risk": "truth drift via convenience path"
+    },
+    {
+      "code": "stage_boundary_sprawl",
+      "prompt": "Does this proposal accidentally turn a support surface into a shadow lifecycle stage?",
+      "risk": "main-chain erosion"
+    },
+    {
+      "code": "false_closure_signal",
+      "prompt": "Are local pass signals being mistaken for requirement closure or release readiness?",
+      "risk": "local success overclaimed as global closure"
+    },
+    {
+      "code": "operator_cost_underpricing",
+      "prompt": "Does the proposal create hidden maintenance, triage, or governance burden?",
+      "risk": "operator cost hidden by conceptual elegance"
+    }
+  ],
+  "route_decision": {
+    "route": "implement",
+    "target_surface": "beacon-implement"
+  },
+  "next_route": {
+    "command": "beacon implement \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2",
+    "why": "Requirement framing is stable enough to continue implementation planning.",
+    "target_surface": "beacon-implement",
+    "priority": "medium",
+    "prerequisites": [
+      "frozen requirement package remains valid"
+    ]
+  },
+  "writeback_targets": [],
+  "state_impact": {
+    "writes_transaction_state": true,
+    "reopens_requirement_truth": false
+  },
+  "gate_impact": {
+    "blocks_execution": false,
+    "gate_owner": "support-route-only"
+  },
+  "blocked": false,
+  "blocked_reason": "",
+  "operator_visible_summary": "CEO review did not find a version-level reframing blocker after challenging default downside axes.",
+  "created_at": "2026-06-03T04:15:23.373148+00:00",
+  "support_write_topology": {
+    "schema_version": "1.0",
+    "supported": true,
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "policy_class": "ordinary_support_review",
+    "source_skill": "beacon-ceo-review",
+    "version": "v1.5.2",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "expected_path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+    "expected_paths": [
+      "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md"
+    ],
+    "actual_path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+    "repair_route": "",
+    "diagnostics": []
+  },
+  "support_research_writeback": {
+    "path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+    "topology": {
+      "schema_version": "1.0",
+      "supported": true,
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "policy_class": "ordinary_support_review",
+      "source_skill": "beacon-ceo-review",
+      "version": "v1.5.2",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "expected_path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+      "expected_paths": [
+        "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md"
+      ],
+      "actual_path": "",
+      "repair_route": "",
+      "diagnostics": []
+    }
+  }
+}

@@ -15,6 +15,7 @@ from beacon.utils.debug_feedback import (
 )
 from beacon.utils.llm_loop import build_next_stage_trace, merge_token_usage
 from beacon.utils.memory import append_scope_items
+from beacon.utils.requirement_refs import existing_requirement_truth_refs
 from beacon.utils.runtime import (
     append_jsonl,
     generate_run_id,
@@ -187,12 +188,19 @@ def _run_workflow_impl(
         context="run.workflow.dispatch",
     )
 
-    # Strict mode requires an existing canonical Beacon user-story artifact.
+    # Strict mode requires existing canonical Beacon requirement truth for the feature.
     if mode == "strict":
-        story_candidates = [
-            root / "docs" / "beacon" / resolved_version / "user-story",
-        ]
-        has_story = any(path.exists() and any(path.glob("*.md")) for path in story_candidates)
+        truth_refs = (
+            existing_requirement_truth_refs(
+                root,
+                version=resolved_version,
+                feature=feature or normalized_type,
+                consumer="run-strict",
+            )
+            if feature
+            else []
+        )
+        has_story = bool(truth_refs)
         if not has_story:
             events.append(
                 {

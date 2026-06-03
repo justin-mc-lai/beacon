@@ -6,17 +6,21 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, machine_change_file
+from beacon.utils.feature_package import validate_feature_package
 from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import materialize_requirement_clarity, requirement_clarity_json_path
 from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state, load_revision_state, reopen_revision_state
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 from beacon.utils.story_state import feature_slug, freeze_story_state, load_story_state, reopen_story_state
+from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 from beacon.utils.versioning import resolve_target_version
 
 
 REQUIRED_REFREEZE_SURFACES = ("change", "prd", "user-story", "test-case", "requirement_clarity", "freeze")
 FILE_REFREEZE_SURFACES = {"change", "prd", "user-story", "test-case"}
+PACKAGE_REFREEZE_SURFACES = ("change", "truth", "tests", "tasks", "evidence", "requirement_clarity", "freeze")
+PACKAGE_FILE_REFREEZE_SURFACES = {"truth", "tests", "tasks", "evidence"}
 
 
 def change_refreeze_transaction_path(project_root: Path, *, version: str, feature: str) -> Path:
@@ -46,6 +50,59 @@ def _surface_paths(project_root: Path, *, version: str, feature: str) -> dict[st
 
 
 def _surface_statuses(project_root: Path, *, version: str, feature: str) -> dict[str, dict[str, Any]]:
+    if feature_package_authoritative(version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=version,
+            feature=feature,
+            consumer="change-refreeze",
+        )["requirement_refs"]
+        package_paths = {
+            "truth": project_root / refs["truth"],
+            "tests": project_root / refs["tests"],
+            "tasks": project_root / refs["tasks"],
+            "evidence": project_root / refs["evidence"],
+        }
+        change_path = change_docs_file(project_root, version, f"{feature_slug(feature)}.md")
+        statuses = {
+            "change": {
+                "path": _relative(project_root, change_path),
+                "exists": change_path.exists(),
+                "status": "present" if change_path.exists() else "package_change_optional",
+                "required": False,
+                "authority": "change_record_not_requirement_truth",
+            }
+        }
+        validation = validate_feature_package(project_root, version=version, feature=feature, write_report=True)
+        validation_passed = validation.get("status") == "pass"
+        for surface, path in package_paths.items():
+            statuses[surface] = {
+                "path": _relative(project_root, path),
+                "exists": path.exists(),
+                "status": "present" if path.exists() and validation_passed else ("invalid" if path.exists() else "missing"),
+                "required": True,
+                "authority": "markdown_feature_package",
+            }
+        statuses["requirement_clarity"] = {
+            "path": _relative(project_root, requirement_clarity_json_path(project_root, version, feature)),
+            "exists": False,
+            "status": "pending",
+            "required": True,
+        }
+        statuses["freeze"] = {
+            "path": _relative(project_root, machine_change_file(project_root, version, f"{feature_slug(feature)}.refreeze-transaction.json")),
+            "exists": False,
+            "status": "pending",
+            "required": True,
+        }
+        statuses["feature_package_validation"] = {
+            "path": _relative(project_root, project_root / str(validation.get("report_path") or "")),
+            "exists": validation_passed,
+            "status": "passed" if validation_passed else "blocked",
+            "required": True,
+            "diagnostics": validation.get("diagnostics", []),
+        }
+        return statuses
     statuses: dict[str, dict[str, Any]] = {}
     for surface, path in _surface_paths(project_root, version=version, feature=feature).items():
         statuses[surface] = {
@@ -216,7 +273,11 @@ def run_change_refreeze_chain(
     missing = [
         surface
         for surface, status in surface_statuses.items()
-        if surface in FILE_REFREEZE_SURFACES and status.get("required") and not status.get("exists")
+        if (
+            (surface in (PACKAGE_FILE_REFREEZE_SURFACES if feature_package_authoritative(resolved_version) else FILE_REFREEZE_SURFACES))
+            and status.get("required")
+            and (not status.get("exists") or str(status.get("status") or "") == "invalid")
+        )
     ]
     if missing:
         payload["blocked_reason"] = "missing_requirement_surfaces"

@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-06-03T06:31:18.253504+00:00",
+  "summary": "AGENTS.md 'one active version branch per service' rule has no escape hatch for evil merge scenarios. When git merge resolves tree incorrectly (e.g. uat 9a154d28), canonical feat...",
+  "raw_note": "AGENTS.md 'one active version branch per service' rule has no escape hatch for evil merge scenarios. When git merge resolves tree incorrectly (e.g. uat 9a154d28), canonical feature branch is already ancestor of uat and can't re-merge. Agents are forced to either: (a) create temporary hotfix branch violating governance, or (b) commit directly on protected uat branch. Neither is allowed. Need a governance-compliant recovery procedure for merge-corrupted protected branches.",
+  "item_class": "improvement",
+  "severity": "P3",
+  "domain": "workflow",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "evidence_abs_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/debug/friction-captures/d2fc7f750917.json"
+}

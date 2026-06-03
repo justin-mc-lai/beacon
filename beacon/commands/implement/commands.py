@@ -67,6 +67,7 @@ from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.prd_bootstrap import inspect_requirement_closure
+from beacon.utils.feature_package import validate_feature_package
 from beacon.utils.revision_delta import load_revision_delta
 from beacon.utils.semantic_runtime import load_or_build_semantic_layer
 from beacon.utils.skill_admission import admit_runtime_skill
@@ -787,6 +788,38 @@ def _requirement_closure_preflight(project_root: Path, *, version: str, feature:
             "reason_code": "",
             "feature": feature,
             "version": resolved_version,
+        }
+    if feature_package_authoritative(resolved_version):
+        validation = validate_feature_package(project_root, version=resolved_version, feature=feature)
+        blocked = str(validation.get("status") or "").strip().lower() != "pass"
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="implement-plan",
+        )["requirement_refs"]
+        return {
+            "enabled": True,
+            "status": "blocked" if blocked else "pass",
+            "blocked": blocked,
+            "reason_code": "feature_package_validation_failed" if blocked else "",
+            "recommended_command": (
+                build_change_command(
+                    feature=feature,
+                    project_root=project_root,
+                    version=resolved_version,
+                    reason="feature-package-validation-failed",
+                )
+                if blocked
+                else ""
+            ),
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": resolved_version,
+            "authority_state": "feature_package_authoritative",
+            "truth_authority": "markdown_feature_package",
+            "requirement_refs": refs,
+            "validation": validation,
         }
 
     inspection = inspect_requirement_closure(

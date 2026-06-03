@@ -12,6 +12,7 @@ from beacon.utils.revision_state import load_revision_state, save_revision_state
 from beacon.utils.prototype_utils import prototype_files
 from beacon.utils.reconciliation import append_implementation_writeback_event
 from beacon.utils.acceptance_kit import write_acceptance_kit_projection
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.implementation_plan import (
     mark_implementation_plan_accepted,
     update_plan_progress_for_implementation,
@@ -86,12 +87,18 @@ def _acceptance_runtime_path(project_root: Path, feature: str) -> Path:
 
 def _acceptance_requirement_refs(project_root: Path, *, version: str, feature: str) -> list[str]:
     slug = feature_slug(feature)
+    refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="acceptance-writeback",
+    )
     return _existing_relative_paths(
         project_root,
         [
-            project_root / "docs" / "beacon" / version / "prd" / f"{slug}.md",
-            project_root / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
-            project_root / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
+            refs["prd"],
+            refs["user_story"],
+            refs["test_case"],
             load_revision_state(project_root, version=version, feature=feature, create_if_missing=True)
             and machine_execution_dir(project_root, version) / f"{slug}.revision.json",
         ],
@@ -337,17 +344,23 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
             execution_root / "architecture-blueprint.md",
         ],
     )
+    requirement_refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="acceptance-workflow-closure",
+    )
     user_story_refs = _existing_relative_paths(
         project_root,
         [
-            docs_root / "user-story" / f"{slug}.md",
+            requirement_refs["user_story"],
             machine_root / "user-story" / f"{slug}.json",
         ],
     )
     prd_refs = _existing_relative_paths(
         project_root,
         [
-            docs_root / "prd" / f"{slug}.md",
+            requirement_refs["prd"],
             machine_root / "execution" / f"{slug}.revision.json",
         ],
     )
@@ -363,7 +376,7 @@ def _workflow_stage_evidence(project_root: Path, *, version: str, feature: str) 
     test_case_refs = _existing_relative_paths(
         project_root,
         [
-            docs_root / "qa" / "test-cases" / f"{slug}.md",
+            requirement_refs["test_case"],
             machine_root / "qa" / f"{slug}.ac-test-matrix.json",
             machine_root / "qa" / f"{slug}.qa9-matrix.json",
             machine_root / "qa" / f"{slug}.story-scenario-map.json",

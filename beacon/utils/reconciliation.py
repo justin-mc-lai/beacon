@@ -7,6 +7,7 @@ from typing import Any, Iterable
 
 from beacon.utils.artifact_paths import machine_change_file, machine_execution_file
 from beacon.utils.change_surface import build_change_command
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
@@ -138,6 +139,17 @@ def build_reconciliation_payload(
     slug = feature_slug(feature)
     current_revision_id = str(revision_state.get("revision_id", "") or "")
     source_revision_id = str(revision_state.get("source_revision_id", "") or "")
+    truth_refs = requirement_truth_paths(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        consumer="implementation-first-reconciliation",
+    )
+    backfilled_surfaces = [
+        _rel(project_root, truth_refs["prd"]),
+        _rel(project_root, truth_refs["user_story"]),
+        _rel(project_root, truth_refs["test_case"]),
+    ]
     return {
         "schema_version": "1.0",
         "artifact": "implementation_first_reconciliation",
@@ -154,15 +166,11 @@ def build_reconciliation_payload(
         "implementation_artifacts": implementation_artifacts,
         "missing_truth_surfaces": ["prd", "user-story", "qa/test-cases"],
         "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
-        "truth_surfaces_backfilled": [
-            f"docs/beacon/{resolved_version}/prd/{slug}.md",
-            f"docs/beacon/{resolved_version}/user-story/{slug}.md",
-            f"docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
-        ] if str(revision_state.get("doc_status", "") or "") == "frozen" else [],
+        "truth_surfaces_backfilled": backfilled_surfaces if str(revision_state.get("doc_status", "") or "") == "frozen" else [],
         "re_freeze_status": "completed" if str(revision_state.get("doc_status", "") or "") == "frozen" else "pending",
         "reprojection_targets": [
-            f"docs/beacon/{resolved_version}/user-story/{slug}.md",
-            f"docs/beacon/{resolved_version}/qa/test-cases/{slug}.md",
+            _rel(project_root, truth_refs["user_story"]),
+            _rel(project_root, truth_refs["test_case"]),
             "qa_proof",
             "release_facing_proof",
         ],

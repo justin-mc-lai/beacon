@@ -9,6 +9,10 @@ description: Use when the user wants to draft, refine, clarify, or review Beacon
 
 This skill routes requirement-definition work through Beacon's `prd` surface.
 
+In v1.5.2+, `beacon-prd` is a compatibility alias for `beacon-truth` mode `truth.define`.
+Use `truth.define` when explaining the preferred lifecycle, and keep `beacon-prd` available as the stable invocation surface.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`; old chain `research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`.
+
 The human-facing contract is aligned to the `v1.5.2` package-authoritative docs line. For v1.5.2 features, `features/<slug>/truth.md` is the normal requirement authority for problem, scope, goals, boundaries, acceptance criteria, and promised surface.
 Legacy `prd / user-story / qa/test-cases` files may be rebuilt by `doctor`, absorbed by `change`, or retained as archive context, but they do not replace the feature package truth.
 

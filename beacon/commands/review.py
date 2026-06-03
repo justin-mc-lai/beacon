@@ -36,6 +36,7 @@ from beacon.utils.runtime_projection_store import runtime_projection_transaction
 from beacon.utils.runtime import now_iso
 from beacon.utils.ceo_review_surface import run_ceo_review
 from beacon.utils.design_review_surface import write_design_review_transaction
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.story_state import load_story_state
 from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.workflow_memory import resolve_workflow_run_id
@@ -56,12 +57,18 @@ def _slug(text: str) -> str:
 def _feature_paths(project_root: Path, version: str, feature: str) -> dict[str, Path]:
     slug = _slug(feature)
     base = project_root / "docs" / "beacon" / version
+    requirement_refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="review",
+    )
     return {
         "base": base,
         "execution": human_execution_dir(project_root, version),
-        "user_story": base / "user-story" / f"{slug}.md",
-        "prd": base / "prd" / f"{slug}.md",
-        "test_case": base / "qa" / "test-cases" / f"{slug}.md",
+        "user_story": requirement_refs["user_story"],
+        "prd": requirement_refs["prd"],
+        "test_case": requirement_refs["test_case"],
         "ac_matrix": qa_matrix_candidates(project_root, version, slug, "ac-test-matrix")[0],
         "prototype_dir": base / "prototype" / slug,
         "implementation_marker": project_root / ".beacon" / "state" / f"implementation-{slug}.json",

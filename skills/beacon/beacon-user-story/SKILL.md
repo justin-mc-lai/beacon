@@ -7,6 +7,10 @@ description: Use when the user wants to derive, refine, review, or freeze user s
 
 This skill routes story work through Beacon's `user-story` surface.
 
+In v1.5.2+, `beacon-user-story` is a compatibility alias for `beacon-truth` mode `truth.acceptance`.
+Use `truth.acceptance` when explaining the preferred lifecycle, and keep `beacon-user-story` available as the stable invocation surface.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`; old chain `test-case -> requirement_clarity -> freeze`.
+
 The host-readable contract is aligned to the current `v1.5.2` package-authoritative docs line.
 For v1.5.2 features, read resolver-selected `features/<slug>/truth.md` as the active requirement and acceptance framing. Legacy `prd / user-story / qa/test-cases` files are migration, rebuild, or archive material only.
 

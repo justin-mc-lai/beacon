@@ -154,8 +154,30 @@ def _next_revision_id(root_state: dict[str, Any]) -> str:
 
 
 def _baseline_hash(project_root: Path, version: str, feature: str) -> str:
+    from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+
     parts: list[str] = []
-    for path in (user_story_markdown_path(project_root, version, feature), _prd_markdown_path(project_root, version, feature), _test_case_markdown_path(project_root, version, feature)):
+    resolved_version = resolve_target_version(project_root, version)
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="revision-state",
+        )["requirement_refs"]
+        candidate_paths = (
+            project_root / refs["truth"],
+            project_root / refs["tests"],
+            project_root / refs["tasks"],
+            project_root / refs["evidence"],
+        )
+    else:
+        candidate_paths = (
+            user_story_markdown_path(project_root, resolved_version, feature),
+            _prd_markdown_path(project_root, resolved_version, feature),
+            _test_case_markdown_path(project_root, resolved_version, feature),
+        )
+    for path in candidate_paths:
         if path.exists():
             parts.append(path.read_text(encoding="utf-8"))
     return "sha256:" + hashlib.sha256("\n\n".join(parts).encode("utf-8")).hexdigest()
@@ -369,6 +391,7 @@ def freeze_story_state(project_root: Path, version: str, feature: str) -> dict[s
 
 def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -> dict[str, Any]:
     from beacon.utils.revision_state import load_revision_state, save_revision_state
+    from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
 
     resolved_version = resolve_target_version(project_root, version)
     path = machine_story_path(project_root, resolved_version, feature)
@@ -388,10 +411,22 @@ def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -
         if isinstance(item, dict) and str(item.get("id") or "").strip()
     }
 
-    user_story_content = user_story_markdown_path(project_root, resolved_version, feature).read_text(encoding="utf-8") if user_story_markdown_path(project_root, resolved_version, feature).exists() else ""
-    prd_path = _prd_markdown_path(project_root, resolved_version, feature)
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="story-state",
+        )["requirement_refs"]
+        prd_path = project_root / refs["truth"]
+        user_story_path = project_root / refs["truth"]
+        qa_path = project_root / refs["tests"]
+    else:
+        prd_path = _prd_markdown_path(project_root, resolved_version, feature)
+        user_story_path = user_story_markdown_path(project_root, resolved_version, feature)
+        qa_path = _test_case_markdown_path(project_root, resolved_version, feature)
+    user_story_content = user_story_path.read_text(encoding="utf-8") if user_story_path.exists() else ""
     prd_content = prd_path.read_text(encoding="utf-8") if prd_path.exists() else ""
-    qa_path = _test_case_markdown_path(project_root, resolved_version, feature)
     qa_content = qa_path.read_text(encoding="utf-8") if qa_path.exists() else ""
     research_path = _research_markdown_path(project_root, resolved_version, feature)
     research_content = research_path.read_text(encoding="utf-8") if research_path.exists() else ""
@@ -399,7 +434,7 @@ def sync_story_state_from_docs(project_root: Path, version: str, feature: str) -
         user_story_content=user_story_content,
         prd_content=prd_content,
         qa_content=qa_content,
-        user_story_source=f"user-story:{user_story_markdown_path(project_root, resolved_version, feature)}",
+        user_story_source=f"user-story:{user_story_path}",
         prd_source=f"prd:{prd_path}",
         qa_source=f"qa:test-cases:{qa_path}",
     )

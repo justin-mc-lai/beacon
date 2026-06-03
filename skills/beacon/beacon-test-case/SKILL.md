@@ -7,6 +7,10 @@ description: Use when the user wants to create, extend, or audit test cases and 
 
 This skill routes acceptance coverage work through Beacon's `test-case` surface.
 
+In v1.5.2+, `beacon-test-case` is a compatibility alias for `beacon-truth` mode `truth.coverage`.
+Use `truth.coverage` when explaining the preferred lifecycle, and keep `beacon-test-case` available as the stable invocation surface.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`; old chain `research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`.
+
 The active coverage contract is aligned to the current `v1.5.2` package-authoritative docs line.
 For v1.5.2 features, `features/<slug>/tests.md` is the normal coverage truth. Legacy `qa/test-cases/` and `.machine/qa/` outputs are migration, rebuild, generated state, or archive material only.
 

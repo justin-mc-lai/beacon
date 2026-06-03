@@ -14,6 +14,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import machine_trace_dir
 from beacon.utils.project_skills import load_skill_registry
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso
 from beacon.utils.subagent_readiness import detect_host_runtime
 from beacon.utils.workflow_memory import build_stage_context, normalize_workflow_stage, stage_context_path
@@ -493,11 +494,16 @@ def _resolve_requirement_doc_path(directory: Path, feature: str) -> Path:
 
 
 def _requirement_doc_candidates(project_root: Path, version: str, feature: str) -> dict[str, Path]:
-    base = project_root / "docs" / "beacon" / version
+    refs = requirement_truth_paths(
+        project_root,
+        version=version,
+        feature=feature,
+        consumer="semantic-runtime",
+    )
     return {
-        "prd": _resolve_requirement_doc_path(base / "prd", feature),
-        "user-story": _resolve_requirement_doc_path(base / "user-story", feature),
-        "test-case": _resolve_requirement_doc_path(base / "qa" / "test-cases", feature),
+        "prd": refs["prd"],
+        "user-story": refs["user-story"],
+        "test-case": refs["test-case"],
     }
 
 

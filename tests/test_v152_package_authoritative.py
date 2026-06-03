@@ -7,10 +7,18 @@ from typer.testing import CliRunner
 
 from beacon import app
 from beacon.utils.acceptance_kit import write_acceptance_kit_projection
+from beacon.utils.ceo_review_surface import run_ceo_review
 from beacon.utils.feature_package import validate_feature_package
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.prototype_utils import source_doc_paths
+from beacon.utils.qa_evo_deep import default_qa_evo_deep_findings, load_qa_evo_deep_source_materials
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
+from beacon.utils.requirement_refs import requirement_truth_paths
+from beacon.utils.revision_state import freeze_revision_state
+from beacon.utils.runtime_projection import build_runtime_projection
 from beacon.utils.runtime import write_json
+from beacon.utils.semantic_runtime import _load_requirement_docs
+from beacon.utils.story_state import freeze_story_state
 from beacon.utils.truth_map import (
     TRUTH_SOURCE_MODEL,
     TRUTH_SOURCE_MODEL_AUTHORITATIVE,
@@ -404,3 +412,161 @@ def test_requirement_completeness_gate_accepts_authoritative_package_without_leg
     assert gate["projection_status"] == "package_authoritative"
     assert gate["package_authoritative_truth"]["validation"]["status"] == "pass"
     assert gate["recommended_command"] == ""
+
+
+def test_change_refreeze_chain_uses_package_surfaces_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    freeze_story_state(tmp_path, VERSION, FEATURE)
+
+    result = CliRunner().invoke(
+        app,
+        [
+            "change",
+            FEATURE,
+            "--project",
+            str(tmp_path),
+            "--version",
+            VERSION,
+            "--reason",
+            "package-authoritative refreeze",
+            "--refreeze-chain",
+            "--json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["refreeze_status"] == "complete"
+    assert payload["blocked_reason"] == ""
+    assert payload["touched_surfaces"] == [
+        "change",
+        "truth",
+        "tests",
+        "tasks",
+        "evidence",
+        "requirement_clarity",
+        "freeze",
+        "feature_package_validation",
+    ]
+    assert payload["surface_statuses"]["change"]["status"] == "package_change_optional"
+    for surface in ["truth", "tests", "tasks", "evidence"]:
+        assert payload["surface_statuses"][surface]["status"] == "present"
+        assert payload["surface_statuses"][surface]["authority"] == "markdown_feature_package"
+    assert payload["requirement_package"]["status"] == "synced"
+    assert payload["requirement_package"]["requirement_refs"]["prd"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert payload["requirement_package"]["story_sync"]["ac_count"] == 8
+    assert payload["truth_revision_after"]["baseline_hash"] != "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+
+def test_package_requirement_refs_replace_legacy_triptych_for_runtime_consumers(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    refs = requirement_truth_paths(tmp_path, version=VERSION, feature=FEATURE, consumer="test")
+
+    assert refs["prd"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert refs["user_story"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert refs["test_case"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/tests.md"
+    assert refs["tasks"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/tasks.md"
+    assert refs["evidence"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/evidence.md"
+
+
+def test_ceo_review_binds_to_package_truth_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = run_ceo_review(
+        tmp_path,
+        version=VERSION,
+        feature=FEATURE,
+        focus="full",
+        decision="hold",
+    )
+
+    assert payload["blocked"] is False
+    assert payload["truth_refs"] == [
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tests.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tasks.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/evidence.md",
+    ]
+
+
+def test_runtime_projection_reports_package_truth_paths_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    payload = build_runtime_projection(tmp_path, docs_version=VERSION, feature=FEATURE)
+    feature_package = payload["feature_packages"][0]
+    material_rows = payload["stage_material_status"]
+    truth_artifacts = [item for item in payload["artifact_refs"] if item["artifact_scope"] == "truth"]
+
+    assert feature_package["prd_path"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert feature_package["user_story_path"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert feature_package["test_case_path"] == f"docs/beacon/{VERSION}/features/{SLUG}/tests.md"
+    assert {row["truth_path"] for row in material_rows} == {
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tests.md",
+    }
+    assert {item["path"] for item in truth_artifacts} == {
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tests.md",
+    }
+
+
+def test_qa_evo_deep_source_materials_use_package_truth_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+    _write(tmp_path, f".beacon/qa/features/{SLUG}/scorecard.json", "{}\n")
+    _write(tmp_path, f".beacon/qa/features/{SLUG}/ac-closure.json", "{}\n")
+
+    materials = load_qa_evo_deep_source_materials(tmp_path, version=VERSION, feature=FEATURE)
+    findings = default_qa_evo_deep_findings(feature=FEATURE, version=VERSION, source_materials=materials)
+
+    assert materials["status"] == "ready"
+    assert materials["materials"]["prd"]["path"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert materials["materials"]["user_story"]["path"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert materials["materials"]["test_case"]["path"] == f"docs/beacon/{VERSION}/features/{SLUG}/tests.md"
+    assert findings[0]["source_refs"] == [
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tests.md",
+    ]
+
+
+def test_prototype_and_semantic_runtime_load_package_truth_without_legacy_triptych(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    prototype_refs = source_doc_paths(tmp_path, VERSION, FEATURE)
+    docs = _load_requirement_docs(tmp_path, VERSION, FEATURE)
+
+    assert prototype_refs["prd"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert prototype_refs["user-story"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
+    assert prototype_refs["test-case"] == tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/tests.md"
+    assert {item["path"] for item in docs} == {
+        f"docs/beacon/{VERSION}/features/{SLUG}/truth.md",
+        f"docs/beacon/{VERSION}/features/{SLUG}/tests.md",
+    }
+
+
+def test_run_strict_accepts_package_truth_without_legacy_user_story(tmp_path: Path) -> None:
+    _seed_package(tmp_path)
+
+    result = CliRunner().invoke(
+        app,
+        [
+            "run",
+            "workflow",
+            "workflow",
+            "--mode",
+            "strict",
+            "--feature",
+            FEATURE,
+            "--version",
+            VERSION,
+            "--project-root",
+            str(tmp_path),
+            "--json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "completed"

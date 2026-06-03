@@ -1,0 +1,908 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-truth-skill-lifecycle-rename-r3",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "version": "v1.5.2",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+  "plan_hash": "sha256:717632179484a2dd63857385b23899676f49d7df1a350bd7a47e8b2e1cd60ceb",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "prd": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "test_case": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "truth": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename",
+    "revision_delta": "docs/beacon/v1.5.2/.machine/execution/revision-delta-beacon-truth-skill-lifecycle-rename.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/beacon-truth-skill-lifecycle-rename.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-03T03:32:41.884944+00:00",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "prd_ref": "docs/beacon/v1.5.2/prd/beacon-truth-skill-lifecycle-rename.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/beacon-truth-skill-lifecycle-rename.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "source": "research:docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing t...",
+      "description": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793223+00:00",
+      "completed_at": "2026-06-03T03:34:23.793501+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 `beacon-truth` must preserve distinct modes for definition, acceptanc...",
+      "description": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793519+00:00",
+      "completed_at": "2026-06-03T03:34:23.793520+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 Every `beacon-truth` mode must resolve feature truth through `beacon...",
+      "description": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793529+00:00",
+      "completed_at": "2026-06-03T03:34:23.793531+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` sk...",
+      "description": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793539+00:00",
+      "completed_at": "2026-06-03T03:34:23.793540+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 Root Beacon and brainstorm guidance must describe the preferred truth...",
+      "description": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793561+00:00",
+      "completed_at": "2026-06-03T03:34:23.793567+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 `beacon-truth` must not turn brainstorm, change-refreeze, QA, or rele...",
+      "description": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793578+00:00",
+      "completed_at": "2026-06-03T03:34:23.793579+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns...",
+      "description": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793587+00:00",
+      "completed_at": "2026-06-03T03:34:23.793589+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "AC-008 The new lifecycle language must preserve the closure route from suppo...",
+      "description": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008",
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/features/beacon-truth-skill-lifecycle-rename/scorecard.json",
+        "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-beacon-truth-skill-lifecycle-rename.json",
+        "run:run-20260603T112204607037",
+        "verify:run-20260603T112204607037"
+      ],
+      "changed_files": [
+        "skills/beacon/beacon-truth/SKILL.md",
+        ".agents/skills/beacon-truth/SKILL.md",
+        "skills/beacon/SKILL.md",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/implementation_plan.py",
+        "beacon/utils/feature_package.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/test_contract_governance.py",
+        "tests/test_v152_truth_skill_lifecycle.py",
+        "tests/test_v152_package_authoritative.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T03:34:23.793597+00:00",
+      "completed_at": "2026-06-03T03:34:23.793598+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "closure-trace",
+        "text": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::closure-trace::the new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, qa, and release.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "compatibility-aliases",
+        "text": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::compatibility-aliases::existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "coverage-boundary",
+        "text": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::coverage-boundary::coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "lifecycle-language",
+        "text": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::lifecycle-language::root beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode-separation",
+        "text": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::mode-separation::`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-stage-inflation",
+        "text": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::no-stage-inflation::`beacon-truth` must not turn brainstorm, change-refreeze, qa, or release into truth authoring stages.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::package-authority::every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-umbrella",
+        "text": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::truth-umbrella::beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+    "source_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json",
+    "generated_at": "2026-06-03T03:32:41.882480+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-beacon-truth-skill-lifecycle-rename.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-beacon-truth-skill-lifecycle-rename.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-beacon-truth-skill-lifecycle-rename.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-beacon-truth-skill-lifecycle-rename.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-truth-skill-lifecycle-rename\" --project-root . --version v1.5.2",
+    "run_command": "beacon implement team-run \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2",
+    "ralph_command": "beacon implement run \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-03T03:32:41.885104+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-skill-lifecycle-rename-R3",
+    "transaction_id": "tx-6cb84bcab7d559b21",
+    "source_hash": "sha256:baea00c080fda17f6104b7fc1d8d049e2aede594a78a7d42d879abddd4c6c785",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-beacon-truth-skill-lifecycle-rename.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-beacon-truth-skill-lifecycle-rename.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-skill-lifecycle-rename-R3",
+    "transaction_id": "tx-6cb84bcab7d559b21",
+    "source_hash": "sha256:baea00c080fda17f6104b7fc1d8d049e2aede594a78a7d42d879abddd4c6c785",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json",
+  "generated_at": "2026-06-03T03:32:41.923982+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-beacon-truth-skill-lifecycle-rename-R3",
+  "transaction_id": "tx-6cb84bcab7d559b21",
+  "source_hash": "sha256:baea00c080fda17f6104b7fc1d8d049e2aede594a78a7d42d879abddd4c6c785",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-03T03:34:23.798580+00:00",
+  "accepted_at": "2026-06-03T03:34:23.798567+00:00",
+  "accepted_by": "codex-release-review"
+}

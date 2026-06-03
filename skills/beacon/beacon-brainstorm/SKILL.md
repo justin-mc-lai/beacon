@@ -14,7 +14,7 @@ It is not a new main lifecycle stage. Its job is to challenge framing, expose ga
 ## When to Use
 
 - continuing requirement brainstorming from `docs/beacon/<version>/`
-- finding missing questions before editing PRD, user-story, or test-case materials
+- finding missing questions before editing `truth.define`, `truth.acceptance`, or `truth.coverage` materials
 - exploring project evolution before promoting it into a formal Beacon change
 - checking implementation prompts against frozen requirement evidence before `beacon-implement`
 
@@ -23,14 +23,15 @@ It is not a new main lifecycle stage. Its job is to challenge framing, expose ga
 - not a truth source
 - not a gate source
 - not a new lifecycle stage
-- does not rewrite `prd`, `user-story`, `qa/test-cases`, `prototype`, or `.machine/`
+- does not rewrite `features/<slug>/truth.md`, `features/<slug>/tests.md`, `prototype`, or `.machine/`
 - if accepted scope changes, route to `beacon-change`
 
 ## Workflow / Decision Loop
 
 - reduce the prompt to user outcome, evidence, and closure constraints
 - challenge framing, assumptions, route, and evidence gaps
-- decide whether the result should go back to `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-change`, or `beacon-implement`
+- decide whether the result should go back to `beacon-truth`, `beacon-change`, or `beacon-implement`
+- for truth work, prefer `truth.define -> truth.acceptance -> truth.coverage`; compatibility aliases are `beacon-prd`, `beacon-user-story`, and `beacon-test-case`
 - stop at convergence output; do not self-promote into frozen truth
 
 ## Common Rationalizations
@@ -133,13 +134,14 @@ When the feature is materially complex, brainstorm must help produce a human-rea
 
 This package is the upstream human-readable contract for:
 
-- `prd`
-- `user-story`
-- `test-case`
+- `truth.define`
+- `truth.acceptance`
+- `truth.coverage`
 - `requirement_clarity`
 - `freeze`
 
-Do not treat this as decoration. These materials are upstream inputs to `prd -> user-story -> test-case -> requirement_clarity -> freeze`.
+Do not treat this as decoration. These materials are upstream inputs to `truth.define -> truth.acceptance -> truth.coverage -> requirement_clarity -> freeze`.
+Compatibility mapping: `prd -> user-story -> test-case -> requirement_clarity -> freeze`.
 
 ## Examples
 

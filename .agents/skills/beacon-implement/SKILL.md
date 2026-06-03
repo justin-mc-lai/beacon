@@ -11,6 +11,7 @@ This skill routes execution work through Beacon's `implement` surface.
 
 `implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
 The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
 For v1.5.2 features, implementation must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`. Legacy truth files may be rebuilt, absorbed, or archived, but they must not override the feature package.
 
 ## When to Use

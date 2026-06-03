@@ -16,9 +16,10 @@ from beacon.utils.markdown_first_freeze import (
     strip_fulltext_mirrors,
 )
 from beacon.utils.requirement_parsing import build_research_projection
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.story_state import feature_slug
-from beacon.utils.truth_map import TRUTH_SOURCE_MODEL_AUTHORITATIVE, truth_source_model_for_version
+from beacon.utils.truth_map import TRUTH_SOURCE_MODEL_AUTHORITATIVE, feature_package_authoritative, truth_source_model_for_version
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
 _DIMENSION_ORDER = [
@@ -105,6 +106,26 @@ def _contains_any(text: str, needles: tuple[str, ...]) -> bool:
 
 def _source_ref(label: str, relative_path: str) -> str:
     return f"{label}:{relative_path}" if relative_path else label
+
+
+def _requirement_ref_strings(*, version: str, feature: str) -> dict[str, str]:
+    slug = feature_slug(feature)
+    if feature_package_authoritative(version):
+        base = f"docs/beacon/{version}/features/{slug}"
+        return {
+            "prd": f"{base}/truth.md",
+            "user_story": f"{base}/truth.md",
+            "test_case": f"{base}/tests.md",
+            "truth": f"{base}/truth.md",
+            "tests": f"{base}/tests.md",
+        }
+    return {
+        "prd": f"docs/beacon/{version}/prd/{slug}.md",
+        "user_story": f"docs/beacon/{version}/user-story/{slug}.md",
+        "test_case": f"docs/beacon/{version}/qa/test-cases/{slug}.md",
+        "truth": f"docs/beacon/{version}/prd/{slug}.md",
+        "tests": f"docs/beacon/{version}/qa/test-cases/{slug}.md",
+    }
 
 
 def build_requirement_envelope(
@@ -458,9 +479,10 @@ def _build_human_loop_handoff(
         if unresolved_gap_count > 0:
             focus_areas.append("把 deferred / rejected 决策回填为可追踪故事")
         candidate_family_names = _candidate_families(story_candidates)
-        writeback_target = f"docs/beacon/{version}/user-story/{feature_slug(feature)}.md"
-        recommended_command = f'beacon user-story create "{feature}" --project <project-root> --version {version} --json'
-        recommended_route = "beacon-user-story"
+        refs = _requirement_ref_strings(version=version, feature=feature)
+        writeback_target = refs["truth"] if feature_package_authoritative(version) else refs["user_story"]
+        recommended_command = f'beacon truth create "{feature}" --project <project-root> --version {version} --json' if feature_package_authoritative(version) else f'beacon user-story create "{feature}" --project <project-root> --version {version} --json'
+        recommended_route = "beacon-truth" if feature_package_authoritative(version) else "beacon-user-story"
         candidate_kind = "story"
     elif target_artifact == "test-case":
         if any(item in missing_dimensions for item in ("happy_paths", "negative_paths", "boundary_conditions", "exceptions", "recovery_paths", "risks", "open_questions")):
@@ -470,9 +492,10 @@ def _build_human_loop_handoff(
         if unresolved_gap_count > 0:
             focus_areas.append("把 deferred / rejected 决策回填为可执行测试")
         candidate_family_names = _candidate_families(coverage_candidates)
-        writeback_target = f"docs/beacon/{version}/qa/test-cases/{feature_slug(feature)}.md"
-        recommended_command = f'beacon test-case create "{feature}" --project <project-root> --version {version} --json'
-        recommended_route = "beacon-test-case"
+        refs = _requirement_ref_strings(version=version, feature=feature)
+        writeback_target = refs["tests"] if feature_package_authoritative(version) else refs["test_case"]
+        recommended_command = f'beacon truth create "{feature}" --project <project-root> --version {version} --json' if feature_package_authoritative(version) else f'beacon test-case create "{feature}" --project <project-root> --version {version} --json'
+        recommended_route = "beacon-truth" if feature_package_authoritative(version) else "beacon-test-case"
         candidate_kind = "coverage"
     else:
         candidate_family_names = []
@@ -506,7 +529,7 @@ def _build_human_loop_handoff(
             "missing_dimensions": missing_dimensions,
             "high_risk_unresolved_categories": high_risk,
         },
-        "source_truth_ref": f"docs/beacon/{version}/prd/{feature_slug(feature)}.md" if feature else "",
+        "source_truth_ref": _requirement_ref_strings(version=version, feature=feature)["truth"] if feature else "",
         "writeback_target": writeback_target,
         "rationale": str(completeness.get("completeness_verdict") or compiler.get("fallback_reason") or "requirement supplement required"),
         "confidence": "medium",
@@ -1010,6 +1033,17 @@ def sync_requirement_deepening_artifacts(
     markdown_first = markdown_first_freeze_supported(resolved_version)
 
     paths = requirement_paths(project_root, resolved_version, feature)
+    active_truth_refs = requirement_truth_paths(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        consumer="requirement-deepening",
+    )
+    source_refs = {
+        "prd": str(active_truth_refs["prd"].relative_to(project_root)),
+        "user_story": str(active_truth_refs["user_story"].relative_to(project_root)),
+        "test_case": str(active_truth_refs["test_case"].relative_to(project_root)),
+    }
     envelope = build_requirement_envelope(
         feature=feature,
         version=resolved_version,
@@ -1017,9 +1051,9 @@ def sync_requirement_deepening_artifacts(
         user_story_content=user_story_content,
         qa_content=qa_content,
         research_content=research_content,
-        prd_source=prd_source,
-        user_story_source=user_story_source,
-        qa_source=qa_source,
+        prd_source=source_refs["prd"],
+        user_story_source=source_refs["user_story"],
+        qa_source=source_refs["test_case"],
         research_source=research_source,
     )
     existing_ac_items = []
@@ -1031,9 +1065,9 @@ def sync_requirement_deepening_artifacts(
             prd_content=prd_content,
             qa_content=qa_content,
             research_content=research_content,
-            user_story_source=user_story_source,
-            prd_source=prd_source,
-            qa_source=qa_source,
+            user_story_source=source_refs["user_story"],
+            prd_source=source_refs["prd"],
+            qa_source=source_refs["test_case"],
             research_source=research_source,
         )
     except Exception:  # noqa: BLE001

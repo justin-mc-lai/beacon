@@ -1,6 +1,6 @@
 ---
 name: beacon-implement
-description: Use when the user wants to plan or run implementation through Beacon's current v1.4.10 runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
+description: Use when the user wants to plan or run implementation through Beacon's current v1.5.2 package-authoritative runtime surface. Keep `implement` as the only public implementation entrypoint; treat team runtime and subagent lanes as internal.
 ---
 
 # Beacon Implement
@@ -10,8 +10,9 @@ description: Use when the user wants to plan or run implementation through Beaco
 This skill routes execution work through Beacon's `implement` surface.
 
 `implement` remains the only public implementation entrypoint. It consumes frozen requirement truth and execution governance context without rewriting those truths.
-The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
-Compatibility bridges may still exist for older entrypoints or wrappers, but they must not override the current requirement package.
+The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
+For v1.5.2 features, implementation must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`. Legacy truth files may be rebuilt, absorbed, or archived, but they must not override the feature package.
 
 ## When to Use
 
@@ -49,7 +50,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 
 ## Verification
 
-- execution 入口明确绑定 frozen `prd / user-story / test-case`
+- execution 入口明确绑定 frozen feature package truth and coverage
 - 当 `PRODUCT.md` / `DESIGN.md` 存在时，实现产物必须对齐其中的设计基线（颜色、间距、圆角、阴影、组件规范）
 - blocked reason、gate context、branch/execution governance 可解释
 - prototype 条件触发时，不会被静默跳过
@@ -75,7 +76,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `project-root`
 - `version`
 - `feature`
-- frozen `prd / user-story / test-case`
+- frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`
 - conditionally required `prototype` when the feature has real UX/UI handoff
 - current gate / blocked reason / branch or execution governance context when present
 - `PRODUCT.md` — project-level product truth; must-read when the file exists at the project root
@@ -113,7 +114,17 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `beacon change ...` when truth must reopen
 - `beacon qa ...` after implementation evidence is ready
 
-## v1.5.0 Feature Package Quick Template
+## v1.5.2 Package-Authoritative Read Order
+
+For v1.5.2+ features, read the resolver output before consuming implementation inputs:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. Markdown package files are the requirement authority; resolver output, `.machine` JSON, QA status, and release reports are generated state, not requirement truth.
+
+## v1.5.2 Feature Package Quick Template
 
 When writing `features/<slug>/tasks.md`, use stable checkbox rows. These rows are a task ledger, not gate truth:
 
@@ -127,7 +138,7 @@ When writing `features/<slug>/tasks.md`, use stable checkbox rows. These rows ar
 - [-] TASK-003 Repair blocked package diagnostics
 ```
 
-Do not treat checked rows as implement, QA, or release completion. Existing gates remain authoritative.
+Do not treat checked rows as implement, QA, or release completion. CLI gates remain authoritative for state progression.
 
 ## Supporting References
 

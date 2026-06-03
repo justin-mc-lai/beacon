@@ -1,0 +1,529 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-beacon-truth-skill-lifecycle-rename-20260603t022547z",
+  "feature": "beacon-truth-skill-lifecycle-rename",
+  "feature_slug": "beacon-truth-skill-lifecycle-rename",
+  "version": "v1.5.2",
+  "change_reason": "adopt truth skill lifecycle rename requirement",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.2/change/beacon-truth-skill-lifecycle-rename.md",
+      "exists": false,
+      "status": "package_change_optional",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.2/.machine/change/beacon-truth-skill-lifecycle-rename.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4"
+  },
+  "truth_revision_after": {
+    "revision_id": "R3",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"beacon-truth-skill-lifecycle-rename\" --project . --version v1.5.2",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-03T02:25:47.652851+00:00",
+  "previous_revision": {
+    "revision_id": "R2",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4"
+  },
+  "opened_revision": {
+    "revision_id": "R3",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R3",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.5.2",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename",
+      "prd": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+      "truth": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+      "tests": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+      "tasks": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+      "evidence": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "tests": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "tasks": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "evidence": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "cee88d6730b1f7d43ff300e88ea3b210fbe937ece2d4f8f31357a3356f305877",
+        "tests": "138994e96a2ed9c17f847ec35166e90152e7eaa9c5e965f465f1075a7e23763c",
+        "tasks": "5794c1bc08082e0fd9ddfc62f1f324d05461cb0de5ca7efe2e7e6861647e4d7f",
+        "evidence": "7bec8eb0170006b836a5300d83559c650f1b7a2912ef39aafde84c137876f0d5"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "beacon-truth-skill-lifecycle-rename",
+        "feature_slug": "beacon-truth-skill-lifecycle-rename",
+        "version": "v1.5.2",
+        "source_paths": {
+          "truth": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+          "tests": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+          "tasks": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+          "evidence": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.5.2/.machine/requirement/beacon-truth-skill-lifecycle-rename.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.5.2/.machine/requirement/beacon-truth-skill-lifecycle-rename.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine beacon-truth-skill-lifecycle-rename --version v1.5.2"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change beacon-truth-skill-lifecycle-rename --version v1.5.2 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.5.2/.machine/requirement/beacon-truth-skill-lifecycle-rename.truth-map.json",
+        "docs/beacon/v1.5.2/.machine/requirement/beacon-truth-skill-lifecycle-rename.requirement-package.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "revision_id": "R3",
+      "ac_count": 8,
+      "test_count": 8,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-truth-skill-lifecycle-rename.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.2",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-03T02:25:47.682575+00:00",
+        "feature": "beacon-truth-skill-lifecycle-rename",
+        "feature_slug": "beacon-truth-skill-lifecycle-rename",
+        "prd_ref": "docs/beacon/v1.5.2/prd/beacon-truth-skill-lifecycle-rename.md",
+        "user_story_ref": "docs/beacon/v1.5.2/user-story/beacon-truth-skill-lifecycle-rename.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.5.2/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+          "prd": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+          "user_story": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+          "test_case": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+          "user_story_refs": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+          "test_case_refs": "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md",
+        "docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md",
+        "docs/beacon/v1.5.2/research/beacon-truth-skill-lifecycle-rename.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.json",
+      "markdown": "docs/beacon/v1.5.2/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-truth-skill-lifecycle-rename",
+      "feature_slug": "beacon-truth-skill-lifecycle-rename",
+      "version": "v1.5.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-beacon-truth-skill-lifecycle-rename.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T200514823024",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-03T02:25:47.835716+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-truth-skill-lifecycle-rename.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-truth-skill-lifecycle-rename",
+    "feature_slug": "beacon-truth-skill-lifecycle-rename",
+    "version": "v1.5.2",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 8,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "closure-trace",
+        "text": "The new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, QA, and release.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::closure-trace::the new lifecycle language must preserve the closure route from support research to truth package, requirement clarity, implementation, qa, and release.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "compatibility-aliases",
+        "text": "Existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::compatibility-aliases::existing `beacon-prd`, `beacon-user-story`, and `beacon-test-case` skills remain available as compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "coverage-boundary",
+        "text": "Coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::coverage-boundary::coverage truth remains in `features/<slug>/tests.md`; `truth.md` owns requirement and acceptance framing, not executable coverage matrices.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "lifecycle-language",
+        "text": "Root Beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::lifecycle-language::root beacon and brainstorm guidance must describe the preferred truth chain as `truth.define -> truth.acceptance -> truth.coverage`, while documenting the old skill names as aliases.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "mode-separation",
+        "text": "`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::mode-separation::`beacon-truth` must preserve distinct modes for definition, acceptance, coverage, and change instead of flattening all requirement work into one freeform truth surface.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-stage-inflation",
+        "text": "`beacon-truth` must not turn brainstorm, change-refreeze, QA, or release into truth authoring stages.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::no-stage-inflation::`beacon-truth` must not turn brainstorm, change-refreeze, qa, or release into truth authoring stages.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "Every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::package-authority::every `beacon-truth` mode must resolve feature truth through `beacon truth-map resolve <feature> --project . --version v1.5.2 --json` before reading or writing requirement material.::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-umbrella",
+        "text": "Beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md",
+        "signature": "ac::::truth-umbrella::beacon exposes `beacon-truth` as the preferred v1.5.2+ human-facing truth umbrella for feature package requirement work.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+    "source_baseline_hash": "sha256:c6887853b9d3cf8f27238b9ea5b1a4c1c7637c50fc6b850c5a26f032c5f4bfb4",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/beacon-truth-skill-lifecycle-rename.json",
+    "generated_at": "2026-06-03T02:25:47.918189+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-beacon-truth-skill-lifecycle-rename.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-beacon-truth-skill-lifecycle-rename.md"
+  }
+}

@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.global_boundaries import global_boundary_prompt_lines
+from beacon.utils.truth_map import feature_package_authoritative
 
 try:  # pragma: no cover - optional dependency
     import yaml  # type: ignore
@@ -367,14 +368,25 @@ def build_default_task_prompt(
     operator_prompt: str = "",
     prompt_boundary: dict[str, Any] | None = None,
 ) -> str:
+    if feature_package_authoritative(version):
+        truth_refs = [
+            f"{source_of_truth_root}/features/{feature_slug}/truth.md",
+            f"{source_of_truth_root}/features/{feature_slug}/tests.md",
+            f"{source_of_truth_root}/features/{feature_slug}/tasks.md",
+            f"{source_of_truth_root}/features/{feature_slug}/evidence.md",
+        ]
+    else:
+        truth_refs = [
+            f"{source_of_truth_root}/user-story/{feature_slug}.md",
+            f"{source_of_truth_root}/prd/{feature_slug}.md",
+            f"{source_of_truth_root}/qa/test-cases/{feature_slug}.md",
+        ]
     lines = [
         "Implement the scoped Beacon feature.",
         f"Feature: {feature}",
         f"Version: {version}",
         "Read Beacon source of truth:",
-        f"- {source_of_truth_root}/user-story/{feature_slug}.md",
-        f"- {source_of_truth_root}/prd/{feature_slug}.md",
-        f"- {source_of_truth_root}/qa/test-cases/{feature_slug}.md",
+        *[f"- {ref}" for ref in truth_refs],
     ]
     root = Path(project_root) if str(project_root or "").strip() else None
     project_truth_lines: list[str] = []

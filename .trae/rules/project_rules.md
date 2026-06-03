@@ -52,9 +52,11 @@
 - `beacon-toolkit-branch-governance`
 - `beacon-toolkit-lighthouse`
 - `beacon-toolkit-metadata`
+- `beacon-truth`
 - `beacon-user-story`
 - `using-beacon`
 <!-- BEACON:AGENT_SURFACE:END -->
+
 
 
 

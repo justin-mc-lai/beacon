@@ -19,6 +19,7 @@ from beacon.utils.qa_runtime import (
     qa_session_manifest_path,
 )
 from beacon.utils.runtime import newest_run_id, read_json
+from beacon.utils.requirement_refs import requirement_truth_paths
 from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 
@@ -278,12 +279,16 @@ def _resolve_primary_feature(project_root: Path, docs_version: str, feature: str
 
 
 def _feature_paths(project_root: Path, *, docs_version: str, feature: str) -> dict[str, Path]:
-    slug = feature_slug(feature)
-    base = project_root / "docs" / "beacon" / docs_version
+    refs = requirement_truth_paths(
+        project_root,
+        version=docs_version,
+        feature=feature,
+        consumer="runtime-projection",
+    )
     return {
-        "prd": base / "prd" / f"{slug}.md",
-        "user_story": base / "user-story" / f"{slug}.md",
-        "test_case": base / "qa" / "test-cases" / f"{slug}.md",
+        "prd": refs["prd"],
+        "user_story": refs["user_story"],
+        "test_case": refs["test_case"],
     }
 
 

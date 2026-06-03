@@ -12,6 +12,11 @@ import typer
 
 from beacon.commands.test_case import create as create_test_case
 from beacon.utils.story_state import sync_story_state_from_docs
+from beacon.utils.truth_map import (
+    feature_package_authoritative,
+    rebuild_machine_json,
+    resolve_truth_read_refs,
+)
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -160,6 +165,32 @@ def sync_change_loop_requirement_package(
 ) -> dict[str, Any]:
     """Refresh the active machine requirement package during reopen/freeze change loops."""
     resolved_version = resolve_target_version(project_root, version)
+    if feature_package_authoritative(resolved_version):
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="change-refreeze",
+        )["requirement_refs"]
+        rebuilt = rebuild_machine_json(project_root, version=resolved_version, feature=feature)
+        story_sync = sync_story_state_from_docs(project_root, resolved_version, feature)
+        validation_status = str(rebuilt.get("validation_status") or "")
+        return {
+            "schema_version": "1.0",
+            "project_root": str(project_root),
+            "version": resolved_version,
+            "feature": feature,
+            "status": "synced" if validation_status == "pass" else "blocked",
+            "authority_state": "feature_package_authoritative",
+            "truth_authority": "markdown_feature_package",
+            "requirement_refs": refs,
+            "story_path": str(refs.get("user_story") or ""),
+            "qa_matrix_path": str(refs.get("test_case") or ""),
+            "qa9_matrix_path": "",
+            "story_scenario_map_path": "",
+            "machine_rebuild": rebuilt,
+            "story_sync": story_sync,
+        }
     result = sync_feature_requirement_materials(
         project_root,
         version=resolved_version,

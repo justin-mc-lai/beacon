@@ -1,6 +1,6 @@
 <!-- BEACON:START -->
-<!-- BEACON:VERSION:v1.4.13 -->
-<!-- BEACON:DOCS_VERSION:v1.4.13 -->
+<!-- BEACON:VERSION:v1.5.2 -->
+<!-- BEACON:DOCS_VERSION:v1.5.2 -->
 # AGENTS.md
 
 This file is Beacon-managed agent operation guidance.
@@ -11,18 +11,20 @@ This file is Beacon-managed agent operation guidance.
 - Preserve user-authored sections outside Beacon managed blocks.
 
 ## Beacon requirement-material usage
-- Runtime target version: `v1.4.13`
-- Docs target version: `v1.4.13`
+- Runtime target version: `v1.5.2`
+- Docs target version: `v1.5.2`
 - Use `docs/beacon/global-boundaries.md` as the canonical Beacon-wide global constraint source.
 - Use `docs/beacon/<version>/` as the canonical delivery tree.
 - Read progressively in this order:
+  0. `beacon truth-map resolve <feature> --project . --version <version> --json` (resolver-first for v1.5.2+)
+
   1. `docs/beacon/global-boundaries.md`
   2. `docs/beacon/<version>/SUMMARY.md`
   3. `docs/beacon/<version>/execution/index.md`
   4. `docs/beacon/<version>/execution/architecture-blueprint.md`
-  5. `docs/beacon/<version>/prd/`, `user-story/`, `qa/test-cases/`
+  5. `docs/beacon/<version>/features/<slug>/truth.md` (requirement authority), `tests.md` (coverage authority)
   6. `docs/beacon/<version>/.machine/`
-- For greenfield projects: start with architecture blueprint, then enter think → user-story → prd.
+- For greenfield projects: start with architecture blueprint, then enter truth.define → truth.accept → implement.
 - For takeover projects: document current-state architecture, service map, constraints, and version timeline before new implementation.
 - If context blocks are missing/corrupted, run:
   - `beacon doctor setup-context --project-root .`
