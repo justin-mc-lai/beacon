@@ -1,28 +1,17 @@
 from __future__ import annotations
 
 import json
-import importlib.util
 import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
 
+from beacon.commands.implement.commands import _branch_guard_inputs, _run_branch_preflight
 from beacon.main import app
 from beacon.utils.project_metadata import resolve_project_metadata_view
 
 
 runner = CliRunner()
-
-
-_IMPLEMENT_SPEC = importlib.util.spec_from_file_location(
-    "beacon_commands_implement_file",
-    Path(__file__).resolve().parents[1] / "beacon" / "commands" / "implement.py",
-)
-assert _IMPLEMENT_SPEC and _IMPLEMENT_SPEC.loader
-_IMPLEMENT_MODULE = importlib.util.module_from_spec(_IMPLEMENT_SPEC)
-_IMPLEMENT_SPEC.loader.exec_module(_IMPLEMENT_MODULE)
-_branch_guard_inputs = _IMPLEMENT_MODULE._branch_guard_inputs
-_run_branch_preflight = _IMPLEMENT_MODULE._run_branch_preflight
 
 
 def _git(cmd: list[str], cwd: Path) -> None:

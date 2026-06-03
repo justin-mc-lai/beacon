@@ -1,20 +1,10 @@
 from __future__ import annotations
 
-import importlib.util
 import subprocess
 from pathlib import Path
 
+from beacon.commands.implement.commands import _run_branch_preflight
 from beacon.utils.git_alignment import ensure_expected_worktree_lane, switch_to_expected_branch
-
-
-_IMPLEMENT_SPEC = importlib.util.spec_from_file_location(
-    "beacon_commands_implement_file_v140_switch",
-    Path(__file__).resolve().parents[1] / "beacon" / "commands" / "implement.py",
-)
-assert _IMPLEMENT_SPEC and _IMPLEMENT_SPEC.loader
-_IMPLEMENT_MODULE = importlib.util.module_from_spec(_IMPLEMENT_SPEC)
-_IMPLEMENT_SPEC.loader.exec_module(_IMPLEMENT_MODULE)
-_run_branch_preflight = _IMPLEMENT_MODULE._run_branch_preflight
 
 
 def _git(cmd: list[str], cwd: Path) -> None:

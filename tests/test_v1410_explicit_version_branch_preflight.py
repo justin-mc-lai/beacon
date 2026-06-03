@@ -1,21 +1,10 @@
 from __future__ import annotations
 
-import importlib.util
 import subprocess
 from pathlib import Path
 
+from beacon.commands.implement.commands import _branch_guard_inputs, _run_branch_preflight
 from beacon.utils.execution_branch_contract import load_execution_branch_contract
-
-
-_IMPLEMENT_SPEC = importlib.util.spec_from_file_location(
-    "beacon_commands_implement_file_v1410_explicit_version",
-    Path(__file__).resolve().parents[1] / "beacon" / "commands" / "implement.py",
-)
-assert _IMPLEMENT_SPEC and _IMPLEMENT_SPEC.loader
-_IMPLEMENT_MODULE = importlib.util.module_from_spec(_IMPLEMENT_SPEC)
-_IMPLEMENT_SPEC.loader.exec_module(_IMPLEMENT_MODULE)
-_branch_guard_inputs = _IMPLEMENT_MODULE._branch_guard_inputs
-_run_branch_preflight = _IMPLEMENT_MODULE._run_branch_preflight
 
 
 FEATURE = "msq-part1-dossier"
