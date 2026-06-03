@@ -6,6 +6,8 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 
+from tests.support.fail_closed import assert_missing_prd_truth
+
 
 runner = CliRunner()
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,14 +18,20 @@ def _invoke(args: list[str]):
     return runner.invoke(app, args)
 
 
+def test_v131_user_story_should_fail_closed_without_prd_truth(tmp_path: Path):
+    for feature in ("Feature Alpha", "Feature Beta"):
+        us = _invoke(["user-story", "create", feature, "--project", str(tmp_path), "--version", VERSION])
+        assert_missing_prd_truth(us, feature=feature)
+
+
 def test_v131_should_allow_multiple_parallel_feature_packages_in_same_version(tmp_path: Path):
     features = ["Feature Alpha", "Feature Beta"]
 
     for feature in features:
-        us = _invoke(["user-story", "create", feature, "--project", str(tmp_path), "--version", VERSION])
-        assert us.exit_code == 0
         prd = _invoke(["prd", "create", feature, "--project", str(tmp_path), "--version", VERSION])
         assert prd.exit_code == 0
+        us = _invoke(["user-story", "create", feature, "--project", str(tmp_path), "--version", VERSION])
+        assert us.exit_code == 0
         tc = _invoke(["test-case", "create", feature, "--project", str(tmp_path), "--version", VERSION])
         assert tc.exit_code == 0
 

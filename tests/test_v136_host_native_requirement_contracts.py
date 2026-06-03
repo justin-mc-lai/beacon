@@ -10,8 +10,12 @@ from typer.testing import CliRunner
 
 from beacon.main import app
 from beacon.utils.semantic_runtime import build_semantic_capability_snapshot, ensure_default_host_bridge_env
+from beacon.utils.story_state import feature_slug
 import beacon.utils.prototype_utils as prototype_utils
 import beacon.commands.prototype as prototype_command
+
+from tests.support.fail_closed import assert_missing_prd_truth, assert_prototype_missing_requirement_truth
+from tests.support.truth_fixtures import seed_legacy_prd
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -34,15 +38,16 @@ def _seed_docs(root: Path, version: str = "v1.3.6") -> None:
 def _copy_real_v136_sources(tmp_path: Path) -> str:
     version = "v1.3.6"
     feature = "beacon-v1.3.6-visual-management-console-and-material-viewer"
-    targets = {
+    slug = feature_slug(feature)
+    sources = {
         ROOT / "docs" / "beacon" / version / "user-story" / "beacon-v1.3.6-visual-management-console-and-material-viewer.md":
-            tmp_path / "docs" / "beacon" / version / "user-story" / "beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+            tmp_path / "docs" / "beacon" / version / "user-story" / f"{slug}.md",
         ROOT / "docs" / "beacon" / version / "prd" / "beacon-v1-3-6-visual-management-console-and-material-viewer.md":
-            tmp_path / "docs" / "beacon" / version / "prd" / "beacon-v1-3-6-visual-management-console-and-material-viewer.md",
+            tmp_path / "docs" / "beacon" / version / "prd" / f"{slug}.md",
         ROOT / "docs" / "beacon" / version / "qa" / "test-cases" / "beacon-v1.3.6-visual-management-console-and-material-viewer.md":
-            tmp_path / "docs" / "beacon" / version / "qa" / "test-cases" / "beacon-v1.3.6-visual-management-console-and-material-viewer.md",
+            tmp_path / "docs" / "beacon" / version / "qa" / "test-cases" / f"{slug}.md",
     }
-    for source, target in targets.items():
+    for source, target in sources.items():
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
     return feature
@@ -444,6 +449,7 @@ def test_v136_user_story_should_use_command_bridge_when_available(monkeypatch, t
     _seed_docs(tmp_path)
     monkeypatch.setenv("BEACON_HOST_RUNTIME", "codex")
     monkeypatch.setenv("BEACON_HOST_USER_STORY_BRIDGE_CMD", f"{sys.executable} {bridge_script}")
+    seed_legacy_prd(tmp_path, "v1.3.6", "Bridge Story")
     result = _invoke(["user-story", "create", "Bridge Story", "--project", str(tmp_path), "--version", "v1.3.6", "--json"])
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
@@ -770,8 +776,43 @@ def test_v136_prototype_should_fallback_to_provider_when_default_host_bridge_can
     assert "PROVIDER HOST 首页" in (root / "pages" / "home.md").read_text(encoding="utf-8")
 
 
+def test_v136_user_story_should_fail_closed_without_prd_truth(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    result = _invoke(
+        [
+            "user-story",
+            "create",
+            "Host Native Story",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.6",
+            "--json",
+        ]
+    )
+    assert_missing_prd_truth(result, feature="Host Native Story")
+
+
+def test_v136_prototype_should_fail_closed_without_requirement_truth(tmp_path: Path) -> None:
+    _seed_docs(tmp_path)
+    result = _invoke(
+        [
+            "prototype",
+            "create",
+            "Host Native Prototype",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.6",
+            "--json",
+        ]
+    )
+    assert_prototype_missing_requirement_truth(result)
+
+
 def test_v136_user_story_should_emit_mode_contract_json(monkeypatch, tmp_path: Path) -> None:
     _seed_docs(tmp_path)
+    seed_legacy_prd(tmp_path, "v1.3.6", "Host Native Story")
     monkeypatch.setenv("BEACON_HOST_RUNTIME", "codex")
     monkeypatch.delenv("BEACON_HOST_USER_STORY_RESPONSE_JSON", raising=False)
     monkeypatch.delenv("BEACON_HOST_USER_STORY_BRIDGE_CMD", raising=False)
