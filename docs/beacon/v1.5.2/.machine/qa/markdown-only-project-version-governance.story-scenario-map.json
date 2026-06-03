@@ -1,0 +1,774 @@
+{
+  "schema_version": "1.0",
+  "feature": "markdown-only-project-version-governance",
+  "feature_slug": "markdown-only-project-version-governance",
+  "version": "v1.5.2",
+  "generated_at": "2026-06-03T13:43:56.169141+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "md-only-authority",
+      "text": "`docs/beacon/governance/project-version-governance.md` is the sole authority for topology, version contracts, and per-service canonical branches.",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "zero-governance-json",
+      "text": "No governance JSON records under `.beacon/metadata/` (including `project-version-metadata.json`); strict verify fails closed if any remain after migration.",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "resolver-required",
+      "text": "`beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implement preflight, material gate, and doctor metadata verify consume `resolve_project_governance` only.",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "read-from-md",
+      "text": "`load_project_metadata` (or successor) parses governance MD; it must not treat JSON as authority.",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "write-to-md-only",
+      "text": "Metadata/branch-governance write transactions update governance MD only; they must not create or update governance JSON as authority.",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-execution-triple-authority",
+      "text": "When governance MD exists for the active version, `load_execution_branch_contract` must not merge branch fields into implement contract (fail-closed or hard ignore with diagnostic).",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "unified-toolkit-transaction",
+      "text": "Metadata and branch-governance toolkit surfaces share one governance MD transaction path (no split JSON vs execution sinks).",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "branch-guard-resolver-only",
+      "text": "`_branch_guard_inputs` derives `expected_branch`, `git_roots`, `participating_services`, `service_branch_map`, and `branch_governance` from the resolver view without execution-contract residue.",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "monorepo-md-contract",
+      "text": "Monorepo topology with multiple `service_bindings` and `per_service_canonical_branch` entries round-trips through governance MD parse and implement preflight.",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "migrate-and-delete-json",
+      "text": "`beacon doctor metadata migrate-to-governance-md` (or equivalent) imports existing JSON envelope into governance MD and removes governance JSON files after successful verify.",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "material-gate-md-path",
+      "text": "Material gate / release supplements reference governance MD via resolver, not hard-coded `.beacon/metadata/*.json` paths.",
+      "scenario_ids": [
+        "SC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-011",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "truth-map-surface",
+      "text": "truth-map registers `project_governance` (or equivalent) as version governance truth for Git/topology, distinct from `SUMMARY.md` product boundary surfaces.",
+      "scenario_ids": [
+        "SC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-012",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "explicit-version-preflight",
+      "text": "Explicit-version implement preflight resolves canonical branch/worktree from governance MD for the requested version; `origin/master` ancestry alone cannot pass preflight when canonical branch mismatches.",
+      "scenario_ids": [
+        "SC-013"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-013",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Resolver points to `docs/beacon/governance/project-version-governance.md`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_governance_md_is_sole_authority_path -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: Strict verify fails if `.beacon/metadata/project-version-metadata.json` exists post-migrate.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_governance_json_absence_fail_closed -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Implement preflight and metadata toolkit routes use resolver, not direct JSON read.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_consumers_use_resolve_project_governance -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: Load path parses governance MD; JSON path not used as authority.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_load_project_metadata_reads_md_only -q",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Write transaction updates MD only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_commit_writes_md_not_governance_json -q",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: With governance MD present, execution triple cannot override branch map.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_execution_triple_branch_merge_fail_closed -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Metadata and branch-governance commands target same MD file.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_toolkit_shared_md_transaction -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: `_branch_guard_inputs` has no execution `service_branch_map` residue.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_branch_guard_inputs_from_resolver_only -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: Multiple services and branches parse and preflight correctly.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_monorepo_version_contract_from_md -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Migrate imports JSON envelope then deletes governance JSON.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_migrate_removes_governance_json -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-011",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-011 primary path :: Material gate does not hard-code metadata JSON path.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_material_gate_uses_governance_md_resolver -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-012",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-012 primary path :: truth-map lists governance MD as truth role.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_truth_map_registers_project_governance_surface -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-013",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-013 primary path :: Wrong per-service branch blocks before edit; master ancestry alone insufficient.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_explicit_version_canonical_branch_from_governance_md -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/markdown-only-project-version-governance/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

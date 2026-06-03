@@ -1,0 +1,600 @@
+{
+  "schema_version": "1.0",
+  "feature": "project-governance-projection-lifecycle",
+  "feature_slug": "project-governance-projection-lifecycle",
+  "version": "v1.5.2",
+  "generated_at": "2026-06-03T14:22:00.406810+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "Parent feature AC-002",
+      "text": "Parent feature AC-002",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "truth-map-single-truth",
+      "text": "`VERSION_GOVERNANCE_SURFACES.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=True`) for `docs/beacon/governance/project-version-governance.md`.",
+      "scenario_ids": [
+        "SC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "truth-map-resolver-docs",
+      "text": "`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills.",
+      "scenario_ids": [
+        "SC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "sqlite-hash-projection",
+      "text": "`project_metadata_current` / events store `source_hash` from governance MD frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority.",
+      "scenario_ids": [
+        "SC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "verify-projection-drift",
+      "text": "`doctor metadata verify` (and governance verify helper) fails closed when MD `source_hash` ≠ sqlite `source_hash` or sqlite row missing while MD authoritative (`reason_code`: `governance_projection_drift`).",
+      "scenario_ids": [
+        "SC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-005",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "sqlite-not-write-authority",
+      "text": "No commit path may load sqlite `payload_json` to mutate governance MD; commits flow MD → sqlite projection only.",
+      "scenario_ids": [
+        "SC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-006",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "version-contract-validation-state",
+      "text": "`beacon-project-governance-v1` accepts `validation_state: active \\",
+      "scenario_ids": [
+        "SC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "resolver-active-contract",
+      "text": "`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only).",
+      "scenario_ids": [
+        "SC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-008",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "doctor-archive-version",
+      "text": "`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same MD transaction as upsert (no JSON sink).",
+      "scenario_ids": [
+        "SC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-009",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "doctor-prune-archived",
+      "text": "`beacon doctor metadata prune-archived` removes archived `###` blocks from governance MD with `--dry-run` default; strict verify passes after prune.",
+      "scenario_ids": [
+        "SC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-010",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: Only `project_governance` maps live MD with `is_truth=True`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_single_governance_truth_surface -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-002 primary path :: No generated surface points at governance MD path.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_no_dual_role_on_governance_md -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: Resolver/inventory payload includes truth vs projection roles.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_resolver_documents_projection_roles -q",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: After commit, sqlite `source_hash` matches MD frontmatter.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_sqlite_stores_source_hash_from_md -q",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-005",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: Tampered sqlite or stale hash → `governance_projection_drift`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_verify_fails_on_projection_drift -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-006",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-006 primary path :: No function writes MD from sqlite payload alone.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_sqlite_payload_not_commit_authority -q",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "AC-007 primary path :: Parse round-trip `active` / `archived`.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_parser_accepts_archived_validation_state -q",
+      "assertion": "All unit assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-008",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-008 primary path :: Archived version not used for branch preflight.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_resolver_skips_archived_contract -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-009",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-009 primary path :: `archive-version` sets `validation_state: archived` in MD.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_doctor_archive_version_marks_archived -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-010",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-010 primary path :: Prune dry-run vs apply removes archived blocks only.",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_doctor_prune_archived_dry_run_and_apply -q",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/project-governance-projection-lifecycle/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

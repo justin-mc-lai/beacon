@@ -2237,34 +2237,46 @@ def _run_branch_preflight(
 
 
 def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    from beacon.utils.project_governance import governance_md_authoritative
+
     config = load_beacon_config(project_root)
     implementation_cfg = config.get("implementation") if isinstance(config.get("implementation"), dict) else {}
     branch_guard_cfg = implementation_cfg.get("branch_guard") if isinstance(implementation_cfg.get("branch_guard"), dict) else {}
     contract = load_or_seed_implementation_git_workflow_contract(project_root, version=version, feature=feature)
     execution_contract = load_execution_branch_contract(project_root, version=version, feature=feature)
+    governance_md_active = governance_md_authoritative(project_root)
+    execution_branch_override_keys = {
+        "expected_branch",
+        "branch_prefix",
+        "base_branch",
+        "require_clean_worktree_for_switch",
+        "service_directories",
+        "direct_delivery_services",
+        "git_roots",
+        "worktree_root",
+        "service_branch_map",
+        "service_worktree_map",
+    }
     if isinstance(execution_contract, dict) and execution_contract.get("material_paths"):
-        contract = {
-            **contract,
-            **{
-                key: value
-                for key, value in execution_contract.items()
-                if key
-                in {
-                    "expected_branch",
-                    "branch_prefix",
-                    "base_branch",
-                    "require_clean_worktree_for_switch",
-                    "service_directories",
-                    "direct_delivery_services",
-                    "git_roots",
-                    "worktree_root",
-                    "service_branch_map",
-                    "service_worktree_map",
-                }
-                and value not in ("", None, [], {})
-            },
-            "execution_branch_contract": execution_contract,
-        }
+        if governance_md_active:
+            contract = {
+                **contract,
+                "execution_branch_contract": {
+                    **execution_contract,
+                    "branch_authority": "markdown_project_governance",
+                    "execution_branch_override_blocked": True,
+                },
+            }
+        else:
+            contract = {
+                **contract,
+                **{
+                    key: value
+                    for key, value in execution_contract.items()
+                    if key in execution_branch_override_keys and value not in ("", None, [], {})
+                },
+                "execution_branch_contract": execution_contract,
+            }
     service_directories = _normalize_string_list(contract.get("service_directories") or contract.get("git_roots"))
     direct_delivery_services = _normalize_string_list(contract.get("direct_delivery_services") or service_directories)
     expected_branch = str(contract.get("expected_branch", "") or str(branch_guard_cfg.get("expected_branch", "") or "")).strip()
@@ -2294,6 +2306,36 @@ def _branch_guard_inputs(project_root: Path, *, version: str, feature: str) -> d
     version_contract = metadata_view.get("version_contract") if isinstance(metadata_view.get("version_contract"), dict) else {}
     selected_service = str(metadata_view.get("selected_service") or "").strip()
     service_binding = metadata_view.get("selected_service_binding") if isinstance(metadata_view.get("selected_service_binding"), dict) else {}
+    if governance_md_active and version_contract and selected_service and service_binding:
+        per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
+        participating = version_contract.get("participating_services") if isinstance(version_contract.get("participating_services"), list) else []
+        payload["expected_branch"] = str(per_service.get(selected_service) or metadata_view.get("selected_branch") or "").strip()
+        if "/" in payload["expected_branch"]:
+            payload["branch_prefix"] = payload["expected_branch"].split("/", 1)[0] + "/"
+        git_roots = [
+            str(item.get("repo_root") or "")
+            for item in metadata_view.get("service_bindings", [])
+            if isinstance(item, dict) and str(item.get("service_key") or "") in participating and str(item.get("repo_root") or "").strip()
+        ]
+        if git_roots:
+            payload["git_roots"] = git_roots
+        if participating:
+            payload["direct_delivery_services"] = [str(item) for item in participating]
+            if str(metadata_view.get("topology_kind") or "").strip() == "single_repo":
+                repo_aliases = [Path(item).name for item in git_roots if str(item).strip()]
+                payload["direct_delivery_services"] = list(dict.fromkeys(repo_aliases or payload["direct_delivery_services"]))
+        if per_service:
+            payload["service_branch_map"] = {str(key): str(value) for key, value in per_service.items() if str(key).strip() and str(value).strip()}
+        if isinstance(metadata_view.get("branch_governance"), dict):
+            payload["branch_governance"] = metadata_view.get("branch_governance", {})
+        payload["metadata_contract"] = {
+            "project_root": metadata_view.get("project_root", ""),
+            "topology_kind": metadata_view.get("topology_kind", ""),
+            "selected_service": selected_service,
+            "governance_md_path": metadata_view.get("paths", {}).get("governance_md", ""),
+            "authority": metadata_view.get("authority", "markdown_project_governance"),
+        }
+        return payload
     if version_contract and selected_service and service_binding:
         per_service = version_contract.get("per_service_canonical_branch") if isinstance(version_contract.get("per_service_canonical_branch"), dict) else {}
         selected_branch = str(per_service.get(selected_service) or "").strip()

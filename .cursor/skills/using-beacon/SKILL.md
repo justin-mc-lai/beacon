@@ -35,7 +35,8 @@ The public surface follows Beacon's current human-facing runtime line. Route by 
   - execution = prototype handoff or implementation work against frozen truth
   - verification/gate = evidence closure, acceptance confidence, release judgment
   - support = challenge, convergence, diagnosis, method strengthening, route explanation
-- route to `beacon-prd`, `beacon-user-story`, `beacon-test-case`, or `beacon-change` when the request is about truth
+- route to `beacon-truth` when the request is about truth; use `truth.define`, `truth.acceptance`, `truth.coverage`, or `truth.change` as the preferred v1.5.2+ modes
+- compatibility aliases remain available: `beacon-prd`, `beacon-user-story`, `beacon-test-case`, and `beacon-change`
 - route to `beacon-prototype` or `beacon-implement` when the request is about execution
 - route to `beacon-qa` or `beacon-release` when the request is about evidence or gate judgment
 - route to `beacon-brainstorm`, `beacon-ceo-review`, `beacon-design-review`, `beacon-deep`, `beacon-context-engineering`, `beacon-source-driven`, `beacon-doubt-review`, `beacon-security-review`, `beacon-performance-review`, `beacon-documentation-adr`, `beacon-debug-recovery`, `beacon-help`, `beacon-status`, or `beacon-doctor` only when support is the real need
@@ -88,6 +89,7 @@ route explanation can distinguish frozen truth and learning hint.
 - `beacon-prd`
 - `beacon-user-story`
 - `beacon-test-case`
+- `beacon-truth`
 - `beacon-prototype`
 - `beacon-change`
 - `beacon-brainstorm`
@@ -113,9 +115,9 @@ route explanation can distinguish frozen truth and learning hint.
 
 ## Examples
 
-- “这个 feature 的承诺面还不清楚，PRD 需要先收口” -> `beacon-prd`
-- “PRD 已经有了，但 acceptance criteria 还不够可执行” -> `beacon-user-story`
-- “故事线没问题，但测试覆盖和 release proof 还不完整” -> `beacon-test-case` 或 `beacon-qa`
+- “这个 feature 的承诺面还不清楚，PRD 需要先收口” -> `beacon-truth` mode `truth.define` / compatibility alias `beacon-prd`
+- “PRD 已经有了，但 acceptance criteria 还不够可执行” -> `beacon-truth` mode `truth.acceptance` / compatibility alias `beacon-user-story`
+- “故事线没问题，但测试覆盖和 release proof 还不完整” -> `beacon-truth` mode `truth.coverage` / compatibility alias `beacon-test-case`, then `beacon-qa`
 - “我不想改 frozen truth，只想继续 challenge 假设或收敛 gap” -> `beacon-brainstorm`
 - “scope 没想改，但当前实现上下文太乱，想先把上下文重排干净” -> `beacon-context-engineering`
 - “truth 稳了，想确保实现和 review 时优先锚定 source 而不是自由发挥” -> `beacon-source-driven`

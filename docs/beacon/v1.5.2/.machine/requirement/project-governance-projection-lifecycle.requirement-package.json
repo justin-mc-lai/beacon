@@ -1,0 +1,257 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-03T14:04:53.472332+00:00",
+  "feature": "project-governance-projection-lifecycle",
+  "feature_slug": "project-governance-projection-lifecycle",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "62cdf38f2b3a673cde62027d74235d2a6bd58e19e0b5cf03f0ba05b462bc89e1",
+    "tests": "882771cb5f266970accccab3d165235212d6770b4e42ab0ce1625f6ec3e892c3",
+    "tasks": "4d543d2371aa6f769611db0864504c003a763aab1ca9fed9a04f0835bd129721",
+    "evidence": "7d26e5b2ff794306b9ae77433c2877b11946891d7495275483e55d8dd30c7dc5"
+  },
+  "truth_frontmatter": {
+    "slug": "project-governance-projection-lifecycle",
+    "version": "v1.5.2",
+    "status": "draft",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parent_feature": "markdown-only-project-version-governance",
+    "governance_parser_contract": "beacon-project-governance-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "truth-map-single-truth",
+      "description": "`VERSION_GOVERNANCE_SURFACES.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=True`) for `docs/beacon/governance/project-version-governance.md`."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "truth-map-no-dual-role",
+      "description": "`GENERATED_GOVERNANCE_SURFACES` must not register the same governance MD path with `generated_governance_state_not_truth`. Legacy alias `project_version_metadata` may remain only if it points to a **deprecated** path (e.g. removed `.beacon/metadata/project-version-metadata.json`) or is removed; never dual-classify the live MD."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "truth-map-resolver-docs",
+      "description": "`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "sqlite-hash-projection",
+      "description": "`project_metadata_current` / events store `source_hash` from governance MD frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "verify-projection-drift",
+      "description": "`doctor metadata verify` (and governance verify helper) fails closed when MD `source_hash` ≠ sqlite `source_hash` or sqlite row missing while MD authoritative (`reason_code`: `governance_projection_drift`)."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "sqlite-not-write-authority",
+      "description": "No commit path may load sqlite `payload_json` to mutate governance MD; commits flow MD → sqlite projection only."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "version-contract-validation-state",
+      "description": "`beacon-project-governance-v1` accepts `validation_state: active \\"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "resolver-active-contract",
+      "description": "`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only)."
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "doctor-archive-version",
+      "description": "`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same MD transaction as upsert (no JSON sink)."
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "doctor-prune-archived",
+      "description": "`beacon doctor metadata prune-archived` removes archived `###` blocks from governance MD with `--dry-run` default; strict verify passes after prune."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_single_governance_truth_surface -q`",
+      "assertion": "Only `project_governance` maps live MD with `is_truth=True`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_no_dual_role_on_governance_md -q`",
+      "assertion": "No generated surface points at governance MD path.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_truth_map_resolver_documents_projection_roles -q`",
+      "assertion": "Resolver/inventory payload includes truth vs projection roles.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_sqlite_stores_source_hash_from_md -q`",
+      "assertion": "After commit, sqlite `source_hash` matches MD frontmatter.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_verify_fails_on_projection_drift -q`",
+      "assertion": "Tampered sqlite or stale hash → `governance_projection_drift`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_sqlite_payload_not_commit_authority -q`",
+      "assertion": "No function writes MD from sqlite payload alone.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_parser_accepts_archived_validation_state -q`",
+      "assertion": "Parse round-trip `active` / `archived`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_resolver_skips_archived_contract -q`",
+      "assertion": "Archived version not used for branch preflight.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_doctor_archive_version_marks_archived -q`",
+      "assertion": "`archive-version` sets `validation_state: archived` in MD.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_project_governance_projection_lifecycle.py::test_doctor_prune_archived_dry_run_and_apply -q`",
+      "assertion": "Prune dry-run vs apply removes archived blocks only.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Fix `truth_map.py` dual surface on governance MD (AC-001, AC-002, AC-003)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Align sqlite projection to MD `source_hash`; optional slim `payload_json` (AC-004, AC-006)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Add `governance_projection_drift` to `verify_project_metadata` / doctor verify (AC-005)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Extend governance parser/render for `validation_state` active|archived (AC-007)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Filter archived contracts in `resolve_project_governance` (AC-008)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Add `doctor metadata archive-version` and `prune-archived` (AC-009, AC-010)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Add `tests/test_project_governance_projection_lifecycle.py` per coverage matrix",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Run parent governance regression + package validation before freeze",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/version-governance-md-only-convergence.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/global-boundaries.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "status": "authoritative",
+      "route": "change"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+      "status": "authoritative",
+      "route": "test-case"
+    }
+  ]
+}

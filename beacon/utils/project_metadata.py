@@ -9,6 +9,17 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.branch_governance import resolve_branch_governance_view
+from beacon.utils.project_governance import (
+    commit_governance_payload,
+    governance_json_forbidden,
+    governance_md_authoritative,
+    governance_md_path,
+    load_governance_payload,
+    migrate_json_to_governance_md,
+    read_governance_md_source_hash,
+    resolve_project_governance,
+    verify_governance_projection,
+)
 from beacon.utils.runtime import now_iso, read_json, write_json
 from beacon.utils.runtime_projection_store import _connect, runtime_ledger_db_path
 
@@ -50,6 +61,8 @@ def _default_payload(project_root: Path) -> dict[str, Any]:
 
 def load_project_metadata(project_root: Path) -> dict[str, Any]:
     root = project_root.expanduser().resolve()
+    if governance_md_authoritative(root):
+        return load_governance_payload(root)
     payload = read_json(metadata_machine_path(root), {})
     if not isinstance(payload, dict) or not payload:
         return _default_payload(root)
@@ -174,15 +187,25 @@ def _ensure_metadata_sqlite_schema() -> None:
                 project_root TEXT NOT NULL,
                 event_type TEXT NOT NULL,
                 committed_at TEXT NOT NULL,
+                source_hash TEXT NOT NULL DEFAULT '',
                 payload_json TEXT NOT NULL
             );
             """
         )
+        columns = {
+            str(row[1])
+            for row in conn.execute("PRAGMA table_info(project_metadata_events)").fetchall()
+        }
+        if "source_hash" not in columns:
+            conn.execute("ALTER TABLE project_metadata_events ADD COLUMN source_hash TEXT NOT NULL DEFAULT ''")
+            conn.commit()
 
 
 def _write_sqlite_projection(project_root: Path, payload: dict[str, Any], *, event_type: str) -> dict[str, Any]:
     _ensure_metadata_sqlite_schema()
     transaction = payload.get("transaction") if isinstance(payload.get("transaction"), dict) else {}
+    root = project_root.expanduser().resolve()
+    source_hash = read_governance_md_source_hash(root) or str(transaction.get("source_hash", "") or "")
     with _connect() as conn:
         conn.execute(
             """
@@ -198,84 +221,52 @@ def _write_sqlite_projection(project_root: Path, payload: dict[str, Any], *, eve
                 payload_json=excluded.payload_json
             """,
             (
-                str(project_root),
+                str(root),
                 str(payload.get("global_project_metadata", {}).get("topology_kind", "") or ""),
                 str(payload.get("global_project_metadata", {}).get("default_execution_service", "") or ""),
                 str(transaction.get("transaction_id", "") or ""),
                 str(transaction.get("committed_at", "") or ""),
-                str(transaction.get("source_hash", "") or ""),
+                source_hash,
                 json.dumps(payload, ensure_ascii=False),
             ),
         )
         conn.execute(
             """
             INSERT OR REPLACE INTO project_metadata_events (
-                transaction_id, project_root, event_type, committed_at, payload_json
-            ) VALUES (?, ?, ?, ?, ?)
+                transaction_id, project_root, event_type, committed_at, source_hash, payload_json
+            ) VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 str(transaction.get("transaction_id", "") or ""),
-                str(project_root),
+                str(root),
                 event_type,
                 str(transaction.get("committed_at", "") or ""),
+                source_hash,
                 json.dumps(payload, ensure_ascii=False),
             ),
         )
         conn.commit()
-    return {"status": "ok", "db_path": str(runtime_ledger_db_path())}
+    return {"status": "ok", "db_path": str(runtime_ledger_db_path()), "source_hash": source_hash}
 
 
 def _commit_payload(project_root: Path, payload: dict[str, Any], *, event_type: str) -> dict[str, Any]:
     root = project_root.expanduser().resolve()
-    machine_path = metadata_machine_path(root)
-    human_path = metadata_human_path(root)
-    machine_path.parent.mkdir(parents=True, exist_ok=True)
-    base_payload = {
-        "schema_version": payload.get("schema_version", "1.0"),
-        "project_root": str(root),
-        "global_project_metadata": payload.get("global_project_metadata", {}),
-        "version_scoped_metadata": payload.get("version_scoped_metadata", {}),
-    }
-    source_hash = _stable_hash(base_payload)
-    transaction_id = f"tx-project-metadata-{source_hash[:16]}"
-    committed_at = now_iso()
-    payload["transaction"] = {
-        "transaction_id": transaction_id,
-        "event_type": event_type,
-        "committed_at": committed_at,
-        "source_hash": source_hash,
-    }
-    write_json(machine_path, payload)
-    human_path.write_text(_render_human(payload), encoding="utf-8")
-    transaction_path = metadata_transactions_root(root) / f"{transaction_id}.json"
-    write_json(transaction_path, payload)
-    state_path = metadata_state_path(root)
-    state_path.parent.mkdir(parents=True, exist_ok=True)
-    write_json(
-        state_path,
-        {
-            "schema_version": "1.0",
-            "project_root": str(root),
-            "transaction_id": transaction_id,
-            "payload_path": str(machine_path.relative_to(root)),
-            "markdown_path": str(human_path.relative_to(root)),
-            "payload_abs_path": str(machine_path),
-            "markdown_abs_path": str(human_path),
-            "committed_at": committed_at,
-        },
-    )
-    sqlite = _write_sqlite_projection(root, payload, event_type=event_type)
+    governance_summary = commit_governance_payload(root, payload, event_type=event_type)
+    sqlite = _write_sqlite_projection(root, load_governance_payload(root), event_type=event_type)
+    md_path = governance_md_path(root)
     return {
         "project_root": str(root),
-        "payload_path": str(machine_path.relative_to(root)),
-        "markdown_path": str(human_path.relative_to(root)),
-        "payload_abs_path": str(machine_path),
-        "markdown_abs_path": str(human_path),
-        "transaction_path": str(transaction_path.relative_to(root)),
-        "transaction_abs_path": str(transaction_path),
-        "transaction_id": transaction_id,
-        "committed_at": committed_at,
+        "payload_path": governance_summary["governance_md_path"],
+        "markdown_path": governance_summary["governance_md_path"],
+        "payload_abs_path": str(md_path),
+        "markdown_abs_path": str(md_path),
+        "transaction_path": "",
+        "transaction_abs_path": "",
+        "transaction_id": governance_summary["transaction_id"],
+        "committed_at": governance_summary["committed_at"],
+        "authority": "markdown_project_governance",
         "sqlite": sqlite,
+        "governance_summary": governance_summary,
     }
 
 
@@ -462,8 +453,37 @@ def delete_project_metadata(
     return {"status": "ok", "payload": payload, "summary": summary}
 
 
-def resolve_project_metadata_view(project_root: Path, *, version: str = "") -> dict[str, Any]:
+def resolve_project_metadata_view(
+    project_root: Path,
+    *,
+    version: str = "",
+    include_archived: bool = False,
+) -> dict[str, Any]:
     root = project_root.expanduser().resolve()
+    if governance_md_authoritative(root):
+        governance = resolve_project_governance(root, version=version, include_archived=include_archived)
+        return {
+            "project_root": governance.get("project_root", str(root)),
+            "topology_kind": governance.get("topology_kind", ""),
+            "default_execution_service": governance.get("default_execution_service", ""),
+            "service_bindings": governance.get("service_bindings", []),
+            "service_bindings_by_key": governance.get("service_bindings_by_key", {}),
+            "version": governance.get("version", version),
+            "version_contract": governance.get("version_contract", {}),
+            "selected_service": governance.get("selected_service", ""),
+            "selected_service_binding": governance.get("selected_service_binding", {}),
+            "selected_branch": governance.get("selected_branch", ""),
+            "paths": {
+                "machine": "",
+                "human": governance.get("paths", {}).get("governance_md", str(governance_md_path(root))),
+                "state": "",
+                "governance_md": governance.get("paths", {}).get("governance_md", str(governance_md_path(root))),
+            },
+            "transaction": governance.get("transaction", {}),
+            "branch_governance": governance.get("branch_governance", {}),
+            "authority": governance.get("authority", "markdown_project_governance"),
+            "parser_contract": governance.get("parser_contract", ""),
+        }
     payload = load_project_metadata(root)
     global_meta = payload.get("global_project_metadata") if isinstance(payload.get("global_project_metadata"), dict) else {}
     version_meta = payload.get("version_scoped_metadata") if isinstance(payload.get("version_scoped_metadata"), dict) else {}
@@ -525,6 +545,22 @@ def verify_project_metadata(project_root: Path, *, version: str = "") -> dict[st
     root = project_root.expanduser().resolve()
     view = resolve_project_metadata_view(root, version=version)
     checks: list[dict[str, Any]] = []
+    json_guard = governance_json_forbidden(root, strict=True)
+    checks.append(
+        {
+            "status": "pass" if json_guard.get("status") == "pass" else "fail",
+            "name": "governance_json_forbidden",
+            "details": json_guard,
+        }
+    )
+    projection_guard = verify_governance_projection(root)
+    checks.append(
+        {
+            "status": "pass" if projection_guard.get("status") == "pass" else "fail",
+            "name": "governance_projection_drift",
+            "details": projection_guard,
+        }
+    )
     topology_kind = str(view.get("topology_kind") or "").strip()
     checks.append(
         {

@@ -37,6 +37,11 @@ LEGACY_EXCEPTION_CLASSIFICATION = "v1.5.1_legacy_exception"
 
 FEATURE_SURFACES = ("truth", "tests", "tasks", "evidence")
 VERSION_GOVERNANCE_SURFACES = {
+    "project_governance": (
+        "docs/beacon/governance/project-version-governance.md",
+        VERSION_GOVERNANCE_TRUTH_ROLE,
+        True,
+    ),
     "global_boundaries": ("docs/beacon/global-boundaries.md", "global_governance_truth", True),
     "summary": ("docs/beacon/{version}/SUMMARY.md", VERSION_GOVERNANCE_TRUTH_ROLE, True),
     "execution_boundaries": ("docs/beacon/{version}/execution/boundaries.md", VERSION_GOVERNANCE_TRUTH_ROLE, True),
@@ -56,6 +61,11 @@ GENERATED_GOVERNANCE_SURFACES = {
     ),
     "project_version_metadata": (
         ".beacon/metadata/project-version-metadata.json",
+        GENERATED_GOVERNANCE_STATE_ROLE,
+        False,
+    ),
+    "project_governance_sqlite_projection": (
+        "{sqlite_runtime_ledger}",
         GENERATED_GOVERNANCE_STATE_ROLE,
         False,
     ),
@@ -219,6 +229,10 @@ def _sha256(path: Path) -> str:
 
 
 def _format_version_path(template: str, version: str) -> str:
+    if template == "{sqlite_runtime_ledger}":
+        from beacon.utils.runtime_projection_store import runtime_ledger_db_path
+
+        return str(runtime_ledger_db_path())
     return template.format(version=version)
 
 
@@ -313,7 +327,7 @@ def resolve_governance_surface(project_root: Path, *, version: str, surface: str
 
     template, role, required = _governance_surface_spec(surface)
     rel_path = _format_version_path(template, version)
-    path = project_root / rel_path
+    path = Path(rel_path) if Path(rel_path).is_absolute() else project_root / rel_path
     is_generated = role == GENERATED_GOVERNANCE_STATE_ROLE
     return {
         "schema_version": "1.0",
@@ -384,6 +398,34 @@ def resolve_version_governance(project_root: Path, *, version: str) -> dict[str,
         diagnostics.extend(_generated_governance_state_diagnostics(project_root, payload))
     has_errors = any(item.get("severity") == "error" for item in diagnostics)
     model = truth_source_model_for_version(version)
+    from beacon.utils.project_governance import GOVERNANCE_JSON_REL, GOVERNANCE_MD_REL
+    from beacon.utils.runtime_projection_store import runtime_ledger_db_path
+
+    governance_md_rel = str(GOVERNANCE_MD_REL)
+    projection_roles = {
+        "canonical_commit_surface": governance_md_rel,
+        "canonical_role": VERSION_GOVERNANCE_TRUTH_ROLE,
+        "sqlite_projection_surface": "project_governance_sqlite_projection",
+        "sqlite_projection_role": GENERATED_GOVERNANCE_STATE_ROLE,
+        "sqlite_ledger_path": str(runtime_ledger_db_path()),
+        "deprecated_legacy_json": str(GOVERNANCE_JSON_REL),
+        "write_direction": "governance_md_to_sqlite_only",
+    }
+    dual_role_offenders = [
+        surface
+        for surface, payload in generated_surfaces.items()
+        if str(payload.get("path") or "").replace("\\", "/") == governance_md_rel
+    ]
+    if dual_role_offenders:
+        diagnostics.append(
+            {
+                "severity": "error",
+                "code": "governance_md_dual_role",
+                "surfaces": dual_role_offenders,
+                "path": governance_md_rel,
+            }
+        )
+        has_errors = True
     return {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
@@ -399,6 +441,7 @@ def resolve_version_governance(project_root: Path, *, version: str) -> dict[str,
             "generated_governance_state": GENERATED_GOVERNANCE_STATE_ROLE,
             "runtime_process_record": RUNTIME_JSON_ROLE,
         },
+        "governance_projection_roles": projection_roles,
         "truth_surfaces": truth_surfaces,
         "generated_state_surfaces": generated_surfaces,
         "manifest_authority": False,

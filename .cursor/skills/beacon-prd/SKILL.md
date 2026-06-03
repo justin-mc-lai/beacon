@@ -1,6 +1,6 @@
 ---
 name: beacon-prd
-description: Use when the user wants to draft, refine, clarify, or review a product requirements document through Beacon's current v1.4.10 runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
+description: Use when the user wants to draft, refine, clarify, or review Beacon feature truth through Beacon's current v1.5.2 package-authoritative runtime surface. Keep brainstorm embedded inside the PRD loop rather than sending the user to a standalone brainstorm stage unless explicitly requested.
 ---
 
 # Beacon PRD
@@ -9,8 +9,12 @@ description: Use when the user wants to draft, refine, clarify, or review a prod
 
 This skill routes requirement-definition work through Beacon's `prd` surface.
 
-The human-facing contract is aligned to the `v1.4.10` docs line (`docs/beacon/v1.4.10/`). `prd` defines problem, scope, goals, boundaries, and promised surface before the requirement package moves downstream.
-Compatibility bridges may still exist for older entrypoints or wrappers, but they do not replace the current `v1.4.10` requirement truth line.
+In v1.5.2+, `beacon-prd` is a compatibility alias for `beacon-truth` mode `truth.define`.
+Use `truth.define` when explaining the preferred lifecycle, and keep `beacon-prd` available as the stable invocation surface.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`; old chain `research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`.
+
+The human-facing contract is aligned to the `v1.5.2` package-authoritative docs line. For v1.5.2 features, `features/<slug>/truth.md` is the normal requirement authority for problem, scope, goals, boundaries, acceptance criteria, and promised surface.
+Legacy `prd / user-story / qa/test-cases` files may be rebuilt by `doctor`, absorbed by `change`, or retained as archive context, but they do not replace the feature package truth.
 
 ## When to Use
 
@@ -72,7 +76,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `project-root`
 - `version`
 - `feature`
-- upstream truth refs from `docs/beacon/<version>/prd/`
+- resolver-selected feature package truth, normally `features/<slug>/truth.md`
 - related `user-story`, `test-case`, `global-boundaries`, and architecture refs when present
 - host bridge or local context that explains the current requirement gap
 
@@ -107,21 +111,33 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but the
 - `beacon brainstorm ...` for read-only convergence
 - `beacon change ...` for frozen-truth revision
 
-## v1.5.0 Feature Package Quick Template
+## v1.5.2 Package-Authoritative Read Order
 
-When writing `features/<slug>/truth.md`, keep it parser-friendly and explicit that `.machine` remains authoritative:
+For v1.5.2+ features, read the resolver output before consuming requirement material:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. The Markdown feature package is the requirement authority; resolver output, `.machine` JSON, manifests, QA status, and release reports are generated state, not requirement truth.
+
+## v1.5.2 Feature Truth Quick Template
+
+When writing `features/<slug>/truth.md`, keep it parser-friendly and explicit that the feature package is authoritative:
 
 ```markdown
 ---
 slug: example-feature
-version: v1.5.0
+version: v1.5.2
 status: draft
 language: en
 canonical_refs:
-  prd: docs/beacon/v1.5.0/prd/example-feature.md
-  user_story: docs/beacon/v1.5.0/user-story/example-feature.md
-  test_case: docs/beacon/v1.5.0/qa/test-cases/example-feature.md
+  prd: docs/beacon/v1.5.2/features/example-feature/truth.md
+  user_story: docs/beacon/v1.5.2/features/example-feature/truth.md
+  test_case: docs/beacon/v1.5.2/features/example-feature/tests.md
 parser_contract: beacon-feature-package-v1
+truth_source_model: feature_package_authoritative
+truth_map_contract: beacon-truth-map-v1
 ---
 
 # Feature: Example Feature
@@ -130,10 +146,10 @@ parser_contract: beacon-feature-package-v1
 
 | AC ID | Theme | Description |
 |-------|-------|-------------|
-| AC-001 | example | The package is generated without replacing canonical truth. |
+| AC-001 | example | The feature package is the authoritative requirement source. |
 ```
 
-This template is authoring support only. CLI validation decides whether the package is accepted as a read model.
+This template is authoring support only. CLI validation decides whether the package is accepted as authoritative feature truth.
 
 ## Supporting References
 
@@ -145,7 +161,7 @@ Use these lightweight references when they reduce ambiguity faster than free-for
 - `../references/state-machine-checklist.md`
 - `../references/freeze-readiness-checklist.md`
 
-These are support material only. They help close requirement reasoning, but they do not replace canonical truth under `docs/beacon/<version>/`.
+These are support material only. They help close requirement reasoning, but they do not replace resolver-selected feature package truth.
 
 ## Examples
 
@@ -162,4 +178,4 @@ These are support material only. They help close requirement reasoning, but they
 - `brainstorm` 可以帮忙 challenge 和收敛，但不能代替 `prd` 冻结正式 truth。
 - 不要在 `prd` 里提前做实现、视觉或 release 层判断。
 - 复杂需求不能只靠文字段落冻结；缺少 research / business flow / state-machine / decision-priority 闭环时，应回补而不是假装 freeze-ready。
-- 最小可执行 requirement contract 是：`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`。
+- v1.5.2 的最小可执行 requirement contract 要落在 feature package：`research/support -> truth.md -> tests.md -> requirement_clarity -> freeze`。

@@ -255,7 +255,7 @@ def branch_governance_writeback_targets(project_root: Path, *, version: str, fea
         "technical_review_json": docs_root / ".machine" / "execution" / f"deterministic-implementation-contract-{slug}.json",
         "architecture_blueprint": docs_root / "execution" / "architecture-blueprint.md",
         "service_slice_map": docs_root / "execution" / "service-slice-map.md",
-        "metadata_contract": project_root / ".beacon" / "metadata" / "project-version-metadata.json",
+        "metadata_contract": project_root / "docs" / "beacon" / "governance" / "project-version-governance.md",
     }
     targets = {name: str(path.relative_to(project_root)) for name, path in refs.items()}
     return {

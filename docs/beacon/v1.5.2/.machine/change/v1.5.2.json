@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 2,
+  "feature_count": 4,
   "features": [
     {
       "feature": "beacon-truth-map-center-and-package-cutover",
@@ -26,14 +26,28 @@
       "feature_slug": "beacon-truth-skill-lifecycle-rename",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "markdown-only-project-version-governance",
+      "feature_slug": "markdown-only-project-version-governance",
+      "summary": "",
+      "status": "completed"
+    },
+    {
+      "feature": "project-governance-projection-lifecycle",
+      "feature_slug": "project-governance-projection-lifecycle",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
     }
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 2,
+    "feature_count": 4,
     "ordered_feature_slugs": [
       "beacon-truth-map-center-and-package-cutover",
-      "beacon-truth-skill-lifecycle-rename"
+      "beacon-truth-skill-lifecycle-rename",
+      "markdown-only-project-version-governance",
+      "project-governance-projection-lifecycle"
     ],
     "waves": [
       {
@@ -54,13 +68,55 @@
             "reason_code": "parallel_no_conflict"
           },
           {
-            "feature": "beacon-truth-skill-lifecycle-rename",
-            "feature_slug": "beacon-truth-skill-lifecycle-rename",
+            "feature": "project-governance-projection-lifecycle",
+            "feature_slug": "project-governance-projection-lifecycle",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
             "parallelizable": true,
             "reason_code": "parallel_no_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 2,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "beacon-truth-skill-lifecycle-rename",
+            "feature_slug": "beacon-truth-skill-lifecycle-rename",
+            "depends_on_features": [
+              "beacon-truth-map-center-and-package-cutover"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
+      },
+      {
+        "wave": 3,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "markdown-only-project-version-governance",
+            "feature_slug": "markdown-only-project-version-governance",
+            "depends_on_features": [
+              "beacon-truth-skill-lifecycle-rename"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
           }
         ]
       }
@@ -72,17 +128,32 @@
     "[beacon-truth-map-center-and-package-cutover] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-truth-skill-lifecycle-rename] Feature-level release projection input for QA accepted current feature",
     "[beacon-truth-skill-lifecycle-rename] Version aggregate projection inclusion guard and repair metadata",
-    "[beacon-truth-skill-lifecycle-rename] Repair-only projection rebuild path for release preflight artifacts"
+    "[beacon-truth-skill-lifecycle-rename] Repair-only projection rebuild path for release preflight artifacts",
+    "[project-governance-projection-lifecycle] Feature-level release projection input for QA accepted current feature",
+    "[project-governance-projection-lifecycle] Version aggregate projection inclusion guard and repair metadata",
+    "[project-governance-projection-lifecycle] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
     "[beacon-truth-map-center-and-package-cutover] Manual-only version aggregate projection repair before release check",
-    "[beacon-truth-skill-lifecycle-rename] Manual-only version aggregate projection repair before release check"
+    "[beacon-truth-skill-lifecycle-rename] Manual-only version aggregate projection repair before release check",
+    "[project-governance-projection-lifecycle] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
     "[beacon-truth-map-center-and-package-cutover] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-truth-map-center-and-package-cutover] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-truth-skill-lifecycle-rename] Release check can route missing current feature projection to an actionable repair path",
-    "[beacon-truth-skill-lifecycle-rename] Version aggregate projection remains a read model instead of requirement truth"
+    "[beacon-truth-skill-lifecycle-rename] Version aggregate projection remains a read model instead of requirement truth",
+    "[markdown-only-project-version-governance] Updated `beacon/utils/project_governance.py`",
+    "[markdown-only-project-version-governance] Updated `beacon/utils/project_metadata.py`",
+    "[markdown-only-project-version-governance] Updated `beacon/commands/implement/commands.py`",
+    "[markdown-only-project-version-governance] Updated `beacon/utils/truth_map.py`",
+    "[markdown-only-project-version-governance] Updated `beacon/utils/material_gate_contract.py`",
+    "[markdown-only-project-version-governance] Updated `beacon/commands/doctor.py`",
+    "[markdown-only-project-version-governance] Updated `tests/test_markdown_only_project_version_governance.py`",
+    "[markdown-only-project-version-governance] Updated `tests/test_v140_branch_governance_metadata.py`",
+    "[markdown-only-project-version-governance] Updated `docs/beacon/governance/project-version-governance.md`",
+    "[project-governance-projection-lifecycle] Release check can route missing current feature projection to an actionable repair path",
+    "[project-governance-projection-lifecycle] Version aggregate projection remains a read model instead of requirement truth"
   ],
   "traceability_refs": [
     "docs/beacon/v1.5.2/change/beacon-truth-map-center-and-package-cutover.md",
@@ -97,7 +168,19 @@
     "docs/beacon/v1.5.2/user-story/beacon-truth-skill-lifecycle-rename.md",
     "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-skill-lifecycle-rename.md",
     "docs/beacon/v1.5.2/.machine/execution/beacon-truth-skill-lifecycle-rename.revision.json",
-    "docs/beacon/v1.5.2/.machine/change/beacon-truth-skill-lifecycle-rename.json"
+    "docs/beacon/v1.5.2/.machine/change/beacon-truth-skill-lifecycle-rename.json",
+    "docs/beacon/v1.5.2/.machine/execution/technical-implementation-markdown-only-project-version-governance.json",
+    "docs/beacon/v1.5.2/.machine/execution/implementation-summary-markdown-only-project-version-governance.json",
+    "docs/beacon/v1.5.2/execution/implementation-brief-markdown-only-project-version-governance.md",
+    "docs/beacon/v1.5.2/.machine/change/markdown-only-project-version-governance.json",
+    "docs/beacon/v1.5.2/change/markdown-only-project-version-governance.md",
+    "docs/beacon/v1.5.2/change/project-governance-projection-lifecycle.md",
+    "docs/beacon/v1.5.2/prd/project-governance-projection-lifecycle.md",
+    "docs/beacon/v1.5.2/user-story/project-governance-projection-lifecycle.md",
+    "docs/beacon/v1.5.2/qa/test-cases/project-governance-projection-lifecycle.md",
+    "docs/beacon/v1.5.2/.machine/execution/project-governance-projection-lifecycle.revision.json",
+    "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-project-governance-projection-lifecycle.json",
+    "docs/beacon/v1.5.2/.machine/change/project-governance-projection-lifecycle.json"
   ],
-  "generated_at": "2026-06-03 11:14"
+  "generated_at": "2026-06-03 22:33"
 }

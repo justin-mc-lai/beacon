@@ -1,6 +1,6 @@
 ---
 name: beacon-qa
-description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.4.10 runtime surface.
+description: Use when the user wants to verify a Beacon feature, inspect new findings, improve coverage, or assess whether a feature is ready for release through Beacon's current v1.5.2 package-authoritative runtime surface.
 ---
 
 # Beacon QA
@@ -10,8 +10,9 @@ description: Use when the user wants to verify a Beacon feature, inspect new fin
 This skill routes verification work through Beacon's `qa` surface.
 
 QA reads frozen requirement truth and implementation evidence, then evaluates layered acceptance proof instead of relying on one proxy score.
-The active human-facing contract is aligned to the current `v1.4.10` docs line (`docs/beacon/v1.4.10/`).
-Compatibility bridges may still exist for older entrypoints or wrappers, but current QA judgment should bind to the `v1.4.10` requirement package.
+The active human-facing contract is aligned to the current `v1.5.2` package-authoritative docs line.
+Compatibility reference: v1.4.7 docs line `docs/beacon/v1.4.7/`.
+For v1.5.2 features, QA judgment must bind to resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`. Legacy truth files may be rebuilt, absorbed, or archived, but they are not the normal QA authority.
 
 ## When to Use
 
@@ -76,7 +77,7 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - `version`
 - `feature`
 - implementation evidence
-- frozen `prd / user-story / test-case`
+- frozen `features/<slug>/truth.md` and `features/<slug>/tests.md`
 - conditionally triggered `prototype` handoff when applicable
 - acceptance kit proof layers and gate context
 
@@ -108,7 +109,17 @@ Compatibility bridges may still exist for older entrypoints or wrappers, but cur
 - `beacon implement ...` for repair handoff
 - `beacon release ...` only after layered evidence is sufficient
 
-## v1.5.0 Feature Package Quick Template
+## v1.5.2 Package-Authoritative Read Order
+
+For v1.5.2+ features, read the resolver output before consuming QA inputs:
+
+```bash
+beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```
+
+Then read `features/<slug>/{truth,tests,tasks,evidence}.md` from the resolved paths. Markdown package files are the requirement and coverage authority; resolver output and generated `.machine` JSON are generated state, not truth authority.
+
+## v1.5.2 Evidence Index Quick Template
 
 When writing `features/<slug>/evidence.md`, keep evidence as an index with explicit authority labels:
 
@@ -119,8 +130,8 @@ When writing `features/<slug>/evidence.md`, keep evidence as an index with expli
 
 | Surface | Authority | Canonical Artifact | Status | Route |
 |---------|-----------|--------------------|--------|-------|
-| beacon-deep | support_advisory | docs/beacon/v1.5.0/research/example.md | indexed | change |
-| qa | qa_verdict | docs/beacon/v1.5.0/.machine/qa/example.qa9-matrix.json | linked | qa |
+| beacon-deep | support_advisory | docs/beacon/v1.5.2/research/example.md | indexed | change |
+| qa | qa_verdict | docs/beacon/v1.5.2/.machine/qa/example.qa9-matrix.json | linked | qa |
 ```
 
 Do not add final verdict, gate truth, or release readiness fields to `evidence.md`.

@@ -1,0 +1,145 @@
+{
+  "schema_version": "1.0",
+  "feature": "project-governance-projection-lifecycle",
+  "feature_slug": "project-governance-projection-lifecycle",
+  "version": "v1.5.2",
+  "revision_id": "R2",
+  "source_revision_id": "R1",
+  "status": "ready",
+  "cleanup_required": true,
+  "removed_requirement_count": 1,
+  "added_requirement_count": 10,
+  "retained_requirement_count": 0,
+  "removed_requirement_surfaces": [
+    {
+      "revision_id": "R1",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "details": [],
+      "source": "",
+      "signature": "ac::::general::acceptance criteria tbd::"
+    }
+  ],
+  "added_requirement_surfaces": [
+    {
+      "revision_id": "R2",
+      "id": "AC-009",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "doctor-archive-version",
+      "text": "`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same MD transaction as upsert (no JSON sink).",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::doctor-archive-version::`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same md transaction as upsert (no json sink).::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-010",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "doctor-prune-archived",
+      "text": "`beacon doctor metadata prune-archived` removes archived `###` blocks from governance MD with `--dry-run` default; strict verify passes after prune.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::doctor-prune-archived::`beacon doctor metadata prune-archived` removes archived `###` blocks from governance md with `--dry-run` default; strict verify passes after prune.::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-001",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "Parent feature AC-002",
+      "text": "Parent feature AC-002",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::parent feature ac-002::parent feature ac-002::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-008",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "resolver-active-contract",
+      "text": "`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only).",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::resolver-active-contract::`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only).::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-004",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "sqlite-hash-projection",
+      "text": "`project_metadata_current` / events store `source_hash` from governance MD frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::sqlite-hash-projection::`project_metadata_current` / events store `source_hash` from governance md frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority.::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-006",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "sqlite-not-write-authority",
+      "text": "No commit path may load sqlite `payload_json` to mutate governance MD; commits flow MD → sqlite projection only.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::sqlite-not-write-authority::no commit path may load sqlite `payload_json` to mutate governance md; commits flow md → sqlite projection only.::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-003",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "truth-map-resolver-docs",
+      "text": "`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::truth-map-resolver-docs::`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills.::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-002",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "truth-map-single-truth",
+      "text": "`VERSION_GOVERNANCE_SURFACES.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=True`) for `docs/beacon/governance/project-version-governance.md`.",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::truth-map-single-truth::`version_governance_surfaces.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=true`) for `docs/beacon/governance/project-version-governance.md`.::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-005",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "verify-projection-drift",
+      "text": "`doctor metadata verify` (and governance verify helper) fails closed when MD `source_hash` ≠ sqlite `source_hash` or sqlite row missing while MD authoritative (`reason_code`: `governance_projection_drift`).",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::verify-projection-drift::`doctor metadata verify` (and governance verify helper) fails closed when md `source_hash` ≠ sqlite `source_hash` or sqlite row missing while md authoritative (`reason_code`: `governance_projection_drift`).::"
+    },
+    {
+      "revision_id": "R2",
+      "id": "AC-007",
+      "story_id": "",
+      "kind": "ac",
+      "theme": "version-contract-validation-state",
+      "text": "`beacon-project-governance-v1` accepts `validation_state: active \\",
+      "details": [],
+      "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "signature": "ac::::version-contract-validation-state::`beacon-project-governance-v1` accepts `validation_state: active \\::"
+    }
+  ],
+  "retained_requirement_surfaces": [],
+  "current_baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30",
+  "source_baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30",
+  "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/project-governance-projection-lifecycle.json",
+  "generated_at": "2026-06-03T14:04:53.840312+00:00",
+  "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-project-governance-projection-lifecycle.json",
+  "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-project-governance-projection-lifecycle.md"
+}

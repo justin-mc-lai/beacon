@@ -45,6 +45,11 @@ from beacon.utils.doctor_orchestrator import (
     run_version_surfaces_sync,
     run_version_surfaces_verify,
 )
+from beacon.utils.project_governance import (
+    archive_version_contract,
+    migrate_json_to_governance_md,
+    prune_archived_contracts,
+)
 from beacon.utils.project_metadata import (
     create_or_update_project_metadata,
     delete_project_metadata,
@@ -527,6 +532,82 @@ def metadata_delete(
         rendered["resolved_metadata_view"] = resolve_project_metadata_view(root, version=version)
         _print_project_metadata_result("Beacon Doctor Metadata Delete", rendered)
     raise typer.Exit(code=0)
+
+
+@metadata_app.command("migrate-to-governance-md")
+def metadata_migrate_to_governance_md(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Import legacy project-version JSON into governance Markdown and remove governance JSON."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = migrate_json_to_governance_md(root)
+    verify = verify_project_metadata(root)
+    payload = {
+        "schema_version": "1.0",
+        "action": "doctor-metadata-migrate-to-governance-md",
+        "result": result,
+        "verify": verify,
+    }
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Migrate status: {result.get('status')}")
+        if result.get("summary"):
+            typer.echo(json.dumps(result["summary"], ensure_ascii=False, indent=2))
+        typer.echo(f"Verify status: {verify.get('status')}")
+    exit_code = 0
+    if result.get("status") == "fail" or verify.get("status") == "fail":
+        exit_code = 2
+    raise typer.Exit(code=exit_code)
+
+
+@metadata_app.command("archive-version")
+def metadata_archive_version(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option(..., "--version", "-v", help="Version contract to archive"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Mark a version contract as archived in governance Markdown."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = archive_version_contract(root, version=version)
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-archive-version", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Archive status: {result.get('status')}")
+        if result.get("summary"):
+            typer.echo(json.dumps(result["summary"], ensure_ascii=False, indent=2))
+    raise typer.Exit(code=0 if result.get("status") == "ok" else 2)
+
+
+@metadata_app.command("prune-archived")
+def metadata_prune_archived(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    apply: bool = typer.Option(False, "--apply", help="Remove archived version blocks from governance MD"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Remove archived version contract blocks from governance Markdown (dry-run by default)."""
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = prune_archived_contracts(root, dry_run=not apply)
+    if apply and result.get("status") == "ok":
+        verify = verify_project_metadata(root)
+        result = {**result, "verify": verify}
+    payload = {"schema_version": "1.0", "action": "doctor-metadata-prune-archived", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo(f"Prune status: {result.get('status')} dry_run={not apply}")
+        if result.get("removed_versions"):
+            typer.echo(f"Removed versions: {', '.join(result['removed_versions'])}")
+        if result.get("verify"):
+            typer.echo(f"Verify status: {result['verify'].get('status')}")
+    exit_code = 0
+    if result.get("status") != "ok":
+        exit_code = 2
+    elif apply and isinstance(result.get("verify"), dict) and result["verify"].get("status") == "fail":
+        exit_code = 2
+    raise typer.Exit(code=exit_code)
 
 
 @metadata_app.command("verify")

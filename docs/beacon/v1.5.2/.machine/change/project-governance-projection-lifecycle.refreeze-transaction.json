@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-project-governance-projection-lifecycle-20260603t140453z",
+  "feature": "project-governance-projection-lifecycle",
+  "feature_slug": "project-governance-projection-lifecycle",
+  "version": "v1.5.2",
+  "change_reason": "§4 projection lifecycle follow-on to markdown-only governance",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.2/change/project-governance-projection-lifecycle.md",
+      "exists": true,
+      "status": "present",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-project-governance-projection-lifecycle.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.2/.machine/change/project-governance-projection-lifecycle.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"project-governance-projection-lifecycle\" --project . --version v1.5.2",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-03T14:04:53.452087+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.5.2",
+    "feature": "project-governance-projection-lifecycle",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle",
+      "prd": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+      "truth": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "tests": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+      "tasks": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+      "evidence": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "project-governance-projection-lifecycle",
+      "feature_slug": "project-governance-projection-lifecycle",
+      "version": "v1.5.2",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "tests": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+        "tasks": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+        "evidence": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "62cdf38f2b3a673cde62027d74235d2a6bd58e19e0b5cf03f0ba05b462bc89e1",
+        "tests": "882771cb5f266970accccab3d165235212d6770b4e42ab0ce1625f6ec3e892c3",
+        "tasks": "4d543d2371aa6f769611db0864504c003a763aab1ca9fed9a04f0835bd129721",
+        "evidence": "7d26e5b2ff794306b9ae77433c2877b11946891d7495275483e55d8dd30c7dc5"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "project-governance-projection-lifecycle",
+        "feature_slug": "project-governance-projection-lifecycle",
+        "version": "v1.5.2",
+        "source_paths": {
+          "truth": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+          "tests": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+          "tasks": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+          "evidence": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.5.2/.machine/requirement/project-governance-projection-lifecycle.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.5.2/.machine/requirement/project-governance-projection-lifecycle.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine project-governance-projection-lifecycle --version v1.5.2"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change project-governance-projection-lifecycle --version v1.5.2 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.5.2/.machine/requirement/project-governance-projection-lifecycle.truth-map.json",
+        "docs/beacon/v1.5.2/.machine/requirement/project-governance-projection-lifecycle.requirement-package.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.5.2/.machine/user-story/project-governance-projection-lifecycle.json",
+      "feature": "project-governance-projection-lifecycle",
+      "version": "v1.5.2",
+      "revision_id": "R2",
+      "ac_count": 10,
+      "test_count": 10,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "project-governance-projection-lifecycle",
+      "feature_slug": "project-governance-projection-lifecycle",
+      "version": "v1.5.2",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-project-governance-projection-lifecycle.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-project-governance-projection-lifecycle.md",
+      "state_path": ".beacon/state/requirement-clarity-project-governance-projection-lifecycle.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.2",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-03T14:04:53.476263+00:00",
+        "feature": "project-governance-projection-lifecycle",
+        "feature_slug": "project-governance-projection-lifecycle",
+        "prd_ref": "docs/beacon/v1.5.2/prd/project-governance-projection-lifecycle.md",
+        "user_story_ref": "docs/beacon/v1.5.2/user-story/project-governance-projection-lifecycle.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.2/research/project-governance-projection-lifecycle.md",
+        "research_exists": false,
+        "source_architecture_path": "docs/beacon/v1.5.2/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.2/research/project-governance-projection-lifecycle.md",
+          "prd": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+          "user_story": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+          "test_case": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md"
+        },
+        "exists": {
+          "research": false,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.5.2/research/project-governance-projection-lifecycle.md",
+        "research_exists": false,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+          "user_story_refs": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+          "test_case_refs": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tests.md",
+        "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/tasks.md",
+        "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/evidence.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-project-governance-projection-lifecycle.json",
+      "markdown": "docs/beacon/v1.5.2/execution/requirement-clarity-project-governance-projection-lifecycle.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "project-governance-projection-lifecycle",
+      "feature_slug": "project-governance-projection-lifecycle",
+      "version": "v1.5.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-project-governance-projection-lifecycle.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-project-governance-projection-lifecycle.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T200514823024",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-03T14:04:53.738920+00:00",
+      "state_path": ".beacon/state/requirement-clarity-project-governance-projection-lifecycle.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "project-governance-projection-lifecycle",
+    "feature_slug": "project-governance-projection-lifecycle",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": true,
+    "removed_requirement_count": 1,
+    "added_requirement_count": 10,
+    "retained_requirement_count": 0,
+    "removed_requirement_surfaces": [
+      {
+        "revision_id": "R1",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "general",
+        "text": "Acceptance criteria TBD",
+        "details": [],
+        "source": "",
+        "signature": "ac::::general::acceptance criteria tbd::"
+      }
+    ],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "doctor-archive-version",
+        "text": "`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same MD transaction as upsert (no JSON sink).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::doctor-archive-version::`beacon doctor metadata archive-version --version <v>` sets contract `validation_state: archived` via the same md transaction as upsert (no json sink).::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "doctor-prune-archived",
+        "text": "`beacon doctor metadata prune-archived` removes archived `###` blocks from governance MD with `--dry-run` default; strict verify passes after prune.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::doctor-prune-archived::`beacon doctor metadata prune-archived` removes archived `###` blocks from governance md with `--dry-run` default; strict verify passes after prune.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "Parent feature AC-002",
+        "text": "Parent feature AC-002",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::parent feature ac-002::parent feature ac-002::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resolver-active-contract",
+        "text": "`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::resolver-active-contract::`resolve_project_governance(version=…)` uses **active** contract for branch preflight; **archived** contracts are ignored unless `--include-archived` (doctor/inspect only).::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "sqlite-hash-projection",
+        "text": "`project_metadata_current` / events store `source_hash` from governance MD frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::sqlite-hash-projection::`project_metadata_current` / events store `source_hash` from governance md frontmatter; full `payload_json` is optional diagnostic cache, not a competing write authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "sqlite-not-write-authority",
+        "text": "No commit path may load sqlite `payload_json` to mutate governance MD; commits flow MD → sqlite projection only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::sqlite-not-write-authority::no commit path may load sqlite `payload_json` to mutate governance md; commits flow md → sqlite projection only.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-map-resolver-docs",
+        "text": "`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::truth-map-resolver-docs::`resolve_truth_map` / entrypoint inventory documents governance truth vs sqlite projection roles for operators and skills.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-map-single-truth",
+        "text": "`VERSION_GOVERNANCE_SURFACES.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=True`) for `docs/beacon/governance/project-version-governance.md`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::truth-map-single-truth::`version_governance_surfaces.project_governance` remains the only truth surface (`version_governance_truth`, `is_truth=true`) for `docs/beacon/governance/project-version-governance.md`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "verify-projection-drift",
+        "text": "`doctor metadata verify` (and governance verify helper) fails closed when MD `source_hash` ≠ sqlite `source_hash` or sqlite row missing while MD authoritative (`reason_code`: `governance_projection_drift`).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::verify-projection-drift::`doctor metadata verify` (and governance verify helper) fails closed when md `source_hash` ≠ sqlite `source_hash` or sqlite row missing while md authoritative (`reason_code`: `governance_projection_drift`).::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "version-contract-validation-state",
+        "text": "`beacon-project-governance-v1` accepts `validation_state: active \\",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+        "signature": "ac::::version-contract-validation-state::`beacon-project-governance-v1` accepts `validation_state: active \\::"
+      }
+    ],
+    "retained_requirement_surfaces": [],
+    "current_baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30",
+    "source_baseline_hash": "sha256:7a93164a18903fb346a810d5c3cb91f78b748b69c6b8106bb1a2be17dcff6e30",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/project-governance-projection-lifecycle.json",
+    "generated_at": "2026-06-03T14:04:53.840312+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-project-governance-projection-lifecycle.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-project-governance-projection-lifecycle.md"
+  }
+}

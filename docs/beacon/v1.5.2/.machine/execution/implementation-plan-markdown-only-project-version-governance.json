@@ -1,0 +1,1359 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-markdown-only-project-version-governance-r2",
+  "feature": "markdown-only-project-version-governance",
+  "feature_slug": "markdown-only-project-version-governance",
+  "version": "v1.5.2",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:899c372fba61aa9338c51242bdbb0971f7a451ed2982adb70985ba759c44f14b",
+  "plan_hash": "sha256:bce576aec3a5e17db648f1eb25b96aa8b5bb6601a031d6ecfadebdd667490723",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+    "prd": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+    "test_case": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tests.md",
+    "truth": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance",
+    "revision_delta": "docs/beacon/v1.5.2/.machine/execution/revision-delta-markdown-only-project-version-governance.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/markdown-only-project-version-governance.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/markdown-only-project-version-governance.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-03T13:51:25.967908+00:00",
+    "feature": "markdown-only-project-version-governance",
+    "feature_slug": "markdown-only-project-version-governance",
+    "prd_ref": "docs/beacon/v1.5.2/prd/markdown-only-project-version-governance.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/markdown-only-project-version-governance.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "markdown-only-project-version-governance",
+    "version": "v1.5.2",
+    "source": "research:docs/beacon/v1.5.2/research/markdown-only-project-version-governance.md",
+    "present": false,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/markdown-only-project-version-governance.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 `docs/beacon/governance/project-version-governance.md` is the sole au...",
+      "description": "`docs/beacon/governance/project-version-governance.md` is the sole authority for topology, version contracts, and per-service canonical branches.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260603T134500Z-md-gov-qa",
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/project_governance.py",
+        "beacon/utils/project_metadata.py",
+        "beacon/commands/implement/commands.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/material_gate_contract.py",
+        "beacon/commands/doctor.py",
+        "tests/test_markdown_only_project_version_governance.py",
+        "tests/test_v140_branch_governance_metadata.py",
+        "docs/beacon/governance/project-version-governance.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-03T13:52:50.060542+00:00",
+      "completed_at": "2026-06-03T13:52:50.060548+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 No governance JSON records under `.beacon/metadata/` (including `proj...",
+      "description": "No governance JSON records under `.beacon/metadata/` (including `project-version-metadata.json`); strict verify fails closed if any remain after migration.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368504+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 `beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implem...",
+      "description": "`beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implement preflight, material gate, and doctor metadata verify consume `resolve_project_governance` only.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368521+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 `load_project_metadata` (or successor) parses governance MD; it must...",
+      "description": "`load_project_metadata` (or successor) parses governance MD; it must not treat JSON as authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368531+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 Metadata/branch-governance write transactions update governance MD on...",
+      "description": "Metadata/branch-governance write transactions update governance MD only; they must not create or update governance JSON as authority.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368539+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 When governance MD exists for the active version, `load_execution_bra...",
+      "description": "When governance MD exists for the active version, `load_execution_branch_contract` must not merge branch fields into implement contract (fail-closed or hard ignore with diagnostic).",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368548+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 Metadata and branch-governance toolkit surfaces share one governance...",
+      "description": "Metadata and branch-governance toolkit surfaces share one governance MD transaction path (no split JSON vs execution sinks).",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368556+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "AC-008 `_branch_guard_inputs` derives `expected_branch`, `git_roots`, `parti...",
+      "description": "`_branch_guard_inputs` derives `expected_branch`, `git_roots`, `participating_services`, `service_branch_map`, and `branch_governance` from the resolver view without execution-contract residue.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008",
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368564+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "AC-009 Monorepo topology with multiple `service_bindings` and `per_service_c...",
+      "description": "Monorepo topology with multiple `service_bindings` and `per_service_canonical_branch` entries round-trips through governance MD parse and implement preflight.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368573+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "AC-010 `beacon doctor metadata migrate-to-governance-md` (or equivalent) imp...",
+      "description": "`beacon doctor metadata migrate-to-governance-md` (or equivalent) imports existing JSON envelope into governance MD and removes governance JSON files after successful verify.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-010",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368581+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "AC-011 Material gate / release supplements reference governance MD via resol...",
+      "description": "Material gate / release supplements reference governance MD via resolver, not hard-coded `.beacon/metadata/*.json` paths.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-011",
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368592+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "AC-012 truth-map registers `project_governance` (or equivalent) as version g...",
+      "description": "truth-map registers `project_governance` (or equivalent) as version governance truth for Git/topology, distinct from `SUMMARY.md` product boundary surfaces.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-012",
+        "TC-012"
+      ],
+      "mapped_scenario_ids": [
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368601+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "AC-013 Explicit-version implement preflight resolves canonical branch/worktr...",
+      "description": "Explicit-version implement preflight resolves canonical branch/worktree from governance MD for the requested version; `origin/master` ancestry alone cannot pass preflight when canonical branch mismatches.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-013"
+      ],
+      "mapped_test_ids": [
+        "TEST-013",
+        "TC-013"
+      ],
+      "mapped_scenario_ids": [
+        "SC-013"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        ".beacon/qa/features/markdown-only-project-version-governance/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260603T215259748160/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260603T215259748160",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/ac-closure.json",
+        ".beacon/qa/features/markdown-only-project-version-governance/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": "2026-06-03T13:53:12.368609+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "markdown-only-project-version-governance",
+    "feature_slug": "markdown-only-project-version-governance",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 13,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "branch-guard-resolver-only",
+        "text": "`_branch_guard_inputs` derives `expected_branch`, `git_roots`, `participating_services`, `service_branch_map`, and `branch_governance` from the resolver view without execution-contract residue.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::branch-guard-resolver-only::`_branch_guard_inputs` derives `expected_branch`, `git_roots`, `participating_services`, `service_branch_map`, and `branch_governance` from the resolver view without execution-contract residue.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-013",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "explicit-version-preflight",
+        "text": "Explicit-version implement preflight resolves canonical branch/worktree from governance MD for the requested version; `origin/master` ancestry alone cannot pass preflight when canonical branch mismatches.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::explicit-version-preflight::explicit-version implement preflight resolves canonical branch/worktree from governance md for the requested version; `origin/master` ancestry alone cannot pass preflight when canonical branch mismatches.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "material-gate-md-path",
+        "text": "Material gate / release supplements reference governance MD via resolver, not hard-coded `.beacon/metadata/*.json` paths.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::material-gate-md-path::material gate / release supplements reference governance md via resolver, not hard-coded `.beacon/metadata/*.json` paths.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "md-only-authority",
+        "text": "`docs/beacon/governance/project-version-governance.md` is the sole authority for topology, version contracts, and per-service canonical branches.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::md-only-authority::`docs/beacon/governance/project-version-governance.md` is the sole authority for topology, version contracts, and per-service canonical branches.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "migrate-and-delete-json",
+        "text": "`beacon doctor metadata migrate-to-governance-md` (or equivalent) imports existing JSON envelope into governance MD and removes governance JSON files after successful verify.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::migrate-and-delete-json::`beacon doctor metadata migrate-to-governance-md` (or equivalent) imports existing json envelope into governance md and removes governance json files after successful verify.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "monorepo-md-contract",
+        "text": "Monorepo topology with multiple `service_bindings` and `per_service_canonical_branch` entries round-trips through governance MD parse and implement preflight.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::monorepo-md-contract::monorepo topology with multiple `service_bindings` and `per_service_canonical_branch` entries round-trips through governance md parse and implement preflight.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "no-execution-triple-authority",
+        "text": "When governance MD exists for the active version, `load_execution_branch_contract` must not merge branch fields into implement contract (fail-closed or hard ignore with diagnostic).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::no-execution-triple-authority::when governance md exists for the active version, `load_execution_branch_contract` must not merge branch fields into implement contract (fail-closed or hard ignore with diagnostic).::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "read-from-md",
+        "text": "`load_project_metadata` (or successor) parses governance MD; it must not treat JSON as authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::read-from-md::`load_project_metadata` (or successor) parses governance md; it must not treat json as authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resolver-required",
+        "text": "`beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implement preflight, material gate, and doctor metadata verify consume `resolve_project_governance` only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::resolver-required::`beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implement preflight, material gate, and doctor metadata verify consume `resolve_project_governance` only.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "truth-map-surface",
+        "text": "truth-map registers `project_governance` (or equivalent) as version governance truth for Git/topology, distinct from `SUMMARY.md` product boundary surfaces.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::truth-map-surface::truth-map registers `project_governance` (or equivalent) as version governance truth for git/topology, distinct from `summary.md` product boundary surfaces.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "unified-toolkit-transaction",
+        "text": "Metadata and branch-governance toolkit surfaces share one governance MD transaction path (no split JSON vs execution sinks).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::unified-toolkit-transaction::metadata and branch-governance toolkit surfaces share one governance md transaction path (no split json vs execution sinks).::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "write-to-md-only",
+        "text": "Metadata/branch-governance write transactions update governance MD only; they must not create or update governance JSON as authority.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::write-to-md-only::metadata/branch-governance write transactions update governance md only; they must not create or update governance json as authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "zero-governance-json",
+        "text": "No governance JSON records under `.beacon/metadata/` (including `project-version-metadata.json`); strict verify fails closed if any remain after migration.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+        "signature": "ac::::zero-governance-json::no governance json records under `.beacon/metadata/` (including `project-version-metadata.json`); strict verify fails closed if any remain after migration.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:899c372fba61aa9338c51242bdbb0971f7a451ed2982adb70985ba759c44f14b",
+    "source_baseline_hash": "sha256:899c372fba61aa9338c51242bdbb0971f7a451ed2982adb70985ba759c44f14b",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/markdown-only-project-version-governance.json",
+    "generated_at": "2026-06-03T13:51:25.963774+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-markdown-only-project-version-governance.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-markdown-only-project-version-governance.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-markdown-only-project-version-governance.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-markdown-only-project-version-governance.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"markdown-only-project-version-governance\" --project-root . --version v1.5.2",
+    "run_command": "beacon implement team-run \"markdown-only-project-version-governance\" --project . --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"markdown-only-project-version-governance\" --project . --version v1.5.2",
+    "ralph_command": "beacon implement run \"markdown-only-project-version-governance\" --project . --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"markdown-only-project-version-governance\" --project . --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "markdown-only-project-version-governance",
+    "feature_slug": "markdown-only-project-version-governance",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-03T13:51:25.968111+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-markdown-only-project-version-governance-R2",
+    "transaction_id": "tx-789b67bb3b5aeedd4",
+    "source_hash": "sha256:ffafda62e80df351a9adefee2b70f3a5f94a6df3f6aa70e317461ba9e8e38c83",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-markdown-only-project-version-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-markdown-only-project-version-governance.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-markdown-only-project-version-governance.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-markdown-only-project-version-governance-R2",
+    "transaction_id": "tx-789b67bb3b5aeedd4",
+    "source_hash": "sha256:ffafda62e80df351a9adefee2b70f3a5f94a6df3f6aa70e317461ba9e8e38c83",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-markdown-only-project-version-governance.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-markdown-only-project-version-governance.json",
+  "generated_at": "2026-06-03T13:51:26.015386+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-markdown-only-project-version-governance-R2",
+  "transaction_id": "tx-789b67bb3b5aeedd4",
+  "source_hash": "sha256:ffafda62e80df351a9adefee2b70f3a5f94a6df3f6aa70e317461ba9e8e38c83",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-03T13:53:12.884473+00:00",
+  "accepted_at": "2026-06-03T13:53:12.884452+00:00",
+  "accepted_by": "qa"
+}

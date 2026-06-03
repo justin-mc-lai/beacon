@@ -1,0 +1,300 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-03T13:31:15.224191+00:00",
+  "feature": "markdown-only-project-version-governance",
+  "feature_slug": "markdown-only-project-version-governance",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "57b489c642fab325bc2fd319af86a9631a173fb6f1bad56e6b7ac81ca98cc16d",
+    "tests": "960807683a4ab8044799dc7545d07c6db3d6537c2443ec97e1d917270555d316",
+    "tasks": "67df86d35a4ec6cf61af16dc23e8ebdde0a1b657d37667481f50cad569ab4d19",
+    "evidence": "3bac0eaa266ceb27023f55a98b216f48a351f6441cc49f4133abeff53040952b"
+  },
+  "truth_frontmatter": {
+    "slug": "markdown-only-project-version-governance",
+    "version": "v1.5.2",
+    "status": "draft",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "governance_parser_contract": "beacon-project-governance-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "md-only-authority",
+      "description": "`docs/beacon/governance/project-version-governance.md` is the sole authority for topology, version contracts, and per-service canonical branches."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "zero-governance-json",
+      "description": "No governance JSON records under `.beacon/metadata/` (including `project-version-metadata.json`); strict verify fails closed if any remain after migration."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "resolver-required",
+      "description": "`beacon-toolkit-metadata`, `beacon-toolkit-branch-governance`, implement preflight, material gate, and doctor metadata verify consume `resolve_project_governance` only."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "read-from-md",
+      "description": "`load_project_metadata` (or successor) parses governance MD; it must not treat JSON as authority."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "write-to-md-only",
+      "description": "Metadata/branch-governance write transactions update governance MD only; they must not create or update governance JSON as authority."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "no-execution-triple-authority",
+      "description": "When governance MD exists for the active version, `load_execution_branch_contract` must not merge branch fields into implement contract (fail-closed or hard ignore with diagnostic)."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "unified-toolkit-transaction",
+      "description": "Metadata and branch-governance toolkit surfaces share one governance MD transaction path (no split JSON vs execution sinks)."
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "branch-guard-resolver-only",
+      "description": "`_branch_guard_inputs` derives `expected_branch`, `git_roots`, `participating_services`, `service_branch_map`, and `branch_governance` from the resolver view without execution-contract residue."
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "monorepo-md-contract",
+      "description": "Monorepo topology with multiple `service_bindings` and `per_service_canonical_branch` entries round-trips through governance MD parse and implement preflight."
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "migrate-and-delete-json",
+      "description": "`beacon doctor metadata migrate-to-governance-md` (or equivalent) imports existing JSON envelope into governance MD and removes governance JSON files after successful verify."
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "material-gate-md-path",
+      "description": "Material gate / release supplements reference governance MD via resolver, not hard-coded `.beacon/metadata/*.json` paths."
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "truth-map-surface",
+      "description": "truth-map registers `project_governance` (or equivalent) as version governance truth for Git/topology, distinct from `SUMMARY.md` product boundary surfaces."
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "explicit-version-preflight",
+      "description": "Explicit-version implement preflight resolves canonical branch/worktree from governance MD for the requested version; `origin/master` ancestry alone cannot pass preflight when canonical branch mismatches."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_governance_md_is_sole_authority_path -q`",
+      "assertion": "Resolver points to `docs/beacon/governance/project-version-governance.md`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_governance_json_absence_fail_closed -q`",
+      "assertion": "Strict verify fails if `.beacon/metadata/project-version-metadata.json` exists post-migrate.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_consumers_use_resolve_project_governance -q`",
+      "assertion": "Implement preflight and metadata toolkit routes use resolver, not direct JSON read.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_load_project_metadata_reads_md_only -q`",
+      "assertion": "Load path parses governance MD; JSON path not used as authority.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_commit_writes_md_not_governance_json -q`",
+      "assertion": "Write transaction updates MD only.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_execution_triple_branch_merge_fail_closed -q`",
+      "assertion": "With governance MD present, execution triple cannot override branch map.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_toolkit_shared_md_transaction -q`",
+      "assertion": "Metadata and branch-governance commands target same MD file.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_branch_guard_inputs_from_resolver_only -q`",
+      "assertion": "`_branch_guard_inputs` has no execution `service_branch_map` residue.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_monorepo_version_contract_from_md -q`",
+      "assertion": "Multiple services and branches parse and preflight correctly.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_migrate_removes_governance_json -q`",
+      "assertion": "Migrate imports JSON envelope then deletes governance JSON.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_material_gate_uses_governance_md_resolver -q`",
+      "assertion": "Material gate does not hard-code metadata JSON path.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_truth_map_registers_project_governance_surface -q`",
+      "assertion": "truth-map lists governance MD as truth role.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_markdown_only_project_version_governance.py::test_explicit_version_canonical_branch_from_governance_md -q`",
+      "assertion": "Wrong per-service branch blocks before edit; master ancestry alone insufficient.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Define `beacon-project-governance-v1` parser and governance MD template",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement `resolve_project_governance` in truth-map",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Switch `load_project_metadata` / commit path to MD-only (zero governance JSON)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Fail-closed execution triple branch merge when governance MD exists",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Unify metadata and branch-governance toolkit write transaction to governance MD",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Rewire `_branch_guard_inputs` and explicit-version preflight to resolver-only",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Add `doctor metadata migrate-to-governance-md` and strict JSON absence verify",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Update material gate and tests to drop hard-coded governance JSON paths",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Add regression tests per `tests.md` coverage matrix",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/version-governance-git-branch-closure.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/version-governance-md-only-convergence.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/explicit-version-canonical-branch-worktree-preflight-gate.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/truth.md",
+      "status": "authoritative",
+      "route": "change"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/markdown-only-project-version-governance/tests.md",
+      "status": "authoritative",
+      "route": "test-case"
+    }
+  ]
+}

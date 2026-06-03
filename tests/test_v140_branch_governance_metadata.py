@@ -84,8 +84,10 @@ def test_hotfix_and_worktree_fields_supported(tmp_path: Path) -> None:
 
 
 def test_merge_and_evidence_fields_supported(tmp_path: Path) -> None:
+    from beacon.utils.project_metadata import load_project_metadata
+
     _create_metadata(tmp_path)
-    payload = json.loads((tmp_path / ".beacon" / "metadata" / "project-version-metadata.json").read_text(encoding="utf-8"))
+    payload = load_project_metadata(tmp_path)
     contract = payload["version_scoped_metadata"]["v1.4.0"]
     assert "previous_baseline->hotfix" in contract["merge_direction_policy"]
     assert contract["evidence_contract"] == ["source_commit"]
