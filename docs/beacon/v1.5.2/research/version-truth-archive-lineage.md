@@ -576,3 +576,17 @@ Everything else (`explain`, `doctor verify-version-truth-catalog`, `truth-map re
 - route_decision: `closed`
 - release_supplement_ref: `docs/beacon/v1.5.2/.machine/deep/version-truth-archive-lineage/release-supplement.json`
 - adoption_status: `route_only`
+
+## Support Findings
+
+### Brainstorm
+
+#### Round 2026-06-04T03:35:38.065923+00:00
+
+- source_skill: `beacon-brainstorm`
+- round_id: `2026-06-04T03:35:38.065923+00:00`
+- material_effect: `read_only_route_only`
+- adoption_status: `route_only`
+- route_decision: beacon-brainstorm
+- finding_summary: Converge missing or ambiguous requirement points into explicit questions and candidate decisions before editing frozen truth.
+- source_refs: `docs/beacon/global-boundaries.md`, `docs/beacon/v1.5.2/SUMMARY.md`, `docs/beacon/v1.5.2/execution/index.md`, `docs/beacon/v1.5.2/execution/architecture-blueprint.md`, `docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md`, `docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md`, `docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md`

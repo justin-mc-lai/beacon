@@ -35,11 +35,16 @@ def _default_requirement_refs(version: str, slug: str) -> tuple[str, str, str]:
 _KIT_LAYER_ORDER = ["skill-contract", "scenario-suite", "trace-scorecard", "real-project-proof"]
 
 
+def _resolve_project_root(project_root: Path) -> Path:
+    return Path(project_root).expanduser().resolve()
+
+
 def acceptance_kit_machine_path(project_root: Path, version: str, feature: str) -> Path:
     return machine_execution_dir(project_root, version) / f"acceptance-kit-{feature_slug(feature)}.json"
 
 
 def load_acceptance_kit(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     path = acceptance_kit_machine_path(project_root, version, feature)
     payload = read_json(path, {})
     if not isinstance(payload, dict) or not payload:
@@ -110,6 +115,7 @@ def summarize_acceptance_kit(kit: dict[str, Any] | None) -> dict[str, Any]:
 
 
 def build_acceptance_kit_projection(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     kit = load_acceptance_kit(project_root, version=version, feature=feature)
     summary = summarize_acceptance_kit(kit)
     if not kit:
@@ -162,6 +168,7 @@ def write_acceptance_kit_projection(
     feature: str,
     acceptance_envelope: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     envelope = acceptance_envelope if isinstance(acceptance_envelope, dict) else {}
     if not envelope:
         path = acceptance_kit_machine_path(project_root, version, feature)

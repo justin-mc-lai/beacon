@@ -378,6 +378,7 @@ def run_beacon_brainstorm(
     requirement_gap_digest: dict[str, Any] | None = None,
     brainstorm_hint: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
+    project_root = Path(project_root).expanduser().resolve()
     canonical_mode = _MODE_ALIASES.get(mode, mode)
     if canonical_mode not in MODES:
         raise ValueError(f"unsupported brainstorm mode: {mode}")

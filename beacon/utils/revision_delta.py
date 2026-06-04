@@ -13,6 +13,10 @@ from beacon.utils.story_state import feature_slug, machine_story_path
 from beacon.utils.versioning import normalize_version, resolve_target_version
 
 
+def _resolve_project_root(project_root: Path) -> Path:
+    return Path(project_root).expanduser().resolve()
+
+
 def _semver_tuple(version: str | None) -> tuple[int, int, int]:
     text = str(normalize_version(version) or version or "").strip().lstrip("v")
     try:
@@ -35,6 +39,7 @@ def revision_delta_markdown_path(project_root: Path, version: str, feature: str)
 
 
 def _computed_revision_delta_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=False)
     revision_id = str(revision.get("revision_id", "") or "")
@@ -105,6 +110,7 @@ def load_revision_delta(
     feature: str,
     materialize_if_missing: bool = False,
 ) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     payload = read_json(revision_delta_json_path(project_root, resolved_version, feature), {})
     if isinstance(payload, dict) and payload:
@@ -234,6 +240,7 @@ def _render_markdown(payload: dict[str, Any]) -> str:
 
 
 def materialize_revision_delta(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     payload = _computed_revision_delta_payload(project_root, version=resolved_version, feature=feature)
     if not revision_delta_supported(resolved_version):

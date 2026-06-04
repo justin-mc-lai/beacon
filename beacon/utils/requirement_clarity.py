@@ -71,6 +71,12 @@ _DECISION_PRIORITY_SECTION_TITLES = {
     "决策优先级",
     "优先级规则",
 }
+
+
+def _resolve_project_root(project_root: Path) -> Path:
+    return Path(project_root).expanduser().resolve()
+
+
 _INLINE_MARKERS = (
     "TBD",
     "TODO",
@@ -521,6 +527,7 @@ def _version_projection_truth_contract(
 
 
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md"
     resolved_runtime = resolve_runtime_version(project_root, "auto")
@@ -722,6 +729,7 @@ def requirement_clarity_state_path(project_root: Path, feature: str) -> Path:
 
 
 def load_requirement_clarity_state(project_root: Path, *, feature: str) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     payload = read_json(requirement_clarity_state_path(project_root, feature), {})
     return payload if isinstance(payload, dict) else {}
 
@@ -813,6 +821,7 @@ def write_requirement_clarity_report(
     feature: str,
     payload: dict[str, Any],
 ) -> dict[str, str]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     json_path = requirement_clarity_json_path(project_root, resolved_version, feature)
     markdown_path = requirement_clarity_markdown_path(project_root, resolved_version, feature)
@@ -835,6 +844,7 @@ def write_requirement_clarity_writeback(
     source: str = "freeze",
     run_id: str = "",
 ) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     state_path = requirement_clarity_state_path(project_root, feature)
     resolved_run_id = run_id or resolve_workflow_run_id(project_root, version=resolved_version, feature=feature) or ""
@@ -893,6 +903,7 @@ def materialize_requirement_clarity(
     source: str = "doctor.sync-requirement-clarity",
     run_id: str = "",
 ) -> dict[str, Any]:
+    project_root = _resolve_project_root(project_root)
     resolved_version = resolve_target_version(project_root, version)
     gate_payload = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature)
     report = write_requirement_clarity_report(

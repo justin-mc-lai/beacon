@@ -22,7 +22,7 @@ def run(
     json_output: bool = typer.Option(False, "--json", help="Print JSON payload"),
 ):
     """Run Beacon's read-only brainstorm sidecar against version materials."""
-    root = Path(project_root) if project_root else Path.cwd()
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
     try:
         payload = run_beacon_brainstorm(
             root,
@@ -52,7 +52,7 @@ def create(
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
     """Create a brainstorming document"""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, None)
 
     md_content = f"""# 发散思维: {topic}
@@ -201,7 +201,7 @@ def list(
     project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
 ):
     """List all brainstorming documents"""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, None)
     brainstorm_dir = project_root / "docs" / "beacon" / resolved_version / "research"
 
