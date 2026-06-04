@@ -1,0 +1,36 @@
+# Beacon Feature Change Document
+
+- feature: `qa-browser-memory-and-skill-evolution-advisory-loop`
+- feature_slug: `qa-browser-memory-and-skill-evolution-advisory-loop`
+- version: `v1.4.10`
+- status: `completed`
+
+## Scope
+- Browser QA memory now admits only current evidence-bound runs, reuses memory as advisory execution influence, and emits SkillEvolver-style proposal-only improvements with independent audit and no QA/release/gate authority.
+
+## Added
+- beacon/utils/qa_browser_memory.py
+- tests/test_v1410_qa_browser_memory_skill_evolution.py
+
+## Removed / Reduced
+- none
+
+## Fixed
+- Updated `beacon/utils/browser_task_compiler.py`
+- Updated `beacon/utils/release_scorecard.py`
+- Updated `docs/beacon/archive/v1.4.10/change/qa-browser-memory-and-skill-evolution-advisory-loop.md`
+- Updated `docs/beacon/archive/v1.4.10/prd/qa-browser-memory-and-skill-evolution-advisory-loop.md`
+- Updated `docs/beacon/archive/v1.4.10/user-story/qa-browser-memory-and-skill-evolution-advisory-loop.md`
+- Updated `docs/beacon/archive/v1.4.10/qa/test-cases/qa-browser-memory-and-skill-evolution-advisory-loop.md`
+
+## Traceability Refs
+- `docs/beacon/archive/v1.4.10/change/qa-browser-memory-and-skill-evolution-advisory-loop.md`
+- `docs/beacon/archive/v1.4.10/.machine/change/qa-browser-memory-and-skill-evolution-advisory-loop.refreeze-transaction.json`
+- `docs/beacon/archive/v1.4.10/.machine/execution/deterministic-implementation-contract-qa-browser-memory-and-skill-evolution-advisory-loop.json`
+- `docs/beacon/archive/v1.4.10/.machine/execution/implementation-plan-qa-browser-memory-and-skill-evolution-advisory-loop.json`
+- `docs/beacon/archive/v1.4.10/.machine/execution/implementation-writeback-ledger-qa-browser-memory-and-skill-evolution-advisory-loop.json`
+- `docs/beacon/archive/v1.4.10/.machine/execution/qa-acceptance-qa-browser-memory-and-skill-evolution-advisory-loop.json`
+- `docs/beacon/archive/v1.4.10/execution/qa-acceptance-brief-qa-browser-memory-and-skill-evolution-advisory-loop.md`
+- `.beacon/transactions/qa-acceptance-qa-browser-memory-and-skill-evolution-advisory-loop.json`
+- `docs/beacon/archive/v1.4.10/.machine/testing/test-contract-index.json`
+- `docs/beacon/archive/v1.4.10/.machine/deep/qa-browser-memory-and-skill-evolution-advisory-loop/deep-closure-brief.json`

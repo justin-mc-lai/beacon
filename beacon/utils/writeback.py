@@ -202,6 +202,7 @@ def acceptance_projection_transaction_contract(
     version: str | None = None,
     feature: str | None = None,
 ) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
     resolved_feature = str(feature or "").strip()
     resolved_version = str(version or "").strip()
     if not resolved_feature:

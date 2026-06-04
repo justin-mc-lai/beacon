@@ -1,0 +1,1497 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-version-truth-archive-lineage-r2",
+  "feature": "version-truth-archive-lineage",
+  "feature_slug": "version-truth-archive-lineage",
+  "version": "v1.5.2",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81",
+  "plan_hash": "sha256:1066151fe6de80217ada8aeb08fa9fd7276e6b5b43177d1f7670400fbb786ba8",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+    "prd": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+    "test_case": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+    "truth": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.5.2/features/version-truth-archive-lineage",
+    "revision_delta": "docs/beacon/v1.5.2/.machine/execution/revision-delta-version-truth-archive-lineage.json",
+    "ac_matrix": "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/version-truth-archive-lineage.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012"
+      ]
+    }
+  ],
+  "task_mapping_source": "acceptance-criteria",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-04T02:12:17.766574+00:00",
+    "feature": "version-truth-archive-lineage",
+    "feature_slug": "version-truth-archive-lineage",
+    "prd_ref": "docs/beacon/v1.5.2/prd/version-truth-archive-lineage.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/version-truth-archive-lineage.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "version-truth-archive-lineage",
+    "version": "v1.5.2",
+    "source": "research:docs/beacon/v1.5.2/research/version-truth-archive-lineage.md",
+    "present": true,
+    "section_count": 3,
+    "sections": {
+      "architecture": [
+        "**Canonical write paths**: `version-truth-catalog.md` (truth placement); `project-version-governance.md` (branch); per-feature truth remains `features/<slug>/truth.md` inside each version tree.",
+        "**Read projections**: `.machine/version-truth-catalog.json`, per-version `.machine/archive/*`, optional sqlite `source_hash`.",
+        "**Modules**: extend `archive_governance.py` + new catalog parser; truth-map / doctor / versioning read catalog before scanning dirs."
+      ],
+      "business_flow": [
+        "Operator triggers cutover or audit need.",
+        "`archive catalog plan` diffs active window vs disk layout.",
+        "`catalog apply --confirm` commits MD + relocates trees + regenerates projections.",
+        "`verify-version-truth-catalog --strict` gates freeze/qa/release on active plane.",
+        "Inspect commands use catalog to resolve `truth_root` for active or archive path."
+      ],
+      "decision_priority": [
+        "MD catalog truth_root wins over directory glob discovery.",
+        "Explicit `--version` wins for inspect; delivery commands fail-closed on non-active unless `--include-archived`.",
+        "Feature `truth.md` wins over prd for discovery on v1.5.2+.",
+        "Governance MD never holds feature requirement content.",
+        "--"
+      ]
+    },
+    "derived_items": [
+      {
+        "theme": "business_flow",
+        "text": "Business flow remains explicit",
+        "details": [
+          "Operator triggers cutover or audit need.",
+          "`archive catalog plan` diffs active window vs disk layout.",
+          "`catalog apply --confirm` commits MD + relocates trees + regenerates projections.",
+          "`verify-version-truth-catalog --strict` gates freeze/qa/release on active plane.",
+          "Inspect commands use catalog to resolve `truth_root` for active or archive path."
+        ],
+        "source": "research:docs/beacon/v1.5.2/research/version-truth-archive-lineage.md"
+      },
+      {
+        "theme": "decision_priority",
+        "text": "Decision priority remains deterministic",
+        "details": [
+          "MD catalog truth_root wins over directory glob discovery.",
+          "Explicit `--version` wins for inspect; delivery commands fail-closed on non-active unless `--include-archived`.",
+          "Feature `truth.md` wins over prd for discovery on v1.5.2+.",
+          "Governance MD never holds feature requirement content.",
+          "--"
+        ],
+        "source": "research:docs/beacon/v1.5.2/research/version-truth-archive-lineage.md"
+      }
+    ],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/version-truth-archive-lineage.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "AC-001 `docs/beacon/governance/version-truth-catalog.md` is the sole commit...",
+      "description": "`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-001"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773096+00:00",
+      "completed_at": "2026-06-04T02:34:00.496134+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "AC-002 Catalog lists exactly **3** `validation_state: active` versions; thei...",
+      "description": "Catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-002"
+      ],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773112+00:00",
+      "completed_at": "2026-06-04T02:34:00.496147+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "AC-003 Archived versions have `truth_root` under `docs/beacon/archive/<versi...",
+      "description": "Archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure C3.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-003"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773121+00:00",
+      "completed_at": "2026-06-04T02:34:00.496156+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "AC-004 `beacon doctor verify-version-truth-catalog --strict` fails closed on...",
+      "description": "`beacon doctor verify-version-truth-catalog --strict` fails closed on MD ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-004"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773129+00:00",
+      "completed_at": "2026-06-04T02:34:00.496164+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "AC-005 Default delivery commands (`implement`, `qa`, `release`, truth-map bu...",
+      "description": "Default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-005"
+      ],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773137+00:00",
+      "completed_at": "2026-06-04T02:34:00.496173+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "AC-006 Unified `discover_features(version)` lists `features/*/truth.md` on v...",
+      "description": "Unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-006"
+      ],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773145+00:00",
+      "completed_at": "2026-06-04T02:34:00.496182+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "AC-007 `beacon archive lineage <slug> [--from v] [--to v]` returns ordered h...",
+      "description": "`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-007"
+      ],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773156+00:00",
+      "completed_at": "2026-06-04T02:34:00.496190+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "AC-008 `beacon archive inventory [--version auto]` builds feature × AC matri...",
+      "description": "`beacon archive inventory [--version auto]` builds feature × AC matrix from active versions' `truth.md` AC tables; archived omitted unless `--include-archived`.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-008"
+      ],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773164+00:00",
+      "completed_at": "2026-06-04T02:34:00.496198+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "AC-009 `docs/beacon/archive/INDEX.md` is regenerated on every `catalog apply...",
+      "description": "`docs/beacon/archive/INDEX.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-009"
+      ],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773171+00:00",
+      "completed_at": "2026-06-04T02:34:00.496206+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "AC-010 `beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry...",
+      "description": "`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog MD + mv trees + INDEX + projections + strict verify.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-010"
+      ],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773179+00:00",
+      "completed_at": "2026-06-04T02:34:00.496215+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "AC-011 `beacon-archive` skill documents decision boundary, four operator ver...",
+      "description": "`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples A–F (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive).",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-011"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-011"
+      ],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773187+00:00",
+      "completed_at": "2026-06-04T02:34:00.496223+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "AC-012 Merge global-boundaries **§4.1 MD-only catalog and archive plane** an...",
+      "description": "Merge global-boundaries **§4.1 MD-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4.",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TC-012"
+      ],
+      "mapped_scenario_ids": [
+        "SC-012"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-012"
+      ],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260604T023324Z-bb93",
+        ".beacon/qa/features/version-truth-archive-lineage/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260604T103410151468/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260604T103410151468",
+        ".beacon/auto-test-status.json",
+        "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+        ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "changed_files": [
+        "beacon/utils/version_truth_catalog.py",
+        "beacon/utils/archive_governance.py",
+        "beacon/commands/archive.py",
+        "beacon/commands/doctor.py",
+        "beacon/utils/artifact_paths.py",
+        "beacon/utils/manifest.py",
+        "beacon/utils/truth_map.py",
+        "beacon/utils/delivery_baseline.py",
+        "docs/beacon/global-boundaries.md",
+        "skills/beacon/beacon-archive/SKILL.md",
+        "tests/test_version_truth_archive_lineage.py"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-04T02:33:24.773194+00:00",
+      "completed_at": "2026-06-04T02:34:00.496231+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "version-truth-archive-lineage",
+    "feature_slug": "version-truth-archive-lineage",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 12,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "active-window-three",
+        "text": "Catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::active-window-three::catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-index-generated",
+        "text": "`docs/beacon/archive/INDEX.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-index-generated::`docs/beacon/archive/index.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-inventory",
+        "text": "`beacon archive inventory [--version auto]` builds feature × AC matrix from active versions' `truth.md` AC tables; archived omitted unless `--include-archived`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-inventory::`beacon archive inventory [--version auto]` builds feature × ac matrix from active versions' `truth.md` ac tables; archived omitted unless `--include-archived`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-lineage",
+        "text": "`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-lineage::`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "catalog-bootstrap-once",
+        "text": "`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog MD + mv trees + INDEX + projections + strict verify.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::catalog-bootstrap-once::`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog md + mv trees + index + projections + strict verify.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "drift-verify-strict",
+        "text": "`beacon doctor verify-version-truth-catalog --strict` fails closed on MD ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::drift-verify-strict::`beacon doctor verify-version-truth-catalog --strict` fails closed on md ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature-discovery-truth",
+        "text": "Unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::feature-discovery-truth::unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "global-boundaries-section",
+        "text": "Merge global-boundaries **§4.1 MD-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::global-boundaries-section::merge global-boundaries **§4.1 md-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "md-catalog-canonical",
+        "text": "`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::md-catalog-canonical::`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "physical-archive-relocate",
+        "text": "Archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure C3.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::physical-archive-relocate::archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure c3.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resolver-active-default",
+        "text": "Default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::resolver-active-default::default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "skill-surface-examples",
+        "text": "`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples A–F (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::skill-surface-examples::`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples a–f (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive).::"
+      }
+    ],
+    "current_baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81",
+    "source_baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/version-truth-archive-lineage.json",
+    "generated_at": "2026-06-04T02:12:17.764513+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-version-truth-archive-lineage.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-version-truth-archive-lineage.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-version-truth-archive-lineage.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-version-truth-archive-lineage.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"version-truth-archive-lineage\" --project-root . --version v1.5.2",
+    "run_command": "beacon implement team-run \"version-truth-archive-lineage\" --project . --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"version-truth-archive-lineage\" --project . --version v1.5.2",
+    "ralph_command": "beacon implement run \"version-truth-archive-lineage\" --project . --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"version-truth-archive-lineage\" --project . --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "version-truth-archive-lineage",
+    "feature_slug": "version-truth-archive-lineage",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": ".",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-04T02:12:17.766707+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2",
+    "transaction_id": "tx-3c5c5119ef0de6a8f",
+    "source_hash": "sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-version-truth-archive-lineage.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-version-truth-archive-lineage.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": ".",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "test_case": "docs/beacon/v1.5.2/qa/test-cases/version-truth-archive-lineage.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2",
+    "transaction_id": "tx-3c5c5119ef0de6a8f",
+    "source_hash": "sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json",
+  "generated_at": "2026-06-04T02:12:17.813976+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2",
+  "transaction_id": "tx-3c5c5119ef0de6a8f",
+  "source_hash": "sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-04T02:34:22.270910+00:00",
+  "accepted_at": "2026-06-04T02:34:22.270872+00:00",
+  "accepted_by": "qa"
+}

@@ -1,0 +1,309 @@
+---
+schema_version: "1.0"
+parser_contract: "beacon-version-truth-catalog-v1"
+active_delivery_window: "3"
+transaction_id: "tx-catalog-20260604t025110z"
+committed_at: "2026-06-04T02:51:10.801462+00:00"
+source_hash: "4daa23fc7e4c34469e0b6374b83093baf0da4589f5d2eabf2afe2e416f0b976e"
+event_type: "catalog-bootstrap"
+---
+
+# Version Truth Catalog
+
+## Policy
+- active_delivery_window: `3`
+- active_truth_root_pattern: `docs/beacon/{version}/`
+- archived_truth_root_pattern: `docs/beacon/archive/{version}/`
+- support_research_root: `docs/beacon/research/`
+
+## Active Delivery Versions
+
+### v1.5.0
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.5.0`
+
+### v1.5.1
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.5.1`
+
+### v1.5.2
+- validation_state: `active`
+- truth_root: `docs/beacon/v1.5.2`
+
+## Archived Versions
+
+### v0.0.1-debug
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v0.0.1-debug`
+- archived_at: `2026-06-04T02:51:10.799303+00:00`
+- reason: `release-line-window`
+
+### v1.0.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.0.0`
+- archived_at: `2026-06-04T02:51:10.799690+00:00`
+- reason: `release-line-window`
+
+### v1.0.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.0.1`
+- archived_at: `2026-06-04T02:51:10.799693+00:00`
+- reason: `release-line-window`
+
+### v1.0.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.0.2`
+- archived_at: `2026-06-04T02:51:10.799695+00:00`
+- reason: `release-line-window`
+
+### v1.0.3
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.0.3`
+- archived_at: `2026-06-04T02:51:10.799697+00:00`
+- reason: `release-line-window`
+
+### v1.1.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.0`
+- archived_at: `2026-06-04T02:51:10.799699+00:00`
+- reason: `release-line-window`
+
+### v1.1.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.1`
+- archived_at: `2026-06-04T02:51:10.799700+00:00`
+- reason: `release-line-window`
+
+### v1.1.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.2`
+- archived_at: `2026-06-04T02:51:10.799702+00:00`
+- reason: `release-line-window`
+
+### v1.1.3
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.3`
+- archived_at: `2026-06-04T02:51:10.799704+00:00`
+- reason: `release-line-window`
+
+### v1.1.4
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.4`
+- archived_at: `2026-06-04T02:51:10.799706+00:00`
+- reason: `release-line-window`
+
+### v1.1.5
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.5`
+- archived_at: `2026-06-04T02:51:10.799708+00:00`
+- reason: `release-line-window`
+
+### v1.1.6
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.6`
+- archived_at: `2026-06-04T02:51:10.799709+00:00`
+- reason: `release-line-window`
+
+### v1.1.7
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.7`
+- archived_at: `2026-06-04T02:51:10.799711+00:00`
+- reason: `release-line-window`
+
+### v1.1.8
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.8`
+- archived_at: `2026-06-04T02:51:10.799713+00:00`
+- reason: `release-line-window`
+
+### v1.1.9
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.9`
+- archived_at: `2026-06-04T02:51:10.799715+00:00`
+- reason: `release-line-window`
+
+### v1.1.10
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.10`
+- archived_at: `2026-06-04T02:51:10.799719+00:00`
+- reason: `release-line-window`
+
+### v1.1.11
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.11`
+- archived_at: `2026-06-04T02:51:10.799721+00:00`
+- reason: `release-line-window`
+
+### v1.1.12
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.1.12`
+- archived_at: `2026-06-04T02:51:10.799723+00:00`
+- reason: `release-line-window`
+
+### v1.2.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.2.0`
+- archived_at: `2026-06-04T02:51:10.799724+00:00`
+- reason: `release-line-window`
+
+### v1.2.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.2.1`
+- archived_at: `2026-06-04T02:51:10.799726+00:00`
+- reason: `release-line-window`
+
+### v1.3.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.0`
+- archived_at: `2026-06-04T02:51:10.799728+00:00`
+- reason: `release-line-window`
+
+### v1.3.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.1`
+- archived_at: `2026-06-04T02:51:10.799730+00:00`
+- reason: `release-line-window`
+
+### v1.3.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.2`
+- archived_at: `2026-06-04T02:51:10.799731+00:00`
+- reason: `release-line-window`
+
+### v1.3.3
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.3`
+- archived_at: `2026-06-04T02:51:10.799733+00:00`
+- reason: `release-line-window`
+
+### v1.3.4
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.4`
+- archived_at: `2026-06-04T02:51:10.799734+00:00`
+- reason: `release-line-window`
+
+### v1.3.5
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.5`
+- archived_at: `2026-06-04T02:51:10.799736+00:00`
+- reason: `release-line-window`
+
+### v1.3.6
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.6`
+- archived_at: `2026-06-04T02:51:10.799737+00:00`
+- reason: `release-line-window`
+
+### v1.3.7
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.7`
+- archived_at: `2026-06-04T02:51:10.799739+00:00`
+- reason: `release-line-window`
+
+### v1.3.8
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.8`
+- archived_at: `2026-06-04T02:51:10.799741+00:00`
+- reason: `release-line-window`
+
+### v1.3.9
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.9`
+- archived_at: `2026-06-04T02:51:10.799742+00:00`
+- reason: `release-line-window`
+
+### v1.3.10
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.10`
+- archived_at: `2026-06-04T02:51:10.799744+00:00`
+- reason: `release-line-window`
+
+### v1.3.11
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.11`
+- archived_at: `2026-06-04T02:51:10.799745+00:00`
+- reason: `release-line-window`
+
+### v1.3.12
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.3.12`
+- archived_at: `2026-06-04T02:51:10.799747+00:00`
+- reason: `release-line-window`
+
+### v1.4.0
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.0`
+- archived_at: `2026-06-04T02:51:10.799748+00:00`
+- reason: `release-line-window`
+
+### v1.4.1
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.1`
+- archived_at: `2026-06-04T02:51:10.799750+00:00`
+- reason: `release-line-window`
+
+### v1.4.2
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.2`
+- archived_at: `2026-06-04T02:51:10.799751+00:00`
+- reason: `release-line-window`
+
+### v1.4.3
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.3`
+- archived_at: `2026-06-04T02:51:10.799753+00:00`
+- reason: `release-line-window`
+
+### v1.4.4
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.4`
+- archived_at: `2026-06-04T02:51:10.799754+00:00`
+- reason: `release-line-window`
+
+### v1.4.5
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.5`
+- archived_at: `2026-06-04T02:51:10.799756+00:00`
+- reason: `release-line-window`
+
+### v1.4.6
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.6`
+- archived_at: `2026-06-04T02:51:10.799757+00:00`
+- reason: `release-line-window`
+
+### v1.4.7
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.7`
+- archived_at: `2026-06-04T02:51:10.799760+00:00`
+- reason: `release-line-window`
+
+### v1.4.8
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.8`
+- archived_at: `2026-06-04T02:51:10.799763+00:00`
+- reason: `release-line-window`
+
+### v1.4.9
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.9`
+- archived_at: `2026-06-04T02:51:10.799765+00:00`
+- reason: `release-line-window`
+
+### v1.4.10
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.10`
+- archived_at: `2026-06-04T02:51:10.799766+00:00`
+- reason: `release-line-window`
+
+### v1.4.11
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.11`
+- archived_at: `2026-06-04T02:51:10.799768+00:00`
+- reason: `release-line-window`
+
+### v1.4.12
+- validation_state: `archived-reference-only`
+- truth_root: `docs/beacon/archive/v1.4.12`
+- archived_at: `2026-06-04T02:51:10.799769+00:00`
+- reason: `release-line-window`

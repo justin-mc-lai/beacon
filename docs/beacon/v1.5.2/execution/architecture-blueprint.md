@@ -136,20 +136,6 @@
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:beacon-truth-skill-lifecycle-rename:END -->
 
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
-## Implementation Delivery Host
-
-- version: `v1.5.2`
-- feature_count: `3`
-- transaction_id: `tx-4beafcec594efd5da`
-- source_hash: `sha256:6ac181deb2d021cf9e1a72f0c415674a913e630cd1a3df50a9d57a24c5f20dde`
-
-### Registered Feature Baselines
-- `beacon-truth-map-center-and-package-cutover` | revision=`R1` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json`
-- `beacon-truth-skill-lifecycle-rename` | revision=`R3` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json`
-- `markdown-only-project-version-governance` | revision=`R2` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-markdown-only-project-version-governance.json`
-<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
-
 <!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:markdown-only-project-version-governance:START -->
 ## Technical Delta Blueprint
 
@@ -216,3 +202,85 @@
 - deterministic implementation contract, git workflow contract, and implementation plan are projections.
 - gates must block if projection metadata or service/branch/worktree fields drift.
 <!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:markdown-only-project-version-governance:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:START -->
+## Implementation Delivery Host
+
+- version: `v1.5.2`
+- feature_count: `4`
+- transaction_id: `tx-36386b84ab50c49a4`
+- source_hash: `sha256:58150b3576730bea585b85713038fdf25c9e88079e93310cf761187f709143ea`
+
+### Registered Feature Baselines
+- `beacon-truth-map-center-and-package-cutover` | revision=`R1` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-map-center-and-package-cutover.json`
+- `beacon-truth-skill-lifecycle-rename` | revision=`R3` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-beacon-truth-skill-lifecycle-rename.json`
+- `markdown-only-project-version-governance` | revision=`R2` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-markdown-only-project-version-governance.json`
+- `version-truth-archive-lineage` | revision=`R2` | branch=`beacon/v1.5.2` | writable_services=. | depends_on=- | baseline_ref=`docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json`
+<!-- BEACON:IMPLEMENTATION-DELIVERY-HOST:END -->
+
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:version-truth-archive-lineage:START -->
+## Technical Delta Blueprint
+
+- project_mode: `greenfield`
+- feature: `version-truth-archive-lineage`
+- version: `v1.5.2`
+
+### Source Refs
+- test_case: `docs/beacon/v1.5.2/qa/test-cases/version-truth-archive-lineage.md`
+
+### Delivery Change Surface
+- none
+### Available Entry Surfaces
+- none
+### Current Service Facts
+- none
+
+### Must Change
+- none
+
+### Can Reuse
+- none
+
+### No-Expand Guardrails
+- none
+
+### Compatibility Rules
+- none
+
+### Delivery Constraints
+- none
+
+### Implement Handoff
+- none
+<!-- BEACON:TECHNICAL-DELTA-BLUEPRINT:version-truth-archive-lineage:END -->
+
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:version-truth-archive-lineage:START -->
+## Implementation Delivery Baseline
+
+- baseline_id: `impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2`
+- transaction_id: `tx-3c5c5119ef0de6a8f`
+- source_hash: `sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685`
+- projection_seq: `1`
+- version: `v1.5.2`
+- feature: `version-truth-archive-lineage`
+- lifecycle_role: `pre-implement delivery blueprint projection`
+- projection_refresh_trigger: `implement plan against the active frozen revision`
+- branch_strategy: `single-branch`
+- base_branch: `main`
+- default_target_branch: `beacon/v1.5.2`
+- branch_prefix: `beacon/`
+- use_git_worktree: `False`
+- worktree_root: `.`
+- workspace_root: `.`
+
+### Delivery Service Scope
+- direct_delivery_services: .
+- writable_services: .
+- reference_only_services: docs
+- depends_on_features: -
+
+### Plan-Time Gate Contract
+- canonical envelope is the only delivery baseline source.
+- deterministic implementation contract, git workflow contract, and implementation plan are projections.
+- gates must block if projection metadata or service/branch/worktree fields drift.
+<!-- BEACON:IMPLEMENTATION-DELIVERY-BASELINE:version-truth-archive-lineage:END -->

@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0",
+  "feature": "version-truth-archive-lineage",
+  "feature_slug": "version-truth-archive-lineage",
+  "version": "v1.5.2",
+  "mode": "single-repo",
+  "expected_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "base_branch": "main",
+  "use_git_worktree": false,
+  "require_clean_worktree_for_switch": true,
+  "service_directories": [
+    "."
+  ],
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "git_roots": [
+    "."
+  ],
+  "worktree_root": ".",
+  "implementation_preflight": [
+    "Before implementation, verify the target service belongs to: .",
+    "Before implementation, verify the current branch is beacon/v1.5.2.",
+    "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+  ],
+  "source": "technical_review_contract",
+  "generated_at": "2026-06-04T02:12:17.766707+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2",
+  "transaction_id": "tx-3c5c5119ef0de6a8f",
+  "source_hash": "sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685",
+  "projection_seq": 1,
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json",
+  "projection_source": "implementation_delivery_baseline_envelope"
+}

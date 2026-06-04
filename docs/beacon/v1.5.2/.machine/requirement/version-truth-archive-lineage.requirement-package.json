@@ -1,0 +1,303 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-04T02:09:51.448977+00:00",
+  "feature": "version-truth-archive-lineage",
+  "feature_slug": "version-truth-archive-lineage",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5e5283316f5a242e580e0e9151a3dc67f45516d98eae20d0b2b68c6b13a90652",
+    "tests": "5c2767df5b5ed4cb6410dcfecd8354866e61744c6bfe5166670ae3aa0ba6fbd1",
+    "tasks": "59fcac7282484ce6f300a91366a0dd769b6c145d896f9ea17f49bcee9017e729",
+    "evidence": "6beea48cd8ab6f6c899a43ed02c38af046c0aa66402a36f2d39554504ad0e0b3"
+  },
+  "truth_frontmatter": {
+    "slug": "version-truth-archive-lineage",
+    "version": "v1.5.2",
+    "status": "draft",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parent_feature": "project-governance-projection-lifecycle",
+    "catalog_parser_contract": "beacon-version-truth-catalog-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "md-catalog-canonical",
+      "description": "`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "active-window-three",
+      "description": "Catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "physical-archive-relocate",
+      "description": "Archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure C3."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "drift-verify-strict",
+      "description": "`beacon doctor verify-version-truth-catalog --strict` fails closed on MD ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "resolver-active-default",
+      "description": "Default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "feature-discovery-truth",
+      "description": "Unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "archive-lineage",
+      "description": "`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots."
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "archive-inventory",
+      "description": "`beacon archive inventory [--version auto]` builds feature × AC matrix from active versions' `truth.md` AC tables; archived omitted unless `--include-archived`."
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "archive-index-generated",
+      "description": "`docs/beacon/archive/INDEX.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands."
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "catalog-bootstrap-once",
+      "description": "`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog MD + mv trees + INDEX + projections + strict verify."
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "skill-surface-examples",
+      "description": "`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples A–F (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive)."
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "global-boundaries-section",
+      "description": "Merge global-boundaries **§4.1 MD-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_catalog_md_is_sole_commit_source -q`",
+      "assertion": "Catalog parser round-trip; JSON projection derived only.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_active_window_three_versions -q`",
+      "assertion": "Exactly 3 active roots under `docs/beacon/<v>/`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_catalog_apply_relocates_archived_tree -q`",
+      "assertion": "Move to `archive/<v>/`; bounded link rewrite; no delete.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_verify_strict_fails_on_catalog_drift -q`",
+      "assertion": "Tampered projection or path mismatch → fail closed.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_resolver_uses_active_catalog_only -q`",
+      "assertion": "Delivery commands ignore archived unless `--include-archived`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_discover_features_uses_truth_md -q`",
+      "assertion": "v1.5.2 discovery finds `features/*/truth.md`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_archive_lineage_spans_active_and_archive -q`",
+      "assertion": "Ordered hops with truth paths across roots.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_archive_inventory_active_ac_matrix -q`",
+      "assertion": "Matrix from active truth AC tables only by default.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_archive_index_regenerated_on_apply -q`",
+      "assertion": "INDEX.md matches catalog; not stale after apply.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "integration",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_catalog_bootstrap_dry_run_and_confirm -q`",
+      "assertion": "Dry-run previews moves; confirm atomic + verify strict.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_beacon_archive_skill_documents_examples -q`",
+      "assertion": "Skill contains four verbs + examples A–F boundaries.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_version_truth_archive_lineage.py::test_global_boundaries_section_4_1_present -q`",
+      "assertion": "§4.1 + archive/change clarification merged in global-boundaries.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Add `version-truth-catalog.md` parser/render + governance-style commit transaction (AC-001)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Implement catalog active window policy and validation (AC-002)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Implement catalog apply/bootstrap relocate + bounded link rewrite (AC-003, AC-010)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Add `doctor verify-version-truth-catalog --strict` + projection generation (AC-004)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Wire `resolve_version_truth_root` into resolver/delivery defaults (AC-005)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Unify `discover_features` for `features/*/truth.md` (AC-006)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Add `beacon archive lineage` command (AC-007)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Add `beacon archive inventory` command (AC-008)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Generate `docs/beacon/archive/INDEX.md` on catalog apply (AC-009)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Extend `beacon-archive` SKILL.md with four verbs + examples A–F (AC-011)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Merge global-boundaries §4.1 + support clarification (AC-012)",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Add `tests/test_version_truth_archive_lineage.py` per coverage matrix",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/version-truth-archive-lineage.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/project-governance-projection-lifecycle/truth.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/global-boundaries.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "status": "authoritative",
+      "route": "change"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+      "status": "authoritative",
+      "route": "test-case"
+    }
+  ]
+}

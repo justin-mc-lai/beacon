@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 from typing import Any
 
@@ -73,10 +74,33 @@ def _iter_version_roots(project_root: Path) -> list[str]:
 
 
 def _feature_names(project_root: Path, *, version: str) -> list[str]:
-    prd_root = project_root / "docs" / "beacon" / version / "prd"
-    if not prd_root.exists():
-        return []
-    return sorted({path.stem for path in prd_root.glob("*.md")})
+    return discover_features(project_root, version=version)
+
+
+def discover_features(project_root: Path, *, version: str) -> list[str]:
+    """List feature slugs from features/*/truth.md (v1.5.2+) with prd/*.md fallback."""
+    from beacon.utils.version_truth_catalog import resolve_version_truth_root
+
+    resolved_version = resolve_target_version(project_root, version)
+    truth_root = resolve_version_truth_root(project_root, resolved_version)
+    features_dir = truth_root / "features"
+    if features_dir.is_dir():
+        slugs = sorted(
+            {
+                path.parent.name
+                for path in features_dir.glob("*/truth.md")
+                if path.is_file() and path.parent.name
+            }
+        )
+        if slugs:
+            return slugs
+    prd_root = truth_root / "prd"
+    if prd_root.is_dir():
+        return sorted({path.stem for path in prd_root.glob("*.md") if path.is_file()})
+    legacy_prd = project_root / "docs" / "beacon" / resolved_version / "prd"
+    if legacy_prd.is_dir():
+        return sorted({path.stem for path in legacy_prd.glob("*.md") if path.is_file()})
+    return []
 
 
 def _existing_feature_refs(project_root: Path, *, version: str, feature: str) -> list[str]:
@@ -307,4 +331,100 @@ def load_archive_read_model(project_root: Path, *, version: str, feature: str = 
         "plan": plan,
         "index": index,
         "feature": load_feature_archive_boundary(project_root, version=resolved_version, feature=feature) if feature else {},
+    }
+
+
+def _extract_ac_ids_from_truth(truth_path: Path) -> list[str]:
+    if not truth_path.is_file():
+        return []
+    text = truth_path.read_text(encoding="utf-8")
+    return sorted(set(re.findall(r"\b(AC-\d{3})\b", text)))
+
+
+def build_archive_lineage(
+    project_root: Path,
+    *,
+    feature: str,
+    from_version: str = "",
+    to_version: str = "",
+) -> dict[str, Any]:
+    from beacon.utils.version_truth_catalog import list_all_catalog_versions, resolve_version_truth_root
+
+    slug = feature_slug(feature)
+    versions = list_all_catalog_versions(project_root)
+    if not versions:
+        versions = _iter_version_roots(project_root)
+    hops: list[dict[str, Any]] = []
+    for version in versions:
+        if from_version and _semver_tuple(version) < _semver_tuple(from_version):
+            continue
+        if to_version and _semver_tuple(version) > _semver_tuple(to_version):
+            continue
+        truth_root = resolve_version_truth_root(project_root, version)
+        truth_path = truth_root / "features" / slug / "truth.md"
+        if not truth_path.is_file():
+            truth_path = truth_root / "prd" / f"{slug}.md"
+        if not truth_path.is_file():
+            continue
+        change_path = project_root / "docs" / "beacon" / version / "change" / f"{slug}.md"
+        revision_path = project_root / "docs" / "beacon" / version / ".machine" / "execution" / f"{slug}.revision.json"
+        revision = read_json(revision_path, {})
+        hops.append(
+            {
+                "version": version,
+                "truth_path": _rel(project_root, truth_path),
+                "change_path": _rel(project_root, change_path) if change_path.is_file() else "",
+                "revision_id": str(revision.get("revision_id") or ""),
+                "baseline_hash": str(revision.get("baseline_hash") or ""),
+            }
+        )
+    return {
+        "schema_version": "1.0",
+        "feature": feature,
+        "feature_slug": slug,
+        "from_version": from_version,
+        "to_version": to_version,
+        "hops": hops,
+        "hop_count": len(hops),
+        "generated_at": now_iso(),
+    }
+
+
+def build_archive_inventory(
+    project_root: Path,
+    *,
+    version: str = "auto",
+    include_archived: bool = False,
+) -> dict[str, Any]:
+    from beacon.utils.version_truth_catalog import list_active_catalog_versions, list_all_catalog_versions, resolve_version_truth_root
+
+    if include_archived:
+        target_versions = list_all_catalog_versions(project_root)
+    else:
+        target_versions = list_active_catalog_versions(project_root)
+    if version not in {"", "auto"}:
+        resolved = resolve_target_version(project_root, version)
+        target_versions = [resolved]
+    rows: list[dict[str, Any]] = []
+    for item_version in target_versions:
+        truth_root = resolve_version_truth_root(project_root, item_version)
+        for slug in discover_features(project_root, version=item_version):
+            truth_path = truth_root / "features" / slug / "truth.md"
+            if not truth_path.is_file():
+                truth_path = truth_root / "prd" / f"{slug}.md"
+            rows.append(
+                {
+                    "version": item_version,
+                    "feature_slug": slug,
+                    "truth_path": _rel(project_root, truth_path),
+                    "ac_ids": _extract_ac_ids_from_truth(truth_path),
+                }
+            )
+    return {
+        "schema_version": "1.0",
+        "include_archived": include_archived,
+        "versions": target_versions,
+        "rows": rows,
+        "row_count": len(rows),
+        "generated_at": now_iso(),
     }

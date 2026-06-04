@@ -1,0 +1,91 @@
+# Native Team Role Report: implementer
+
+- role: `implementer`
+- status: `completed`
+- revision_id: `R1`
+- summary: implementation writeback recorded for planned items
+
+## implemented_item_ids
+- `AC-001`
+- `AC-002`
+- `AC-003`
+- `AC-004`
+- `AC-005`
+- `AC-006`
+- `AC-007`
+- `AC-008`
+- `AC-009`
+- `AC-010`
+- `AC-011`
+- `AC-012`
+- `AC-013`
+- `AC-014`
+- `AC-015`
+- `AC-016`
+- `TASK-001`
+
+## changed_files
+- `.beacon/coverage-summary.json`
+- `.beacon/evidence-manifest.json`
+- `.beacon/state/memory-friction-evolution/latest.json`
+- `.omc/project-memory.json`
+- `beacon-console-ui/IMPLEMENTATION.md`
+- `beacon-console-ui/README.md`
+- `beacon-console-ui/index.html`
+- `beacon-console-ui/package.json`
+- `beacon-console-ui/src/components/Layout/index.css`
+- `beacon-console-ui/src/components/Layout/index.tsx`
+- `beacon-console-ui/src/data/consoleData.ts`
+- `beacon-console-ui/src/index.css`
+- `beacon-console-ui/src/pages/HomePage/index.tsx`
+- `beacon-console-ui/src/pages/ManagementOverviewPage/index.tsx`
+- `beacon-console-ui/src/pages/MaterialDocumentDetailPage/index.tsx`
+- `beacon-console-ui/src/pages/MaterialViewerPage/index.tsx`
+- `beacon-console-ui/src/pages/ProjectDetailPage/index.tsx`
+- `beacon-console-ui/src/pages/RecoveryDiagnosticsPage/index.tsx`
+- `beacon-console-ui/src/pages/RuntimeCenterPage/index.tsx`
+- `beacon-console-ui/src/router/index.tsx`
+- `beacon-console-ui/src/types/project.ts`
+- `beacon-console-ui/src/utils/labels.ts`
+- `beacon-console-ui/vite.config.ts`
+- `beacon/cli_factory.py`
+- `beacon/command_catalog.py`
+- `beacon/commands/gate.py`
+- `beacon/commands/implement.py`
+- `beacon/commands/prototype.py`
+- `beacon/commands/release.py`
+- `beacon/commands/status.py`
+- `beacon/commands/workflow.py`
+- `beacon/utils/delivery_kernel.py`
+- `beacon/utils/help_support.py`
+- `beacon/utils/implement_adapters.py`
+- `beacon/utils/intent_router.py`
+- `beacon/utils/llm_loop.py`
+- `beacon/utils/memory.py`
+- `beacon/utils/project_skills.py`
+- `beacon/utils/prototype_utils.py`
+- `beacon/utils/release_scorecard.py`
+- `beacon/utils/semantic_runtime.py`
+- `beacon/utils/workflow_memory.py`
+- `docs/beacon/archive/v1.3.6/.machine/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.json`
+- `docs/beacon/archive/v1.3.6/.machine/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.progress.json`
+- `docs/beacon/archive/v1.3.6/execution/implementation-plan-beacon-v1.3.6-visual-management-console-and-material-viewer.md`
+- `docs/beacon/archive/v1.3.6/research/README.md`
+- `docs/beacon/archive/v1.3.6/research/beacon-oss-sync-memory-agents-absorption-analysis.md`
+- `tests/test_gate_memory_closure_contract.py`
+- `tests/test_release_check_contract.py`
+- `tests/test_report_memory_metrics.py`
+- `tests/test_v103_workflow_attempt_contract.py`
+- `tests/test_v103_workflow_interactive_and_closure.py`
+- `tests/test_v103_workflow_interactive_timeout_contract.py`
+- `tests/test_v112_version_truth_profile_boundary_governance.py`
+- `tests/test_v113_command_layering.py`
+- `tests/test_v117_project_skill_orchestration.py`
+- `tests/test_v135_prototype_wireframe_mode.py`
+- `tests/test_v136_delivery_kernel_read_model.py`
+- `tests/test_workflow_continue_progress.py`
+- `tests/test_workflow_memory_lifecycle.py`
+
+## recommendations
+- Follow the implementation-architect execution note when present.
+- Run reviewer gate to confirm no scope/spec drift.

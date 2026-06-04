@@ -177,7 +177,10 @@ def build_implementation_delivery_baseline(
 def projection_metadata(envelope: dict[str, Any], *, project_root: Path | None = None, version: str = "", feature: str = "") -> dict[str, Any]:
     metadata = {field: envelope.get(field) for field in PROJECTION_FIELDS}
     if project_root is not None and version and feature:
-        metadata["canonical_envelope_ref"] = str(implementation_delivery_baseline_path(project_root, version, feature).relative_to(project_root))
+        root = project_root.resolve()
+        metadata["canonical_envelope_ref"] = str(
+            implementation_delivery_baseline_path(root, version, feature).resolve().relative_to(root)
+        )
     metadata["projection_source"] = "implementation_delivery_baseline_envelope"
     return metadata
 

@@ -1591,3 +1591,33 @@ def verify_version_surfaces_command(
     else:
         _print_version_surface_verify_result(payload.get("result", {}))
     raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-version-truth-catalog")
+def verify_version_truth_catalog_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    strict: bool = typer.Option(False, "--strict", help="Fail closed when catalog MD, projection, or paths drift"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify version-truth-catalog MD against machine projection and on-disk truth roots."""
+    from beacon.utils.version_truth_catalog import verify_version_truth_catalog
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    result = verify_version_truth_catalog(root, strict=strict)
+    payload = {"schema_version": "1.0", "action": "doctor-verify-version-truth-catalog", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Version Truth Catalog Verify")
+        typer.echo(f"status: {result.get('status')}")
+        if result.get("reason_code"):
+            typer.echo(f"reason_code: {result.get('reason_code')}")
+        for check in result.get("checks") or []:
+            if isinstance(check, dict):
+                typer.echo(f"- {check.get('name')}: {check.get('status')} ({check.get('reason_code', '')})")
+    exit_code = 0
+    if result.get("status") == "fail":
+        exit_code = 2
+    elif strict and result.get("status") == "skipped":
+        exit_code = 2
+    raise typer.Exit(code=exit_code)

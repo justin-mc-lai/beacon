@@ -45,7 +45,8 @@ class DoctorExecutionResult:
 
 def resolve_doctor_project_root(project_root: str) -> Path:
     """Resolve a doctor project root with CLI-compatible fallback."""
-    return Path(project_root) if project_root else Path.cwd()
+    root = Path(project_root) if project_root else Path.cwd()
+    return root.expanduser().resolve()
 
 
 def resolve_doctor_runtime_version(runtime_info: dict[str, Any] | None = None) -> str:
@@ -63,7 +64,7 @@ def build_doctor_execution_context(
     include_version_context: bool = True,
 ) -> DoctorExecutionContext:
     """Build the shared execution context consumed by doctor handlers."""
-    root = Path(project_root) if isinstance(project_root, Path) else resolve_doctor_project_root(project_root)
+    root = (Path(project_root) if isinstance(project_root, Path) else resolve_doctor_project_root(project_root)).expanduser().resolve()
     runtime_info = collect_runtime_info()
     runtime_version = resolve_doctor_runtime_version(runtime_info)
     version_context = None

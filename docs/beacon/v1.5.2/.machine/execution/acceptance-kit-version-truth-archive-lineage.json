@@ -1,0 +1,46 @@
+{
+  "schema_version": "1.0",
+  "feature": "version-truth-archive-lineage",
+  "feature_slug": "version-truth-archive-lineage",
+  "version": "v1.5.2",
+  "verdict": "passed",
+  "layers": {
+    "skill-contract": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "evidence_ref": "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-version-truth-archive-lineage.json"
+    },
+    "scenario-suite": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "evidence_ref": "docs/beacon/v1.5.2/execution/qa-acceptance-brief-version-truth-archive-lineage.md"
+    },
+    "trace-scorecard": {
+      "status": "pass",
+      "source_truth_ref": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+      "evidence_ref": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md"
+    },
+    "real-project-proof": {
+      "status": "pass",
+      "source_truth_ref": ".beacon/transactions/qa-acceptance-version-truth-archive-lineage.json",
+      "evidence_ref": ".beacon/transactions/qa-acceptance-version-truth-archive-lineage.json"
+    }
+  },
+  "real_project_proof": {
+    "status": "pass",
+    "evidence_refs": [
+      ".beacon/transactions/qa-acceptance-version-truth-archive-lineage.json",
+      "docs/beacon/v1.5.2/execution/qa-acceptance-brief-version-truth-archive-lineage.md",
+      "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-version-truth-archive-lineage.json",
+      ".beacon/auto-test-status.json",
+      ".beacon/qa/status.json",
+      "docs/beacon/v1.5.2/.machine/qa/version-truth-archive-lineage.ac-test-matrix.json",
+      ".beacon/coverage-summary.json",
+      ".beacon/qa/features/version-truth-archive-lineage/ac-closure.json",
+      ".beacon/qa/features/version-truth-archive-lineage/scorecard.json",
+      ".beacon/release-gate-report.json"
+    ],
+    "source": "qa_acceptance_envelope"
+  },
+  "regression_pass": true
+}

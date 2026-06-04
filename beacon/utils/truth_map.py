@@ -819,7 +819,21 @@ def evaluate_implement_version_governance_preflight(
     diagnostics: list[dict[str, Any]] = []
     reason_code = ""
 
-    if governance.get("blocked"):
+    from beacon.utils.version_truth_catalog import evaluate_catalog_delivery_preflight
+
+    catalog_preflight = evaluate_catalog_delivery_preflight(root, version=version)
+    if catalog_preflight.get("blocked"):
+        reason_code = str(catalog_preflight.get("reason_code") or "version_not_on_active_delivery_plane")
+        diagnostics.append(
+            {
+                "severity": "error",
+                "code": reason_code,
+                "message": "version is not on the catalog active delivery plane",
+                "validation_state": catalog_preflight.get("validation_state", ""),
+            }
+        )
+
+    if governance.get("blocked") and not reason_code:
         governance_codes = {
             str(item.get("code") or "").strip()
             for item in governance.get("diagnostics", [])
@@ -889,6 +903,7 @@ def evaluate_implement_version_governance_preflight(
             "path": str(workflow.get("path") or ""),
         },
         "version_governance": governance,
+        "catalog_delivery_preflight": catalog_preflight,
         "project_metadata_verification": metadata_verdict,
         "diagnostics": diagnostics,
         "recommended_command": repair_commands[0],

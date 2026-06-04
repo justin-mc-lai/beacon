@@ -32,7 +32,15 @@ def uses_machine_surface(version: str | None, *, runtime_version: str | None = N
 
 
 def version_root(project_root: Path, version: str) -> Path:
-    return project_root / "docs" / "beacon" / version
+    resolved = normalize_version(version) or version
+    try:
+        from beacon.utils.version_truth_catalog import catalog_supported, resolve_version_truth_root
+
+        if catalog_supported(resolved):
+            return resolve_version_truth_root(project_root, resolved)
+    except Exception:  # noqa: BLE001
+        pass
+    return project_root / "docs" / "beacon" / resolved
 
 
 def human_execution_dir(project_root: Path, version: str) -> Path:

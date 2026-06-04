@@ -482,6 +482,7 @@ def _analyze_feature_implementation_order(project_root: Path, *, version: str, f
 
 
 def _build_version_change_payload(project_root: Path, *, version: str) -> dict:
+    project_root = project_root.expanduser().resolve()
     feature_payloads = _feature_change_payloads(project_root, version)
     features = []
     added: list[str] = []
@@ -742,7 +743,7 @@ def check(
     json_output: bool = typer.Option(False, "--json", help="JSON output"),
 ):
     """Check release conditions"""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     if metadata_machine_path(project_root).exists():

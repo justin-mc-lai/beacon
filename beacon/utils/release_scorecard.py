@@ -305,7 +305,8 @@ def _feature_change_payload(project_root: Path, *, version: str, feature: str) -
 def _acceptance_envelope_payload(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     if not feature:
         return {}
-    path = machine_execution_dir(project_root, version) / f"qa-acceptance-{feature_slug(feature)}.json"
+    root = project_root.resolve()
+    path = machine_execution_dir(root, version) / f"qa-acceptance-{feature_slug(feature)}.json"
     payload = _load_json(path)
     if not payload:
         return {}
@@ -313,7 +314,7 @@ def _acceptance_envelope_payload(project_root: Path, *, version: str, feature: s
     if payload_version and payload_version != version:
         return {}
     normalized = dict(payload)
-    normalized["_machine_path"] = str(path.relative_to(project_root))
+    normalized["_machine_path"] = str(path.resolve().relative_to(root))
     return normalized
 
 
@@ -680,6 +681,7 @@ def _qa_memory_release_support(feature_scorecard: dict[str, Any]) -> dict[str, A
 
 
 def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, Any]:
+    project_root = project_root.resolve()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     version_governance_truth = resolve_version_governance(project_root, version=resolved_version)

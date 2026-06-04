@@ -2,11 +2,12 @@
   "schema_version": "1.0",
   "artifact": "implementation_delivery_host",
   "version": "v1.5.2",
-  "feature_count": 3,
+  "feature_count": 4,
   "feature_slugs": [
     "beacon-truth-map-center-and-package-cutover",
     "beacon-truth-skill-lifecycle-rename",
-    "markdown-only-project-version-governance"
+    "markdown-only-project-version-governance",
+    "version-truth-archive-lineage"
   ],
   "features": [
     {
@@ -77,16 +78,40 @@
       ],
       "depends_on_features": [],
       "updated_at": "2026-06-03T13:51:25.969553+00:00"
+    },
+    {
+      "feature": "version-truth-archive-lineage",
+      "feature_slug": "version-truth-archive-lineage",
+      "revision_id": "R2",
+      "baseline_id": "impl-delivery-baseline-v1.5.2-version-truth-archive-lineage-R2",
+      "transaction_id": "tx-3c5c5119ef0de6a8f",
+      "source_hash": "sha256:74252c1ef4b49851e0b9bc41733375637df0bde52817e80e9350534951e11685",
+      "baseline_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-version-truth-archive-lineage.json",
+      "default_target_branch": "beacon/v1.5.2",
+      "worktree_root": ".",
+      "workspace_root": ".",
+      "direct_delivery_services": [
+        "."
+      ],
+      "writable_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "depends_on_features": [],
+      "updated_at": "2026-06-04T02:12:17.768427+00:00"
     }
   ],
   "services_map": {
     ".": [
       "beacon-truth-map-center-and-package-cutover",
       "beacon-truth-skill-lifecycle-rename",
-      "markdown-only-project-version-governance"
+      "markdown-only-project-version-governance",
+      "version-truth-archive-lineage"
     ]
   },
-  "source_hash": "sha256:6ac181deb2d021cf9e1a72f0c415674a913e630cd1a3df50a9d57a24c5f20dde",
-  "transaction_id": "tx-4beafcec594efd5da",
-  "generated_at": "2026-06-03T13:51:25.971159+00:00"
+  "source_hash": "sha256:58150b3576730bea585b85713038fdf25c9e88079e93310cf761187f709143ea",
+  "transaction_id": "tx-36386b84ab50c49a4",
+  "generated_at": "2026-06-04T02:12:17.770067+00:00"
 }

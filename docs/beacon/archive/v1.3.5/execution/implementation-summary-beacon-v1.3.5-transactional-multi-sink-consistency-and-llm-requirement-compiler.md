@@ -1,0 +1,89 @@
+# Beacon Implementation Summary
+
+- feature: `beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler`
+- version: `v1.3.5`
+- run_id: `run-20260420T150929Z-e370`
+- status: `completed`
+- runner: `codex-subagents`
+- adapter_type: `native`
+- mode: `team`
+- host_runtime: `codex`
+
+## Changed Files
+- `.beacon/evidence-manifest.json`
+- `.omc/project-memory.json`
+- `beacon/commands/gate.py`
+- `beacon/commands/implement.py`
+- `beacon/commands/prd.py`
+- `beacon/commands/release.py`
+- `beacon/commands/review.py`
+- `beacon/commands/status.py`
+- `beacon/utils/git_alignment.py`
+- `beacon/utils/implementation_plan.py`
+- `beacon/utils/prototype_utils.py`
+- `beacon/utils/requirement_clarity.py`
+- `beacon/utils/runtime_projection_store.py`
+- `beacon/utils/technical_review_contract.py`
+- `docs/beacon/v1.3.3/.machine/execution/change-impact.json`
+- `docs/beacon/v1.3.3/.machine/execution/config.json`
+- `docs/beacon/v1.3.3/.machine/execution/delivery-manifest.json`
+- `docs/beacon/v1.3.3/.machine/execution/git-alignment.json`
+- `docs/beacon/v1.3.3/.machine/execution/source.json`
+- `docs/beacon/archive/v1.3.5/SUMMARY.md`
+- `docs/beacon/archive/v1.3.5/execution/index.md`
+- `docs/beacon/archive/v1.3.5/qa/test-cases/index.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/canonical-envelope.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/coverage-report.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/freeze.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/implementation-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/interaction-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/manifest.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/navigation-map.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/home.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/management-overview.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/project-detail.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/recovery-diagnostics.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/page-specs/runtime-center.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-plan.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/prototype-review.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/route-closure-contract.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/source-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/state-flow-map.md`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-manifest.json`
+- `docs/beacon/v1.3.6/prototype/beacon-v1-3-6-visual-management-console-and-material-viewer/wireframe-summary.md`
+- `skills/beacon/beacon-help/SKILL.md`
+- `skills/beacon/beacon-status/SKILL.md`
+- `skills/beacon/using-beacon/SKILL.md`
+- `tests/test_v114_implement_command.py`
+- `tests/test_v131_cognitive_load_gates.py`
+- `tests/test_v135_prototype_projection_consistency.py`
+
+## Verification
+- `passed`: beacon implement run --runner codex-subagents
+- `passed`: auto-test-status
+
+## Artifact Updates
+- `user_story`: required=False reason=story machine state writeback recorded
+- `review_quality`: required=True reason=run quality review after native implementation
+- `acceptance`: required=True reason=acceptance remains a formal post-verify action
+
+## Requirement Traceability
+- source_of_truth_root: `docs/beacon/v1.3.5`
+- prd: `docs/beacon/archive/v1.3.5/prd/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md`
+- user_story: `docs/beacon/archive/v1.3.5/user-story/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md`
+- test_case: `docs/beacon/archive/v1.3.5/qa/test-cases/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.md`
+- ac_matrix: `docs/beacon/archive/v1.3.5/.machine/qa/beacon-v1.3.5-transactional-multi-sink-consistency-and-llm-requirement-compiler.ac-test-matrix.json`
+- revision_id: `R1`
+- implemented_item_ids: `AC-001, AC-002, AC-003, AC-004, AC-005, TASK-001`
+- implemented_task_ids: ``
+- verified_task_ids: ``
+
+## Delivery Surfaces
+- runtime_mode: `team`
+- shipped_surfaces: ``
+- partial_surfaces: ``
+- deferred_surfaces: ``
+- downgrade_rationale: ``

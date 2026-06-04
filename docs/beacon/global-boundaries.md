@@ -29,6 +29,7 @@ prd
 
 - `prototype` 只可作为条件触发层插入 `test-case` 与 `implement` 之间，不得被默认抬升为所有 feature 的常驻主段。
 - `ceo-review`、`brainstorm`、`design-review`、`deep`、`help`、`status`、`doctor`、`archive` 等都属于 support surface，不是新的 lifecycle stage。
+- `archive` governs historical requirement isolation and version-truth catalog commits; it does not replace `change` for editing frozen feature truth.
 - support surface 可以 challenge、explain、route、diagnose，但不能默认替代 truth surface、execution surface 或 release gate。
 
 收敛原则：
@@ -90,6 +91,15 @@ Beacon 的多表面写入必须遵循单真值、多投影、事务一致的原�
 收敛原则：
 
 > Beacon 可以有多个读面，但只能有一个提交真值。
+
+### 4.1 MD-only catalog and archive plane (v1.5.2+ evolution line)
+
+- Requirement-truth **version catalog** canonical source is Markdown under `docs/beacon/governance/version-truth-catalog.md`, not scattered JSON or hand-edited directory lists.
+- **Active delivery truth** lives under `docs/beacon/<version>/` for at most the configured active window (default: 3 release lines).
+- **Archived requirement truth** lives under `docs/beacon/archive/<version>/`; archive is relocation, not deletion of requirement evidence.
+- Project **governance** (branch/topology) and **truth catalog** (delivery tree placement) are separate MD authorities; neither substitutes for `features/<slug>/truth.md`.
+- `.machine/` and sqlite projections of the catalog are read/verify surfaces; drift against catalog MD must fail closed for freeze, qa, and release on the active plane.
+- Default resolver, doctor, status, and truth-map bulk scans use the catalog active set; explicit `--version` may target archived roots for inspect-only commands.
 
 ## 5. Skill 哲学边界
 

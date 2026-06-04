@@ -1,0 +1,593 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-version-truth-archive-lineage-20260604t020951z",
+  "feature": "version-truth-archive-lineage",
+  "feature_slug": "version-truth-archive-lineage",
+  "version": "v1.5.2",
+  "change_reason": "Promote MD-only version truth catalog, archive bootstrap, lineage/inventory from brainstorm research",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.2/change/version-truth-archive-lineage.md",
+      "exists": true,
+      "status": "present",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-version-truth-archive-lineage.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.2/.machine/change/version-truth-archive-lineage.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"version-truth-archive-lineage\" --project . --version v1.5.2",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-04T02:09:51.314393+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": ".",
+    "version": "v1.5.2",
+    "feature": "version-truth-archive-lineage",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.5.2/features/version-truth-archive-lineage",
+      "prd": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+      "truth": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+      "tests": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+      "tasks": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+      "evidence": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "version-truth-archive-lineage",
+      "feature_slug": "version-truth-archive-lineage",
+      "version": "v1.5.2",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "tests": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+        "tasks": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+        "evidence": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "5e5283316f5a242e580e0e9151a3dc67f45516d98eae20d0b2b68c6b13a90652",
+        "tests": "5c2767df5b5ed4cb6410dcfecd8354866e61744c6bfe5166670ae3aa0ba6fbd1",
+        "tasks": "59fcac7282484ce6f300a91366a0dd769b6c145d896f9ea17f49bcee9017e729",
+        "evidence": "6beea48cd8ab6f6c899a43ed02c38af046c0aa66402a36f2d39554504ad0e0b3"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "version-truth-archive-lineage",
+        "feature_slug": "version-truth-archive-lineage",
+        "version": "v1.5.2",
+        "source_paths": {
+          "truth": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+          "tests": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+          "tasks": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+          "evidence": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.5.2/.machine/requirement/version-truth-archive-lineage.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.5.2/.machine/requirement/version-truth-archive-lineage.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine version-truth-archive-lineage --version v1.5.2"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change version-truth-archive-lineage --version v1.5.2 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.5.2/.machine/requirement/version-truth-archive-lineage.truth-map.json",
+        "docs/beacon/v1.5.2/.machine/requirement/version-truth-archive-lineage.requirement-package.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.5.2/.machine/user-story/version-truth-archive-lineage.json",
+      "feature": "version-truth-archive-lineage",
+      "version": "v1.5.2",
+      "revision_id": "R2",
+      "ac_count": 12,
+      "test_count": 12,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "version-truth-archive-lineage",
+      "feature_slug": "version-truth-archive-lineage",
+      "version": "v1.5.2",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-version-truth-archive-lineage.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-version-truth-archive-lineage.md",
+      "state_path": ".beacon/state/requirement-clarity-version-truth-archive-lineage.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.2",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-04T02:09:51.456193+00:00",
+        "feature": "version-truth-archive-lineage",
+        "feature_slug": "version-truth-archive-lineage",
+        "prd_ref": "docs/beacon/v1.5.2/prd/version-truth-archive-lineage.md",
+        "user_story_ref": "docs/beacon/v1.5.2/user-story/version-truth-archive-lineage.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.2/research/version-truth-archive-lineage.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.5.2/source-architecture/version-truth-archive-lineage.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.2/research/version-truth-archive-lineage.md",
+          "prd": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+          "user_story": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+          "test_case": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010",
+            "AC-011",
+            "AC-012"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": true,
+        "supported": true,
+        "projection_types": [
+          "business_flow",
+          "state_machine"
+        ],
+        "research_path": "docs/beacon/v1.5.2/research/version-truth-archive-lineage.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": true,
+          "user_story_refs": true,
+          "test_case_refs": true,
+          "coverage_notes": true,
+          "out_of_scope_notes": true
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+          "user_story_refs": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+          "test_case_refs": "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": true
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tests.md",
+        "docs/beacon/v1.5.2/features/version-truth-archive-lineage/tasks.md",
+        "docs/beacon/v1.5.2/features/version-truth-archive-lineage/evidence.md",
+        "docs/beacon/v1.5.2/research/version-truth-archive-lineage.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-version-truth-archive-lineage.json",
+      "markdown": "docs/beacon/v1.5.2/execution/requirement-clarity-version-truth-archive-lineage.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "version-truth-archive-lineage",
+      "feature_slug": "version-truth-archive-lineage",
+      "version": "v1.5.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-version-truth-archive-lineage.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-version-truth-archive-lineage.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T200514823024",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-04T02:09:51.540333+00:00",
+      "state_path": ".beacon/state/requirement-clarity-version-truth-archive-lineage.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "version-truth-archive-lineage",
+    "feature_slug": "version-truth-archive-lineage",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 12,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "active-window-three",
+        "text": "Catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::active-window-three::catalog lists exactly **3** `validation_state: active` versions; their `truth_root` values are `docs/beacon/<version>/` only.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-index-generated",
+        "text": "`docs/beacon/archive/INDEX.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-index-generated::`docs/beacon/archive/index.md` is regenerated on every `catalog apply` / `bootstrap --confirm`; not hand-edited; lists active set, archived count, feature counts, quick commands.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-inventory",
+        "text": "`beacon archive inventory [--version auto]` builds feature × AC matrix from active versions' `truth.md` AC tables; archived omitted unless `--include-archived`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-inventory::`beacon archive inventory [--version auto]` builds feature × ac matrix from active versions' `truth.md` ac tables; archived omitted unless `--include-archived`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "archive-lineage",
+        "text": "`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::archive-lineage::`beacon archive lineage <slug> [--from v] [--to v]` returns ordered hops with `truth_path`, optional `change_path`, freeze revision / source_hash across active + archive roots.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "catalog-bootstrap-once",
+        "text": "`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog MD + mv trees + INDEX + projections + strict verify.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::catalog-bootstrap-once::`beacon archive catalog bootstrap --active v1.5.0,v1.5.1,v1.5.2 --dry-run` previews ~46 relocations; `--confirm` performs one atomic transaction: write catalog md + mv trees + index + projections + strict verify.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "drift-verify-strict",
+        "text": "`beacon doctor verify-version-truth-catalog --strict` fails closed on MD ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::drift-verify-strict::`beacon doctor verify-version-truth-catalog --strict` fails closed on md ↔ `.machine/version-truth-catalog.json` mismatch, missing sqlite `source_hash` row (when shared store used), or on-disk path ≠ catalog `truth_root`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "feature-discovery-truth",
+        "text": "Unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::feature-discovery-truth::unified `discover_features(version)` lists `features/*/truth.md` on v1.5.2+ (not `prd/` only); used by archive plan/status and truth-map inventory.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "global-boundaries-section",
+        "text": "Merge global-boundaries **§4.1 MD-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::global-boundaries-section::merge global-boundaries **§4.1 md-only catalog and archive plane** and §1 support-surface clarification for archive vs change; drift on active plane blocks freeze/qa/release per §4.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "md-catalog-canonical",
+        "text": "`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::md-catalog-canonical::`docs/beacon/governance/version-truth-catalog.md` is the sole commit source for version-level truth placement; `parser_contract: beacon-version-truth-catalog-v1`; frontmatter carries `transaction_id`, `source_hash`, `active_delivery_window`.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "physical-archive-relocate",
+        "text": "Archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure C3.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::physical-archive-relocate::archived versions have `truth_root` under `docs/beacon/archive/<version>/`; `catalog apply` / `bootstrap --confirm` **moves** trees (relocate, not delete); bounded internal link rewrite per closure c3.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resolver-active-default",
+        "text": "Default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed.",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::resolver-active-default::default delivery commands (`implement`, `qa`, `release`, truth-map bulk scans) resolve roots from catalog **active** set only; explicit `--version` may target archived roots for inspect-only surfaces; non-active delivery without `--include-archived` fails closed.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "skill-surface-examples",
+        "text": "`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples A–F (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive).",
+        "details": [],
+        "source": "user-story:docs/beacon/v1.5.2/features/version-truth-archive-lineage/truth.md",
+        "signature": "ac::::skill-surface-examples::`beacon-archive` skill documents decision boundary, four operator verbs, and scenario examples a–f (cutover, historical audit, cross-version evolution, capability map, feature retire, learnable archive).::"
+      }
+    ],
+    "current_baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81",
+    "source_baseline_hash": "sha256:b359f259a7194d7ecac8dc1ad056cf35583b12020f0386dec0fe1f93af400b81",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/version-truth-archive-lineage.json",
+    "generated_at": "2026-06-04T02:09:51.660622+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-version-truth-archive-lineage.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-version-truth-archive-lineage.md"
+  }
+}

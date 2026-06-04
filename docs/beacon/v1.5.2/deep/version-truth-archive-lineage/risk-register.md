@@ -1,0 +1,106 @@
+# Risk Register
+
+- schema_version: `1.0`
+- feature: `version-truth-archive-lineage`
+- feature_slug: `version-truth-archive-lineage`
+- version: `v1.5.2`
+- generated_at: `2026-06-04T02:56:29.223491+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/v1.5.2/prd/version-truth-archive-lineage.md",
+  "user_story": "docs/beacon/v1.5.2/user-story/version-truth-archive-lineage.md",
+  "test_case": "docs/beacon/v1.5.2/qa/test-cases/version-truth-archive-lineage.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- lineage_policy: `trace-on-promotion; L0/L1 are non-canonical support projections, L2 requires truth-surface adoption, L3 belongs to PRD/user-story/test-case`
+- artifact_type: `risk_register`
+## findings
+```json
+[
+  {
+    "finding_id": "DF-001",
+    "classification": "order_or_transaction_flow",
+    "severity": "P3",
+    "release_blocking": false,
+    "state": "closed",
+    "route_decision": {
+      "route": "test-case delta",
+      "target_surface": "test-case",
+      "next_route": "beacon test-case"
+    },
+    "closure_decision": "closed",
+    "backlog_decision": "",
+    "summary": "order_or_transaction_flow reviewed by deep loop",
+    "source": "order",
+    "lineage": {
+      "lineage_mode": "adoption_required",
+      "source_truth_refs": [
+        "docs/beacon/v1.5.2/prd/version-truth-archive-lineage.md",
+        "docs/beacon/v1.5.2/user-story/version-truth-archive-lineage.md",
+        "docs/beacon/v1.5.2/qa/test-cases/version-truth-archive-lineage.md"
+      ],
+      "candidate_parent_refs": [
+        {
+          "ref_type": "TC",
+          "ref_id": "TC-001",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "AC",
+          "ref_id": "AC-001",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "TC",
+          "ref_id": "TC-002",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "AC",
+          "ref_id": "AC-002",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "TC",
+          "ref_id": "TC-003",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "AC",
+          "ref_id": "AC-003",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "TC",
+          "ref_id": "TC-004",
+          "confidence": "high",
+          "inferred": true
+        },
+        {
+          "ref_type": "AC",
+          "ref_id": "AC-004",
+          "confidence": "high",
+          "inferred": true
+        }
+      ],
+      "route_target": "test-case",
+      "truth_impact": "acceptance_delta",
+      "promotion_required": false,
+      "canonical": false,
+      "gate_trust": "canonical_only",
+      "blocking": true
+    }
+  }
+]
+```
+
+- orphan_finding_count: `0`

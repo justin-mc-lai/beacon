@@ -1,0 +1,114 @@
+# State Machine Report
+
+- schema_version: `1.0`
+- feature: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`
+- feature_slug: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`
+- version: `v1.4.3`
+- generated_at: `2026-05-11T11:50:37.027360+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/archive/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+  "user_story": "docs/beacon/archive/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+  "test_case": "docs/beacon/archive/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- artifact_type: `state_machine_report`
+## loop_states
+```json
+[
+  "scan_truth",
+  "model_business",
+  "challenge_gaps",
+  "derive_delta",
+  "classify_findings",
+  "route_repairs",
+  "verify_closure"
+]
+```
+
+## diagram_truth
+```json
+{
+  "schema_version": "1.0",
+  "version": "v1.4.3",
+  "supported": true,
+  "required": true,
+  "ready": true,
+  "diagram_types": [
+    "branch-flow",
+    "state-machine",
+    "decision-priority"
+  ],
+  "state_axes": [
+    "requirement_governance_state",
+    "unreviewed -> ceo_challenged -> truth_routed -> freeze_ready",
+    "design_governance_state",
+    "undifferentiated -> design_reviewed -> prototype_condition_decided -> handoff_ready",
+    "learning_governance_state",
+    "latent -> recalled -> disclosed -> audited -> pruned_or_retained",
+    "support_explainability_state",
+    "implicit -> visible -> route_explained -> evidence_first"
+  ],
+  "missing_diagram_types": [],
+  "missing_state_axes": false,
+  "complexity_signals": [
+    "branch-flow",
+    "state-machine",
+    "decision-priority",
+    "state axes"
+  ],
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: requirement_governance_state, unreviewed -> ceo_challenged -> truth_routed -> freeze_ready, design_governance_state, undifferentiated -> design_reviewed -> prototype_condition_decided -> handoff_ready, learning_governance_state, latent -> recalled -> disclosed -> audited -> pruned_or_retained, support_explainability_state, implicit -> visible -> route_explained -> evidence_first"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: requirement_governance_state, unreviewed -> ceo_challenged -> truth_routed -> freeze_ready, design_governance_state, undifferentiated -> design_reviewed -> prototype_condition_decided -> handoff_ready, learning_governance_state, latent -> recalled -> disclosed -> audited -> pruned_or_retained, support_explainability_state, implicit -> visible -> route_explained -> evidence_first"
+  ],
+  "evidence_lines": {
+    "branch-flow": [
+      "- `branch-flow`"
+    ],
+    "state-machine": [
+      "- `state-machine`"
+    ],
+    "decision-priority": [
+      "- `decision-priority`"
+    ],
+    "state-axes": [
+      "- `requirement_governance_state`: `unreviewed -> ceo_challenged -> truth_routed -> freeze_ready`",
+      "- `design_governance_state`: `undifferentiated -> design_reviewed -> prototype_condition_decided -> handoff_ready`",
+      "- `learning_governance_state`: `latent -> recalled -> disclosed -> audited -> pruned_or_retained`",
+      "- `support_explainability_state`: `implicit -> visible -> route_explained -> evidence_first`"
+    ]
+  },
+  "generated_at": "2026-05-11T11:50:37.025732+00:00",
+  "feature": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "feature_slug": "beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation",
+  "prd_ref": "docs/beacon/archive/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+  "user_story_ref": "docs/beacon/archive/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md"
+}
+```
+
+## state_axes
+```json
+[
+  "requirement_governance_state",
+  "unreviewed -> ceo_challenged -> truth_routed -> freeze_ready",
+  "design_governance_state",
+  "undifferentiated -> design_reviewed -> prototype_condition_decided -> handoff_ready",
+  "learning_governance_state",
+  "latent -> recalled -> disclosed -> audited -> pruned_or_retained",
+  "support_explainability_state",
+  "implicit -> visible -> route_explained -> evidence_first"
+]
+```
+
+- state_machine_contract: `state axes stay explicit through implementation, QA, and release evidence`

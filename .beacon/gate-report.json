@@ -1,9 +1,40 @@
 {
   "stage": "verify",
   "mode": "strict",
-  "status": "Pass",
-  "issues": [],
-  "run_id": "run-20260603T223038479946",
+  "status": "Blocked",
+  "issues": [
+    {
+      "reason_code": "assertion_count_zero_pass",
+      "message": "layer contract passed but assertion_count=0",
+      "blocked": true
+    },
+    {
+      "reason_code": "junit_missing_or_invalid",
+      "message": "layer contract missing junit.xml",
+      "blocked": true
+    },
+    {
+      "reason_code": "assertion_count_zero_pass",
+      "message": "layer integration passed but assertion_count=0",
+      "blocked": true
+    },
+    {
+      "reason_code": "junit_missing_or_invalid",
+      "message": "layer integration missing junit.xml",
+      "blocked": true
+    },
+    {
+      "reason_code": "assertion_count_zero_pass",
+      "message": "layer unit passed but assertion_count=0",
+      "blocked": true
+    },
+    {
+      "reason_code": "junit_missing_or_invalid",
+      "message": "layer unit missing junit.xml",
+      "blocked": true
+    }
+  ],
+  "run_id": "run-20260604T103410151468",
   "version": "v1.5.2",
-  "updated_at": "2026-06-03T14:30:50.673329+00:00"
+  "updated_at": "2026-06-04T02:34:20.086508+00:00"
 }

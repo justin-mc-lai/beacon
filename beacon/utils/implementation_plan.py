@@ -1619,6 +1619,7 @@ def _render_task_ledger_markdown(payload: dict[str, Any], progress_payload: dict
 
 
 def _write_implementation_plan(project_root: Path, *, version: str, feature: str, payload: dict[str, Any]) -> dict[str, Any]:
+    project_root = project_root.resolve()
     resolved_version = resolve_target_version(project_root, version)
     payload = dict(payload)
     payload["version"] = resolved_version

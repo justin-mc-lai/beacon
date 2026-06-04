@@ -1,0 +1,131 @@
+# State Machine Report
+
+- schema_version: `1.0`
+- feature: `beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance`
+- feature_slug: `beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance`
+- version: `v1.4.2`
+- generated_at: `2026-05-09T08:40:24.335629+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/archive/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+  "user_story": "docs/beacon/archive/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+  "test_case": "docs/beacon/archive/v1.4.2/qa/test-cases/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- artifact_type: `state_machine_report`
+## loop_states
+```json
+[
+  "scan_truth",
+  "model_business",
+  "challenge_gaps",
+  "derive_delta",
+  "classify_findings",
+  "route_repairs",
+  "verify_closure"
+]
+```
+
+## diagram_truth
+```json
+{
+  "schema_version": "1.0",
+  "version": "v1.4.2",
+  "supported": true,
+  "required": true,
+  "ready": true,
+  "diagram_types": [
+    "branch-flow",
+    "state-machine",
+    "decision-priority"
+  ],
+  "state_axes": [
+    "contract_lane",
+    "truth_binding",
+    "evidence_status",
+    "surface_sync",
+    "release_blocking"
+  ],
+  "missing_diagram_types": [],
+  "missing_state_axes": false,
+  "complexity_signals": [
+    "branch-flow",
+    "state-machine",
+    "decision-priority",
+    "state axes",
+    "ownership"
+  ],
+  "review_gates": [
+    "implementation must cover the declared branch-flow split points",
+    "implementation must preserve the declared state-machine transitions",
+    "implementation must preserve decision-priority ordering",
+    "implementation must keep state axes explicit: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+  ],
+  "qa_coverage_hints": [
+    "cover primary and alternate branch-flow paths",
+    "cover state transitions, illegal transitions, and recovery paths",
+    "cover conflicting conditions using declared decision priority",
+    "cover axis combinations across: contract_lane, truth_binding, evidence_status, surface_sync, release_blocking"
+  ],
+  "evidence_lines": {
+    "branch-flow": [
+      "- `branch-flow`",
+      "```text",
+      "feature_change_detected",
+      "-> affected_contract_layer_identified",
+      "-> test_contract_index_built",
+      "-> lane_status_verified",
+      "-> qa_evidence_collected",
+      "-> release_scorecard_consumes_lane_status"
+    ],
+    "state-machine": [
+      "- `state-machine`",
+      "```text",
+      "unindexed",
+      "-> indexed",
+      "-> lane_verified",
+      "-> evidence_collected",
+      "-> release_consumed",
+      "-> closed"
+    ],
+    "decision-priority": [
+      "- `decision-priority`",
+      "```text",
+      "global_boundaries",
+      "> frozen_requirement_truth",
+      "> test_contract_index",
+      "> lane_execution_evidence",
+      "> release_scorecard",
+      "> unclassified_full_suite_output"
+    ],
+    "state-axes": [
+      "- `contract_lane`",
+      "- `truth_binding`",
+      "- `evidence_status`",
+      "- `surface_sync`",
+      "- `release_blocking`"
+    ]
+  },
+  "generated_at": "2026-05-09T08:40:24.335012+00:00",
+  "feature": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "feature_slug": "beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance",
+  "prd_ref": "docs/beacon/archive/v1.4.2/prd/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md",
+  "user_story_ref": "docs/beacon/archive/v1.4.2/user-story/beacon-v1.4.2-contract-aligned-test-evolution-and-skill-delivery-governance.md"
+}
+```
+
+## state_axes
+```json
+[
+  "contract_lane",
+  "truth_binding",
+  "evidence_status",
+  "surface_sync",
+  "release_blocking"
+]
+```
+
+- state_machine_contract: `state axes stay explicit through implementation, QA, and release evidence`

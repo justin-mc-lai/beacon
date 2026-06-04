@@ -1,0 +1,21 @@
+# Deep Skip Evidence
+
+- schema_version: `1.0`
+- feature: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`
+- feature_slug: `beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation`
+- version: `v1.4.3`
+- generated_at: `2026-05-11T11:50:37.027360+00:00`
+## source_refs
+```json
+{
+  "prd": "docs/beacon/archive/v1.4.3/prd/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+  "user_story": "docs/beacon/archive/v1.4.3/user-story/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md",
+  "test_case": "docs/beacon/archive/v1.4.3/qa/test-cases/beacon-v1.4.3-evidence-first-decision-surfaces-and-governed-learning-activation.md"
+}
+```
+
+- canonical_truth_policy: `read_only_frozen_truth`
+- artifact_type: `deep_skip_evidence`
+- status: `not_applicable`
+- skip_reason: ``
+- accepted: `False`

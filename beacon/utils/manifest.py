@@ -44,8 +44,9 @@ def _manifest_path(project_root: Path, version: str) -> Path:
 
 
 def _version_root(project_root: Path, version: str) -> Path:
-    resolved = normalize_version(version) or version
-    return project_root / "docs" / "beacon" / resolved
+    from beacon.utils.artifact_paths import version_root
+
+    return version_root(project_root, version)
 
 
 def _slugify(feature: str) -> str:
