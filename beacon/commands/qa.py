@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -18,6 +19,7 @@ from beacon.utils.change_surface import build_change_command
 from beacon.utils.delivery_kernel import build_delivery_contract
 from beacon.utils.coverage import write_coverage_summary
 from beacon.utils.implement_adapters import format_template
+from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
@@ -328,16 +330,33 @@ def _plan_browser_prepare_lines(plan: dict[str, Any], project_root: Path) -> lis
     return lines
 
 
-def _beacon_exec(args: list[str], *, cwd: Path | None = None) -> int:
+def _beacon_exec(args: list[str], *, cwd: Path | None = None, timeout_seconds: int | None = None) -> int:
     cmd = [sys.executable, "-m", "beacon.main", *args]
-    result = subprocess.run(cmd, cwd=cwd or _repo_root())
+    result = subprocess.run(cmd, cwd=cwd or _repo_root(), timeout=timeout_seconds)
     return int(result.returncode)
 
 
-def _beacon_exec_silent(args: list[str], *, cwd: Path | None = None) -> int:
+def _beacon_exec_silent(args: list[str], *, cwd: Path | None = None, timeout_seconds: int | None = None) -> int:
     cmd = [sys.executable, "-m", "beacon.main", *args]
-    result = subprocess.run(cmd, cwd=cwd or _repo_root(), capture_output=True, text=True)
+    result = subprocess.run(
+        cmd,
+        cwd=cwd or _repo_root(),
+        capture_output=True,
+        text=True,
+        timeout=timeout_seconds,
+    )
     return int(result.returncode)
+
+
+def _qa_runner_timeout_seconds() -> int:
+    raw = str(os.environ.get("BEACON_QA_RUNNER_TIMEOUT_SECONDS") or "").strip()
+    if not raw:
+        return 1800
+    try:
+        value = int(raw)
+    except ValueError:
+        return 1800
+    return max(1, value)
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
@@ -1042,6 +1061,32 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
     args = _strip_option_with_value(args, "--runtime")
     current_session = load_current_qa_session(project_root)
 
+    if feature:
+        cutover_preflight = build_legacy_cutover_preflight(
+            project_root,
+            version=version if version != "auto" else "auto",
+            feature=feature,
+            resume_intent="qa",
+        )
+        if bool(cutover_preflight.get("blocked")):
+            next_route = cutover_preflight.get("next_route") if isinstance(cutover_preflight.get("next_route"), dict) else {}
+            blocked_payload = _with_qa_surface({
+                "schema_version": "1.0",
+                "feature": feature,
+                "version": str(cutover_preflight.get("version") or version),
+                "status": "blocked",
+                "reason_codes": ["legacy_cutover_required"],
+                "legacy_cutover_preflight": cutover_preflight,
+                "legacy_cutover": cutover_preflight.get("legacy_cutover", {}),
+                "next_route": next_route,
+                "recommended_command": str(next_route.get("command") or ""),
+            }, blocked=True)
+            if json_output:
+                typer.echo(json.dumps(blocked_payload, ensure_ascii=False, indent=2))
+            else:
+                typer.echo("Beacon QA blocked: legacy cutover required", err=True)
+            return 2, blocked_payload
+
     if metadata_machine_path(project_root).exists():
         metadata_verdict = verify_project_metadata(project_root, version=version if version != "auto" else "")
         if str(metadata_verdict.get("status") or "").lower() == "fail":
@@ -1580,20 +1625,37 @@ def _run_feature_aware_qa(raw_args: list[str]) -> tuple[int, dict[str, Any]]:
         "mode": str(plan.get("execution_mode") or mode),
         "team_mode": bool(team_mode),
     }
-    with project_process_lock(
-        project_root,
-        name="qa-feature-aware",
-        owner=f"qa:{feature}",
-        metadata=lock_metadata,
-    ):
-        command_exit = _beacon_exec_silent(auto_args, cwd=_repo_root()) if json_output else _beacon_exec(auto_args, cwd=_repo_root())
+    qa_runner_timeout_seconds = _qa_runner_timeout_seconds()
+    command_error_reason = ""
+    try:
+        with project_process_lock(
+            project_root,
+            name="qa-feature-aware",
+            owner=f"qa:{feature}",
+            timeout_seconds=min(float(qa_runner_timeout_seconds), 300.0),
+            metadata=lock_metadata,
+        ):
+            command_exit = (
+                _beacon_exec_silent(auto_args, cwd=_repo_root(), timeout_seconds=qa_runner_timeout_seconds)
+                if json_output
+                else _beacon_exec(auto_args, cwd=_repo_root(), timeout_seconds=qa_runner_timeout_seconds)
+            )
+    except TimeoutError:
+        command_exit = 124
+        command_error_reason = "qa_feature_lock_timeout"
+    except subprocess.TimeoutExpired:
+        command_exit = 124
+        command_error_reason = "qa_runner_timeout"
     if command_exit != 0:
+        failure_reason = command_error_reason or "auto_test_invocation_failed"
         blocked_payload = _with_qa_surface({
             **plan,
             "status": "blocked",
-            "reason_codes": sorted({*list(plan.get("reason_codes") or []), "auto_test_invocation_failed"}),
+            "reason_codes": sorted({*list(plan.get("reason_codes") or []), failure_reason}),
             "message": "auto-test qa9 invocation failed; stale QA status was not accepted",
             "command_exit": int(command_exit),
+            "command_error_reason": failure_reason,
+            "qa_runner_timeout_seconds": qa_runner_timeout_seconds,
             "auto_test_args": auto_args,
             "team_mode": bool(team_mode),
             "host_runtime": resolved_host_runtime,
@@ -2143,6 +2205,26 @@ def evolve(
         matrix_path = materialize_feature_qa_matrix(project_root, plan=plan)
         plan["feature_matrix_path"] = str(matrix_path.relative_to(project_root))
     if write_matrix:
+        existing_status = load_feature_qa_status(project_root, feature=feature)
+        if (
+            str(plan.get("status") or "").strip().lower() == "up_to_date"
+            and bool(plan.get("evidence_done"))
+            and str(existing_status.get("status") or "").strip().lower() == "passed"
+            and bool(existing_status.get("evidence_done"))
+        ):
+            for key in (
+                "run_id",
+                "release_ready",
+                "feature_scorecard",
+                "feature_scorecard_path",
+                "ac_closure_path",
+                "acceptance_writeback",
+                "canonical_matrix_path",
+                "release_gate_report_path",
+            ):
+                if key in existing_status and key not in plan:
+                    plan[key] = existing_status[key]
+            plan["previous_status"] = "passed"
         write_feature_qa_status(project_root, feature=feature, payload=plan)
     plan = _with_qa_surface(plan)
     if json_output:

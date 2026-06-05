@@ -1,0 +1,1616 @@
+{
+  "schema_version": "1.0",
+  "feature": "legacy-project-v152-cutover",
+  "feature_slug": "legacy-project-v152-cutover",
+  "version": "v1.5.2",
+  "current_revision_id": "R5",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-05T07:14:38.147986+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "legacy-project-v152-cutover",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:b5644cf806644cdd3439bb3ac5b3056abb9590affe26c264af066dd11d810c55",
+      "superseded_by": "R2",
+      "created_at": "2026-06-05T02:39:48.322608+00:00",
+      "frozen_at": "2026-06-05T02:39:48.335012+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "legacy-project-v152-cutover",
+      "source_revision_id": "R1",
+      "reason": "Promote brainstormed legacy project v1.5.2 cutover path into frozen truth: legacy detection, one-command phased migration, governance verify, stale skill detection, fail-closed mixed authority, and resume original refreeze intent after successful cutover.",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:b5644cf806644cdd3439bb3ac5b3056abb9590affe26c264af066dd11d810c55",
+      "superseded_by": "R3",
+      "created_at": "2026-06-05T02:39:54.632490+00:00",
+      "frozen_at": "2026-06-05T02:39:55.217942+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R3",
+      "feature_slug": "legacy-project-v152-cutover",
+      "source_revision_id": "R2",
+      "reason": "accept tasks.md as requirement-owned task intent consumed by implement plan without progress writeback",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41",
+      "superseded_by": "R4",
+      "created_at": "2026-06-05T03:23:13.521129+00:00",
+      "frozen_at": "2026-06-05T03:23:23.283398+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R4",
+      "feature_slug": "legacy-project-v152-cutover",
+      "source_revision_id": "R3",
+      "reason": "verify relative project refreeze path",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41",
+      "superseded_by": "R5",
+      "created_at": "2026-06-05T06:09:56.588747+00:00",
+      "frozen_at": "2026-06-05T06:09:57.382936+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R5",
+      "feature_slug": "legacy-project-v152-cutover",
+      "source_revision_id": "R4",
+      "reason": "accept friction routing simplification and doctor truth-source mismatch closure",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:4f0a1ae7cdd350d973b0dc011c0964023ccf6c8f6bc370776c100f0bc605130c",
+      "superseded_by": null,
+      "created_at": "2026-06-05T06:34:20.053928+00:00",
+      "frozen_at": "2026-06-05T06:34:20.819312+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "legacy-project-v152-cutover",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "legacy-detection",
+          "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "refreeze-intercept",
+          "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phased-migration",
+          "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "governance-verify",
+          "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "stale-skill-detection",
+          "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed-mixed-authority",
+          "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "resume-original-intent",
+          "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source": "research:docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "legacy-project-v152-cutover",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "legacy-detection",
+          "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "refreeze-intercept",
+          "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phased-migration",
+          "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "governance-verify",
+          "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "stale-skill-detection",
+          "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed-mixed-authority",
+          "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "resume-original-intent",
+          "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source": "research:docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R3",
+      "title": "legacy-project-v152-cutover",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "legacy-detection",
+          "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "refreeze-intercept",
+          "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phased-migration",
+          "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "governance-verify",
+          "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "stale-skill-detection",
+          "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed-mixed-authority",
+          "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "resume-original-intent",
+          "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "tasks-plan-alignment",
+          "text": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R3",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R4",
+      "title": "legacy-project-v152-cutover",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "legacy-detection",
+          "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "refreeze-intercept",
+          "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phased-migration",
+          "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "governance-verify",
+          "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "stale-skill-detection",
+          "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed-mixed-authority",
+          "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "resume-original-intent",
+          "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "tasks-plan-alignment",
+          "text": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R4",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R5",
+      "title": "legacy-project-v152-cutover",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "legacy-detection",
+          "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "refreeze-intercept",
+          "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "phased-migration",
+          "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "governance-verify",
+          "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "stale-skill-detection",
+          "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "fail-closed-mixed-authority",
+          "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "resume-original-intent",
+          "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "tasks-plan-alignment",
+          "text": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "friction-routing-simplification",
+          "text": "Beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a CLI/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change CLI version stability.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+          "changed_in_revision": "R5",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-05T07:09:05.869178+00:00",
+          "changed_in_revision": "R5"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — `beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — Beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a CLI/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change CLI version stability.",
+          "required": true,
+          "status": "passed",
+          "implemented_by_run_id": "impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+          "verified_by_run_id": "run-20260605T151229921412",
+          "accepted_at": null,
+          "changed_in_revision": "R5",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "legacy-project-v152-cutover",
+      "feature_slug": "legacy-project-v152-cutover",
+      "version": "v1.5.2",
+      "last_changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-05T07:14:38.046934+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

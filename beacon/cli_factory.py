@@ -114,6 +114,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.manifest import app as manifest_app
     from .commands.truth import app as truth_app
     from .commands.truth_map import app as truth_map_app
+    from .commands.truth_cutover import app as truth_cutover_app
 
     # Testing & Release commands
     from .commands.auto_test import app as auto_test_app
@@ -154,6 +155,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(manifest_app, name="manifest")
     app.add_typer(truth_app, name="truth")
     app.add_typer(truth_map_app, name="truth-map")
+    app.add_typer(truth_cutover_app, name="truth-cutover")
     app.add_typer(archive_app, name="archive")
     app.command("change")(change_entry)
     app.command("materialize-feature-package")(materialize_feature_package_entry)

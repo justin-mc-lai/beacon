@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 
 from beacon.commands.gate import GateMode, check_delivery_execution_artifacts
+from beacon.utils.implementation_plan import build_implementation_plan_gate_payload
+from beacon.utils.requirement_clarity import build_requirement_clarity_gate_payload
 
 
 def _seed_release_execution(root: Path, *, version: str = "v1.1.1", with_manifest: bool = True, pending_task: bool = False) -> None:
@@ -139,6 +141,61 @@ def test_gate_release_should_require_git_workflow_contract_for_v130_plans(tmp_pa
     issues = check_delivery_execution_artifacts(tmp_path, GateMode.STRICT, "release", version)
     reason_codes = {item["reason_code"] for item in issues}
     assert "git_workflow_contract_missing" in reason_codes
+
+
+def test_gate_release_should_handle_relative_project_root_for_missing_git_workflow(tmp_path: Path, monkeypatch):
+    version = "v1.3.0"
+    _seed_release_execution(tmp_path, version=version, pending_task=False)
+    machine_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_dir.mkdir(parents=True, exist_ok=True)
+    (machine_dir / "implementation-plan-demo.json").write_text(
+        json.dumps(
+            {
+                "feature": "Demo",
+                "feature_slug": "demo",
+                "version": version,
+                "tasks": [{"task_id": "ITASK-001"}],
+                "source_refs": {"prd": "docs/beacon/v1.3.0/prd/demo.md"},
+            },
+            ensure_ascii=False,
+        ),
+        encoding="utf-8",
+    )
+
+    monkeypatch.chdir(tmp_path)
+    issues = check_delivery_execution_artifacts(Path("."), GateMode.STRICT, "release", version)
+
+    reason_codes = {item["reason_code"] for item in issues}
+    assert "git_workflow_contract_missing" in reason_codes
+
+
+def test_implementation_plan_gate_should_handle_relative_project_root(tmp_path: Path, monkeypatch):
+    version = "v1.3.0"
+    feature = "Demo"
+    machine_dir = tmp_path / "docs" / "beacon" / version / ".machine" / "execution"
+    machine_dir.mkdir(parents=True, exist_ok=True)
+
+    monkeypatch.chdir(tmp_path)
+    payload = build_implementation_plan_gate_payload(Path("."), version=version, feature=feature)
+
+    assert payload["expected_plan"] == "docs/beacon/v1.3.0/.machine/execution/implementation-plan-demo.json"
+
+
+def test_requirement_clarity_gate_should_handle_relative_project_root(tmp_path: Path, monkeypatch):
+    version = "v1.3.3"
+    feature = "Demo"
+    docs_root = tmp_path / "docs" / "beacon" / version
+    (docs_root / "prd").mkdir(parents=True, exist_ok=True)
+    (docs_root / "user-story").mkdir(parents=True, exist_ok=True)
+    (docs_root / "qa" / "test-cases").mkdir(parents=True, exist_ok=True)
+    (docs_root / "prd" / "demo.md").write_text("# PRD\n", encoding="utf-8")
+    (docs_root / "user-story" / "demo.md").write_text("# Story\n", encoding="utf-8")
+    (docs_root / "qa" / "test-cases" / "demo.md").write_text("# Tests\n", encoding="utf-8")
+
+    monkeypatch.chdir(tmp_path)
+    payload = build_requirement_clarity_gate_payload(Path("."), version=version, feature=feature)
+
+    assert payload["report_json_path"] == "docs/beacon/v1.3.3/.machine/execution/requirement-clarity-demo.json"
 
 
 def test_gate_release_should_ignore_support_implementation_plan_marker(tmp_path: Path):

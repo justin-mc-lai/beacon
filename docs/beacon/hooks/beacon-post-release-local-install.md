@@ -13,6 +13,8 @@ produces_evidence:
   - claude_agent_surface_verify
   - global_beacon_cli_version
   - global_beacon_cli_launcher_path
+  - macmini_hermes_beacon_sync_default
+  - macmini_hermes_beacon_sync_finance
 failure_route: release
 ---
 
@@ -26,6 +28,7 @@ After a Beacon source release is accepted, this project-level hook records the l
 - materialize Beacon host-visible skills into the local Claude agent surface;
 - verify those local agent surfaces against the released Beacon line;
 - confirm the global `beacon` and `beacon-cli` launchers resolve to the released CLI version.
+- sync Beacon skills into Mac mini Hermes Agent profiles (default + finance) via `qi-dev-macmini`.
 
 This hook is project-specific to the Beacon source repository. It is not a default Beacon lifecycle behavior for downstream projects.
 
@@ -72,6 +75,10 @@ python3 -m beacon.main doctor verify-agent-surface --project-root . --version <v
 python3 -m beacon.main doctor setup --force --json
 beacon --version
 beacon-cli --version
+
+# sync to Mac mini Hermes Agent
+qi_dev.sh macmini exec "bash /Users/apple/Developer/Personal/products/hapi-implementation-playbook/tools/hapi-dual-mac-ops/scripts/sync_beacon_dual_machine.sh --peer-only"
+qi_dev.sh macmini health
 ```
 
 ## Evidence
@@ -85,6 +92,8 @@ The hook evidence must record, or be accompanied by, these release follow-up fac
 - `beacon --version` prints the target Beacon CLI version.
 - `beacon-cli --version` prints the target Beacon CLI version.
 - `which beacon` and `which beacon-cli` resolve to launchers on the operator PATH.
+- Mac mini Hermes Agent default profile Beacon skill sync status is `PASS`.
+- Mac mini Hermes Agent finance profile Beacon skill sync status is `PASS`.
 
 Runtime hook evidence is written under `.beacon/state/hooks/beacon-post-release-local-install/`.
 

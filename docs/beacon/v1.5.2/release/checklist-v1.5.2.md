@@ -1,7 +1,7 @@
 # Release Checklist: v1.5.2
 
 **Version**: v1.5.2
-**Created**: 2026-06-03 22:33
+**Created**: 2026-06-05 15:28
 **Status**: Pending
 
 ---
@@ -43,13 +43,13 @@
 
 ## CEO Challenge Coverage
 
-- status: `missing`
-- decision: `none`
-- covered_axes: `none`
-- missing_axes: `too_smooth_path, buried_landmine, truth_freeze_destabilization, stage_boundary_sprawl, false_closure_signal, operator_cost_underpricing`
-- needs_challenge: `True`
-- gap_status: `warn`
-- next_route: `none`
+- status: `advisory`
+- decision: `hold`
+- covered_axes: `too_smooth_path, buried_landmine, truth_freeze_destabilization, stage_boundary_sprawl, false_closure_signal, operator_cost_underpricing`
+- missing_axes: `none`
+- needs_challenge: `False`
+- gap_status: `pass`
+- next_route: `beacon implement "legacy-project-v152-cutover" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2`
 
 
 ---

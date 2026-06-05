@@ -1,0 +1,562 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-legacy-project-v152-cutover-20260605t063419z",
+  "feature": "legacy-project-v152-cutover",
+  "feature_slug": "legacy-project-v152-cutover",
+  "version": "v1.5.2",
+  "change_reason": "accept friction routing simplification and doctor truth-source mismatch closure",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.2/change/legacy-project-v152-cutover.md",
+      "exists": false,
+      "status": "package_change_optional",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-legacy-project-v152-cutover.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.2/.machine/change/legacy-project-v152-cutover.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R4",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41"
+  },
+  "truth_revision_after": {
+    "revision_id": "R5",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:4f0a1ae7cdd350d973b0dc011c0964023ccf6c8f6bc370776c100f0bc605130c"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"legacy-project-v152-cutover\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-05T06:34:19.811138+00:00",
+  "previous_revision": {
+    "revision_id": "R4",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41"
+  },
+  "opened_revision": {
+    "revision_id": "R5",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R5",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v1.5.2",
+    "feature": "legacy-project-v152-cutover",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover",
+      "prd": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+      "truth": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "tests": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+      "tasks": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+      "evidence": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "legacy-project-v152-cutover",
+      "feature_slug": "legacy-project-v152-cutover",
+      "version": "v1.5.2",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "tests": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+        "tasks": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+        "evidence": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "00ab877fdd95a609102b7ce124f3f726785d0ec0caa4485e4fbf8c8895e4a9aa",
+        "tests": "16a414ba19596d82f0590c4d9f0706f984e65f2234729b498286684122df1653",
+        "tasks": "5360303ba1e48d0a7a753e4d8b1fb8fc6fc9129c8af9316fb92d1b06ce4d9598",
+        "evidence": "5d8f5fea7dffe576445acfb7616d4e5d62c227aa9f0f89041377b0f4d50bdd10"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "legacy-project-v152-cutover",
+        "feature_slug": "legacy-project-v152-cutover",
+        "version": "v1.5.2",
+        "source_paths": {
+          "truth": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+          "tests": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+          "tasks": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+          "evidence": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.5.2/.machine/requirement/legacy-project-v152-cutover.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.5.2/.machine/requirement/legacy-project-v152-cutover.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine legacy-project-v152-cutover --version v1.5.2"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change legacy-project-v152-cutover --version v1.5.2 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.5.2/.machine/requirement/legacy-project-v152-cutover.truth-map.json",
+        "docs/beacon/v1.5.2/.machine/requirement/legacy-project-v152-cutover.requirement-package.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.5.2/.machine/user-story/legacy-project-v152-cutover.json",
+      "feature": "legacy-project-v152-cutover",
+      "version": "v1.5.2",
+      "revision_id": "R5",
+      "ac_count": 10,
+      "test_count": 10,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "legacy-project-v152-cutover",
+      "feature_slug": "legacy-project-v152-cutover",
+      "version": "v1.5.2",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-legacy-project-v152-cutover.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-legacy-project-v152-cutover.md",
+      "state_path": ".beacon/state/requirement-clarity-legacy-project-v152-cutover.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.2",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-05T06:34:20.371399+00:00",
+        "feature": "legacy-project-v152-cutover",
+        "feature_slug": "legacy-project-v152-cutover",
+        "prd_ref": "docs/beacon/v1.5.2/prd/legacy-project-v152-cutover.md",
+        "user_story_ref": "docs/beacon/v1.5.2/user-story/legacy-project-v152-cutover.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.5.2/source-architecture/legacy-project-v152-cutover.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+          "prd": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+          "user_story": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+          "test_case": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+          "user_story_refs": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+          "test_case_refs": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+        "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+        "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md",
+        "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-legacy-project-v152-cutover.json",
+      "markdown": "docs/beacon/v1.5.2/execution/requirement-clarity-legacy-project-v152-cutover.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "legacy-project-v152-cutover",
+      "feature_slug": "legacy-project-v152-cutover",
+      "version": "v1.5.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-legacy-project-v152-cutover.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-legacy-project-v152-cutover.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T200514823024",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-05T06:34:20.709634+00:00",
+      "state_path": ".beacon/state/requirement-clarity-legacy-project-v152-cutover.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "legacy-project-v152-cutover",
+    "feature_slug": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "revision_id": "R5",
+    "source_revision_id": "R4",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 1,
+    "retained_requirement_count": 9,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R5",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "friction-routing-simplification",
+        "text": "Beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a CLI/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change CLI version stability.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::friction-routing-simplification::beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a cli/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change cli version stability.::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R5",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed-mixed-authority",
+        "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::fail-closed-mixed-authority::freeze, refreeze, implement, qa, and release must fail closed while package authority, governance md, or agent-surface verification is incomplete or contradictory.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "governance-verify",
+        "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::governance-verify::project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "legacy-detection",
+        "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::legacy-detection::cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance md, missing projection, and stale agent-surface guidance.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::package-authority::requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "phased-migration",
+        "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::phased-migration::beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "refreeze-intercept",
+        "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::refreeze-intercept::`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resume-original-intent",
+        "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::resume-original-intent::after successful cutover, beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "stale-skill-detection",
+        "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::stale-skill-detection::cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "tasks-plan-alignment",
+        "text": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::tasks-plan-alignment::for v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:4f0a1ae7cdd350d973b0dc011c0964023ccf6c8f6bc370776c100f0bc605130c",
+    "source_baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/legacy-project-v152-cutover.json",
+    "generated_at": "2026-06-05T06:34:20.826154+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-legacy-project-v152-cutover.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-legacy-project-v152-cutover.md"
+  }
+}

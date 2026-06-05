@@ -24,6 +24,7 @@ from beacon.utils.versioning import (
     release_line_key,
     resolve_docs_version,
 )
+from beacon.utils.truth_map import feature_package_authoritative, verify_truth_map
 from beacon.utils.version_surface import (
     format_governance_diagnostic,
     get_version_surface_governance_payload,
@@ -665,6 +666,77 @@ def _collect_suspicious_runtime_named_docs_root(
     return ("WARN", evidence)
 
 
+def _collect_truth_source_mismatch(
+    *,
+    project_root: Path,
+    version: str,
+) -> tuple[str, list[str]]:
+    evidence = [f"version={version or 'missing'}"]
+    if not feature_package_authoritative(version):
+        evidence.append("feature_package_authoritative=false")
+        return ("PASS", evidence)
+
+    features_root = project_root / "docs" / "beacon" / version / "features"
+    if not features_root.exists():
+        evidence.append("features_root=missing")
+        return ("PASS", evidence)
+
+    mismatches: list[str] = []
+    for feature_dir in sorted(path for path in features_root.iterdir() if path.is_dir()):
+        slug = feature_dir.name
+        if not (feature_dir / "truth.md").exists():
+            continue
+        verification = verify_truth_map(project_root, version=version, feature=slug, strict=True)
+        diagnostics = verification.get("diagnostics") if isinstance(verification.get("diagnostics"), list) else []
+        if not bool(verification.get("blocked")) and not diagnostics:
+            continue
+        codes = sorted({str(item.get("code") or "") for item in diagnostics if isinstance(item, dict) and item.get("code")})
+        checked = verification.get("checked_machine_json") if isinstance(verification.get("checked_machine_json"), list) else []
+        mismatches.append(
+            "feature="
+            + slug
+            + f" status={verification.get('status') or 'unknown'}"
+            + f" diagnostics={codes}"
+            + f" checked_machine_json={checked}"
+        )
+
+    if not mismatches:
+        evidence.append("truth_map_alignment=pass")
+        return ("PASS", evidence)
+    evidence.extend(mismatches[:20])
+    return ("FAIL", evidence)
+
+
+def _truth_source_mismatch_repair_commands(project_root: Path, version: str) -> list[str]:
+    root = str(project_root)
+    features_root = project_root / "docs" / "beacon" / version / "features"
+    features = ["<feature>"]
+    if features_root.exists():
+        mismatched: list[str] = []
+        for feature_dir in sorted(path for path in features_root.iterdir() if path.is_dir()):
+            slug = feature_dir.name
+            if not (feature_dir / "truth.md").exists():
+                continue
+            verification = verify_truth_map(project_root, version=version, feature=slug, strict=True)
+            diagnostics = verification.get("diagnostics") if isinstance(verification.get("diagnostics"), list) else []
+            if bool(verification.get("blocked")) or diagnostics:
+                mismatched.append(slug)
+        if mismatched:
+            features = mismatched[:5]
+
+    commands: list[str] = []
+    for feature in features:
+        commands.extend(
+            [
+                f"beacon truth-map verify {feature} --project {root} --version {version} --json",
+                f"beacon truth-map rebuild-machine {feature} --project {root} --version {version} --json",
+                f"beacon truth-cutover run {feature} --project {root} --version {version} --json",
+                f"beacon validate-feature-package {feature} --project {root} --version {version} --json",
+            ]
+        )
+    return commands
+
+
 def collect_compatibility_checks(
     *,
     project_root: Path,
@@ -726,6 +798,10 @@ def collect_compatibility_checks(
     docs_runtime_separation_status, docs_runtime_separation_evidence = _collect_docs_runtime_separation_integrity(
         project_root=project_root,
         version_context=version_context,
+    )
+    truth_source_mismatch_status, truth_source_mismatch_evidence = _collect_truth_source_mismatch(
+        project_root=project_root,
+        version=resolved_docs_version,
     )
     suspicious_runtime_root_status, suspicious_runtime_root_evidence = _collect_suspicious_runtime_named_docs_root(
         project_root=project_root,
@@ -832,6 +908,14 @@ def collect_compatibility_checks(
                 "Inspect the runtime-named docs root and remove it if it was created accidentally.",
                 "Keep only the project docs line under `docs/beacon/<docs_version>/` and let managed context track runtime separately.",
             ],
+        },
+        "truth_source_mismatch": {
+            "status": truth_source_mismatch_status,
+            "severity": "high",
+            "summary": "Feature package authority and generated truth-map state should agree for v1.5.2.",
+            "evidence": truth_source_mismatch_evidence,
+            "impact": "Mixed or stale truth authority can make Beacon trust old package projections or machine mirrors instead of current markdown truth.",
+            "repair": _truth_source_mismatch_repair_commands(project_root, resolved_docs_version),
         },
         "runless_docs_only": {
             "status": runless_docs_only_status,
@@ -955,6 +1039,7 @@ def _compatibility_checks_to_incompatibilities(
         "global_boundaries_source": "COMP-213",
         "global_boundaries_inheritance": "COMP-214",
         "global_boundaries_principles": "COMP-215",
+        "truth_source_mismatch": "COMP-216",
     }
     items: list[dict[str, Any]] = []
     for name, check in compatibility_checks.items():
@@ -1066,6 +1151,11 @@ def build_doctor_payload(
             "suspicious_runtime_named_docs_root": {
                 "status": "UNKNOWN",
                 "severity": "medium",
+                "summary": "project root unavailable",
+            },
+            "truth_source_mismatch": {
+                "status": "UNKNOWN",
+                "severity": "high",
                 "summary": "project root unavailable",
             },
             "runless_docs_only": {"status": "UNKNOWN", "severity": "high", "summary": "project root unavailable"},

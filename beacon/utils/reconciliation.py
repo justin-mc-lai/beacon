@@ -13,6 +13,18 @@ from beacon.utils.story_state import feature_slug
 from beacon.utils.versioning import resolve_target_version
 
 
+def _resolve_project_root(project_root: Path) -> Path:
+    return Path(project_root).expanduser().resolve()
+
+
+def _rel(project_root: Path, path: Path) -> str:
+    root = _resolve_project_root(project_root)
+    try:
+        return str(path.relative_to(root))
+    except ValueError:
+        return str(path)
+
+
 def implementation_writeback_ledger_path(project_root: Path, *, version: str, feature: str) -> Path:
     return machine_execution_file(project_root, version, f"implementation-writeback-ledger-{feature_slug(feature)}.json")
 

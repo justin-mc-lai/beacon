@@ -1,0 +1,332 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-05T06:34:20.230927+00:00",
+  "feature": "legacy-project-v152-cutover",
+  "feature_slug": "legacy-project-v152-cutover",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "00ab877fdd95a609102b7ce124f3f726785d0ec0caa4485e4fbf8c8895e4a9aa",
+    "tests": "16a414ba19596d82f0590c4d9f0706f984e65f2234729b498286684122df1653",
+    "tasks": "5360303ba1e48d0a7a753e4d8b1fb8fc6fc9129c8af9316fb92d1b06ce4d9598",
+    "evidence": "5d8f5fea7dffe576445acfb7616d4e5d62c227aa9f0f89041377b0f4d50bdd10"
+  },
+  "truth_frontmatter": {
+    "slug": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "status": "draft",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "legacy-detection",
+      "description": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "refreeze-intercept",
+      "description": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "phased-migration",
+      "description": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "package-authority",
+      "description": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "governance-verify",
+      "description": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "stale-skill-detection",
+      "description": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "fail-closed-mixed-authority",
+      "description": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory."
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "resume-original-intent",
+      "description": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command."
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "tasks-plan-alignment",
+      "description": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state."
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "friction-routing-simplification",
+      "description": "Beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a CLI/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change CLI version stability."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "integration",
+      "command": "",
+      "assertion": "A project with legacy triptych, missing package, missing governance MD, missing projection, or stale agent surface is classified as `legacy_or_mixed_truth_state`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "integration",
+      "command": "",
+      "assertion": "`beacon-change-refreeze` blocks direct refreeze and recommends the cutover route when preflight reports legacy/mixed state.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "",
+      "assertion": "The cutover wrapper emits ordered phases and can run/report inventory, package validation, truth-map verify, governance verify, agent refresh, and resume state.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "contract",
+      "command": "",
+      "assertion": "Package validation treats `features/<slug>/truth.md` and `tests.md` as authority; legacy triptych conflicts are reported as drift with package truth winning.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "integration",
+      "command": "",
+      "assertion": "`doctor metadata verify` fails closed when governance MD is missing, active version contract is missing, or sqlite projection source hash drifts.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "contract",
+      "command": "",
+      "assertion": "Stale skills/rules that describe old triptych as normal v1.5.2 authority are detected and route to agent-surface setup/verify.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "integration",
+      "command": "",
+      "assertion": "freeze/refreeze/implement/QA/release cannot pass while any cutover plane is blocked or contradictory.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "",
+      "assertion": "After all cutover phases pass, the transaction returns the original requested route, including `beacon change ... --refreeze-chain` for refreeze intent.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "",
+      "assertion": "Inventory mode is read-only and does not mutate package, governance MD, sqlite projection, or agent surface files.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-010",
+      "layer": "contract",
+      "command": "",
+      "assertion": "A dry-run cutover report includes exact next commands for every blocked phase.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-011",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`beacon implement plan` resolves package `tasks.md` and reports task alignment even when technical review blocks execution admission.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-012",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Implementation progress updates execution plan/progress artifacts and does not write completion state back into `features/<slug>/tasks.md`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-013",
+      "layer": "contract",
+      "command": "",
+      "assertion": "No standalone default `beacon-truth-cutover` public skill is required; `beacon truth-cutover --help` is available and legacy/mixed preflight routes existing human surfaces to `beacon-truth-cutover` / `truth-cutover run`.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-014",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Doctor reports `truth_source_mismatch` with low-cognitive-load explanation and exact repair commands when feature package authority, truth-map projection, machine mirrors, governance, or legacy triptych contradict v1.5.2 authority.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-015",
+      "layer": "regression",
+      "command": "",
+      "assertion": "`technical_review_contract` and `beacon change` accept relative `--project .` without subpath or version drift; `--version v1.5.2` remains the selected and recommended refreeze version.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Add cutover inventory classification for legacy/mixed truth state.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Add a human-facing cutover wrapper command/skill for phased migration.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Wire package materialize/validate and truth-map verify into cutover phases.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Wire governance MD verify/projection drift checks into cutover phases.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Detect stale agent-surface skill guidance and route setup/verify.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Preserve and resume the original operator intent after successful cutover.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Add tests for read-only inventory and dry-run next-command reporting.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "friction-intake",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/debug/friction-captures/6ee6242f9ff2.json",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "beacon-ceo-review",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+      "status": "indexed",
+      "route": "change"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+      "status": "authoritative",
+      "route": "truth"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "qa_verdict",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+      "status": "authoritative",
+      "route": "test-case"
+    },
+    {
+      "surface": "refreeze-transaction",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/.machine/change/legacy-project-v152-cutover.refreeze-transaction.json",
+      "status": "generated",
+      "route": "change"
+    }
+  ]
+}

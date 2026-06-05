@@ -15,6 +15,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.delivery_baseline import load_implementation_delivery_host
 from beacon.utils.implementation_plan import load_implementation_plan_progress
+from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_audit import build_requirement_package_gate
 from beacon.utils.memory import append_memory_entry
 from beacon.utils.project_metadata import metadata_machine_path, verify_project_metadata
@@ -630,7 +631,7 @@ def create(
     output: Optional[str] = typer.Option(None, "--output", "-o", help="Output file"),
 ):
     """Create release checklist"""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).resolve()
     resolved_version = resolve_target_version(project_root, version)
     version_change_payload = _build_version_change_payload(project_root, version=resolved_version)
     version_change_payload = _stabilize_version_change_payload(
@@ -857,6 +858,8 @@ def check(
     authoritative_qa_ready = bool(
         ((release_scorecard.get("qa") or {}) if isinstance(release_scorecard.get("qa"), dict) else {}).get("release_ready", False)
     )
+    qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
+    authoritative_feature = str(qa_summary.get("feature") or "").strip()
 
     auto_test_path = project_root / ".beacon" / "auto-test-status.json"
     gate_report_path = _select_gate_report_path(project_root, version=resolved_version)
@@ -865,6 +868,23 @@ def check(
 
     checks: list[tuple[str, str, str]] = []
     evidence_refs: list[str] = []
+
+    if authoritative_feature:
+        cutover_preflight = build_legacy_cutover_preflight(
+            project_root,
+            version=resolved_version,
+            feature=authoritative_feature,
+            resume_intent="release",
+        )
+        checks.append(
+            (
+                "legacy cutover preflight",
+                "fail" if bool(cutover_preflight.get("blocked")) else "pass",
+                f"reason={cutover_preflight.get('reason_code') or '-'}",
+            )
+        )
+    else:
+        cutover_preflight = {}
 
     if requirement_package_gate_blocked:
         checks.append(
@@ -906,8 +926,6 @@ def check(
     )
 
     scorecard_gate = release_scorecard.get("gate") if isinstance(release_scorecard.get("gate"), dict) else {}
-    qa_summary = release_scorecard.get("qa") if isinstance(release_scorecard.get("qa"), dict) else {}
-    authoritative_feature = str(qa_summary.get("feature") or "").strip()
     gate_ok = False
     gate_status = "missing"
     gate_coverage_full: Optional[bool] = None
@@ -1284,7 +1302,10 @@ def check(
             failed_checks.append(check_name)
 
     recommended_command = ""
-    if browser_release_blockers:
+    if bool(cutover_preflight.get("blocked")):
+        next_route = cutover_preflight.get("next_route") if isinstance(cutover_preflight.get("next_route"), dict) else {}
+        recommended_command = str(next_route.get("command") or "")
+    elif browser_release_blockers:
         recommended_command = _browser_release_recommended_command(
             project_root,
             version=resolved_version,
@@ -1332,6 +1353,7 @@ def check(
         "failed_checks": failed_checks,
         "warning_checks": warning_checks,
         "checks": check_records,
+        "legacy_cutover_preflight": cutover_preflight,
         "browser_release_blockers": browser_release_blockers,
         "recommended_command": recommended_command,
         "lifecycle_hook_advisory": lifecycle_hook_advisory,
