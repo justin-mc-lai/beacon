@@ -521,6 +521,7 @@ def _version_projection_truth_contract(
 
 
 def build_requirement_clarity_gate_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    project_root = project_root.resolve()
     resolved_version = resolve_target_version(project_root, version)
     prd_path = project_root / "docs" / "beacon" / resolved_version / "prd" / f"{feature_slug(feature)}.md"
     resolved_runtime = resolve_runtime_version(project_root, "auto")

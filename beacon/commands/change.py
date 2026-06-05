@@ -54,7 +54,7 @@ def _change_impl(
     refreeze_chain: bool,
     json_output: bool,
 ) -> int:
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     if refreeze_chain:
         payload = run_change_refreeze_chain(

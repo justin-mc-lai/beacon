@@ -7,6 +7,7 @@ from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, machine_change_file
 from beacon.utils.feature_package import validate_feature_package
+from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import materialize_requirement_clarity, requirement_clarity_json_path
 from beacon.utils.revision_delta import materialize_revision_delta
@@ -269,6 +270,20 @@ def run_change_refreeze_chain(
         before_revision=before_revision,
         surface_statuses=surface_statuses,
     )
+
+    if feature_package_authoritative(resolved_version):
+        cutover_preflight = build_legacy_cutover_preflight(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            resume_intent="refreeze",
+        )
+        if bool(cutover_preflight.get("blocked")):
+            payload["blocked_reason"] = "legacy_cutover_required"
+            payload["legacy_cutover"] = cutover_preflight["legacy_cutover"]
+            payload["next_route"] = cutover_preflight["next_route"]
+            payload["artifacts"] = _write_transaction(project_root, version=resolved_version, feature=feature, payload=payload)
+            return payload
 
     missing = [
         surface

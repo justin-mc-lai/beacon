@@ -226,6 +226,56 @@ def test_auto_test_qa9_tc_execution_should_prefer_entry_command_over_layer_overr
     assert "# layer-override" not in tc_command
 
 
+def test_auto_test_qa9_should_timeout_layer_command_and_write_evidence(tmp_path: Path, monkeypatch):
+    monkeypatch.setenv("BEACON_LAYER_TIMEOUT_SECONDS", "1")
+    matrix_path = qa_matrix_output(tmp_path, "v1.0.2", "qa9-feature", "qa9-matrix")
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_payload = {
+        "schema_version": "1.0.2",
+        "feature": "QA9 Feature",
+        "feature_slug": "qa9-feature",
+        "version": "v1.0.2",
+        "qa_types": ["unit"],
+        "entries": [
+            {
+                "tc_id": "TC-001",
+                "ac_id": "AC-001",
+                "qa_type": "unit",
+                "automation": "auto",
+                "command": "python3 -c \"import time; time.sleep(5)\"",
+                "assertion": "unit assertion",
+                "evidence_path": ".beacon/evidence/test-results/qa9-feature/{run_id}/TC-001.json",
+                "status": "pending",
+            },
+        ],
+    }
+    matrix_path.write_text(json.dumps(matrix_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    result = runner.invoke(
+        app,
+        [
+            "auto-test",
+            "create",
+            "qa9",
+            "--project",
+            str(tmp_path),
+            "--qa-matrix-path",
+            str(matrix_path),
+        ],
+    )
+    assert result.exit_code == 0, result.stdout
+
+    status_payload = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
+    assert status_payload["status"] == "failed"
+    tc_result = status_payload["qa9"]["tc_results"][0]
+    assert tc_result["status"] == "blocked"
+    assert tc_result["reason_code"] == "runner_execution_timeout"
+    result_path = tmp_path / ".beacon" / "evidence" / "auto-test" / status_payload["run_id"] / "qa9-tc" / "TC-001" / "result.json"
+    result_payload = json.loads(result_path.read_text(encoding="utf-8"))
+    assert result_payload["status"] == "blocked"
+    assert result_payload["timeout_seconds"] == 1
+
+
 def test_gate_check_release_should_report_qa9_matrix_missing(tmp_path: Path):
     result = runner.invoke(
         app,

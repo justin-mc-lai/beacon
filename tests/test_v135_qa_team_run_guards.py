@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from beacon.commands import qa as qa_command
@@ -112,6 +113,70 @@ def test_v135_run_feature_aware_qa_should_block_when_auto_test_invocation_fails(
     auto_test_args = payload["auto_test_args"]
     assert "--host-runtime" not in auto_test_args
     assert "--team-mode" not in auto_test_args
+    assert captured["payload"]["status"] == "blocked"
+
+
+def test_v135_run_feature_aware_qa_should_write_status_when_auto_test_times_out(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    matrix_path = tmp_path / ".beacon" / "qa" / "features" / "feature" / "matrix.qa9.json"
+    matrix_path.parent.mkdir(parents=True, exist_ok=True)
+    matrix_path.write_text('{"entries":[]}\n', encoding="utf-8")
+
+    plan = {
+        "schema_version": "1.0",
+        "feature": "Beacon Feature",
+        "feature_slug": "feature",
+        "version": "v1.3.5",
+        "status": "rerun_required",
+        "implementation_done": True,
+        "implementation_run_id": "impl-run-1",
+        "reason_codes": [],
+        "targeted_layers": ["contract"],
+        "targeted_entries": [{"tc_id": "TC-008", "source_tc_id": "TC-008", "ac_id": "AC-002", "qa_type": "contract"}],
+    }
+    captured: dict[str, object] = {}
+
+    monkeypatch.setenv("BEACON_QA_RUNNER_TIMEOUT_SECONDS", "1")
+    monkeypatch.setattr(qa_command, "resolve_profile_for_feature", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "evaluate_project_profile_gate", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "build_requirement_package_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(qa_command, "build_requirement_completeness_gate", lambda *args, **kwargs: {"status": "pass"})
+    monkeypatch.setattr(qa_command, "load_current_qa_session", lambda *_args, **_kwargs: {})
+    monkeypatch.setattr(qa_command, "build_feature_qa_plan", lambda *args, **kwargs: plan)
+    monkeypatch.setattr(qa_command, "qa_team_contract", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "load_implement_to_qa_handoff", lambda *args, **kwargs: {})
+    monkeypatch.setattr(qa_command, "materialize_feature_qa_matrix", lambda *args, **kwargs: matrix_path)
+    monkeypatch.setattr(qa_command, "detect_host_runtime", lambda value=None: value or "codex")
+    monkeypatch.setattr(qa_command, "_repo_root", lambda: tmp_path)
+    monkeypatch.setattr(
+        qa_command,
+        "_beacon_exec_silent",
+        lambda *args, **kwargs: (_ for _ in ()).throw(subprocess.TimeoutExpired(cmd=["beacon"], timeout=1)),
+    )
+    monkeypatch.setattr(
+        qa_command,
+        "write_feature_qa_status",
+        lambda _project_root, *, feature, payload: captured.update({"payload": payload}) or (tmp_path / "feature-status.json"),
+    )
+    monkeypatch.setattr(qa_command, "_update_evidence_manifest", lambda *args, **kwargs: None)
+
+    exit_code, payload = qa_command._run_feature_aware_qa(
+        [
+            "Beacon Feature",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.3.5",
+            "--json",
+        ]
+    )
+
+    assert exit_code == 2
+    assert payload["status"] == "blocked"
+    assert "qa_runner_timeout" in payload["reason_codes"]
+    assert payload["command_error_reason"] == "qa_runner_timeout"
     assert captured["payload"]["status"] == "blocked"
 
 
@@ -399,3 +464,54 @@ def test_v135_run_feature_aware_qa_should_refresh_manifest_with_plan_when_reusin
         ".beacon/qa/features/beacon-feature/plan.json"
         in captured_manifest["refs"]
     )
+
+
+def test_v135_qa_evolve_should_preserve_existing_pass_evidence_when_up_to_date(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    captured: dict[str, object] = {}
+    feature = "Beacon Feature"
+    existing_status = {
+        "feature": feature,
+        "status": "passed",
+        "evidence_done": True,
+        "run_id": "run-123",
+        "release_ready": True,
+        "feature_scorecard": {"release_ready": True},
+        "acceptance_writeback": {"status": "completed"},
+    }
+    plan = {
+        "feature": feature,
+        "feature_slug": "beacon-feature",
+        "version": "v1.3.5",
+        "status": "up_to_date",
+        "implementation_done": True,
+        "evidence_done": True,
+        "targeted_entries": [],
+    }
+
+    monkeypatch.setattr(qa_command, "_default_feature_qa_ui_runner", lambda *_args, **_kwargs: "playwright")
+    monkeypatch.setattr(qa_command, "build_feature_qa_plan", lambda *args, **kwargs: dict(plan))
+    monkeypatch.setattr(qa_command, "load_feature_qa_status", lambda *_args, **_kwargs: existing_status)
+    monkeypatch.setattr(
+        qa_command,
+        "write_feature_qa_status",
+        lambda _project_root, *, feature, payload: captured.update({"payload": payload}) or (tmp_path / "status.json"),
+    )
+
+    qa_command.evolve(
+        feature=feature,
+        project=str(tmp_path),
+        version="v1.3.5",
+        mode="feature-aware",
+        write_matrix=True,
+        json_output=False,
+    )
+
+    payload = captured["payload"]
+    assert payload["status"] == "up_to_date"
+    assert payload["previous_status"] == "passed"
+    assert payload["run_id"] == "run-123"
+    assert payload["release_ready"] is True
+    assert payload["acceptance_writeback"]["status"] == "completed"

@@ -1999,6 +1999,7 @@ def _load_json_file(path: Path) -> tuple[Optional[Dict[str, Any]], str]:
 
 def check_delivery_execution_artifacts(project_root: Path, mode: GateMode, stage: str, version: Optional[str] = None) -> List[Dict[str, Any]]:
     """Check execution-layer delivery governance artifacts."""
+    project_root = project_root.resolve()
     issues: list[dict[str, Any]] = []
     if stage != "release":
         return issues

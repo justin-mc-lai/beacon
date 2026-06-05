@@ -821,6 +821,9 @@ def test_v119_auto_test_should_respect_explicit_qa_types_over_matrix_defaults(tm
     auto_status = json.loads((tmp_path / ".beacon" / "auto-test-status.json").read_text(encoding="utf-8"))
     assert auto_status["status"] == "passed"
     assert auto_status["selected_layers"] == ["contract", "integration"]
+    tc_results = auto_status["qa9"]["tc_results"]
+    assert {item["tc_id"] for item in tc_results} == {"TC-001", "TC-002"}
+    assert {item["qa_type"] for item in tc_results} == {"contract", "integration"}
 
 
 

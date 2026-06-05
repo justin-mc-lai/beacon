@@ -1,0 +1,1870 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-legacy-project-v152-cutover-r5",
+  "feature": "legacy-project-v152-cutover",
+  "feature_slug": "legacy-project-v152-cutover",
+  "version": "v1.5.2",
+  "revision_id": "R5",
+  "baseline_hash": "sha256:4f0a1ae7cdd350d973b0dc011c0964023ccf6c8f6bc370776c100f0bc605130c",
+  "plan_hash": "sha256:d7a123056e73bf544b1079ffb9fa2cddd55446d78c7ce1847f14b621fd16128c",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+    "prd": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+    "test_case": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+    "truth": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover",
+    "revision_delta": "docs/beacon/v1.5.2/.machine/execution/revision-delta-legacy-project-v152-cutover.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/legacy-project-v152-cutover.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/legacy-project-v152-cutover.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-05T06:40:21.589538+00:00",
+    "feature": "legacy-project-v152-cutover",
+    "feature_slug": "legacy-project-v152-cutover",
+    "prd_ref": "docs/beacon/v1.5.2/prd/legacy-project-v152-cutover.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/legacy-project-v152-cutover.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/legacy-project-v152-cutover.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/legacy-project-v152-cutover.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Add cutover inventory classification for legacy/mixed truth state.",
+      "description": "Add cutover inventory classification for legacy/mixed truth state.",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013703+00:00",
+      "completed_at": "2026-06-05T06:47:29.013707+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+      "description": "Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013714+00:00",
+      "completed_at": "2026-06-05T06:47:29.013715+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Add a human-facing cutover wrapper command/skill for phased migration.",
+      "description": "Add a human-facing cutover wrapper command/skill for phased migration.",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-003",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004",
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013720+00:00",
+      "completed_at": "2026-06-05T06:47:29.013722+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Wire package materialize/validate and truth-map verify into cutover phases.",
+      "description": "Wire package materialize/validate and truth-map verify into cutover phases.",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013726+00:00",
+      "completed_at": "2026-06-05T06:47:29.013728+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Wire governance MD verify/projection drift checks into cutover phases.",
+      "description": "Wire governance MD verify/projection drift checks into cutover phases.",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013732+00:00",
+      "completed_at": "2026-06-05T06:47:29.013733+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Detect stale agent-surface skill guidance and route setup/verify.",
+      "description": "Detect stale agent-surface skill guidance and route setup/verify.",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013738+00:00",
+      "completed_at": "2026-06-05T06:47:29.013739+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "TASK-007 Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+      "description": "Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+      "source_task_id": "TASK-007",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013744+00:00",
+      "completed_at": "2026-06-05T06:47:29.013745+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "TASK-008 Preserve and resume the original operator intent after successful cutover.",
+      "description": "Preserve and resume the original operator intent after successful cutover.",
+      "source_task_id": "TASK-008",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008",
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013750+00:00",
+      "completed_at": "2026-06-05T06:47:29.013751+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "TASK-009 Add tests for read-only inventory and dry-run next-command reporting.",
+      "description": "Add tests for read-only inventory and dry-run next-command reporting.",
+      "source_task_id": "TASK-009",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009",
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-009",
+        "TEST-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-011",
+        "SC-AUTO-TC-012"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch",
+        ".beacon/qa/features/legacy-project-v152-cutover/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T150657245069/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T150657245069",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/ac-closure.json",
+        ".beacon/qa/features/legacy-project-v152-cutover/scorecard.json",
+        ".beacon/release-gate-report.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/unit/result.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T151229921412/summary.json",
+        "verify:run-20260605T151229921412"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013756+00:00",
+      "completed_at": "2026-06-05T06:47:29.013757+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "TASK-010 Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+      "description": "Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+      "source_task_id": "TASK-010",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013761+00:00",
+      "completed_at": "2026-06-05T06:47:29.013763+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "TASK-011 Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+      "description": "Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+      "source_task_id": "TASK-011",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013767+00:00",
+      "completed_at": "2026-06-05T06:47:29.013768+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "TASK-012 Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+      "description": "Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+      "source_task_id": "TASK-012",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013772+00:00",
+      "completed_at": "2026-06-05T06:47:29.013774+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "TASK-013 Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+      "description": "Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+      "source_task_id": "TASK-013",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013778+00:00",
+      "completed_at": "2026-06-05T06:47:29.013779+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "TASK-014 Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+      "description": "Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+      "source_task_id": "TASK-014",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:impl-legacy-project-v152-cutover-r5-doctor-mismatch"
+      ],
+      "changed_files": [
+        "beacon/utils/doctor_diagnostics.py",
+        "tests/test_doctor_v2_context_checks.py",
+        "tests/test_v152_legacy_project_cutover.py",
+        "."
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T06:47:29.013783+00:00",
+      "completed_at": "2026-06-05T06:47:29.013785+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "legacy-project-v152-cutover",
+    "feature_slug": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md",
+    "task_count": 14,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Add cutover inventory classification for legacy/mixed truth state.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Add a human-facing cutover wrapper command/skill for phased migration.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Wire package materialize/validate and truth-map verify into cutover phases.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Wire governance MD verify/projection drift checks into cutover phases.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Detect stale agent-surface skill guidance and route setup/verify.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-007",
+        "title": "Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-008",
+        "title": "Preserve and resume the original operator intent after successful cutover.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-009",
+        "title": "Add tests for read-only inventory and dry-run next-command reporting.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-010",
+        "title": "Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-011",
+        "title": "Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-012",
+        "title": "Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-013",
+        "title": "Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-014",
+        "title": "Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Add cutover inventory classification for legacy/mixed truth state.",
+        "description": "Add cutover inventory classification for legacy/mixed truth state.",
+        "source_task_id": "TASK-001",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+        "description": "Teach `beacon-change-refreeze` to run cutover preflight before refreeze.",
+        "source_task_id": "TASK-002",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Add a human-facing cutover wrapper command/skill for phased migration.",
+        "description": "Add a human-facing cutover wrapper command/skill for phased migration.",
+        "source_task_id": "TASK-003",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Wire package materialize/validate and truth-map verify into cutover phases.",
+        "description": "Wire package materialize/validate and truth-map verify into cutover phases.",
+        "source_task_id": "TASK-004",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Wire governance MD verify/projection drift checks into cutover phases.",
+        "description": "Wire governance MD verify/projection drift checks into cutover phases.",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Detect stale agent-surface skill guidance and route setup/verify.",
+        "description": "Detect stale agent-surface skill guidance and route setup/verify.",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-007",
+        "title": "Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+        "description": "Enforce fail-closed behavior for freeze/refreeze/implement/QA/release while cutover is blocked.",
+        "source_task_id": "TASK-007",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-008",
+        "title": "Preserve and resume the original operator intent after successful cutover.",
+        "description": "Preserve and resume the original operator intent after successful cutover.",
+        "source_task_id": "TASK-008",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-009",
+        "title": "Add tests for read-only inventory and dry-run next-command reporting.",
+        "description": "Add tests for read-only inventory and dry-run next-command reporting.",
+        "source_task_id": "TASK-009",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-010",
+        "title": "Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+        "description": "Update skill guidance so research promotion goes through change/refreeze and not direct truth edits.",
+        "source_task_id": "TASK-010",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-011",
+        "title": "Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+        "description": "Align `beacon implement plan` with package `tasks.md` while keeping runtime progress in execution artifacts.",
+        "source_task_id": "TASK-011",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-012",
+        "title": "Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+        "description": "Add doctor `truth_source_mismatch` diagnostics with exact repair routing.",
+        "source_task_id": "TASK-012",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-013",
+        "title": "Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+        "description": "Add QA regressions for truth-cutover routing simplification, root normalization, and change CLI version stability.",
+        "source_task_id": "TASK-013",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-014",
+        "title": "Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+        "description": "Update help/doctor route copy so `truth-cutover` is presented as a CLI repair transaction, not a new default public skill.",
+        "source_task_id": "TASK-014",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "legacy-project-v152-cutover",
+    "feature_slug": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "revision_id": "R5",
+    "source_revision_id": "R4",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 1,
+    "retained_requirement_count": 9,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R5",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "friction-routing-simplification",
+        "text": "Beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a CLI/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change CLI version stability.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::friction-routing-simplification::beacon must close the four accepted friction findings with the lowest-cognitive-load route: keep `truth-cutover` as a cli/machine repair transaction instead of adding a new default public skill, route existing human surfaces to it, add explicit `doctor truth-source-mismatch` diagnostics and repair commands, and regression-test the `technical_review_contract` root fix plus change cli version stability.::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R5",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed-mixed-authority",
+        "text": "Freeze, refreeze, implement, QA, and release must fail closed while package authority, governance MD, or agent-surface verification is incomplete or contradictory.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::fail-closed-mixed-authority::freeze, refreeze, implement, qa, and release must fail closed while package authority, governance md, or agent-surface verification is incomplete or contradictory.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "governance-verify",
+        "text": "Project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::governance-verify::project governance cutover must verify `docs/beacon/governance/project-version-governance.md` and generated sqlite/runtime projection, failing closed on missing version contract or projection drift.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "legacy-detection",
+        "text": "Cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance MD, missing projection, and stale agent-surface guidance.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::legacy-detection::cutover preflight detects legacy or mixed truth state, including old `prd/`, `user-story/`, `qa/test-cases/` surfaces, missing feature package files, missing governance md, missing projection, and stale agent-surface guidance.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "Requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::package-authority::requirement package cutover must validate `features/<slug>/{truth,tests,tasks,evidence}.md` as v1.5.2 package authority; legacy triptych can be absorb/rebuild/archive-only and cannot win authority.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "phased-migration",
+        "text": "Beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::phased-migration::beacon exposes a human-facing one-command cutover wrapper that runs or reports phases: inventory, package materialize/validate, truth-map verify, governance verify/projection, agent-surface refresh, and resume.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "refreeze-intercept",
+        "text": "`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::refreeze-intercept::`beacon-change-refreeze` must detect legacy/mixed state before refreeze and route to cutover instead of presenting `beacon change ... --refreeze-chain` as sufficient.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "resume-original-intent",
+        "text": "After successful cutover, Beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::resume-original-intent::after successful cutover, beacon resumes the original operator intent, such as refreeze, without requiring the operator to rediscover the next command.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "stale-skill-detection",
+        "text": "Cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::stale-skill-detection::cutover must detect stale installed/project skills or agent rules that still present old triptych as normal v1.5.2 truth authority and route to `doctor setup-agent-surface` / verify.::"
+      },
+      {
+        "revision_id": "R5",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "tasks-plan-alignment",
+        "text": "For v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md",
+        "signature": "ac::::tasks-plan-alignment::for v1.5.2 package-authoritative features, `beacon implement plan` must consume `features/<slug>/tasks.md` as the requirement-owned task intent and may return a draft/skeleton plan even when execution admission is blocked; implementation progress must write to execution/progress artifacts, not mutate `tasks.md` checkbox state.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:4f0a1ae7cdd350d973b0dc011c0964023ccf6c8f6bc370776c100f0bc605130c",
+    "source_baseline_hash": "sha256:ac72b9f418daad370892137564f1989bb772999539a0366b52908bfc72fa1d41",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/legacy-project-v152-cutover.json",
+    "generated_at": "2026-06-05T06:40:21.573908+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-legacy-project-v152-cutover.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-legacy-project-v152-cutover.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-legacy-project-v152-cutover.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-legacy-project-v152-cutover.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"legacy-project-v152-cutover\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "run_command": "beacon implement team-run \"legacy-project-v152-cutover\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"legacy-project-v152-cutover\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "ralph_command": "beacon implement run \"legacy-project-v152-cutover\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"legacy-project-v152-cutover\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "legacy-project-v152-cutover",
+    "feature_slug": "legacy-project-v152-cutover",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-05T06:40:21.591126+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-legacy-project-v152-cutover-R5",
+    "transaction_id": "tx-48389fe5ef0b507e0",
+    "source_hash": "sha256:9e7bb1c06384b850e56f7f6fb787aab60988565a10cc91f57fe51fb8693c3028",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-legacy-project-v152-cutover.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-legacy-project-v152-cutover.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-legacy-project-v152-cutover.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-legacy-project-v152-cutover-R5",
+    "transaction_id": "tx-48389fe5ef0b507e0",
+    "source_hash": "sha256:9e7bb1c06384b850e56f7f6fb787aab60988565a10cc91f57fe51fb8693c3028",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-legacy-project-v152-cutover.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-legacy-project-v152-cutover.json",
+  "generated_at": "2026-06-05T06:40:21.779452+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-legacy-project-v152-cutover-R5",
+  "transaction_id": "tx-48389fe5ef0b507e0",
+  "source_hash": "sha256:9e7bb1c06384b850e56f7f6fb787aab60988565a10cc91f57fe51fb8693c3028",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-05T07:14:38.152516+00:00",
+  "accepted_at": "2026-06-05T07:14:38.152454+00:00",
+  "accepted_by": "qa"
+}

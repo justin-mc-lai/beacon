@@ -37,6 +37,7 @@ from beacon.utils.git_alignment import (
 )
 from beacon.utils.governance import evaluate_takeover_baseline_gate
 from beacon.utils.implementation_plan import (
+    build_task_ledger_alignment_payload,
     build_implementation_plan_gate_payload,
     compile_implementation_plan,
     ensure_implementation_git_workflow_contract,
@@ -63,6 +64,7 @@ from beacon.utils.implement_adapters import (
     resolve_default_runner,
 )
 from beacon.utils.learning_loop import write_requirement_rewrite_input
+from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.host_prompt_trace import record_host_prompt_trace
 from beacon.utils.implement_prompt_boundary import evaluate_implement_prompt_boundary
 from beacon.utils.material_audit import build_requirement_package_gate
@@ -139,6 +141,14 @@ def _with_implement_surface(
     )
 
 
+def _with_task_alignment(payload: dict[str, Any], *, project_root: Path, version: str, feature: str) -> dict[str, Any]:
+    if "task_alignment" in payload:
+        return payload
+    payload = dict(payload)
+    payload["task_alignment"] = build_task_ledger_alignment_payload(project_root, version=version, feature=feature)
+    return payload
+
+
 def _implement_version_governance_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     if not truth_map_supported(version):
         return {
@@ -183,6 +193,34 @@ def _blocked_implement_version_governance_payload(
         },
         reason_code=reason_code,
         recommended_command=recommended_command,
+        blocked=True,
+    )
+
+
+def _blocked_legacy_cutover_payload(
+    *,
+    project_root: Path,
+    version: str,
+    feature: str,
+    preflight: dict[str, Any],
+) -> dict[str, Any]:
+    next_route = preflight.get("next_route") if isinstance(preflight.get("next_route"), dict) else {}
+    return _with_implement_surface(
+        {
+            "schema_version": "1.0",
+            "status": "blocked",
+            "reason_code": "legacy_cutover_required",
+            "feature": feature,
+            "feature_slug": _slug(feature),
+            "version": version,
+            "legacy_cutover_preflight": preflight,
+            "legacy_cutover": preflight.get("legacy_cutover", {}),
+            "next_route": next_route,
+            "recommended_command": str(next_route.get("command") or ""),
+            "project_root": str(project_root),
+        },
+        reason_code="legacy_cutover_required",
+        recommended_command=str(next_route.get("command") or ""),
         blocked=True,
     )
 
@@ -2407,6 +2445,19 @@ def run_implement_stage(  # noqa: PLR0913
             ),
         }, blocked=True)
         return 2, payload
+    cutover_preflight = build_legacy_cutover_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        resume_intent="implement",
+    )
+    if bool(cutover_preflight.get("blocked")):
+        return 2, _blocked_legacy_cutover_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            preflight=cutover_preflight,
+        )
     requirement_package_gate = build_requirement_package_gate(
         project_root,
         version=resolved_version,
@@ -4048,6 +4099,7 @@ def import_evidence(
             feature=feature,
             prompt_boundary=prompt_boundary,
         )
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -4548,7 +4600,7 @@ def sync_git_workflow(
 
 
 def _plan_impl(feature: str, project: Optional[str], version: str, json_output: bool, host_prompt: str = "") -> int:
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     prompt_boundary = _resolve_host_prompt_boundary(
         project_root=project_root,
         version=version,
@@ -4563,6 +4615,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             feature=feature,
             prompt_boundary=prompt_boundary,
         )
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if host_prompt:
             _capture_host_prompt_trace(
                 project_root=project_root,
@@ -4573,6 +4626,25 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
                 mapped_command=f'beacon implement plan "{feature}" --project-root {project_root} --version {resolved_version}',
                 payload=payload,
             )
+        if json_output:
+            typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        else:
+            typer.echo(f"Beacon implementation plan blocked: {payload.get('reason_code')}")
+        return 2
+    cutover_preflight = build_legacy_cutover_preflight(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        resume_intent="implement",
+    )
+    if bool(cutover_preflight.get("blocked")):
+        payload = _blocked_legacy_cutover_payload(
+            project_root=project_root,
+            version=resolved_version,
+            feature=feature,
+            preflight=cutover_preflight,
+        )
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -4590,6 +4662,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
             feature=feature,
             preflight=governance_preflight,
         )
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -4619,6 +4692,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
                 )
             ),
         }, blocked=True)
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -4649,6 +4723,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
                 )
             ),
         }, blocked=True)
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:
@@ -4679,6 +4754,7 @@ def _plan_impl(feature: str, project: Optional[str], version: str, json_output: 
                 )
             ),
         }, blocked=True)
+        payload = _with_task_alignment(payload, project_root=project_root, version=resolved_version, feature=feature)
         if json_output:
             typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         else:

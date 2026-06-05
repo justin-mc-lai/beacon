@@ -9,7 +9,9 @@ from beacon import app
 from beacon.utils.acceptance_kit import write_acceptance_kit_projection
 from beacon.utils.ceo_review_surface import run_ceo_review
 from beacon.utils.feature_package import validate_feature_package
+from beacon.utils.implementation_plan import compile_implementation_plan, implementation_plan_progress_path, implementation_task_ledger_markdown_path
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.project_governance import commit_governance_payload
 from beacon.utils.prototype_utils import source_doc_paths
 from beacon.utils.qa_evo_deep import default_qa_evo_deep_findings, load_qa_evo_deep_source_materials
 from beacon.utils.requirement_deepening import build_requirement_completeness_gate
@@ -49,6 +51,38 @@ def _write(root: Path, rel: str, content: str) -> None:
 
 
 def _seed_governance(root: Path, version: str = VERSION) -> None:
+    commit_governance_payload(
+        root,
+        {
+            "schema_version": "1.0",
+            "project_root": str(root),
+            "global_project_metadata": {
+                "project_root": str(root),
+                "topology_kind": "single_repo",
+                "default_execution_service": "beacon",
+                "service_bindings": [
+                    {
+                        "service_key": "beacon",
+                        "repo_root": str(root),
+                        "repo_root_relative": ".",
+                        "role": "service",
+                        "writable": True,
+                        "worktree_path_policy": "follow-repo-root",
+                    }
+                ],
+            },
+            "version_scoped_metadata": {
+                version: {
+                    "version": version,
+                    "participating_services": ["beacon"],
+                    "per_service_canonical_branch": {"beacon": "main"},
+                    "branch_guard_mode": "strict",
+                    "validation_state": "active",
+                }
+            },
+        },
+        event_type="test-seed",
+    )
     base = f"docs/beacon/{version}"
     _write(root, "docs/beacon/global-boundaries.md", "# Global\n")
     _write(root, f"{base}/SUMMARY.md", f"# {version}\n")
@@ -457,6 +491,82 @@ def test_change_refreeze_chain_uses_package_surfaces_without_legacy_triptych(tmp
     assert payload["requirement_package"]["requirement_refs"]["prd"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
     assert payload["requirement_package"]["story_sync"]["ac_count"] == 8
     assert payload["truth_revision_after"]["baseline_hash"] != "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+
+
+def test_change_refreeze_chain_accepts_relative_project_root_for_package_authority(tmp_path: Path, monkeypatch) -> None:
+    _seed_package(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    freeze_story_state(tmp_path, VERSION, FEATURE)
+
+    monkeypatch.chdir(tmp_path)
+    result = CliRunner().invoke(
+        app,
+        [
+            "change",
+            FEATURE,
+            "--project",
+            ".",
+            "--version",
+            VERSION,
+            "--reason",
+            "package-authoritative refreeze",
+            "--refreeze-chain",
+            "--json",
+        ],
+    )
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["refreeze_status"] == "complete"
+    assert payload["blocked_reason"] == ""
+    assert payload["artifacts"]["machine_path"].startswith(f"docs/beacon/{VERSION}/.machine/change/")
+
+
+def test_implement_plan_consumes_package_tasks_without_mutating_task_ledger(tmp_path: Path, monkeypatch) -> None:
+    _seed_package(tmp_path)
+    freeze_revision_state(tmp_path, version=VERSION, feature=FEATURE)
+    freeze_story_state(tmp_path, VERSION, FEATURE)
+    tasks_path = tmp_path / f"docs/beacon/{VERSION}/features/{SLUG}/tasks.md"
+    before = tasks_path.read_text(encoding="utf-8")
+
+    monkeypatch.setattr("beacon.utils.implementation_plan.feature_requires_technical_review", lambda *_args, **_kwargs: False)
+    code, payload = compile_implementation_plan(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert code == 0
+    assert payload["status"] == "not_required"
+    assert payload["task_alignment"]["status"] == "aligned"
+    assert payload["task_alignment"]["task_count"] == 2
+    assert payload["task_alignment"]["draft_implementation_tasks"][0]["source_task_id"] == "TASK-001"
+    assert tasks_path.read_text(encoding="utf-8") == before
+
+    monkeypatch.setattr("beacon.utils.implementation_plan.feature_requires_technical_review", lambda *_args, **_kwargs: True)
+    monkeypatch.setattr(
+        "beacon.utils.implementation_plan.build_technical_review_gate_payload",
+        lambda *_args, **_kwargs: {"blocked": False, "reason_code": ""},
+    )
+    code, payload = compile_implementation_plan(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert code == 2
+    assert payload["status"] == "blocked"
+    assert payload["task_alignment"]["status"] == "aligned"
+    assert payload["task_alignment"]["draft_implementation_tasks"][0]["source_task_id"] == "TASK-001"
+    assert tasks_path.read_text(encoding="utf-8") == before
+
+    monkeypatch.setattr(
+        "beacon.utils.implementation_plan.build_material_gate_preflight",
+        lambda *_args, **_kwargs: {"blocked": False, "status": "pass", "reason_code": ""},
+    )
+    code, payload = compile_implementation_plan(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert code == 0
+    assert payload["status"] == "planned"
+    plan = json.loads((tmp_path / payload["plan_path"]).read_text(encoding="utf-8"))
+    assert plan["task_mapping_source"] == "package-tasks"
+    assert plan["tasks"][0]["source_task_id"] == "TASK-001"
+    assert payload["task_alignment"]["package_tasks_mutated"] is False
+    assert implementation_plan_progress_path(tmp_path, VERSION, FEATURE).exists()
+    assert implementation_task_ledger_markdown_path(tmp_path, VERSION, FEATURE).exists()
+    assert tasks_path.read_text(encoding="utf-8") == before
 
 
 def test_package_requirement_refs_replace_legacy_triptych_for_runtime_consumers(tmp_path: Path) -> None:

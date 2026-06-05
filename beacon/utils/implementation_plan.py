@@ -57,6 +57,7 @@ _FR_RE = re.compile(r"\b(FR-\d{3,})\b", flags=re.I)
 _FR_LINE_RE = re.compile(r"^(FR-\d{3,})\s*(.+?)\s*$", flags=re.I)
 _FR_BULLET_RE = re.compile(r"^(?:[-*+]\s+)(FR-\d{3,})\s*(.+?)\s*$", flags=re.I)
 _FR_NUMBERED_RE = re.compile(r"^(?:\d+[.)]\s+)(FR-\d{3,})\s*(.+?)\s*$", flags=re.I)
+_TASK_LEDGER_RE = re.compile(r"^(?:[-*+]\s+)?\[(?P<mark>[ xX-])\]\s+(?P<task_id>TASK-\d{3,})\s+(?P<title>.+?)\s*$", flags=re.I)
 _FUNCTIONAL_REQUIREMENT_TITLES = {
     "functional requirements",
     "requirements",
@@ -828,6 +829,114 @@ def _read_text(path: Path) -> str:
         return path.read_text(encoding="utf-8")
     except Exception:  # noqa: BLE001
         return ""
+
+
+def _project_relative(project_root: Path, path: Path) -> str:
+    try:
+        return str(path.relative_to(project_root))
+    except ValueError:
+        return str(path)
+
+
+def _parse_package_task_ledger(content: str) -> list[dict[str, Any]]:
+    tasks: list[dict[str, Any]] = []
+    for raw in str(content or "").splitlines():
+        line = raw.strip()
+        if not line:
+            continue
+        match = _TASK_LEDGER_RE.match(line)
+        if not match:
+            continue
+        mark = match.group("mark")
+        status = "completed" if mark.lower() == "x" else "blocked" if mark == "-" else "planned"
+        tasks.append(
+            {
+                "task_id": match.group("task_id").upper(),
+                "title": match.group("title").strip(),
+                "requirement_checkbox_state": status,
+                "implementation_status": "planned",
+            }
+        )
+    return tasks
+
+
+def build_task_ledger_alignment_payload(project_root: Path, *, version: str = "auto", feature: str) -> dict[str, Any]:
+    """Resolve package tasks.md as requirement-owned intent without mutating it."""
+
+    project_root = project_root.expanduser().resolve()
+    resolved_version = resolve_target_version(project_root, version)
+    payload: dict[str, Any] = {
+        "schema_version": "1.0",
+        "status": "not_applicable",
+        "blocked": False,
+        "reason_code": "",
+        "feature": feature,
+        "feature_slug": feature_slug(feature),
+        "version": resolved_version,
+        "authority": "not_package_authoritative",
+        "package_tasks_path": "",
+        "task_count": 0,
+        "resolved": False,
+        "alignment_mode": "not_package_authoritative",
+        "progress_write_target": "execution_artifacts",
+        "package_tasks_mutated": False,
+        "tasks": [],
+        "draft_implementation_tasks": [],
+    }
+    if not feature_package_authoritative(resolved_version):
+        return payload
+    try:
+        refs = resolve_truth_read_refs(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            consumer="implement-plan-task-ledger",
+        )["requirement_refs"]
+    except Exception as exc:  # noqa: BLE001
+        payload.update(
+            {
+                "status": "blocked",
+                "blocked": True,
+                "reason_code": "task_ledger_resolve_failed",
+                "authority": "markdown_feature_package",
+                "alignment_mode": "resolver_failed",
+                "diagnostics": [str(exc)],
+            }
+        )
+        return payload
+    task_path = project_root / str(refs.get("tasks", "") or "")
+    tasks = _parse_package_task_ledger(_read_text(task_path))
+    draft_tasks = [
+        {
+            "task_id": f"ITASK-{index:03d}",
+            "title": str(task.get("title", "") or ""),
+            "description": str(task.get("title", "") or ""),
+            "source_task_id": str(task.get("task_id", "") or ""),
+            "source_task_status": str(task.get("requirement_checkbox_state", "") or ""),
+            "status": "planned",
+            "evidence_refs": [],
+            "changed_files": [],
+            "blocked_reason": "",
+        }
+        for index, task in enumerate(tasks, start=1)
+    ]
+    payload.update(
+        {
+            "status": "aligned" if task_path.exists() else "blocked",
+            "blocked": not task_path.exists(),
+            "reason_code": "" if task_path.exists() else "task_ledger_missing",
+            "authority": "markdown_feature_package",
+            "package_tasks_path": _project_relative(project_root, task_path),
+            "task_count": len(tasks),
+            "resolved": task_path.exists(),
+            "alignment_mode": "package_tasks_to_implementation_plan",
+            "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+            "package_tasks_mutated": False,
+            "tasks": tasks,
+            "draft_implementation_tasks": draft_tasks,
+        }
+    )
+    return payload
 
 
 def _is_functional_requirements_heading(title: str) -> bool:
@@ -1673,7 +1782,9 @@ def _write_implementation_plan(project_root: Path, *, version: str, feature: str
 
 
 def compile_implementation_plan(project_root: Path, *, version: str = "auto", feature: str) -> tuple[int, dict[str, Any]]:
+    project_root = project_root.expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
+    task_alignment = build_task_ledger_alignment_payload(project_root, version=resolved_version, feature=feature)
     if not feature_requires_implementation_plan(project_root, version=resolved_version, feature=feature):
         return 0, {
             "schema_version": "1.0",
@@ -1683,6 +1794,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "feature": feature,
             "feature_slug": feature_slug(feature),
             "version": resolved_version,
+            "task_alignment": task_alignment,
         }
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=True)
     if str(revision.get("doc_status", "draft") or "draft") != "frozen":
@@ -1695,6 +1807,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "feature_slug": feature_slug(feature),
             "version": resolved_version,
             "recommended_command": f'beacon freeze "{feature}" --project-root {project_root} --version {resolved_version}',
+            "task_alignment": task_alignment,
         }
         return 2, payload
     existing_contract = load_technical_review_contract(project_root, version=resolved_version, feature=feature)
@@ -1722,6 +1835,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "version": resolved_version,
             "technical_review_gate": technical_review_gate,
             "recommended_command": str(technical_review_gate.get("contract_json_path") or ""),
+            "task_alignment": task_alignment,
         }
         return 2, payload
     story = load_story_state(
@@ -1751,6 +1865,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "revision_id": str(revision.get("revision_id", "") or ""),
                 "source_revision_id": str(revision.get("source_revision_id", "") or ""),
                 "revision_delta": revision_delta,
+                "task_alignment": task_alignment,
             }
             return 2, payload
     if feature_package_authoritative(resolved_version):
@@ -1796,6 +1911,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "feature_slug": feature_slug(feature),
             "version": resolved_version,
             "missing_source_refs": missing_refs,
+            "task_alignment": task_alignment,
         }
         return 2, payload
     diagram_truth = load_feature_diagram_truth(project_root, version=resolved_version, feature=feature)
@@ -1813,6 +1929,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 f'beacon brainstorm run "补齐 {feature} 的 diagram truth layer" '
                 f'--project-root {project_root} --version {resolved_version} --feature "{feature}" --json'
             ),
+            "task_alignment": task_alignment,
         }
         return 2, payload
 
@@ -1856,20 +1973,22 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
             "version": resolved_version,
             "material_gate_preflight": material_gate_preflight,
             "recommended_command": f'beacon doctor sync-technical-review-contract "{feature}" --project-root {project_root} --version {resolved_version} --review-status approved',
+            "task_alignment": task_alignment,
         }
         return 2, payload
 
     prd_content = _read_text(project_root / source_refs["prd"])
-    if feature_package_authoritative(resolved_version):
-        prd_content = "\n\n".join(
-            part
-            for part in (
-                prd_content,
-                _read_text(project_root / source_refs.get("tasks", "")),
-            )
-            if part.strip()
-        )
-    prd_candidates = _extract_prd_task_candidates(prd_content)
+    package_task_candidates = [
+        {
+            "candidate_id": str(task.get("task_id", "") or ""),
+            "title": f"{task.get('task_id', '')} {task.get('title', '')}".strip(),
+            "description": str(task.get("title", "") or ""),
+            "source_task_id": str(task.get("task_id", "") or ""),
+        }
+        for task in task_alignment.get("tasks", [])
+        if isinstance(task, dict)
+    ]
+    prd_candidates = package_task_candidates or _extract_prd_task_candidates(prd_content)
     diagram_task_projection = {
         "diagram_types": list(diagram_truth.get("diagram_types", [])),
         "state_axes": list(diagram_truth.get("state_axes", [])),
@@ -1905,6 +2024,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "task_id": task_id,
                 "title": candidate.get("title", "").strip() or f"FR task {idx}",
                 "description": description or "Implementation task",
+                "source_task_id": str(candidate.get("source_task_id", "") or ""),
                 "mapped_story_ids": [str(story.get("story_id", "US-001") or "US-001")],
                 "mapped_ac_ids": mapped_ac_ids,
                 "mapped_test_ids": normalized_test_ids,
@@ -2056,12 +2176,13 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
                 "task_ids": [str(task.get("task_id", "") or "") for task in tasks],
             }
         ],
-        "task_mapping_source": "prd-sections" if prd_candidates else "acceptance-criteria",
+        "task_mapping_source": "package-tasks" if package_task_candidates else "prd-sections" if prd_candidates else "acceptance-criteria",
         "diagram_truth": diagram_truth,
         "research_projection": research_projection,
         "review_gates": list(diagram_truth.get("review_gates", [])),
         "qa_coverage_hints": list(diagram_truth.get("qa_coverage_hints", [])),
         "tasks": tasks,
+        "task_alignment": task_alignment,
         "revision_delta": revision_delta,
         "revision_delta_ref": str(revision_delta.get("json_ref", "") or ""),
         "revision_delta_markdown_ref": str(revision_delta.get("markdown_ref", "") or ""),
@@ -2102,6 +2223,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
         "git_workflow_ref": str(implementation_git_workflow_json_path(project_root, resolved_version, feature).relative_to(project_root)),
         "git_workflow_markdown_ref": str(implementation_git_workflow_markdown_path(project_root, resolved_version, feature).relative_to(project_root)),
         "counts": _task_counts(tasks),
+        "task_alignment": task_alignment,
         "revision_cleanup_required": bool(revision_delta.get("cleanup_required", False)),
         "team_mode": payload.get("team_mode", {}),
         "git_workflow": payload.get("git_workflow", {}),
@@ -2111,6 +2233,7 @@ def compile_implementation_plan(project_root: Path, *, version: str = "auto", fe
 
 
 def build_implementation_plan_gate_payload(project_root: Path, *, version: str = "auto", feature: str, run_id: str = "") -> dict[str, Any]:
+    project_root = project_root.resolve()
     resolved_version = resolve_target_version(project_root, version)
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=False)
     plan_path = implementation_plan_json_path(project_root, resolved_version, feature)

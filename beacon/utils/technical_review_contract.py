@@ -531,6 +531,7 @@ def build_technical_review_gate_payload(
     feature: str,
     revision_id: str = "",
 ) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     resolved_runtime = resolve_runtime_version(project_root, "auto")
     json_path = technical_review_contract_json_path(project_root, resolved_version, feature)

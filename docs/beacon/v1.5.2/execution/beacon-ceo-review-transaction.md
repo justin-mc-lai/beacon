@@ -1,16 +1,16 @@
 # beacon-ceo-review Transaction
 
-- feature: `beacon-truth-skill-lifecycle-rename`
+- feature: `legacy-project-v152-cutover`
 - version: `v1.5.2`
 - status: `advisory`
 - decision: `hold`
-- truth_refs: `docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/truth.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tests.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/tasks.md, docs/beacon/v1.5.2/features/beacon-truth-skill-lifecycle-rename/evidence.md`
+- truth_refs: `docs/beacon/v1.5.2/features/legacy-project-v152-cutover/truth.md, docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tests.md, docs/beacon/v1.5.2/features/legacy-project-v152-cutover/tasks.md, docs/beacon/v1.5.2/features/legacy-project-v152-cutover/evidence.md`
 
 ## Summary
 CEO review did not find a version-level reframing blocker after challenging default downside axes.
 
 ## Next Route
-- command: `beacon implement "beacon-truth-skill-lifecycle-rename" --project . --version v1.5.2`
+- command: `beacon implement "legacy-project-v152-cutover" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2`
 - why: Requirement framing is stable enough to continue implementation planning.
 
 ## Challenge Axes

@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
   "action": "run",
-  "run_id": "run-20260604T030357Z-c05e",
+  "run_id": "run-20260605T072852Z-33df",
   "hook_id": "beacon-post-release-local-install",
   "version": "v1.5.2",
-  "feature": "version-truth-archive-lineage",
+  "feature": "legacy-project-v152-cutover",
   "dry_run": false,
   "confirmed": true,
   "status": "passed",
@@ -15,14 +15,14 @@
     "action": "plan",
     "hook_id": "beacon-post-release-local-install",
     "version": "v1.5.2",
-    "feature": "version-truth-archive-lineage",
+    "feature": "legacy-project-v152-cutover",
     "status": "planned",
     "blocked": false,
     "admission": {
       "schema_version": "1.0",
       "hook_id": "beacon-post-release-local-install",
       "hook_code": "post_release",
-      "feature": "version-truth-archive-lineage",
+      "feature": "legacy-project-v152-cutover",
       "path": "docs/beacon/hooks/beacon-post-release-local-install.md",
       "status": "pass",
       "blocked": false,
@@ -41,7 +41,9 @@
           "claude_agent_surface_setup",
           "claude_agent_surface_verify",
           "global_beacon_cli_version",
-          "global_beacon_cli_launcher_path"
+          "global_beacon_cli_launcher_path",
+          "macmini_hermes_beacon_sync_default",
+          "macmini_hermes_beacon_sync_finance"
         ],
         "failure_route": "release"
       }
@@ -56,12 +58,12 @@
   "side_effect_executed": true,
   "runtime_evidence_only": true,
   "truth_authority": false,
-  "written_at": "2026-06-04T03:03:57.370678+00:00",
+  "written_at": "2026-06-05T07:28:52.662085+00:00",
   "post_release_followup": {
     "schema_version": "1.0",
     "hook_id": "beacon-post-release-local-install",
     "version": "v1.5.2",
-    "feature": "version-truth-archive-lineage",
+    "feature": "legacy-project-v152-cutover",
     "status": "pass",
     "blocked": false,
     "reason_codes": [],
@@ -78,14 +80,14 @@
             {
               "id": "beacon-archive",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-archive",
-              "action": "updated",
+              "action": "unchanged",
               "source_hash": "e372345eaa2d591ec68839aab4596c7266232b4ab043409615381bf014c96789"
             },
             {
               "id": "beacon-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.agents/skills/beacon-brainstorm",
               "action": "unchanged",
-              "source_hash": "27d3fbbc669f1f442ecc6354df027213f615793c3dcc539b25b3bf0ef63a0229"
+              "source_hash": "9ececb9df0104c5e7f4ed7ac4095044212d712cae4035166e384d6f5112ff83a"
             },
             {
               "id": "beacon-ceo-review",
@@ -457,14 +459,14 @@
             {
               "id": "beacon-archive",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-archive",
-              "action": "updated",
+              "action": "unchanged",
               "source_hash": "e372345eaa2d591ec68839aab4596c7266232b4ab043409615381bf014c96789"
             },
             {
               "id": "beacon-brainstorm",
               "path": "/Users/apple/Developer/Personal/products/beacon/.claude/skills/beacon-brainstorm",
               "action": "unchanged",
-              "source_hash": "27d3fbbc669f1f442ecc6354df027213f615793c3dcc539b25b3bf0ef63a0229"
+              "source_hash": "9ececb9df0104c5e7f4ed7ac4095044212d712cae4035166e384d6f5112ff83a"
             },
             {
               "id": "beacon-ceo-review",
@@ -877,7 +879,7 @@
     ]
   },
   "evidence_paths": {
-    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260604T030357Z-c05e.json",
+    "runtime": ".beacon/state/hooks/beacon-post-release-local-install/run-20260605T072852Z-33df.json",
     "latest_read_model": "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json"
   }
 }

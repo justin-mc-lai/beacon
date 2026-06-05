@@ -76,6 +76,7 @@ LAYER_NAMES = (
 DEFAULT_ALL_LAYERS = ("ui", "api-curl", "unit", "smoke")
 
 DEFAULT_REQUIRED_UI_ACTIONS = ("login", "register", "browse", "submit-form")
+DEFAULT_LAYER_TIMEOUT_SECONDS = 300
 PROTECTED_SURFACE_HOST_HINTS = ("vercel.app",)
 ATTACHED_BROWSER_RUNNER_TYPES = {
     "web-access",
@@ -666,6 +667,7 @@ def _run_layer_command(
     extra_env: dict[str, str] | None = None,
     tc_id: str = "",
     ac_id: str = "",
+    timeout_seconds: int | None = None,
 ) -> dict:
     command_log = layer_dir / "command.txt"
     stdout_log = layer_dir / "stdout.log"
@@ -679,6 +681,8 @@ def _run_layer_command(
     run_records: list[dict[str, Any]] = []
     final_result: subprocess.CompletedProcess[str] | None = None
     started_at = datetime.now().isoformat()
+    timeout = max(1, int(timeout_seconds or _layer_timeout_seconds()))
+    timeout_expired: subprocess.TimeoutExpired[str] | None = None
     for attempt in range(1, attempts + 1):
         run_env = os.environ.copy()
         run_env.update(
@@ -700,14 +704,30 @@ def _run_layer_command(
             run_env["BEACON_AC_ID"] = ac_id
         if isinstance(extra_env, dict):
             run_env.update({str(k): str(v) for k, v in extra_env.items() if str(k).strip()})
-        result = subprocess.run(
-            command,
-            cwd=project_root,
-            shell=True,
-            text=True,
-            capture_output=True,
-            env=run_env,
-        )
+        try:
+            result = subprocess.run(
+                command,
+                cwd=project_root,
+                shell=True,
+                text=True,
+                capture_output=True,
+                env=run_env,
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired as exc:
+            timeout_expired = exc
+            stdout_value = exc.stdout or ""
+            stderr_value = exc.stderr or ""
+            if isinstance(stdout_value, bytes):
+                stdout_value = stdout_value.decode("utf-8", errors="replace")
+            if isinstance(stderr_value, bytes):
+                stderr_value = stderr_value.decode("utf-8", errors="replace")
+            result = subprocess.CompletedProcess(
+                args=command,
+                returncode=124,
+                stdout=str(stdout_value),
+                stderr=str(stderr_value),
+            )
         if run_id:
             _append_raw_command_log(
                 project_root,
@@ -731,6 +751,8 @@ def _run_layer_command(
         final_result = result
         if result.returncode == 0:
             break
+        if timeout_expired is not None:
+            break
 
     assert final_result is not None
     stdout_text = final_result.stdout or ""
@@ -738,7 +760,7 @@ def _run_layer_command(
     stdout_log.write_text(stdout_text, encoding="utf-8")
     stderr_log.write_text(stderr_text, encoding="utf-8")
 
-    status = "passed" if final_result.returncode == 0 else "failed"
+    status = "passed" if final_result.returncode == 0 else ("blocked" if timeout_expired is not None else "failed")
     was_flaky = status == "passed" and any(item.get("exit_code") != 0 for item in run_records[:-1])
     assertion_count = _extract_assertion_count(stdout_text, stderr_text, junit_file=junit_file)
     fingerprint_input = "\n".join(
@@ -758,6 +780,8 @@ def _run_layer_command(
         "command": command,
         "exit_code": final_result.returncode,
         "status": status,
+        "reason_code": "runner_execution_timeout" if timeout_expired is not None else "",
+        "timeout_seconds": timeout,
         "assertion_count": assertion_count,
         "was_flaky": was_flaky,
         "attempt_count": len(run_records),
@@ -792,6 +816,17 @@ def _run_layer_command(
     ]
     payload["evidence_ref"] = list(dict.fromkeys([*payload["evidence_ref"], *extra_refs]))
     return payload
+
+
+def _layer_timeout_seconds() -> int:
+    raw = str(os.environ.get("BEACON_LAYER_TIMEOUT_SECONDS") or "").strip()
+    if not raw:
+        return DEFAULT_LAYER_TIMEOUT_SECONDS
+    try:
+        value = int(raw)
+    except ValueError:
+        return DEFAULT_LAYER_TIMEOUT_SECONDS
+    return max(1, value)
 
 
 def _collect_files(root: Path) -> dict[str, str]:
@@ -1532,6 +1567,7 @@ def _execute_qa9_tc_entries(
     compat_required_pairs: list[dict[str, str]],
     compat_browsers_list: list[str],
     compat_devices_list: list[str],
+    selected_qa_types: list[str] | None = None,
 ) -> dict[str, dict[str, Any]]:
     entries = matrix_payload.get("entries")
     if not isinstance(entries, list):
@@ -1542,6 +1578,11 @@ def _execute_qa9_tc_entries(
     resolved_version = str(matrix_payload.get("version") or "").strip() or "auto"
     feature_name = str(matrix_payload.get("feature") or matrix_payload.get("feature_slug") or "").strip()
     prefer_explicit_layer_overrides = _is_feature_aware_qa_matrix(matrix_payload)
+    selected_filter = {
+        normalize_qa_type(str(item).strip())
+        for item in (selected_qa_types or [])
+        if normalize_qa_type(str(item).strip())
+    }
     round_stop_active = False
     round_stop_reasons: list[str] = []
     round_stop_anchor = ""
@@ -1554,6 +1595,8 @@ def _execute_qa9_tc_entries(
         ac_id = str(item.get("ac_id") or "").strip()
         qa_type = normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
         if qa_type not in QA9_TYPES:
+            continue
+        if selected_filter and qa_type not in selected_filter:
             continue
         automation = str(item.get("automation") or "auto").strip().lower()
         if round_stop_active:
@@ -1915,6 +1958,7 @@ def _build_qa9_tc_backfill(
     layer_results: list[dict[str, Any]],
     run_id: str,
     tc_execution_map: dict[str, dict[str, Any]] | None = None,
+    selected_qa_types: list[str] | None = None,
 ) -> dict[str, Any]:
     entries = matrix_payload.get("entries")
     if not isinstance(entries, list):
@@ -1945,10 +1989,17 @@ def _build_qa9_tc_backfill(
     tc_results: list[dict[str, Any]] = []
     passed = failed = blocked = pending = 0
     auto_total = auto_executed = 0
+    selected_filter = {
+        normalize_qa_type(str(item).strip())
+        for item in (selected_qa_types or [])
+        if normalize_qa_type(str(item).strip())
+    }
     for item in entries:
         if not isinstance(item, dict):
             continue
         qa_type = normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+        if selected_filter and qa_type not in selected_filter:
+            continue
         tc_id = str(item.get("tc_id") or qa_type or "TC-UNKNOWN").strip()
         ac_id = str(item.get("ac_id") or "AC-UNKNOWN").strip()
         automation = str(item.get("automation") or "auto").strip().lower()
@@ -2764,6 +2815,7 @@ def create(
             compat_required_pairs=compat_required_pairs,
             compat_browsers_list=compat_browsers_list,
             compat_devices_list=compat_devices_list,
+            selected_qa_types=selected_layers,
         )
         qa9_tc_execution_path = evidence_root / "qa9" / "tc-execution-map.json"
         qa9_tc_execution_path.parent.mkdir(parents=True, exist_ok=True)
@@ -2806,6 +2858,8 @@ def create(
                 if automation not in {"auto", "hybrid"}:
                     continue
                 qa_type = normalize_qa_type(str(item.get("qa_type") or item.get("layer") or "").strip())
+                if selected_layers and qa_type not in selected_layers:
+                    continue
                 command = str(item.get("command") or commands.get(qa_type) or "").strip()
                 if not command:
                     auto_missing_command.append(str(item.get("tc_id") or qa_type))
@@ -2821,6 +2875,7 @@ def create(
             layer_results=layer_results,
             run_id=run_id,
             tc_execution_map=qa9_tc_execution_map,
+            selected_qa_types=selected_layers,
         )
         summary = tc_backfill.get("summary") if isinstance(tc_backfill, dict) else {}
         if isinstance(summary, dict):
