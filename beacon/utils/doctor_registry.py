@@ -407,12 +407,14 @@ def _host_verify_agent_surface(
     project_root: Path,
     agent: str,
     runtime_version: str,
+    docs_version: str,
     strict: bool,
 ) -> dict[str, Any]:
     return verify_agent_surface(
         project_root,
         agent=agent,
         runtime_version=runtime_version,
+        docs_version=docs_version,
         strict=strict,
     )
 

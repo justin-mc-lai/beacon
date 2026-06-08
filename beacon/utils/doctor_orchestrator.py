@@ -1147,11 +1147,13 @@ def run_agent_surface_verify(
 ) -> DoctorExecutionResult:
     """Verify project-local Beacon agent surface files."""
     ctx = build_doctor_execution_context(project_root, version=version or None, strict=strict)
+    docs_version = str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version)
     result = run_doctor_handler(
         "host.verify.agent-surface",
         project_root=ctx.project_root,
         agent=agent,
         runtime_version=ctx.runtime_version,
+        docs_version=docs_version,
         strict=strict,
     )
     payload = {
@@ -1159,7 +1161,7 @@ def run_agent_surface_verify(
         "action": "verify-agent-surface",
         "status": _map_verify_status(str(result.get("status", "warn")).lower()),
         "runtime_version": ctx.runtime_version,
-        "docs_version": str((ctx.version_context or {}).get("docs_version", "") or ctx.runtime_version),
+        "docs_version": docs_version,
         "version_context": ctx.version_context or {},
         "version_semantics": (ctx.version_context or {}).get("version_semantics", {}),
         "result": result,
