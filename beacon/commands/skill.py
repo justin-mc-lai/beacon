@@ -37,7 +37,12 @@ from beacon.utils.skill_discovery import (
     write_skill_discovery_state,
 )
 from beacon.utils.skill_drift import build_skill_drift_report
-from beacon.utils.skill_eval_kit import materialize_skill_eval_kit, run_skill_eval
+from beacon.utils.skill_eval_kit import (
+    generate_skill_eval_review,
+    materialize_skill_eval_kit,
+    run_skill_eval,
+    run_skill_eval_benchmark,
+)
 
 app = typer.Typer(name="skill", help="Manage Beacon implementation skill adapters")
 registry_app = typer.Typer(name="registry", help="Inspect Beacon multi-skill registry")
@@ -608,11 +613,12 @@ app.add_typer(package_app, name="package")
 @eval_kit_app.command("init")
 def eval_kit_init(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.4.10", "--version", "-v", help="Eval case set version"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Materialize default Skill Eval Kit cases, tags, splits, and regression core."""
     root = Path(project_root) if project_root else Path.cwd()
-    payload = materialize_skill_eval_kit(root)
+    payload = materialize_skill_eval_kit(root, version=version)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         if payload.get("status") == "blocked":
@@ -625,17 +631,52 @@ def eval_kit_init(
 def eval_kit_run(
     project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
     split: str = typer.Option("regression-core", "--split", help="Split to run: regression-core|optimization|holdout|all"),
+    version: str = typer.Option("v1.4.10", "--version", "-v", help="Eval case set version"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run Skill Eval Kit cases and write runtime evidence."""
     root = Path(project_root) if project_root else Path.cwd()
-    payload = run_skill_eval(root, split=split)
+    payload = run_skill_eval(root, split=split, version=version)
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
         if payload.get("status") != "pass":
             raise typer.Exit(2)
         return
     typer.echo(f"✓ Skill Eval Kit run: {payload.get('metrics_path')}")
+
+
+@eval_kit_app.command("review")
+def eval_kit_review(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    feedback_path: str = typer.Option("", "--feedback-path", help="Optional feedback.json path"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Generate a self-contained Skill Eval Kit review artifact."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = generate_skill_eval_review(root, feedback_path=Path(feedback_path) if feedback_path else None)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") in {"fail", "blocked"}:
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit review: {payload.get('review_html_path')}")
+
+
+@eval_kit_app.command("benchmark")
+def eval_kit_benchmark(
+    project_root: str = typer.Option("", "--project-root", "--project", "-p", help="Project root path"),
+    version: str = typer.Option("v1.6.0", "--version", "-v", help="Benchmark case set version"),
+    json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
+):
+    """Run Skill Eval Kit benchmark and write behavior evidence artifacts."""
+    root = Path(project_root) if project_root else Path.cwd()
+    payload = run_skill_eval_benchmark(root, version=version)
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+        if payload.get("status") != "pass":
+            raise typer.Exit(2)
+        return
+    typer.echo(f"✓ Skill Eval Kit benchmark: {payload.get('root')}")
 
 
 app.add_typer(eval_kit_app, name="eval-kit")

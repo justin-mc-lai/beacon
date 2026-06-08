@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-08T07:23:22.765617+00:00",
+  "generated_at": "2026-06-08T09:05:21.205607+00:00",
   "feature": "beacon-skill-harness-taxonomy-v160",
   "feature_slug": "beacon-skill-harness-taxonomy-v160",
   "version": "v1.6.0",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/evidence.md"
   },
   "source_hashes": {
-    "truth": "6737d320fc6dc41b71e8a17a3c7f4ff420f31365cdb43df68c496bad51820271",
-    "tests": "26605feb34c0dfa4d8d20756eaecfae17d7cc0b11ca0ed09aafeef5618fd2310",
-    "tasks": "ee8b7e94c81e9ee23401e94c58682a54923be4a2cb0d6e03e9e27593e088dba0",
-    "evidence": "4214c917e05309b0c735801acb08d13160ad8ad095580a4f3c24b567a6a620ae"
+    "truth": "8910b0ec3ef6815ffc621fb6b4a592ea6db0fa3c684cdcf4b22f7dc17915e52a",
+    "tests": "50b29c86d0d4c80b632cbba121ec99348160fafaed7bf10ac27c1b57db9bf533",
+    "tasks": "f9ef44854fdb7e2f19e5b6723d6eda19d590c9a47c03fc76eb638eaa929b5972",
+    "evidence": "82291d86274b34eea4d2e60b0621966ef13489f9889ff4789bf2e16ebc651bfc"
   },
   "truth_frontmatter": {
     "slug": "beacon-skill-harness-taxonomy-v160",
@@ -123,6 +123,31 @@
       "ac_id": "AC-017",
       "theme": "harness-hard-gate-injection",
       "description": "每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 QA/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。"
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "skill-eval-benchmark-artifacts",
+      "description": "`beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。"
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "behavior-evidence-upgrade",
+      "description": "Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。"
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "benchmark-baseline-comparison",
+      "description": "Benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。"
+    },
+    {
+      "ac_id": "AC-021",
+      "theme": "grader-critique",
+      "description": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。"
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "benchmark-analysis",
+      "description": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。"
     }
   ],
   "test_rows": [
@@ -261,6 +286,46 @@
       "command": "",
       "assertion": "扫描所有 v1.6.0 host-visible `SKILL.md`，验证共享 preamble 后存在匹配 harness 的 `HARD GATE`，并覆盖禁止跨 harness 调用、越权 truth/implementation/QA/release 动作、假交付闭环和唯一允许产物；缺失或不匹配时 agent-surface verify 必须失败。",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-018",
+      "tc_id": "TC-018",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "`beacon skill eval-kit benchmark --version v1.6.0` 输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，且标记 `runtime_evidence_only=true`、`requirement_truth=false`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "tc_id": "TC-019",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Benchmark 覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态/replay 证明升级为行为证据。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-020",
+      "tc_id": "TC-020",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Benchmark 每个关键 case 同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-021",
+      "tc_id": "TC-021",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-022",
+      "tc_id": "TC-022",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
@@ -347,6 +412,31 @@
     {
       "id": "TASK-017",
       "title": "实现 harness-specific HARD GATE 模板注入和 agent-surface verify 扫描：planner/generator/evaluator/governor 各自生成禁止动作、唯一允许产物和跨 harness route 规则，缺失或不匹配时阻断 v1.6.0 skill package。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-018",
+      "title": "实现 `beacon skill eval-kit benchmark --version v1.6.0`，输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` runtime evidence。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-019",
+      "title": "将 TC-006 到 TC-011、TC-017 纳入 benchmark 行为 case，覆盖 harness 越权阻断、rough routing、no-fake-delivery 和 HARD GATE 注入。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-020",
+      "title": "为 benchmark 增加 `with_skill` 与 `baseline` 对照聚合，输出 pass rate、boundary violation、fake delivery block 和 delta。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-021",
+      "title": "为 grading 增加 fake-delivery critique 与 weak-assertion critique，阻断假证据或弱断言被当成 release-ready。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-022",
+      "title": "为 analysis 增加跨 case failure patterns、covered AC/TC、static-only AC/TC 和 recommended route。",
       "status": "unchecked"
     }
   ],
@@ -438,6 +528,20 @@
     },
     {
       "surface": "harness-hard-gate-injection",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "skill-creator-eval-harness-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/skill-creator-eval-harness-research.md",
+      "status": "accepted-for-change",
+      "route": "change/refreeze"
+    },
+    {
+      "surface": "skill-eval-benchmark-contract",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
       "status": "adopted",

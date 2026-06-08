@@ -7,6 +7,7 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.utils.qa_feature import build_feature_qa_plan, materialize_feature_qa_matrix
 
 
 runner = CliRunner()
@@ -46,6 +47,95 @@ def _write_research(path: Path, *, decision: str = "queued", promotion_ref: str 
         ),
         encoding="utf-8",
     )
+
+
+def _write_minimal_v160_skill_harness_package(root: Path) -> None:
+    feature_root = root / "docs" / "beacon" / "v1.6.0" / "features" / "beacon-skill-harness-taxonomy-v160"
+    feature_root.mkdir(parents=True, exist_ok=True)
+    (feature_root / "truth.md").write_text(
+        "\n".join(
+            [
+                "---",
+                "slug: beacon-skill-harness-taxonomy-v160",
+                "version: v1.6.0",
+                "status: frozen",
+                "language: zh",
+                "canonical_refs:",
+                "  prd: docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+                "  user_story: docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+                "  test_case: docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+                "parser_contract: beacon-feature-package-v1",
+                "---",
+                "",
+                "# Beacon Skill Harness Taxonomy v1.6.0",
+                "",
+                "## 验收标准",
+                "",
+                "| AC ID | Theme | Description |",
+                "|-------|-------|-------------|",
+                "| AC-001 | skill-eval | Skill eval benchmark is feature-scoped. |",
+                "| AC-002 | qa-scope | QA matrix does not fall back to whole-repo contract tests. |",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "tests.md").write_text(
+        "\n".join(
+            [
+                "# Tests",
+                "",
+                "| AC ID | TC ID | Layer | Assertion |",
+                "|-------|-------|-------|-----------|",
+                "| AC-001 | TC-001 | contract | Skill eval benchmark artifact exists. |",
+                "| AC-002 | TC-002 | integration | Feature-aware QA uses scoped commands. |",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    (feature_root / "tasks.md").write_text("# Tasks\n\n- [ ] TASK-001 Keep QA scoped.\n", encoding="utf-8")
+    (feature_root / "evidence.md").write_text(
+        "\n".join(
+            [
+                "# Evidence",
+                "",
+                "## Evidence Index",
+                "",
+                "| Surface | Authority | Canonical Artifact | Status | Route |",
+                "|---------|-----------|--------------------|--------|-------|",
+                "| qa | qa_verdict | .beacon/qa/features/beacon-skill-harness-taxonomy-v160/matrix.qa9.json | linked | qa |",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+    state_root = root / ".beacon" / "state"
+    state_root.mkdir(parents=True, exist_ok=True)
+    (state_root / "implementation-beacon-skill-harness-taxonomy-v160.json").write_text(
+        json.dumps(
+            {
+                "schema_version": "1.0",
+                "run_id": "run-impl-v160",
+                "feature": "beacon-skill-harness-taxonomy-v160",
+                "version": "v1.6.0",
+                "status": "completed",
+                "imported": True,
+                "summary_ref": "docs/beacon/v1.6.0/change/beacon-skill-harness-taxonomy-v160.refreeze-summary.md",
+                "source_refs": [".beacon/state/skill-eval/benchmarks/example/analysis/analysis.json"],
+                "approved_by": "codex-test",
+                "changed_files": ["beacon/utils/qa_feature.py"],
+            },
+            ensure_ascii=False,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+    tests_dir = root / "tests"
+    tests_dir.mkdir(parents=True, exist_ok=True)
+    (tests_dir / "test_v160_skill_harness_taxonomy.py").write_text("def test_placeholder():\n    assert True\n", encoding="utf-8")
+    (tests_dir / "test_v1410_qa_evo_deep_skill_eval.py").write_text("def test_placeholder():\n    assert True\n", encoding="utf-8")
+    (tests_dir / "test_v147_change_refreeze_one_shot.py").write_text("def test_placeholder():\n    assert True\n", encoding="utf-8")
 
 
 def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_path: Path) -> None:
@@ -267,3 +357,107 @@ def test_v160_no_fake_delivery_rejects_placeholder_closure() -> None:
     assert payload["closure_allowed"] is False
     assert "placeholder_implementation" in payload["detected"]
     assert "zero_assertions" in payload["detected"]
+
+
+def test_v160_skill_eval_kit_uses_harness_routes_and_review_artifact(tmp_path: Path) -> None:
+    init = _invoke(["skill", "eval-kit", "init", "--project", str(tmp_path), "--version", "v1.6.0", "--json"])
+    assert init.exit_code == 0, init.stdout
+    init_payload = json.loads(init.stdout)
+    assert init_payload["version"] == "v1.6.0"
+    cases_payload = json.loads((tmp_path / init_payload["cases_path"]).read_text(encoding="utf-8"))
+    routes = {case["expected_route"] for case in cases_payload["cases"]}
+    assert "beacon-planner-source-driven" in routes
+    assert "beacon-generator-implementation" in routes
+    assert "beacon-evaluator-qa" in routes
+    assert "beacon-governor-status" in routes
+    assert "beacon-qa" not in routes
+
+    run = _invoke(["skill", "eval-kit", "run", "--project", str(tmp_path), "--version", "v1.6.0", "--split", "all", "--json"])
+    assert run.exit_code == 0, run.stdout
+    run_payload = json.loads(run.stdout)
+    assert run_payload["runtime_evidence_only"] is True
+    assert run_payload["requirement_truth"] is False
+
+    feedback_path = tmp_path / ".beacon" / "state" / "skill-eval" / "feedback.json"
+    feedback_path.write_text(
+        json.dumps({"reviews": [{"run_id": run_payload["run_id"], "feedback": "route stable"}]}, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    review = _invoke(["skill", "eval-kit", "review", "--project", str(tmp_path), "--json"])
+    assert review.exit_code == 0, review.stdout
+    review_payload = json.loads(review.stdout)
+    assert review_payload["status"] == "pass"
+    assert review_payload["review_model"] == "runs_outputs_grading_feedback"
+    assert review_payload["runtime_evidence_only"] is True
+    assert review_payload["requirement_truth"] is False
+    assert review_payload["run_count"] == 1
+    assert review_payload["runs"][0]["outputs"]
+    assert review_payload["runs"][0]["grading"]["status"] == "pass"
+    assert review_payload["feedback"]["reviews"][0]["feedback"] == "route stable"
+    html = (tmp_path / review_payload["review_html_path"]).read_text(encoding="utf-8")
+    assert "Beacon Skill Eval Review" in html
+    assert "beacon-evaluator-qa" in html
+
+
+def test_v160_feature_qa_matrix_uses_scoped_commands_for_skill_harness_package(tmp_path: Path) -> None:
+    _write_minimal_v160_skill_harness_package(tmp_path)
+
+    plan = build_feature_qa_plan(
+        tmp_path,
+        version="v1.6.0",
+        feature="beacon-skill-harness-taxonomy-v160",
+        persist=False,
+    )
+    matrix_path = materialize_feature_qa_matrix(tmp_path, plan=plan)
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+
+    commands = {str(item["command"]) for item in matrix["entries"]}
+    assert commands
+    assert all("tests/test_v160_skill_harness_taxonomy.py" in command for command in commands)
+    assert all("tests/test_v147_change_refreeze_one_shot.py" in command for command in commands)
+    assert all("-k contract" not in command for command in commands)
+    assert all("-k integration" not in command for command in commands)
+
+
+def test_v160_skill_eval_benchmark_outputs_behavior_evidence_for_hard_gate_cases(tmp_path: Path) -> None:
+    result = _invoke(["skill", "eval-kit", "benchmark", "--project", str(tmp_path), "--version", "v1.6.0", "--json"])
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["status"] == "pass"
+    assert payload["runtime_evidence_only"] is True
+    assert payload["requirement_truth"] is False
+    assert payload["formal_verdict_authority"] is False
+    assert payload["release_verdict_authority"] is False
+
+    root = tmp_path / payload["root"]
+    assert (root / "eval_metadata").is_dir()
+    assert (root / "grading").is_dir()
+    assert (root / "benchmark" / "benchmark.json").exists()
+    assert (root / "analysis" / "analysis.json").exists()
+    assert (root / "analysis" / "analysis.md").exists()
+
+    expected_tc_ids = {"TC-006", "TC-007", "TC-008", "TC-009", "TC-010", "TC-011", "TC-017"}
+    expected_behavior_ac_ids = {"AC-006", "AC-007", "AC-008", "AC-009", "AC-010", "AC-011", "AC-017"}
+    expected_benchmark_contract_ac_ids = {"AC-018", "AC-019", "AC-020", "AC-021", "AC-022"}
+    assert set(payload["covered_tc_ids"]) == expected_tc_ids
+    assert set(payload["analysis"]["covered_tc_ids"]) == expected_tc_ids
+    assert set(payload["analysis"]["covered_behavior_ac_ids"]) == expected_behavior_ac_ids
+    assert set(payload["analysis"]["covered_benchmark_contract_ac_ids"]) == expected_benchmark_contract_ac_ids
+    assert set(payload["covered_ac_ids"]) == expected_behavior_ac_ids | expected_benchmark_contract_ac_ids
+    assert payload["analysis"]["static_only_ac_ids"] == []
+    assert payload["analysis"]["recommended_route"] == "beacon-evaluator-qa"
+
+    benchmark = json.loads((root / "benchmark" / "benchmark.json").read_text(encoding="utf-8"))
+    assert benchmark["configs"]["with_skill"]["pass_rate"] == 1.0
+    assert benchmark["configs"]["baseline"]["boundary_violation_count"] >= 1
+    assert benchmark["delta"]["boundary_violation_count"] < 0
+    assert benchmark["baseline_gate_authority"] is False
+
+    tc011_grading = json.loads((root / "grading" / "tc-011-no-fake-delivery.with_skill.json").read_text(encoding="utf-8"))
+    assert tc011_grading["fake_delivery_blocked"] is True
+    assert "fake_delivery_closure_blocked" in tc011_grading["reason_codes"]
+    assert tc011_grading["fake_delivery_critique"]
+
+    tc017_grading = json.loads((root / "grading" / "tc-017-hard-gate-injection.with_skill.json").read_text(encoding="utf-8"))
+    assert tc017_grading["hard_gate_verified"] is True
+    assert "hard_gate_behavior_verified" in tc017_grading["reason_codes"]

@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-skill-harness-taxonomy-v160
 
 - version: `v1.6.0`
-- change_reason: `accept harness-specific HARD GATE injection for v1.6.0 skills; require SKILL.md gate blocks after shared preamble to block cross-harness invocation, unauthorized truth/implementation/gate actions, fake delivery closure, and enforce agent-surface verification`
+- change_reason: `align benchmark AC table and refreeze skill eval benchmark behavior evidence contract`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R4`
-- revision_after: `R5`
+- revision_before: `R6`
+- revision_after: `R7`
 
 ## Surface Statuses
 - `change`: `package_change_optional` (docs/beacon/v1.6.0/change/beacon-skill-harness-taxonomy-v160.md)

@@ -155,6 +155,37 @@ def _manifest_versions(project_root: Path) -> dict[str, str]:
     }
 
 
+def _allowed_agent_surface_docs_versions(manifest: dict[str, Any], versions: dict[str, str]) -> set[str]:
+    allowed = {versions["docs_version"]}
+    for item in manifest.get("planning_lines", []) or []:
+        normalized = normalize_version(str(item))
+        if normalized:
+            allowed.add(normalized)
+    for item in manifest.get("partial_runtime_supplement_lines", []) or []:
+        normalized = normalize_version(str(item))
+        if normalized:
+            allowed.add(normalized)
+    lines = manifest.get("lines") if isinstance(manifest.get("lines"), dict) else {}
+    for version, row in lines.items():
+        status = str((row or {}).get("status") or "").strip()
+        if status in {"current_runtime_release", "planning_only", "planning_with_partial_runtime_supplement"}:
+            normalized = normalize_version(str(version))
+            if normalized:
+                allowed.add(normalized)
+    return {item for item in allowed if item}
+
+
+def _resolve_agent_surface_docs_version(
+    manifest: dict[str, Any],
+    versions: dict[str, str],
+    payload: dict[str, Any],
+) -> str:
+    current = normalize_version(str(payload.get("docs_version", "") or "")) or ""
+    if current and current in _allowed_agent_surface_docs_versions(manifest, versions):
+        return current
+    return versions["docs_version"]
+
+
 def _read_json(path: Path) -> dict[str, Any]:
     if not path.exists():
         return {}
@@ -369,7 +400,13 @@ def _sync_trae_rules_surface(project_root: Path, versions: dict[str, str], *, dr
     }
 
 
-def _sync_agent_surface_state(project_root: Path, versions: dict[str, str], *, dry_run: bool) -> dict[str, Any]:
+def _sync_agent_surface_state(
+    project_root: Path,
+    manifest: dict[str, Any],
+    versions: dict[str, str],
+    *,
+    dry_run: bool,
+) -> dict[str, Any]:
     path = project_root / _AGENT_SURFACE_STATE_FILE
     if not path.exists():
         return {
@@ -381,10 +418,11 @@ def _sync_agent_surface_state(project_root: Path, versions: dict[str, str], *, d
             "reason": "missing",
         }
     payload = _read_json(path)
+    docs_version = _resolve_agent_surface_docs_version(manifest, versions, payload)
     next_payload = {
         **payload,
         "runtime_version": versions["runtime_version"],
-        "docs_version": versions["docs_version"],
+        "docs_version": docs_version,
         "updated_at": now_iso(),
     }
     current = json.dumps(payload, ensure_ascii=False, indent=2) + "\n"
@@ -399,7 +437,8 @@ def _sync_agent_surface_state(project_root: Path, versions: dict[str, str], *, d
         "changed": changed,
         "expected": {
             "runtime_version": versions["runtime_version"],
-            "docs_version": versions["docs_version"],
+            "docs_version": docs_version,
+            "allowed_docs_versions": sorted(_allowed_agent_surface_docs_versions(manifest, versions)),
         },
     }
 
@@ -416,7 +455,7 @@ def sync_version_surfaces(project_root: Path | str, *, dry_run: bool) -> dict[st
         _sync_skill_metadata_surface(root, versions, dry_run=dry_run),
         _sync_root_skill_surface(root, versions, dry_run=dry_run),
         _sync_trae_rules_surface(root, versions, dry_run=dry_run),
-        _sync_agent_surface_state(root, versions, dry_run=dry_run),
+        _sync_agent_surface_state(root, manifest, versions, dry_run=dry_run),
     ]
     changed = [item for item in surface_results if item.get("changed")]
     return {
@@ -518,6 +557,46 @@ def _compare_optional_surface(
     }
 
 
+def _compare_agent_surface_state(
+    *,
+    path: Path,
+    actual: dict[str, str],
+    manifest: dict[str, Any],
+    versions: dict[str, str],
+    strict: bool,
+) -> dict[str, Any]:
+    if not path.exists():
+        return {
+            "name": "agent_surface_state",
+            "status": "pass",
+            "details": {"path": str(path), "configured": False, "optional": True},
+        }
+    allowed_docs_versions = _allowed_agent_surface_docs_versions(manifest, versions)
+    drift: dict[str, Any] = {}
+    if actual.get("runtime_version", "") != versions["runtime_version"]:
+        drift["runtime_version"] = {
+            "expected": versions["runtime_version"],
+            "actual": actual.get("runtime_version", ""),
+        }
+    actual_docs = actual.get("docs_version", "")
+    if actual_docs not in allowed_docs_versions:
+        drift["docs_version"] = {
+            "expected": versions["docs_version"],
+            "allowed": sorted(allowed_docs_versions),
+            "actual": actual_docs,
+        }
+    return {
+        "name": "agent_surface_state",
+        "status": "pass" if not drift else ("fail" if strict else "warn"),
+        "details": {
+            "path": str(path),
+            "configured": True,
+            "drift": drift,
+            "allowed_docs_versions": sorted(allowed_docs_versions),
+        },
+    }
+
+
 def verify_version_surfaces(project_root: Path | str, *, strict: bool) -> dict[str, Any]:
     """Verify managed source surfaces against canonical version truth."""
     root = Path(project_root).resolve()
@@ -597,14 +676,11 @@ def verify_version_surfaces(project_root: Path | str, *, strict: bool) -> dict[s
             },
             strict=strict,
         ),
-        _compare_optional_surface(
-            name="agent_surface_state",
+        _compare_agent_surface_state(
             path=agent_surface_state_path,
             actual=_read_agent_surface_state(agent_surface_state_path),
-            expected={
-                "runtime_version": versions["runtime_version"],
-                "docs_version": versions["docs_version"],
-            },
+            manifest=manifest,
+            versions=versions,
             strict=strict,
         ),
     ]

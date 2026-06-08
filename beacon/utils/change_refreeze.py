@@ -14,7 +14,7 @@ from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state, load_revision_state, reopen_revision_state
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 from beacon.utils.story_state import feature_slug, freeze_story_state, load_story_state, reopen_story_state
-from beacon.utils.truth_map import feature_package_authoritative, resolve_truth_read_refs
+from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -51,7 +51,7 @@ def _surface_paths(project_root: Path, *, version: str, feature: str) -> dict[st
 
 
 def _surface_statuses(project_root: Path, *, version: str, feature: str) -> dict[str, dict[str, Any]]:
-    if feature_package_authoritative(version):
+    if feature_package_authoritative_feature(project_root, version=version, feature=feature):
         refs = resolve_truth_read_refs(
             project_root,
             version=version,
@@ -255,6 +255,7 @@ def run_change_refreeze_chain(
     """Run one governed change -> requirement package -> clarity -> freeze attempt."""
 
     resolved_version = resolve_target_version(project_root, version)
+    package_authoritative = feature_package_authoritative_feature(project_root, version=resolved_version, feature=feature)
     surface_statuses = _surface_statuses(project_root, version=resolved_version, feature=feature)
     before_revision = load_revision_state(
         project_root,
@@ -271,7 +272,7 @@ def run_change_refreeze_chain(
         surface_statuses=surface_statuses,
     )
 
-    if feature_package_authoritative(resolved_version):
+    if package_authoritative:
         cutover_preflight = build_legacy_cutover_preflight(
             project_root,
             version=resolved_version,
@@ -289,7 +290,7 @@ def run_change_refreeze_chain(
         surface
         for surface, status in surface_statuses.items()
         if (
-            (surface in (PACKAGE_FILE_REFREEZE_SURFACES if feature_package_authoritative(resolved_version) else FILE_REFREEZE_SURFACES))
+            (surface in (PACKAGE_FILE_REFREEZE_SURFACES if package_authoritative else FILE_REFREEZE_SURFACES))
             and status.get("required")
             and (not status.get("exists") or str(status.get("status") or "") == "invalid")
         )

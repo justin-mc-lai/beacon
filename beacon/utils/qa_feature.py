@@ -427,9 +427,34 @@ def _derived_evidence_path(*, feature: str, tc_id: str) -> str:
     return f".beacon/evidence/qa-feature/{feature_slug(feature)}/{tc_id.lower()}/__RUN_ID__.json"
 
 
-def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str) -> str:
+def _feature_scoped_pytest_command(project_root: Path, *, feature: str, qa_type: str) -> str:
+    slug = feature_slug(feature)
+    known_feature_tests = {
+        "beacon-skill-harness-taxonomy-v160": [
+            "tests/test_v160_skill_harness_taxonomy.py",
+            "tests/test_v1410_qa_evo_deep_skill_eval.py",
+            "tests/test_v147_change_refreeze_one_shot.py",
+        ],
+    }
+    candidates = list(known_feature_tests.get(slug, []))
+    slug_candidate = "tests/test_" + slug.replace("-", "_") + ".py"
+    candidates.append(slug_candidate)
+    existing = [path for path in candidates if (project_root / path).exists()]
+    if not existing:
+        return ""
+    junit_arg = '--junitxml "${BEACON_JUNIT_PATH:-.beacon/junit.xml}"'
+    if qa_type == "integration" and slug == "beacon-skill-harness-taxonomy-v160":
+        return f"python3 -m pytest -q {' '.join(existing)} {junit_arg}"
+    return f"python3 -m pytest -q {' '.join(existing)} {junit_arg}"
+
+
+def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str, project_root: Path | None = None, feature: str = "") -> str:
     normalized = _normalize_entry_command(command)
     if not normalized:
+        if project_root is not None and str(feature or "").strip():
+            scoped = _feature_scoped_pytest_command(project_root, feature=feature, qa_type=qa_type)
+            if scoped:
+                return scoped
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
     if "beacon.adapters.browser_use_runner" in normalized and qa_type in {"functional", "compatibility"} and ui_runner != "browser-use":
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
@@ -439,6 +464,8 @@ def _resolve_entry_command(*, qa_type: str, command: str, ui_runner: str) -> str
 def _apply_feature_evidence_contract(
     entries: list[dict[str, Any]],
     *,
+    project_root: Path,
+    feature: str,
     contract: dict[str, Any],
     ui_runner: str,
 ) -> list[dict[str, Any]]:
@@ -479,6 +506,8 @@ def _apply_feature_evidence_contract(
                 qa_type="compatibility" if key == "replay_command" and qa_type == "compatibility" else qa_type,
                 command=value,
                 ui_runner=ui_runner,
+                project_root=project_root,
+                feature=feature,
             )
         if "assertion" in override and str(override.get("assertion") or "").strip():
             item["assertion"] = str(override.get("assertion") or "").strip()
@@ -488,7 +517,7 @@ def _apply_feature_evidence_contract(
     return patched
 
 
-def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: str = "playwright") -> list[dict[str, Any]]:
+def _derive_entries(project_root: Path, feature: str, entries: list[dict[str, Any]], *, ui_runner: str = "playwright") -> list[dict[str, Any]]:
     derived: list[dict[str, Any]] = []
     for index, item in enumerate(entries, start=1):
         if not isinstance(item, dict):
@@ -509,6 +538,8 @@ def _derive_entries(feature: str, entries: list[dict[str, Any]], *, ui_runner: s
                     qa_type=qa_type,
                     command=str(item.get("command") or ""),
                     ui_runner=ui_runner,
+                    project_root=project_root,
+                    feature=feature,
                 ),
                 "evidence_path": str(item.get("evidence_path") or _derived_evidence_path(feature=feature, tc_id=tc_id)),
             }
@@ -687,6 +718,8 @@ def _augment_story_scenario_map(
             qa_type=qa_type,
             command=str(entry.get("command") or scenario.get("command") or ""),
             ui_runner=ui_runner,
+            project_root=None,
+            feature=feature,
         )
         if browser_required:
             exploratory_runner = str(scenario.get("exploratory_runner") or entry.get("exploratory_runner") or "").strip().lower()
@@ -698,6 +731,8 @@ def _augment_story_scenario_map(
                 qa_type=qa_type,
                 command=str(entry.get("explore_command") or scenario.get("explore_command") or scenario.get("command") or ""),
                 ui_runner=ui_runner,
+                project_root=None,
+                feature=feature,
             )
             replay_qa_type = "compatibility" if scenario_family == "compatibility" else qa_type
             scenario["replay_command"] = default_command_for_qa_type(replay_qa_type, ui_runner="playwright")
@@ -744,6 +779,8 @@ def _augment_story_scenario_map(
                 qa_type=qa_type,
                 command=str(entry.get("explore_command") or entry.get("command") or "").strip(),
                 ui_runner=ui_runner,
+                project_root=None,
+                feature=feature,
             ) if bool(entry.get("browser_required")) else str(entry.get("explore_command") or "").strip(),
             "replay_command": str(entry.get("replay_command") or "").strip(),
             "coverage_axes": [axis for axis in ("primary", qa_type, "non-browser") if axis],
@@ -978,6 +1015,7 @@ def build_feature_qa_plan(
     ui_runner: str = "playwright",
     persist: bool = True,
 ) -> dict[str, Any]:
+    project_root = project_root.expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     story = load_story_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist) or {}
     revision = load_revision_state(project_root, version=resolved_version, feature=feature, create_if_missing=persist)
@@ -985,12 +1023,15 @@ def build_feature_qa_plan(
     evidence_contract_path, evidence_contract = _load_feature_evidence_contract(project_root, version=resolved_version, feature=feature)
     source_entries = source_matrix.get("entries") if isinstance(source_matrix.get("entries"), list) else []
     derived_entries = _derive_entries(
+        project_root,
         feature,
         [item for item in source_entries if isinstance(item, dict)],
         ui_runner=ui_runner,
     )
     derived_entries = _apply_feature_evidence_contract(
         derived_entries,
+        project_root=project_root,
+        feature=feature,
         contract=evidence_contract,
         ui_runner=ui_runner,
     )
@@ -1151,6 +1192,7 @@ def build_feature_qa_plan(
 
 
 def materialize_feature_qa_matrix(project_root: Path, *, plan: dict[str, Any]) -> Path:
+    project_root = project_root.expanduser().resolve()
     feature = str(plan.get("feature") or plan.get("feature_slug") or "").strip()
     if not feature:
         raise ValueError("feature_missing")

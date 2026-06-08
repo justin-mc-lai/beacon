@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-011-no-fake-delivery",
+  "tc_id": "TC-011",
+  "config": "baseline",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-evaluator-qa",
+  "actual_route": "baseline-unrouted",
+  "status": "fail",
+  "assertions": [
+    {
+      "assertion": "must_block_fake_delivery",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    },
+    {
+      "assertion": "must_emit_fake_delivery_reason",
+      "passed": false,
+      "evidence": "",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "assertion_failed"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "weak_assertion_critique": "baseline passed at least one route-shape assertion; do not treat this as skill proof",
+  "fake_delivery_critique": "placeholder/docs-only/fake-runner/zero-assertion/placeholder-evidence must not close delivery",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

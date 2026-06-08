@@ -417,6 +417,18 @@ def test_status_surface_reports_package_authority(tmp_path: Path) -> None:
     assert payload["source_of_truth"]["json_authority"] is False
 
 
+def test_status_surface_accepts_relative_project_root_for_machine_path(tmp_path: Path, monkeypatch) -> None:
+    _seed_package(tmp_path)
+    monkeypatch.chdir(tmp_path)
+    runner = CliRunner()
+
+    result = runner.invoke(app, ["status", "--project-root", ".", "--version", VERSION])
+
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["source_of_truth"]["machine_root"] == f"docs/beacon/{VERSION}/.machine"
+
+
 def test_gate_blocks_when_package_surfaces_are_missing_even_if_legacy_exists(tmp_path: Path) -> None:
     _seed_governance(tmp_path)
     base = f"docs/beacon/{VERSION}"

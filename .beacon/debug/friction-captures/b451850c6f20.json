@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "captured_at": "2026-06-08T09:55:32.400169+00:00",
+  "summary": "Friction: refreeze-chain uses version-only feature_package_authoritative() check instead of feature-aware check. When running 'beacon change --refreeze-chain' for a feature at v...",
+  "raw_note": "Friction: refreeze-chain uses version-only feature_package_authoritative() check instead of feature-aware check. When running 'beacon change --refreeze-chain' for a feature at v0.0.1 with truth.md frontmatter truth_source_model=feature_package_authoritative, the refreeze still requires legacy PRD/user-story/test-case surfaces because _semver_tuple('v0.0.1') >= (1,5,2) is False. Root cause: change_refreeze.py line 288-292 calls feature_package_authoritative(resolved_version) which is version-only, but truth_map_supported_for_feature() already exists at truth_map.py:215 which checks feature_package_ready() on disk. Repair: either (a) make feature_package_authoritative() accept project_root+feature params, or (b) change_refreeze should call truth_map_supported_for_feature() or resolve_truth_read_refs() first to derive the model from resolved refs. Impact: operator in old-version project (v0.0.1) with package-authoritative truth must manually write PRD/user-story/test-case compatibility mirrors to bypass blocking.",
+  "item_class": "improvement",
+  "severity": "P3",
+  "domain": "workflow",
+  "project_root": "/Users/apple/Developer/Personal/products/beacon",
+  "evidence_abs_path": "/Users/apple/Developer/Personal/products/beacon/.beacon/debug/friction-captures/b451850c6f20.json"
+}

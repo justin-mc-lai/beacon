@@ -224,6 +224,11 @@ def feature_package_authoritative(version: str | None) -> bool:
     return truth_source_model_for_version(version) == TRUTH_SOURCE_MODEL_AUTHORITATIVE
 
 
+def feature_package_authoritative_feature(project_root: Path, *, version: str, feature: str) -> bool:
+    """Return True if version >= v1.5.2 OR the feature package physically exists on disk."""
+    return feature_package_authoritative(version) or feature_package_ready(project_root, version=version, feature=feature)
+
+
 def _rel(root: Path, path: Path) -> str:
     try:
         return str(path.relative_to(root))

@@ -1,0 +1,774 @@
+{
+  "schema_version": "1.0",
+  "contract_kind": "beacon_test_contract_index",
+  "version": "v1.6.0",
+  "runtime_line": "v1.6.0",
+  "runtime_release_line": "v1.5.2",
+  "docs_line": "v1.6.0",
+  "feature": "beacon-skill-harness-taxonomy-v160",
+  "feature_slug": "beacon-skill-harness-taxonomy-v160",
+  "feature_line_status": "planning_only",
+  "truth_refs": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+    "story_state": "docs/beacon/v1.6.0/.machine/user-story/beacon-skill-harness-taxonomy-v160.json"
+  },
+  "source_hashes": {
+    "truth": "sha256:8910b0ec3ef6815ffc621fb6b4a592ea6db0fa3c684cdcf4b22f7dc17915e52a",
+    "tests": "sha256:50b29c86d0d4c80b632cbba121ec99348160fafaed7bf10ac27c1b57db9bf533",
+    "tasks": "sha256:f9ef44854fdb7e2f19e5b6723d6eda19d590c9a47c03fc76eb638eaa929b5972",
+    "evidence": "sha256:82291d86274b34eea4d2e60b0621966ef13489f9889ff4789bf2e16ebc651bfc",
+    "ac_matrix": "sha256:50b29c86d0d4c80b632cbba121ec99348160fafaed7bf10ac27c1b57db9bf533",
+    "story_state": "sha256:d2c79d261279e9ea6e59b33d3d4ab7dc3a9931b0f3b10ca885524641593b161f"
+  },
+  "lanes": {
+    "feature_release_facing": [
+      {
+        "tc_id": "TC-001",
+        "ac_id": "AC-001",
+        "ac_theme": "lifecycle-language",
+        "lane": "feature_release_facing",
+        "layer": "docs",
+        "command": "",
+        "assertion": "v1.6.0 文档使用 `plan -> truth -> generate -> evaluate -> release` 作为用户可见生命周期。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-001/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-002",
+        "ac_id": "AC-002",
+        "ac_theme": "package-authority",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "`beacon truth-map resolve` 为 v1.6.0 选择 `features/<slug>/{truth,tests,tasks,evidence}.md` 作为 authority。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-002/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-003",
+        "ac_id": "AC-003",
+        "ac_theme": "harness-prefix",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "每个 v1.6.0 host-visible skill 名称都匹配 `beacon-(planner",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-003/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-004",
+        "ac_id": "AC-004",
+        "ac_theme": "no-old-skill-aliases",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "v1.6.0 skill package 中不存在旧 host-visible skill aliases。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-004/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-005",
+        "ac_id": "AC-005",
+        "ac_theme": "shared-preamble",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "每个 v1.6.0 host-visible skill 都包含共享生成 preamble。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-005/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-006",
+        "ac_id": "AC-006",
+        "ac_theme": "planner-hard-gate",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "Planner skills 不能写 implementation、frozen truth、QA verdicts 或 release verdicts。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-006/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-007",
+        "ac_id": "AC-007",
+        "ac_theme": "generator-hard-gate",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "Generator skills 不能在缺少 evaluator evidence 或 fake delivery 检查时声称完成。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-007/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-008",
+        "ac_id": "AC-008",
+        "ac_theme": "evaluator-hard-gate",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "Evaluator skills 不能在生成 verdict 的同时改写 truth 或修复 implementation。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-008/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-009",
+        "ac_id": "AC-009",
+        "ac_theme": "governor-hard-gate",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "Governor skills 被分类为 support/governance surfaces，不能成为 human mainline stages。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-009/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-010",
+        "ac_id": "AC-010",
+        "ac_theme": "rough-prompt-routing",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "",
+        "assertion": "Rough prompt routing 输出 outcome、source/truth/evidence refs、湖/海分类、gaps、risks 和 harness route。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-010/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-011",
+        "ac_id": "AC-011",
+        "ac_theme": "no-fake-delivery",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "Placeholder implementation、docs-only completion、fake runner evidence、zero assertions 和 placeholder evidence 都会被拒绝为 closure。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-011/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-013",
+        "ac_id": "AC-013",
+        "ac_theme": "default-truth-language-zh",
+        "lane": "feature_release_facing",
+        "layer": "docs",
+        "command": "",
+        "assertion": "v1.6.0 canonical requirement truth、AC、测试断言、任务台账、迁移说明和 skill preamble 默认以中文为主语言；英文只作为稳定术语或路径标识保留。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-013/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-014",
+        "ac_id": "AC-014",
+        "ac_theme": "planner-research-contract",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "`research/<feature-slug>.md` 被识别为 planner `support_advisory` artifact，并包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-014/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-015",
+        "ac_id": "AC-015",
+        "ac_theme": "research-to-truth-promotion",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "",
+        "assertion": "没有 `user_decision=accepted/promoted` 和 `promotion_ref` 的 research artifact 不能写入 package truth，也不能作为 implementation、QA 或 release closure。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-015/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-016",
+        "ac_id": "AC-016",
+        "ac_theme": "skill-rename-rewrite-contract",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "v1.6.0 host-visible skill 迁移产物必须只有 `beacon-<harness>-<function>` 新名，且 `SKILL.md` frontmatter/name/description/preamble/boundary 与 Rename Matrix 对齐。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-016/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-017",
+        "ac_id": "AC-017",
+        "ac_theme": "harness-hard-gate-injection",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "",
+        "assertion": "扫描所有 v1.6.0 host-visible `SKILL.md`，验证共享 preamble 后存在匹配 harness 的 `HARD GATE`，并覆盖禁止跨 harness 调用、越权 truth/implementation/QA/release 动作、假交付闭环和唯一允许产物；缺失或不匹配时 agent-surface verify 必须失败。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-017/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-018",
+        "ac_id": "AC-018",
+        "ac_theme": "skill-eval-benchmark-artifacts",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "",
+        "assertion": "`beacon skill eval-kit benchmark --version v1.6.0` 输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，且标记 `runtime_evidence_only=true`、`requirement_truth=false`。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-018/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-019",
+        "ac_id": "AC-019",
+        "ac_theme": "behavior-evidence-upgrade",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "",
+        "assertion": "Benchmark 覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态/replay 证明升级为行为证据。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-019/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-020",
+        "ac_id": "AC-020",
+        "ac_theme": "benchmark-baseline-comparison",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "",
+        "assertion": "Benchmark 每个关键 case 同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-020/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-021",
+        "ac_id": "AC-021",
+        "ac_theme": "grader-critique",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "",
+        "assertion": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-021/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-022",
+        "ac_id": "AC-022",
+        "ac_theme": "benchmark-analysis",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "",
+        "assertion": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-022/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "current_runtime_contract": [],
+    "generated_surface_sync": [],
+    "compatibility_contract": [
+      {
+        "tc_id": "TC-012",
+        "ac_id": "AC-012",
+        "ac_theme": "migration-docs",
+        "lane": "compatibility_contract",
+        "layer": "docs",
+        "command": "",
+        "assertion": "Migration docs 包含 old-to-new mapping、old alias removal、CLI compatibility boundary 和 operator next steps。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-012/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      }
+    ],
+    "legacy_snapshot": [],
+    "browser_runtime_admission": []
+  },
+  "lane_counts": {
+    "feature_release_facing": 21,
+    "current_runtime_contract": 0,
+    "generated_surface_sync": 0,
+    "compatibility_contract": 1,
+    "legacy_snapshot": 0,
+    "browser_runtime_admission": 0
+  },
+  "canonical_lanes": [
+    "feature_release_facing",
+    "current_runtime_contract",
+    "generated_surface_sync",
+    "compatibility_contract",
+    "legacy_snapshot",
+    "browser_runtime_admission"
+  ],
+  "test_refs": [
+    {
+      "tc_id": "TC-001",
+      "ac_id": "AC-001",
+      "ac_theme": "lifecycle-language",
+      "lane": "feature_release_facing",
+      "layer": "docs",
+      "command": "",
+      "assertion": "v1.6.0 文档使用 `plan -> truth -> generate -> evaluate -> release` 作为用户可见生命周期。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-001/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-002",
+      "ac_id": "AC-002",
+      "ac_theme": "package-authority",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`beacon truth-map resolve` 为 v1.6.0 选择 `features/<slug>/{truth,tests,tasks,evidence}.md` 作为 authority。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-002/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-003",
+      "ac_id": "AC-003",
+      "ac_theme": "harness-prefix",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "每个 v1.6.0 host-visible skill 名称都匹配 `beacon-(planner",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-003/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-004",
+      "ac_id": "AC-004",
+      "ac_theme": "no-old-skill-aliases",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "v1.6.0 skill package 中不存在旧 host-visible skill aliases。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-004/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-005",
+      "ac_id": "AC-005",
+      "ac_theme": "shared-preamble",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "每个 v1.6.0 host-visible skill 都包含共享生成 preamble。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-005/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-006",
+      "ac_id": "AC-006",
+      "ac_theme": "planner-hard-gate",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "Planner skills 不能写 implementation、frozen truth、QA verdicts 或 release verdicts。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-006/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-007",
+      "ac_id": "AC-007",
+      "ac_theme": "generator-hard-gate",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "Generator skills 不能在缺少 evaluator evidence 或 fake delivery 检查时声称完成。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-007/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-008",
+      "ac_id": "AC-008",
+      "ac_theme": "evaluator-hard-gate",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "Evaluator skills 不能在生成 verdict 的同时改写 truth 或修复 implementation。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-008/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-009",
+      "ac_id": "AC-009",
+      "ac_theme": "governor-hard-gate",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "Governor skills 被分类为 support/governance surfaces，不能成为 human mainline stages。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-009/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-010",
+      "ac_id": "AC-010",
+      "ac_theme": "rough-prompt-routing",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Rough prompt routing 输出 outcome、source/truth/evidence refs、湖/海分类、gaps、risks 和 harness route。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-010/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-011",
+      "ac_id": "AC-011",
+      "ac_theme": "no-fake-delivery",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "Placeholder implementation、docs-only completion、fake runner evidence、zero assertions 和 placeholder evidence 都会被拒绝为 closure。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-011/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-012",
+      "ac_id": "AC-012",
+      "ac_theme": "migration-docs",
+      "lane": "compatibility_contract",
+      "layer": "docs",
+      "command": "",
+      "assertion": "Migration docs 包含 old-to-new mapping、old alias removal、CLI compatibility boundary 和 operator next steps。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-012/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-013",
+      "ac_id": "AC-013",
+      "ac_theme": "default-truth-language-zh",
+      "lane": "feature_release_facing",
+      "layer": "docs",
+      "command": "",
+      "assertion": "v1.6.0 canonical requirement truth、AC、测试断言、任务台账、迁移说明和 skill preamble 默认以中文为主语言；英文只作为稳定术语或路径标识保留。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-013/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-014",
+      "ac_id": "AC-014",
+      "ac_theme": "planner-research-contract",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`research/<feature-slug>.md` 被识别为 planner `support_advisory` artifact，并包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-014/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-015",
+      "ac_id": "AC-015",
+      "ac_theme": "research-to-truth-promotion",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "",
+      "assertion": "没有 `user_decision=accepted/promoted` 和 `promotion_ref` 的 research artifact 不能写入 package truth，也不能作为 implementation、QA 或 release closure。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-015/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-016",
+      "ac_id": "AC-016",
+      "ac_theme": "skill-rename-rewrite-contract",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "v1.6.0 host-visible skill 迁移产物必须只有 `beacon-<harness>-<function>` 新名，且 `SKILL.md` frontmatter/name/description/preamble/boundary 与 Rename Matrix 对齐。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-016/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-017",
+      "ac_id": "AC-017",
+      "ac_theme": "harness-hard-gate-injection",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "",
+      "assertion": "扫描所有 v1.6.0 host-visible `SKILL.md`，验证共享 preamble 后存在匹配 harness 的 `HARD GATE`，并覆盖禁止跨 harness 调用、越权 truth/implementation/QA/release 动作、假交付闭环和唯一允许产物；缺失或不匹配时 agent-surface verify 必须失败。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-017/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-018",
+      "ac_id": "AC-018",
+      "ac_theme": "skill-eval-benchmark-artifacts",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "`beacon skill eval-kit benchmark --version v1.6.0` 输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，且标记 `runtime_evidence_only=true`、`requirement_truth=false`。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-018/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-019",
+      "ac_id": "AC-019",
+      "ac_theme": "behavior-evidence-upgrade",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Benchmark 覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态/replay 证明升级为行为证据。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-019/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-020",
+      "ac_id": "AC-020",
+      "ac_theme": "benchmark-baseline-comparison",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Benchmark 每个关键 case 同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-020/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-021",
+      "ac_id": "AC-021",
+      "ac_theme": "grader-critique",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-021/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-022",
+      "ac_theme": "benchmark-analysis",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "",
+      "assertion": "Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-skill-harness-taxonomy-v160/tc-022/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    }
+  ],
+  "ac_to_test_refs": {
+    "AC-001": [
+      "TC-001"
+    ],
+    "AC-002": [
+      "TC-002"
+    ],
+    "AC-003": [
+      "TC-003"
+    ],
+    "AC-004": [
+      "TC-004"
+    ],
+    "AC-005": [
+      "TC-005"
+    ],
+    "AC-006": [
+      "TC-006"
+    ],
+    "AC-007": [
+      "TC-007"
+    ],
+    "AC-008": [
+      "TC-008"
+    ],
+    "AC-009": [
+      "TC-009"
+    ],
+    "AC-010": [
+      "TC-010"
+    ],
+    "AC-011": [
+      "TC-011"
+    ],
+    "AC-012": [
+      "TC-012"
+    ],
+    "AC-013": [
+      "TC-013"
+    ],
+    "AC-014": [
+      "TC-014"
+    ],
+    "AC-015": [
+      "TC-015"
+    ],
+    "AC-016": [
+      "TC-016"
+    ],
+    "AC-017": [
+      "TC-017"
+    ],
+    "AC-018": [
+      "TC-018"
+    ],
+    "AC-019": [
+      "TC-019"
+    ],
+    "AC-020": [
+      "TC-020"
+    ],
+    "AC-021": [
+      "TC-021"
+    ],
+    "AC-022": [
+      "TC-022"
+    ]
+  },
+  "qa_order_contract": {
+    "sequence": [
+      "user_story_ac_order",
+      "scenario_divergence",
+      "current_round_execution",
+      "evidence_pack",
+      "coverage_current_gap",
+      "continue_decision",
+      "severe_blocker_stop_for_repair",
+      "repair_handoff",
+      "beacon_help_resume",
+      "next_qa_round_test_case_backfill",
+      "release_guidance"
+    ],
+    "source": "skills/beacon/references/usage-rules.md"
+  },
+  "deep_delta_policy": {
+    "owner": "deep",
+    "adoption_route": "test-case_or_supplemental_qa",
+    "executes_qa": false
+  },
+  "planning_line_safety": {
+    "status": "pass",
+    "blocked": false,
+    "reason_code": "",
+    "runtime_line": "v1.5.2",
+    "docs_default_line": "v1.5.2",
+    "current_runtime_release_line": "v1.5.2",
+    "feature_line_status": "planning_only"
+  },
+  "status": "pass",
+  "blocked": false,
+  "reason_codes": [],
+  "generated_at": "2026-06-08T14:04:49.901177+00:00",
+  "index_path": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json"
+}

@@ -7,6 +7,7 @@ from typer.testing import CliRunner
 
 from beacon.commands.test_case import _build_entries_from_qa_case_rows
 from beacon.cli_factory import build_app
+from beacon.utils import project_hooks
 from beacon.utils.project_hooks import ALLOWED_HOOK_CODES, plan_hook, run_hook, validate_hook_contract
 from beacon.utils.requirement_parsing import extract_qa_case_rows
 
@@ -285,6 +286,51 @@ def test_beacon_source_release_hook_confirmed_followup(tmp_path: Path, monkeypat
     assert followup["launcher_setup"]["status"] == "PASS"
     assert VERSION in followup["cli_versions"]["beacon"]["stdout"]
     assert VERSION in followup["cli_versions"]["beacon-cli"]["stdout"]
+
+
+def test_beacon_source_release_hook_checks_runtime_cli_version_not_docs_version(tmp_path: Path, monkeypatch) -> None:
+    _copy_beacon_source_hook(tmp_path)
+
+    class Result:
+        exit_code = 0
+
+        def __init__(self, payload: dict) -> None:
+            self.payload = payload
+
+    monkeypatch.setattr(project_hooks, "__toolkit_version__", "v1.5.2")
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_setup",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_agent_surface_verify",
+        lambda **_: Result({"status": "PASS", "result": {}}),
+    )
+    monkeypatch.setattr(
+        "beacon.utils.doctor_orchestrator.run_launcher_setup",
+        lambda **_: Result({"status": "PASS"}),
+    )
+    monkeypatch.setattr(
+        project_hooks,
+        "_command_output",
+        lambda args: {"stdout": "Beacon CLI v1.5.2", "status": "pass", "returncode": 0, "command": args},
+    )
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version="v1.6.0",
+        feature="beacon-skill-harness-taxonomy-v160",
+        hook_code="post_release",
+        confirm=True,
+    )
+
+    assert payload["blocked"] is False
+    followup = payload["post_release_followup"]
+    assert followup["status"] == "pass"
+    assert followup["version"] == "v1.6.0"
+    assert followup["expected_runtime_version"] == "v1.5.2"
+    assert not any("version_mismatch" in reason for reason in followup["reason_codes"])
 
 
 def test_beacon_source_release_hook_collects_installation_evidence(tmp_path: Path, monkeypatch) -> None:

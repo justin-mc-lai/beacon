@@ -209,6 +209,43 @@ HARD GATE 注入要求：
 - agent-surface verify 必须扫描 HARD GATE：缺失、位置错误、harness 不匹配、禁止动作不完整或旧 skill alias 中存在 gate 漂移时，v1.6.0 skill package 不能通过。
 - CLI/function 层治理仍然保留，但不能替代 `SKILL.md` 内的 HARD GATE。
 
+## Skill Eval Benchmark Contract
+
+v1.6.0 skill eval 不能停留在静态扫描或 replay-only 断言。Beacon 必须提供一个最小 benchmark 入口：
+
+```bash
+beacon skill eval-kit benchmark --version v1.6.0
+```
+
+该入口生成 runtime evidence，而不是 requirement truth。输出目录必须位于：
+
+```text
+.beacon/state/skill-eval/benchmarks/<benchmark-id>/
+```
+
+每次 benchmark 至少输出四类 artifact：
+
+- `eval_metadata/`：每个 case 的 prompt、target harness、truth/source/evidence refs、assertions、baseline/with-skill 配置。
+- `grading/`：每个配置的 assertion 结果、evidence、reason code、fake-delivery/weak-assertion critique。
+- `benchmark/`：按 case 和配置聚合 pass rate、boundary violation、fake delivery block、time/token 占位或实测指标、with-skill vs baseline delta。
+- `analysis/`：跨 case 失败模式、弱断言、flaky 风险、skill 是否比 baseline 更好、推荐 route。
+
+Benchmark 必须覆盖三类行为证据：
+
+1. Trigger/routing eval：粗 prompt 能归约为 outcome、truth/source/evidence refs、湖/海、gap/risk 和推荐 harness route。
+2. Boundary negative eval：planner 被要求写代码、generator 被要求自证完成、evaluator 被要求修实现、governor 被要求给 release verdict 时，必须被 HARD GATE 阻断并 route。
+3. Package/static eval：继续验证 host-visible skill package、agent surface、preamble、HARD GATE 和旧 alias 移除。
+
+Benchmark 对照规则：
+
+- 每个关键 case 必须至少包含 `with_skill` 与 `baseline` 两个配置。
+- `with_skill` 期望命中 v1.6.0 harness route 并守住 boundary。
+- `baseline` 可以作为对照证据，但不能被当作 release gate；baseline 失败用于证明 skill 改善，baseline 通过用于暴露 case 断言可能过弱。
+- Grader 必须能识别 placeholder implementation、docs-only completion、fake runner evidence、zero assertions、placeholder evidence 和 weak assertions。
+- Analyzer 必须产出跨 case 结论，说明哪些 AC/TC 已由行为证据覆盖，哪些仍只由静态扫描覆盖。
+
+Benchmark artifact 是 runtime process record，不要求 Markdown twin，也不能替代 `features/<slug>/{truth,tests,tasks,evidence}.md`、`beacon skill package verify`、`doctor verify-agent-surface` 或 formal `beacon-evaluator-qa` verdict。
+
 ## Harness 边界
 
 ### Planner
@@ -381,6 +418,11 @@ v1.6.0 skill 改名必须是生成式迁移，不是手工散改。迁移器必�
 | AC-015 | research-to-truth-promotion | Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-generator-truth-change` 或 `beacon-generator-truth-refreeze` 进入 package truth 并冻结。 |
 | AC-016 | skill-rename-rewrite-contract | v1.6.0 skill 改名必须生成新 `beacon-<harness>-<function>` host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases，并把旧名限制在 migration/archive/release notes。 |
 | AC-017 | harness-hard-gate-injection | 每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 QA/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。 |
+| AC-018 | skill-eval-benchmark-artifacts | `beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。 |
+| AC-019 | behavior-evidence-upgrade | Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。 |
+| AC-020 | benchmark-baseline-comparison | Benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。 |
+| AC-021 | grader-critique | Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。 |
+| AC-022 | benchmark-analysis | Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。 |
 
 ## 非目标
 

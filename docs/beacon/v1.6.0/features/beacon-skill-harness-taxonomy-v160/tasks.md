@@ -19,6 +19,11 @@
 - [ ] TASK-015 实现或文档化 research 到 truth/change/refreeze 的 promotion gate：没有用户确认和 promotion_ref 时，research 不得自动写 truth 或作为交付闭环。
 - [ ] TASK-016 实现 skill rename rewrite contract：生成 `beacon-<harness>-<function>` 新 skill，更新 frontmatter/name/description/preamble/boundary，并移除旧 host-visible aliases。
 - [ ] TASK-017 实现 harness-specific HARD GATE 模板注入和 agent-surface verify 扫描：planner/generator/evaluator/governor 各自生成禁止动作、唯一允许产物和跨 harness route 规则，缺失或不匹配时阻断 v1.6.0 skill package。
+- [ ] TASK-018 实现 `beacon skill eval-kit benchmark --version v1.6.0`，输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` runtime evidence。
+- [ ] TASK-019 将 TC-006 到 TC-011、TC-017 纳入 benchmark 行为 case，覆盖 harness 越权阻断、rough routing、no-fake-delivery 和 HARD GATE 注入。
+- [ ] TASK-020 为 benchmark 增加 `with_skill` 与 `baseline` 对照聚合，输出 pass rate、boundary violation、fake delivery block 和 delta。
+- [ ] TASK-021 为 grading 增加 fake-delivery critique 与 weak-assertion critique，阻断假证据或弱断言被当成 release-ready。
+- [ ] TASK-022 为 analysis 增加跨 case failure patterns、covered AC/TC、static-only AC/TC 和 recommended route。
 
 ## 边界
 

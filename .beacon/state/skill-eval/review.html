@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8">
+  <title>Beacon Skill Eval Review</title>
+  <style>
+    body { color: #17202a; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; margin: 32px; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0 28px; }
+    th, td { border: 1px solid #d7dde5; padding: 8px 10px; text-align: left; }
+    th { background: #f3f5f7; }
+    code, pre { background: #f6f8fa; border-radius: 4px; }
+    pre { padding: 12px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>Beacon Skill Eval Review</h1>
+  <p>status: <strong>pass</strong> · runtime evidence only: True</p>
+  <table>
+    <thead><tr><th>Run</th><th>Status</th><th>Version</th><th>Split</th><th>Cases</th><th>Failures</th></tr></thead>
+    <tbody><tr><td>skill-eval-20260523t084423z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260523t084737z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260523t085339z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260524t034624z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260524t041531z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260524t042040z</td><td>pass</td><td></td><td>regression-core</td><td>6</td><td>0</td></tr><tr><td>skill-eval-20260608t085619z</td><td>pass</td><td>v1.6.0</td><td>all</td><td>4</td><td>0</td></tr></tbody>
+  </table>
+  <section><h2>skill-eval-20260523t084423z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260523t084737z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260523t085339z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260524t034624z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260524t041531z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260524t042040z</h2><ul><li><strong>route-deep</strong> pass <code>beacon-deep</code></li><li><strong>route-implement-ralph</strong> pass <code>beacon-implement --mode ralph</code></li><li><strong>route-implement-single</strong> pass <code>beacon-implement --mode single</code></li><li><strong>route-implement-team</strong> pass <code>beacon-implement --mode team</code></li><li><strong>route-learn</strong> pass <code>beacon-learn</code></li><li><strong>route-ordinary-support</strong> pass <code>beacon-brainstorm</code></li></ul></section><section><h2>skill-eval-20260608t085619z</h2><ul><li><strong>v160-route-evaluator-qa</strong> pass <code>beacon-evaluator-qa</code></li><li><strong>v160-route-generator-implementation</strong> pass <code>beacon-generator-implementation</code></li><li><strong>v160-route-governor-status</strong> pass <code>beacon-governor-status</code></li><li><strong>v160-route-planner-source-driven</strong> pass <code>beacon-planner-source-driven</code></li></ul></section>
+  <h2>Embedded Review Data</h2>
+  <pre>{
+  &quot;schema_version&quot;: &quot;1.0&quot;,
+  &quot;status&quot;: &quot;pass&quot;,
+  &quot;run_count&quot;: 7,
+  &quot;runs&quot;: [
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260523t084423z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260523t084423z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-23T08:44:23.209565+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260523t084423z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-23T08:44:23.209565+00:00&quot;
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260523t084737z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260523t084737z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-23T08:47:37.688865+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260523t084737z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-23T08:47:37.688865+00:00&quot;
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260523t085339z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260523t085339z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-23T08:53:39.393061+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260523t085339z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-23T08:53:39.393061+00:00&quot;
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260524t034624z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260524t034624z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-24T03:46:24.417046+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260524t034624z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-24T03:46:24.417046+00:00&quot;
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;boundary_preserved&quot;: true
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260524t041531z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260524t041531z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-24T04:15:31.148463+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260524t041531z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-24T04:15:31.148463+00:00&quot;,
+        &quot;replay_dimensions&quot;: [
+          &quot;route_decision&quot;,
+          &quot;boundary_preservation&quot;,
+          &quot;source_anchor&quot;
+        ]
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;actual_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;actual_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;actual_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260524t042040z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260524t042040z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;&quot;,
+      &quot;split&quot;: &quot;regression-core&quot;,
+      &quot;case_count&quot;: 6,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-05-24T04:20:40.050656+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260524t042040z&quot;,
+        &quot;split&quot;: &quot;regression-core&quot;,
+        &quot;case_count&quot;: 6,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-05-24T04:20:40.050656+00:00&quot;,
+        &quot;replay_dimensions&quot;: [
+          &quot;route_decision&quot;,
+          &quot;boundary_preservation&quot;,
+          &quot;source_anchor&quot;
+        ]
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-deep&quot;,
+          &quot;expected_route&quot;: &quot;beacon-deep&quot;,
+          &quot;actual_route&quot;: &quot;beacon-deep&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-ralph&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode ralph&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-single&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode single&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-implement-team&quot;,
+          &quot;expected_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;actual_route&quot;: &quot;beacon-implement --mode team&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-learn&quot;,
+          &quot;expected_route&quot;: &quot;beacon-learn&quot;,
+          &quot;actual_route&quot;: &quot;beacon-learn&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;route-ordinary-support&quot;,
+          &quot;expected_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;actual_route&quot;: &quot;beacon-brainstorm&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    },
+    {
+      &quot;run_id&quot;: &quot;skill-eval-20260608t085619z&quot;,
+      &quot;path&quot;: &quot;.beacon/state/skill-eval/runs/skill-eval-20260608t085619z&quot;,
+      &quot;status&quot;: &quot;pass&quot;,
+      &quot;version&quot;: &quot;v1.6.0&quot;,
+      &quot;split&quot;: &quot;all&quot;,
+      &quot;case_count&quot;: 4,
+      &quot;failure_count&quot;: 0,
+      &quot;generated_at&quot;: &quot;2026-06-08T08:56:19.995257+00:00&quot;,
+      &quot;metrics&quot;: {
+        &quot;schema_version&quot;: &quot;1.0&quot;,
+        &quot;run_id&quot;: &quot;skill-eval-20260608t085619z&quot;,
+        &quot;version&quot;: &quot;v1.6.0&quot;,
+        &quot;split&quot;: &quot;all&quot;,
+        &quot;case_count&quot;: 4,
+        &quot;failure_count&quot;: 0,
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: [],
+        &quot;generated_at&quot;: &quot;2026-06-08T08:56:19.995257+00:00&quot;,
+        &quot;replay_dimensions&quot;: [
+          &quot;route_decision&quot;,
+          &quot;boundary_preservation&quot;,
+          &quot;source_anchor&quot;
+        ]
+      },
+      &quot;outputs&quot;: [
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;v160-route-evaluator-qa&quot;,
+          &quot;expected_route&quot;: &quot;beacon-evaluator-qa&quot;,
+          &quot;actual_route&quot;: &quot;beacon-evaluator-qa&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;v160-route-generator-implementation&quot;,
+          &quot;expected_route&quot;: &quot;beacon-generator-implementation&quot;,
+          &quot;actual_route&quot;: &quot;beacon-generator-implementation&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;v160-route-governor-status&quot;,
+          &quot;expected_route&quot;: &quot;beacon-governor-status&quot;,
+          &quot;actual_route&quot;: &quot;beacon-governor-status&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        },
+        {
+          &quot;schema_version&quot;: &quot;1.0&quot;,
+          &quot;case_id&quot;: &quot;v160-route-planner-source-driven&quot;,
+          &quot;expected_route&quot;: &quot;beacon-planner-source-driven&quot;,
+          &quot;actual_route&quot;: &quot;beacon-planner-source-driven&quot;,
+          &quot;status&quot;: &quot;pass&quot;,
+          &quot;route_decision_replayed&quot;: true,
+          &quot;route_decision_matched&quot;: true,
+          &quot;boundary_preservation_replayed&quot;: true,
+          &quot;boundary_preserved&quot;: true,
+          &quot;source_anchor_replayed&quot;: true,
+          &quot;source_anchor_covered&quot;: true,
+          &quot;replay_failures&quot;: []
+        }
+      ],
+      &quot;grading&quot;: {
+        &quot;status&quot;: &quot;pass&quot;,
+        &quot;failures&quot;: []
+      }
+    }
+  ],
+  &quot;feedback_path&quot;: &quot;.beacon/state/skill-eval/feedback.json&quot;,
+  &quot;feedback&quot;: {
+    &quot;schema_version&quot;: &quot;1.0&quot;,
+    &quot;reviews&quot;: []
+  },
+  &quot;runtime_evidence_only&quot;: true,
+  &quot;requirement_truth&quot;: false,
+  &quot;review_model&quot;: &quot;runs_outputs_grading_feedback&quot;
+}</pre>
+</body>
+</html>

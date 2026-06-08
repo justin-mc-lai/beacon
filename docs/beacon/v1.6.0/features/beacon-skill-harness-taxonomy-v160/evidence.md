@@ -17,6 +17,8 @@
 | planner-research-contract | requirement_truth | docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md | adopted | truth.define |
 | skill-rename-rewrite-contract | requirement_truth | docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md | adopted | truth.define |
 | harness-hard-gate-injection | requirement_truth | docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md | adopted | truth.define |
+| skill-creator-eval-harness-research | support_advisory | docs/beacon/v1.6.0/research/skill-creator-eval-harness-research.md | accepted-for-change | change/refreeze |
+| skill-eval-benchmark-contract | requirement_truth | docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md | adopted | truth.define |
 
 ## 决策记录
 
@@ -31,6 +33,7 @@
 - 已接受：research 进入需求真相必须有用户确认和 `promotion_ref`，并通过 governed truth/change/refreeze 路径冻结。
 - 已接受：v1.6.0 skill 改名必须按 Rename Matrix 生成新 `beacon-<harness>-<function>` host-visible skill，并移除旧 host-visible aliases。
 - 已接受：v1.6.0 不能只依赖 CLI/function routing 治理 harness 边界；每个 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，由 agent-surface verify 扫描并阻断缺失或不匹配的 gate。
+- 已接受：skill eval 需要 benchmark 行为证据层，输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/`，并把 TC-006 到 TC-011、TC-017 从静态或 replay-only 证明升级为 runtime evidence。
 
 ## 边界
 

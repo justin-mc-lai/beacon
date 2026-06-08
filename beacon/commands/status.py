@@ -120,7 +120,7 @@ def _status_impl(
     run_id: str,
     change_intent: str,
 ) -> int:
-    root = Path(project_root) if project_root else Path.cwd()
+    root = (Path(project_root) if project_root else Path.cwd()).expanduser().resolve()
     team_root = root / ".beacon" / "team"
     team_count = len([p for p in team_root.glob("*") if p.is_dir()]) if team_root.exists() else 0
     bridge_root = root / ".beacon" / "bridge"

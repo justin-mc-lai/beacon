@@ -481,8 +481,8 @@ def _build_import_evidence_prompt_boundary(
     touched = ", ".join([*changed_files, *service_dirs])
     prompt = (
         "Import externally produced implementation evidence for the scoped Beacon feature. "
-        "Read Beacon source of truth and bind the imported evidence to the frozen PRD, user-story, "
-        "and test-case truth. Implement only against the frozen PRD, user-story, and test-case truth above. "
+        "Read Beacon source of truth and bind the imported evidence to the frozen feature package truth. "
+        "Implement only against the frozen feature package truth above. "
         f"Evidence refs: {refs}. Changed files or service directories: {touched}."
     )
     payload = evaluate_implement_prompt_boundary(
