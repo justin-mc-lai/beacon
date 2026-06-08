@@ -8,6 +8,7 @@ from beacon.commands.gate import (
     GateMode,
     _resolve_latest_closed_workflow_run_id,
     _resolve_release_contract_run_id,
+    _resolve_release_report_run_id,
     check_release_memory_profile,
     check_spec_consistency,
 )
@@ -56,6 +57,38 @@ def test_v140_release_contract_run_prefers_verify_gate_report_run(tmp_path: Path
     )
 
     assert _resolve_release_contract_run_id(tmp_path, version=VERSION) == "run-current"
+
+
+def test_v140_release_report_run_prefers_current_passed_auto_test_over_stale_contract(tmp_path: Path) -> None:
+    _write_json(tmp_path / ".beacon" / "runs" / "run-current" / "state.json", {"run_id": "run-current", "version": VERSION})
+    _write_json(tmp_path / ".beacon" / "runs" / "run-old" / "state.json", {"run_id": "run-old", "version": VERSION})
+    _write_json(
+        tmp_path / ".beacon" / "auto-test-status.json",
+        {
+            "status": "passed",
+            "run_id": "run-current",
+            "version": VERSION,
+        },
+    )
+    _write_json(
+        tmp_path / ".beacon" / "gate-report.json",
+        {
+            "run_id": "run-current",
+            "stage": "qa",
+            "version": VERSION,
+            "status": "Pass",
+        },
+    )
+    _write_json(
+        tmp_path / "docs" / "beacon" / VERSION / ".machine" / "execution" / "terminal.json",
+        {
+            "run_id": "run-old",
+            "version": VERSION,
+            "status": "Pass",
+        },
+    )
+
+    assert _resolve_release_report_run_id(tmp_path, version=VERSION) == "run-current"
 
 
 def test_v140_release_contract_run_prefers_latest_closed_workflow_over_stale_execution_artifacts(tmp_path: Path) -> None:

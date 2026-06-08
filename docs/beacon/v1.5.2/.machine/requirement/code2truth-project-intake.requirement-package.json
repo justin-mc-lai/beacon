@@ -1,0 +1,281 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-05T09:44:28.365034+00:00",
+  "feature": "code2truth-project-intake",
+  "feature_slug": "code2truth-project-intake",
+  "version": "v1.5.2",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "7251264970b73d71e294a1062d0cbcec0d2591bac39b9c5f1bcc0fa84382cc0b",
+    "tests": "8633280a3fe4e083f669f843e64201ce601d0b33cf39b567d2d34a87116bcf49",
+    "tasks": "3fe86149c9aaf5f38008980684944faef2f8420fb8fdccacf52022312414c377",
+    "evidence": "05ee99e2fce80f3d8f77e88ca24e12adca309b3f9150ee05e46d494e92560265"
+  },
+  "truth_frontmatter": {
+    "slug": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "source-inventory",
+      "description": "Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts."
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "provider-evidence-boundary",
+      "description": "Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority."
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "candidate-truth-reconstruction",
+      "description": "Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim."
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "user-confirmation-gate",
+      "description": "Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package."
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "package-authority",
+      "description": "The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority."
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "implement-no-op-admission",
+      "description": "`beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure."
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "tasks-evidence-closure",
+      "description": "`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence."
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "qa-truth-governance-verification",
+      "description": "`beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction."
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "fail-closed-ambiguity",
+      "description": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth."
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "existing-project-pilot",
+      "description": "The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption."
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Intake builds a source inventory from code, docs, skills, tests, CLI behavior, Beacon source maps, and available provider artifacts.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "contract",
+      "command": "",
+      "assertion": "Provider artifacts from `qi-dev-understand-anything` / Understand-Anything are recorded as evidence refs and cannot be marked as requirement authority.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "contract",
+      "command": "",
+      "assertion": "Candidate truth output includes source refs, confidence, and ambiguity markers for material claims.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Candidate truth is not promoted to package truth until user confirmation and governed truth/change routing occur.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "integration",
+      "command": "",
+      "assertion": "`beacon truth-map resolve` selects `features/<slug>/{truth,tests,tasks,evidence}.md` as authority and generated JSON/provider graphs cannot override it.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "integration",
+      "command": "",
+      "assertion": "Implement admission can close with no source diff when frozen ACs are satisfied by existing behavior and evidence.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "contract",
+      "command": "",
+      "assertion": "`tasks.md` records existing-code satisfaction and evidence refs without pretending task checkboxes are implementation, QA, or release gates.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "",
+      "assertion": "QA validates package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "negative",
+      "command": "",
+      "assertion": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior is excluded, questioned, or routed to change instead of frozen as truth.",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "pilot",
+      "command": "",
+      "assertion": "A bounded existing-project pilot, such as one `justin-mc-lai-skills` skill pack, can be analyzed without whole-repo forced adoption.",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "beacon-brainstorm",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+      "status": "adopted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "source-architecture",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/source-architecture/code2truth-project-intake.md",
+      "status": "indexed",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "qi-dev-understand-anything",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/products/justin-mc-lai-skills/skills/qi-dev/qi-dev-understand-anything/SKILL.md",
+      "status": "provider-indexed",
+      "route": "source-driven"
+    },
+    {
+      "surface": "understand-anything-artifacts",
+      "authority": "support_advisory",
+      "canonical_artifact": ".understand-anything/knowledge-graph.json; .understand-anything/graph-build-report.json",
+      "status": "optional-provider-evidence",
+      "route": "source-driven"
+    },
+    {
+      "surface": "doctor-governance",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon doctor metadata verify --project-root . --version v1.5.2 --json",
+      "status": "required-before-qa",
+      "route": "qa"
+    }
+  ]
+}

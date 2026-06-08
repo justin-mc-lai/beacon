@@ -13,7 +13,7 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 6,
+  "feature_count": 7,
   "features": [
     {
       "feature": "beacon-truth-map-center-and-package-cutover",
@@ -26,6 +26,12 @@
       "feature_slug": "beacon-truth-skill-lifecycle-rename",
       "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
       "status": "generated"
+    },
+    {
+      "feature": "code2truth-project-intake",
+      "feature_slug": "code2truth-project-intake",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
     },
     {
       "feature": "legacy-project-v152-cutover",
@@ -54,14 +60,15 @@
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 6,
+    "feature_count": 7,
     "ordered_feature_slugs": [
       "beacon-truth-map-center-and-package-cutover",
       "beacon-truth-skill-lifecycle-rename",
       "markdown-only-project-version-governance",
       "project-governance-projection-lifecycle",
       "version-truth-archive-lineage",
-      "legacy-project-v152-cutover"
+      "legacy-project-v152-cutover",
+      "code2truth-project-intake"
     ],
     "waves": [
       {
@@ -175,6 +182,27 @@
             "reason_code": "shared_delivery_service_conflict"
           }
         ]
+      },
+      {
+        "wave": 6,
+        "parallelizable": false,
+        "features": [
+          {
+            "feature": "code2truth-project-intake",
+            "feature_slug": "code2truth-project-intake",
+            "depends_on_features": [
+              "legacy-project-v152-cutover"
+            ],
+            "direct_delivery_services": [
+              "."
+            ],
+            "writable_services": [
+              "."
+            ],
+            "parallelizable": false,
+            "reason_code": "shared_delivery_service_conflict"
+          }
+        ]
       }
     ]
   },
@@ -185,6 +213,9 @@
     "[beacon-truth-skill-lifecycle-rename] Feature-level release projection input for QA accepted current feature",
     "[beacon-truth-skill-lifecycle-rename] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-truth-skill-lifecycle-rename] Repair-only projection rebuild path for release preflight artifacts",
+    "[code2truth-project-intake] Feature-level release projection input for QA accepted current feature",
+    "[code2truth-project-intake] Version aggregate projection inclusion guard and repair metadata",
+    "[code2truth-project-intake] Repair-only projection rebuild path for release preflight artifacts",
     "[legacy-project-v152-cutover] Feature-level release projection input for QA accepted current feature",
     "[legacy-project-v152-cutover] Version aggregate projection inclusion guard and repair metadata",
     "[legacy-project-v152-cutover] Repair-only projection rebuild path for release preflight artifacts",
@@ -198,6 +229,7 @@
   "removed": [
     "[beacon-truth-map-center-and-package-cutover] Manual-only version aggregate projection repair before release check",
     "[beacon-truth-skill-lifecycle-rename] Manual-only version aggregate projection repair before release check",
+    "[code2truth-project-intake] Manual-only version aggregate projection repair before release check",
     "[legacy-project-v152-cutover] Manual-only version aggregate projection repair before release check",
     "[project-governance-projection-lifecycle] Manual-only version aggregate projection repair before release check",
     "[version-truth-archive-lineage] Manual-only version aggregate projection repair before release check"
@@ -207,6 +239,8 @@
     "[beacon-truth-map-center-and-package-cutover] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-truth-skill-lifecycle-rename] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-truth-skill-lifecycle-rename] Version aggregate projection remains a read model instead of requirement truth",
+    "[code2truth-project-intake] Release check can route missing current feature projection to an actionable repair path",
+    "[code2truth-project-intake] Version aggregate projection remains a read model instead of requirement truth",
     "[legacy-project-v152-cutover] Release check can route missing current feature projection to an actionable repair path",
     "[legacy-project-v152-cutover] Version aggregate projection remains a read model instead of requirement truth",
     "[markdown-only-project-version-governance] Updated `beacon/utils/project_governance.py`",
@@ -237,6 +271,13 @@
     "docs/beacon/v1.5.2/qa/test-cases/beacon-truth-skill-lifecycle-rename.md",
     "docs/beacon/v1.5.2/.machine/execution/beacon-truth-skill-lifecycle-rename.revision.json",
     "docs/beacon/v1.5.2/.machine/change/beacon-truth-skill-lifecycle-rename.json",
+    "docs/beacon/v1.5.2/change/code2truth-project-intake.md",
+    "docs/beacon/v1.5.2/prd/code2truth-project-intake.md",
+    "docs/beacon/v1.5.2/user-story/code2truth-project-intake.md",
+    "docs/beacon/v1.5.2/qa/test-cases/code2truth-project-intake.md",
+    "docs/beacon/v1.5.2/.machine/execution/code2truth-project-intake.revision.json",
+    "docs/beacon/v1.5.2/.machine/execution/qa-acceptance-code2truth-project-intake.json",
+    "docs/beacon/v1.5.2/.machine/change/code2truth-project-intake.json",
     "docs/beacon/v1.5.2/change/legacy-project-v152-cutover.md",
     "docs/beacon/v1.5.2/prd/legacy-project-v152-cutover.md",
     "docs/beacon/v1.5.2/user-story/legacy-project-v152-cutover.md",
@@ -265,5 +306,5 @@
     "docs/beacon/v1.5.2/.machine/change/version-truth-archive-lineage.json",
     "docs/beacon/v1.5.2/change/version-truth-archive-lineage.md"
   ],
-  "generated_at": "2026-06-05 15:18"
+  "generated_at": "2026-06-05 19:26"
 }

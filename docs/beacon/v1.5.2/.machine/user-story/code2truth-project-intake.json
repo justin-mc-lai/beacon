@@ -1,0 +1,741 @@
+{
+  "schema_version": "1.0",
+  "feature": "code2truth-project-intake",
+  "feature_slug": "code2truth-project-intake",
+  "version": "v1.5.2",
+  "current_revision_id": "R2",
+  "lifecycle_status": "frozen",
+  "updated_at": "2026-06-05T11:27:57.985431+00:00",
+  "revisions": [
+    {
+      "revision_id": "R1",
+      "feature_slug": "code2truth-project-intake",
+      "source_revision_id": null,
+      "reason": "draft",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
+      "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+      "superseded_by": "R2",
+      "created_at": "2026-06-05T09:44:19.803106+00:00",
+      "frozen_at": "2026-06-05T09:44:19.815163+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "code2truth-project-intake",
+      "source_revision_id": "R1",
+      "reason": "Accept code2truth closed loop: existing implementation evidence reconstructs candidate truth, user-confirmed output freezes into package truth, implement may no-op with evidence, and QA validates truth/evidence/governance.",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+      "superseded_by": null,
+      "created_at": "2026-06-05T09:44:28.190061+00:00",
+      "frozen_at": "2026-06-05T09:44:28.689189+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    }
+  ],
+  "stories": [
+    {
+      "story_id": "US-001",
+      "revision_id": "R1",
+      "title": "code2truth-project-intake",
+      "priority": "medium",
+      "status": "superseded",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "source-inventory",
+          "text": "Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "provider-evidence-boundary",
+          "text": "Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "candidate-truth-reconstruction",
+          "text": "Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "user-confirmation-gate",
+          "text": "Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "implement-no-op-admission",
+          "text": "`beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "tasks-evidence-closure",
+          "text": "`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "qa-truth-governance-verification",
+          "text": "`beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed-ambiguity",
+          "text": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "existing-project-pilot",
+          "text": "The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — `beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+          "required": true,
+          "status": "draft",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": null,
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "code2truth-project-intake",
+        "version": "v1.5.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      }
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "code2truth-project-intake",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "source-inventory",
+          "text": "Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "provider-evidence-boundary",
+          "text": "Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "candidate-truth-reconstruction",
+          "text": "Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "user-confirmation-gate",
+          "text": "Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "package-authority",
+          "text": "The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "implement-no-op-admission",
+          "text": "`beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "tasks-evidence-closure",
+          "text": "`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "qa-truth-governance-verification",
+          "text": "`beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "fail-closed-ambiguity",
+          "text": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "existing-project-pilot",
+          "text": "The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260605T111821Z-1575",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-05T11:23:40.307896+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — `beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — `tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — `beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": null,
+          "verified_by_run_id": "review.accept",
+          "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "code2truth-project-intake",
+        "version": "v1.5.2",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "code2truth-project-intake",
+      "feature_slug": "code2truth-project-intake",
+      "version": "v1.5.2",
+      "last_changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "verification_evidence": [
+        ".beacon/auto-test-status.json"
+      ],
+      "accepted_at": "2026-06-05T11:27:57.971723+00:00",
+      "accepted_by": "qa"
+    }
+  ]
+}

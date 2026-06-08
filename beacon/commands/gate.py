@@ -1217,6 +1217,18 @@ def _resolve_release_contract_run_id(project_root: Path, version: Optional[str] 
     return ""
 
 
+def _resolve_release_report_run_id(project_root: Path, version: Optional[str] = None) -> str:
+    resolved_version = _resolved_gate_version(project_root, version)
+    status_payload, status_code = _load_json_file(project_root / ".beacon" / "auto-test-status.json")
+    if status_code == "ok" and isinstance(status_payload, dict):
+        status = str(status_payload.get("status") or "").strip().lower()
+        status_version = str(status_payload.get("version") or "").strip()
+        status_run_id = str(status_payload.get("run_id") or "").strip()
+        if status == "passed" and status_run_id and (not status_version or status_version == resolved_version):
+            return status_run_id
+    return _resolve_release_contract_run_id(project_root, version=resolved_version)
+
+
 def _load_run_scoped_spec_fingerprint(project_root: Path, *, version: str, run_id: str) -> dict[str, Any]:
     if not run_id:
         return {}
@@ -4619,11 +4631,7 @@ def _run_check_command(
         persisted_result = dict(result)
         resolved_version = _resolved_gate_version(root, version)
         persisted_result["version"] = resolved_version
-        persisted_run_id = _resolve_release_contract_run_id(root, version=resolved_version)
-        if not persisted_run_id:
-            status_payload, status_code = _load_json_file(root / ".beacon" / "auto-test-status.json")
-            if status_code == "ok" and isinstance(status_payload, dict):
-                persisted_run_id = str(status_payload.get("run_id") or "").strip()
+        persisted_run_id = _resolve_release_report_run_id(root, version=resolved_version)
         persisted_result["run_id"] = persisted_run_id
         persisted_result["updated_at"] = datetime.now(timezone.utc).isoformat()
         report_path = release_gate_report_file(root)

@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.change_surface import build_change_command
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import feature_package_authoritative
 from beacon.utils.versioning import normalize_version, release_line_key, resolve_target_version
 
 _TRUTH_CONFLICT_PATTERNS = (
@@ -57,11 +58,20 @@ def implement_prompt_boundary_supported(version: str | None) -> bool:
 def _frozen_refs(project_root: Path, *, version: str, feature: str) -> list[str]:
     slug = feature_slug(feature)
     base = project_root / "docs" / "beacon" / version
-    refs = [
-        base / "prd" / f"{slug}.md",
-        base / "user-story" / f"{slug}.md",
-        base / "qa" / "test-cases" / f"{slug}.md",
-    ]
+    if feature_package_authoritative(version):
+        package_root = base / "features" / slug
+        refs = [
+            package_root / "truth.md",
+            package_root / "tests.md",
+            package_root / "tasks.md",
+            package_root / "evidence.md",
+        ]
+    else:
+        refs = [
+            base / "prd" / f"{slug}.md",
+            base / "user-story" / f"{slug}.md",
+            base / "qa" / "test-cases" / f"{slug}.md",
+        ]
     return [str(path.relative_to(project_root)) for path in refs]
 
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import importlib
 from pathlib import Path
 
@@ -62,6 +63,8 @@ Return to release follow-up repair.
 
 def _write_release_artifacts(root: Path) -> None:
     (root / ".beacon").mkdir(parents=True, exist_ok=True)
+    evidence_path = root / "evidence.txt"
+    evidence_path.write_text("release evidence\n", encoding="utf-8")
     (root / ".beacon" / "auto-test-status.json").write_text(
         json.dumps({"status": "passed", "version": VERSION, "run_id": "run-release"}),
         encoding="utf-8",
@@ -71,7 +74,18 @@ def _write_release_artifacts(root: Path) -> None:
         encoding="utf-8",
     )
     (root / ".beacon" / "evidence-manifest.json").write_text(
-        json.dumps({"version": VERSION, "run_id": "run-release", "entries": [{"path": "evidence.txt"}]}),
+        json.dumps(
+            {
+                "version": VERSION,
+                "run_id": "run-release",
+                "entries": [
+                    {
+                        "path": "evidence.txt",
+                        "sha256": hashlib.sha256(evidence_path.read_bytes()).hexdigest(),
+                    }
+                ],
+            }
+        ),
         encoding="utf-8",
     )
     (root / ".beacon" / "coverage-summary.json").write_text(
@@ -222,3 +236,23 @@ def test_manual_confirmed_hook_without_confirm_remains_blocked(tmp_path: Path) -
     assert payload["blocked"] is True
     assert payload["reason_code"] == "manual_confirmation_required"
     assert payload["side_effect_executed"] is False
+
+
+def test_hook_run_refreshes_evidence_manifest_for_runtime_and_latest_read_model(tmp_path: Path) -> None:
+    _write_post_release_hook(tmp_path)
+
+    payload = run_hook(
+        tmp_path,
+        "beacon-post-release-local-install",
+        version=VERSION,
+        feature=FEATURE,
+        hook_code="post_release",
+        dry_run=True,
+    )
+
+    runtime_ref = payload["evidence_paths"]["runtime"]
+    latest_ref = payload["evidence_paths"]["latest_read_model"]
+    manifest = json.loads((tmp_path / ".beacon" / "evidence-manifest.json").read_text(encoding="utf-8"))
+    entries = {item["path"]: item["sha256"] for item in manifest["entries"]}
+    assert entries[runtime_ref] == hashlib.sha256((tmp_path / runtime_ref).read_bytes()).hexdigest()
+    assert entries[latest_ref] == hashlib.sha256((tmp_path / latest_ref).read_bytes()).hexdigest()

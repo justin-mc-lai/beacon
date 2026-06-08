@@ -14,6 +14,7 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.story_state import feature_slug
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 from beacon.utils.versioning import normalize_version
 
 REQUIRED_TRUTH_FRONTMATTER = ("slug", "version", "status", "language", "canonical_refs", "parser_contract")
@@ -506,4 +507,5 @@ def validate_feature_package(
         report_path = machine_requirement_file(project_root, version, "feature-package-validation.json")
         write_json(report_path, payload)
         payload["report_path"] = _rel(project_root, report_path)
+        refresh_evidence_manifest(project_root, refs=[payload["report_path"]], version=version)
     return payload

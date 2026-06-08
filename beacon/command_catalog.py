@@ -17,6 +17,7 @@ CORE_COMMANDS = (
 SUPPORT_COMMANDS = (
     "automation",
     "board",
+    "code2truth",
     "help",
     "status",
     "doctor",
@@ -109,6 +110,7 @@ SUPPORTED_SUBCOMMANDS = (
     "api-design",
     "auto-test",
     "board",
+    "code2truth",
     "qa",
     "brainstorm",
     "data-dictionary",

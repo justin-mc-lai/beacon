@@ -18,3 +18,5 @@
 v1.5.2 implementation uses feature-package Markdown as the normal truth source and requires resolver/package authority before execution.
 
 Legacy PRD/user-story/test-case files may exist only as rebuild, absorb, or archive artifacts.
+- `./evo-harness-contract.md`
+- `./evo-scorecard-contract.md`

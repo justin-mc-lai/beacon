@@ -151,6 +151,8 @@ def test_cli_materialize_and_validate_feature_package_should_emit_json(tmp_path:
     validate_payload = json.loads(validate_result.stdout)
     assert validate_payload["status"] == "pass"
     assert validate_payload["report_path"] == f"docs/beacon/{VERSION}/.machine/requirement/feature-package-validation.json"
+    manifest = json.loads((tmp_path / ".beacon" / "evidence-manifest.json").read_text(encoding="utf-8"))
+    assert validate_payload["report_path"] in {item["path"] for item in manifest["entries"]}
 
 
 def test_legacy_cli_surfaces_should_remain_available() -> None:
@@ -163,20 +165,17 @@ def test_legacy_cli_surfaces_should_remain_available() -> None:
 
 def test_skill_templates_should_include_v150_package_examples() -> None:
     root = Path(__file__).resolve().parents[1]
-    for rel in (
-        "skills/beacon/beacon-prd/SKILL.md",
-        "skills/beacon/beacon-test-case/SKILL.md",
-        "skills/beacon/beacon-implement/SKILL.md",
-        "skills/beacon/beacon-qa/SKILL.md",
-    ):
-        content = (root / rel).read_text(encoding="utf-8")
-        assert "v1.5.0 Feature Package Quick Template" in content
+    prd = (root / "skills/beacon/beacon-prd/SKILL.md").read_text(encoding="utf-8")
+    test_case = (root / "skills/beacon/beacon-test-case/SKILL.md").read_text(encoding="utf-8")
+    implement = (root / "skills/beacon/beacon-implement/SKILL.md").read_text(encoding="utf-8")
+    qa = (root / "skills/beacon/beacon-qa/SKILL.md").read_text(encoding="utf-8")
 
-    assert "parser_contract: beacon-feature-package-v1" in (root / "skills/beacon/beacon-prd/SKILL.md").read_text(
-        encoding="utf-8"
-    )
-    assert "TASK-001" in (root / "skills/beacon/beacon-implement/SKILL.md").read_text(encoding="utf-8")
-    assert "support_advisory" in (root / "skills/beacon/beacon-qa/SKILL.md").read_text(encoding="utf-8")
+    assert "parser_contract: beacon-feature-package-v1" in prd
+    assert "features/<slug>/{truth,tests,tasks,evidence}.md" in prd
+    assert "v1.5.2 Feature Package Quick Template" in test_case
+    assert "v1.5.2 Feature Package Quick Template" in implement
+    assert "TASK-001" in implement
+    assert "support_advisory" in qa
 
 
 def test_current_v150_feature_package_validation_should_pass() -> None:

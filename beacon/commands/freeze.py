@@ -23,7 +23,7 @@ app = typer.Typer(name="freeze", help="Freeze current feature revision as implem
 
 
 def _freeze_impl(feature: str, project: Optional[str], version: str, json_output: bool) -> int:
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     clarity_gate = build_requirement_clarity_gate_payload(project_root, version=resolved_version, feature=feature)
     clarity_report = write_requirement_clarity_report(

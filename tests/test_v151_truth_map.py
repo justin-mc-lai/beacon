@@ -9,6 +9,7 @@ from typer.testing import CliRunner
 from beacon import app
 from beacon.utils.feature_package import validate_feature_package
 from beacon.utils.material_audit import build_material_audit
+from beacon.utils.project_governance import commit_governance_payload
 from beacon.utils.runtime import write_json
 from beacon.utils.truth_map import (
     GENERATED_GOVERNANCE_STATE_ROLE,
@@ -49,14 +50,46 @@ def _write(root: Path, rel: str, content: str) -> None:
     path.write_text(content, encoding="utf-8")
 
 
-def _seed_v151_package(root: Path) -> None:
-    base = f"docs/beacon/{VERSION}"
+def _seed_v151_package(root: Path, *, version: str = VERSION) -> None:
+    base = f"docs/beacon/{version}"
     _write(root, "docs/beacon/global-boundaries.md", "# Global\n")
-    _write(root, f"{base}/SUMMARY.md", "# v1.5.1\n")
+    commit_governance_payload(
+        root,
+        {
+            "schema_version": "1.0",
+            "project_root": str(root),
+            "global_project_metadata": {
+                "project_root": str(root),
+                "topology_kind": "single_repo",
+                "default_execution_service": "beacon",
+                "service_bindings": [
+                    {
+                        "service_key": "beacon",
+                        "repo_root": str(root),
+                        "repo_root_relative": "",
+                        "role": "service",
+                        "writable": True,
+                        "worktree_path_policy": "follow-repo-root",
+                    }
+                ],
+            },
+            "version_scoped_metadata": {
+                version: {
+                    "version": version,
+                    "participating_services": ["beacon"],
+                    "per_service_canonical_branch": {"beacon": "main"},
+                    "branch_guard_mode": "strict",
+                    "validation_state": "active",
+                }
+            },
+        },
+        event_type="test-seed",
+    )
+    _write(root, f"{base}/SUMMARY.md", f"# {version}\n")
     _write(root, f"{base}/execution/boundaries.md", "# Boundaries\n")
     _write(root, f"{base}/execution/project-skill-qa-evolution-blueprint.md", "# Project Skill QA\n")
     _write(root, f"{base}/source-architecture/index.md", "# Source Architecture\n")
-    _write(root, f"{base}/release/{VERSION}.md", "# Release\n")
+    _write(root, f"{base}/release/{version}.md", "# Release\n")
     _write(
         root,
         f"{base}/features/{SLUG}/truth.md",
@@ -64,7 +97,7 @@ def _seed_v151_package(root: Path) -> None:
             [
                 "---",
                 f"slug: {SLUG}",
-                f"version: {VERSION}",
+                f"version: {version}",
                 "status: frozen",
                 "language: zh",
                 "canonical_refs:",
@@ -302,6 +335,21 @@ def test_md_truth_does_not_require_json_twin(tmp_path: Path) -> None:
     assert payload["status"] == "pass"
     assert payload["checked_machine_json"] == []
     assert payload["json_authority"] is False
+
+
+def test_project_low_version_package_ready_truth_map_should_verify(tmp_path: Path) -> None:
+    project_version = "v0.0.1"
+    _seed_v151_package(tmp_path, version=project_version)
+
+    rebuild_machine_json(tmp_path, version=project_version, feature=FEATURE, strict=True)
+    payload = verify_truth_map(tmp_path, version=project_version, feature=FEATURE, strict=True)
+    resolved = resolve_truth_map(tmp_path, version=project_version, feature=FEATURE)
+
+    assert payload["status"] == "pass"
+    assert payload["blocked"] is False
+    assert payload["truth_source_model"] == TRUTH_SOURCE_MODEL
+    assert resolved["supported"] is True
+    assert not any(item["code"] == "truth_map_unsupported_version" for item in payload["diagnostics"])
 
 
 def test_doctor_rebuild_route_declared(tmp_path: Path) -> None:
@@ -581,7 +629,6 @@ def test_generated_governance_state_labels(tmp_path: Path) -> None:
 def test_implement_version_governance_preflight_blocks_metadata_branch_drift(tmp_path: Path) -> None:
     _seed_git_repo(tmp_path, branch="main")
     _seed_v151_package(tmp_path)
-    _seed_project_metadata(tmp_path, branch="main")
     _seed_git_workflow(tmp_path, expected_branch="beacon/v1.5.1")
     runner = CliRunner()
 

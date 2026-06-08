@@ -837,6 +837,32 @@ def current_runtime_release_version(project_root: Path) -> str | None:
     return version if not versions or version in versions else None
 
 
+def _single_active_project_contract_version(project_root: Path) -> str:
+    from beacon.utils.project_governance import governance_md_authoritative, load_governance_payload
+
+    root = project_root.expanduser().resolve()
+    if not governance_md_authoritative(root):
+        return ""
+    payload = load_governance_payload(root)
+    versions = payload.get("version_scoped_metadata")
+    if not isinstance(versions, dict):
+        return ""
+    docs_root = root / "docs" / "beacon"
+    active_versions: list[str] = []
+    for version, contract in versions.items():
+        normalized = normalize_version(str(version or ""))
+        if not normalized or not isinstance(contract, dict):
+            continue
+        state = str(contract.get("validation_state") or "active").strip().lower()
+        if state != "active":
+            continue
+        if not (docs_root / normalized).is_dir():
+            continue
+        active_versions.append(normalized)
+    unique_versions = sorted(set(active_versions), key=_version_key)
+    return unique_versions[0] if len(unique_versions) == 1 else ""
+
+
 def resolve_docs_version(
     project_root: Path,
     requested: str | None,
@@ -855,20 +881,25 @@ def resolve_docs_version(
             resolved = onboarding
             source = "onboarding_state"
         else:
-            version_truth = load_version_truth(project_root)
-            docs_default = normalize_version(
-                str(
-                    version_truth.get("docs_default_line", "")
-                    or version_truth.get("current_runtime_release_line", "")
-                    or ""
-                )
-            )
-            if docs_default:
-                resolved = docs_default
-                source = "version_truth"
+            project_contract_version = _single_active_project_contract_version(project_root)
+            if project_contract_version:
+                resolved = project_contract_version
+                source = "project_governance"
             else:
-                resolved = largest_version(project_root, fallback=fallback)
-                source = "docs_scan"
+                version_truth = load_version_truth(project_root)
+                docs_default = normalize_version(
+                    str(
+                        version_truth.get("docs_default_line", "")
+                        or version_truth.get("current_runtime_release_line", "")
+                        or ""
+                    )
+                )
+                if docs_default:
+                    resolved = docs_default
+                    source = "version_truth"
+                else:
+                    resolved = largest_version(project_root, fallback=fallback)
+                    source = "docs_scan"
     else:
         normalized = normalize_version(requested)
         if not normalized:
