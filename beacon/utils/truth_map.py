@@ -207,6 +207,15 @@ def truth_map_supported(version: str | None) -> bool:
     return _semver_tuple(version) >= (1, 5, 1)
 
 
+def feature_package_ready(project_root: Path, *, version: str, feature: str) -> bool:
+    paths = package_paths(project_root, version=version, feature=feature_slug(feature))
+    return all(paths[surface].is_file() for surface in FEATURE_SURFACES)
+
+
+def truth_map_supported_for_feature(project_root: Path, *, version: str, feature: str) -> bool:
+    return truth_map_supported(version) or feature_package_ready(project_root, version=version, feature=feature)
+
+
 def truth_source_model_for_version(version: str | None) -> str:
     return TRUTH_SOURCE_MODEL_AUTHORITATIVE if _semver_tuple(version) >= (1, 5, 2) else TRUTH_SOURCE_MODEL
 
@@ -957,6 +966,11 @@ def resolve_truth_map(project_root: Path, *, version: str, feature: str | None =
 
     slug = feature_slug(feature) if feature else ""
     model = truth_source_model_for_version(version)
+    supported = (
+        truth_map_supported_for_feature(project_root, version=version, feature=slug)
+        if slug
+        else truth_map_supported(version)
+    )
     payload: dict[str, Any] = {
         "schema_version": "1.0",
         "truth_map_contract": TRUTH_MAP_CONTRACT,
@@ -967,7 +981,7 @@ def resolve_truth_map(project_root: Path, *, version: str, feature: str | None =
         "governance_state_role": GENERATED_GOVERNANCE_STATE_ROLE,
         "governance_resolver_mode": GOVERNANCE_RESOLVER_MODE,
         "version": version,
-        "supported": truth_map_supported(version),
+        "supported": supported,
         "truth_map_json_authority": False,
         "json_authority": False,
         "authority_source": "cli_static_resolver_plus_markdown_feature_package",
@@ -1130,7 +1144,7 @@ def verify_truth_map(project_root: Path, *, version: str, feature: str, strict: 
     validation = validate_feature_package(project_root, version=version, feature=slug, write_report=False)
     model = truth_source_model_for_version(version)
 
-    if not truth_map_supported(version):
+    if not truth_map_supported_for_feature(project_root, version=version, feature=slug):
         diagnostics.append({"severity": "error", "code": "truth_map_unsupported_version", "version": version})
     if resolved.get("status") != "resolved":
         diagnostics.append({"severity": "error", "code": "feature_package_not_resolved"})
@@ -1141,11 +1155,29 @@ def verify_truth_map(project_root: Path, *, version: str, feature: str, strict: 
     plan = resolve_machine_json_plan(project_root, version=version, feature=slug)
     current_hashes = _source_hashes(project_root, version=version, feature=slug)
     checked_machine_json: list[str] = []
-    for rel_path in plan.get("outputs", {}).values():
+    for name, rel_path in plan.get("outputs", {}).items():
         path = project_root / rel_path
         if not path.exists():
             continue
         checked_machine_json.append(rel_path)
+        if name == "feature_package_validation":
+            validation_payload = read_json(path, {})
+            validation_hashes = (
+                validation_payload.get("source_hashes")
+                if isinstance(validation_payload, dict) and isinstance(validation_payload.get("source_hashes"), dict)
+                else {}
+            )
+            if validation_hashes and validation_hashes != current_hashes:
+                diagnostics.append(
+                    {
+                        "severity": "error",
+                        "code": "machine_json_source_hash_stale",
+                        "path": rel_path,
+                        "expected": current_hashes,
+                        "actual": validation_hashes,
+                    }
+                )
+            continue
         diagnostics.extend(_verify_machine_payload(project_root, path=path, current_hashes=current_hashes))
 
     has_errors = any(item.get("severity") == "error" for item in diagnostics)

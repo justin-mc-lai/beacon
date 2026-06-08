@@ -83,6 +83,46 @@ def test_resolve_target_version_auto_should_prefer_onboarding_docs_version(tmp_p
     assert resolve_target_version(tmp_path, "auto") == "v0.1.0"
 
 
+def test_resolve_target_version_auto_should_prefer_single_active_project_contract_over_runtime_docs(tmp_path: Path):
+    (tmp_path / "docs" / "beacon" / "v0.0.1").mkdir(parents=True)
+    (tmp_path / "docs" / "beacon" / "v1.5.2").mkdir(parents=True)
+    governance = tmp_path / "docs" / "beacon" / "governance" / "project-version-governance.md"
+    governance.parent.mkdir(parents=True, exist_ok=True)
+    governance.write_text(
+        "\n".join(
+            [
+                "---",
+                'schema_version: "1.0"',
+                f'project_root: "{tmp_path}"',
+                'topology_kind: "single_repo"',
+                'default_execution_service: "demo"',
+                "---",
+                "",
+                "# Project Version Governance",
+                "",
+                "## Service Bindings",
+                f"- `demo` repo=`{tmp_path}` role=`service` writable=`true` worktree_policy=`follow-repo-root`",
+                "",
+                "## Version Contracts",
+                "",
+                "### v0.0.1",
+                "- participating_services: `demo`",
+                "- branch_guard_mode: `strict`",
+                "- validation_state: `active`",
+                "- per_service_canonical_branch:",
+                "  - `demo`: `main`",
+                "",
+                "## Runtime Capability Note",
+                "- Beacon runtime/docs capability: `v1.5.2`",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    assert resolve_target_version(tmp_path, "auto") == "v0.0.1"
+
+
 def test_resolve_runtime_version_auto_should_follow_active_toolkit_version(tmp_path: Path):
     (tmp_path / ".beacon" / "state").mkdir(parents=True, exist_ok=True)
     write_json(

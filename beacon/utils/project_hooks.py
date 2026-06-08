@@ -11,6 +11,7 @@ from typing import Any
 
 from beacon.utils.runtime import generate_run_id, now_iso, write_json
 from beacon.utils.skill_config import SkillConfigError, _Parser
+from beacon.utils.v115_delivery import refresh_evidence_manifest
 
 ALLOWED_HOOK_CODES = {
     "post_implement_pre_qa",
@@ -595,6 +596,14 @@ def run_hook(
     }
     write_json(runtime_path, payload)
     write_json(latest_path, payload)
+    refresh_evidence_manifest(
+        project_root,
+        refs=[
+            str(runtime_path.relative_to(project_root)),
+            str(latest_path.relative_to(project_root)),
+        ],
+        version=version,
+    )
     return payload
 
 

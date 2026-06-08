@@ -8,6 +8,7 @@ from typing import Any
 
 from beacon.utils.global_boundaries import path_mentions_global_boundaries, project_global_boundaries_path
 from beacon.utils.story_state import feature_slug
+from beacon.utils.truth_map import resolve_truth_map, verify_truth_map
 from beacon.utils.versioning import resolve_target_version
 
 _SUPPORTED_HOSTS = {"codex", "claude"}
@@ -169,22 +170,60 @@ def delegation_readiness_precheck(
     resolved_version = resolve_target_version(root, version)
     slug = feature_slug(feature)
     docs_root = root / "docs" / "beacon" / resolved_version
-    checks = [
-        {
-            "name": "prd_present",
-            "ok": (docs_root / "prd" / f"{slug}.md").exists(),
-            "detail": str((docs_root / "prd" / f"{slug}.md").relative_to(root)),
-        },
-        {
-            "name": "user_story_present",
-            "ok": (docs_root / "user-story" / f"{slug}.md").exists(),
-            "detail": str((docs_root / "user-story" / f"{slug}.md").relative_to(root)),
-        },
-        {
-            "name": "test_case_present",
-            "ok": (docs_root / "qa" / "test-cases" / f"{slug}.md").exists(),
-            "detail": str((docs_root / "qa" / "test-cases" / f"{slug}.md").relative_to(root)),
-        },
+    checks: list[dict[str, Any]]
+    truth_map = resolve_truth_map(root, version=resolved_version, feature=feature)
+    feature_truth = truth_map.get("feature_truth") if isinstance(truth_map.get("feature_truth"), dict) else {}
+    authority_state = str(feature_truth.get("authority_state") or truth_map.get("authority_state") or "").strip()
+    if authority_state == "feature_package_authoritative":
+        source_paths = feature_truth.get("source_paths") if isinstance(feature_truth.get("source_paths"), dict) else {}
+        truth_verify = verify_truth_map(root, version=resolved_version, feature=feature, strict=False)
+        checks = [
+            {
+                "name": "package_truth_present",
+                "ok": bool(source_paths.get("truth")) and (root / str(source_paths.get("truth"))).exists(),
+                "detail": str(source_paths.get("truth") or ""),
+            },
+            {
+                "name": "package_tests_present",
+                "ok": bool(source_paths.get("tests")) and (root / str(source_paths.get("tests"))).exists(),
+                "detail": str(source_paths.get("tests") or ""),
+            },
+            {
+                "name": "package_tasks_present",
+                "ok": bool(source_paths.get("tasks")) and (root / str(source_paths.get("tasks"))).exists(),
+                "detail": str(source_paths.get("tasks") or ""),
+            },
+            {
+                "name": "package_evidence_present",
+                "ok": bool(source_paths.get("evidence")) and (root / str(source_paths.get("evidence"))).exists(),
+                "detail": str(source_paths.get("evidence") or ""),
+            },
+            {
+                "name": "truth_map_verify_pass",
+                "ok": str(truth_verify.get("status") or "") == "pass" and not bool(truth_verify.get("blocked")),
+                "detail": "beacon truth-map verify",
+            },
+        ]
+    else:
+        checks = [
+            {
+                "name": "prd_present",
+                "ok": (docs_root / "prd" / f"{slug}.md").exists(),
+                "detail": str((docs_root / "prd" / f"{slug}.md").relative_to(root)),
+            },
+            {
+                "name": "user_story_present",
+                "ok": (docs_root / "user-story" / f"{slug}.md").exists(),
+                "detail": str((docs_root / "user-story" / f"{slug}.md").relative_to(root)),
+            },
+            {
+                "name": "test_case_present",
+                "ok": (docs_root / "qa" / "test-cases" / f"{slug}.md").exists(),
+                "detail": str((docs_root / "qa" / "test-cases" / f"{slug}.md").relative_to(root)),
+            },
+        ]
+    checks.extend(
+        [
         {
             "name": "implementation_plan_present",
             "ok": (docs_root / ".machine" / "execution" / f"implementation-plan-{slug}.json").exists(),
@@ -197,7 +236,7 @@ def delegation_readiness_precheck(
         },
         {
             "name": "qa_baseline_bundle_present",
-            "ok": all(
+            "ok": authority_state == "feature_package_authoritative" or all(
                 path.exists()
                 for path in [
                     docs_root / ".machine" / "qa" / f"{slug}.ac-test-matrix.json",
@@ -207,7 +246,8 @@ def delegation_readiness_precheck(
             ),
             "detail": str((docs_root / ".machine" / "qa").relative_to(root)),
         },
-    ]
+        ]
+    )
     blocked = [item["name"] for item in checks if not bool(item.get("ok"))]
     return {
         "schema_version": "1.0",

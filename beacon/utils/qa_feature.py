@@ -2000,8 +2000,9 @@ def build_feature_qa_precision_artifacts(
             str(browser_evidence_item.get("browser_evidence_pack_ref") or "").strip(),
             str(browser_evidence_item.get("replay_ref") or "").strip(),
         ]
+    targeted_entry_dicts = [item for item in (plan.get("targeted_entries") or []) if isinstance(item, dict)]
     browser_required_for_acceptance = any(bool(item.get("browser_required")) for item in scenario_results) or any(
-        bool(item.get("browser_required")) for item in (plan.get("targeted_entries") or [])
+        bool(item.get("browser_required")) for item in targeted_entry_dicts
     )
     qa_acceptance_capability = build_qa_acceptance_capability_summary(
         profile="browser" if browser_required_for_acceptance else "closure",

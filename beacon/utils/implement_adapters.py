@@ -369,11 +369,14 @@ def build_default_task_prompt(
     prompt_boundary: dict[str, Any] | None = None,
 ) -> str:
     if feature_package_authoritative(version):
+        source_root = str(source_of_truth_root or "").rstrip("/")
+        package_suffix = f"/features/{feature_slug}"
+        package_root = source_root if source_root.endswith(package_suffix) else f"{source_root}{package_suffix}"
         truth_refs = [
-            f"{source_of_truth_root}/features/{feature_slug}/truth.md",
-            f"{source_of_truth_root}/features/{feature_slug}/tests.md",
-            f"{source_of_truth_root}/features/{feature_slug}/tasks.md",
-            f"{source_of_truth_root}/features/{feature_slug}/evidence.md",
+            f"{package_root}/truth.md",
+            f"{package_root}/tests.md",
+            f"{package_root}/tasks.md",
+            f"{package_root}/evidence.md",
         ]
     else:
         truth_refs = [
