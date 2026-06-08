@@ -1,228 +1,179 @@
 ---
 name: beacon
-description: Use when you need Beacon's evidence-first workflow as the host-level meta-protocol for deciding which truth, execution, gate, or support surface should run next.
+description: Beacon v1.6.0 host-level router for harness-first planner/generator/evaluator/governor skills.
 metadata:
   author: Beacon CLI
-  version: "1.5.2"
+  version: "v1.6.0"
   organization: Beacon
-  date: May 2026
-  abstract: Compact meta-protocol for Beacon's human-facing workflow surface. It classifies the current decision surface, preserves hard boundaries, and routes to the right child skill without exposing runtime internals by default.
+  date: June 2026
+  abstract: Harness-first Beacon meta-protocol. Route coarse user intent into planner, generator, evaluator, or governor skills without preserving old host-visible aliases.
 ---
 
 # Beacon Skill
 
-This package is the canonical `skills/beacon/` wrapper for Codex and Claude.
+This package is the canonical `skills/beacon/` host-visible Beacon skill package for Codex and Claude.
 
-Beacon is not just a command catalog. It is a truth-and-delivery meta-protocol:
+v1.6.0 is a breaking skill-surface migration. Host-visible child skills use only:
 
-- classify the current decision surface
-- preserve stable boundaries that must not drift
-- route to the right truth, execution, gate, or support skill
-- keep support capability wide without expanding the public mainline
+- `beacon-planner-*`
+- `beacon-generator-*`
+- `beacon-evaluator-*`
+- `beacon-governor-*`
+
+Old host-visible aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not present in this package. If CLI compatibility is needed, it belongs in CLI routing or migration tooling, not duplicate host-visible skill directories.
 
 ## Meta-Protocol
 
-Always start with one question:
+Always start with one routing question:
 
-> 当前问题属于哪个决策面: truth、execution、verification/gate，还是 support?
+> 当前请求应该由哪个 harness 负责：planner、generator、evaluator，还是 governor？
 
-Route by decision surface, not by tool familiarity, internal runtime mechanics, or which command name looks closest.
+Route by authority boundary, not by old stage names or tool familiarity.
 
-The public Codex / Claude surfaces are:
+## Beacon v1.6.0 共享 Preamble
 
-- host entry:
-  - `using-beacon`
-- truth:
-  - `beacon-truth`
-  - `beacon-prd`
-  - `beacon-user-story`
-  - `beacon-test-case`
-  - `beacon-change`
-- execution:
-  - `beacon-prototype`
-  - `beacon-implement`
-- gate:
-  - `beacon-qa`
-  - `beacon-release`
-- support:
-  - `beacon-brainstorm`
-  - `beacon-deep`
-  - `beacon-change-refreeze`
-  - `beacon-ceo-review`
-  - `beacon-design-review`
-  - `beacon-context-engineering`
-  - `beacon-source-driven`
-  - `beacon-doubt-review`
-  - `beacon-security-review`
-  - `beacon-performance-review`
-  - `beacon-documentation-adr`
-  - `beacon-debug-recovery`
-  - `beacon-help`
-  - `beacon-status`
-  - `beacon-doctor`
-  - `beacon-learn`
-  - `beacon-archive`
-  - `beacon-real-project-validation`
-  - `beacon-friction-intake`
+1. 先判断湖还是海：湖要煮干；海要拆分、标超纲或延后。
+2. 先搜再造：推理前先读取 resolver 选中的 truth、source、evidence 和相关 memory。
+3. 用户主权：Beacon 推荐路由；是否接受范围或把 queue item 升级为 truth/change 由用户决定。
+4. 不假交付：placeholder implementation、docs-only completion、fake runner、zero assertions 或 placeholder evidence 不能算闭环。
+5. Harness 边界：planner 不实现；generator 不裁决自身完成；evaluator 不改写 truth；governor 不成为主生命周期阶段。
 
-## Current v1.3.9 Additions
+## Harness Routing
 
-Legacy compatibility anchors that should remain discoverable from the packaged host skill:
+- `planner`: 拆分粗提示词，判断湖/海规模，读取 truth/source/evidence，并产出 research/planning artifact 或 route recommendation。
+- `generator`: 在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth、implementation、prototype、design 或 delivery artifact。
+- `evaluator`: 验证 evidence，识别 truth drift、fake delivery、missing coverage、placeholder evidence，并产出 verdict/finding/route/block。
+- `governor`: 维护 context、archive、memory、hooks、automation、metadata、status 和 diagnostic support。
 
-- `beacon-deep` remains a deep analysis support surface
-- `beacon-friction-intake` remains available through `beacon friction-intake run ...`
-- historical host-pack tests may still look for named support surfaces from earlier packaged lines
+## Host-Visible Skills
 
-## Stable Rules
+Planner:
 
-These rules should remain true even when runtime details evolve:
+- `beacon-planner-brainstorm`
+- `beacon-planner-deep-analysis`
+- `beacon-planner-friction-intake`
+- `beacon-planner-founder-review`
+- `beacon-planner-design-review`
+- `beacon-planner-security-review`
+- `beacon-planner-performance-review`
+- `beacon-planner-doubt-review`
+- `beacon-planner-source-driven`
+- `beacon-planner-context-engineering`
+- `beacon-planner-design-simplify`
+- `beacon-planner-documentation-adr`
 
-- main chain stays compact: `truth.define -> truth.acceptance -> truth.coverage -> implement -> qa -> release`
-- `beacon-truth` is the preferred v1.5.2+ truth umbrella; `beacon-prd`, `beacon-user-story`, and `beacon-test-case` remain compatibility aliases for `truth.define`, `truth.acceptance`, and `truth.coverage`
-- v1.5.2 feature truth is resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; legacy triptych files are migration, rebuild, or archive material only
-- `prototype` is conditional, not a mandatory new stage for every feature
-- support surfaces stay advisory and do not become truth sources
-- support surfaces are not gate sources
-- support surfaces are not new lifecycle stages
-- canonical truth remains versioned under `docs/beacon/<version>/`; for v1.5.2 features, canonical requirement truth is the Markdown feature package
-- QA prompt contract must follow first principles and bind claims back to evidence
-- if a scorecard or gate path says `stop_for_repair`, route to repair or truth recovery before continuing
-- browser-admitted or compatibility paths such as `browser-use` remain optional capability planes, not default lifecycle requirements
+Planner tools may still route to stable CLI commands. For example, `beacon-planner-friction-intake` can recommend `beacon friction-intake run ...` while remaining a planner support surface.
 
-## Route-Back Rules
+Generator:
 
-Use these defaults:
+- `beacon-generator-truth-package`
+- `beacon-generator-truth-bootstrap`
+- `beacon-generator-truth-change`
+- `beacon-generator-truth-refreeze`
+- `beacon-generator-prototype-binding`
+- `beacon-generator-implementation`
+- `beacon-generator-design-support`
+- `beacon-generator-design-bootstrap`
+- `beacon-generator-design-explore`
+- `beacon-generator-design-system`
+- `beacon-generator-design-polish`
 
-- promise, scope, ambiguity, or acceptance still open -> `beacon-truth` mode `truth.define`, `truth.acceptance`, or `truth.coverage`
-- compatibility aliases remain valid: `beacon-prd` for `truth.define`, `beacon-user-story` for `truth.acceptance`, and `beacon-test-case` for `truth.coverage`
-- frozen truth must change -> `beacon-change`
-- accepted post-freeze one-shot refreeze closure -> `beacon-change-refreeze`
-- coding or implementation execution against frozen truth -> `beacon-implement`
-- evidence closure, verification depth, or acceptance proof -> `beacon-qa`
-- release readiness, blocker judgment, or go/no-go -> `beacon-release`
-- blocked, unsure next step, or resume guidance -> `beacon-help` or `beacon-status`
-- package drift, docs drift, environment drift, or context corruption -> `beacon-doctor`
+Evaluator:
 
-If any support surface changes accepted scope or promise, it must route back through `beacon-change`.
+- `beacon-evaluator-qa`
+- `beacon-evaluator-qa-deep`
+- `beacon-evaluator-release`
+- `beacon-evaluator-real-project`
 
-## Support Surface Constitution
+Governor:
 
-Support surfaces exist to widen judgment, not to replace the mainline.
+- `beacon-governor-design-library`
+- `beacon-governor-design-extract`
+- `beacon-governor-doctor`
+- `beacon-governor-debug-recovery`
+- `beacon-governor-status`
+- `beacon-governor-help`
+- `beacon-governor-archive`
+- `beacon-governor-learn`
+- `beacon-governor-hooks`
+- `beacon-governor-automation`
+- `beacon-governor-branch`
+- `beacon-governor-lighthouse`
+- `beacon-governor-metadata`
+- `beacon-governor-router`
 
-They may:
+## Lifecycle
 
-- challenge framing
-- expose uncertainty or drift
-- improve evidence quality
-- strengthen implementation method
-- explain route and fallback
+The user-visible v1.6.0 lifecycle is:
 
-They may not:
-
-- freeze canonical truth by default
-- claim implementation completion
-- issue release verdicts by default
-- silently replace `change`, `implement`, `qa`, or `release`
-
-`beacon-deep` remains the deep analysis support surface for high-risk structural review and test-delta derivation.
-`beacon-change-refreeze` remains a change-family support route to `beacon change ... --refreeze-chain`; it is not a lifecycle stage, truth source, or gate source.
-
-## Human vs Machine Readout
-
-Human-facing output should stay concise:
-
-- current status
-- blocker if any
-- recommended next surface
-- fallback or repair route
-
-Machine-facing output should stay complete:
-
-- reason codes
-- evidence refs
-- artifact paths
-- diagnostics
-- runtime or transaction metadata
-
-Beacon should absorb complexity into machine-readable surfaces first, then project only the minimum useful action layer to humans.
-
-## Current Anchors
-
-Keep only the minimum current anchors here:
-
-- current package version: `1.5.2`
-- current planning line for this evolution theme: `docs/beacon/v1.5.2/`
-- current planning line for this evolution theme: `docs/beacon/v1.4.7/` (compatibility reference only)
-- current public runtime/docs line: `docs/beacon/v1.5.2/`
-- previous runtime line: `docs/beacon/v1.5.1/`
-- compatibility reference line: `docs/beacon/v1.4.7/`
-- if a target project pins another docs line, follow the pinned local truth instead of silently overriding it
-
-## v1.5.2 Truth Resolver Rule
-
-Before reading or writing feature truth, resolve the current truth map:
-
-```bash
-beacon truth-map resolve <feature> --project . --version v1.5.2 --json
+```text
+plan -> truth -> generate -> evaluate -> release
 ```
 
-Then consume the resolved `features/<slug>/{truth,tests,tasks,evidence}.md`. Resolver output, `.machine` JSON, manifests, QA status, and release reports are generated state or evidence, not requirement authority.
+Requirement authority still resolves through:
 
-## Lightweight References
+```text
+beacon truth-map resolve <feature> --project . --version <version> --json
+docs/beacon/<version>/features/<slug>/{truth,tests,tasks,evidence}.md
+```
 
-When the user needs fast human-readable judgment support, start with:
+`prd`, `user-story`, and `test-case` are legacy concepts. They may appear in migration docs or archives, but they are not v1.6.0 host-visible skill categories.
 
-- [`references/usage-rules.md`](./references/usage-rules.md)
-- [`references/support-surface-routing-cheatsheet.md`](./references/support-surface-routing-cheatsheet.md)
-- [`references/requirement-closure-checklist.md`](./references/requirement-closure-checklist.md)
-- [`references/freeze-readiness-checklist.md`](./references/freeze-readiness-checklist.md)
-- [`references/qa-layer-checklist.md`](./references/qa-layer-checklist.md)
-- [`references/release-blocker-taxonomy.md`](./references/release-blocker-taxonomy.md)
-- [`references/external-lifecycle-mapping.md`](./references/external-lifecycle-mapping.md)
-- [`references/research-closure-checklist.md`](./references/research-closure-checklist.md)
-- [`references/business-flow-checklist.md`](./references/business-flow-checklist.md)
-- [`references/state-machine-checklist.md`](./references/state-machine-checklist.md)
+## Research Contract
 
-These references are non-canonical support material. They help humans scan and decide faster, but they do not replace versioned truth.
+Planner research lives at:
 
-For complex v1.5.2 features, the minimum freeze-facing requirement chain is expressed inside the feature package:
+```text
+docs/beacon/<version>/research/<feature-slug>.md
+```
 
-`research/support -> truth.define -> truth.acceptance -> truth.coverage -> requirement_clarity -> freeze`
+Its authority is `support_advisory`. It can support routing, risk analysis, lake/ocean classification, source anchoring, and gap discovery. It cannot become requirement truth, implementation closure, QA pass, or release readiness by itself.
 
-Compatibility mapping for older host-skill tests and operators:
+Research can enter the main chain only when:
 
-`research -> prd -> user-story -> test-case -> requirement_clarity -> freeze`
+```text
+user_decision = accepted/promoted
+promotion_ref is present
+route = beacon-generator-truth-change or beacon-generator-truth-refreeze
+```
 
-## Deep References
+## Hard Gates
 
-When versioned delivery context is needed, read progressively:
+Every v1.6.0 child `SKILL.md` must include the shared preamble followed immediately by a harness-specific `HARD GATE`.
 
-1. [`../../docs/beacon/v1.5.2/SUMMARY.md`](../../docs/beacon/v1.5.2/SUMMARY.md)
-2. [`../../docs/beacon/v1.5.2/execution/index.md`](../../docs/beacon/v1.5.2/execution/index.md)
-3. [`../../docs/beacon/v1.5.2/release/v1.5.2.md`](../../docs/beacon/v1.5.2/release/v1.5.2.md)
-4. [`../../docs/beacon/v1.5.1/SUMMARY.md`](../../docs/beacon/v1.5.1/SUMMARY.md)
+The gate must prevent:
 
-Do not treat this wrapper as the full runtime manual or release note.
+- planner writing truth, code, `.machine/`, QA verdict, or release verdict
+- generator self-certifying completion or using fake delivery as closure
+- evaluator rewriting truth or repairing implementation inside the verdict action
+- governor becoming a truth, implementation, QA, or release stage
 
-## Lifecycle Navigation Rules
+Verify with:
 
-- `beacon help --project-root . --json` is the default recovery route when the next surface is unclear.
-- If frozen truth is stale, do not push through execution. Reopen through `beacon-change`.
-- If verification reveals drift or weak evidence, return to the right truth or execution surface instead of hand-waving through gate.
-- If support output is only advisory, say so explicitly and route back.
-- Support surfaces such as `beacon-friction-intake` may run host-visible commands like `beacon friction-intake run ...`, but they still do not become truth or gate stages.
+```bash
+beacon skill package verify --project-root . --version v1.6.0 --package-root skills/beacon --json
+beacon doctor setup-agent-surface --project-root . --version v1.6.0 --agent codex --json
+beacon doctor verify-agent-surface --project-root . --version v1.6.0 --agent codex --strict --json
+```
 
-## Examples
+## No-Fake-Delivery
 
-- 适用例：
-  - “我想用 Beacon 作为总入口，但先要判断现在属于哪种决策面。”
-  - “我需要一个稳定的元协议，把 truth、execution、qa、release 和 support surface 路由清楚。”
-  - “我知道 Beacon 很严谨，但这轮到底该先走主链还是先走 support？”
-- 不适用例：
-  - “我已经明确知道要进哪条具体子 skill，而且只想看那条 skill 的边界。” -> 直接进入对应子 skill
+These signals cannot close implementation, QA, or release:
 
-## Cold-start anchors
+- placeholder implementation
+- docs-only completion
+- fake runner evidence
+- zero assertions
+- placeholder evidence
 
-- 主 `beacon` skill 的职责是路由和边界，不是总 runbook。
-- 好的入口不是把所有命令都摊开，而是先判断当前问题属于哪个决策面。
-- Beacon 的 support 面可以更强，但主链不应因此继续膨胀。
+Use:
+
+```bash
+beacon skill package verify-closure --payload-json '{"implementation":"real code path exercised","assertions":"12 assertions"}' --json
+```
+
+## References
+
+- `docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md`
+- `docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md`
+- `docs/beacon/v1.6.0/execution/implementation-summary-beacon-skill-harness-taxonomy-v160.md`

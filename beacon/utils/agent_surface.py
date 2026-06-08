@@ -52,6 +52,7 @@ class SkillProjection:
     source_kind: str
     content: str | None = None
     source_dir: Path | None = None
+    files: dict[str, str] | None = None
 
 
 @dataclass(frozen=True)
@@ -252,14 +253,18 @@ description: Beacon v1.6.0 {harness} skill。用于{role}；必须遵守共享 p
 """
 
 
-def _write_projected_skill(destination: Path, content: str) -> None:
+def _write_projected_skill(destination: Path, content: str, files: dict[str, str] | None = None) -> None:
     destination.mkdir(parents=True, exist_ok=True)
     (destination / "SKILL.md").write_text(content, encoding="utf-8")
+    for relative, file_content in (files or {}).items():
+        path = destination / relative
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(file_content, encoding="utf-8")
 
 
 def _copy_projected_skill(destination: Path, projection: SkillProjection) -> None:
     if projection.content is not None:
-        _write_projected_skill(destination, projection.content)
+        _write_projected_skill(destination, projection.content, projection.files)
         return
     if projection.source_dir is not None:
         shutil.copytree(projection.source_dir, destination)
@@ -267,25 +272,126 @@ def _copy_projected_skill(destination: Path, projection: SkillProjection) -> Non
     raise ValueError(f"skill projection {projection.id} has no source")
 
 
-def _projected_content_hash(skill_id: str, content: str) -> str:
+def _projected_content_hash(skill_id: str, content: str, files: dict[str, str] | None = None) -> str:
     digest = hashlib.sha256()
     digest.update(b"SKILL.md\0")
     digest.update(content.encode("utf-8"))
     digest.update(b"\0")
+    for relative, file_content in sorted((files or {}).items()):
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(file_content.encode("utf-8"))
+        digest.update(b"\0")
     return digest.hexdigest()
+
+
+def _v160_extra_skill_files(skill_id: str) -> dict[str, str]:
+    if skill_id != "beacon-generator-implementation":
+        return {}
+    return {
+        "references/implement-single.md": """# Implement Single Mode
+
+## Purpose
+
+Use `single` for small, low-risk, clearly scoped implementation under `beacon-generator-implementation`.
+
+## Admission
+
+- Requirement truth is frozen.
+- Scope is narrow and low-risk.
+- Role separation is not needed.
+- Multi-round closure control is not needed.
+
+## Command
+
+```bash
+beacon implement run "<feature>" --project . --version <version> --mode single
+```
+
+## Evidence
+
+- Implementation summary.
+- Changed file list.
+- QA handoff when implementation evidence is ready.
+
+## Boundary
+
+Single mode cannot rewrite frozen truth, run QA, pass release, or override gate verdicts.
+""",
+        "references/implement-team.md": """# Implement Team Mode
+
+## Purpose
+
+Use `team` for complex implementation that benefits from role separation, subagent lanes, or parallel evidence.
+
+## Admission
+
+- Requirement truth is frozen.
+- Implementation spans multiple modules or concerns.
+- Planner / implementer / reviewer / tester separation is useful.
+- QA handoff needs role-specific context.
+
+## Command
+
+```bash
+beacon implement run "<feature>" --project . --version <version> --mode team
+```
+
+## Evidence
+
+- Team plan and role evidence.
+- Implementation handoff.
+- Review or QA readiness notes.
+
+## Boundary
+
+Team mode remains internal runtime behavior under `beacon-generator-implementation`; it is not a public lifecycle skill and does not produce QA or release verdicts.
+""",
+        "references/implement-ralph.md": """# Implement Ralph Mode
+
+## Purpose
+
+Use `ralph` as a closure controller when team or complex implementation evidence needs multi-round repair routing toward review, QA, or release.
+
+## Admission
+
+- Requirement truth is frozen.
+- Team or complex implementation has produced evidence, but closure is not authoritative.
+- Review quality, QA, or release next action must be routed.
+- Ralph can record blocker, next action, round trace, and evidence refs.
+
+## Command
+
+```bash
+beacon implement run "<feature>" --project . --version <version> --mode ralph
+```
+
+## Evidence
+
+- Ralph round trace.
+- Current blocker and next action.
+- Recommended command for implement repair, QA, or release.
+
+## Boundary
+
+Ralph routes next action and evidence only; it never replaces QA, release, gate, or frozen truth.
+""",
+    }
 
 
 def _v160_skill_projections() -> list[SkillProjection]:
     projections: list[SkillProjection] = []
     for row in _v160_rows():
         content = _render_v160_skill(row)
+        extra_files = _v160_extra_skill_files(row["new"])
         projections.append(
             SkillProjection(
                 id=row["new"],
                 source_path=row["old"],
-                source_hash=_projected_content_hash(row["new"], content),
+                source_hash=_projected_content_hash(row["new"], content, extra_files),
                 source_kind="generated_v160_harness_taxonomy",
                 content=content,
+                files=extra_files,
             )
         )
     return sorted(projections, key=lambda item: item.id)
@@ -1051,7 +1157,7 @@ def setup_agent_surface(
                 if destination.exists():
                     shutil.rmtree(destination)
                 if source_skill.content is not None:
-                    _write_projected_skill(destination, source_skill.content)
+                    _write_projected_skill(destination, source_skill.content, source_skill.files)
                 elif source_skill.source_dir is not None:
                     shutil.copytree(source_skill.source_dir, destination)
                 else:

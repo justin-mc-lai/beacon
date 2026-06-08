@@ -37,7 +37,7 @@ def test_setup_agent_surface_for_trae_should_materialize_host_visible_skills(tmp
     installed = payload["result"]["installed"]
     assert len(installed) == len(source_skills)
 
-    for skill_name in ("using-beacon", "beacon-prd", "beacon-qa", "beacon-release", "beacon-doctor"):
+    for skill_name in ("beacon-planner-brainstorm", "beacon-generator-implementation", "beacon-evaluator-qa", "beacon-governor-doctor"):
         assert (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists()
 
     rules_text = (tmp_path / ".trae" / "rules" / "project_rules.md").read_text(encoding="utf-8")
@@ -76,14 +76,14 @@ def test_setup_agent_surface_for_all_supported_hosts_should_materialize_host_vis
         assert payload["status"] == "PASS"
         installed_names = {item["id"] for item in payload["result"]["installed"]}
         assert expected_names <= installed_names
-        assert (skills_root / "using-beacon" / "SKILL.md").exists()
-        assert (skills_root / "beacon-prd" / "SKILL.md").exists()
-        assert (skills_root / "beacon-qa" / "SKILL.md").exists()
+        assert (skills_root / "beacon-planner-brainstorm" / "SKILL.md").exists()
+        assert (skills_root / "beacon-generator-implementation" / "SKILL.md").exists()
+        assert (skills_root / "beacon-evaluator-qa" / "SKILL.md").exists()
 
         if rules_path is not None:
             rules_text = rules_path.read_text(encoding="utf-8")
             assert "Installed Beacon Skills" in rules_text
-            for skill_name in ("using-beacon", "beacon-prd", "beacon-qa", "beacon-release"):
+            for skill_name in ("beacon-planner-brainstorm", "beacon-generator-implementation", "beacon-evaluator-qa", "beacon-evaluator-release"):
                 assert f"`{skill_name}`" in rules_text
 
     state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
@@ -107,7 +107,7 @@ def test_setup_agent_surface_should_accept_winsurf_alias(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["result"]["agent"] == "windsurf"
-    assert (tmp_path / ".windsurf" / "skills" / "using-beacon" / "SKILL.md").exists()
+    assert (tmp_path / ".windsurf" / "skills" / "beacon-governor-router" / "SKILL.md").exists()
 
 
 def test_verify_agent_surface_should_pass_after_setup(tmp_path: Path):
