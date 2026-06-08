@@ -1,0 +1,561 @@
+{
+  "schema_version": "1.0",
+  "transaction_id": "tx-change-refreeze-code2truth-project-intake-20260605t094427z",
+  "feature": "code2truth-project-intake",
+  "feature_slug": "code2truth-project-intake",
+  "version": "v1.5.2",
+  "change_reason": "Accept code2truth closed loop: existing implementation evidence reconstructs candidate truth, user-confirmed output freezes into package truth, implement may no-op with evidence, and QA validates truth/evidence/governance.",
+  "touched_surfaces": [
+    "change",
+    "truth",
+    "tests",
+    "tasks",
+    "evidence",
+    "requirement_clarity",
+    "freeze",
+    "feature_package_validation"
+  ],
+  "surface_statuses": {
+    "change": {
+      "path": "docs/beacon/v1.5.2/change/code2truth-project-intake.md",
+      "exists": false,
+      "status": "package_change_optional",
+      "required": false,
+      "authority": "change_record_not_requirement_truth"
+    },
+    "truth": {
+      "path": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tests": {
+      "path": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "tasks": {
+      "path": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "evidence": {
+      "path": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md",
+      "exists": true,
+      "status": "present",
+      "required": true,
+      "authority": "markdown_feature_package"
+    },
+    "requirement_clarity": {
+      "path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-code2truth-project-intake.json",
+      "exists": true,
+      "status": "passed",
+      "required": true
+    },
+    "freeze": {
+      "path": "docs/beacon/v1.5.2/.machine/change/code2truth-project-intake.refreeze-transaction.json",
+      "exists": true,
+      "status": "complete",
+      "required": true
+    },
+    "feature_package_validation": {
+      "path": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+      "exists": true,
+      "status": "passed",
+      "required": true,
+      "diagnostics": []
+    }
+  },
+  "truth_revision_before": {
+    "revision_id": "R1",
+    "doc_status": "frozen",
+    "lifecycle_status": "idle",
+    "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071"
+  },
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071"
+  },
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-implement",
+    "command": "beacon implement \"code2truth-project-intake\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
+  "delivery_execution": {
+    "implement_executed": false,
+    "qa_executed": false,
+    "release_executed": false
+  },
+  "created_at": "2026-06-05T09:44:27.973708+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071"
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "draft",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v1.5.2",
+    "feature": "code2truth-project-intake",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.5.2/features/code2truth-project-intake",
+      "prd": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "user_story": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "test_case": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+      "truth": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+      "tests": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+      "tasks": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+      "evidence": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "code2truth-project-intake",
+      "feature_slug": "code2truth-project-intake",
+      "version": "v1.5.2",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "tests": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+        "tasks": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+        "evidence": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "7251264970b73d71e294a1062d0cbcec0d2591bac39b9c5f1bcc0fa84382cc0b",
+        "tests": "8633280a3fe4e083f669f843e64201ce601d0b33cf39b567d2d34a87116bcf49",
+        "tasks": "3fe86149c9aaf5f38008980684944faef2f8420fb8fdccacf52022312414c377",
+        "evidence": "05ee99e2fce80f3d8f77e88ca24e12adca309b3f9150ee05e46d494e92560265"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "code2truth-project-intake",
+        "feature_slug": "code2truth-project-intake",
+        "version": "v1.5.2",
+        "source_paths": {
+          "truth": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+          "tests": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+          "tasks": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+          "evidence": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.5.2/.machine/requirement/code2truth-project-intake.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.5.2/.machine/requirement/code2truth-project-intake.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine code2truth-project-intake --version v1.5.2"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change code2truth-project-intake --version v1.5.2 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.5.2/.machine/requirement/code2truth-project-intake.truth-map.json",
+        "docs/beacon/v1.5.2/.machine/requirement/code2truth-project-intake.requirement-package.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.5.2/.machine/user-story/code2truth-project-intake.json",
+      "feature": "code2truth-project-intake",
+      "version": "v1.5.2",
+      "revision_id": "R2",
+      "ac_count": 10,
+      "test_count": 10,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "code2truth-project-intake",
+      "feature_slug": "code2truth-project-intake",
+      "version": "v1.5.2",
+      "runtime_version": "v1.5.2",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-code2truth-project-intake.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-code2truth-project-intake.md",
+      "state_path": ".beacon/state/requirement-clarity-code2truth-project-intake.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.5.2",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-05T09:44:28.394058+00:00",
+        "feature": "code2truth-project-intake",
+        "feature_slug": "code2truth-project-intake",
+        "prd_ref": "docs/beacon/v1.5.2/prd/code2truth-project-intake.md",
+        "user_story_ref": "docs/beacon/v1.5.2/user-story/code2truth-project-intake.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.5.2/source-architecture/code2truth-project-intake.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+          "prd": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+          "user_story": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+          "test_case": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-002",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-006",
+            "AC-007",
+            "AC-008",
+            "AC-009",
+            "AC-010"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": false,
+        "supported": true,
+        "projection_types": [],
+        "research_path": "docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": false,
+          "user_story_refs": false,
+          "test_case_refs": false,
+          "coverage_notes": false,
+          "out_of_scope_notes": false
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+          "user_story_refs": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+          "test_case_refs": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": false
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+        "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+        "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md",
+        "docs/beacon/v1.5.2/research/code2truth-project-intake.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-code2truth-project-intake.json",
+      "markdown": "docs/beacon/v1.5.2/execution/requirement-clarity-code2truth-project-intake.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "code2truth-project-intake",
+      "feature_slug": "code2truth-project-intake",
+      "version": "v1.5.2",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.5.2/.machine/execution/requirement-clarity-code2truth-project-intake.json",
+      "report_markdown_path": "docs/beacon/v1.5.2/execution/requirement-clarity-code2truth-project-intake.md",
+      "finding_count": 0,
+      "run_id": "run-20260602T200514823024",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-05T09:44:28.580535+00:00",
+      "state_path": ".beacon/state/requirement-clarity-code2truth-project-intake.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "code2truth-project-intake",
+    "feature_slug": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 10,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "candidate-truth-reconstruction",
+        "text": "Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::candidate-truth-reconstruction::intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "existing-project-pilot",
+        "text": "The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::existing-project-pilot::the intake model must support a bounded pilot on an existing skill project such as `/users/apple/developer/personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed-ambiguity",
+        "text": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::fail-closed-ambiguity::ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implement-no-op-admission",
+        "text": "`beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::implement-no-op-admission::`beacon implement` may complete as no-op/evidence-only execution when frozen acs are already satisfied by existing code and every task has evidence-backed closure.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::package-authority::the frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated json, legacy triptych, provider graphs, and support research cannot win authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "provider-evidence-boundary",
+        "text": "Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::provider-evidence-boundary::third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-truth-governance-verification",
+        "text": "`beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::qa-truth-governance-verification::`beacon qa` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-inventory",
+        "text": "Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::source-inventory::code2truth intake must build a source inventory from existing code, docs, skills, tests, cli behavior, beacon lighthouse/source-architecture outputs, and available provider artifacts.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "tasks-evidence-closure",
+        "text": "`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::tasks-evidence-closure::`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "user-confirmation-gate",
+        "text": "Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::user-confirmation-gate::candidate truth can become formal truth only after user confirmation and governed promotion into the beacon feature package.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+    "source_baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/code2truth-project-intake.json",
+    "generated_at": "2026-06-05T09:44:28.695499+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-code2truth-project-intake.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-code2truth-project-intake.md"
+  }
+}

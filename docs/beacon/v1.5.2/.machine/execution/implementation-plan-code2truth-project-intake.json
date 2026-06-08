@@ -1,0 +1,1322 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-code2truth-project-intake-r2",
+  "feature": "code2truth-project-intake",
+  "feature_slug": "code2truth-project-intake",
+  "version": "v1.5.2",
+  "revision_id": "R2",
+  "baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+  "plan_hash": "sha256:f7a009a1c246e161dcc587d0ef493a5573a2082f3a8ba380d9e40cf131b7f99a",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+    "prd": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+    "test_case": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+    "truth": "docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+    "tests": "docs/beacon/v1.5.2/features/code2truth-project-intake/tests.md",
+    "tasks": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+    "evidence": "docs/beacon/v1.5.2/features/code2truth-project-intake/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.5.2/features/code2truth-project-intake",
+    "revision_delta": "docs/beacon/v1.5.2/.machine/execution/revision-delta-code2truth-project-intake.json",
+    "story_scenario_map": "docs/beacon/v1.5.2/.machine/qa/code2truth-project-intake.story-scenario-map.json",
+    "research_projection": "docs/beacon/v1.5.2/.machine/user-story/code2truth-project-intake.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.5.2/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.5.2",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-05T11:27:58.833688+00:00",
+    "feature": "code2truth-project-intake",
+    "feature_slug": "code2truth-project-intake",
+    "prd_ref": "docs/beacon/v1.5.2/prd/code2truth-project-intake.md",
+    "user_story_ref": "docs/beacon/v1.5.2/user-story/code2truth-project-intake.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/research/code2truth-project-intake.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.5.2/.machine/user-story/code2truth-project-intake.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-001 Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+      "description": "Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+      "source_task_id": "TASK-001",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.636894+00:00",
+      "completed_at": "2026-06-05T11:18:22.711293+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-002 Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+      "description": "Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+      "source_task_id": "TASK-002",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711306+00:00",
+      "completed_at": "2026-06-05T11:18:22.711308+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-003 Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+      "description": "Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+      "source_task_id": "TASK-003",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711315+00:00",
+      "completed_at": "2026-06-05T11:18:22.711316+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-004 Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+      "description": "Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+      "source_task_id": "TASK-004",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-004"
+      ],
+      "mapped_scenario_ids": [
+        "SC-004"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711322+00:00",
+      "completed_at": "2026-06-05T11:18:22.711324+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-005 Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+      "description": "Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+      "source_task_id": "TASK-005",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-005"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711330+00:00",
+      "completed_at": "2026-06-05T11:18:22.711331+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-006 Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+      "description": "Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+      "source_task_id": "TASK-006",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-006"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711337+00:00",
+      "completed_at": "2026-06-05T11:18:22.711339+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "TASK-007 Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+      "description": "Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+      "source_task_id": "TASK-007",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008",
+        "TC-008"
+      ],
+      "mapped_scenario_ids": [
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711345+00:00",
+      "completed_at": "2026-06-05T11:18:22.711346+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "TASK-008 Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+      "description": "Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+      "source_task_id": "TASK-008",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-009"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711352+00:00",
+      "completed_at": "2026-06-05T11:18:22.711353+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "TASK-009 Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+      "description": "Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+      "source_task_id": "TASK-009",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010",
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-010",
+        "TEST-007",
+        "TC-007",
+        "TC-010"
+      ],
+      "mapped_scenario_ids": [
+        "SC-007",
+        "SC-010"
+      ],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260605T111821Z-1575",
+        ".beacon/qa/features/code2truth-project-intake/matrix.qa9.json",
+        ".beacon/qa/status.json",
+        ".beacon/qa/current-session.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260605T192323567734/summary.json",
+        ".beacon/flaky-history.json",
+        ".beacon/evidence-signature-chain.json",
+        "verify:run-20260605T192323567734",
+        ".beacon/auto-test-status.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/code2truth-project-intake/ac-closure.json",
+        ".beacon/qa/features/code2truth-project-intake/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:review.accept"
+      ],
+      "changed_files": [
+        "beacon/cli_factory.py",
+        "beacon/command_catalog.py",
+        "beacon/commands/freeze.py",
+        "beacon/utils/implement_adapters.py",
+        "beacon/utils/implement_prompt_boundary.py",
+        "beacon/utils/qa_feature.py",
+        "beacon/utils/subagent_readiness.py",
+        "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-host.json",
+        "docs/beacon/v1.5.2/.machine/requirement/feature-package-validation.json",
+        "docs/beacon/v1.5.2/execution/architecture-blueprint.md"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-05T11:18:22.711359+00:00",
+      "completed_at": "2026-06-05T11:18:22.711361+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "code2truth-project-intake",
+    "feature_slug": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.5.2/features/code2truth-project-intake/tasks.md",
+    "task_count": 9,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-001",
+        "title": "Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-002",
+        "title": "Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-003",
+        "title": "Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-004",
+        "title": "Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-005",
+        "title": "Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-006",
+        "title": "Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-007",
+        "title": "Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-008",
+        "title": "Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-009",
+        "title": "Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+        "description": "Define the source inventory model for code, docs, skills, tests, CLI behavior, Beacon source maps, and provider artifacts.",
+        "source_task_id": "TASK-001",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+        "description": "Define provider authority boundaries for `qi-dev-understand-anything` / Understand-Anything and similar code-map tools.",
+        "source_task_id": "TASK-002",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+        "description": "Define candidate truth reconstruction with source refs, confidence, and ambiguity markers.",
+        "source_task_id": "TASK-003",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+        "description": "Require user confirmation before candidate truth can be promoted into package-authoritative truth.",
+        "source_task_id": "TASK-004",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+        "description": "Freeze package authority through `truth-map` selected `truth.md`, `tests.md`, `tasks.md`, and `evidence.md`.",
+        "source_task_id": "TASK-005",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+        "description": "Define implement no-op/evidence-only admission when existing code satisfies frozen truth.",
+        "source_task_id": "TASK-006",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-007",
+        "title": "Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+        "description": "Define QA coverage for package truth, provider evidence, governance verify, and current behavior satisfaction.",
+        "source_task_id": "TASK-007",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-008",
+        "title": "Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+        "description": "Preserve fail-closed routing for ambiguous, stale, conflicting, low-confidence, or unproven behavior.",
+        "source_task_id": "TASK-008",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-009",
+        "title": "Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+        "description": "Support a bounded pilot on an existing project or skill pack before whole-repo adoption.",
+        "source_task_id": "TASK-009",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "code2truth-project-intake",
+    "feature_slug": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 10,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "candidate-truth-reconstruction",
+        "text": "Intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::candidate-truth-reconstruction::intake must reconstruct candidate truth with source refs, confidence, and ambiguity markers for each material claim.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "existing-project-pilot",
+        "text": "The intake model must support a bounded pilot on an existing skill project such as `/Users/apple/Developer/Personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::existing-project-pilot::the intake model must support a bounded pilot on an existing skill project such as `/users/apple/developer/personal/products/justin-mc-lai-skills`, preferably by one skill pack before whole-repo adoption.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "fail-closed-ambiguity",
+        "text": "Ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::fail-closed-ambiguity::ambiguous, stale, conflicting, low-confidence, or unproven behavior must fail closed into questions, exclusions, or change routing instead of freezing as authoritative truth.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "implement-no-op-admission",
+        "text": "`beacon implement` may complete as no-op/evidence-only execution when frozen ACs are already satisfied by existing code and every task has evidence-backed closure.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::implement-no-op-admission::`beacon implement` may complete as no-op/evidence-only execution when frozen acs are already satisfied by existing code and every task has evidence-backed closure.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "package-authority",
+        "text": "The frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated JSON, legacy triptych, provider graphs, and support research cannot win authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::package-authority::the frozen truth source must be resolver-selected `features/<slug>/{truth,tests,tasks,evidence}.md`; generated json, legacy triptych, provider graphs, and support research cannot win authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "provider-evidence-boundary",
+        "text": "Third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::provider-evidence-boundary::third-party or local code-map providers such as `qi-dev-understand-anything` must be treated as evidence providers only, never as requirement authority.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "qa-truth-governance-verification",
+        "text": "`beacon QA` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::qa-truth-governance-verification::`beacon qa` must validate truth-map resolution, package coverage, evidence refs, provider boundary, governance/doctor verification, and current behavior satisfaction.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "source-inventory",
+        "text": "Code2truth intake must build a source inventory from existing code, docs, skills, tests, CLI behavior, Beacon lighthouse/source-architecture outputs, and available provider artifacts.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::source-inventory::code2truth intake must build a source inventory from existing code, docs, skills, tests, cli behavior, beacon lighthouse/source-architecture outputs, and available provider artifacts.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "tasks-evidence-closure",
+        "text": "`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::tasks-evidence-closure::`tasks.md` must express implementation intent and may mark existing-code satisfaction through evidence refs; it must not fake source churn or replace execution/gate evidence.::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "user-confirmation-gate",
+        "text": "Candidate truth can become formal truth only after user confirmation and governed promotion into the Beacon feature package.",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.5.2/features/code2truth-project-intake/truth.md",
+        "signature": "ac::::user-confirmation-gate::candidate truth can become formal truth only after user confirmation and governed promotion into the beacon feature package.::"
+      }
+    ],
+    "current_baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+    "source_baseline_hash": "sha256:0ae70798c1f77d0db999d18f8931713d19e13fdbabc359172216798fc8abd071",
+    "story_state_ref": "docs/beacon/v1.5.2/.machine/user-story/code2truth-project-intake.json",
+    "generated_at": "2026-06-05T11:27:58.813903+00:00",
+    "json_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-code2truth-project-intake.json",
+    "markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-code2truth-project-intake.md"
+  },
+  "revision_delta_ref": "docs/beacon/v1.5.2/.machine/execution/revision-delta-code2truth-project-intake.json",
+  "revision_delta_markdown_ref": "docs/beacon/v1.5.2/execution/revision-delta-code2truth-project-intake.md",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"code2truth-project-intake\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "run_command": "beacon implement team-run \"code2truth-project-intake\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "dev_run_command": "beacon implement dev-run \"code2truth-project-intake\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "ralph_command": "beacon implement run \"code2truth-project-intake\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"code2truth-project-intake\" --project /Users/apple/Developer/Personal/products/beacon --version v1.5.2",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "code2truth-project-intake",
+    "feature_slug": "code2truth-project-intake",
+    "version": "v1.5.2",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.5.2",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.5.2.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-05T11:27:58.837570+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.5.2-code2truth-project-intake-R2",
+    "transaction_id": "tx-23317ccf9b6db3f83",
+    "source_hash": "sha256:ee503e159c6e4d56a884ecb92821e967b26e33587bdf9ae8fc4960ce741ba2a6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-code2truth-project-intake.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.5.2/.machine/execution/git-workflow-code2truth-project-intake.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.5.2/execution/git-workflow-code2truth-project-intake.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.5.2",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {},
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.5.2-code2truth-project-intake-R2",
+    "transaction_id": "tx-23317ccf9b6db3f83",
+    "source_hash": "sha256:ee503e159c6e4d56a884ecb92821e967b26e33587bdf9ae8fc4960ce741ba2a6",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-code2truth-project-intake.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.5.2/.machine/execution/implementation-delivery-baseline-code2truth-project-intake.json",
+  "generated_at": "2026-06-05T11:27:58.962085+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.5.2-code2truth-project-intake-R2",
+  "transaction_id": "tx-23317ccf9b6db3f83",
+  "source_hash": "sha256:ee503e159c6e4d56a884ecb92821e967b26e33587bdf9ae8fc4960ce741ba2a6",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-05T11:27:58.962130+00:00"
+}
