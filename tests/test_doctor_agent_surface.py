@@ -178,7 +178,7 @@ def test_setup_agent_surface_v160_should_materialize_harness_taxonomy(tmp_path: 
 
     state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
     assert state["agents"]["codex"]["taxonomy_version"] == "v1.6.0"
-    assert state["agents"]["codex"]["source_kind"] == "generated_v160_harness_taxonomy"
+    assert state["agents"]["codex"]["source_kind"] == "migrated_v160_harness_taxonomy_preserve_skill_content"
 
 
 def test_verify_agent_surface_v160_should_pass_after_setup(tmp_path: Path):
@@ -237,7 +237,7 @@ def test_verify_agent_surface_v160_should_fail_when_hard_gate_is_missing(tmp_pat
     skill_path = tmp_path / ".agents" / "skills" / "beacon-generator-implementation" / "SKILL.md"
     skill_text = skill_path.read_text(encoding="utf-8")
     start = skill_text.index("HARD GATE:")
-    end = skill_text.index("## 职责")
+    end = skill_text.index("## v1.6.0 Harness Migration")
     skill_path.write_text(skill_text[:start] + skill_text[end:], encoding="utf-8")
 
     verify = _invoke(

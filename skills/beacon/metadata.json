@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "name": "beacon",
   "version": "v1.6.0",
-  "source_kind": "generated_v160_harness_taxonomy",
+  "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content",
   "generated_at": "2026-06-08T08:18:40.734404+00:00",
   "expected_skill_count": 41,
   "host_visible_skill_names": [
@@ -343,5 +343,14 @@
     }
   ],
   "authority": "generated_skill_package",
-  "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+  "content_preservation": {
+    "policy": "new harness skill directories preserve full pre-v1.6.0 SKILL.md body plus v1.6.0 preamble and HARD GATE",
+    "baseline_ref": "main:skills/beacon",
+    "legacy_truth_refs": [
+      "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-prd.md",
+      "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-user-story.md",
+      "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-test-case.md"
+    ]
+  }
 }

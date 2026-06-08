@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Use `single` for small, low-risk, clearly scoped implementation under `beacon-generator-implementation`.
+Use `single` for small, low-risk, clearly scoped implementation under the single public `beacon-generator-implementation` skill.
 
 ## Admission
 

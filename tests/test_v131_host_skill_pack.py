@@ -72,7 +72,7 @@ def test_packaged_beacon_metadata_should_match_current_package_version():
     payload = json.loads(metadata.read_text(encoding="utf-8"))
     assert payload["name"] == "beacon"
     assert payload["version"] == "v1.6.0"
-    assert payload["source_kind"] == "generated_v160_harness_taxonomy"
+    assert payload["source_kind"] == "migrated_v160_harness_taxonomy_preserve_skill_content"
 
 
 def test_v131_docs_should_reference_host_skill_pack_and_public_skill_names():

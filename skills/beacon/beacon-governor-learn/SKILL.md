@@ -1,9 +1,44 @@
 ---
 name: beacon-governor-learn
-description: Beacon v1.6.0 governor skill。用于受治理学习；必须遵守共享 preamble 和 HARD GATE，不能越过本 harness 边界。
+description: Beacon v1.6.0 governor skill migrated from `beacon-learn`. Use when the user wants Beacon to recall, audit, or prune learning as a governed decision input instead of passive memory storage.
 ---
 
 # Beacon Governor Learn
+
+This skill is a host-visible learning governance surface.
+
+It makes learning visible and auditable, while keeping learning advisory rather than truth-defining.
+
+## Use for
+
+- recall prior learning into current routing
+- audit which learning influenced a decision
+- prune stale or conflicting learning
+
+## Operator rule
+
+Prefer:
+
+```bash
+beacon recall governed "<feature>" --project . --version auto --mode audit --json
+```
+
+Use `beacon-help` or `beacon-status` after recall when the operator needs route explanation.
+
+## Boundary
+
+- does not directly modify requirement truth
+- does not define QA or release verdict
+- stale/conflicting learning must be surfaced, not silently trusted
+
+## Examples
+
+- 适用例：
+  - “我想知道之前哪些 learning 正在影响这次 route 判断。”
+  - “这批 learning 可能过时了，先帮我 audit 或 prune。”
+- 不适用例：
+  - “我想直接靠 learning 判 release pass/fail。” -> 这不属于 `beacon-governor-learn`
+
 
 ## Beacon v1.6.0 共享 Preamble
 
@@ -18,6 +53,14 @@ HARD GATE:
 禁止定义 requirement truth，禁止执行 implementation，禁止给 QA/release verdict，禁止成为主生命周期 stage。
 你的唯一产出是 context/metadata/archive/hooks/automation/status/diagnostic support。
 如发现 truth、implementation 或 gate 问题，只能路由。
+
+## v1.6.0 Harness Migration
+
+- Harness：`governor`。
+- 来源迁移：`beacon-learn` -> `beacon-governor-learn`。
+- 主要作用：受治理学习。
+- 兼容说明：旧 skill 的专业正文、workflow、boundary、verification、evidence 和附属资产在本目录内保留；旧名称不再作为 host-visible skill 目录出现。
+
 
 ## 职责
 

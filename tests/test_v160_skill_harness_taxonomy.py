@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 
 from typer.testing import CliRunner
@@ -9,6 +10,10 @@ from beacon.main import app
 
 
 runner = CliRunner()
+
+ROOT = Path(__file__).resolve().parents[1]
+PRESERVED_SOURCE_KIND = "migrated_v160_harness_taxonomy_preserve_skill_content"
+LEGACY_SKILL_BASELINE = "main"
 
 
 def _invoke(args: list[str]):
@@ -75,12 +80,40 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     assert "Beacon v1.6.0 共享 Preamble" in source_driven
     assert "HARD GATE:" in source_driven
     assert "你正在运行 planner skill" in source_driven
-    assert "outcome、truth/source/evidence refs、湖/海" in source_driven
+    assert "源码和证据锚定分析" in source_driven
     assert source_driven.index("Beacon v1.6.0 共享 Preamble") < source_driven.index("HARD GATE:")
 
     metadata = json.loads((package_root / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["version"] == "v1.6.0"
-    assert metadata["source_kind"] == "generated_v160_harness_taxonomy"
+    assert metadata["source_kind"] == PRESERVED_SOURCE_KIND
+    assert metadata["content_preservation"]["policy"].startswith("new harness skill directories preserve full")
+
+    implementation = (package_root / "beacon-generator-implementation" / "SKILL.md").read_text(encoding="utf-8")
+    assert "PRODUCT.md / DESIGN.md" in implementation
+    assert "Beacon v1.6.0 共享 Preamble" in implementation
+    assert len(implementation.splitlines()) > 170
+
+
+def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
+    pairs = [
+        ("beacon-brainstorm", "beacon-planner-brainstorm", "read-only convergence surface"),
+        ("beacon-implement", "beacon-generator-implementation", "PRODUCT.md / DESIGN.md"),
+        ("beacon-qa", "beacon-evaluator-qa", "QA reads frozen requirement truth"),
+        ("beacon-release", "beacon-evaluator-release", "release readiness"),
+        ("using-beacon", "beacon-governor-router", "host-native route constitution"),
+    ]
+    for old_id, new_id, preserved_phrase in pairs:
+        old_text = subprocess.check_output(["git", "show", f"{LEGACY_SKILL_BASELINE}:skills/beacon/{old_id}/SKILL.md"], text=True)
+        new_text = (ROOT / "skills" / "beacon" / new_id / "SKILL.md").read_text(encoding="utf-8")
+        assert preserved_phrase in new_text
+        assert "Beacon v1.6.0 共享 Preamble" in new_text
+        assert "HARD GATE:" in new_text
+        assert len(new_text.splitlines()) >= len(old_text.splitlines())
+
+    truth_refs = ROOT / "skills" / "beacon" / "beacon-generator-truth-package" / "references"
+    assert (truth_refs / "legacy-beacon-prd.md").exists()
+    assert (truth_refs / "legacy-beacon-user-story.md").exists()
+    assert (truth_refs / "legacy-beacon-test-case.md").exists()
 
 
 def test_v160_skill_package_verify_should_fail_for_old_alias_and_missing_gate(tmp_path: Path) -> None:

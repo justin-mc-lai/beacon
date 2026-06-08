@@ -1,9 +1,68 @@
 ---
 name: beacon-generator-design-explore
-description: Beacon v1.6.0 generator skill。用于UI 方向探索；必须遵守共享 preamble 和 HARD GATE，不能越过本 harness 边界。
+description: Beacon v1.6.0 generator skill migrated from `beacon-design-explore`. Use when the user wants Beacon-owned support-only UI direction exploration through the deterministic `beacon design route explore` contract.
 ---
 
 # Beacon Generator Design Explore
+
+## Overview
+
+This is a host-visible child skill for the Beacon design `explore` route.
+
+It preserves the `vibe-to-ui` exploration capability while keeping output as design direction candidates until accepted facts are bound back to Beacon truth.
+
+## When to Use
+
+- UI direction exploration
+- concept direction comparison
+- information hierarchy sketching
+- layout model exploration
+- interaction model candidates
+
+## Boundary
+
+- not a truth source
+- not a gate source
+- not a new lifecycle stage
+- not a release verdict
+- support-only design exploration
+- does not replace `beacon-design`
+- does not treat `vibe-to-ui` output as Beacon truth
+
+## Workflow / Decision Loop
+
+- run or reason against `beacon design route explore "<feature>" --project . --version auto --json`
+- produce concept directions, hierarchy options, layout models, and interaction candidates
+- route accepted prototype input to `beacon prototype adapt`
+- route promise-changing facts to `beacon change ... --refreeze-chain`
+- hand off to `beacon implement` only after accepted facts are truth-bound
+
+## Verification
+
+- route payload reports `route=beacon-generator-design-explore`, `intent=explore`, and `upstream=vibe-to-ui`
+- route payload marks `support_only=true`, `truth_source=false`, `gate_source=false`, and `lifecycle_stage=false`
+- accepted design facts have a truth-binding route before implementation
+
+## Operator Rule
+
+Prefer:
+
+```bash
+beacon design route explore "<feature>" --project . --version auto --json
+```
+
+If a design result is accepted:
+
+```bash
+beacon prototype adapt "<feature>" --project . --version auto --design-result-ref <accepted-design-result>
+```
+
+If design facts change product promise, behavior, AC, or QA coverage:
+
+```bash
+beacon change "<feature>" --project . --version auto --reason "accepted design truth changed requirement promise" --refreeze-chain
+```
+
 
 ## Beacon v1.6.0 共享 Preamble
 
@@ -18,6 +77,14 @@ HARD GATE:
 禁止自证完成，禁止给 QA/release verdict，禁止把 placeholder/docs-only/fake-runner/zero-assertion/placeholder-evidence 当成交付闭环。
 只能在 resolver-selected truth、用户已接受 scope 和本 skill authority 内写 truth 或 delivery artifact。
 如需判断是否通过，必须路由到 evaluator。
+
+## v1.6.0 Harness Migration
+
+- Harness：`generator`。
+- 来源迁移：`beacon-design-explore` -> `beacon-generator-design-explore`。
+- 主要作用：UI 方向探索。
+- 兼容说明：旧 skill 的专业正文、workflow、boundary、verification、evidence 和附属资产在本目录内保留；旧名称不再作为 host-visible skill 目录出现。
+
 
 ## 职责
 

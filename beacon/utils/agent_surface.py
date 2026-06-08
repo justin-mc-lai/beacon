@@ -40,6 +40,11 @@ _V160_NO_FAKE_DELIVERY_TERMS = (
     "zero assertions",
     "placeholder evidence",
 )
+_V160_PACKAGE_SOURCE_KINDS = {
+    "generated_v160_harness_taxonomy",
+    "generated_v160_harness_taxonomy_fallback",
+    "migrated_v160_harness_taxonomy_preserve_skill_content",
+}
 
 
 @dataclass(frozen=True)
@@ -381,7 +386,20 @@ Ralph routes next action and evidence only; it never replaces QA, release, gate,
 
 def _v160_skill_projections() -> list[SkillProjection]:
     projections: list[SkillProjection] = []
+    source_root = packaged_beacon_skill_root()
     for row in _v160_rows():
+        source_skill = source_root / row["new"]
+        if (source_skill / "SKILL.md").exists():
+            projections.append(
+                SkillProjection(
+                    id=row["new"],
+                    source_path=str(source_skill.relative_to(source_root)),
+                    source_hash=_hash_directory(source_skill),
+                    source_kind="migrated_v160_harness_taxonomy_preserve_skill_content",
+                    source_dir=source_skill,
+                )
+            )
+            continue
         content = _render_v160_skill(row)
         extra_files = _v160_extra_skill_files(row["new"])
         projections.append(
@@ -389,7 +407,7 @@ def _v160_skill_projections() -> list[SkillProjection]:
                 id=row["new"],
                 source_path=row["old"],
                 source_hash=_projected_content_hash(row["new"], content, extra_files),
-                source_kind="generated_v160_harness_taxonomy",
+                source_kind="generated_v160_harness_taxonomy_fallback",
                 content=content,
                 files=extra_files,
             )
@@ -549,7 +567,7 @@ def materialize_v160_skill_package(
         "schema_version": "1.0",
         "name": "beacon",
         "version": _V160_TAXONOMY_VERSION,
-        "source_kind": "generated_v160_harness_taxonomy",
+        "source_kind": "migrated_v160_harness_taxonomy_preserve_skill_content",
         "generated_at": now_iso(),
         "expected_skill_count": len(expected_ids),
         "host_visible_skill_names": expected_ids,
@@ -557,6 +575,15 @@ def materialize_v160_skill_package(
         "rename_matrix": _v160_rows(),
         "authority": "generated_skill_package",
         "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+        "content_preservation": {
+            "policy": "new harness skill directories preserve full pre-v1.6.0 SKILL.md body plus v1.6.0 preamble and HARD GATE",
+            "baseline_ref": "main:skills/beacon",
+            "legacy_truth_refs": [
+                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-prd.md",
+                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-user-story.md",
+                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-test-case.md",
+            ],
+        },
     }
     metadata_path = package_root / "metadata.json"
     if not dry_run:
@@ -626,7 +653,7 @@ def verify_v160_skill_package(
         metadata_errors.append("metadata_missing")
     if metadata and str(metadata.get("version") or "") != _V160_TAXONOMY_VERSION:
         metadata_errors.append("metadata_version_mismatch")
-    if metadata and str(metadata.get("source_kind") or "") != "generated_v160_harness_taxonomy":
+    if metadata and str(metadata.get("source_kind") or "") not in _V160_PACKAGE_SOURCE_KINDS:
         metadata_errors.append("metadata_source_kind_mismatch")
 
     checks = [
@@ -1195,7 +1222,9 @@ def setup_agent_surface(
                 "surface_root": str(target.skills_root.relative_to(root)),
                 "rules_path": str(target.rules_path.relative_to(root)) if target.rules_path else "",
                 "source_root": str(source_root.relative_to(root)) if source_root.is_relative_to(root) else str(source_root),
-                "source_kind": "generated_v160_harness_taxonomy" if v160_taxonomy else "packaged_skill_directory",
+                "source_kind": (
+                    source_skills[0].source_kind if v160_taxonomy and source_skills else "packaged_skill_directory"
+                ),
                 "taxonomy_version": _V160_TAXONOMY_VERSION if v160_taxonomy else "",
                 "installed_skills": installed_state,
             },
