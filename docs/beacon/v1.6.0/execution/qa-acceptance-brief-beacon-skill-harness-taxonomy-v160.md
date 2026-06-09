@@ -2,9 +2,9 @@
 
 - version: `v1.6.0`
 - feature: `beacon-skill-harness-taxonomy-v160`
-- revision_id: `R7`
+- revision_id: `R8`
 - verdict: `passed`
-- accepted_at: `2026-06-08T14:04:34.856668+00:00`
+- accepted_at: `2026-06-09T03:40:53.617945+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -23,6 +23,7 @@
 ## Evidence Refs
 - `.beacon/auto-test-status.json`
 - `.beacon/qa/status.json`
+- `docs/beacon/v1.6.0/.machine/qa/beacon-skill-harness-taxonomy-v160.ac-test-matrix.json`
 - `.beacon/coverage-summary.json`
 - `.beacon/qa/features/beacon-skill-harness-taxonomy-v160/ac-closure.json`
 - `.beacon/qa/features/beacon-skill-harness-taxonomy-v160/scorecard.json`

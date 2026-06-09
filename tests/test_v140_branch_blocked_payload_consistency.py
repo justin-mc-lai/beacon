@@ -325,6 +325,11 @@ def test_qa_reused_existing_pass_payload_includes_decision_surface(tmp_path: Pat
     assert payload["guardrail_contract"]["blocked"] is False
     assert payload["guardrail_contract"]["fail_closed"] is True
     assert payload["message"] == "feature has no executable QA matrix entries; reused existing passed QA status"
+    assert payload["release_gate_report_path"] == ".beacon/release-gate-report.json"
+    release_gate_report = json.loads((tmp_path / ".beacon" / "release-gate-report.json").read_text(encoding="utf-8"))
+    assert release_gate_report["stage"] == "release"
+    assert release_gate_report["status"] == "Pass"
+    assert release_gate_report["blocked_count"] == 0
 
 
 def test_qa_up_to_date_payload_includes_decision_surface(tmp_path: Path, monkeypatch):

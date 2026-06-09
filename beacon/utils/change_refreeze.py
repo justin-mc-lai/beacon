@@ -136,6 +136,17 @@ def _revision_ref(state: dict[str, Any]) -> dict[str, str]:
     }
 
 
+def _uses_compact_skill_names(version: str) -> bool:
+    text = str(version or "").strip().lower().lstrip("v")
+    parts: list[int] = []
+    for raw in text.split(".")[:3]:
+        digits = "".join(ch for ch in raw if ch.isdigit())
+        parts.append(int(digits or "0"))
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts[:3]) >= (1, 6, 0)
+
+
 def _next_route_payload(
     *,
     project_root: Path,
@@ -144,14 +155,16 @@ def _next_route_payload(
     refreeze_status: str,
     blocked_reason: str,
 ) -> dict[str, Any]:
+    implement_surface = "beacon-gen-implement" if _uses_compact_skill_names(version) else "beacon-implement"
+    change_surface = "beacon-gen-change" if _uses_compact_skill_names(version) else "beacon-change"
     if refreeze_status == "complete":
         return {
-            "target_surface": "beacon-implement",
+            "target_surface": implement_surface,
             "command": f'beacon implement "{feature}" --project {project_root} --version {version}',
             "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth",
         }
     return {
-        "target_surface": "beacon-change",
+        "target_surface": change_surface,
         "command": f'beacon change "{feature}" --project {project_root} --version {version}',
         "why": blocked_reason or "refreeze transaction did not complete",
     }

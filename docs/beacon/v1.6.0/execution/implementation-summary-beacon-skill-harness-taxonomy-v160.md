@@ -8,7 +8,7 @@
 ## Scope
 
 - Added version-aware agent surface projection for v1.6.0.
-- Added generated `beacon-<harness>-<function>` skill materialization from the frozen Rename Matrix.
+- Added generated `beacon-<harness-code>-<function>` skill materialization from the frozen Rename Matrix.
 - Added shared Chinese Beacon v1.6.0 preamble generation.
 - Added harness-specific `HARD GATE` generation for planner/generator/evaluator/governor.
 - Added v1.6.0 verify checks for harness naming, old alias removal, shared preamble, hard gate position and gate content.
@@ -47,7 +47,7 @@
 
 - package_root: `docs/beacon/v1.6.0/.generated/skills/beacon`
 - skill_count: `41`
-- naming: only `beacon-planner-*`, `beacon-generator-*`, `beacon-evaluator-*`, `beacon-governor-*`
+- naming: only `beacon-pln-*`, `beacon-gen-*`, `beacon-eval-*`, `beacon-gov-*`
 - removed_alias_policy: old host-visible aliases are not emitted in the v1.6.0 package.
 - metadata: `docs/beacon/v1.6.0/.generated/skills/beacon/metadata.json`
 

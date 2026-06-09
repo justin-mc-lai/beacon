@@ -305,11 +305,11 @@ def test_skill_guidance_points_to_package_authoritative_truth_map_first() -> Non
     root = Path(__file__).resolve().parents[1]
     for rel in (
         "skills/beacon/SKILL.md",
-        "skills/beacon/beacon-generator-truth-package/SKILL.md",
-        "skills/beacon/beacon-generator-implementation/SKILL.md",
-        "skills/beacon/beacon-evaluator-qa/SKILL.md",
-        "skills/beacon/beacon-evaluator-release/SKILL.md",
-        "skills/beacon/beacon-planner-source-driven/SKILL.md",
+        "skills/beacon/beacon-gen-truth/SKILL.md",
+        "skills/beacon/beacon-gen-implement/SKILL.md",
+        "skills/beacon/beacon-eval-qa/SKILL.md",
+        "skills/beacon/beacon-eval-release/SKILL.md",
+        "skills/beacon/beacon-pln-source/SKILL.md",
     ):
         content = (root / rel).read_text(encoding="utf-8")
         normalized = content.lower()

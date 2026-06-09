@@ -138,9 +138,10 @@ def test_human_toolkit_commands(tmp_path: Path) -> None:
 
 
 def test_project_hooks_human_facing_skill_packaged() -> None:
-    skill_text = Path("skills/beacon/beacon-project-hooks/SKILL.md").read_text(encoding="utf-8")
+    skill_text = Path("skills/beacon/beacon-gov-hooks/SKILL.md").read_text(encoding="utf-8")
 
-    assert "name: beacon-project-hooks" in skill_text
+    assert "name: beacon-gov-hooks" in skill_text
+    assert "beacon-project-hooks` -> `beacon-gov-hooks" in skill_text
     assert "beacon hooks list --project ." in skill_text
     assert 'beacon hooks plan "<hook-id>" --project . --version <version> --feature "<feature>"' in skill_text
     assert 'beacon hooks run "<hook-id>" --project . --version <version> --feature "<feature>" --dry-run' in skill_text
@@ -190,7 +191,7 @@ def test_unsafe_hook_requests_fail_closed(tmp_path: Path) -> None:
 
 
 def test_explicit_gate_pytest_with_manual_confirmation_name_stays_automated() -> None:
-    qa_path = Path("docs/beacon/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md")
+    qa_path = Path("docs/beacon/archive/v1.4.10/qa/test-cases/project-lifecycle-hook-skill-toolkit-contract.md")
     rows = extract_qa_case_rows(qa_path.read_text(encoding="utf-8"), f"qa:test-cases:{qa_path}")
     entries = _build_entries_from_qa_case_rows(
         feature=FEATURE,

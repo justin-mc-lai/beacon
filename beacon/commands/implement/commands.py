@@ -123,6 +123,17 @@ from beacon.utils.writeback import record_implementation_writeback
 app = typer.Typer(name="implement", help="Run implementation via configured skill adapters")
 
 
+def _uses_compact_skill_names(version: str) -> bool:
+    text = str(version or "").strip().lower().lstrip("v")
+    parts: list[int] = []
+    for raw in text.split(".")[:3]:
+        digits = "".join(ch for ch in raw if ch.isdigit())
+        parts.append(int(digits or "0"))
+    while len(parts) < 3:
+        parts.append(0)
+    return tuple(parts[:3]) >= (1, 6, 0)
+
+
 def _with_implement_surface(
     payload: dict[str, Any],
     *,
@@ -4114,7 +4125,7 @@ def import_evidence(
         "feature_slug": slug,
         "version": resolved_version,
         "runner": "import-evidence",
-        "skill": "beacon-implement",
+        "skill": "beacon-gen-implement" if _uses_compact_skill_names(resolved_version) else "beacon-implement",
         "status": "completed",
         "imported": True,
         "source_refs": source_refs,
@@ -4148,7 +4159,7 @@ def import_evidence(
             "implementation_marker": str(marker.relative_to(project_root)),
             "writeback": writeback_payload,
             "next_route": {
-                "target_surface": "beacon-qa",
+                "target_surface": "beacon-eval-qa" if _uses_compact_skill_names(resolved_version) else "beacon-qa",
                 "command": f'beacon qa run "{feature}" --project {project_root} --version {resolved_version}',
             },
         },

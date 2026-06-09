@@ -8,14 +8,14 @@ from beacon import __version__
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_HOST_SKILLS = (
-    "beacon-planner-brainstorm",
-    "beacon-planner-source-driven",
-    "beacon-generator-truth-package",
-    "beacon-generator-implementation",
-    "beacon-evaluator-qa",
-    "beacon-evaluator-release",
-    "beacon-governor-router",
-    "beacon-governor-doctor",
+    "beacon-pln-brainstorm",
+    "beacon-pln-source",
+    "beacon-gen-truth",
+    "beacon-gen-implement",
+    "beacon-eval-qa",
+    "beacon-eval-release",
+    "beacon-gov-router",
+    "beacon-gov-doctor",
 )
 OLD_HOST_ALIASES = (
     "using-beacon",
@@ -51,10 +51,10 @@ def test_codex_install_doc_should_target_packaged_beacon_skill_root():
     assert "/absolute/path/to/beacon/skills/beacon" in text
     assert "~/.agents/skills/beacon" in text
     assert 'ln -s /absolute/path/to/beacon/skills/beacon ~/.codex/skills/beacon' not in text
-    assert "beacon-planner-*" in text
-    assert "beacon-generator-*" in text
-    assert "beacon-evaluator-*" in text
-    assert "beacon-governor-*" in text
+    assert "beacon-pln-*" in text
+    assert "beacon-gen-*" in text
+    assert "beacon-eval-*" in text
+    assert "beacon-gov-*" in text
 
 
 def test_claude_plugin_metadata_should_exist_for_beacon_host_pack():
@@ -85,7 +85,7 @@ def test_v131_docs_should_reference_host_skill_pack_and_public_skill_names():
     assert "project-skill-qa-evolution-blueprint.md" in index_doc
     assert "host-visible skills" in architecture
     assert "`skills/beacon/`: packaged host-visible skills." in architecture
-    assert "beacon-<harness>-<function>" in boundaries
+    assert "beacon-<harness-code>-<function>" in boundaries
     assert "Old host-visible skill aliases are not part of the v1.6.0 skill package." in boundaries
 
 

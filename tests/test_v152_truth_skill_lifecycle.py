@@ -17,27 +17,27 @@ def _read(path: Path) -> str:
 
 
 def test_beacon_truth_skill_exists_in_packaged_surface_as_v160_generator() -> None:
-    text = _read(PACKAGED / "beacon-generator-truth-package" / "SKILL.md")
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md")
     assert text.startswith("---\n")
-    assert "name: beacon-generator-truth-package" in text
+    assert "name: beacon-gen-truth" in text
     assert "Beacon v1.6.0 共享 Preamble" in text
     assert "HARD GATE:" in text
     assert "你正在运行 generator skill" in text
-    assert "beacon-truth` -> `beacon-generator-truth-package" in text
+    assert "beacon-truth` -> `beacon-gen-truth" in text
 
 
 def test_beacon_truth_preserves_distinct_change_and_refreeze_routes() -> None:
-    change = _read(PACKAGED / "beacon-generator-truth-change" / "SKILL.md")
-    refreeze = _read(PACKAGED / "beacon-generator-truth-refreeze" / "SKILL.md")
-    bootstrap = _read(PACKAGED / "beacon-generator-truth-bootstrap" / "SKILL.md")
-    assert "beacon-change` -> `beacon-generator-truth-change" in change
-    assert "beacon-change-refreeze` -> `beacon-generator-truth-refreeze" in refreeze
-    assert "beacon-prd-bootstrap` -> `beacon-generator-truth-bootstrap" in bootstrap
+    change = _read(PACKAGED / "beacon-gen-change" / "SKILL.md")
+    refreeze = _read(PACKAGED / "beacon-gen-refreeze" / "SKILL.md")
+    bootstrap = _read(PACKAGED / "beacon-gen-truth-init" / "SKILL.md")
+    assert "beacon-change` -> `beacon-gen-change" in change
+    assert "beacon-change-refreeze` -> `beacon-gen-refreeze" in refreeze
+    assert "beacon-prd-bootstrap` -> `beacon-gen-truth-init" in bootstrap
     assert "禁止自证完成" in change
 
 
 def test_beacon_truth_is_resolver_first_and_package_authoritative() -> None:
-    text = _read(PACKAGED / "beacon-generator-truth-package" / "SKILL.md")
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md")
     root_skill = _read(PACKAGED / "SKILL.md")
     assert "resolver-selected truth" in text
     assert "docs/beacon/<version>/research/<feature-slug>.md" in text
@@ -53,20 +53,20 @@ def test_legacy_truth_skills_are_removed_from_v160_packaged_surface() -> None:
 def test_root_and_brainstorm_prefer_truth_mode_lifecycle_language() -> None:
     root_skill = _read(PACKAGED / "SKILL.md")
     assert "plan -> truth -> generate -> evaluate -> release" in root_skill
-    assert "`beacon-generator-truth-package`" in root_skill
+    assert "`beacon-gen-truth`" in root_skill
     assert "Old host-visible aliases" in root_skill
 
-    brainstorm = _read(PACKAGED / "beacon-planner-brainstorm" / "SKILL.md")
+    brainstorm = _read(PACKAGED / "beacon-pln-brainstorm" / "SKILL.md")
     assert "你正在运行 planner skill" in brainstorm
     assert "route recommendation" in brainstorm
 
 
 def test_beacon_truth_does_not_inflate_support_or_gate_surfaces() -> None:
-    text = _read(PACKAGED / "beacon-generator-truth-package" / "SKILL.md").lower()
+    text = _read(PACKAGED / "beacon-gen-truth" / "SKILL.md").lower()
     assert "禁止自证完成" in text
     assert "禁止给 qa/release verdict" in text
     assert "fake-runner" in text
-    evaluator = _read(PACKAGED / "beacon-evaluator-qa" / "SKILL.md").lower()
+    evaluator = _read(PACKAGED / "beacon-eval-qa" / "SKILL.md").lower()
     assert "禁止改写 requirement truth" in evaluator
 
 

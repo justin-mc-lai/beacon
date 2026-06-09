@@ -35,7 +35,9 @@ truth-map resolver -> features/<slug>/{truth,tests,tasks,evidence}.md
 v1.6.0 host-visible skill names are intentionally breaking and use:
 
 ```text
-beacon-<harness>-<function>
+beacon-<harness-code>-<function>
 ```
+
+Harness codes are `pln`, `gen`, `eval`, and `gov`.
 
 Old host-visible skill aliases are not part of the v1.6.0 skill package.

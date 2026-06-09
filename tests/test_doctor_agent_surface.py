@@ -37,7 +37,7 @@ def test_setup_agent_surface_for_trae_should_materialize_host_visible_skills(tmp
     installed = payload["result"]["installed"]
     assert len(installed) == len(source_skills)
 
-    for skill_name in ("beacon-planner-brainstorm", "beacon-generator-implementation", "beacon-evaluator-qa", "beacon-governor-doctor"):
+    for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-gov-doctor"):
         assert (tmp_path / ".trae" / "skills" / skill_name / "SKILL.md").exists()
 
     rules_text = (tmp_path / ".trae" / "rules" / "project_rules.md").read_text(encoding="utf-8")
@@ -76,14 +76,14 @@ def test_setup_agent_surface_for_all_supported_hosts_should_materialize_host_vis
         assert payload["status"] == "PASS"
         installed_names = {item["id"] for item in payload["result"]["installed"]}
         assert expected_names <= installed_names
-        assert (skills_root / "beacon-planner-brainstorm" / "SKILL.md").exists()
-        assert (skills_root / "beacon-generator-implementation" / "SKILL.md").exists()
-        assert (skills_root / "beacon-evaluator-qa" / "SKILL.md").exists()
+        assert (skills_root / "beacon-pln-brainstorm" / "SKILL.md").exists()
+        assert (skills_root / "beacon-gen-implement" / "SKILL.md").exists()
+        assert (skills_root / "beacon-eval-qa" / "SKILL.md").exists()
 
         if rules_path is not None:
             rules_text = rules_path.read_text(encoding="utf-8")
             assert "Installed Beacon Skills" in rules_text
-            for skill_name in ("beacon-planner-brainstorm", "beacon-generator-implementation", "beacon-evaluator-qa", "beacon-evaluator-release"):
+            for skill_name in ("beacon-pln-brainstorm", "beacon-gen-implement", "beacon-eval-qa", "beacon-eval-release"):
                 assert f"`{skill_name}`" in rules_text
 
     state = json.loads((tmp_path / ".beacon" / "state" / "agent-surfaces.json").read_text(encoding="utf-8"))
@@ -107,7 +107,7 @@ def test_setup_agent_surface_should_accept_winsurf_alias(tmp_path: Path):
     assert result.exit_code == 0, result.stdout
     payload = json.loads(result.stdout)
     assert payload["result"]["agent"] == "windsurf"
-    assert (tmp_path / ".windsurf" / "skills" / "beacon-governor-router" / "SKILL.md").exists()
+    assert (tmp_path / ".windsurf" / "skills" / "beacon-gov-router" / "SKILL.md").exists()
 
 
 def test_verify_agent_surface_should_pass_after_setup(tmp_path: Path):
@@ -161,16 +161,16 @@ def test_setup_agent_surface_v160_should_materialize_harness_taxonomy(tmp_path: 
     assert payload["status"] == "PASS"
     installed_names = {item["id"] for item in payload["result"]["installed"]}
 
-    assert "beacon-planner-brainstorm" in installed_names
-    assert "beacon-generator-implementation" in installed_names
-    assert "beacon-evaluator-qa" in installed_names
-    assert "beacon-governor-doctor" in installed_names
+    assert "beacon-pln-brainstorm" in installed_names
+    assert "beacon-gen-implement" in installed_names
+    assert "beacon-eval-qa" in installed_names
+    assert "beacon-gov-doctor" in installed_names
     for old_name in ("beacon-brainstorm", "beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-implement", "beacon-qa", "beacon-release", "using-beacon"):
         assert old_name not in installed_names
         assert not (tmp_path / ".agents" / "skills" / old_name).exists()
 
-    skill_text = (tmp_path / ".agents" / "skills" / "beacon-planner-brainstorm" / "SKILL.md").read_text(encoding="utf-8")
-    assert "name: beacon-planner-brainstorm" in skill_text
+    skill_text = (tmp_path / ".agents" / "skills" / "beacon-pln-brainstorm" / "SKILL.md").read_text(encoding="utf-8")
+    assert "name: beacon-pln-brainstorm" in skill_text
     assert "Beacon v1.6.0 共享 Preamble" in skill_text
     assert "HARD GATE:" in skill_text
     assert "你正在运行 planner skill" in skill_text
@@ -217,6 +217,7 @@ def test_verify_agent_surface_v160_should_pass_after_setup(tmp_path: Path):
     assert checks["v160_harness_skill_names"]["status"] == "pass"
     assert checks["v160_no_old_host_visible_aliases"]["status"] == "pass"
     assert checks["v160_shared_preamble_and_hard_gates"]["status"] == "pass"
+    assert checks["v160_canonical_route_references"]["status"] == "pass"
 
 
 def test_verify_agent_surface_v160_should_fail_when_hard_gate_is_missing(tmp_path: Path):
@@ -234,7 +235,7 @@ def test_verify_agent_surface_v160_should_fail_when_hard_gate_is_missing(tmp_pat
     )
     assert setup.exit_code == 0, setup.stdout
 
-    skill_path = tmp_path / ".agents" / "skills" / "beacon-generator-implementation" / "SKILL.md"
+    skill_path = tmp_path / ".agents" / "skills" / "beacon-gen-implement" / "SKILL.md"
     skill_text = skill_path.read_text(encoding="utf-8")
     start = skill_text.index("HARD GATE:")
     end = skill_text.index("## v1.6.0 Harness Migration")
@@ -259,7 +260,7 @@ def test_verify_agent_surface_v160_should_fail_when_hard_gate_is_missing(tmp_pat
     assert payload["status"] == "BLOCKED"
     checks = {item["name"]: item for item in payload["result"]["checks"]}
     assert checks["v160_shared_preamble_and_hard_gates"]["status"] == "fail"
-    assert "beacon-generator-implementation" in checks["v160_shared_preamble_and_hard_gates"]["details"]["gate_errors"]
+    assert "beacon-gen-implement" in checks["v160_shared_preamble_and_hard_gates"]["details"]["gate_errors"]
 
 
 def test_verify_agent_surface_v160_should_fail_when_old_alias_exists(tmp_path: Path):
@@ -300,3 +301,47 @@ def test_verify_agent_surface_v160_should_fail_when_old_alias_exists(tmp_path: P
     checks = {item["name"]: item for item in payload["result"]["checks"]}
     assert checks["v160_no_old_host_visible_aliases"]["status"] == "fail"
     assert "beacon-qa" in checks["v160_no_old_host_visible_aliases"]["details"]["old_aliases"]
+
+
+def test_verify_agent_surface_v160_should_fail_when_stale_route_reference_exists(tmp_path: Path):
+    setup = _invoke(
+        [
+            "doctor",
+            "setup-agent-surface",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--agent",
+            "codex",
+        ]
+    )
+    assert setup.exit_code == 0, setup.stdout
+
+    skill_path = tmp_path / ".agents" / "skills" / "beacon-gov-router" / "SKILL.md"
+    skill_path.write_text(
+        skill_path.read_text(encoding="utf-8") + "\n- route to `beacon-release` for release judgment.\n",
+        encoding="utf-8",
+    )
+
+    verify = _invoke(
+        [
+            "doctor",
+            "verify-agent-surface",
+            "--project-root",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--agent",
+            "codex",
+            "--strict",
+            "--json",
+        ]
+    )
+    assert verify.exit_code == 2, verify.stdout
+    payload = json.loads(verify.stdout)
+    checks = {item["name"]: item for item in payload["result"]["checks"]}
+    assert checks["v160_canonical_route_references"]["status"] == "fail"
+    errors = checks["v160_canonical_route_references"]["details"]["route_errors"]
+    assert "beacon-gov-router" in errors
+    assert any("`beacon-release` should be `beacon-eval-release`" in item for item in errors["beacon-gov-router"])

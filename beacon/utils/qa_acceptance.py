@@ -341,15 +341,17 @@ def build_release_boundary_verdict(
 def build_qa_acceptance_capability_summary(
     *,
     profile: str = "complete",
+    required_layers: list[str] | None = None,
     browser_required: bool = False,
     executed_layers: list[str] | None = None,
     blocked_layers: list[str] | None = None,
     not_applicable_layers: dict[str, str] | None = None,
     browser_evidence: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    taxonomy = validate_qa_layer_taxonomy()
+    taxonomy = validate_qa_layer_taxonomy(required_layers or None)
     completeness = build_qa_profile_completeness(
         profile=profile,
+        required_layers=required_layers,
         executed_layers=executed_layers or [],
         blocked_layers=blocked_layers or [],
         not_applicable_layers=not_applicable_layers or {},

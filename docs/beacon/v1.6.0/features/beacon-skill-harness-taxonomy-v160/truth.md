@@ -18,18 +18,22 @@ truth_map_contract: beacon-truth-map-v1
 
 `beacon-skill-harness-taxonomy-v160` 定义 Beacon v1.6.0 的 breaking skill 分类体系。
 
-目标是用 harness-first 的命名和职责模型替换历史上混杂的 host-visible skill 名称：
+目标是用 compact harness-first 的命名和职责模型替换历史上混杂、过长或被 host autocomplete 截断的 host-visible skill 名称：
 
 ```text
-beacon-<harness>-<function>
+beacon-<harness-code>-<function-code>
 ```
 
-v1.6.0 接受的 harness 家族为：
+v1.6.0 接受的 harness 家族和 host-visible code 为：
 
-- `planner`：拆分粗提示词，判断湖/海规模，读取 truth/source/evidence，并推荐路由。
-- `generator`：在已接受的权限边界内创建或更新 truth、实现、原型、设计或交付产物。
-- `evaluator`：验证证据，识别漂移或假交付，并阻断或路由面向 release 的决策。
-- `governor`：维护 context、archive、memory、hooks、automation、metadata、status 和诊断脚手架。
+| Harness | Host-visible code | Role |
+|---|---|---|
+| `planner` | `pln` | 拆分粗提示词，判断湖/海规模，读取 truth/source/evidence，并推荐路由。 |
+| `generator` | `gen` | 在已接受的权限边界内创建或更新 truth、实现、原型、设计或交付产物。 |
+| `evaluator` | `eval` | 验证证据，识别漂移或假交付，并阻断或路由面向 release 的决策。 |
+| `governor` | `gov` | 维护 context、archive、memory、hooks、automation、metadata、status 和诊断脚手架。 |
+
+完整 harness 名称必须继续出现在 `SKILL.md` description、职责说明和 `HARD GATE` 中，作为语义边界；host-visible skill 目录名必须使用 compact code，避免 `$beacon...` 自动补全只显示重复前缀而隐藏功能词。
 
 ## 问题
 
@@ -37,13 +41,13 @@ Beacon v1.5.2 已完成 package-authoritative truth 切换，但 skill surface �
 
 这会让粗粒度用户提示词产生歧义。例如“帮我分析这个 feature”可能在 research、truth 编辑、implementation、QA 或 release 语言之间漂移，缺少稳定的角色边界。
 
-v1.6.0 必须在 skill 名称、共享 preamble 和 hard gate 中显式表达 harness 职责。
+v1.6.0 必须在 compact skill 名称、共享 preamble 和 hard gate 中显式表达 harness 职责，同时保证自动补全时能更早暴露功能词。
 
 ## 默认语言策略
 
 Beacon 需求真相默认使用中文表达。除非用户显式指定其他语言，v1.6.0 的 canonical requirement truth、acceptance criteria、test assertions、task ledger、migration docs 和 host-visible skill preamble 都应使用中文作为主语言。
 
-英文术语可作为稳定标识保留，例如 `truth-map resolver`、`features/<slug>/truth.md`、`beacon-<harness>-<function>`、`planner/generator/evaluator/governor`、`AC-*`、`TC-*` 和具体文件路径。英文术语只能辅助精确引用，不能让需求正文、验收语义或操作说明退回英文为主。
+英文术语可作为稳定标识保留，例如 `truth-map resolver`、`features/<slug>/truth.md`、`beacon-<harness-code>-<function-code>`、`planner/generator/evaluator/governor`、`pln/gen/eval/gov`、`AC-*`、`TC-*` 和具体文件路径。英文术语只能辅助精确引用，不能让需求正文、验收语义或操作说明退回英文为主。
 
 生成或迁移 v1.6.0 skill 时，若来源材料为英文，generator 必须把需求真相正文归一为中文；evaluator 必须把“需求真相主语言不是中文”识别为阻断项，除非存在用户明确的非中文例外。
 
@@ -117,7 +121,7 @@ Planner research closure 只能有以下状态：
 ```text
 research/support_advisory
 -> user_decision = accepted/promoted
--> beacon-generator-truth-change 或 beacon-generator-truth-refreeze
+-> beacon-gen-change 或 beacon-gen-refreeze
 -> features/<slug>/{truth,tests,tasks,evidence}.md
 -> requirement_clarity
 -> freeze
@@ -244,7 +248,7 @@ Benchmark 对照规则：
 - Grader 必须能识别 placeholder implementation、docs-only completion、fake runner evidence、zero assertions、placeholder evidence 和 weak assertions。
 - Analyzer 必须产出跨 case 结论，说明哪些 AC/TC 已由行为证据覆盖，哪些仍只由静态扫描覆盖。
 
-Benchmark artifact 是 runtime process record，不要求 Markdown twin，也不能替代 `features/<slug>/{truth,tests,tasks,evidence}.md`、`beacon skill package verify`、`doctor verify-agent-surface` 或 formal `beacon-evaluator-qa` verdict。
+Benchmark artifact 是 runtime process record，不要求 Markdown twin，也不能替代 `features/<slug>/{truth,tests,tasks,evidence}.md`、`beacon skill package verify`、`doctor verify-agent-surface` 或 formal `beacon-eval-qa` verdict。
 
 ## Harness 边界
 
@@ -315,13 +319,13 @@ Governor skills 禁止：
 v1.6.0 host-visible skills 必须使用：
 
 ```text
-beacon-planner-*
-beacon-generator-*
-beacon-evaluator-*
-beacon-governor-*
+beacon-pln-*
+beacon-gen-*
+beacon-eval-*
+beacon-gov-*
 ```
 
-v1.6.0 host-visible skill package 不得保留旧 skill alias。如果临时需要 CLI 兼容，它属于 CLI migration tooling 或 registry，而不是 host-visible skill names。
+v1.6.0 host-visible skill package 不得保留旧 skill alias，也不得把第一版完整 harness 长名作为 canonical host-visible alias 保留。如果临时需要 CLI 兼容，它属于 CLI migration tooling 或 registry，而不是 host-visible skill names。
 
 ## Skill Rename Rewrite Contract
 
@@ -329,12 +333,13 @@ v1.6.0 skill 改名必须是生成式迁移，不是手工散改。迁移器必�
 
 改写规则：
 
-- 新 skill 目录名必须等于 `beacon-<harness>-<function>`。
+- 新 skill 目录名必须等于 `beacon-<harness-code>-<function-code>`。
+- harness code 只能是 `pln/gen/eval/gov`，并分别映射到完整 harness `planner/generator/evaluator/governor`。
 - `SKILL.md` frontmatter 的 `name` 必须等于新目录名。
-- `description` 必须使用中文主语言，并说明 harness 职责、使用场景和不能越权的边界。
+- `description` 必须使用中文主语言，并说明完整 harness 职责、使用场景和不能越权的边界。
 - skill 正文必须包含 v1.6.0 共享 preamble。
 - skill 正文必须包含 harness boundary：planner 不写 truth/implementation/gate；generator 不自证完成；evaluator 不改 truth/implementation；governor 不成为主链 stage。
-- 旧 host-visible skill 目录不得留作 alias、wrapper 或 duplicate skill。
+- 旧 host-visible skill 目录和第一版完整 harness 长目录不得留作 alias、wrapper 或 duplicate skill。
 - 如果 CLI 命令仍需临时兼容旧名字，兼容只能出现在 CLI registry/migration tooling，不能出现在 host-visible skill package。
 - 迁移完成后，agent surface verify 必须以新 skill 名为 expected set；旧 expected set 必须失败或不存在。
 - 文档中的旧 skill 名只能出现在 migration mapping、archive 或 release note，不得作为推荐入口。
@@ -350,52 +355,52 @@ v1.6.0 skill 改名必须是生成式迁移，不是手工散改。迁移器必�
 
 ## Rename Matrix
 
-| Current skill | v1.6.0 skill | Harness | Role |
-|---|---|---|---|
-| `beacon-brainstorm` | `beacon-planner-brainstorm` | planner | Rough prompt decomposition and route convergence |
-| `beacon-deep` | `beacon-planner-deep-analysis` | planner | Complex state/risk/test-delta analysis |
-| `beacon-friction-intake` | `beacon-planner-friction-intake` | planner | Friction capture and queue-only governance |
-| `beacon-ceo-review` | `beacon-planner-founder-review` | planner | Founder/business challenge |
-| `beacon-design-review` | `beacon-planner-design-review` | planner | UX/design challenge |
-| `beacon-security-review` | `beacon-planner-security-review` | planner | Security challenge |
-| `beacon-performance-review` | `beacon-planner-performance-review` | planner | Performance challenge |
-| `beacon-doubt-review` | `beacon-planner-doubt-review` | planner | Assumption challenge |
-| `beacon-source-driven` | `beacon-planner-source-driven` | planner | Source evidence anchoring |
-| `beacon-context-engineering` | `beacon-planner-context-engineering` | planner | Context reshaping |
-| `beacon-truth` | `beacon-generator-truth-package` | generator | Package-authoritative truth umbrella |
-| `beacon-prd` | remove or absorb into `beacon-generator-truth-package` | generator | Legacy truth drafting concept |
-| `beacon-user-story` | remove or absorb into `beacon-generator-truth-package` | generator | Legacy acceptance concept |
-| `beacon-test-case` | remove or absorb into `beacon-generator-truth-package` | generator | Legacy coverage concept |
-| `beacon-prd-bootstrap` | `beacon-generator-truth-bootstrap` | generator | Package bootstrap |
-| `beacon-change` | `beacon-generator-truth-change` | generator | Governed truth change |
-| `beacon-change-refreeze` | `beacon-generator-truth-refreeze` | generator | Governed refreeze chain |
-| `beacon-prototype` | `beacon-generator-prototype-binding` | generator | Accepted UI/UX result binding |
-| `beacon-implement` | `beacon-generator-implementation` | generator | Implementation planning/execution |
-| `beacon-design` | `beacon-generator-design-support` | generator | Design support umbrella |
-| `beacon-design-bootstrap` | `beacon-generator-design-bootstrap` | generator | Design capability admission |
-| `beacon-design-explore` | `beacon-generator-design-explore` | generator | UI direction exploration |
-| `beacon-design-system` | `beacon-generator-design-system` | generator | Component system planning |
-| `beacon-design-polish` | `beacon-generator-design-polish` | generator | UI polish support |
-| `beacon-design-library` | `beacon-governor-design-library` | governor | Reference lookup |
-| `beacon-design-extract` | `beacon-governor-design-extract` | governor | Screenshot/reference extraction |
-| `beacon-design-simplify` | `beacon-planner-design-simplify` | planner | Simplicity audit |
-| `beacon-qa` | `beacon-evaluator-qa` | evaluator | Acceptance verification |
-| `beacon-qa-evo-deep` | `beacon-evaluator-qa-deep` | evaluator | Deep QA support findings |
-| `beacon-release` | `beacon-evaluator-release` | evaluator | Release readiness |
-| `beacon-real-project-validation` | `beacon-evaluator-real-project` | evaluator | Real project release proof |
-| `beacon-documentation-adr` | `beacon-planner-documentation-adr` | planner | ADR/documentation clarity |
-| `beacon-doctor` | `beacon-governor-doctor` | governor | Context/environment repair |
-| `beacon-debug-recovery` | `beacon-governor-debug-recovery` | governor | Blocker recovery |
-| `beacon-status` | `beacon-governor-status` | governor | Board and state visibility |
-| `beacon-help` | `beacon-governor-help` | governor | Next-step guidance |
-| `beacon-archive` | `beacon-governor-archive` | governor | Historical truth isolation |
-| `beacon-learn` | `beacon-governor-learn` | governor | Governed learning |
-| `beacon-project-hooks` | `beacon-governor-hooks` | governor | Lifecycle hook contracts |
-| `beacon-toolkit-automation` | `beacon-governor-automation` | governor | Scheduled automation assets |
-| `beacon-toolkit-branch-governance` | `beacon-governor-branch` | governor | Branch/worktree governance |
-| `beacon-toolkit-lighthouse` | `beacon-governor-lighthouse` | governor | Fast source/repo analysis |
-| `beacon-toolkit-metadata` | `beacon-governor-metadata` | governor | Deterministic metadata tooling |
-| `using-beacon` | remove or replace with `beacon-governor-router` | governor | Host-level router |
+| Legacy skill | Previous full-harness v1.6.0 name | Compact canonical v1.6.0 skill | Harness | Role |
+|---|---|---|---|---|
+| `beacon-brainstorm` | `beacon-planner-brainstorm` | `beacon-pln-brainstorm` | planner | Rough prompt decomposition and route convergence |
+| `beacon-deep` | `beacon-planner-deep-analysis` | `beacon-pln-deep` | planner | Complex state/risk/test-delta analysis |
+| `beacon-friction-intake` | `beacon-planner-friction-intake` | `beacon-pln-friction` | planner | Friction capture and queue-only governance |
+| `beacon-ceo-review` | `beacon-planner-founder-review` | `beacon-pln-founder` | planner | Founder/business challenge |
+| `beacon-design-review` | `beacon-planner-design-review` | `beacon-pln-design` | planner | UX/design challenge |
+| `beacon-security-review` | `beacon-planner-security-review` | `beacon-pln-security` | planner | Security challenge |
+| `beacon-performance-review` | `beacon-planner-performance-review` | `beacon-pln-performance` | planner | Performance challenge |
+| `beacon-doubt-review` | `beacon-planner-doubt-review` | `beacon-pln-doubt` | planner | Assumption challenge |
+| `beacon-source-driven` | `beacon-planner-source-driven` | `beacon-pln-source` | planner | Source evidence anchoring |
+| `beacon-context-engineering` | `beacon-planner-context-engineering` | `beacon-pln-context` | planner | Context reshaping |
+| `beacon-design-simplify` | `beacon-planner-design-simplify` | `beacon-pln-simplify` | planner | Simplicity audit |
+| `beacon-documentation-adr` | `beacon-planner-documentation-adr` | `beacon-pln-adr` | planner | ADR/documentation clarity |
+| `beacon-truth` | `beacon-generator-truth-package` | `beacon-gen-truth` | generator | Package-authoritative truth umbrella |
+| `beacon-prd` | remove or absorb into `beacon-generator-truth-package` | remove or absorb into `beacon-gen-truth` | generator | Legacy truth drafting concept |
+| `beacon-user-story` | remove or absorb into `beacon-generator-truth-package` | remove or absorb into `beacon-gen-truth` | generator | Legacy acceptance concept |
+| `beacon-test-case` | remove or absorb into `beacon-generator-truth-package` | remove or absorb into `beacon-gen-truth` | generator | Legacy coverage concept |
+| `beacon-prd-bootstrap` | `beacon-generator-truth-bootstrap` | `beacon-gen-truth-init` | generator | Package bootstrap |
+| `beacon-change` | `beacon-generator-truth-change` | `beacon-gen-change` | generator | Governed truth change |
+| `beacon-change-refreeze` | `beacon-generator-truth-refreeze` | `beacon-gen-refreeze` | generator | Governed refreeze chain |
+| `beacon-prototype` | `beacon-generator-prototype-binding` | `beacon-gen-prototype` | generator | Accepted UI/UX result binding |
+| `beacon-implement` | `beacon-generator-implementation` | `beacon-gen-implement` | generator | Implementation planning/execution |
+| `beacon-design` | `beacon-generator-design-support` | `beacon-gen-design` | generator | Design support umbrella |
+| `beacon-design-bootstrap` | `beacon-generator-design-bootstrap` | `beacon-gen-design-init` | generator | Design capability admission |
+| `beacon-design-explore` | `beacon-generator-design-explore` | `beacon-gen-design-explore` | generator | UI direction exploration |
+| `beacon-design-system` | `beacon-generator-design-system` | `beacon-gen-design-system` | generator | Component system planning |
+| `beacon-design-polish` | `beacon-generator-design-polish` | `beacon-gen-design-polish` | generator | UI polish support |
+| `beacon-qa` | `beacon-evaluator-qa` | `beacon-eval-qa` | evaluator | Acceptance verification |
+| `beacon-qa-evo-deep` | `beacon-evaluator-qa-deep` | `beacon-eval-qa-deep` | evaluator | Deep QA support findings |
+| `beacon-release` | `beacon-evaluator-release` | `beacon-eval-release` | evaluator | Release readiness |
+| `beacon-real-project-validation` | `beacon-evaluator-real-project` | `beacon-eval-real-project` | evaluator | Real project release proof |
+| `beacon-design-library` | `beacon-governor-design-library` | `beacon-gov-library` | governor | Reference lookup |
+| `beacon-design-extract` | `beacon-governor-design-extract` | `beacon-gov-extract` | governor | Screenshot/reference extraction |
+| `beacon-doctor` | `beacon-governor-doctor` | `beacon-gov-doctor` | governor | Context/environment repair |
+| `beacon-debug-recovery` | `beacon-governor-debug-recovery` | `beacon-gov-debug` | governor | Blocker recovery |
+| `beacon-status` | `beacon-governor-status` | `beacon-gov-status` | governor | Board and state visibility |
+| `beacon-help` | `beacon-governor-help` | `beacon-gov-help` | governor | Next-step guidance |
+| `beacon-archive` | `beacon-governor-archive` | `beacon-gov-archive` | governor | Historical truth isolation |
+| `beacon-learn` | `beacon-governor-learn` | `beacon-gov-learn` | governor | Governed learning |
+| `beacon-project-hooks` | `beacon-governor-hooks` | `beacon-gov-hooks` | governor | Lifecycle hook contracts |
+| `beacon-toolkit-automation` | `beacon-governor-automation` | `beacon-gov-automation` | governor | Scheduled automation assets |
+| `beacon-toolkit-branch-governance` | `beacon-governor-branch` | `beacon-gov-branch` | governor | Branch/worktree governance |
+| `beacon-toolkit-lighthouse` | `beacon-governor-lighthouse` | `beacon-gov-lighthouse` | governor | Fast source/repo analysis |
+| `beacon-toolkit-metadata` | `beacon-governor-metadata` | `beacon-gov-metadata` | governor | Deterministic metadata tooling |
+| `using-beacon` | `beacon-governor-router` | `beacon-gov-router` | governor | Host-level router |
 
 ## 验收标准
 
@@ -403,7 +408,7 @@ v1.6.0 skill 改名必须是生成式迁移，不是手工散改。迁移器必�
 |-------|-------|-------------|
 | AC-001 | lifecycle-language | v1.6.0 用户可见文档把生命周期描述为 `plan -> truth -> generate -> evaluate -> release`，而不是 `prd -> user-story -> test-case`。 |
 | AC-002 | package-authority | v1.6.0 truth 仍由 resolver 选择的 `features/<slug>/{truth,tests,tasks,evidence}.md` 承载；generated JSON 和 legacy triptych surfaces 不能赢得 authority。 |
-| AC-003 | harness-prefix | 每个 v1.6.0 host-visible skill 都使用 `beacon-<harness>-<function>`，其中 harness 只能是 `planner/generator/evaluator/governor`。 |
+| AC-003 | compact-harness-prefix | 每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function-code>`，其中 harness code 只能是 `pln/gen/eval/gov`，并分别映射到 `planner/generator/evaluator/governor`。 |
 | AC-004 | no-old-skill-aliases | v1.6.0 host-visible skill package 不保留旧 skill aliases，例如 `beacon-brainstorm`、`beacon-prd`、`beacon-user-story`、`beacon-test-case`、`beacon-implement`、`beacon-qa` 或 `beacon-release`。 |
 | AC-005 | shared-preamble | 每个 v1.6.0 host-visible skill 都包含共享生成 preamble，覆盖湖/海、先搜再造、用户主权、不假交付和 harness 边界。 |
 | AC-006 | planner-hard-gate | Planner skills 只能产出 research/planning artifacts 和 route recommendations；不能写 implementation、frozen truth、QA verdicts 或 release verdicts。 |
@@ -415,8 +420,8 @@ v1.6.0 skill 改名必须是生成式迁移，不是手工散改。迁移器必�
 | AC-012 | migration-docs | Migration docs 必须定义 old-to-new skill mapping、旧 alias 移除、CLI compatibility boundary 和 operator next steps。 |
 | AC-013 | default-truth-language-zh | 除非用户显式指定其他语言，Beacon v1.6.0 的需求真相、验收标准、测试断言、任务台账、迁移说明和 host-visible skill preamble 默认以中文为主语言；英文只能作为稳定术语或路径标识保留。 |
 | AC-014 | planner-research-contract | v1.6.0 把 `docs/beacon/<version>/research/<feature-slug>.md` 定义为 planner artifact surface，authority 为 `support_advisory`；research 必须包含 outcome、湖/海、truth/source/evidence refs、gaps、risks、recommended_route、user_decision 和 promotion_ref，才能被路由或升级。 |
-| AC-015 | research-to-truth-promotion | Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-generator-truth-change` 或 `beacon-generator-truth-refreeze` 进入 package truth 并冻结。 |
-| AC-016 | skill-rename-rewrite-contract | v1.6.0 skill 改名必须生成新 `beacon-<harness>-<function>` host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases，并把旧名限制在 migration/archive/release notes。 |
+| AC-015 | research-to-truth-promotion | Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。 |
+| AC-016 | skill-rename-rewrite-contract | v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function-code>` compact host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases 和第一版完整 harness 长名 aliases，并把旧名限制在 migration/archive/release notes。 |
 | AC-017 | harness-hard-gate-injection | 每个 v1.6.0 host-visible skill 必须在共享 preamble 后注入 harness-specific `HARD GATE`，显式禁止跨 harness skill 调用、越权写 truth、越权 implementation、越权 QA/release verdict 和假交付闭环，并声明唯一允许产物；agent-surface verify 必须扫描并阻断缺失或不匹配的 gate。 |
 | AC-018 | skill-eval-benchmark-artifacts | `beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。 |
 | AC-019 | behavior-evidence-upgrade | Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。 |

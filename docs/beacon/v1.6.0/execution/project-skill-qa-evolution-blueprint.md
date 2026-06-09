@@ -5,15 +5,15 @@
 v1.6.0 changes Beacon's host-visible skill taxonomy from historical stage/support names to harness-first names:
 
 ```text
-beacon-<harness>-<function>
+beacon-<harness-code>-<function>
 ```
 
-Accepted harnesses:
+Accepted harness codes:
 
-- `planner`
-- `generator`
-- `evaluator`
-- `governor`
+- `pln` -> planner
+- `gen` -> generator
+- `eval` -> evaluator
+- `gov` -> governor
 
 ## Skill Material Effects
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 
-PUBLIC_IMPLEMENT_SKILL = "beacon-generator-implementation"
+PUBLIC_IMPLEMENT_SKILL = "beacon-gen-implement"
 FORBIDDEN_PUBLIC_IMPLEMENT_MODE_SKILLS = (
     "beacon-implement-single",
     "beacon-implement-team",
@@ -52,7 +52,7 @@ IMPLEMENT_MODE_PLAYBOOKS: dict[str, dict[str, Any]] = {
             "implementation handoff",
             "review or QA readiness notes",
         ],
-        "boundary": "Team mode remains internal runtime behavior under beacon-generator-implementation and is not a public lifecycle skill.",
+        "boundary": "Team mode remains internal runtime behavior under beacon-gen-implement and is not a public lifecycle skill.",
         "non_goals": [
             "new public team skill",
             "automatic QA pass",
@@ -91,7 +91,7 @@ def canonical_implement_mode_command(*, feature: str, project_root: Path | str, 
 
 def playbook_refs() -> dict[str, str]:
     return {
-        mode: f"skills/beacon/beacon-generator-implementation/references/implement-{mode}.md"
+        mode: f"skills/beacon/beacon-gen-implement/references/implement-{mode}.md"
         for mode in IMPLEMENT_MODE_PLAYBOOKS
     }
 

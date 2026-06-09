@@ -7,6 +7,11 @@ from pathlib import Path
 from typer.testing import CliRunner
 
 from beacon.main import app
+from beacon.commands.auto_test import (
+    _mark_negative_expected_block_passed,
+    _negative_expected_block_observed,
+    _run_layer_command,
+)
 from beacon.utils.qa_feature import build_feature_qa_plan, materialize_feature_qa_matrix
 
 
@@ -39,7 +44,7 @@ def _write_research(path: Path, *, decision: str = "queued", promotion_ref: str 
                 "- test_gap: 无",
                 "- implementation_risk: low",
                 "- verification_risk: low",
-                "- recommended_route: beacon-generator-truth-refreeze",
+                "- recommended_route: beacon-gen-refreeze",
                 f"- user_decision: {decision}",
                 f"- promotion_ref: {promotion_ref}",
                 "",
@@ -157,16 +162,16 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
 
     package_root = Path(payload["package_root"])
     skill_dirs = {item.name for item in package_root.iterdir() if item.is_dir()}
-    assert "beacon-planner-source-driven" in skill_dirs
-    assert "beacon-generator-implementation" in skill_dirs
-    assert "beacon-evaluator-qa" in skill_dirs
-    assert "beacon-governor-router" in skill_dirs
-    assert all(name.startswith(("beacon-planner-", "beacon-generator-", "beacon-evaluator-", "beacon-governor-")) for name in skill_dirs)
+    assert "beacon-pln-source" in skill_dirs
+    assert "beacon-gen-implement" in skill_dirs
+    assert "beacon-eval-qa" in skill_dirs
+    assert "beacon-gov-router" in skill_dirs
+    assert all(name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-")) for name in skill_dirs)
     for old_name in ("beacon-brainstorm", "beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-implement", "beacon-qa", "beacon-release", "using-beacon"):
         assert old_name not in skill_dirs
 
-    source_driven = (package_root / "beacon-planner-source-driven" / "SKILL.md").read_text(encoding="utf-8")
-    assert "name: beacon-planner-source-driven" in source_driven
+    source_driven = (package_root / "beacon-pln-source" / "SKILL.md").read_text(encoding="utf-8")
+    assert "name: beacon-pln-source" in source_driven
     assert "Beacon v1.6.0 共享 Preamble" in source_driven
     assert "HARD GATE:" in source_driven
     assert "你正在运行 planner skill" in source_driven
@@ -176,21 +181,32 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     metadata = json.loads((package_root / "metadata.json").read_text(encoding="utf-8"))
     assert metadata["version"] == "v1.6.0"
     assert metadata["source_kind"] == PRESERVED_SOURCE_KIND
-    assert metadata["content_preservation"]["policy"].startswith("new harness skill directories preserve full")
+    assert metadata["content_preservation"]["policy"].startswith("compact harness skill directories preserve full")
 
-    implementation = (package_root / "beacon-generator-implementation" / "SKILL.md").read_text(encoding="utf-8")
+    implementation = (package_root / "beacon-gen-implement" / "SKILL.md").read_text(encoding="utf-8")
     assert "PRODUCT.md / DESIGN.md" in implementation
     assert "Beacon v1.6.0 共享 Preamble" in implementation
     assert len(implementation.splitlines()) > 170
+    assert "`beacon-eval-qa`" in implementation
+    assert "`beacon-qa`" not in "\n".join(line for line in implementation.splitlines() if "来源迁移" not in line and "migrated from" not in line)
+
+    router = (package_root / "beacon-gov-router" / "SKILL.md").read_text(encoding="utf-8")
+    assert "`beacon-gen-implement`" in router
+    assert "`beacon-eval-release`" in router
+    assert "`beacon-implement`" not in "\n".join(line for line in router.splitlines() if "来源迁移" not in line and "migrated from" not in line)
+
+    qa = (package_root / "beacon-eval-qa" / "SKILL.md").read_text(encoding="utf-8")
+    assert "`beacon-eval-qa-deep`" in qa
+    assert "`beacon-eval-qa-evo-deep`" not in qa
 
 
 def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
     pairs = [
-        ("beacon-brainstorm", "beacon-planner-brainstorm", "read-only convergence surface"),
-        ("beacon-implement", "beacon-generator-implementation", "PRODUCT.md / DESIGN.md"),
-        ("beacon-qa", "beacon-evaluator-qa", "QA reads frozen requirement truth"),
-        ("beacon-release", "beacon-evaluator-release", "release readiness"),
-        ("using-beacon", "beacon-governor-router", "host-native route constitution"),
+        ("beacon-brainstorm", "beacon-pln-brainstorm", "read-only convergence surface"),
+        ("beacon-implement", "beacon-gen-implement", "PRODUCT.md / DESIGN.md"),
+        ("beacon-qa", "beacon-eval-qa", "QA reads frozen requirement truth"),
+        ("beacon-release", "beacon-eval-release", "release readiness"),
+        ("using-beacon", "beacon-gov-router", "host-native route constitution"),
     ]
     for old_id, new_id, preserved_phrase in pairs:
         old_text = subprocess.check_output(["git", "show", f"{LEGACY_SKILL_BASELINE}:skills/beacon/{old_id}/SKILL.md"], text=True)
@@ -200,7 +216,7 @@ def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
         assert "HARD GATE:" in new_text
         assert len(new_text.splitlines()) >= len(old_text.splitlines())
 
-    truth_refs = ROOT / "skills" / "beacon" / "beacon-generator-truth-package" / "references"
+    truth_refs = ROOT / "skills" / "beacon" / "beacon-gen-truth" / "references"
     assert (truth_refs / "legacy-beacon-prd.md").exists()
     assert (truth_refs / "legacy-beacon-user-story.md").exists()
     assert (truth_refs / "legacy-beacon-test-case.md").exists()
@@ -214,7 +230,7 @@ def test_v160_skill_package_verify_should_fail_for_old_alias_and_missing_gate(tm
     old_alias = package_root / "beacon-qa"
     old_alias.mkdir()
     (old_alias / "SKILL.md").write_text("---\nname: beacon-qa\n---\n# Old QA\n", encoding="utf-8")
-    implementation_skill = package_root / "beacon-generator-implementation" / "SKILL.md"
+    implementation_skill = package_root / "beacon-gen-implement" / "SKILL.md"
     text = implementation_skill.read_text(encoding="utf-8")
     implementation_skill.write_text(text.replace("HARD GATE:", "SOFT GATE:", 1), encoding="utf-8")
 
@@ -234,7 +250,117 @@ def test_v160_skill_package_verify_should_fail_for_old_alias_and_missing_gate(tm
     payload = json.loads(verify.stdout)
     checks = {item["name"]: item for item in payload["checks"]}
     assert "beacon-qa" in checks["v160_no_old_host_visible_aliases"]["details"]["old_aliases"]
-    assert "beacon-generator-implementation" in checks["v160_shared_preamble_and_hard_gates"]["details"]["gate_errors"]
+    assert "beacon-gen-implement" in checks["v160_shared_preamble_and_hard_gates"]["details"]["gate_errors"]
+
+
+def test_v160_skill_package_verify_should_fail_for_stale_route_recommendation(tmp_path: Path) -> None:
+    setup = _invoke(["skill", "package", "materialize", "--project-root", str(tmp_path), "--version", "v1.6.0", "--json"])
+    assert setup.exit_code == 0, setup.stdout
+    package_root = Path(json.loads(setup.stdout)["package_root"])
+
+    skill_file = package_root / "beacon-pln-source" / "SKILL.md"
+    skill_file.write_text(
+        skill_file.read_text(encoding="utf-8") + "\n- route to `beacon-qa` for formal verification.\n",
+        encoding="utf-8",
+    )
+
+    verify = _invoke(["skill", "package", "verify", "--project-root", str(tmp_path), "--version", "v1.6.0", "--json"])
+    assert verify.exit_code == 2, verify.stdout
+    payload = json.loads(verify.stdout)
+    checks = {item["name"]: item for item in payload["checks"]}
+    assert checks["v160_canonical_route_references"]["status"] == "fail"
+    errors = checks["v160_canonical_route_references"]["details"]["route_errors"]
+    assert "beacon-pln-source" in errors
+    assert any("`beacon-qa` should be `beacon-eval-qa`" in item for item in errors["beacon-pln-source"])
+
+
+def test_v160_feature_qa_matrix_replaces_feature_command_placeholder(tmp_path: Path) -> None:
+    _write_minimal_v160_skill_harness_package(tmp_path)
+    tests_path = tmp_path / "docs" / "beacon" / "v1.6.0" / "features" / "beacon-skill-harness-taxonomy-v160" / "tests.md"
+    tests_path.write_text(
+        "\n".join(
+            [
+                "# Tests",
+                "",
+                "| AC ID | TC ID | Layer | Command | Assertion |",
+                "|-------|-------|-------|---------|-----------|",
+                "| AC-014 | TC-014 | contract | `beacon skill package verify-research <feature> --project-root <project-root> --version <version> --json` | Research artifact is feature scoped. |",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    plan = build_feature_qa_plan(
+        tmp_path,
+        version="v1.6.0",
+        feature="beacon-skill-harness-taxonomy-v160",
+        persist=True,
+    )
+    matrix_path = materialize_feature_qa_matrix(tmp_path, plan=plan)
+    matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+    command = matrix["entries"][0]["command"]
+
+    assert "<feature>" not in command
+    assert "<version>" not in command
+    assert "<project-root>" not in command
+    assert "verify-research beacon-skill-harness-taxonomy-v160" in command
+    assert "--version v1.6.0" in command
+
+
+def test_v160_auto_test_uses_structured_json_assertions_for_cli_evidence(tmp_path: Path) -> None:
+    command = (
+        "python3 -c 'import json; "
+        "print(json.dumps({\"status\":\"pass\",\"ok\":True,\"checks\":[{\"name\":\"a\"},{\"name\":\"b\"}]}))'"
+    )
+    payload = _run_layer_command(
+        layer="contract",
+        command=command,
+        project_root=tmp_path,
+        layer_dir=tmp_path / ".beacon" / "evidence" / "auto-test" / "run-test" / "qa9-tc" / "TC-001",
+        run_id="run-test",
+        tc_id="TC-001",
+        ac_id="AC-001",
+    )
+
+    assert payload["status"] == "passed"
+    assert payload["assertion_count"] == 2
+    assert payload["junit_valid"] is True
+    assert (tmp_path / payload["junit_path"]).exists()
+
+
+def test_v160_negative_promotion_gate_block_counts_as_negative_pass(tmp_path: Path) -> None:
+    command = (
+        "python3 -c 'import json, sys; "
+        "print(json.dumps({\"status\":\"fail\",\"ok\":False,"
+        "\"promotion_gate\":{\"status\":\"blocked\",\"allowed\":False,"
+        "\"reason_codes\":[\"promotion_ref_missing\"]}})); sys.exit(2)' "
+        "# verify-promotion"
+    )
+    layer_dir = tmp_path / ".beacon" / "evidence" / "auto-test" / "run-test" / "qa9-tc" / "TC-015"
+    payload = _run_layer_command(
+        layer="contract",
+        command=command,
+        project_root=tmp_path,
+        layer_dir=layer_dir,
+        run_id="run-test",
+        tc_id="TC-015",
+        ac_id="AC-015",
+    )
+    observed, reason_code = _negative_expected_block_observed(tmp_path, payload)
+    updated = _mark_negative_expected_block_passed(
+        project_root=tmp_path,
+        layer_dir=layer_dir,
+        run_payload=payload,
+        reason_code=reason_code,
+    )
+
+    assert observed is True
+    assert reason_code == "negative_promotion_gate_block_observed"
+    assert updated["status"] == "passed"
+    assert updated["original_exit_code"] == 2
+    assert updated["assertion_count"] == 1
+    assert updated["junit_valid"] is True
 
 
 def test_v160_research_contract_allows_queued_but_blocks_promotion_without_user_acceptance(tmp_path: Path) -> None:
@@ -338,7 +464,7 @@ def test_v160_route_prompt_outputs_required_planner_contract_fields() -> None:
     ):
         assert key in payload
     assert payload["harness"] == "planner"
-    assert payload["recommended_route"].startswith("beacon-planner-")
+    assert payload["recommended_route"].startswith("beacon-pln-")
 
 
 def test_v160_no_fake_delivery_rejects_placeholder_closure() -> None:
@@ -359,6 +485,38 @@ def test_v160_no_fake_delivery_rejects_placeholder_closure() -> None:
     assert "zero_assertions" in payload["detected"]
 
 
+def test_v160_import_evidence_uses_compact_skill_routes(tmp_path: Path) -> None:
+    _write_minimal_v160_skill_harness_package(tmp_path)
+
+    result = _invoke(
+        [
+            "implement",
+            "import-evidence",
+            "beacon-skill-harness-taxonomy-v160",
+            "--project",
+            str(tmp_path),
+            "--version",
+            "v1.6.0",
+            "--source-ref",
+            "pytest: tests/test_v160_skill_harness_taxonomy.py",
+            "--changed-file",
+            "beacon/utils/agent_surface.py",
+            "--summary-ref",
+            "docs/beacon/v1.6.0/execution/implementation-summary-beacon-skill-harness-taxonomy-v160.md",
+            "--approved-by",
+            "codex-test",
+            "--json",
+        ]
+    )
+    assert result.exit_code == 0, result.stdout
+    payload = json.loads(result.stdout)
+    assert payload["skill"] == "beacon-gen-implement"
+    assert payload["next_route"]["target_surface"] == "beacon-eval-qa"
+
+    marker = json.loads((tmp_path / ".beacon" / "state" / "implementation-beacon-skill-harness-taxonomy-v160.json").read_text(encoding="utf-8"))
+    assert marker["skill"] == "beacon-gen-implement"
+
+
 def test_v160_skill_eval_kit_uses_harness_routes_and_review_artifact(tmp_path: Path) -> None:
     init = _invoke(["skill", "eval-kit", "init", "--project", str(tmp_path), "--version", "v1.6.0", "--json"])
     assert init.exit_code == 0, init.stdout
@@ -366,10 +524,10 @@ def test_v160_skill_eval_kit_uses_harness_routes_and_review_artifact(tmp_path: P
     assert init_payload["version"] == "v1.6.0"
     cases_payload = json.loads((tmp_path / init_payload["cases_path"]).read_text(encoding="utf-8"))
     routes = {case["expected_route"] for case in cases_payload["cases"]}
-    assert "beacon-planner-source-driven" in routes
-    assert "beacon-generator-implementation" in routes
-    assert "beacon-evaluator-qa" in routes
-    assert "beacon-governor-status" in routes
+    assert "beacon-pln-source" in routes
+    assert "beacon-gen-implement" in routes
+    assert "beacon-eval-qa" in routes
+    assert "beacon-gov-status" in routes
     assert "beacon-qa" not in routes
 
     run = _invoke(["skill", "eval-kit", "run", "--project", str(tmp_path), "--version", "v1.6.0", "--split", "all", "--json"])
@@ -396,7 +554,7 @@ def test_v160_skill_eval_kit_uses_harness_routes_and_review_artifact(tmp_path: P
     assert review_payload["feedback"]["reviews"][0]["feedback"] == "route stable"
     html = (tmp_path / review_payload["review_html_path"]).read_text(encoding="utf-8")
     assert "Beacon Skill Eval Review" in html
-    assert "beacon-evaluator-qa" in html
+    assert "beacon-eval-qa" in html
 
 
 def test_v160_feature_qa_matrix_uses_scoped_commands_for_skill_harness_package(tmp_path: Path) -> None:
@@ -445,7 +603,7 @@ def test_v160_skill_eval_benchmark_outputs_behavior_evidence_for_hard_gate_cases
     assert set(payload["analysis"]["covered_benchmark_contract_ac_ids"]) == expected_benchmark_contract_ac_ids
     assert set(payload["covered_ac_ids"]) == expected_behavior_ac_ids | expected_benchmark_contract_ac_ids
     assert payload["analysis"]["static_only_ac_ids"] == []
-    assert payload["analysis"]["recommended_route"] == "beacon-evaluator-qa"
+    assert payload["analysis"]["recommended_route"] == "beacon-eval-qa"
 
     benchmark = json.loads((root / "benchmark" / "benchmark.json").read_text(encoding="utf-8"))
     assert benchmark["configs"]["with_skill"]["pass_rate"] == 1.0

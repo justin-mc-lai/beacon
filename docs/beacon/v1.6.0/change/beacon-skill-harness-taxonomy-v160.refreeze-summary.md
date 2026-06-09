@@ -1,15 +1,15 @@
 # Change Refreeze Summary: beacon-skill-harness-taxonomy-v160
 
 - version: `v1.6.0`
-- change_reason: `align benchmark AC table and refreeze skill eval benchmark behavior evidence contract`
+- change_reason: `compact-host-visible-skill-names`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-implement`
-- revision_before: `R6`
-- revision_after: `R7`
+- revision_before: `R8`
+- revision_after: `R8`
 
 ## Surface Statuses
-- `change`: `package_change_optional` (docs/beacon/v1.6.0/change/beacon-skill-harness-taxonomy-v160.md)
+- `change`: `present` (docs/beacon/v1.6.0/change/beacon-skill-harness-taxonomy-v160.md)
 - `truth`: `present` (docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md)
 - `tests`: `present` (docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md)
 - `tasks`: `present` (docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tasks.md)
@@ -20,7 +20,7 @@
 
 ## Refreshed Surfaces
 
-- truth, tests, tasks, evidence, requirement_clarity, freeze, feature_package_validation
+- change, truth, tests, tasks, evidence, requirement_clarity, freeze, feature_package_validation
 
 ## Boundary
 

@@ -270,8 +270,8 @@ def test_one_shot_refreeze_does_not_execute_delivery_stages(tmp_path: Path) -> N
 def test_change_skill_exposes_one_shot_refreeze_operator_route() -> None:
     root = Path(__file__).resolve().parents[1]
     for path in [
-        root / "skills" / "beacon" / "beacon-generator-truth-refreeze" / "SKILL.md",
-        root / ".agents" / "skills" / "beacon-generator-truth-refreeze" / "SKILL.md",
+        root / "skills" / "beacon" / "beacon-gen-refreeze" / "SKILL.md",
+        root / ".agents" / "skills" / "beacon-gen-refreeze" / "SKILL.md",
     ]:
         text = path.read_text(encoding="utf-8")
         assert "`beacon change ... --refreeze-chain`" in text

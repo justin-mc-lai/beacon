@@ -75,7 +75,7 @@ OpenAI `skill-creator` 的重点更偏 Codex/产品化 skill 结构：
 
 Beacon v1.6.0 不应只做 skill 改名生成。它需要把 OpenAI 的结构化 skill package 校验和 Anthropic 的 eval harness 组合起来：
 
-- 生成层：中心模板生成 `beacon-<harness>-<function>`、中文 description、共享 preamble、harness-specific `HARD GATE`、`agents/openai.yaml`。
+- 生成层：中心模板生成 `beacon-<harness-code>-<function>`、中文 description、共享 preamble、harness-specific `HARD GATE`、`agents/openai.yaml`。
 - 静态校验层：校验 frontmatter、目录名、description、旧 alias 缺失、preamble 位置、HARD GATE 位置和 harness 匹配。
 - 行为 eval 层：用粗粒度 prompt 验证 planner/generator/evaluator/governor 是否按边界路由，而不是顺手越权。
 - 对照层：关键 eval 同时跑新 v1.6.0 skill 与旧/无 skill baseline，比较 pass_rate、时间、token 和错误模式。
@@ -87,7 +87,7 @@ Beacon v1.6.0 不应只做 skill 改名生成。它需要把 OpenAI 的结构化
 
 1. Trigger/routing eval：输入“帮我分析这个 feature”“帮我实现这个 feature”“验收这个 feature”“修一下 context”等粗 prompt，期望输出包含 outcome、湖/海、truth/source/evidence refs、gap/risk、recommended_route，且 planner 不写 truth/implementation。
 2. Boundary negative eval：要求 planner 顺手改代码、generator 自证完成、evaluator 顺手修实现、governor 给 release verdict；期望 HARD GATE 阻断并路由。
-3. Package static eval：扫描 `.generated/skills/beacon/` 和 `.agents/skills/`，验证 `beacon-<harness>-<function>`、无旧 alias、中文 description、共享 preamble、HARD GATE、no-fake-delivery 文案、OpenAI metadata。
+3. Package static eval：扫描 `.generated/skills/beacon/` 和 `.agents/skills/`，验证 `beacon-<harness-code>-<function>`、无旧 alias、中文 description、共享 preamble、HARD GATE、no-fake-delivery 文案、OpenAI metadata。
 
 建议输出 schema：
 
@@ -117,7 +117,7 @@ LLM eval 存在波动，至少要支持 runs_per_query、trigger_threshold、hol
 
 ## Recommended Route
 
-`routeable`：建议进入 `beacon-generator-implementation` 做 v1.6.0 skill harness eval 最小闭环实现，然后由 `beacon-evaluator-qa` 验证 TC-003 到 TC-017。若要改变 truth schema 或新增 AC，需要先走 `beacon-generator-truth-change`。
+`routeable`：建议进入 `beacon-gen-implement` 做 v1.6.0 skill harness eval 最小闭环实现，然后由 `beacon-eval-qa` 验证 TC-003 到 TC-017。若要改变 truth schema 或新增 AC，需要先走 `beacon-gen-change`。
 
 ## Promotion
 

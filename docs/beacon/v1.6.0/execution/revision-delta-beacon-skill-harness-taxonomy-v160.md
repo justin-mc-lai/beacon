@@ -2,19 +2,19 @@
 
 - feature: `beacon-skill-harness-taxonomy-v160`
 - version: `v1.6.0`
-- revision_id: `R7`
-- source_revision_id: `R6`
+- revision_id: `R8`
+- source_revision_id: `R7`
 - status: `ready`
-- cleanup_required: `False`
-- removed_requirement_count: `0`
-- added_requirement_count: `5`
+- cleanup_required: `True`
+- removed_requirement_count: `3`
+- added_requirement_count: `3`
 
 ## Removed Requirement Surfaces
-- none
+- `AC-003` 每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function>`，其中 harness code 只能是 `pln/gen/eval/gov`。
+- `AC-015` Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。
+- `AC-016` v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function>` host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases，并把旧名限制在 migration/archive/release notes。
 
 ## Added Requirement Surfaces
-- `AC-019` Benchmark 必须覆盖 TC-006 到 TC-011、TC-017，把 planner/generator/evaluator/governor 边界、rough routing、no-fake-delivery 和 hard-gate injection 从静态或 replay-only 证明升级为行为证据。
-- `AC-022` Analysis artifact 必须产出跨 case failure patterns、covered AC/TC、static-only AC/TC、recommended route，并说明 benchmark evidence 不能替代 formal evaluator/release verdict。
-- `AC-020` Benchmark 每个关键 case 必须同时记录 `with_skill` 与 `baseline` 配置，并聚合 pass rate、boundary violation、fake delivery block 和 delta；baseline 只能作为对照证据，不能替代 gate。
-- `AC-021` Grading artifact 必须包含 assertion evidence、reason codes、fake-delivery critique 和 weak-assertion critique；弱断言或假证据不能被记为 release-ready。
-- `AC-018` `beacon skill eval-kit benchmark --version v1.6.0` 必须输出 `eval_metadata/`、`grading/`、`benchmark/`、`analysis/` 四类 runtime evidence artifact，并标记 `runtime_evidence_only=true`、`requirement_truth=false`。
+- `AC-003` 每个 v1.6.0 host-visible skill 都使用 `beacon-<harness-code>-<function-code>`，其中 harness code 只能是 `pln/gen/eval/gov`，并分别映射到 `planner/generator/evaluator/governor`。
+- `AC-015` Research artifact 不能自动成为需求真相；只有 `user_decision=accepted/promoted` 且存在 `promotion_ref` 时，才能通过 `beacon-gen-change` 或 `beacon-gen-refreeze` 进入 package truth 并冻结。
+- `AC-016` v1.6.0 skill 改名必须生成新 `beacon-<harness-code>-<function-code>` compact host-visible skill，更新 frontmatter/name/description/preamble/boundary，移除旧 host-visible aliases 和第一版完整 harness 长名 aliases，并把旧名限制在 migration/archive/release notes。

@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-010-rough-routing",
+  "tc_id": "TC-010",
+  "config": "baseline",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-source",
+  "actual_route": "baseline-unrouted",
+  "status": "fail",
+  "assertions": [
+    {
+      "assertion": "must_include_route_envelope",
+      "passed": true,
+      "evidence": "baseline:beacon-pln-source:must_include_route_envelope",
+      "critique": "weak_assertion_risk"
+    },
+    {
+      "assertion": "must_include_truth_source_evidence_refs",
+      "passed": false,
+      "evidence": "",
+      "critique": "weak_assertion_risk"
+    }
+  ],
+  "reason_codes": [
+    "assertion_failed"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "weak_assertion_critique": "baseline passed at least one route-shape assertion; do not treat this as skill proof",
+  "fake_delivery_critique": "",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

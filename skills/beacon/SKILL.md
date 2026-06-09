@@ -15,10 +15,10 @@ This package is the canonical `skills/beacon/` host-visible Beacon skill package
 
 v1.6.0 is a breaking skill-surface migration. Host-visible child skills use only:
 
-- `beacon-planner-*`
-- `beacon-generator-*`
-- `beacon-evaluator-*`
-- `beacon-governor-*`
+- `beacon-pln-*`
+- `beacon-gen-*`
+- `beacon-eval-*`
+- `beacon-gov-*`
 
 Old host-visible aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not present in this package. If CLI compatibility is needed, it belongs in CLI routing or migration tooling, not duplicate host-visible skill directories.
 
@@ -49,58 +49,58 @@ Route by authority boundary, not by old stage names or tool familiarity.
 
 Planner:
 
-- `beacon-planner-brainstorm`
-- `beacon-planner-deep-analysis`
-- `beacon-planner-friction-intake`
-- `beacon-planner-founder-review`
-- `beacon-planner-design-review`
-- `beacon-planner-security-review`
-- `beacon-planner-performance-review`
-- `beacon-planner-doubt-review`
-- `beacon-planner-source-driven`
-- `beacon-planner-context-engineering`
-- `beacon-planner-design-simplify`
-- `beacon-planner-documentation-adr`
+- `beacon-pln-brainstorm`
+- `beacon-pln-deep`
+- `beacon-pln-friction`
+- `beacon-pln-founder`
+- `beacon-pln-design`
+- `beacon-pln-security`
+- `beacon-pln-performance`
+- `beacon-pln-doubt`
+- `beacon-pln-source`
+- `beacon-pln-context`
+- `beacon-pln-simplify`
+- `beacon-pln-adr`
 
-Planner tools may still route to stable CLI commands. For example, `beacon-planner-friction-intake` can recommend `beacon friction-intake run ...` while remaining a planner support surface.
+Planner tools may still route to stable CLI commands. For example, `beacon-pln-friction` can recommend `beacon friction-intake run ...` while remaining a planner support surface.
 
 Generator:
 
-- `beacon-generator-truth-package`
-- `beacon-generator-truth-bootstrap`
-- `beacon-generator-truth-change`
-- `beacon-generator-truth-refreeze`
-- `beacon-generator-prototype-binding`
-- `beacon-generator-implementation`
-- `beacon-generator-design-support`
-- `beacon-generator-design-bootstrap`
-- `beacon-generator-design-explore`
-- `beacon-generator-design-system`
-- `beacon-generator-design-polish`
+- `beacon-gen-truth`
+- `beacon-gen-truth-init`
+- `beacon-gen-change`
+- `beacon-gen-refreeze`
+- `beacon-gen-prototype`
+- `beacon-gen-implement`
+- `beacon-gen-design`
+- `beacon-gen-design-init`
+- `beacon-gen-design-explore`
+- `beacon-gen-design-system`
+- `beacon-gen-design-polish`
 
 Evaluator:
 
-- `beacon-evaluator-qa`
-- `beacon-evaluator-qa-deep`
-- `beacon-evaluator-release`
-- `beacon-evaluator-real-project`
+- `beacon-eval-qa`
+- `beacon-eval-qa-deep`
+- `beacon-eval-release`
+- `beacon-eval-real-project`
 
 Governor:
 
-- `beacon-governor-design-library`
-- `beacon-governor-design-extract`
-- `beacon-governor-doctor`
-- `beacon-governor-debug-recovery`
-- `beacon-governor-status`
-- `beacon-governor-help`
-- `beacon-governor-archive`
-- `beacon-governor-learn`
-- `beacon-governor-hooks`
-- `beacon-governor-automation`
-- `beacon-governor-branch`
-- `beacon-governor-lighthouse`
-- `beacon-governor-metadata`
-- `beacon-governor-router`
+- `beacon-gov-library`
+- `beacon-gov-extract`
+- `beacon-gov-doctor`
+- `beacon-gov-debug`
+- `beacon-gov-status`
+- `beacon-gov-help`
+- `beacon-gov-archive`
+- `beacon-gov-learn`
+- `beacon-gov-hooks`
+- `beacon-gov-automation`
+- `beacon-gov-branch`
+- `beacon-gov-lighthouse`
+- `beacon-gov-metadata`
+- `beacon-gov-router`
 
 ## Lifecycle
 
@@ -134,7 +134,7 @@ Research can enter the main chain only when:
 ```text
 user_decision = accepted/promoted
 promotion_ref is present
-route = beacon-generator-truth-change or beacon-generator-truth-refreeze
+route = beacon-gen-change or beacon-gen-refreeze
 ```
 
 ## Hard Gates

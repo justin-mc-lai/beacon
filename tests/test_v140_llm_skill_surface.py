@@ -6,12 +6,12 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILL_ROOT = ROOT / "skills" / "beacon"
 CORE_SKILLS = [
-    "beacon-generator-truth-package",
-    "beacon-generator-implementation",
-    "beacon-evaluator-qa",
-    "beacon-evaluator-release",
-    "beacon-planner-source-driven",
-    "beacon-governor-doctor",
+    "beacon-gen-truth",
+    "beacon-gen-implement",
+    "beacon-eval-qa",
+    "beacon-eval-release",
+    "beacon-pln-source",
+    "beacon-gov-doctor",
 ]
 REQUIRED_SECTIONS = [
     "## Beacon v1.6.0 共享 Preamble",

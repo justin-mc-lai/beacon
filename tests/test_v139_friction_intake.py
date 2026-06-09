@@ -25,12 +25,12 @@ def test_v139_friction_intake_should_be_support_surface_and_skill_visible() -> N
 
     host_skill = Path("skills/beacon/SKILL.md")
     text = host_skill.read_text(encoding="utf-8")
-    assert "`beacon-planner-friction-intake`" in text
+    assert "`beacon-pln-friction`" in text
     assert "friction-intake run" in text
 
-    subskill = Path("skills/beacon/beacon-planner-friction-intake/SKILL.md")
+    subskill = Path("skills/beacon/beacon-pln-friction/SKILL.md")
     subskill_text = subskill.read_text(encoding="utf-8")
-    assert "name: beacon-planner-friction-intake" in subskill_text
+    assert "name: beacon-pln-friction" in subskill_text
     assert "摩擦记录" in subskill_text
 
 

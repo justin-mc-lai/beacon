@@ -17,6 +17,12 @@ _RULE_BLOCK_END = "<!-- BEACON:AGENT_SURFACE:END -->"
 _STATE_PATH = Path(".beacon") / "state" / "agent-surfaces.json"
 _V160_TAXONOMY_VERSION = "v1.6.0"
 _V160_HARNESSES = {"planner", "generator", "evaluator", "governor"}
+_V160_HARNESS_CODES = {
+    "pln": "planner",
+    "gen": "generator",
+    "eval": "evaluator",
+    "gov": "governor",
+}
 _V160_RESEARCH_REQUIRED_FIELDS = (
     "outcome",
     "lake_or_ocean",
@@ -76,55 +82,163 @@ def packaged_beacon_skill_root() -> Path:
 
 
 _V160_RENAME_MATRIX: tuple[tuple[str, str, str, str], ...] = (
-    ("beacon-brainstorm", "beacon-planner-brainstorm", "planner", "粗提示词拆分、湖海判断与路由收敛"),
-    ("beacon-deep", "beacon-planner-deep-analysis", "planner", "复杂状态、风险与测试差量分析"),
-    ("beacon-friction-intake", "beacon-planner-friction-intake", "planner", "摩擦记录、排队与只读治理"),
-    ("beacon-ceo-review", "beacon-planner-founder-review", "planner", "创始人和商业视角挑战"),
-    ("beacon-design-review", "beacon-planner-design-review", "planner", "UX 和设计方案挑战"),
-    ("beacon-security-review", "beacon-planner-security-review", "planner", "安全风险挑战"),
-    ("beacon-performance-review", "beacon-planner-performance-review", "planner", "性能风险挑战"),
-    ("beacon-doubt-review", "beacon-planner-doubt-review", "planner", "假设和反例挑战"),
-    ("beacon-source-driven", "beacon-planner-source-driven", "planner", "源码和证据锚定分析"),
-    ("beacon-context-engineering", "beacon-planner-context-engineering", "planner", "上下文重塑与路由建议"),
-    ("beacon-design-simplify", "beacon-planner-design-simplify", "planner", "简化审计与范围收敛"),
-    ("beacon-documentation-adr", "beacon-planner-documentation-adr", "planner", "ADR 和文档清晰度分析"),
-    ("beacon-truth", "beacon-generator-truth-package", "generator", "package-authoritative 需求真相总入口"),
-    ("beacon-prd-bootstrap", "beacon-generator-truth-bootstrap", "generator", "需求真相包初始化"),
-    ("beacon-change", "beacon-generator-truth-change", "generator", "受治理的需求真相变更"),
-    ("beacon-change-refreeze", "beacon-generator-truth-refreeze", "generator", "受治理的需求重冻结"),
-    ("beacon-prototype", "beacon-generator-prototype-binding", "generator", "已接受 UI/UX 原型结果绑定"),
-    ("beacon-implement", "beacon-generator-implementation", "generator", "实现计划与执行"),
-    ("beacon-design", "beacon-generator-design-support", "generator", "设计支持总入口"),
-    ("beacon-design-bootstrap", "beacon-generator-design-bootstrap", "generator", "设计能力准入"),
-    ("beacon-design-explore", "beacon-generator-design-explore", "generator", "UI 方向探索"),
-    ("beacon-design-system", "beacon-generator-design-system", "generator", "组件系统规划"),
-    ("beacon-design-polish", "beacon-generator-design-polish", "generator", "UI 打磨支持"),
-    ("beacon-qa", "beacon-evaluator-qa", "evaluator", "验收证据验证"),
-    ("beacon-qa-evo-deep", "beacon-evaluator-qa-deep", "evaluator", "深度 QA findings"),
-    ("beacon-release", "beacon-evaluator-release", "evaluator", "发布就绪判断"),
-    ("beacon-real-project-validation", "beacon-evaluator-real-project", "evaluator", "真实项目发布证明"),
-    ("beacon-design-library", "beacon-governor-design-library", "governor", "设计参考检索"),
-    ("beacon-design-extract", "beacon-governor-design-extract", "governor", "截图和参考抽取"),
-    ("beacon-doctor", "beacon-governor-doctor", "governor", "上下文和环境修复"),
-    ("beacon-debug-recovery", "beacon-governor-debug-recovery", "governor", "阻断恢复"),
-    ("beacon-status", "beacon-governor-status", "governor", "状态和看板可见性"),
-    ("beacon-help", "beacon-governor-help", "governor", "下一步指导"),
-    ("beacon-archive", "beacon-governor-archive", "governor", "历史需求隔离"),
-    ("beacon-learn", "beacon-governor-learn", "governor", "受治理学习"),
-    ("beacon-project-hooks", "beacon-governor-hooks", "governor", "生命周期 hook 合约"),
-    ("beacon-toolkit-automation", "beacon-governor-automation", "governor", "自动化资产"),
-    ("beacon-toolkit-branch-governance", "beacon-governor-branch", "governor", "分支和工作区治理"),
-    ("beacon-toolkit-lighthouse", "beacon-governor-lighthouse", "governor", "快速源码和仓库分析"),
-    ("beacon-toolkit-metadata", "beacon-governor-metadata", "governor", "确定性 metadata 工具"),
-    ("using-beacon", "beacon-governor-router", "governor", "host 级路由提示"),
+    ("beacon-brainstorm", "beacon-pln-brainstorm", "planner", "粗提示词拆分、湖海判断与路由收敛"),
+    ("beacon-deep", "beacon-pln-deep", "planner", "复杂状态、风险与测试差量分析"),
+    ("beacon-friction-intake", "beacon-pln-friction", "planner", "摩擦记录、排队与只读治理"),
+    ("beacon-ceo-review", "beacon-pln-founder", "planner", "创始人和商业视角挑战"),
+    ("beacon-design-review", "beacon-pln-design", "planner", "UX 和设计方案挑战"),
+    ("beacon-security-review", "beacon-pln-security", "planner", "安全风险挑战"),
+    ("beacon-performance-review", "beacon-pln-performance", "planner", "性能风险挑战"),
+    ("beacon-doubt-review", "beacon-pln-doubt", "planner", "假设和反例挑战"),
+    ("beacon-source-driven", "beacon-pln-source", "planner", "源码和证据锚定分析"),
+    ("beacon-context-engineering", "beacon-pln-context", "planner", "上下文重塑与路由建议"),
+    ("beacon-design-simplify", "beacon-pln-simplify", "planner", "简化审计与范围收敛"),
+    ("beacon-documentation-adr", "beacon-pln-adr", "planner", "ADR 和文档清晰度分析"),
+    ("beacon-truth", "beacon-gen-truth", "generator", "package-authoritative 需求真相总入口"),
+    ("beacon-prd-bootstrap", "beacon-gen-truth-init", "generator", "需求真相包初始化"),
+    ("beacon-change", "beacon-gen-change", "generator", "受治理的需求真相变更"),
+    ("beacon-change-refreeze", "beacon-gen-refreeze", "generator", "受治理的需求重冻结"),
+    ("beacon-prototype", "beacon-gen-prototype", "generator", "已接受 UI/UX 原型结果绑定"),
+    ("beacon-implement", "beacon-gen-implement", "generator", "实现计划与执行"),
+    ("beacon-design", "beacon-gen-design", "generator", "设计支持总入口"),
+    ("beacon-design-bootstrap", "beacon-gen-design-init", "generator", "设计能力准入"),
+    ("beacon-design-explore", "beacon-gen-design-explore", "generator", "UI 方向探索"),
+    ("beacon-design-system", "beacon-gen-design-system", "generator", "组件系统规划"),
+    ("beacon-design-polish", "beacon-gen-design-polish", "generator", "UI 打磨支持"),
+    ("beacon-qa", "beacon-eval-qa", "evaluator", "验收证据验证"),
+    ("beacon-qa-evo-deep", "beacon-eval-qa-deep", "evaluator", "深度 QA findings"),
+    ("beacon-release", "beacon-eval-release", "evaluator", "发布就绪判断"),
+    ("beacon-real-project-validation", "beacon-eval-real-project", "evaluator", "真实项目发布证明"),
+    ("beacon-design-library", "beacon-gov-library", "governor", "设计参考检索"),
+    ("beacon-design-extract", "beacon-gov-extract", "governor", "截图和参考抽取"),
+    ("beacon-doctor", "beacon-gov-doctor", "governor", "上下文和环境修复"),
+    ("beacon-debug-recovery", "beacon-gov-debug", "governor", "阻断恢复"),
+    ("beacon-status", "beacon-gov-status", "governor", "状态和看板可见性"),
+    ("beacon-help", "beacon-gov-help", "governor", "下一步指导"),
+    ("beacon-archive", "beacon-gov-archive", "governor", "历史需求隔离"),
+    ("beacon-learn", "beacon-gov-learn", "governor", "受治理学习"),
+    ("beacon-project-hooks", "beacon-gov-hooks", "governor", "生命周期 hook 合约"),
+    ("beacon-toolkit-automation", "beacon-gov-automation", "governor", "自动化资产"),
+    ("beacon-toolkit-branch-governance", "beacon-gov-branch", "governor", "分支和工作区治理"),
+    ("beacon-toolkit-lighthouse", "beacon-gov-lighthouse", "governor", "快速源码和仓库分析"),
+    ("beacon-toolkit-metadata", "beacon-gov-metadata", "governor", "确定性 metadata 工具"),
+    ("using-beacon", "beacon-gov-router", "governor", "host 级路由提示"),
 )
+
+_V160_PREVIOUS_LONG_ALIAS_IDS = {
+    "beacon-planner-brainstorm",
+    "beacon-planner-deep-analysis",
+    "beacon-planner-friction-intake",
+    "beacon-planner-founder-review",
+    "beacon-planner-design-review",
+    "beacon-planner-security-review",
+    "beacon-planner-performance-review",
+    "beacon-planner-doubt-review",
+    "beacon-planner-source-driven",
+    "beacon-planner-context-engineering",
+    "beacon-planner-design-simplify",
+    "beacon-planner-documentation-adr",
+    "beacon-generator-truth-package",
+    "beacon-generator-truth-bootstrap",
+    "beacon-generator-truth-change",
+    "beacon-generator-truth-refreeze",
+    "beacon-generator-prototype-binding",
+    "beacon-generator-implementation",
+    "beacon-generator-design-support",
+    "beacon-generator-design-bootstrap",
+    "beacon-generator-design-explore",
+    "beacon-generator-design-system",
+    "beacon-generator-design-polish",
+    "beacon-evaluator-qa",
+    "beacon-evaluator-qa-deep",
+    "beacon-evaluator-release",
+    "beacon-evaluator-real-project",
+    "beacon-governor-design-library",
+    "beacon-governor-design-extract",
+    "beacon-governor-doctor",
+    "beacon-governor-debug-recovery",
+    "beacon-governor-status",
+    "beacon-governor-help",
+    "beacon-governor-archive",
+    "beacon-governor-learn",
+    "beacon-governor-hooks",
+    "beacon-governor-automation",
+    "beacon-governor-branch",
+    "beacon-governor-lighthouse",
+    "beacon-governor-metadata",
+    "beacon-governor-router",
+}
 
 _V160_REMOVED_OLD_ALIASES = {
     "beacon-prd",
     "beacon-user-story",
     "beacon-test-case",
 }
-_V160_OLD_ALIAS_IDS = {row[0] for row in _V160_RENAME_MATRIX} | _V160_REMOVED_OLD_ALIASES
+_V160_OLD_ALIAS_IDS = {row[0] for row in _V160_RENAME_MATRIX} | _V160_REMOVED_OLD_ALIASES | _V160_PREVIOUS_LONG_ALIAS_IDS
+_V160_PREVIOUS_LONG_ALIAS_REWRITE_MAP = {
+    "beacon-planner-brainstorm": "beacon-pln-brainstorm",
+    "beacon-planner-deep-analysis": "beacon-pln-deep",
+    "beacon-planner-friction-intake": "beacon-pln-friction",
+    "beacon-planner-founder-review": "beacon-pln-founder",
+    "beacon-planner-design-review": "beacon-pln-design",
+    "beacon-planner-security-review": "beacon-pln-security",
+    "beacon-planner-performance-review": "beacon-pln-performance",
+    "beacon-planner-doubt-review": "beacon-pln-doubt",
+    "beacon-planner-source-driven": "beacon-pln-source",
+    "beacon-planner-context-engineering": "beacon-pln-context",
+    "beacon-planner-design-simplify": "beacon-pln-simplify",
+    "beacon-planner-documentation-adr": "beacon-pln-adr",
+    "beacon-generator-truth-package": "beacon-gen-truth",
+    "beacon-generator-truth-bootstrap": "beacon-gen-truth-init",
+    "beacon-generator-truth-change": "beacon-gen-change",
+    "beacon-generator-truth-refreeze": "beacon-gen-refreeze",
+    "beacon-generator-prototype-binding": "beacon-gen-prototype",
+    "beacon-generator-implementation": "beacon-gen-implement",
+    "beacon-generator-design-support": "beacon-gen-design",
+    "beacon-generator-design-bootstrap": "beacon-gen-design-init",
+    "beacon-generator-design-explore": "beacon-gen-design-explore",
+    "beacon-generator-design-system": "beacon-gen-design-system",
+    "beacon-generator-design-polish": "beacon-gen-design-polish",
+    "beacon-evaluator-qa": "beacon-eval-qa",
+    "beacon-evaluator-qa-deep": "beacon-eval-qa-deep",
+    "beacon-evaluator-release": "beacon-eval-release",
+    "beacon-evaluator-real-project": "beacon-eval-real-project",
+    "beacon-governor-design-library": "beacon-gov-library",
+    "beacon-governor-design-extract": "beacon-gov-extract",
+    "beacon-governor-doctor": "beacon-gov-doctor",
+    "beacon-governor-debug-recovery": "beacon-gov-debug",
+    "beacon-governor-status": "beacon-gov-status",
+    "beacon-governor-help": "beacon-gov-help",
+    "beacon-governor-archive": "beacon-gov-archive",
+    "beacon-governor-learn": "beacon-gov-learn",
+    "beacon-governor-hooks": "beacon-gov-hooks",
+    "beacon-governor-automation": "beacon-gov-automation",
+    "beacon-governor-branch": "beacon-gov-branch",
+    "beacon-governor-lighthouse": "beacon-gov-lighthouse",
+    "beacon-governor-metadata": "beacon-gov-metadata",
+    "beacon-governor-router": "beacon-gov-router",
+}
+_V160_ROUTE_REWRITE_MAP = {
+    **{old: new for old, new, _harness, _role in _V160_RENAME_MATRIX},
+    **{
+        "beacon-prd": "beacon-gen-truth",
+        "beacon-user-story": "beacon-gen-truth",
+        "beacon-test-case": "beacon-gen-truth",
+    },
+    **_V160_PREVIOUS_LONG_ALIAS_REWRITE_MAP,
+    "beacon-eval-qa-evo-deep": "beacon-eval-qa-deep",
+    "beacon-gen-change-refreeze": "beacon-gen-refreeze",
+}
+_V160_ROUTE_REWRITE_ORDER = tuple(sorted(_V160_ROUTE_REWRITE_MAP, key=len, reverse=True))
+_V160_ROUTE_REFERENCE_ALLOW_MARKERS = (
+    "migrated from",
+    "来源迁移",
+)
+_V160_FORBIDDEN_ROUTE_PHRASES = (
+    "old public skill names remain",
+    "use the old skill names",
+    "compatibility aliases remain available",
+)
 
 _V160_SHARED_PREAMBLE = """## Beacon v1.6.0 共享 Preamble
 
@@ -204,7 +318,9 @@ def default_v160_skill_package_root(project_root: Path | str, version: str = _V1
 
 def _harness_from_skill_id(skill_id: str) -> str:
     parts = skill_id.split("-")
-    return parts[1] if len(parts) >= 3 and parts[0] == "beacon" else ""
+    if len(parts) < 3 or parts[0] != "beacon":
+        return ""
+    return _V160_HARNESS_CODES.get(parts[1], "")
 
 
 def _v160_frontmatter_name(text: str) -> str:
@@ -255,7 +371,90 @@ description: Beacon v1.6.0 {harness} skill。用于{role}；必须遵守共享 p
 - 粗提示词先归约为 outcome、truth/source/evidence refs、湖/海、truth_gap、test_gap、implementation_risk、verification_risk 和 recommended_route。
 - `docs/beacon/<version>/research/<feature-slug>.md` 是 planner `support_advisory` artifact；没有用户确认和 `promotion_ref`，不能升级为 requirement truth。
 - 需要跨 harness 时，停止当前动作，输出 route recommendation，并等待用户确认。
-"""
+	"""
+
+
+def _v160_allows_legacy_route_reference(line: str) -> bool:
+    lowered = line.lower()
+    return any(marker in lowered for marker in _V160_ROUTE_REFERENCE_ALLOW_MARKERS)
+
+
+def _replace_exact_skill_id(text: str, old: str, new: str) -> str:
+    pattern = rf"(?<![A-Za-z0-9_-]){re.escape(old)}(?![A-Za-z0-9_-])"
+    return re.sub(pattern, new, text)
+
+
+def normalize_v160_skill_content(text: str) -> str:
+    """Rewrite v1.6.0 host-visible route references to compact canonical skill names."""
+    normalized_lines: list[str] = []
+    for raw_line in text.splitlines(keepends=True):
+        line = raw_line.rstrip("\n")
+        newline = raw_line[len(line):]
+        if _v160_allows_legacy_route_reference(line):
+            normalized_lines.append(raw_line)
+            continue
+        normalized = line
+        normalized = normalized.replace("## Compatibility Aliases", "## Canonical v1.6.0 Routes")
+        normalized = normalized.replace("Compatibility aliases remain available", "Canonical v1.6.0 routes")
+        normalized = normalized.replace("compatibility aliases remain available", "canonical v1.6.0 routes")
+        normalized = normalized.replace("Compatibility aliases are", "Canonical v1.6.0 routes are")
+        normalized = normalized.replace("compatibility aliases are", "canonical v1.6.0 routes are")
+        normalized = normalized.replace("Compatibility alias:", "Canonical v1.6.0 route:")
+        normalized = normalized.replace("compatibility alias:", "canonical v1.6.0 route:")
+        normalized = normalized.replace("compatibility alias", "canonical v1.6.0 route")
+        normalized = normalized.replace(
+            "`beacon-gen-truth`, `beacon-gen-truth`, `beacon-gen-truth`, and `beacon-gen-change`",
+            "`beacon-gen-truth` for truth definition/acceptance/coverage and `beacon-gen-change` for truth changes",
+        )
+        normalized = normalized.replace(
+            "`beacon-gen-truth`, `beacon-gen-truth`, or `beacon-gen-truth`",
+            "`beacon-gen-truth`",
+        )
+        normalized = normalized.replace(
+            "Use the old skill names when invoking stable compatibility surfaces.",
+            "Use compact skill names for host-visible routing; use CLI commands only for stable compatibility command surfaces.",
+        )
+        normalized = normalized.replace(
+            "Old public skill names remain canonical v1.6.0 routees and must continue to work.",
+            "Old public skill names do not remain host-visible routees in v1.6.0; compact names are canonical.",
+        )
+        normalized = normalized.replace(
+            "route back to `implement`, `test-case`, or `change`",
+            "route to `beacon-gen-implement`, `beacon-gen-truth` for coverage, or `beacon-gen-change`",
+        )
+        normalized = normalized.replace("route back to `implement`", "route to `beacon-gen-implement`")
+        normalized = normalized.replace("route to `change`", "route to `beacon-gen-change`")
+        normalized = normalized.replace("route to `test-case`", "route to `beacon-gen-truth` for coverage")
+        normalized = normalized.replace("handing off to `release`", "handing off to `beacon-eval-release`")
+        normalized = normalized.replace(
+            "blocks `implement` / `qa` / `release`",
+            "blocks `beacon-gen-implement` / `beacon-eval-qa` / `beacon-eval-release`",
+        )
+        for old in _V160_ROUTE_REWRITE_ORDER:
+            normalized = _replace_exact_skill_id(normalized, old, _V160_ROUTE_REWRITE_MAP[old])
+        normalized_lines.append(normalized + newline)
+    normalized_text = "".join(normalized_lines)
+    for route in sorted(set(_V160_ROUTE_REWRITE_MAP.values())):
+        duplicate = f"- `{route}`\n- `{route}`\n"
+        while duplicate in normalized_text:
+            normalized_text = normalized_text.replace(duplicate, f"- `{route}`\n")
+    return normalized_text
+
+
+def _v160_skill_content_route_errors(text: str) -> list[str]:
+    errors: list[str] = []
+    for line_number, line in enumerate(text.splitlines(), start=1):
+        if _v160_allows_legacy_route_reference(line):
+            continue
+        lowered = line.lower()
+        for phrase in _V160_FORBIDDEN_ROUTE_PHRASES:
+            if phrase in lowered:
+                errors.append(f"line {line_number}: stale route phrase `{phrase}` must use compact canonical route language")
+        for old in _V160_ROUTE_REWRITE_ORDER:
+            if re.search(rf"(?<![A-Za-z0-9_-]){re.escape(old)}(?![A-Za-z0-9_-])", line):
+                replacement = _V160_ROUTE_REWRITE_MAP[old]
+                errors.append(f"line {line_number}: stale route reference `{old}` should be `{replacement}`")
+    return errors
 
 
 def _write_projected_skill(destination: Path, content: str, files: dict[str, str] | None = None) -> None:
@@ -268,13 +467,34 @@ def _write_projected_skill(destination: Path, content: str, files: dict[str, str
 
 
 def _copy_projected_skill(destination: Path, projection: SkillProjection) -> None:
+    if projection.source_dir is not None:
+        shutil.copytree(projection.source_dir, destination)
+        if projection.content is not None:
+            (destination / "SKILL.md").write_text(projection.content, encoding="utf-8")
+        for relative, file_content in (projection.files or {}).items():
+            path = destination / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text(file_content, encoding="utf-8")
+        return
     if projection.content is not None:
         _write_projected_skill(destination, projection.content, projection.files)
         return
-    if projection.source_dir is not None:
-        shutil.copytree(projection.source_dir, destination)
-        return
     raise ValueError(f"skill projection {projection.id} has no source")
+
+
+def _hash_projected_source_dir(source_dir: Path, *, skill_text: str) -> str:
+    digest = hashlib.sha256()
+    files = sorted(node for node in source_dir.rglob("*") if node.is_file())
+    for file_path in files:
+        relative = file_path.relative_to(source_dir).as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        if relative == "SKILL.md":
+            digest.update(skill_text.encode("utf-8"))
+        else:
+            digest.update(file_path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
 
 
 def _projected_content_hash(skill_id: str, content: str, files: dict[str, str] | None = None) -> str:
@@ -291,14 +511,14 @@ def _projected_content_hash(skill_id: str, content: str, files: dict[str, str] |
 
 
 def _v160_extra_skill_files(skill_id: str) -> dict[str, str]:
-    if skill_id != "beacon-generator-implementation":
+    if skill_id != "beacon-gen-implement":
         return {}
     return {
         "references/implement-single.md": """# Implement Single Mode
 
 ## Purpose
 
-Use `single` for small, low-risk, clearly scoped implementation under `beacon-generator-implementation`.
+Use `single` for small, low-risk, clearly scoped implementation under `beacon-gen-implement`.
 
 ## Admission
 
@@ -350,7 +570,7 @@ beacon implement run "<feature>" --project . --version <version> --mode team
 
 ## Boundary
 
-Team mode remains internal runtime behavior under `beacon-generator-implementation`; it is not a public lifecycle skill and does not produce QA or release verdicts.
+Team mode remains internal runtime behavior under `beacon-gen-implement`; it is not a public lifecycle skill and does not produce QA or release verdicts.
 """,
         "references/implement-ralph.md": """# Implement Ralph Mode
 
@@ -390,12 +610,14 @@ def _v160_skill_projections() -> list[SkillProjection]:
     for row in _v160_rows():
         source_skill = source_root / row["new"]
         if (source_skill / "SKILL.md").exists():
+            normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
             projections.append(
                 SkillProjection(
                     id=row["new"],
                     source_path=str(source_skill.relative_to(source_root)),
-                    source_hash=_hash_directory(source_skill),
+                    source_hash=_hash_projected_source_dir(source_skill, skill_text=normalized_content),
                     source_kind="migrated_v160_harness_taxonomy_preserve_skill_content",
+                    content=normalized_content,
                     source_dir=source_skill,
                 )
             )
@@ -445,7 +667,7 @@ def _verify_v160_skill_content(skill_id: str, text: str) -> list[str]:
     errors: list[str] = []
     harness = _harness_from_skill_id(skill_id)
     if harness not in _V160_HARNESSES:
-        errors.append("skill name must match beacon-(planner|generator|evaluator|governor)-<function>")
+        errors.append("skill name must match beacon-(pln|gen|eval|gov)-<function>")
     if _v160_frontmatter_name(text) != skill_id:
         errors.append("frontmatter name must match directory name")
     preamble_index = text.find(_V160_SHARED_PREAMBLE)
@@ -478,18 +700,24 @@ def _verify_v160_surface(target: AgentSurfaceTarget, expected_ids: list[str]) ->
     ) if target.skills_root.exists() else []
     wrong_names = [skill_id for skill_id in expected_ids if _harness_from_skill_id(skill_id) not in _V160_HARNESSES]
     gate_errors: dict[str, list[str]] = {}
+    route_errors: dict[str, list[str]] = {}
     for skill_id in expected_ids:
         skill_file = target.skills_root / skill_id / "SKILL.md"
         if not skill_file.exists():
             continue
-        errors = _verify_v160_skill_content(skill_id, skill_file.read_text(encoding="utf-8"))
+        text = skill_file.read_text(encoding="utf-8")
+        errors = _verify_v160_skill_content(skill_id, text)
         if errors:
             gate_errors[skill_id] = errors
+        stale_route_errors = _v160_skill_content_route_errors(text)
+        if stale_route_errors:
+            route_errors[skill_id] = stale_route_errors
     return {
         "unexpected": unexpected,
         "old_aliases": old_aliases,
         "wrong_names": wrong_names,
         "gate_errors": gate_errors,
+        "route_errors": route_errors,
     }
 
 
@@ -576,12 +804,12 @@ def materialize_v160_skill_package(
         "authority": "generated_skill_package",
         "truth_ref": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
         "content_preservation": {
-            "policy": "new harness skill directories preserve full pre-v1.6.0 SKILL.md body plus v1.6.0 preamble and HARD GATE",
+            "policy": "compact harness skill directories preserve full pre-v1.6.0 SKILL.md body plus v1.6.0 preamble and HARD GATE",
             "baseline_ref": "main:skills/beacon",
             "legacy_truth_refs": [
-                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-prd.md",
-                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-user-story.md",
-                "skills/beacon/beacon-generator-truth-package/references/legacy-beacon-test-case.md",
+                "skills/beacon/beacon-gen-truth/references/legacy-beacon-prd.md",
+                "skills/beacon/beacon-gen-truth/references/legacy-beacon-user-story.md",
+                "skills/beacon/beacon-gen-truth/references/legacy-beacon-test-case.md",
             ],
         },
     }
@@ -686,6 +914,11 @@ def verify_v160_skill_package(
             "name": "v160_shared_preamble_and_hard_gates",
             "status": "pass" if not v160_surface["gate_errors"] else "fail",
             "details": {"gate_errors": v160_surface["gate_errors"]},
+        },
+        {
+            "name": "v160_canonical_route_references",
+            "status": "pass" if not v160_surface["route_errors"] else "fail",
+            "details": {"route_errors": v160_surface["route_errors"]},
         },
         {
             "name": "v160_package_metadata",
@@ -841,9 +1074,9 @@ def build_v160_rough_prompt_route(
     broad_markers = ("整体", "完整", "全量", "重构", "全部", "everything", "whole", "all", "architecture")
     risky_markers = ("实现", "开发", "代码", "提交", "release", "发布", "qa", "验收")
     lake_or_ocean = "ocean" if any(marker in lowered for marker in broad_markers) or len(text) > 180 else "lake"
-    route = "beacon-planner-brainstorm" if lake_or_ocean == "ocean" else "beacon-planner-source-driven"
+    route = "beacon-pln-brainstorm" if lake_or_ocean == "ocean" else "beacon-pln-source"
     if any(marker in lowered for marker in risky_markers):
-        route = "beacon-planner-source-driven"
+        route = "beacon-pln-source"
     truth_gap = not truth_refs
     test_gap = not evidence_refs
     return {
@@ -1183,12 +1416,7 @@ def setup_agent_surface(
             if not dry_run:
                 if destination.exists():
                     shutil.rmtree(destination)
-                if source_skill.content is not None:
-                    _write_projected_skill(destination, source_skill.content, source_skill.files)
-                elif source_skill.source_dir is not None:
-                    shutil.copytree(source_skill.source_dir, destination)
-                else:
-                    raise ValueError(f"skill projection {skill_id} has no source")
+                _copy_projected_skill(destination, source_skill)
         installed.append(
             {
                 "id": skill_id,
@@ -1313,6 +1541,11 @@ def verify_agent_surface(
                     "name": "v160_shared_preamble_and_hard_gates",
                     "status": "pass" if not v160_surface["gate_errors"] else "fail",
                     "details": {"gate_errors": v160_surface["gate_errors"]},
+                },
+                {
+                    "name": "v160_canonical_route_references",
+                    "status": "pass" if not v160_surface["route_errors"] else "fail",
+                    "details": {"route_errors": v160_surface["route_errors"]},
                 },
             ]
         )

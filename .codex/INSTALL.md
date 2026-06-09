@@ -23,10 +23,10 @@ Those paths create duplicate discovery and can make Codex restart onto a stale B
 
 Beacon v1.6.0 uses only harness-first skill names:
 
-- `beacon-planner-*`
-- `beacon-generator-*`
-- `beacon-evaluator-*`
-- `beacon-governor-*`
+- `beacon-pln-*`
+- `beacon-gen-*`
+- `beacon-eval-*`
+- `beacon-gov-*`
 
 Old aliases such as `using-beacon`, `beacon-prd`, `beacon-user-story`, `beacon-test-case`, `beacon-implement`, `beacon-qa`, `beacon-release`, and `beacon-brainstorm` are intentionally not emitted in the packaged host-visible skill root.
 
