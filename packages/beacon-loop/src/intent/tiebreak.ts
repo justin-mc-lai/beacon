@@ -1,6 +1,7 @@
 import { join } from "node:path";
 import { writeJson } from "../runner/fs.js";
 import { nowIso, RUNTIME_ROLE } from "../runner/types.js";
+import { inferFeatureSlugFromUtterance } from "./feature-slug.js";
 
 export const TIE_BREAK_CONFIDENCE_THRESHOLD = 0.6;
 
@@ -12,7 +13,7 @@ export function needsIntentTieBreak(contract) {
 function fixtureResolution(contract) {
   const utterance = String(contract?.utterance || "");
   const inferredFeature = contract.feature_slug
-    || (utterance.match(/features\/([a-z0-9-]+)/i)?.[1] ?? "")
+    || inferFeatureSlugFromUtterance(utterance)
     || (/\bdemo\b/i.test(utterance) ? "demo" : "");
   return {
     intent_class: contract.intent_class || "delivery_closed_loop",
@@ -24,10 +25,11 @@ function fixtureResolution(contract) {
 }
 
 function defaultGreenLightResolution(contract) {
+  const utterance = String(contract?.utterance || "");
   return {
     intent_class: contract.intent_class || "delivery_closed_loop",
     scope_mode: contract.scope_mode || "full_parity",
-    feature_slug: contract.feature_slug || "",
+    feature_slug: contract.feature_slug || inferFeatureSlugFromUtterance(utterance),
     confidence: 0.7,
     rationale_summary: "default green-light tie-break: continue delivery without user interrupt"
   };

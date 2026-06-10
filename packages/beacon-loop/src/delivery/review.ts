@@ -48,6 +48,31 @@ function p1FixtureReview(intentContract) {
   });
 }
 
+function mapPlannerPayload(intentContract, payload) {
+  const synthesis = payload.synthesis && typeof payload.synthesis === "object"
+    ? payload.synthesis
+    : { recommended_route: payload.recommended_route || "continue_delivery" };
+  const reviewLanes = Array.isArray(payload.reviewer_lanes)
+    ? payload.reviewer_lanes.map((lane) => ({
+      lane: lane.lane || lane.reviewer || "unknown",
+      status: lane.status || "completed",
+      evidence_ref: lane.runtime_evidence_ref || lane.evidence_ref || ""
+    }))
+    : [];
+  return {
+    ...fixtureReview(intentContract),
+    execution_mode: payload.execution_mode || "",
+    review_lanes: reviewLanes,
+    findings: Array.isArray(payload.findings) ? payload.findings : [],
+    synthesis,
+    parity_matrix: Array.isArray(payload.parity_matrix) ? payload.parity_matrix : [],
+    deferral_ledger: Array.isArray(payload.deferral_ledger) ? payload.deferral_ledger : [],
+    review_id: payload.review_id || "",
+    planner_boundary: payload.planner_boundary || undefined,
+    fallback_reason: payload.fallback_reason || ""
+  };
+}
+
 export function runPlannerReview(projectRoot, runDir, intentContract) {
   const outPath = join(runDir, "review-artifact.json");
   const reviewEnv = process.env.BEACON_LOOP_TEST_REVIEW || "";
@@ -62,6 +87,7 @@ export function runPlannerReview(projectRoot, runDir, intentContract) {
     return { status: "pass", artifact };
   }
 
+  const prompt = String(intentContract.utterance || intentContract.feature_slug || "").trim();
   const args = [
     "planner-review",
     "run",
@@ -69,7 +95,9 @@ export function runPlannerReview(projectRoot, runDir, intentContract) {
     "--project",
     projectRoot,
     "--version",
-    intentContract.version || "v1.6.0",
+    intentContract.version || "auto",
+    "--prompt",
+    prompt || intentContract.feature_slug || "unknown",
     "--json"
   ];
   if (reviewEnv === "parallel" || process.env.BEACON_LOOP_REVIEW_PARALLEL === "1") {
@@ -78,24 +106,28 @@ export function runPlannerReview(projectRoot, runDir, intentContract) {
   const result = run("beacon", args, { cwd: projectRoot });
   if (result.code !== 0) {
     const artifact = fixtureReview(intentContract);
-    artifact.findings = [{ severity: "P2", code: "planner_review_subprocess_fallback", text: result.stderr || "review subprocess unavailable" }];
+    artifact.findings = [{
+      severity: "P1",
+      code: "planner_review_subprocess_failed",
+      text: result.stderr || result.stdout || "planner-review subprocess unavailable"
+    }];
+    artifact.synthesis = { recommended_route: "continue_delivery" };
     writeJson(outPath, artifact);
-    return { status: "pass", artifact, fallback: true };
+    return { status: "degraded", artifact, fallback: true, reason_code: "planner_review_subprocess_failed" };
   }
   try {
     const payload = JSON.parse(result.stdout);
-    const artifact = {
-      ...fixtureReview(intentContract),
-      findings: payload.findings || [],
-      synthesis: payload.synthesis || fixtureReview(intentContract).synthesis,
-      parity_matrix: payload.parity_matrix || [],
-      deferral_ledger: payload.deferral_ledger || []
-    };
+    const artifact = mapPlannerPayload(intentContract, payload);
     writeJson(outPath, artifact);
-    return { status: "pass", artifact };
-  } catch {
+    return { status: "pass", artifact, review_id: payload.review_id || "" };
+  } catch (error) {
     const artifact = fixtureReview(intentContract);
+    artifact.findings = [{
+      severity: "P1",
+      code: "planner_review_json_invalid",
+      text: String(error)
+    }];
     writeJson(outPath, artifact);
-    return { status: "pass", artifact, fallback: true };
+    return { status: "degraded", artifact, fallback: true, reason_code: "planner_review_json_invalid" };
   }
 }

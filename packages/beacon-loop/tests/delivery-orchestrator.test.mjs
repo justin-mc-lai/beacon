@@ -6,6 +6,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { canTransition } from "../dist/delivery/state.js";
 import { classifyIntent } from "../dist/intent/classify.js";
+import { resolveProjectVersion } from "../dist/beacon/version.js";
 
 const root = new URL("..", import.meta.url).pathname;
 const cli = join(root, "dist", "cli.js");
@@ -66,11 +67,58 @@ const resolveMode = ${JSON.stringify(resolveMode)};
 const qaMode = ${JSON.stringify(qaMode)};
 const frozenPayload = ${JSON.stringify(frozenPayload)};
 const draftPayload = ${JSON.stringify(draftPayload)};
+const phantomPathsPayload = {
+  feature_truth: {
+    status: "blocked",
+    truth_frontmatter: { status: "draft" },
+    frontmatter_errors: ["frontmatter_missing"],
+    source_paths: {
+      truth: "docs/beacon/v1.6.0/features/demo/truth.md",
+      tests: "docs/beacon/v1.6.0/features/demo/tests.md",
+      tasks: "docs/beacon/v1.6.0/features/demo/tasks.md",
+      evidence: "docs/beacon/v1.6.0/features/demo/evidence.md"
+    },
+    surfaces: {
+      truth: { exists: false },
+      tests: { exists: false },
+      tasks: { exists: false },
+      evidence: { exists: false }
+    }
+  }
+};
 if (args[0] === "--version") { console.log("Beacon CLI v1.6.0"); process.exit(0); }
 if (args[0] === "truth-map" && args[1] === "resolve") {
   if (resolveMode === "blocked") { console.error("missing truth"); process.exit(2); }
+  if (resolveMode === "phantom_paths") {
+    console.log(JSON.stringify(phantomPathsPayload));
+    process.exit(0);
+  }
   const payload = resolveMode === "draft" ? draftPayload : frozenPayload;
   console.log(JSON.stringify(payload));
+  process.exit(0);
+}
+if (args[0] === "truth" && args[1] === "init") {
+  console.log("truth init ok");
+  process.exit(0);
+}
+if (args[0] === "prd-bootstrap" && args[1] === "run") {
+  console.log(JSON.stringify({ status: "completed", feature: args[2] || "demo" }));
+  process.exit(0);
+}
+if (args[0] === "brainstorm" && args[1] === "run") {
+  console.log(JSON.stringify({ status: "completed", output_path: "docs/beacon/v1.6.0/features/demo/research.md" }));
+  process.exit(0);
+}
+if (args[0] === "doctor" && args[1] === "sync-materials") {
+  console.log(JSON.stringify({ status: "completed", result: { feature_count: 1 } }));
+  process.exit(0);
+}
+if (args[0] === "doctor" && args[1] === "sync-requirement-clarity") {
+  console.log(JSON.stringify({ status: "completed", result: { gate: { status: "pass" } } }));
+  process.exit(0);
+}
+if (args[0] === "materialize-feature-package") {
+  console.log(JSON.stringify({ status: "materialized", written: ["docs/beacon/v1.6.0/features/demo/truth.md"] }));
   process.exit(0);
 }
 if (args[0] === "truth-map" && args[1] === "rebuild-machine") {
@@ -140,6 +188,46 @@ test("intent-capture: delivery goal writes intent artifacts (AC-031 / TC-031)", 
   assert.equal(capture.utterance, "deliver demo feature");
   assert.equal(contract.utterance, "deliver demo feature");
   assert.ok(contract.determinism?.rules_hash);
+});
+
+test("cold-start-slug-inference: gum utterance infers feature slug without --feature", () => {
+  const contract = classifyIntent(
+    "复刻 charmbracelet/gum 的 choose/filter 交互，在本项目 parity 交付",
+    { version: "v1.0.0", mode: "delivery" }
+  );
+  assert.equal(contract.feature_slug, "gum-choose-filter-parity");
+});
+
+test("project-version-auto: resolves docs version from onboarding (P2)", () => {
+  const project = makeProject();
+  mkdirSync(join(project, ".beacon", "state"), { recursive: true });
+  writeFileSync(
+    join(project, ".beacon", "state", "project-onboarding.json"),
+    JSON.stringify({ docs_version: "v1.0.0", runtime_version: "v1.6.0" }),
+    "utf8"
+  );
+  assert.equal(resolveProjectVersion(project, "auto"), "v1.0.0");
+  assert.equal(resolveProjectVersion(project, "v1.6.0"), "v1.6.0");
+});
+
+test("phantom-truth-paths: missing surfaces enter truth_fill bootstrap (P0 cold-start)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project, { resolveMode: "phantom_paths" }),
+    BEACON_LOOP_TEST_REVIEW: "fixture",
+    BEACON_LOOP_TEST_TRUTH_FILL: "fixture"
+  };
+  const result = run(
+    ["goal", "deliver demo", "--project", project, "--feature", "demo", "--mode", "delivery", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 2);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.reason_code, "truth_not_frozen");
+  const promotion = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "truth-promotion.json"), "utf8"));
+  assert.ok(promotion.calls.length >= 1);
+  const deliveryState = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "delivery-state.json"), "utf8"));
+  assert.notEqual(deliveryState.state, "implement_loop");
 });
 
 test("intent-classify-deterministic: same utterance yields same contract (AC-032 / TC-032)", () => {

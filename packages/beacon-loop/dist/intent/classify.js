@@ -1,5 +1,5 @@
 import { CLASSIFIER_ID, rulesHash } from "./rules.js";
-import { slugify } from "../runner/types.js";
+import { inferFeatureSlugFromUtterance } from "./feature-slug.js";
 
 const DELIVERY_SIGNALS = ["闭环", "交付", "验收", "release", "truth", "delivery", "closed loop", "closed-loop"];
 const FULL_PARITY_SIGNALS = ["完整", "全量", "parity", "不要mvp", "full parity", "full_parity"];
@@ -48,7 +48,7 @@ export function classifyIntent(utterance, options = {}) {
     scopeMode = hasAny(text, FULL_PARITY_SIGNALS) ? "full_parity" : "full_parity";
   }
 
-  const featureSlug = extractFeatureSlug(text, explicitFeature);
+  const featureSlug = inferFeatureSlugFromUtterance(text, explicitFeature);
   if (!featureSlug && (mode === "execute-only" || intentClass === "execute_bound")) {
     ambiguous = true;
   }

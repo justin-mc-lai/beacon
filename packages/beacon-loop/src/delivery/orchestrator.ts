@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { writeJson } from "../runner/fs.js";
-import { resolveTruth } from "../beacon/resolve.js";
+import { resolveTruth, isFeatureTruthFrozen } from "../beacon/resolve.js";
 import { buildIntentCapture } from "../intent/capture.js";
 import { classifyIntent } from "../intent/classify.js";
 import { needsIntentTieBreak, runIntentTieBreak } from "../intent/tiebreak.js";
@@ -16,11 +16,8 @@ import {
 import { runTruthFill, scanTruthGap } from "./truth-fill.js";
 import { nowIso } from "../runner/types.js";
 
-export function truthFrozen(resolver) {
-  const status = resolver?.payload?.feature_truth?.truth_frontmatter?.status
-    || resolver?.payload?.truth_frontmatter?.status
-    || "";
-  return !resolver?.blocked && String(status) === "frozen";
+export function truthFrozen(resolver, projectRoot, version, feature) {
+  return isFeatureTruthFrozen(projectRoot, version, feature, resolver);
 }
 
 export function writeIntentArtifacts(runDir, utterance, options) {
@@ -135,7 +132,12 @@ export function runDeliveryPipeline(projectRoot, runDir, ctx) {
   if (gap.blocked || gap.deferPending) {
     step = transitionDeliveryState(runDir, "truth_fill");
     if (!step.ok) return deliveryReturn({ status: "blocked", reason_code: step.reason_code }, runDir, mode);
-    const fill = runTruthFill(projectRoot, runDir, { version: runPackage.version, feature, reviewArtifact: review.artifact });
+    const fill = runTruthFill(projectRoot, runDir, {
+      version: runPackage.version,
+      feature,
+      reviewArtifact: review.artifact,
+      utterance: goal
+    });
     step = transitionDeliveryState(runDir, "truth_freeze_gate");
     if (!step.ok) return deliveryReturn({ status: "blocked", reason_code: step.reason_code }, runDir, mode);
     if (fill.status === "blocked") {
@@ -152,7 +154,7 @@ export function runDeliveryPipeline(projectRoot, runDir, ctx) {
     gap = scanTruthGap(projectRoot, runPackage.version, feature, review.artifact);
   }
 
-  const frozen = truthFrozen(gap.resolver);
+  const frozen = truthFrozen(gap.resolver, projectRoot, runPackage.version, feature);
   if (!frozen) {
     if (dryRun) {
       return deliveryReturn({

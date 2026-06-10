@@ -131,6 +131,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.lighthouse import app as lighthouse_app
     from .commands.memory_friction_evolution import app as memory_friction_evolution_app
     from .commands.prd_bootstrap import app as prd_bootstrap_app
+    from .commands.planner_review import app as planner_review_app
     from .commands.save import app as save_app
     from .commands.recall import app as recall_app
     from .commands.remember import app as remember_app
@@ -202,6 +203,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(lighthouse_app, name="lighthouse", hidden=True)
     app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution", hidden=True)
     app.add_typer(prd_bootstrap_app, name="prd-bootstrap", hidden=True)
+    app.add_typer(planner_review_app, name="planner-review", hidden=True)
     app.add_typer(save_app, name="save", hidden=True)
     app.add_typer(recall_app, name="recall", hidden=True)
     app.add_typer(remember_app, name="remember", hidden=True)

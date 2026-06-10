@@ -22,6 +22,8 @@ function parseSimpleYaml(text) {
   return out;
 }
 
+import { resolveProjectVersion } from "../beacon/version.js";
+
 export function loadLoopConfig(projectRoot) {
   const paths = [join(homedir(), ".beacon-loop", "config.yml"), join(projectRoot, ".beacon-loop", "config.yml")];
   let merged = {};
@@ -39,8 +41,9 @@ export function resolveGoalOptions(projectRoot, args, cli = {}) {
   const strictInterrupt = has("--strict-interrupt")
     ? true
     : Boolean(cli.strictInterrupt || config.strict_interrupt);
+  const requestedVersion = has("--version") ? cli.version : config.version || cli.version || "auto";
   return {
-    version: has("--version") ? cli.version : config.version || cli.version || "v1.6.0",
+    version: resolveProjectVersion(projectRoot, requestedVersion),
     feature: has("--feature") ? cli.feature : config.feature || cli.feature || "",
     mode: has("--mode") ? cli.mode : config.mode || cli.mode || "delivery",
     askOn: String(askOnRaw).split(",").map((item) => item.trim()).filter(Boolean),

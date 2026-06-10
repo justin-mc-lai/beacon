@@ -53,7 +53,7 @@ Commands:
 
 Options:
   --project <path>
-  --version <version>
+  --version <version>   (default: auto — project docs/onboarding version)
   --dry-run
   --json
   --allow-dirty
@@ -118,7 +118,7 @@ if (command === "goal") {
     process.exit(2);
   }
   const resolved = resolveGoalOptions(projectRoot, args, {
-    version: option(args, "--version", "v1.6.0"),
+    version: option(args, "--version", "auto"),
     feature: option(args, "--feature", ""),
     mode: option(args, "--mode", "delivery"),
     askOn: option(args, "--ask-on", ""),

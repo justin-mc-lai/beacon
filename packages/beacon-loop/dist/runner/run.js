@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { resolveProjectVersion } from "../beacon/version.js";
 import { isGitRepo, gitStatus } from "../git/git.js";
-import { resolveTruth } from "../beacon/resolve.js";
+import { resolveTruth, isFeatureTruthFrozen } from "../beacon/resolve.js";
 import { ensureDir, readJson, writeJson, writeText } from "./fs.js";
 import { runOrchestrator } from "./orchestrator.js";
 import { validateBranchMode, resolveWorkspace } from "../git/branches.js";
@@ -9,7 +10,7 @@ import { RUNTIME_ROLE, nowIso } from "./types.js";
 import { syncRunToLedger } from "../ledger/runs.js";
 import { defaultRunState } from "./state.js";
 import { classifyIntent } from "../intent/classify.js";
-import { finalizeDeliveryAfterImplement, runDeliveryPipeline, truthFrozen } from "../delivery/orchestrator.js";
+import { finalizeDeliveryAfterImplement, runDeliveryPipeline } from "../delivery/orchestrator.js";
 import { readDeliveryState, transitionDeliveryState } from "../delivery/state.js";
 
 export function createRunId() {
@@ -51,7 +52,7 @@ function bootstrapRuntimeFiles(runDir, runPackage, resolver) {
 }
 
 export function startGoal(projectRoot, goal, options = {}) {
-  const version = options.version || "v1.6.0";
+  const version = resolveProjectVersion(projectRoot, options.version || "auto");
   const mode = options.mode || "delivery";
   const featureHint = String(options.feature || "").trim();
 
@@ -113,7 +114,7 @@ export function startGoal(projectRoot, goal, options = {}) {
         resolver_command: resolver.command
       };
     }
-    if (!truthFrozen(resolver)) {
+    if (!isFeatureTruthFrozen(projectRoot, version, feature, resolver)) {
       return {
         schema_version: "1.0",
         surface: "beacon-loop",
