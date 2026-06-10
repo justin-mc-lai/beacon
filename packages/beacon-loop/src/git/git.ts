@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -30,7 +30,16 @@ export function currentHead(projectRoot) {
 export function createWorktree(projectRoot, runId) {
   const worktreePath = join(projectRoot, ".beacon", "loop", "worktrees", runId);
   const branch = `beacon-loop/${runId}`;
-  const result = run("git", ["worktree", "add", "-b", branch, worktreePath, "HEAD"], { cwd: projectRoot });
+  mkdirSync(join(worktreePath, ".."), { recursive: true });
+  if (existsSync(worktreePath)) {
+    run("git", ["worktree", "remove", "--force", worktreePath], { cwd: projectRoot });
+  }
+  run("git", ["worktree", "prune"], { cwd: projectRoot });
+  let result = run("git", ["worktree", "add", "-b", branch, worktreePath, "HEAD"], { cwd: projectRoot });
+  if (result.code !== 0 && /already exists/i.test(`${result.stdout}\n${result.stderr}`)) {
+    run("git", ["branch", "-D", branch], { cwd: projectRoot });
+    result = run("git", ["worktree", "add", "-b", branch, worktreePath, "HEAD"], { cwd: projectRoot });
+  }
   return { branch, worktreePath, result };
 }
 

@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-015-planner-autofix-false",
+  "tc_id": "TC-015",
+  "config": "with_skill",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "actual_route": "beacon-pln-review",
+  "status": "pass",
+  "assertions": [
+    {
+      "assertion": "must_set_autofix_allowed_false",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_set_autofix_allowed_false",
+      "critique": ""
+    },
+    {
+      "assertion": "must_route_instead_of_fixing",
+      "passed": true,
+      "evidence": "with_skill:beacon-pln-review:must_route_instead_of_fixing",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "planner_autofix_disallowed"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": false,
+  "hard_gate_verified": false,
+  "intent_snapshot_preserved": false,
+  "full_parity_preserved": false,
+  "source_parity_blocked": false,
+  "deferral_ledger_required": false,
+  "state_machine_reviewed": false,
+  "state_truth_landing_blocked": false,
+  "state_tests_landing_blocked": false,
+  "finding_schema_complete": false,
+  "planner_autofix_blocked": true,
+  "reviewer_synthesis_completed": false,
+  "multi_agent_lane_selection": false,
+  "independent_lane_findings": false,
+  "synthesis_arbitration": false,
+  "fallback_transparency": false,
+  "fake_parallel_blocked": false,
+  "runtime_authority_flags": false,
+  "planner_review_boundary_verified": false,
+  "weak_assertion_critique": "",
+  "fake_delivery_critique": "",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

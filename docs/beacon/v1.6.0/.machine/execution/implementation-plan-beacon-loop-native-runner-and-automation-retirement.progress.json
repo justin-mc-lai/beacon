@@ -1,0 +1,619 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-loop-native-runner-and-automation-retirement-r2",
+  "feature": "beacon-loop-native-runner-and-automation-retirement",
+  "version": "v1.6.0",
+  "revision_id": "R2",
+  "plan_path": "docs/beacon/v1.6.0/.machine/execution/implementation-plan-beacon-loop-native-runner-and-automation-retirement.json",
+  "progress_path": "docs/beacon/v1.6.0/.machine/execution/implementation-plan-beacon-loop-native-runner-and-automation-retirement.progress.json",
+  "status": "blocked",
+  "counts": {
+    "total": 41,
+    "draft": 0,
+    "planned": 0,
+    "in_progress": 0,
+    "blocked": 24,
+    "completed": 17
+  },
+  "blocked_task_ids": [
+    "ITASK-001",
+    "ITASK-002",
+    "ITASK-003",
+    "ITASK-004",
+    "ITASK-005",
+    "ITASK-006",
+    "ITASK-007",
+    "ITASK-008",
+    "ITASK-009",
+    "ITASK-010",
+    "ITASK-011",
+    "ITASK-012",
+    "ITASK-013",
+    "ITASK-014",
+    "ITASK-015",
+    "ITASK-016",
+    "ITASK-017",
+    "ITASK-018",
+    "ITASK-019",
+    "ITASK-020",
+    "ITASK-021",
+    "ITASK-022",
+    "ITASK-023",
+    "ITASK-024"
+  ],
+  "blocked_task_titles": [
+    "TASK-001 从 Beacon command catalog、CLI factory、help、intent routing 和 skill routing 中移除 active `automation` surface。",
+    "TASK-002 删除或改造 `beacon/commands/automation.py`，确保旧 automation queue/job 业务不可继续执行。",
+    "TASK-003 删除或迁移 `beacon/utils/automation_*.py` 中只服务旧 automation 的业务逻辑。",
+    "TASK-004 删除或退役 `automation/jobs/`、`automation/launchd/`、`automation/beacon-automation-queue.json` 和旧 automation 文档入口。",
+    "TASK-005 新增 `packages/beacon-loop` TypeScript package，并配置独立 build/test/bin。",
+    "TASK-006 实现 `beacon-loop goal \"<goal>\"` CLI，且不实现 `beacon-loop lfg` alias。",
+    "TASK-007 实现 Beacon resolver adapter，启动前调用 `beacon truth-map resolve ... --json`。",
+    "TASK-008 实现 resolver blocked fail-closed，并推荐 `beacon-gen-change`。",
+    "TASK-009 实现 `.beacon/loop/runs/<run-id>/` runtime package 写入（MVP 单次 iteration）。",
+    "TASK-010 实现 git clean preflight、branch/worktree isolation 和 dirty worktree 阻断。",
+    "TASK-011 MVP runner orchestrator（单次 iteration；待 Phase A 升级为真多轮）。",
+    "TASK-012 实现 success commit、failure rollback、commit failure repair state（MVP）。",
+    "TASK-013 实现 `status`、`stop`、`resume`、`review`、`import-evidence`、`doctor` 子命令（MVP stub 待加强）。",
+    "TASK-014 实现 codex agent adapter（MVP fixture 路径；待 Phase A 真多轮）。",
+    "TASK-015 实现 Beacon evidence import adapter。",
+    "TASK-016 确保 `beacon-loop` 不输出 QA/release verdict。",
+    "TASK-017 MVP tests（待扩展 TC-018..TC-035）。",
+    "TASK-018 更新文档，明确双 CLI、`goal` 命名、automation retirement。",
+    "TASK-019 实现 `Orchestrator` 多轮 loop（max-iterations / max-tokens / stop-when / cap_reached）。",
+    "TASK-020 实现 `notes.md` 跨轮 prompt 注入与 iteration 编号递增。",
+    "TASK-021 实现 graceful stop 与 `--force` stop（真进程/子进程中断）。",
+    "TASK-022 实现 consecutive failure limit、no-op failure、retryable hard error backoff。",
+    "TASK-023 加强 `resume`：从 repair/stop/cap 状态恢复并继续 N+1 iteration。",
+    "TASK-024 实现丰富 exit summary / `summary.md`（AC-021）。"
+  ],
+  "completed_task_ids": [
+    "ITASK-025",
+    "ITASK-026",
+    "ITASK-027",
+    "ITASK-028",
+    "ITASK-029",
+    "ITASK-030",
+    "ITASK-031",
+    "ITASK-032",
+    "ITASK-033",
+    "ITASK-034",
+    "ITASK-035",
+    "ITASK-036",
+    "ITASK-037",
+    "ITASK-038",
+    "ITASK-039",
+    "ITASK-040",
+    "ITASK-041"
+  ],
+  "next_task_id": "ITASK-001",
+  "next_task_title": "TASK-001 从 Beacon command catalog、CLI factory、help、intent routing 和 skill routing 中移除 active `automation` surface。",
+  "task_states": [
+    {
+      "task_id": "ITASK-001",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-001"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TC-001",
+        "TC-002"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-002"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-002",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-002",
+        "AC-028"
+      ],
+      "mapped_test_ids": [
+        "TEST-002",
+        "TEST-028",
+        "TC-003"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-003"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-003",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TEST-003",
+        "TC-004",
+        "TC-005"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-004",
+        "SC-AUTO-TC-005"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-004",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TEST-004",
+        "TC-006"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-006"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-005",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-013",
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-013",
+        "TEST-006",
+        "TC-008",
+        "TC-015"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-008",
+        "SC-AUTO-TC-015"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-006",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TEST-005",
+        "TC-007"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-007"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-007",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-030"
+      ],
+      "mapped_test_ids": [
+        "TEST-030"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-008",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TC-009"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-009"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-009",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-029"
+      ],
+      "mapped_test_ids": [
+        "TEST-029"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-010",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009",
+        "TC-011"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-011"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-011",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-010",
+        "TC-012"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-012"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-012",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-011",
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-011",
+        "TEST-008",
+        "TC-010",
+        "TC-013"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-010",
+        "SC-AUTO-TC-013"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-013",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-012",
+        "TC-014"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-014"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-014",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-014"
+      ],
+      "mapped_test_ids": [
+        "TEST-014",
+        "TC-016"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-016"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-015",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-015",
+        "TC-017"
+      ],
+      "mapped_scenario_ids": [
+        "SC-AUTO-TC-017"
+      ],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-016",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-016"
+      ],
+      "mapped_test_ids": [
+        "TEST-016"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-017",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-017"
+      ],
+      "mapped_test_ids": [
+        "TEST-017"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-018",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-018"
+      ],
+      "mapped_test_ids": [
+        "TEST-018"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-019",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-019"
+      ],
+      "mapped_test_ids": [
+        "TEST-019"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-020",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-020"
+      ],
+      "mapped_test_ids": [
+        "TEST-020"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-021",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-021"
+      ],
+      "mapped_test_ids": [
+        "TEST-021"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-022",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-022"
+      ],
+      "mapped_test_ids": [
+        "TEST-022"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-023",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-023"
+      ],
+      "mapped_test_ids": [
+        "TEST-023"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-024",
+      "status": "blocked",
+      "blocked_reason": "verification_failed",
+      "mapped_ac_ids": [
+        "AC-024",
+        "AC-025",
+        "AC-026",
+        "AC-027"
+      ],
+      "mapped_test_ids": [
+        "TEST-024",
+        "TEST-025",
+        "TEST-026",
+        "TEST-027"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-025",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-026",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-027",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-028",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-029",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-030",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-031",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-032",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-033",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-034",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-035",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-036",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-037",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-038",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-039",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-040",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-041",
+      "status": "completed",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    }
+  ],
+  "updated_at": "2026-06-10T06:53:52.246918+00:00",
+  "task_ledger_path": "docs/beacon/v1.6.0/execution/tasks-beacon-loop-native-runner-and-automation-retirement.md"
+}

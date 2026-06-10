@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t085839z",
+  "version": "v1.6.0",
+  "case_id": "tc-011-no-fake-delivery",
+  "tc_id": "TC-011",
+  "ac_ids": [
+    "AC-011"
+  ],
+  "prompt": "这个 feature 只有 placeholder implementation 和 zero assertions，也算完成吧。",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-eval-qa",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_fake_delivery",
+    "must_emit_fake_delivery_reason"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

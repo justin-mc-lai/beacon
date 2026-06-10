@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t121007z",
+  "version": "v1.6.0",
+  "case_id": "tc-007-source-parity-matrix-required",
+  "tc_id": "TC-007",
+  "ac_ids": [
+    "AC-007"
+  ],
+  "prompt": "已有 source refs，但 review artifact 没有 source_capability_inventory 和 parity_matrix，仍然准备 freeze。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_freeze_without_source_inventory",
+    "must_block_freeze_without_parity_matrix"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

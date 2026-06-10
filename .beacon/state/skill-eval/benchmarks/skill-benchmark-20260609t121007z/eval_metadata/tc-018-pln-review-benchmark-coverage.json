@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t121007z",
+  "version": "v1.6.0",
+  "case_id": "tc-018-pln-review-benchmark-coverage",
+  "tc_id": "TC-018",
+  "ac_ids": [
+    "AC-018"
+  ],
+  "prompt": "证明 eval/benchmark 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_cover_intent_parity",
+    "must_cover_source_parity",
+    "must_cover_state_machine",
+    "must_cover_boundary_negative",
+    "must_cover_finding_schema"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

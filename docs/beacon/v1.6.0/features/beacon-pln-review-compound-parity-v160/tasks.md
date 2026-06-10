@@ -16,8 +16,8 @@
 - [x] TASK-012 增加 `tests/test_v160_pln_review_compound_parity.py`。
 - [x] TASK-013 重新 materialize skill package、generated projection 和 agent surface。
 - [x] TASK-014 导入 implementation evidence。
-- [ ] TASK-015 路由到 `beacon-eval-qa` 做 formal QA。
-- [ ] TASK-016 路由到 `beacon-eval-release` 做 release readiness。
+- [x] TASK-015 路由到 `beacon-eval-qa` 做 formal QA。（superseded-by-qa：`qa-acceptance-beacon-pln-review-compound-parity-v160.json`，2026-06-09 passed）
+- [x] TASK-016 路由到 `beacon-eval-release` 做 release readiness。（superseded-by-qa：feature QA accepted；版本级 release 仍待 v1.6.0 promotion）
 
 ## 边界
 

@@ -1,8 +1,13 @@
 #!/usr/bin/env node
 import { existsSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
+import { resolveGoalOptions } from "./config/load.js";
 import { run } from "./git/git.js";
 import { importEvidence } from "./evidence/importer.js";
+import { analyzeRun, learnRun } from "./harness/index.js";
+import { diagnoseRuns, queryRuns, showRun } from "./ledger/runs.js";
+import { runtimeList, runtimeRemove, runtimeSet } from "./ledger/runtime.js";
+import { sqliteAvailable } from "./ledger/db.js";
 import { latestRunId } from "./runner/fs.js";
 import { resumeRun, startGoal, statusRun, stopRun } from "./runner/run.js";
 
@@ -32,11 +37,19 @@ function help() {
 Commands:
   goal <goal>
   status [run-id]
-  stop <run-id>
+  stop <run-id> [--force]
   resume <run-id>
   review <run-id>
   import-evidence <run-id>
-  doctor
+  doctor [--diagnose]
+  runs query [--status <s>]
+  runs show <run-id>
+  runs diagnose
+  runtime-set <run-id> --status <running|stopped|error|degraded|starting> [--port N] [--notes <text>]
+  runtime-list [--status <s>]
+  runtime-remove <run-id>
+  analyze <run-id>
+  learn <run-id>
 
 Options:
   --project <path>
@@ -47,20 +60,34 @@ Options:
   --max-iterations <n>
   --max-tokens <n>
   --stop-when <text>
+  --branch-mode <worktree|current-branch|run-branch>
+  --isolated-worktree
+  --agent <codex|claude|acp:target>
 `);
 }
 
-function doctor(projectRoot, jsonOutput) {
+function doctor(projectRoot, jsonOutput, diagnose = false) {
   const nodeMajor = Number(process.versions.node.split(".")[0] || "0");
   const checks = {
     node_runtime: { status: nodeMajor >= 20 ? "pass" : "blocked", version: process.versions.node },
+    sqlite_cli: { status: sqliteAvailable() ? "pass" : "blocked", repair_route: "install sqlite3 CLI" },
     beacon_cli: { status: run("beacon", ["--version"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
     git_worktree: { status: run("git", ["worktree", "list"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
     agent_backend: { status: run("codex", ["--version"], { cwd: projectRoot }).code === 0 || process.env.BEACON_LOOP_TEST_AGENT_RESULT ? "pass" : "blocked", adapter: "codex" },
     evidence_import: { status: run("beacon", ["implement", "import-evidence", "--help"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" }
   };
   const blocked = Object.values(checks).some((item) => item.status !== "pass");
-  emit({ schema_version: "1.0", surface: "beacon-loop", command: "doctor", status: blocked ? "blocked" : "pass", checks }, jsonOutput);
+  const payload = {
+    schema_version: "1.0",
+    surface: "beacon-loop",
+    command: "doctor",
+    status: blocked ? "blocked" : "pass",
+    checks
+  };
+  if (diagnose) {
+    payload.diagnose = diagnoseRuns(projectRoot);
+  }
+  emit(payload, jsonOutput);
   process.exit(blocked ? 2 : 0);
 }
 
@@ -74,7 +101,9 @@ if (!command || command === "--help" || command === "-h") {
   process.exit(0);
 }
 
-if (command === "doctor") doctor(projectRoot, jsonOutput);
+if (command === "doctor") {
+  doctor(projectRoot, jsonOutput, flag(args, "--diagnose"));
+}
 
 if (command === "goal") {
   const goal = args[1] || "";
@@ -82,7 +111,7 @@ if (command === "goal") {
     console.error("goal is required");
     process.exit(2);
   }
-  const payload = startGoal(projectRoot, goal, {
+  const resolved = resolveGoalOptions(projectRoot, args, {
     version: option(args, "--version", "v1.6.0"),
     feature: option(args, "--feature", ""),
     dryRun: flag(args, "--dry-run"),
@@ -91,8 +120,10 @@ if (command === "goal") {
     maxTokens: option(args, "--max-tokens", "0"),
     stopWhen: option(args, "--stop-when", ""),
     agent: option(args, "--agent", "codex"),
-    branchMode: option(args, "--branch-mode", "worktree")
+    branchMode: option(args, "--branch-mode", "worktree"),
+    isolatedWorktree: flag(args, "--isolated-worktree")
   });
+  const payload = startGoal(projectRoot, goal, resolved);
   emit(payload, jsonOutput);
   process.exit(payload.status === "blocked" ? 2 : 0);
 }
@@ -132,6 +163,76 @@ if (command === "import-evidence") {
   const payload = importEvidence(projectRoot, args[1] || latestRunId(projectRoot), jsonOutput);
   emit(payload, jsonOutput);
   process.exit(payload.status === "imported" ? 0 : 2);
+}
+
+if (command === "runs") {
+  const sub = args[1] || "";
+  if (sub === "query") {
+    const payload = queryRuns(projectRoot, { status: option(args, "--status", "") });
+    emit(payload, jsonOutput);
+    process.exit(payload.status === "blocked" ? 2 : 0);
+  }
+  if (sub === "show") {
+    const runId = args[2] || "";
+    if (!runId) {
+      console.error("run-id is required");
+      process.exit(2);
+    }
+    const payload = showRun(projectRoot, runId);
+    emit(payload, jsonOutput);
+    process.exit(payload.status === "blocked" ? 2 : 0);
+  }
+  if (sub === "diagnose") {
+    emit(diagnoseRuns(projectRoot), jsonOutput);
+    process.exit(0);
+  }
+  console.error("Unknown runs subcommand");
+  process.exit(2);
+}
+
+if (command === "runtime-set") {
+  const runId = args[1] || "";
+  if (!runId) {
+    console.error("run-id is required");
+    process.exit(2);
+  }
+  const payload = runtimeSet(projectRoot, runId, {
+    status: option(args, "--status", "running"),
+    port: option(args, "--port", "0"),
+    notes: option(args, "--notes", "")
+  });
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
+}
+
+if (command === "runtime-list") {
+  const payload = runtimeList(projectRoot, { status: option(args, "--status", "") });
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
+}
+
+if (command === "runtime-remove") {
+  const runId = args[1] || "";
+  if (!runId) {
+    console.error("run-id is required");
+    process.exit(2);
+  }
+  emit(runtimeRemove(projectRoot, runId), jsonOutput);
+  process.exit(0);
+}
+
+if (command === "analyze") {
+  const runId = args[1] || latestRunId(projectRoot);
+  const payload = analyzeRun(projectRoot, runId);
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
+}
+
+if (command === "learn") {
+  const runId = args[1] || latestRunId(projectRoot);
+  const payload = learnRun(projectRoot, runId);
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
 }
 
 console.error("Unknown command");

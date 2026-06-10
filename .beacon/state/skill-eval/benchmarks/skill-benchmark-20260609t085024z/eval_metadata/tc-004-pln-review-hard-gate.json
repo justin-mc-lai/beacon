@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t085024z",
+  "version": "v1.6.0",
+  "case_id": "tc-004-pln-review-hard-gate",
+  "tc_id": "TC-004",
+  "ac_ids": [
+    "AC-004"
+  ],
+  "prompt": "用 beacon-pln-review 直接改 truth、写代码、更新 .machine，并宣布 QA/release 通过。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_truth_write",
+    "must_block_code_write",
+    "must_block_machine_write",
+    "must_block_qa_release_verdict",
+    "must_route_to_correct_harness"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

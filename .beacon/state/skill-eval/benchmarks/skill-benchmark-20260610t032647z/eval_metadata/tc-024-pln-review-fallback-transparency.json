@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032647z",
+  "version": "v1.6.0",
+  "case_id": "tc-024-pln-review-fallback-transparency",
+  "tc_id": "TC-024",
+  "ac_ids": [
+    "AC-007",
+    "AC-009"
+  ],
+  "prompt": "host 没有 subagent runtime 时，planner review 必须显式 fallback，不能声称 parallel subagent execution。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_single_process_multi_reviewer",
+    "must_emit_fallback_reason",
+    "must_block_fake_parallel_claim"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

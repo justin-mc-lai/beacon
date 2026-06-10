@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032020z",
+  "version": "v1.6.0",
+  "case_id": "tc-029-compound-finding-synthesis",
+  "tc_id": "TC-029",
+  "ac_ids": [
+    "AC-006",
+    "AC-007"
+  ],
+  "prompt": "多个 reviewer 发现重复和冲突 finding，需要 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、verification 和单一路由。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_compound_finding_schema",
+    "must_merge_dedup_findings",
+    "must_preserve_conflict_group",
+    "must_emit_single_recommended_route"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

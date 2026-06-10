@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t121247z",
+  "version": "v1.6.0",
+  "case_id": "tc-021-pln-review-multi-agent-lane-selection",
+  "tc_id": "TC-021",
+  "ac_ids": [
+    "AC-002",
+    "AC-003",
+    "AC-004"
+  ],
+  "prompt": "用 beacon-pln-review 对 source parity、security、performance、design、brownfield、evidence、founder 和 doubt 风险做真实多代理审查。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+  ],
+  "assertions": [
+    "must_select_always_on_reviewers",
+    "must_select_conditional_reviewers",
+    "must_emit_reviewer_lanes"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

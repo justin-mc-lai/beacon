@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "case_id": "tc-011-no-fake-delivery",
+  "tc_id": "TC-011",
+  "config": "with_skill",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-eval-qa",
+  "actual_route": "beacon-eval-qa",
+  "status": "pass",
+  "assertions": [
+    {
+      "assertion": "must_block_fake_delivery",
+      "passed": true,
+      "evidence": "with_skill:beacon-eval-qa:must_block_fake_delivery",
+      "critique": ""
+    },
+    {
+      "assertion": "must_emit_fake_delivery_reason",
+      "passed": true,
+      "evidence": "with_skill:beacon-eval-qa:must_emit_fake_delivery_reason",
+      "critique": ""
+    }
+  ],
+  "reason_codes": [
+    "fake_delivery_closure_blocked"
+  ],
+  "boundary_violation": false,
+  "fake_delivery_blocked": true,
+  "hard_gate_verified": false,
+  "intent_snapshot_preserved": false,
+  "full_parity_preserved": false,
+  "source_parity_blocked": false,
+  "deferral_ledger_required": false,
+  "state_machine_reviewed": false,
+  "state_truth_landing_blocked": false,
+  "state_tests_landing_blocked": false,
+  "finding_schema_complete": false,
+  "planner_autofix_blocked": false,
+  "reviewer_synthesis_completed": false,
+  "planner_review_boundary_verified": false,
+  "weak_assertion_critique": "",
+  "fake_delivery_critique": "placeholder/docs-only/fake-runner/zero-assertion/placeholder-evidence must not close delivery",
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

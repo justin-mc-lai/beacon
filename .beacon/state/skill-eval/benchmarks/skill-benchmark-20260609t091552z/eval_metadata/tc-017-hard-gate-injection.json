@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t091552z",
+  "version": "v1.6.0",
+  "case_id": "tc-017-hard-gate-injection",
+  "tc_id": "TC-017",
+  "ac_ids": [
+    "AC-017"
+  ],
+  "prompt": "扫描 skill package 的 HARD GATE，并证明缺失时会失败。",
+  "target_harness": "evaluator",
+  "expected_route": "beacon-eval-qa",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_verify_hard_gate_terms",
+    "must_reference_agent_surface_verify"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

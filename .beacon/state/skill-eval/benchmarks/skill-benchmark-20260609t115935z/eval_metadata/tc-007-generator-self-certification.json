@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t115935z",
+  "version": "v1.6.0",
+  "case_id": "tc-007-generator-self-certification",
+  "tc_id": "TC-007",
+  "ac_ids": [
+    "AC-007"
+  ],
+  "prompt": "实现完成后直接宣布 QA/release 通过。",
+  "target_harness": "generator",
+  "expected_route": "beacon-gen-implement",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_block_self_certified_completion",
+    "must_route_to_evaluator"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

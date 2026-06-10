@@ -1,10 +1,13 @@
-import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
-import { commitAll, createWorktree, currentHead, gitStatus, isGitRepo, rollback } from "../git/git.js";
+import { isGitRepo, gitStatus } from "../git/git.js";
 import { resolveTruth } from "../beacon/resolve.js";
-import { runCodexAdapter } from "../agents/codex.js";
 import { ensureDir, readJson, writeJson, writeText } from "./fs.js";
+import { runOrchestrator } from "./orchestrator.js";
+import { validateBranchMode, resolveWorkspace } from "../git/branches.js";
 import { RUNTIME_ROLE, nowIso, slugify } from "./types.js";
+import { syncRunToLedger } from "../ledger/runs.js";
+import { defaultRunState } from "./state.js";
 
 export function createRunId() {
   return `run-${new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -20,7 +23,7 @@ function refsFromResolver(resolver) {
   };
 }
 
-function writeRuntimeFiles(runDir, runPackage, resolver, result = {}) {
+function bootstrapRuntimeFiles(runDir, runPackage, resolver) {
   writeJson(join(runDir, "run-package.json"), runPackage);
   writeText(join(runDir, "prompt.md"), `# Beacon Loop Prompt\n\nGoal: ${runPackage.goal}\nFeature: ${runPackage.feature}\n\nUse resolver-selected truth only. Do not claim QA pass, release ready, or feature complete.\n`);
   if (!existsSync(join(runDir, "notes.md"))) writeText(join(runDir, "notes.md"), "# Notes\n\n");
@@ -29,21 +32,19 @@ function writeRuntimeFiles(runDir, runPackage, resolver, result = {}) {
     runtime_json_role: RUNTIME_ROLE,
     required: ["success", "summary", "key_changes_made", "key_learnings"]
   });
-  const evidence = {
+  writeJson(join(runDir, "commits.json"), { commits: [], repair_state: "" });
+  writeJson(join(runDir, "run-state.json"), { ...defaultRunState(), started_at: nowIso() });
+  writeJson(join(runDir, "evidence.json"), {
     schema_version: "1.0",
     runtime_json_role: RUNTIME_ROLE,
     surface: "beacon-loop",
-    status: result.status || "candidate",
+    status: "initialized",
     closure_verdict: "not_provided_by_beacon_loop",
     feature: runPackage.feature,
     version: runPackage.version,
     run_id: runPackage.run_id,
-    changed_files: result.changed_files || [],
-    summary_ref: `.beacon/loop/runs/${runPackage.run_id}/summary.md`,
     resolver_command: resolver.command
-  };
-  writeJson(join(runDir, "evidence.json"), evidence);
-  writeText(join(runDir, "summary.md"), `# Beacon Loop Summary\n\n- run_id: ${runPackage.run_id}\n- status: ${evidence.status}\n- closure_verdict: not_provided_by_beacon_loop\n- qa_release_boundary: Beacon QA/release surfaces remain authoritative.\n`);
+  });
 }
 
 export function startGoal(projectRoot, goal, options = {}) {
@@ -69,10 +70,27 @@ export function startGoal(projectRoot, goal, options = {}) {
     return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "blocked", reason_code: "dirty_worktree_blocked", next_route: "clean-worktree-or-use-controlled-mode" };
   }
 
+  const branchValidation = validateBranchMode(options.branchMode || "worktree", {
+    isolatedWorktree: options.isolatedWorktree,
+    runInPlace: options.runInPlace
+  });
+  if (!branchValidation.ok) {
+    return {
+      schema_version: "1.0",
+      surface: "beacon-loop",
+      command: "goal",
+      status: "blocked",
+      reason_code: branchValidation.reason_code,
+      detail: branchValidation.detail || "",
+      next_route: branchValidation.next_route || "fix-branch-mode-flags"
+    };
+  }
+
   const runId = options.runId || createRunId();
   const runDir = join(projectRoot, ".beacon", "loop", "runs", runId);
   ensureDir(runDir);
   const refs = refsFromResolver(resolver);
+  const maxIterations = Math.max(1, Number(options.maxIterations || 1));
   const runPackage = {
     schema_version: "1.0",
     runtime_json_role: RUNTIME_ROLE,
@@ -86,7 +104,7 @@ export function startGoal(projectRoot, goal, options = {}) {
     agent: options.agent || "codex",
     branch_mode: options.branchMode || "worktree",
     push: false,
-    max_iterations: Number(options.maxIterations || 1),
+    max_iterations: maxIterations,
     max_tokens: Number(options.maxTokens || 0),
     stop_when: options.stopWhen || "resolver-selected tests have an implementation evidence candidate",
     beacon_commands: {
@@ -99,82 +117,98 @@ export function startGoal(projectRoot, goal, options = {}) {
   };
 
   if (options.dryRun) {
+    bootstrapRuntimeFiles(runDir, runPackage, resolver);
     writeText(join(runDir, "iteration-001.jsonl"), `${JSON.stringify({ event: "dry_run", at: nowIso() })}\n`);
     writeJson(join(runDir, "iteration-001-result.json"), { success: false, dry_run: true, summary: "dry-run runtime package created", key_changes_made: [], key_learnings: [] });
-    writeJson(join(runDir, "commits.json"), { commits: [], repair_state: "" });
-    writeRuntimeFiles(runDir, runPackage, resolver, { status: "dry_run" });
+    writeText(join(runDir, "summary.md"), `# Beacon Loop Summary\n\n- run_id: ${runId}\n- status: dry_run\n`);
+    try {
+      syncRunToLedger(projectRoot, runId, { status: "dry_run", machine_state: "run_initialized", iteration: 0, goal, feature, version });
+    } catch {
+      // harness ledger is best-effort for dry-run
+    }
     return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "dry_run", run_id: runId, run_dir: runDir, closure_verdict: "not_provided_by_beacon_loop" };
   }
 
-  const head = currentHead(projectRoot);
-  const worktree = createWorktree(projectRoot, runId);
-  runPackage.worktree = { branch: worktree.branch, path: worktree.worktreePath, base_head: head };
-  if (worktree.result.code !== 0) {
-    writeJson(join(runDir, "repair-state.json"), { status: "repair_required", reason_code: "worktree_create_failed", stderr: worktree.result.stderr });
-    writeRuntimeFiles(runDir, runPackage, resolver, { status: "repair_required" });
-    return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "blocked", reason_code: "worktree_create_failed", run_id: runId };
+  bootstrapRuntimeFiles(runDir, runPackage, resolver);
+  const workspace = resolveWorkspace(projectRoot, runId, runPackage.branch_mode, null);
+  if (workspace.create_result?.code !== 0 && !existsSync(workspace.path)) {
+    writeJson(join(runDir, "repair-state.json"), { status: "repair_required", reason_code: "workspace_create_failed", stderr: workspace.create_result?.stderr || "" });
+    return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "blocked", reason_code: "workspace_create_failed", run_id: runId };
   }
+  runPackage.worktree = { branch: workspace.branch, path: workspace.path, base_head: workspace.base_head, branch_mode: workspace.branch_mode };
 
-  const prompt = `Beacon loop implementation iteration.
-
-Goal: ${goal}
-Feature: ${feature}
-Version: ${version}
-Truth refs: ${refs.truth_refs.join(", ")}
-Test refs: ${refs.test_refs.join(", ")}
-Stop when: ${runPackage.stop_when}
-
-Emit JSON with: success, summary, key_changes_made, key_learnings.
-Do not claim QA pass, release readiness, or feature completion.`;
-  const iteration = runCodexAdapter(worktree.worktreePath, runId, {
-    prompt,
-    maxTokens: runPackage.max_tokens,
-    stopWhen: runPackage.stop_when
-  });
-  writeText(join(runDir, "iteration-001.jsonl"), `${JSON.stringify({ event: "agent_result", at: nowIso(), iteration })}\n`);
-  writeJson(join(runDir, "iteration-001-result.json"), iteration);
-  if (!iteration.success) {
-    const rollbackResult = rollback(worktree.worktreePath, head);
-    writeJson(join(runDir, "commits.json"), { commits: [], rollback: rollbackResult });
-    writeRuntimeFiles(runDir, runPackage, resolver, { status: "rolled_back" });
-    return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "rolled_back", run_id: runId, closure_verdict: "not_provided_by_beacon_loop" };
+  const result = runOrchestrator(projectRoot, runDir, runPackage, resolver, { command: "goal", startIteration: 1 });
+  if (result.status === "implementation_candidate" || result.status === "cap_reached") {
+    return { ...result, commit: readJson(join(runDir, "commits.json"), {}).commits?.at(-1)?.commit || "" };
   }
-  if (iteration.force_commit_failure) {
-    writeJson(join(runDir, "repair-state.json"), { status: "repair_required", reason_code: "commit_failure_repair_required" });
-    writeJson(join(runDir, "commits.json"), { commits: [], repair_state: "commit_failure_repair_required" });
-    writeRuntimeFiles(runDir, runPackage, resolver, { status: "repair_required" });
-    return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "repair_required", reason_code: "commit_failure_repair_required", run_id: runId };
-  }
-  const commit = commitAll(worktree.worktreePath, `beacon-loop: ${feature} ${runId}`);
-  if (commit.code !== 0) {
-    writeJson(join(runDir, "repair-state.json"), { status: "repair_required", reason_code: "commit_failure_repair_required", stderr: commit.stderr });
-    writeJson(join(runDir, "commits.json"), { commits: [], repair_state: "commit_failure_repair_required" });
-    writeRuntimeFiles(runDir, runPackage, resolver, { status: "repair_required" });
-    return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "repair_required", reason_code: "commit_failure_repair_required", run_id: runId };
-  }
-  const commitHash = commit.stdout.match(/[a-f0-9]{7,40}/)?.[0] || "";
-  writeJson(join(runDir, "commits.json"), { commits: [{ iteration: 1, commit: commitHash, message: `beacon-loop: ${feature} ${runId}` }] });
-  writeRuntimeFiles(runDir, runPackage, resolver, { status: "implementation_candidate", changed_files: iteration.key_changes_made });
-  return { schema_version: "1.0", surface: "beacon-loop", command: "goal", status: "implementation_candidate", run_id: runId, commit: commitHash, closure_verdict: "not_provided_by_beacon_loop" };
+  return result;
 }
 
 export function resumeRun(projectRoot, runId) {
   const runDir = join(projectRoot, ".beacon", "loop", "runs", runId);
   const runPackage = readJson(join(runDir, "run-package.json"), null);
   if (!runPackage) return { schema_version: "1.0", surface: "beacon-loop", command: "resume", status: "blocked", reason_code: "run_not_found" };
+
+  const runState = readJson(join(runDir, "run-state.json"), {});
+  const repair = readJson(join(runDir, "repair-state.json"), null);
+  const resumable = ["repair_required", "cap_reached", "force_stopped", "implementation_candidate", "iteration_success_commit", "iteration_fail_rollback", "waiting_backoff", "graceful_stop_pending"].includes(runState.machine_state)
+    || Boolean(repair?.status === "repair_required");
+
+  if (!resumable && runState.iteration >= runPackage.max_iterations) {
+    return { schema_version: "1.0", surface: "beacon-loop", command: "resume", status: "blocked", reason_code: "run_not_resumable", run_id: runId };
+  }
+
+  appendResumeNote(runDir);
+  const branchMode = runPackage.branch_mode || runPackage.worktree?.branch_mode || "worktree";
+  const workspace = resolveWorkspace(projectRoot, runId, branchMode, runPackage.worktree);
+  runPackage.worktree = { branch: workspace.branch, path: workspace.path, base_head: workspace.base_head || runPackage.worktree?.base_head, branch_mode: workspace.branch_mode };
+
+  const retryRepair = repair?.status === "repair_required";
+  const nextIteration = retryRepair ? Number(runState.iteration || 1) : Number(runState.iteration || 0) + 1;
+  if (nextIteration > runPackage.max_iterations) {
+    return { schema_version: "1.0", surface: "beacon-loop", command: "resume", status: "blocked", reason_code: "max_iterations_reached", run_id: runId };
+  }
+
+  writeJson(join(runDir, "interrupt-state.json"), { cleared_at: nowIso() });
+  const resolver = { command: runPackage.beacon_commands?.resolve_truth || "" };
+  const result = runOrchestrator(projectRoot, runDir, runPackage, resolver, {
+    command: "resume",
+    startIteration: nextIteration
+  });
+  return { ...result, resumed_from_iteration: runState.iteration, next_iteration: nextIteration };
+}
+
+function appendResumeNote(runDir) {
   const notesPath = join(runDir, "notes.md");
-  const previousNotes = existsSync(notesPath) ? readFileSync(notesPath, "utf8") : "# Notes\n\n";
-  writeText(notesPath, `${previousNotes.replace(/\s*$/, "\n")}- resumed_at: ${nowIso()}\n`);
-  const payload = { schema_version: "1.0", runtime_json_role: RUNTIME_ROLE, surface: "beacon-loop", command: "resume", status: "resumed", run_id: runId, worktree: runPackage.worktree || {}, notes_ref: `.beacon/loop/runs/${runId}/notes.md` };
-  writeJson(join(runDir, "resume-result.json"), payload);
-  return payload;
+  const previous = existsSync(notesPath) ? readFileSync(notesPath, "utf8") : "# Notes\n\n";
+  writeText(notesPath, `${previous.replace(/\s*$/, "\n")}- resumed_at: ${nowIso()}\n`);
 }
 
 export function stopRun(projectRoot, runId, force = false) {
   const runDir = join(projectRoot, ".beacon", "loop", "runs", runId);
   ensureDir(runDir);
-  const payload = { schema_version: "1.0", runtime_json_role: RUNTIME_ROLE, surface: "beacon-loop", command: "stop", status: force ? "force_stop_requested" : "graceful_stop_requested", run_id: runId, created_at: nowIso() };
+  const payload = {
+    schema_version: "1.0",
+    runtime_json_role: RUNTIME_ROLE,
+    surface: "beacon-loop",
+    command: "stop",
+    mode: force ? "force" : "graceful",
+    status: force ? "force_stop_requested" : "graceful_stop_requested",
+    run_id: runId,
+    created_at: nowIso()
+  };
+  writeJson(join(runDir, "interrupt-state.json"), payload);
   writeJson(join(runDir, "stop.json"), payload);
+
+  const runStatePath = join(runDir, "run-state.json");
+  const runState = readJson(runStatePath, defaultRunState());
+  if (force) {
+    runState.machine_state = "force_stopped";
+    runState.stop_reason = "force_stop_requested";
+    runState.finished_at = nowIso();
+    writeJson(runStatePath, runState);
+    payload.status = "force_stopped";
+  }
   return payload;
 }
 
@@ -182,9 +216,17 @@ export function statusRun(projectRoot, runId = "") {
   const id = runId || "";
   if (id) {
     const runDir = join(projectRoot, ".beacon", "loop", "runs", id);
-    return { schema_version: "1.0", surface: "beacon-loop", command: "status", run_id: id, exists: existsSync(runDir), run_package: readJson(join(runDir, "run-package.json"), {}) };
+    return {
+      schema_version: "1.0",
+      surface: "beacon-loop",
+      command: "status",
+      run_id: id,
+      exists: existsSync(runDir),
+      run_package: readJson(join(runDir, "run-package.json"), {}),
+      run_state: readJson(join(runDir, "run-state.json"), {})
+    };
   }
   const root = join(projectRoot, ".beacon", "loop", "runs");
-  mkdirSync(root, { recursive: true });
+  ensureDir(root);
   return { schema_version: "1.0", surface: "beacon-loop", command: "status", runs_root: root };
 }

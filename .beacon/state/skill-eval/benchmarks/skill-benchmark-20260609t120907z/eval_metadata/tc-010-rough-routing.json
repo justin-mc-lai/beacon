@@ -1,0 +1,33 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t120907z",
+  "version": "v1.6.0",
+  "case_id": "tc-010-rough-routing",
+  "tc_id": "TC-010",
+  "ac_ids": [
+    "AC-010"
+  ],
+  "prompt": "分析 Beacon v1.6.0 skill harness benchmark 应该怎么验收。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-source",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/tests.md"
+  ],
+  "assertions": [
+    "must_include_route_envelope",
+    "must_include_truth_source_evidence_refs"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

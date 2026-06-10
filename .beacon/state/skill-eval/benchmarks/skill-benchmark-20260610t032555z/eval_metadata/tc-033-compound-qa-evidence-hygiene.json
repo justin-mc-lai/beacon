@@ -1,0 +1,35 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260610t032555z",
+  "version": "v1.6.0",
+  "case_id": "tc-033-compound-qa-evidence-hygiene",
+  "tc_id": "TC-033",
+  "ac_ids": [
+    "AC-011",
+    "AC-014"
+  ],
+  "prompt": "QA benchmark/browser/compatibility 有 junit missing、assertion_count_zero、fake runner、placeholder evidence、browser admission 和 compatibility pair evidence 缺口。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_qa_evidence_hygiene",
+    "must_flag_junit_assertion_placeholder_and_fake_runner",
+    "must_require_benchmark_metadata_grading_analysis"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}

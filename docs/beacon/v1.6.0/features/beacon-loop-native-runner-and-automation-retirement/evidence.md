@@ -4,51 +4,52 @@
 
 | Surface | Authority | Canonical Artifact | Status | Route |
 |---------|-----------|--------------------|--------|-------|
-| planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-native-runner-and-automation-retirement.md | accepted-for-change | truth.define |
+| planner-review-r2 | support_advisory | conversation: beacon-pln-review full parity | accepted-for-change | change |
+| change-record-r2 | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-native-runner-and-automation-retirement.md | accepted-for-change | refreeze |
+| planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-native-runner-and-automation-retirement.md | promoted | truth.define |
 | feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md | authoritative | truth.define |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/evidence.md | evidence-indexed | evaluate |
+| gnhf-source | support_advisory | /Users/apple/Developer/Personal/oss-sync/agents/agent-systems/gnhf | indexed | source-study |
 | gnhf-analysis | support_advisory | /Users/apple/Developer/Personal/oss-sync/index/analysis/kunchenguid-gnhf.md | indexed | source-study |
-| gnhf-learning-note | support_advisory | /Users/apple/Developer/Personal/personal-brain/sources/oss-sync-notes/kunchenguid-gnhf/2026-06-09-104020.md | indexed | source-study |
-| beacon-project-note | support_advisory | /Users/apple/Developer/Personal/personal-brain/projects/notes/beacon/2026-06-09-104021.md | indexed | source-study |
-| compound-engineering-article | support_advisory | /Users/apple/Developer/Personal/personal-brain/sources/web/mp-weixin-qq-com-superpowers-ai-51-agent-35.md | indexed | source-study |
-| implementation-python-retirement | support_advisory | beacon/cli_factory.py; beacon/command_catalog.py; beacon/commands/automation.py; beacon/commands/implement/commands.py | implemented | generate |
-| implementation-loop-package | support_advisory | packages/beacon-loop/ | implemented | generate |
-| implementation-automation-tombstone | support_advisory | automation/README.md | implemented | generate |
-| implementation-tests-python | support_advisory | tests/test_v160_beacon_loop_automation_retirement.py | passing | qa |
-| implementation-tests-node | support_advisory | packages/beacon-loop/tests/beacon-loop.test.mjs | passing | qa |
+| manage-oss-sync-harness | support_advisory | ~/.codex/skills/manage-oss-sync/SKILL.md | indexed | source-study |
+| implementation-mvp-skeleton | support_advisory | packages/beacon-loop/ | partial | generate |
+| implementation-phase-a-orchestrator | support_advisory | packages/beacon-loop/src/runner/orchestrator.ts; state.ts; prompt.ts | implemented | qa |
+| implementation-phase-b-ledger | support_advisory | packages/beacon-loop/src/ledger/; harness/ | implemented | qa |
+| implementation-phase-c-adapters | support_advisory | packages/beacon-loop/src/agents/; config/load.ts; git/branches.ts | implemented | qa |
+| implementation-phase-d-e2e-script | support_advisory | packages/beacon-loop/tests/beacon-loop.test.mjs (TC-033); scripts/e2e-closed-loop.mjs | implemented | qa |
+| implementation-automation-retirement | support_advisory | beacon/commands/automation.py; automation/README.md | implemented | generate |
+| implementation-tests | support_advisory | packages/beacon-loop/tests/beacon-loop.test.mjs (26 cases); tests/test_v160_beacon_loop_automation_retirement.py | partial | qa |
 
 ## 决策记录
 
-- 已接受：旧 `automation` 业务面不继续承载长 loop agent 保活，应退役或仅保留 blocking stub。
-- 已接受：Beacon 仓库采用同仓库双 CLI 目标形态：`beacon` 负责 truth/gate，`beacon-loop` 负责 long loop runner。
-- 已接受：`beacon-loop` 正式入口为 `beacon-loop goal "<goal>"`。
-- 已接受：不保留 `beacon-loop lfg "<goal>"` alias、deprecated alias、compatibility route 或 help hint。
-- 已接受：`beacon-loop` 必须先读取 Beacon resolver-selected truth，resolver blocked 或 feature package 缺失时 fail closed 并路由 `beacon-gen-change`。
-- 已接受：`beacon-loop` runtime artifacts 是 process records，不是 requirement truth。
-- 已接受：implementation candidate 必须通过 Beacon evidence import、QA 和 release gate 回到主链；`beacon-loop` 不给 QA/release verdict。
+- 已接受：R2 change 将 `scope_mode` 提升为 `full_parity`（gnhf runner + manage-oss-sync harness patterns）。
+- 已接受：State Model、Parity Matrix、Deferral Ledger 写入 package truth。
+- 已接受：D-005..D-008（TUI、telemetry、prevent-sleep、stdin UX）显式 defer 至 v1.6.x patch。
+- 已接受：MVP 骨架（TASK-001..018）保留为已完成历史，但 full parity AC-016..AC-030 待 Phase A-D 实现与 QA。
+- 已接受：Beacon QA/release 仍是唯一 closure verdict。
 
-## Implementation Candidate Evidence
+## Implementation Candidate Evidence（MVP 骨架）
 
-- `beacon automation` 已从 `beacon/cli_factory.py` active registration 和 `beacon/command_catalog.py` default/support surfaces 移除。
-- `beacon/commands/automation.py` 仅保留 blocking stub：`automation retired; use beacon-loop goal`。
-- 旧 scheduler queue/job 业务 utils 和 `automation/jobs/`、`automation/launchd/`、`automation/beacon-automation-queue.json` 已退役。
-- `packages/beacon-loop` 提供独立 Node 20-compatible CLI package，bin 为 `beacon-loop`。
-- `beacon-loop goal` 写入 `.beacon/loop/runs/<run-id>/` runtime process records，并通过 `beacon truth-map resolve ... --json` fail-closed 读取 truth。
-- `beacon-loop import-evidence` 调用 `beacon implement import-evidence`，只导入 implementation evidence candidate。
-- Runtime evidence 标记 `runtime_process_record_not_requirement_truth`，并显式声明不提供 QA/release closure verdict。
+- `beacon automation` 已退役为 blocking stub。
+- `packages/beacon-loop` 提供独立 CLI；`goal` 写入 runtime process records。
+- resolver fail-closed 与 `import-evidence` 桥接已实现。
+
+## Implementation Candidate Evidence（Phase A-D — 待 Beacon QA closure）
+
+- Phase A-D 代码路径已实现：`orchestrator` 多轮、`ledger`/`diagnose`/`runtime-*`、`analyze`/`learn`、branch modes、config、claude/acp adapters、TC-033 closed-loop 脚本测试。
+- `beacon-loop` 仍不产出 QA/release verdict；closure 需 `beacon qa run` + release gate（TASK-040）。
 
 ## Verification Commands
 
 ```bash
 npm --prefix packages/beacon-loop run build
 npm --prefix packages/beacon-loop test
-pytest -q tests/test_v160_beacon_loop_automation_retirement.py tests/test_v113_command_layering.py tests/test_skill_command_alignment.py
-beacon --help
-rg "beacon-automation-queue|beacon-hourly-qa|repair-window" beacon automation
+pytest -q tests/test_v160_beacon_loop_automation_retirement.py
+beacon validate-feature-package beacon-loop-native-runner-and-automation-retirement --version v1.6.0 --json
 ```
 
 ## 边界
 
-`evidence.md` 是证据索引/read model，不是 final verdict。它不得包含 release readiness、QA pass、implementation completion 或 source-of-truth override。
+`evidence.md` 是证据索引/read model，不是 final verdict。不得包含 release readiness、QA pass、implementation completion 或 source-of-truth override。

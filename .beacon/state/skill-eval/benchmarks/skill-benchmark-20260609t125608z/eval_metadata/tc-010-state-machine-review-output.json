@@ -1,0 +1,39 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "skill-benchmark-20260609t125608z",
+  "version": "v1.6.0",
+  "case_id": "tc-010-state-machine-review-output",
+  "tc_id": "TC-010",
+  "ac_ids": [
+    "AC-010"
+  ],
+  "prompt": "这个 feature 有 multi-agent loop、resume、stop、recovery、blocked state 和 release gate。",
+  "target_harness": "planner",
+  "expected_route": "beacon-pln-review",
+  "truth_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md"
+  ],
+  "source_refs": [
+    "beacon/utils/skill_eval_kit.py",
+    "beacon/utils/agent_surface.py"
+  ],
+  "evidence_refs": [
+    "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/tests.md"
+  ],
+  "assertions": [
+    "must_emit_states",
+    "must_emit_transitions",
+    "must_emit_invalid_transitions",
+    "must_emit_side_effects",
+    "must_emit_recovery_paths",
+    "must_emit_terminal_states",
+    "must_emit_state_axes",
+    "must_emit_coverage_implications"
+  ],
+  "configs": [
+    "with_skill",
+    "baseline"
+  ],
+  "runtime_evidence_only": true,
+  "requirement_truth": false
+}
