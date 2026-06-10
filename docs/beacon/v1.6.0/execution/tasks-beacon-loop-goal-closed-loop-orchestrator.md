@@ -2,9 +2,9 @@
 
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r1`
-- revision_id: `R1`
-- progress: `23/23`
+- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r2`
+- revision_id: `R2`
+- progress: `29/29`
 - status: `completed`
 - next_task: ``
 - blocked_tasks: `0`
@@ -17,7 +17,7 @@
 ## Tasks
 
 [x] `ITASK-001` TASK-041 新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。
-  - tests=TC-034
+  - tests=TC-034,TC-040
 [x] `ITASK-002` TASK-042 实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。
   - tests=TEST-008 | depends_on=ITASK-001
 [x] `ITASK-003` TASK-043 扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。
@@ -28,7 +28,7 @@
   - tests=TEST-009 | depends_on=ITASK-004
 [x] `ITASK-006` TASK-046 CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。
   - tests=TEST-001,TEST-002 | depends_on=ITASK-005
-[x] `ITASK-007` TASK-047 CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。
+[x] `ITASK-007` TASK-047 CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。
   - tests=TEST-006 | depends_on=ITASK-006
 [x] `ITASK-008` TASK-048 测试 TC-031..TC-033、TC-038 骨架。
   - tests=TEST-007,TEST-014 | depends_on=ITASK-007
@@ -37,7 +37,7 @@
 [x] `ITASK-010` TASK-050 实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。
   - tests=TEST-011 | depends_on=ITASK-009
 [x] `ITASK-011` TASK-051 实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。
-  - tests=TEST-012,TEST-013,TEST-015 | depends_on=ITASK-010
+  - tests=TEST-012,TEST-013,TEST-015,TEST-017,TEST-018 | depends_on=ITASK-010
 [x] `ITASK-012` TASK-052 `execute-only` 模式：强制 `--feature` + resolve pass。
   - depends_on=ITASK-011
 [x] `ITASK-013` TASK-053 测试 TC-034、TC-035、TC-038b。
@@ -56,9 +56,21 @@
   - depends_on=ITASK-018
 [x] `ITASK-020` TASK-060 scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。
   - depends_on=ITASK-019
-[x] `ITASK-021` TASK-061 defer D-009: review lane 并行化评估与实现。
+[x] `ITASK-021` TASK-061 实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。
   - depends_on=ITASK-020
 [x] `ITASK-022` TASK-062 更新 `evidence.md`；parent 回归 TC-040、TC-041。
   - depends_on=ITASK-021
-[x] `ITASK-023` TASK-063 `beacon qa run` + release gate 正式验收本 feature。
+[x] `ITASK-023` TASK-063 `beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。
   - depends_on=ITASK-022
+[x] `ITASK-024` TASK-064 实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。
+  - depends_on=ITASK-023
+[x] `ITASK-025` TASK-065 默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。
+  - depends_on=ITASK-024
+[x] `ITASK-026` TASK-066 CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。
+  - depends_on=ITASK-025
+[x] `ITASK-027` TASK-067 实现 AC-042：`recommended_route` / Beacon lifecycle auto-route；无 AskUser UI。
+  - depends_on=ITASK-026
+[x] `ITASK-028` TASK-068 测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。
+  - depends_on=ITASK-027
+[x] `ITASK-029` TASK-069 R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。
+  - depends_on=ITASK-028

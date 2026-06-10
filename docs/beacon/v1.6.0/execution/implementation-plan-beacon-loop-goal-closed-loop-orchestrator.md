@@ -1,13 +1,13 @@
 # Beacon Implementation Plan
 
-- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r1`
+- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r2`
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- revision_id: `R1`
-- baseline_hash: `sha256:66327efa4cf6d3ed778dbcde241818445b311c0ff4a34ed689dbefc8ec9426c5`
-- delivery_baseline_id: `impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R1`
-- delivery_baseline_source_hash: `sha256:9ce91309132bea6a2db4a8a6a455cb6fabca0d1559b9002be646fcfc08a80950`
-- plan_hash: `sha256:b54f040ca1b6d10db45ac66f97f7fb752e4ac7944f6332bb73f9717e625f72a3`
+- revision_id: `R2`
+- baseline_hash: `sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24`
+- delivery_baseline_id: `impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R2`
+- delivery_baseline_source_hash: `sha256:21ca32bc2a8398708e4531b087687f82266182c2904cd55811eaac4fff7bb480`
+- plan_hash: `sha256:3b5f16ba4a0c65adf31a71d3fe354152683f222ed4fb301680e7e9f688f4cd67`
 - status: `completed`
 
 ## Source Refs
@@ -19,6 +19,7 @@
 - tasks: `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md`
 - evidence: `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md`
 - source_of_truth_root: `docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator`
+- revision_delta: `docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json`
 - ac_matrix: `docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json`
 - story_scenario_map: `docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.story-scenario-map.json`
 - qa9_matrix: `docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.qa9-matrix.json`
@@ -66,14 +67,20 @@
 - source_artifact: `docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json`
 - section_count: `0`
 
+## Revision Delta
+- revision_id: `R2`
+- source_revision_id: `R1`
+- cleanup_required: `False`
+- revision_delta_ref: `docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json`
+
 ## Tasks
 
 ### ITASK-001 — TASK-041 新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。
 - status: `completed`
-- mapped_ac_ids: AC-004
-- mapped_test_ids: TC-034
-- mapped_scenario_ids: SC-002, SC-003
-- mapped_qa_case_ids: TC-034
+- mapped_ac_ids: AC-004, AC-016
+- mapped_test_ids: TC-034, TC-040
+- mapped_scenario_ids: SC-001, SC-002, SC-003, SC-004
+- mapped_qa_case_ids: TC-034, TC-040
 - depends_on: -
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -96,7 +103,7 @@
 - status: `completed`
 - mapped_ac_ids: AC-003
 - mapped_test_ids: TC-040
-- mapped_scenario_ids: SC-001
+- mapped_scenario_ids: SC-001, SC-004
 - mapped_qa_case_ids: TC-040
 - depends_on: ITASK-002
 - direct_delivery_services: .
@@ -140,7 +147,7 @@
 - target_modules: .
 - diagram_review_gates: -
 
-### ITASK-007 — TASK-047 CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。
+### ITASK-007 — TASK-047 CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。
 - status: `completed`
 - mapped_ac_ids: AC-006
 - mapped_test_ids: TEST-006
@@ -190,8 +197,8 @@
 
 ### ITASK-011 — TASK-051 实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。
 - status: `completed`
-- mapped_ac_ids: AC-012, AC-013, AC-015
-- mapped_test_ids: TEST-012, TEST-013, TEST-015
+- mapped_ac_ids: AC-012, AC-013, AC-015, AC-017, AC-018
+- mapped_test_ids: TEST-012, TEST-013, TEST-015, TEST-017, TEST-018
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-010
@@ -308,7 +315,7 @@
 - target_modules: .
 - diagram_review_gates: -
 
-### ITASK-021 — TASK-061 defer D-009: review lane 并行化评估与实现。
+### ITASK-021 — TASK-061 实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。
 - status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
@@ -332,13 +339,85 @@
 - target_modules: .
 - diagram_review_gates: -
 
-### ITASK-023 — TASK-063 `beacon qa run` + release gate 正式验收本 feature。
+### ITASK-023 — TASK-063 `beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。
 - status: `completed`
 - mapped_ac_ids: -
 - mapped_test_ids: -
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-022
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-024 — TASK-064 实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-023
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-025 — TASK-065 默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-024
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-026 — TASK-066 CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-025
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-027 — TASK-067 实现 AC-042：`recommended_route` / Beacon lifecycle auto-route；无 AskUser UI。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-026
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-028 — TASK-068 测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-027
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-029 — TASK-069 R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-028
 - direct_delivery_services: .
 - reference_only_services: docs
 - target_modules: .

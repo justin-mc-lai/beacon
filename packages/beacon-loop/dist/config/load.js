@@ -35,12 +35,16 @@ export function loadLoopConfig(projectRoot) {
 export function resolveGoalOptions(projectRoot, args, cli = {}) {
   const config = loadLoopConfig(projectRoot);
   const has = (flag) => args.includes(flag);
-  const askOnRaw = has("--ask-on") ? cli.askOn : config.ask_on || cli.askOn || "P0,P1";
+  const askOnRaw = has("--ask-on") ? cli.askOn : config.ask_on ?? cli.askOn ?? "";
+  const strictInterrupt = has("--strict-interrupt")
+    ? true
+    : Boolean(cli.strictInterrupt || config.strict_interrupt);
   return {
     version: has("--version") ? cli.version : config.version || cli.version || "v1.6.0",
     feature: has("--feature") ? cli.feature : config.feature || cli.feature || "",
     mode: has("--mode") ? cli.mode : config.mode || cli.mode || "delivery",
     askOn: String(askOnRaw).split(",").map((item) => item.trim()).filter(Boolean),
+    strictInterrupt,
     autoDecideDeferrals: has("--auto-decide") ? true : Boolean(cli.autoDecideDeferrals || config.auto_decide_deferrals),
     ackIntentDrift: has("--ack-intent-drift") ? true : Boolean(cli.ackIntentDrift),
     agent: has("--agent") ? cli.agent : config.agent || cli.agent || "codex",

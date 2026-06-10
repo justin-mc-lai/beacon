@@ -7,7 +7,7 @@
 | user-confirmed-architecture | support_advisory | conversation: delivery orchestrator AC-031..039 | accepted-for-change | change |
 | change-record | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md | accepted-for-change | refreeze |
 | planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md | promoted | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen** | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R2** | implement |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md | evidence-indexed | evaluate |
@@ -15,29 +15,46 @@
 | planner-review-contract | requirement_truth | docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md | frozen | dependency |
 | planner-review-runtime | support_advisory | beacon/utils/planner_review_runtime.py | indexed | generate |
 | parent-implementation | support_advisory | packages/beacon-loop/ | extended | qa |
-| delivery-orchestrator | support_advisory | packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts | implemented | qa |
-| intent-capture | support_advisory | packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts | implemented | qa |
+| delivery-orchestrator | support_advisory | packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts; review-gate.ts | implemented | qa |
+| intent-capture | support_advisory | packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts; tiebreak.ts | implemented | qa |
 | runner-delivery-integration | support_advisory | packages/beacon-loop/src/runner/run.ts | implemented | qa |
-| delivery-tests | support_advisory | packages/beacon-loop/tests/delivery-orchestrator.test.mjs (9 cases, AC-031..039) | implemented | qa |
+| delivery-tests | support_advisory | packages/beacon-loop/tests/delivery-orchestrator.test.mjs (12 cases, AC-031..039 + AC-040..042) | implemented | qa |
 | parent-test-compat | support_advisory | packages/beacon-loop/tests/beacon-loop.test.mjs (execute-only default migration) | implemented | qa |
-| implement-import | support_advisory | run-20260610T091306Z-c638 | imported | qa |
+| implement-import-r1 | support_advisory | run-20260610T091306Z-c638 | imported | qa |
+| implement-import-r2 | support_advisory | run-20260610T112829Z-717e | imported | qa |
+| writeback-ledger | support_advisory | docs/beacon/v1.6.0/.machine/execution/implementation-writeback-ledger-beacon-loop-goal-closed-loop-orchestrator.json (R1 + R2) | indexed | evaluate |
+| test-contract-index | support_advisory | docs/beacon/v1.6.0/.machine/testing/test-contract-index.json (12 TC, TC-042..044) | indexed | evaluate |
+| qa-acceptance-envelope | support_advisory | docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json | indexed | evaluate |
+| qa-run-r2 | support_advisory | run-20260610T192844576131 | indexed | evaluate |
+| release-gate-artifact | support_advisory | .beacon/release-gate-report.json (stage=release, run_id=run-20260610T192844576131) | indexed | release |
+| release-checklist | support_advisory | docs/beacon/v1.6.0/release/checklist-v1.6.0.md | indexed | release |
 
 ## 决策记录
 
 - 已接受：新建独立 feature `beacon-loop-goal-closed-loop-orchestrator`，扩展 parent runner，不 reopen parent frozen truth。
 - 已接受：`scope_mode=full_parity`（delivery orchestrator 层）。
 - 已接受：AC-031..AC-039 与 Delivery Loop State Model。
-- 已接受：D-009..D-011 显式 defer（并行 review、LLM tie-break、AskUserQuestion UI）。
-- 待完成：package refreeze 后进入 Phase E 实现。
-- 已完成：Phase E delivery orchestrator 实现（AC-031..AC-039）、npm 35/35 测试、implement evidence import `run-20260610T091306Z-c638`、Beacon QA `run-20260610T172407766304`（TC-031..039 全 pass）。
+- 已接受：AC-031..AC-039 与 Delivery Loop State Model（R1）。
+- **R2 撤销**：D-009..D-011 的 accepted defer（用户主权：默认 LLM tie-break + green-light 非打断；并行 review；Beacon lifecycle auto-route）。
+- **R2 新增**：AC-040（LLM tie-break green-light）、AC-041（并行 review）、AC-042（lifecycle auto-route，无 AskUser UI）。
+- R1 已完成：Phase E delivery orchestrator（AC-031..039）、npm 35/35、QA `run-20260610T172407766304`。
+- **R2 refreeze closure**：revision **R2** frozen；`docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md` + truth-cutover refreeze-chain 完成；D-009..D-011 标记 rejected。
+- **R2 implement closure**：`beacon implement import-evidence` → `run-20260610T112829Z-717e`；writeback ledger 补录 R2；触及 `tiebreak.ts`、`review-gate.ts`、`review.ts`、`orchestrator.ts`、`cli.ts`、`config/load.ts`、`delivery-orchestrator.test.mjs`。
+- **R2 QA closure**：QA artifact `run-20260610T192844576131`；acceptance envelope `qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json`；matrix 12 AC（AC-031..042）；reconciliation gate cleared（R2 writeback 后 `required=false`）。
+- **R2 test-contract closure**：`beacon doctor build-test-contract-index` 重建 index（9→12 TC，含 TC-042..044）；`verify-test-contract-index --strict` 产物归档。
+- **R2 release-facing closure**：`beacon release check v1.6.0` 产物；`beacon gate release` → `.beacon/release-gate-report.json`；`beacon release create v1.6.0` → `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`。
 
 ## Implementation Candidate Evidence
 
 - `beacon-loop goal` 默认 `delivery` mode；`--mode execute-only --feature <slug>` 保留 parent execute-only 路径。
-- Delivery state machine：`intent_capture → planner_review → truth_gap_scan → truth_fill? → implement_loop → import_evidence → qa → release → terminal_closed`。
+- Delivery state machine：`intent_capture → planner_review → truth_gap_scan → truth_fill（条件分支）→ implement_loop → import_evidence → qa → release → terminal_closed`。
 - 修复 `truth_gap_scan → truth_freeze_gate` 非法迁移；frozen truth gate 在 implement_loop 前 fail-closed。
 - 新增 `packages/beacon-loop/tests/delivery-orchestrator.test.mjs` 覆盖 TC-031..TC-039。
 - parent 回归：`beacon-loop.test.mjs` 通过 `goalDemo()` 注入 execute-only；测试隔离改用 `mkdtempSync` + 串行 test file。
+- R2：`packages/beacon-loop/src/intent/tiebreak.ts` 默认 green-light continue；`intent-tiebreak.json` 落盘；ambiguous 默认不再进入 `user_decision_pending`（`--strict-interrupt` opt-in）。
+- R2：`packages/beacon-loop/src/delivery/review-gate.ts` P0 hard stop / P1 green-light；`recommended_route` 驱动下一 delivery state。
+- R2：`packages/beacon-loop/src/delivery/review.ts` parallel fixture + `--execution-mode parallel_subagent_review`。
+- R2：测试扩展 TC-042（LLM tie-break）、TC-043（parallel review）、TC-044（lifecycle auto-route）；npm test 38/38（packages/beacon-loop）。
 
 ## Verification Commands
 
@@ -45,8 +62,15 @@
 npm --prefix packages/beacon-loop run build
 npm --prefix packages/beacon-loop test
 pytest -q tests/test_v160_beacon_loop_automation_retirement.py
-beacon implement plan beacon-loop-goal-closed-loop-orchestrator --project . --version v1.6.0 --json
+beacon implement import-evidence beacon-loop-goal-closed-loop-orchestrator --project . --version v1.6.0 \
+  --source-ref docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md \
+  --changed-file packages/beacon-loop/src/intent/tiebreak.ts \
+  --summary-ref docs/beacon/v1.6.0/execution/implementation-plan-beacon-loop-goal-closed-loop-orchestrator.md \
+  --approved-by operator --json
 beacon qa run beacon-loop-goal-closed-loop-orchestrator --project . --version v1.6.0 --json
+beacon doctor build-test-contract-index beacon-loop-goal-closed-loop-orchestrator --project-root . --version v1.6.0 --json
+beacon release check v1.6.0 --project . --json
+beacon gate release --project-root . --version v1.6.0 --json
 ```
 
 ## 边界

@@ -268,3 +268,67 @@ test("e2e-utterance-to-release: frozen fixture delivery chain (AC-039 / TC-039)"
   const deliveryState = JSON.parse(readFileSync(join(runDir, "delivery-state.json"), "utf8"));
   assert.equal(deliveryState.state, "terminal_closed");
 });
+
+test("llm-tiebreak-green-light: ambiguous utterance continues without user_decision_pending (AC-040 / TC-042)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_TEST_REVIEW: "fixture",
+    BEACON_LOOP_TEST_TIEBREAK: "fixture"
+  };
+  const result = run(
+    ["goal", "maybe improve something vague", "--project", project, "--mode", "review-only", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.status, "review_complete");
+  assert.notEqual(payload.status, "user_decision_pending");
+  const runDir = join(project, ".beacon", "loop", "runs", payload.run_id);
+  const tiebreak = JSON.parse(readFileSync(join(runDir, "intent-tiebreak.json"), "utf8"));
+  assert.equal(tiebreak.tiebreak_authority, "llm_default_green_light");
+  assert.equal(tiebreak.runtime_evidence_only, true);
+  const contract = JSON.parse(readFileSync(join(runDir, "intent-contract.json"), "utf8"));
+  assert.equal(contract.determinism.ambiguous, false);
+  assert.equal(contract.determinism.tiebreak_applied, true);
+  const deliveryState = JSON.parse(readFileSync(join(runDir, "delivery-state.json"), "utf8"));
+  assert.equal(deliveryState.state, "truth_gap_scan");
+});
+
+test("parallel-review-lanes: parallel fixture writes per-lane refs (AC-041 / TC-043)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_TEST_REVIEW: "parallel-fixture"
+  };
+  const result = run(
+    ["goal", "beacon-loop orchestrator review", "--project", project, "--feature", "demo", "--mode", "review-only", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const artifact = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "review-artifact.json"), "utf8"));
+  assert.equal(artifact.execution_mode, "parallel_subagent_review");
+  assert.ok(Array.isArray(artifact.review_lanes));
+  assert.ok(artifact.review_lanes.length >= 2);
+  assert.ok(artifact.review_lanes.every((lane) => lane.evidence_ref));
+});
+
+test("lifecycle-auto-route: P1 finding continues on recommended_route (AC-042 / TC-044)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_TEST_REVIEW: "fixture-p1"
+  };
+  const result = run(
+    ["goal", "deliver demo", "--project", project, "--feature", "demo", "--mode", "review-only", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.status, "review_complete");
+  assert.notEqual(payload.status, "user_decision_pending");
+  const artifact = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "review-artifact.json"), "utf8"));
+  assert.ok(artifact.findings.some((item) => item.severity === "P1"));
+  assert.equal(artifact.synthesis.recommended_route, "truth_fill");
+});

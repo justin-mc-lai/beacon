@@ -65,7 +65,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-06-10T16:30:50.686835",
+    "generated_at": "2026-06-10T18:50:53.795936",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -82,7 +82,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-06-10T16:30:50.686028",
+    "generated_at": "2026-06-10T18:50:53.795111",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -490,6 +490,81 @@
       "steps": ""
     },
     {
+      "tc_id": "TC-042",
+      "ac_id": "AC-040",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-040 :: 规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_s",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
+      "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-042.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
+      "scenario": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-043",
+      "ac_id": "AC-041",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-041 :: review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
+      "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-043.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
+      "scenario": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-044",
+      "ac_id": "AC-042",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-042 :: P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
+      "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-044.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
+      "scenario": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "steps": ""
+    },
+    {
       "tc_id": "TC-040",
       "ac_id": "AC-003",
       "story_id": "",
@@ -669,7 +744,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 16,
+    "row_count": 19,
     "enrichment_disabled": true
   },
   "compatibility_matrix": {
@@ -697,7 +772,7 @@
       }
     ]
   },
-  "generated_at": "2026-06-10T16:30:50.686887",
+  "generated_at": "2026-06-10T18:50:53.795981",
   "research_projection": {
     "schema_version": "1.0",
     "feature": "beacon-loop-goal-closed-loop-orchestrator",

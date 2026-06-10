@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-beacon-loop-goal-closed-loop-orchestrator-20260610t075428z",
+  "transaction_id": "tx-change-refreeze-beacon-loop-goal-closed-loop-orchestrator-20260610t105025z",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "change_reason": "goal-delivery-orchestrator-initial-freeze",
+  "change_reason": "R2: D-010 default LLM intent tie-break green-light non-interrupt; reject D-009/D-011 accepted defer; AC-040..042",
   "touched_surfaces": [
     "change",
     "truth",
@@ -53,14 +53,14 @@
     },
     "requirement_clarity": {
       "path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json",
-      "exists": false,
-      "status": "pending",
+      "exists": true,
+      "status": "passed",
       "required": true
     },
     "freeze": {
       "path": "docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.refreeze-transaction.json",
-      "exists": false,
-      "status": "pending",
+      "exists": true,
+      "status": "complete",
       "required": true
     },
     "feature_package_validation": {
@@ -72,23 +72,802 @@
     }
   },
   "truth_revision_before": {
-    "revision_id": "R1",
+    "revision_id": "R2",
     "doc_status": "draft",
     "lifecycle_status": "idle",
     "baseline_hash": ""
   },
-  "truth_revision_after": {},
-  "refreeze_status": "blocked",
-  "next_route": {
-    "target_surface": "beacon-gen-change",
-    "command": "beacon change \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
-    "why": "revision_not_frozen"
+  "truth_revision_after": {
+    "revision_id": "R2",
+    "doc_status": "frozen",
+    "lifecycle_status": "frozen",
+    "baseline_hash": "sha256:363b55ed119554a35d941648f11f9f62fcc39662bd508338d74fe8ff6e93c3e7"
   },
-  "blocked_reason": "revision_not_frozen",
+  "refreeze_status": "complete",
+  "next_route": {
+    "target_surface": "beacon-gen-implement",
+    "command": "beacon implement \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "why": "refreeze transaction completed; implementation may plan against the refreshed frozen truth"
+  },
+  "blocked_reason": "",
   "delivery_execution": {
     "implement_executed": false,
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-06-10T07:54:28.980104+00:00"
+  "created_at": "2026-06-10T10:50:25.246707+00:00",
+  "previous_revision": {
+    "revision_id": "R1",
+    "doc_status": "superseded",
+    "lifecycle_status": "superseded",
+    "baseline_hash": ""
+  },
+  "opened_revision": {
+    "revision_id": "R2",
+    "doc_status": "draft",
+    "lifecycle_status": "idle",
+    "baseline_hash": ""
+  },
+  "story_reopen": {
+    "current_revision_id": "R2",
+    "lifecycle_status": "draft"
+  },
+  "requirement_package": {
+    "schema_version": "1.0",
+    "project_root": "/Users/apple/Developer/Personal/products/beacon",
+    "version": "v1.6.0",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "status": "synced",
+    "authority_state": "feature_package_authoritative",
+    "truth_authority": "markdown_feature_package",
+    "requirement_refs": {
+      "source_of_truth_root": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator",
+      "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+      "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
+    },
+    "story_path": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "qa_matrix_path": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "qa9_matrix_path": "",
+    "story_scenario_map_path": "",
+    "machine_rebuild": {
+      "schema_version": "1.0",
+      "truth_map_contract": "beacon-truth-map-v1",
+      "truth_source_model": "feature_package_authoritative",
+      "truth_package_contract": "beacon-feature-package-v2",
+      "machine_json_role": "generated_state_not_truth",
+      "generated_by": "beacon.truth_map.resolver",
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "status": "rebuilt",
+      "blocked": false,
+      "validation_status": "pass",
+      "source_paths": {
+        "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+        "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
+      },
+      "source_hashes": {
+        "truth": "17a27948f8f81bf9b318263bcc64d890c1d2d2679e77c4176d0d29839624c5f0",
+        "tests": "5d4b568ea42be431cf7f9846469801edc8afc44e0fc77cad0a526dbbea63f2ea",
+        "tasks": "44cc7ab8e70c62fe7b1b44618ed333590177e6def57335c65f6b6bd262f553a3",
+        "evidence": "bc852143241c523168abb4cf74df463ced0610a49d38aad8ae31608115b53569"
+      },
+      "plan": {
+        "schema_version": "1.0",
+        "truth_map_contract": "beacon-truth-map-v1",
+        "truth_source_model": "feature_package_authoritative",
+        "truth_package_contract": "beacon-feature-package-v2",
+        "machine_json_role": "generated_state_not_truth",
+        "generated_by": "beacon.truth_map.resolver",
+        "feature": "beacon-loop-goal-closed-loop-orchestrator",
+        "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+        "version": "v1.6.0",
+        "source_paths": {
+          "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+          "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+          "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+          "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
+        },
+        "outputs": {
+          "truth_map_projection": "docs/beacon/v1.6.0/.machine/requirement/beacon-loop-goal-closed-loop-orchestrator.truth-map.json",
+          "requirement_package_state": "docs/beacon/v1.6.0/.machine/requirement/beacon-loop-goal-closed-loop-orchestrator.requirement-package.json",
+          "feature_package_validation": "docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json"
+        },
+        "runtime_json_exemption": {
+          "role": "runtime_process_record_not_requirement_truth",
+          "applies_to": [
+            ".beacon/runs/**",
+            ".beacon/qa/**",
+            "runtime/process execution records"
+          ],
+          "requires_markdown_twin": false,
+          "requirement_authority": false
+        },
+        "routes": {
+          "doctor_rebuild": {
+            "status": "legacy_output_only",
+            "command": "beacon truth-map rebuild-machine beacon-loop-goal-closed-loop-orchestrator --version v1.6.0"
+          },
+          "change_absorb": {
+            "status": "package_truth_target_only",
+            "command": "beacon change beacon-loop-goal-closed-loop-orchestrator --version v1.6.0 --reason absorb-legacy-truth-into-feature-package"
+          }
+        }
+      },
+      "written": [
+        "docs/beacon/v1.6.0/.machine/requirement/beacon-loop-goal-closed-loop-orchestrator.truth-map.json",
+        "docs/beacon/v1.6.0/.machine/requirement/beacon-loop-goal-closed-loop-orchestrator.requirement-package.json",
+        "docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json"
+      ]
+    },
+    "story_sync": {
+      "path": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json",
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "revision_id": "R2",
+      "ac_count": 18,
+      "test_count": 18,
+      "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  },
+  "requirement_clarity": {
+    "gate": {
+      "schema_version": "1.0",
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "runtime_version": "v1.6.0",
+      "runtime_capability_line": "v1.3.3",
+      "required": true,
+      "reason_code": "",
+      "blocked": false,
+      "status": "pass",
+      "findings": [],
+      "report_json_path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json",
+      "report_markdown_path": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.md",
+      "state_path": ".beacon/state/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json",
+      "diagram_truth": {
+        "schema_version": "1.0",
+        "version": "v1.6.0",
+        "supported": true,
+        "required": false,
+        "ready": true,
+        "diagram_types": [],
+        "state_axes": [],
+        "missing_diagram_types": [],
+        "missing_state_axes": false,
+        "complexity_signals": [],
+        "review_gates": [],
+        "qa_coverage_hints": [],
+        "evidence_lines": {},
+        "generated_at": "2026-06-10T10:50:29.232629+00:00",
+        "feature": "beacon-loop-goal-closed-loop-orchestrator",
+        "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+        "prd_ref": "docs/beacon/v1.6.0/prd/beacon-loop-goal-closed-loop-orchestrator.md",
+        "user_story_ref": "docs/beacon/v1.6.0/user-story/beacon-loop-goal-closed-loop-orchestrator.md"
+      },
+      "human_closure_contract": {
+        "required": false,
+        "research_path": "docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+        "research_exists": true,
+        "source_architecture_path": "docs/beacon/v1.6.0/source-architecture/index.md",
+        "source_architecture_exists": true,
+        "required_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "missing_sections": [
+          "architecture",
+          "business_flow"
+        ],
+        "diagram_types": [],
+        "complexity_signals": []
+      },
+      "requirement_closure_contract": {
+        "required": true,
+        "chain_order": [
+          "research",
+          "prd",
+          "user_story",
+          "test_case",
+          "requirement_clarity",
+          "freeze"
+        ],
+        "human_closure_required": false,
+        "paths": {
+          "research": "docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+          "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+          "user_story": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+          "test_case": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md"
+        },
+        "exists": {
+          "research": true,
+          "prd": true,
+          "user_story": true,
+          "test_case": true
+        },
+        "required_research_sections": [],
+        "missing_research_sections": [],
+        "ac_projection": {
+          "prd_ac_ids": [
+            "AC-001",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-016",
+            "AC-021",
+            "AC-022",
+            "AC-025",
+            "AC-030",
+            "AC-031",
+            "AC-032",
+            "AC-033",
+            "AC-034",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040",
+            "AC-041",
+            "AC-042"
+          ],
+          "user_story_ac_ids": [
+            "AC-001",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-016",
+            "AC-021",
+            "AC-022",
+            "AC-025",
+            "AC-030",
+            "AC-031",
+            "AC-032",
+            "AC-033",
+            "AC-034",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040",
+            "AC-041",
+            "AC-042"
+          ],
+          "test_case_ac_ids": [
+            "AC-001",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-016",
+            "AC-021",
+            "AC-022",
+            "AC-025",
+            "AC-030",
+            "AC-031",
+            "AC-032",
+            "AC-033",
+            "AC-034",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040",
+            "AC-041",
+            "AC-042"
+          ],
+          "upstream_ac_ids": [
+            "AC-001",
+            "AC-003",
+            "AC-004",
+            "AC-005",
+            "AC-016",
+            "AC-021",
+            "AC-022",
+            "AC-025",
+            "AC-030",
+            "AC-031",
+            "AC-032",
+            "AC-033",
+            "AC-034",
+            "AC-035",
+            "AC-036",
+            "AC-037",
+            "AC-038",
+            "AC-039",
+            "AC-040",
+            "AC-041",
+            "AC-042"
+          ],
+          "missing_test_case_ac_ids": []
+        }
+      },
+      "version_projection_truth_contract": {
+        "required": true,
+        "supported": true,
+        "projection_types": [
+          "state_machine"
+        ],
+        "research_path": "docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+        "research_exists": true,
+        "required_fields": [
+          "prd_refs",
+          "user_story_refs",
+          "test_case_refs",
+          "coverage_notes",
+          "out_of_scope_notes"
+        ],
+        "field_presence": {
+          "prd_refs": true,
+          "user_story_refs": true,
+          "test_case_refs": true,
+          "coverage_notes": true,
+          "out_of_scope_notes": true
+        },
+        "missing_fields": [],
+        "required_refs": {
+          "prd_refs": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+          "user_story_refs": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+          "test_case_refs": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md"
+        },
+        "missing_ref_targets": [],
+        "ready": true
+      },
+      "support_write_topology_contract": {
+        "schema_version": "1.0",
+        "supported": true,
+        "status": "pass",
+        "blocked": false,
+        "reason_code": "",
+        "diagnostics": []
+      },
+      "required_artifacts": [],
+      "scanned_files": [
+        "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+        "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md",
+        "docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md"
+      ]
+    },
+    "report": {
+      "json": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json",
+      "markdown": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.md"
+    },
+    "writeback": {
+      "schema_version": "1.0",
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "status": "pass",
+      "blocked": false,
+      "reason_code": "",
+      "report_json_path": "docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json",
+      "report_markdown_path": "docs/beacon/v1.6.0/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.md",
+      "finding_count": 0,
+      "run_id": "",
+      "source": "change.refreeze-chain",
+      "written_at": "2026-06-10T10:50:29.681136+00:00",
+      "state_path": ".beacon/state/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json"
+    }
+  },
+  "revision_delta": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+    "version": "v1.6.0",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "status": "ready",
+    "cleanup_required": false,
+    "removed_requirement_count": 0,
+    "added_requirement_count": 3,
+    "retained_requirement_count": 15,
+    "removed_requirement_surfaces": [],
+    "added_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-017",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-040",
+        "text": "TC-042",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-040::tc-042::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-016",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-041",
+        "text": "TC-043",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-041::tc-043::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-018",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-042",
+        "text": "TC-044",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-042::tc-044::"
+      }
+    ],
+    "retained_requirement_surfaces": [
+      {
+        "revision_id": "R2",
+        "id": "AC-004",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`implement_loop` 子状态复用",
+        "text": "`implement_loop` 子状态复用",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`implement_loop` 子状态复用::`implement_loop` 子状态复用::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-001",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-031..AC-039 delivery orchestrator",
+        "text": "AC-031..AC-039 delivery orchestrator",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-031..ac-039 delivery orchestrator::ac-031..ac-039 delivery orchestrator::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-031",
+        "text": "TC-031",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-031::tc-031::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-032",
+        "text": "TC-032",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-032::tc-032::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-033",
+        "text": "TC-033",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-033::tc-033::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-034",
+        "text": "TC-034",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-034::tc-034::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-035",
+        "text": "TC-035",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-035::tc-035::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-012",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-036",
+        "text": "TC-036",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-036::tc-036::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-013",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-037",
+        "text": "TC-037",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-037::tc-037::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-014",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-038",
+        "text": "TC-038",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-038::tc-038::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-015",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-039",
+        "text": "TC-039",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-039::tc-039::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-005",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "delivery-state 写入同一 ledger",
+        "text": "delivery-state 写入同一 ledger",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::delivery-state 写入同一 ledger::delivery-state 写入同一 ledger::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-002",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "保留；扩展 `--mode`",
+        "text": "保留；扩展 `--mode`",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::保留；扩展 `--mode`::保留；扩展 `--mode`::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-006",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "扩展为 AC-039 全链 E2E",
+        "text": "扩展为 AC-039 全链 E2E",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::扩展为 ac-039 全链 e2e::扩展为 ac-039 全链 e2e::"
+      },
+      {
+        "revision_id": "R2",
+        "id": "AC-003",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "扩展：blocked 时进入 truth_fill，非仅 abort",
+        "text": "扩展：blocked 时进入 truth_fill，非仅 abort",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::扩展：blocked 时进入 truth_fill，非仅 abort::扩展：blocked 时进入 truth_fill，非仅 abort::"
+      }
+    ],
+    "current_baseline_hash": "sha256:363b55ed119554a35d941648f11f9f62fcc39662bd508338d74fe8ff6e93c3e7",
+    "source_baseline_hash": "sha256:66327efa4cf6d3ed778dbcde241818445b311c0ff4a34ed689dbefc8ec9426c5",
+    "story_state_ref": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json",
+    "generated_at": "2026-06-10T10:50:29.694135+00:00",
+    "json_ref": "docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json",
+    "markdown_ref": "docs/beacon/v1.6.0/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.md"
+  },
+  "release_projection_sync": {
+    "status": "pass",
+    "truth_authority": false,
+    "lifecycle_stage": false,
+    "release_publish_action": false,
+    "feature_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "json_path": "docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.json",
+      "markdown_path": "docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md",
+      "json_written": true,
+      "markdown_exists": true,
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "version": "v1.6.0",
+        "feature": "beacon-loop-goal-closed-loop-orchestrator",
+        "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+        "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+        "status": "completed",
+        "accepted_at": "2026-06-10T09:24:37.047183+00:00",
+        "revision_id": "R2",
+        "projection_role": {
+          "artifact_role": "version_aggregate_projection",
+          "truth_source": false,
+          "gate_source": false,
+          "lifecycle_stage": false,
+          "release_publish_action": false
+        },
+        "truth_authority": false,
+        "lifecycle_stage": false,
+        "added": [
+          "Feature-level release projection input for QA accepted current feature",
+          "Version aggregate projection inclusion guard and repair metadata",
+          "Repair-only projection rebuild path for release preflight artifacts"
+        ],
+        "removed": [
+          "Manual-only version aggregate projection repair before release check"
+        ],
+        "fixed": [
+          "Release check can route missing current feature projection to an actionable repair path",
+          "Version aggregate projection remains a read model instead of requirement truth"
+        ],
+        "traceability_refs": [
+          "docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md",
+          "docs/beacon/v1.6.0/prd/beacon-loop-goal-closed-loop-orchestrator.md",
+          "docs/beacon/v1.6.0/user-story/beacon-loop-goal-closed-loop-orchestrator.md",
+          "docs/beacon/v1.6.0/qa/test-cases/beacon-loop-goal-closed-loop-orchestrator.md",
+          "docs/beacon/v1.6.0/.machine/execution/beacon-loop-goal-closed-loop-orchestrator.revision.json",
+          "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json"
+        ],
+        "generated_at": "2026-06-10T10:50:29.703078+00:00"
+      }
+    },
+    "version_aggregate_projection": {
+      "schema_version": "1.0",
+      "status": "pass",
+      "version": "v1.6.0",
+      "markdown_path": "docs/beacon/v1.6.0/change/v1.6.0.md",
+      "json_path": "docs/beacon/v1.6.0/.machine/change/v1.6.0.json",
+      "feature_count": 5,
+      "feature_slugs": [
+        "beacon-loop-goal-closed-loop-orchestrator",
+        "beacon-loop-native-runner-and-automation-retirement",
+        "beacon-pln-review-compound-parity-v160",
+        "beacon-pln-review-intent-parity-state-machine-v160",
+        "beacon-skill-harness-taxonomy-v160"
+      ],
+      "projection_role": {
+        "artifact_role": "version_aggregate_projection",
+        "truth_source": false,
+        "gate_source": false,
+        "lifecycle_stage": false,
+        "release_publish_action": false
+      },
+      "truth_authority": false,
+      "lifecycle_stage": false,
+      "release_publish_action": false,
+      "implementation_order": {
+        "status": "analyzed",
+        "feature_count": 5,
+        "ordered_feature_slugs": [
+          "beacon-skill-harness-taxonomy-v160",
+          "beacon-pln-review-compound-parity-v160",
+          "beacon-pln-review-intent-parity-state-machine-v160",
+          "beacon-loop-native-runner-and-automation-retirement",
+          "beacon-loop-goal-closed-loop-orchestrator"
+        ],
+        "waves": [
+          {
+            "wave": 1,
+            "parallelizable": true,
+            "features": [
+              {
+                "feature": "beacon-skill-harness-taxonomy-v160",
+                "feature_slug": "beacon-skill-harness-taxonomy-v160",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-pln-review-compound-parity-v160",
+                "feature_slug": "beacon-pln-review-compound-parity-v160",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-pln-review-intent-parity-state-machine-v160",
+                "feature_slug": "beacon-pln-review-intent-parity-state-machine-v160",
+                "depends_on_features": [],
+                "direct_delivery_services": [],
+                "writable_services": [],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              },
+              {
+                "feature": "beacon-loop-native-runner-and-automation-retirement",
+                "feature_slug": "beacon-loop-native-runner-and-automation-retirement",
+                "depends_on_features": [],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": true,
+                "reason_code": "parallel_no_conflict"
+              }
+            ]
+          },
+          {
+            "wave": 2,
+            "parallelizable": false,
+            "features": [
+              {
+                "feature": "beacon-loop-goal-closed-loop-orchestrator",
+                "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+                "depends_on_features": [
+                  "beacon-loop-native-runner-and-automation-retirement"
+                ],
+                "direct_delivery_services": [
+                  "."
+                ],
+                "writable_services": [
+                  "."
+                ],
+                "parallelizable": false,
+                "reason_code": "shared_delivery_service_conflict"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
 }

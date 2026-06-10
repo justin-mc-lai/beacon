@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-closed-loop-orchestrator
 
 - version: `v1.6.0`
-- change_reason: `goal-delivery-orchestrator-initial-freeze`
-- refreeze_status: `blocked`
-- blocked_reason: `revision_not_frozen`
-- next_route: `beacon-gen-change`
-- revision_before: `R1`
-- revision_after: ``
+- change_reason: `R2: D-010 default LLM intent tie-break green-light non-interrupt; reject D-009/D-011 accepted defer; AC-040..042`
+- refreeze_status: `complete`
+- blocked_reason: ``
+- next_route: `beacon-gen-implement`
+- revision_before: `R2`
+- revision_after: `R2`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md)
@@ -14,13 +14,13 @@
 - `tests`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md)
 - `tasks`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md)
 - `evidence`: `present` (docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md)
-- `requirement_clarity`: `pending` (docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json)
-- `freeze`: `pending` (docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.refreeze-transaction.json)
+- `requirement_clarity`: `passed` (docs/beacon/v1.6.0/.machine/execution/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json)
+- `freeze`: `complete` (docs/beacon/v1.6.0/.machine/change/beacon-loop-goal-closed-loop-orchestrator.refreeze-transaction.json)
 - `feature_package_validation`: `passed` (docs/beacon/v1.6.0/.machine/requirement/feature-package-validation.json)
 
 ## Refreshed Surfaces
 
-- change, truth, tests, tasks, evidence, feature_package_validation
+- change, truth, tests, tasks, evidence, requirement_clarity, freeze, feature_package_validation
 
 ## Boundary
 

@@ -17,12 +17,12 @@
     "story_state": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json"
   },
   "source_hashes": {
-    "truth": "sha256:4b7769ca4b9d24cb1a88de4003ea751c015c59c04278631fa322567a3721bd0f",
-    "tests": "sha256:bf9aed8601f10b775459f97ea005342c99207cfd2f47a87ca907d3496e81e934",
-    "tasks": "sha256:ebbc84b548af3184581dab439beda0063fae1254f2bbd7b44818608e03a66074",
-    "evidence": "sha256:87d49bb3ed7df4cfc90ff8fd2ef426f73037821fb902d5353c8db15335c03646",
-    "ac_matrix": "sha256:bf9aed8601f10b775459f97ea005342c99207cfd2f47a87ca907d3496e81e934",
-    "story_state": "sha256:291b042e248e1fdc11017f38f34972ffdbe431765308ab4ae3aac6def8d4c23a"
+    "truth": "sha256:97bca50d809d25effe8477ad459f45b0e8fb00a2bee916d71636eb822b58d554",
+    "tests": "sha256:5d4b568ea42be431cf7f9846469801edc8afc44e0fc77cad0a526dbbea63f2ea",
+    "tasks": "sha256:44cc7ab8e70c62fe7b1b44618ed333590177e6def57335c65f6b6bd262f553a3",
+    "evidence": "sha256:9c3850da175e1eb4983f525be3e0ba3252a0a4daaabcb7f9100e435b71fda4dd",
+    "ac_matrix": "sha256:5d4b568ea42be431cf7f9846469801edc8afc44e0fc77cad0a526dbbea63f2ea",
+    "story_state": "sha256:0052b36f71bde76d3f27b6d90dbe8fe64b3c654dc032a13b6f7e9d2a9384af7b"
   },
   "lanes": {
     "feature_release_facing": [
@@ -151,6 +151,48 @@
         "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-042",
+        "ac_id": "AC-040",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
+        "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-042/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-043",
+        "ac_id": "AC-041",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
+        "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-043/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-044",
+        "ac_id": "AC-042",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
+        "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-044/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
       }
     ],
     "current_runtime_contract": [],
@@ -160,7 +202,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 9,
+    "feature_release_facing": 12,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -301,6 +343,48 @@
       "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-042",
+      "ac_id": "AC-040",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
+      "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-042/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-043",
+      "ac_id": "AC-041",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
+      "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-043/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-044",
+      "ac_id": "AC-042",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
+      "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-044/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
@@ -330,6 +414,15 @@
     ],
     "AC-039": [
       "TC-039"
+    ],
+    "AC-040": [
+      "TC-042"
+    ],
+    "AC-041": [
+      "TC-043"
+    ],
+    "AC-042": [
+      "TC-044"
     ]
   },
   "qa_order_contract": {
@@ -365,6 +458,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-06-10T09:44:10.043082+00:00",
+  "generated_at": "2026-06-10T11:48:07.080651+00:00",
   "index_path": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json"
 }

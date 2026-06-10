@@ -3,7 +3,9 @@ import { writeJson } from "../runner/fs.js";
 import { resolveTruth } from "../beacon/resolve.js";
 import { buildIntentCapture } from "../intent/capture.js";
 import { classifyIntent } from "../intent/classify.js";
+import { needsIntentTieBreak, runIntentTieBreak } from "../intent/tiebreak.js";
 import { runDeliveryEvalChain } from "./eval-chain.js";
+import { applyLifecycleRoute, shouldInterruptForReview } from "./review-gate.js";
 import { runPlannerReview } from "./review.js";
 import {
   defaultDeliveryState,
@@ -23,8 +25,12 @@ export function truthFrozen(resolver) {
 
 export function writeIntentArtifacts(runDir, utterance, options) {
   const capture = buildIntentCapture(utterance);
-  const contract = classifyIntent(utterance, options);
+  let contract = classifyIntent(utterance, options);
   writeJson(join(runDir, "intent-capture.json"), capture);
+  if (needsIntentTieBreak(contract)) {
+    const tiebreak = runIntentTieBreak(runDir, contract);
+    contract = tiebreak.contract;
+  }
   writeJson(join(runDir, "intent-contract.json"), contract);
   return { capture, contract };
 }
@@ -65,19 +71,34 @@ export function runDeliveryPipeline(projectRoot, runDir, ctx) {
   }
 
   const review = runPlannerReview(projectRoot, runDir, contract);
-  if (contract.determinism?.ambiguous && !options.autoDecideDeferrals) {
+
+  const reviewInterrupt = shouldInterruptForReview(review.artifact, options);
+  if (reviewInterrupt.interrupt) {
     transitionDeliveryState(runDir, "user_decision_pending");
-    if (mode === "review-only") {
-      return deliveryReturn({
-        schema_version: "1.0",
-        surface: "beacon-loop",
-        command: "goal",
-        status: "user_decision_pending",
-        reason_code: "ambiguous_intent",
-        run_id: runPackage.run_id,
-        run_dir: runDir
-      }, runDir, mode);
-    }
+    return deliveryReturn({
+      schema_version: "1.0",
+      surface: "beacon-loop",
+      command: "goal",
+      status: "user_decision_pending",
+      reason_code: reviewInterrupt.reason_code,
+      run_id: runPackage.run_id,
+      run_dir: runDir
+    }, runDir, mode);
+  }
+
+  const lifecycle = applyLifecycleRoute(review.artifact);
+  if (!lifecycle.continueDelivery) {
+    transitionDeliveryState(runDir, lifecycle.route === "terminal_aborted" ? "terminal_aborted" : "user_decision_pending");
+    return deliveryReturn({
+      schema_version: "1.0",
+      surface: "beacon-loop",
+      command: "goal",
+      status: lifecycle.route === "terminal_aborted" ? "blocked" : "user_decision_pending",
+      reason_code: lifecycle.reason_code,
+      recommended_route: lifecycle.route,
+      run_id: runPackage.run_id,
+      run_dir: runDir
+    }, runDir, mode);
   }
 
   step = transitionDeliveryState(runDir, "truth_gap_scan");

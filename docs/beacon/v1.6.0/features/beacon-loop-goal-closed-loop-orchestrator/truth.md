@@ -43,7 +43,7 @@ plan -> truth -> generate -> evaluate -> release
 
 - 用户原话中的能力请求必须在 `intent-contract` + `review-artifact` 中可追溯
 - 任何从 full delivery 闭环到「仅 implement stub」的降级必须进入 `Deferral Ledger` 并获用户显式接受
-- 本 change 仅接受 **D-009..D-011** 为显式 defer（见下）
+- R2 撤销 D-009..D-011 的 **accepted defer**；D-010 升格为 in-scope（AC-040）；D-009/D-011 改回 in-scope 承诺（见 Parity Matrix / Deferral Ledger）
 
 ## 背景
 
@@ -86,19 +86,28 @@ beacon-loop goal "<utterance>" [options]
 
 | Mode | 行为 |
 |------|------|
-| `delivery` | 全链：intent → review → truth_fill? → implement → import → qa → release invoke |
+| `delivery` | 全链：intent → review → truth_fill（条件）→ implement → import → qa → release invoke |
 | `execute-only` | 仅 implement_loop；**必须** frozen truth + `--feature` |
 | `intent-only` | 只写 intent-capture + intent-contract |
 | `review-only` | intent + planner review artifact，不实现 |
 
-人机门控 flags：
+Green-Light 默认策略（R2 / AC-040）：
+
+- **默认一律绿灯、尽可能不打断**：`delivery` 模式不因规则 classifier 的 `ambiguous`  alone 进入 `user_decision_pending`。
+- 规则 classifier（AC-032）仍 deterministic；当 confidence 低或 `ambiguous=true` 时，**默认**走 LLM intent tie-break（见下）并 **continue**。
+- 仅 **hard stop** 允许打断：`intent_drift` 未 `--ack-intent-drift`、P0 planner finding（truth authority / illegal scope cut）、illegal state transition、repair cap、truth frozen gate fail。
+- planner review `synthesis.recommended_route` 与 Beacon lifecycle route（如 `truth_fill` / `implement_loop`）为 **默认续跑依据**；不要求交互式 AskUser UI。
+
+人机门控 flags（**opt-in strict**，非默认打断）：
 
 ```bash
---ask-on P0,P1          # 默认：P0/P1 停等用户确认
---auto-decide deferrals # 仅对已 accepted defer 自动继续
---ack-intent-drift      # utterance 与 frozen intent_snapshot 冲突时显式确认
+--strict-interrupt      # opt-in：恢复 P0/P1 停等（等价旧 --ask-on P0,P1 严格模式）
+--ask-on P0,P1          # deprecated alias；默认 delivery 不启用
+--ack-intent-drift      # utterance 与 frozen intent_snapshot 冲突时必须显式确认（hard stop）
 --feature <slug>        # 显式 feature；禁止仅靠 slugify(utterance)
 ```
+
+移除 `--auto-decide deferrals` 作为 ambiguous 默认门控；deferral ledger 中 **无** `user_decision=accepted` 的 scope cut 不得 silent 继续（与 AC-034 一致）。
 
 ## Intent Contract Schema
 
@@ -141,7 +150,7 @@ beacon-loop goal "<utterance>" [options]
 | 调研 / 探索 / brainstorm | `research` | `research` → route `beacon-pln-brainstorm`，不进入 implement |
 | frozen truth + 只跑实现 | `execute_bound` | 继承 truth `scope_mode` |
 
-`ambiguous=true` 时必须进入 `user_decision_pending`，不得自动进入 `truth_fill` 或 `implement_loop`。
+`ambiguous=true` 时 **不得** 因 ambiguous alone 进入 `user_decision_pending`；须走 AC-040 LLM tie-break 并默认 continue。`user_decision_pending` 仅用于 hard stop 后的显式恢复或 opt-in strict 模式。
 
 ## Runtime Artifact Contract
 
@@ -172,7 +181,7 @@ Run 目录扩展（相对 parent）：
 |-------|------|
 | `intent_capture` | 写入 intent-capture + intent-contract |
 | `intent_review` | 运行 planner review runtime |
-| `user_decision_pending` | P0/P1 或 ambiguous intent 等待用户 |
+| `user_decision_pending` | hard stop 或 opt-in strict 后等待用户恢复（**非** routine ambiguous） |
 | `truth_gap_scan` | resolve + parity 缺口扫描 |
 | `truth_fill` | 编排 beacon gen-truth / gen-change / refreeze |
 | `truth_freeze_gate` | 等待 frozen truth |
@@ -236,9 +245,30 @@ release_pending -> terminal_closed | repair_from_qa | truth_fill(route change)
 
 Review gate：
 
-- P0 finding → `user_decision_pending` 或 `terminal_aborted`
-- `deferral_ledger` 含 `user_decision: pending` → block `truth_fill` / `implement_loop`
+- P0 finding → **hard stop**（`terminal_aborted` 或需 `--ack-intent-drift` / explicit strict flag）
+- P1 finding → **默认 green-light continue**；写入 `review-artifact.json` 与 `notes.md`，由 `recommended_route` 驱动下一跳（truth_fill / implement_loop 等）
+- `deferral_ledger` 含 `user_decision: pending` → block `truth_fill` / `implement_loop`（scope cut 仍须用户主权）
 - `scope_mode=full_parity` 且 parity missing 无 accepted defer → route truth_fill
+
+## LLM Intent Tie-Break Contract（AC-040）
+
+当 `intent-contract.json` 中 `determinism.ambiguous=true` 或 `determinism.confidence` 低于 tie-break 阈值时：
+
+1. loop 调用 **LLM intent tie-break** adapter（subprocess 至 Beacon 或 host LLM surface；**不得**写 package truth）
+2. 落盘 `intent-tiebreak.json`，必填：
+   - `utterance`、`rules_classifier_output`、`llm_resolution`（`intent_class`、`scope_mode`、`feature_slug` 建议）
+   - `confidence`、`rationale_summary`（审计用，非 formal verdict）
+   - `tiebreak_authority: llm_default_green_light`
+   - `runtime_evidence_only: true`
+3. 合并结果写回 **runtime** `intent-contract.json` 的 `tiebreak` 字段；`rules_hash` 不变
+4. **默认** `transition → truth_gap_scan`（continue）；**禁止**仅因 ambiguous 进入 `user_decision_pending`
+
+Hard stop 例外（不打 green-light）：
+
+- LLM tie-break 失败且 strict 模式
+- P0 planner finding
+- `intent_drift` 未 ack
+- 用户显式 `--strict-interrupt`
 
 ## Truth Fill Subchain Contract
 
@@ -302,17 +332,19 @@ QA fail（AC-037）：`qa_pending` → `repair_from_qa` → `implement_loop`，�
 | qa fail repair loop | AC-037 | TC-037 | notes.md + delivery-state | missing | none |
 | delivery state resume | AC-038 | TC-038 | delivery-state.json | missing | none |
 | full chain E2E | AC-039 | TC-039 | e2e script | missing | none |
-| parallel review lanes | — | — | — | out of scope | D-009 accepted |
-| LLM intent tie-break default | — | — | — | out of scope | D-010 accepted |
-| AskUserQuestion UI | — | — | — | out of scope | D-011 accepted |
+| parallel review lanes | AC-041 | TC-043 | review-artifact.json | missing | none |
+| LLM intent tie-break default green-light | AC-040 | TC-042 | intent-tiebreak.json | missing | none |
+| Beacon lifecycle auto-route (no AskUser UI) | AC-042 | TC-044 | delivery-state.json | missing | none |
 
 ## Deferral Ledger
 
 | deferral_id | capability | reason | impact | user_decision | expiry_or_revisit | recommended_route |
 |-------------|------------|--------|--------|---------------|-------------------|-------------------|
-| D-009 | 并行 review lane 真多进程 | Phase E 先 subprocess 串行 | review latency 较高 | accepted | Phase H | defer |
-| D-010 | LLM 默认 tie-break 分类 | 确定性优先 | ambiguous 更常停等用户 | accepted | v1.6.x patch | defer |
-| D-011 | 交互式 AskUserQuestion | CLI flags 先行 | P0/P1 需显式 flag | accepted | v1.6.x patch | defer |
+| D-009 | （已撤销 defer）并行 review lane 真多进程 | R1 误 accept 串行替代 | 延迟真并行能力 | **rejected** | R2 implement | beacon-gen-implement |
+| D-010 | （已撤销 defer）LLM 默认 tie-break | R1 误 accept 规则停等 | 打断 delivery 绿灯流 | **rejected** | R2 AC-040 | beacon-gen-implement |
+| D-011 | （已撤销 defer）AskUserQuestion / CLI flag 主门控 | R1 解法偏离用户意图 | 人工 flag babysitting | **rejected** | R2 AC-042 | beacon-gen-implement |
+
+R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现能力以 AC-040..AC-042 + parity matrix `missing` 跟踪。
 
 ## Delivery Phases
 
@@ -322,6 +354,7 @@ QA fail（AC-037）：`qa_pending` → `repair_from_qa` → `implement_loop`，�
 | F | truth_fill 子链 + truth_freeze_gate | AC-034..AC-035 |
 | G | delivery mode qa/release + qa fail 回灌 | AC-036..AC-037 |
 | H | resume delivery-state + parallel review + E2E | AC-038..AC-039 |
+| I | R2 green-light intent + lifecycle auto-route | AC-040..AC-042 |
 
 Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
 
@@ -347,6 +380,9 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
 | AC-037 | beacon qa fail 时进入 `repair_from_qa` 并回灌 `implement_loop`（findings 写入 notes），直至 cap 或 qa pass。 |
 | AC-038 | `delivery-state.json` 记录 Delivery Loop 全状态；`resume` 可恢复；illegal transition 有测试阻断。 |
 | AC-039 | E2E 契约：utterance → review artifact → truth frozen → implement → import → qa → release invoke；formal verdict 仅来自 Beacon evaluator。 |
+| AC-040 | **Green-light LLM tie-break**：`delivery` 默认启用；规则 `ambiguous`/低 confidence 时写 `intent-tiebreak.json` 并 **continue**；不得仅因 ambiguous 进入 `user_decision_pending`；hard stop 仅限 intent drift 未 ack、P0 finding、illegal transition、cap。 |
+| AC-041 | **并行 review lane**：planner review runtime `execution_mode=parallel_subagent_review`（或等价真并行）；`review-artifact.json` 含 per-lane evidence ref。 |
+| AC-042 | **Beacon lifecycle auto-route**：无 AskUser UI；loop 消费 `review-artifact.synthesis.recommended_route` 与 Beacon gov route 续跑；`--strict-interrupt` 为 opt-in。 |
 
 ## Source Advisory
 
@@ -357,4 +393,4 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
 | `features/beacon-loop-native-runner-and-automation-retirement/truth.md` | parent frozen truth |
 | `features/beacon-pln-review-intent-parity-state-machine-v160/truth.md` | planner review contract |
 
-本文件为 package-authoritative requirement truth（**frozen**，R1 baseline）。
+本文件为 package-authoritative requirement truth（**frozen**，R2 revision）。

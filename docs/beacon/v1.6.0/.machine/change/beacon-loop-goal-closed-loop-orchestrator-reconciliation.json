@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0",
+  "artifact": "implementation_first_reconciliation",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+  "version": "v1.6.0",
+  "status": "required",
+  "reason_code": "implementation_first_reconciliation_required",
+  "recovery_kind": "implementation_first_reconciliation",
+  "delivery_mode": "recovery_not_normal_delivery",
+  "drift_detected_at": "2026-06-10T11:21:08.054156+00:00",
+  "detected_revision_id": "R2",
+  "source_revision_id": "R1",
+  "implementation_artifacts": [
+    {
+      "revision_id": "R1",
+      "run_id": "run-20260610T091306Z-c638",
+      "recorded_at": "2026-06-10T09:13:06.646099+00:00",
+      "implemented_item_ids": [
+        "TEST-001",
+        "AC-003",
+        "AC-011",
+        "TEST-003",
+        "TEST-008",
+        "AC-007",
+        "TEST-005",
+        "TEST-010",
+        "AC-005",
+        "TEST-007",
+        "AC-001",
+        "TEST-006",
+        "AC-015",
+        "AC-014",
+        "TEST-004",
+        "TEST-002",
+        "TEST-009",
+        "AC-006",
+        "TASK-001",
+        "TEST-011",
+        "AC-012",
+        "TEST-013",
+        "AC-002",
+        "AC-013",
+        "AC-004",
+        "AC-010",
+        "TEST-012",
+        "AC-008",
+        "TEST-014",
+        "AC-009",
+        "TEST-015"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ]
+    }
+  ],
+  "missing_truth_surfaces": [
+    "prd",
+    "user-story",
+    "qa/test-cases"
+  ],
+  "recovery_reason": "implementation evidence exists on earlier revision lineage and must be reconciled through beacon-change without erasing provenance",
+  "truth_surfaces_backfilled": [
+    "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md"
+  ],
+  "re_freeze_status": "completed",
+  "reprojection_targets": [
+    "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "qa_proof",
+    "release_facing_proof"
+  ],
+  "provenance": {
+    "post_hoc_writeback_occurred": true,
+    "preserve_drift_history": true,
+    "current_revision_id": "R2",
+    "current_delivery_status": "idle"
+  },
+  "change_route": {
+    "action": "beacon-change",
+    "command": "beacon change \"beacon-loop-goal-closed-loop-orchestrator\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.0 --reason \"implementation-first-reconciliation\""
+  }
+}

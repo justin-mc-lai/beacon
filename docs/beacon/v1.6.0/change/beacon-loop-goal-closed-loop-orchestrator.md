@@ -41,17 +41,31 @@ Planner review 与 prior 对话已判定：把 plan 意图直接落成 MVP 骨�
 
 实现依赖 parent Phase A-D 能力；本 feature Phase E-H 在 parent 之上叠加。
 
-## Accepted Deferrals
+## R2 Revision（2026-06-10）
+
+- **change_reason**: D-010 默认 LLM intent tie-break + green-light 非打断；撤销 D-009/D-011 accepted defer
+- **revision_id**: R2（previous R1）
+- **user_decision**: accepted
+
+| ID | R1 | R2 |
+|----|----|-----|
+| D-009 | accepted defer 串行 review | **rejected** → AC-041 in scope |
+| D-010 | accepted defer 规则停等 | **rejected** → AC-040 in scope |
+| D-011 | accepted defer AskUser/CLI flags | **rejected** → AC-042 lifecycle auto-route |
+
+## Accepted Deferrals（R1 — superseded by R2）
 
 | ID | Capability | Decision | Revisit |
 |----|------------|----------|---------|
-| D-009 | 并行 review lane 真多进程（非 subprocess 串行） | `accepted` defer | Phase H |
-| D-010 | LLM tie-break 意图分类（默认仅规则确定性） | `accepted` defer | v1.6.x patch |
-| D-011 | 交互式 `AskUserQuestion` 门控 UI（CLI 先用 flags） | `accepted` defer | v1.6.x patch |
+| D-009 | 并行 review lane 真多进程（非 subprocess 串行） | ~~`accepted`~~ **rejected R2** | AC-041 |
+| D-010 | LLM tie-break 意图分类（默认仅规则确定性） | ~~`accepted`~~ **rejected R2** | AC-040 |
+| D-011 | 交互式 `AskUserQuestion` 门控 UI（CLI 先用 flags） | ~~`accepted`~~ **rejected R2** | AC-042 |
+
+R2 起 **无 accepted defer**；未实现能力以 AC-040..042 + parity matrix `missing` 跟踪。
 
 ## Non-Deferrals（must land in this feature truth）
 
-- AC-031..AC-039 全部进入 package truth / tests
+- AC-031..AC-042 全部进入 package truth / tests
 - Delivery Loop State Model + illegal transition 测试
 - Deterministic intent classification contract
 - Automatic planner review artifact 落盘
@@ -70,7 +84,7 @@ Planner review 与 prior 对话已判定：把 plan 意图直接落成 MVP 骨�
 - `Orchestrator Modes`（delivery / execute-only / intent-only / review-only）
 - `Truth Fill Subchain Contract`
 - `Parent Feature Dependency Matrix`
-- AC-031..AC-039 与 tests/tasks Phase E-H
+- AC-031..AC-042 与 tests/tasks Phase E-I
 
 ## Next Route
 

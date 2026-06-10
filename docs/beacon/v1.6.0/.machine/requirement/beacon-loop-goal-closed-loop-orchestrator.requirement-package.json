@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-10T09:40:56.229177+00:00",
+  "generated_at": "2026-06-10T10:51:01.864778+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "4b7769ca4b9d24cb1a88de4003ea751c015c59c04278631fa322567a3721bd0f",
-    "tests": "bf9aed8601f10b775459f97ea005342c99207cfd2f47a87ca907d3496e81e934",
-    "tasks": "ebbc84b548af3184581dab439beda0063fae1254f2bbd7b44818608e03a66074",
-    "evidence": "87d49bb3ed7df4cfc90ff8fd2ef426f73037821fb902d5353c8db15335c03646"
+    "truth": "97bca50d809d25effe8477ad459f45b0e8fb00a2bee916d71636eb822b58d554",
+    "tests": "5d4b568ea42be431cf7f9846469801edc8afc44e0fc77cad0a526dbbea63f2ea",
+    "tasks": "44cc7ab8e70c62fe7b1b44618ed333590177e6def57335c65f6b6bd262f553a3",
+    "evidence": "9c3850da175e1eb4983f525be3e0ba3252a0a4daaabcb7f9100e435b71fda4dd"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
@@ -83,6 +83,21 @@
     {
       "ac_id": "AC-039",
       "theme": "E2E 契约：utterance → review artifact → truth frozen → implement → import → qa → release invoke；formal verdict 仅来自 Beacon evaluator。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-040",
+      "theme": "**Green-light LLM tie-break**：`delivery` 默认启用；规则 `ambiguous`/低 confidence 时写 `intent-tiebreak.json` 并 **continue**；不得仅因 ambiguous 进入 `user_decision_pending`；hard stop 仅限 intent drift 未 ack、P0 finding、illegal transition、cap。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-041",
+      "theme": "**并行 review lane**：planner review runtime `execution_mode=parallel_subagent_review`（或等价真并行）；`review-artifact.json` 含 per-lane evidence ref。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-042",
+      "theme": "**Beacon lifecycle auto-route**：无 AskUser UI；loop 消费 `review-artifact.synthesis.recommended_route` 与 Beacon gov route 续跑；`--strict-interrupt` 为 opt-in。",
       "description": ""
     }
   ],
@@ -158,6 +173,30 @@
       "command": "`cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"`",
       "assertion": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-040",
+      "tc_id": "TC-042",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
+      "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-041",
+      "tc_id": "TC-043",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
+      "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-042",
+      "tc_id": "TC-044",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
+      "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
@@ -193,7 +232,7 @@
     },
     {
       "id": "TASK-047",
-      "title": "CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+      "title": "CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。",
       "status": "unchecked"
     },
     {
@@ -263,7 +302,7 @@
     },
     {
       "id": "TASK-061",
-      "title": "defer D-009: review lane 并行化评估与实现。",
+      "title": "实现 AC-041：review lane 真并行（`execution_mode=parallel_subagent_review`）。",
       "status": "unchecked"
     },
     {
@@ -273,7 +312,37 @@
     },
     {
       "id": "TASK-063",
-      "title": "`beacon qa run` + release gate 正式验收本 feature。",
+      "title": "`beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-064",
+      "title": "实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-065",
+      "title": "默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-066",
+      "title": "CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-067",
+      "title": "实现 AC-042：`recommended_route` / Beacon lifecycle auto-route；无 AskUser UI。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-068",
+      "title": "测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-069",
+      "title": "R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。",
       "status": "unchecked"
     }
   ],
@@ -304,7 +373,7 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "**frozen**",
+      "status": "**frozen R2**",
       "route": "implement"
     },
     {

@@ -2,9 +2,9 @@
 
 - version: `v1.6.0`
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
-- revision_id: `R1`
+- revision_id: `R2`
 - verdict: `passed`
-- accepted_at: `2026-06-10T09:24:37.047183+00:00`
+- accepted_at: `2026-06-10T11:29:31.368721+00:00`
 - accepted_by: `qa`
 
 ## Summary

@@ -3,7 +3,7 @@
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "generated_at": "2026-06-10T16:30:46.151994",
+  "generated_at": "2026-06-10T18:50:49.906391",
   "compiler": {
     "requested_mode": "auto",
     "effective_mode": "markdown",
@@ -63,8 +63,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"`",
       "scenario": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-031/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-031/command.txt"
     },
     {
       "tc_id": "TC-032",
@@ -90,8 +90,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"`",
       "scenario": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-032/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-032/command.txt"
     },
     {
       "tc_id": "TC-033",
@@ -117,8 +117,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"`",
       "scenario": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-033/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-033/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -144,8 +144,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-035",
@@ -171,8 +171,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"`",
       "scenario": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-035/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-035/command.txt"
     },
     {
       "tc_id": "TC-036",
@@ -198,8 +198,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"`",
       "scenario": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-036/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-036/command.txt"
     },
     {
       "tc_id": "TC-037",
@@ -225,8 +225,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"`",
       "scenario": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-037/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-037/command.txt"
     },
     {
       "tc_id": "TC-038",
@@ -252,8 +252,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"`",
       "scenario": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-038/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-038/command.txt"
     },
     {
       "tc_id": "TC-039",
@@ -279,8 +279,89 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"`",
       "scenario": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-039/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-039/command.txt"
+    },
+    {
+      "tc_id": "TC-042",
+      "ac_id": "AC-040",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-040 :: 规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_s",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
+      "assertion": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-042.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
+      "scenario": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
+      "steps": "",
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-042/command.txt"
+    },
+    {
+      "tc_id": "TC-043",
+      "ac_id": "AC-041",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-041 :: review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
+      "assertion": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-043.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
+      "scenario": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "steps": "",
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-043/command.txt"
+    },
+    {
+      "tc_id": "TC-044",
+      "ac_id": "AC-042",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-042 :: P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
+      "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-044.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
+      "scenario": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "steps": "",
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-044/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -331,8 +412,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill` 而非仅 abort（扩展 parent resolver 行为）。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -358,8 +439,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "truth gap 与 resolve blocked 共用 truth_fill 子链；parity 缺口有 promotion 记录。",
       "steps": "",
-      "last_run_id": "run-20260610T172407766304",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T172407766304/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260610T192844576131",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -476,7 +557,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 16,
+    "row_count": 19,
     "enrichment_disabled": true
   }
 }

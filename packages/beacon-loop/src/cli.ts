@@ -65,8 +65,9 @@ Options:
   --agent <codex|claude|acp:target>
   --mode <delivery|execute-only|intent-only|review-only>
   --feature <slug>
-  --ask-on <P0,P1,...>
-  --auto-decide deferrals
+  --strict-interrupt
+  --ask-on <P0,P1,...>   (deprecated; use with --strict-interrupt)
+  --auto-decide deferrals (deprecated)
   --ack-intent-drift
 `);
 }
@@ -120,7 +121,8 @@ if (command === "goal") {
     version: option(args, "--version", "v1.6.0"),
     feature: option(args, "--feature", ""),
     mode: option(args, "--mode", "delivery"),
-    askOn: option(args, "--ask-on", "P0,P1"),
+    askOn: option(args, "--ask-on", ""),
+    strictInterrupt: flag(args, "--strict-interrupt"),
     autoDecideDeferrals: flag(args, "--auto-decide"),
     ackIntentDrift: flag(args, "--ack-intent-drift"),
     dryRun: flag(args, "--dry-run"),

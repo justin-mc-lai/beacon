@@ -3,21 +3,35 @@
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "current_revision_id": "R1",
+  "current_revision_id": "R2",
   "lifecycle_status": "frozen",
-  "updated_at": "2026-06-10T09:24:37.158394+00:00",
+  "updated_at": "2026-06-10T11:29:31.535048+00:00",
   "revisions": [
     {
       "revision_id": "R1",
       "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
       "source_revision_id": null,
       "reason": "draft",
-      "doc_status": "frozen",
-      "delivery_status": "idle",
+      "doc_status": "superseded",
+      "delivery_status": "superseded",
       "baseline_hash": "sha256:66327efa4cf6d3ed778dbcde241818445b311c0ff4a34ed689dbefc8ec9426c5",
-      "superseded_by": null,
+      "superseded_by": "R2",
       "created_at": "2026-06-10T07:55:57.165126+00:00",
       "frozen_at": "2026-06-10T07:55:57.178530+00:00",
+      "accepted_at": null,
+      "accepted_by": null
+    },
+    {
+      "revision_id": "R2",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "source_revision_id": "R1",
+      "reason": "Revise D-010: default LLM intent tie-break with green-light non-interrupt execution; reject prior accepted defer; align D-009/D-011 deferral ledger",
+      "doc_status": "frozen",
+      "delivery_status": "idle",
+      "baseline_hash": "sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24",
+      "superseded_by": null,
+      "created_at": "2026-06-10T10:42:45.806835+00:00",
+      "frozen_at": "2026-06-10T10:50:29.687834+00:00",
       "accepted_at": null,
       "accepted_by": null
     }
@@ -28,7 +42,7 @@
       "revision_id": "R1",
       "title": "beacon-loop-goal-closed-loop-orchestrator",
       "priority": "medium",
-      "status": "accepted",
+      "status": "superseded",
       "items": [
         {
           "id": "AC-001",
@@ -538,6 +552,617 @@
       ],
       "accepted_at": "2026-06-10T09:24:37.047183+00:00",
       "accepted_by": "qa"
+    },
+    {
+      "story_id": "US-001",
+      "revision_id": "R2",
+      "title": "beacon-loop-goal-closed-loop-orchestrator",
+      "priority": "medium",
+      "status": "accepted",
+      "items": [
+        {
+          "id": "AC-001",
+          "kind": "ac",
+          "theme": "AC-031..AC-039 delivery orchestrator",
+          "text": "AC-031..AC-039 delivery orchestrator",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-002",
+          "kind": "ac",
+          "theme": "保留；扩展 `--mode`",
+          "text": "保留；扩展 `--mode`",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-003",
+          "kind": "ac",
+          "theme": "扩展：blocked 时进入 truth_fill，非仅 abort",
+          "text": "扩展：blocked 时进入 truth_fill，非仅 abort",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-004",
+          "kind": "ac",
+          "theme": "`implement_loop` 子状态复用",
+          "text": "`implement_loop` 子状态复用",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-005",
+          "kind": "ac",
+          "theme": "delivery-state 写入同一 ledger",
+          "text": "delivery-state 写入同一 ledger",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-006",
+          "kind": "ac",
+          "theme": "扩展为 AC-039 全链 E2E",
+          "text": "扩展为 AC-039 全链 E2E",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-007",
+          "kind": "ac",
+          "theme": "AC-031",
+          "text": "TC-031",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-008",
+          "kind": "ac",
+          "theme": "AC-032",
+          "text": "TC-032",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-009",
+          "kind": "ac",
+          "theme": "AC-033",
+          "text": "TC-033",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-010",
+          "kind": "ac",
+          "theme": "AC-034",
+          "text": "TC-034",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-011",
+          "kind": "ac",
+          "theme": "AC-035",
+          "text": "TC-035",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-012",
+          "kind": "ac",
+          "theme": "AC-036",
+          "text": "TC-036",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-013",
+          "kind": "ac",
+          "theme": "AC-037",
+          "text": "TC-037",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-014",
+          "kind": "ac",
+          "theme": "AC-038",
+          "text": "TC-038",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-015",
+          "kind": "ac",
+          "theme": "AC-039",
+          "text": "TC-039",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-016",
+          "kind": "ac",
+          "theme": "AC-041",
+          "text": "TC-043",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-017",
+          "kind": "ac",
+          "theme": "AC-040",
+          "text": "TC-042",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "AC-018",
+          "kind": "ac",
+          "theme": "AC-042",
+          "text": "TC-044",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "story_id": "",
+          "details": [],
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TASK-001",
+          "kind": "task",
+          "text": "Implement current frozen revision",
+          "required": true,
+          "status": "accepted",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": "2026-06-10T11:29:31.368721+00:00",
+          "changed_in_revision": "R2"
+        },
+        {
+          "id": "TEST-001",
+          "kind": "test",
+          "text": "Verify AC-001 — AC-031..AC-039 delivery orchestrator",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-001"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-002",
+          "kind": "test",
+          "text": "Verify AC-002 — 保留；扩展 `--mode`",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-002"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-003",
+          "kind": "test",
+          "text": "Verify AC-003 — 扩展：blocked 时进入 truth_fill，非仅 abort",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-003"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-004",
+          "kind": "test",
+          "text": "Verify AC-004 — `implement_loop` 子状态复用",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-004"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-005",
+          "kind": "test",
+          "text": "Verify AC-005 — delivery-state 写入同一 ledger",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-005"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-006",
+          "kind": "test",
+          "text": "Verify AC-006 — 扩展为 AC-039 全链 E2E",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-006"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-007",
+          "kind": "test",
+          "text": "Verify AC-007 — TC-031",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-007"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-008",
+          "kind": "test",
+          "text": "Verify AC-008 — TC-032",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-008"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-009",
+          "kind": "test",
+          "text": "Verify AC-009 — TC-033",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-009"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-010",
+          "kind": "test",
+          "text": "Verify AC-010 — TC-034",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-010"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-011",
+          "kind": "test",
+          "text": "Verify AC-011 — TC-035",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-011"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-012",
+          "kind": "test",
+          "text": "Verify AC-012 — TC-036",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-012"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-013",
+          "kind": "test",
+          "text": "Verify AC-013 — TC-037",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-013"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-014",
+          "kind": "test",
+          "text": "Verify AC-014 — TC-038",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-014"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-015",
+          "kind": "test",
+          "text": "Verify AC-015 — TC-039",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-015"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-016",
+          "kind": "test",
+          "text": "Verify AC-016 — TC-043",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-016"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-017",
+          "kind": "test",
+          "text": "Verify AC-017 — TC-042",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-017"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        },
+        {
+          "id": "TEST-018",
+          "kind": "test",
+          "text": "Verify AC-018 — TC-044",
+          "required": true,
+          "status": "implemented",
+          "implemented_by_run_id": "run-20260610T112829Z-717e",
+          "verified_by_run_id": null,
+          "accepted_at": null,
+          "changed_in_revision": "R2",
+          "covers": [
+            "AC-018"
+          ],
+          "story_id": "",
+          "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md"
+        }
+      ],
+      "research_projection": {
+        "schema_version": "1.0",
+        "feature": "beacon-loop-goal-closed-loop-orchestrator",
+        "version": "v1.6.0",
+        "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+        "present": true,
+        "section_count": 0,
+        "sections": {},
+        "derived_items": []
+      },
+      "feature": "beacon-loop-goal-closed-loop-orchestrator",
+      "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+      "version": "v1.6.0",
+      "verification_evidence": [
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/scorecard.json",
+        ".beacon/release-gate-report.json"
+      ],
+      "accepted_at": "2026-06-10T11:29:31.368721+00:00",
+      "accepted_by": "qa",
+      "last_changed_files": [
+        "packages/beacon-loop/src/intent/tiebreak.ts",
+        "packages/beacon-loop/src/delivery/review-gate.ts",
+        "packages/beacon-loop/src/delivery/review.ts",
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/src/cli.ts",
+        "packages/beacon-loop/src/config/load.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
+      ]
     }
   ]
 }
