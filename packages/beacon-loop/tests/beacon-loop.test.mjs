@@ -1,4 +1,4 @@
-import { chmodSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -13,10 +13,33 @@ function makeScratchDir(prefix) {
   return join(testScratchRoot, `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
 }
 
-test.after(() => {
-  if (existsSync(testScratchRoot)) {
-    rmSync(testScratchRoot, { recursive: true, force: true });
+function removeWorktreesInProject(projectDir) {
+  const worktreesRoot = join(projectDir, ".beacon", "loop", "worktrees");
+  if (!existsSync(worktreesRoot)) return;
+  for (const runId of readdirSync(worktreesRoot)) {
+    const worktreePath = join(worktreesRoot, runId);
+    spawnSync("git", ["worktree", "remove", "--force", worktreePath], { cwd: projectDir, encoding: "utf8" });
   }
+  spawnSync("git", ["worktree", "prune"], { cwd: projectDir, encoding: "utf8" });
+}
+
+function removeScratchRoot() {
+  if (!existsSync(testScratchRoot)) return;
+  for (const entry of readdirSync(testScratchRoot)) {
+    const projectDir = join(testScratchRoot, entry);
+    if (existsSync(join(projectDir, ".git"))) {
+      removeWorktreesInProject(projectDir);
+    }
+  }
+  try {
+    rmSync(testScratchRoot, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
+  } catch {
+    spawnSync("rm", ["-rf", testScratchRoot], { stdio: "ignore" });
+  }
+}
+
+test.after(() => {
+  removeScratchRoot();
 });
 
 function run(args, options = {}) {
