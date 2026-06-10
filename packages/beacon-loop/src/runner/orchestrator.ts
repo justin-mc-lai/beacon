@@ -3,6 +3,8 @@ import { join } from "node:path";
 import { resolveWorkspace } from "../git/branches.js";
 import { commitAll, currentHead, rollback } from "../git/git.js";
 import { runAgentAdapter } from "../agents/index.js";
+import { appendTruthPromotion } from "../delivery/truth-fill.js";
+import { buildImplementWorkerCommand, defaultImplementRunner, writeWorkerRoute } from "../harness/worker-route.js";
 import { ensureDir, readJson, writeJson, writeText } from "./fs.js";
 import { buildIterationPrompt, loadNotes } from "./prompt.js";
 import { syncRunToLedger } from "../ledger/runs.js";
@@ -123,6 +125,9 @@ export function runOrchestrator(projectRoot, runDir, runPackage, resolver, optio
   let finalStatus = "implementation_candidate";
   let reasonCode = "";
 
+  const implementRunner = runPackage.implement_runner || defaultImplementRunner();
+  writeWorkerRoute(runDir, projectRoot, runPackage.feature, runPackage.version, implementRunner);
+
   for (let n = startIteration; n <= maxIterations; n += 1) {
     if (shouldForceStop(runDir, readJson)) {
       runState.machine_state = RUN_STATES.FORCE_STOPPED;
@@ -156,14 +161,33 @@ export function runOrchestrator(projectRoot, runDir, runPackage, resolver, optio
     writeText(join(runDir, "prompt.md"), `${prompt}\n`);
     writeText(join(runDir, `iteration-${padIteration(n)}-prompt.txt`), `${prompt}\n`);
 
-    const iteration = runAgentAdapter(runPackage.agent || "codex", worktreePath, runPackage.run_id, {
+    const iteration = runAgentAdapter(runPackage.agent || "implement-harness", worktreePath, runPackage.run_id, {
       prompt,
       iteration: n,
       maxTokens: runPackage.max_tokens,
-      stopWhen: runPackage.stop_when
+      stopWhen: runPackage.stop_when,
+      projectRoot,
+      feature: runPackage.feature,
+      version: runPackage.version,
+      runDir,
+      runner: implementRunner
+    });
+    const workerCommand =
+      iteration.worker_command ||
+      buildImplementWorkerCommand(projectRoot, runPackage.feature, runPackage.version, implementRunner);
+    appendTruthPromotion(runDir, {
+      delivery_state: "implement_loop",
+      harness: iteration.harness || "gen-implement",
+      command: workerCommand,
+      implement_runner: implementRunner,
+      exit_code: iteration.success && !isNoOpFailure(iteration) ? 0 : 1,
+      iteration: n
     });
     const paths = iterationPaths(runDir, n);
-    writeText(paths.jsonl, `${JSON.stringify({ event: "agent_result", at: nowIso(), iteration: n, result: iteration })}\n`);
+    writeText(
+      paths.jsonl,
+      `${JSON.stringify({ event: "agent_result", at: nowIso(), iteration: n, worker_command: iteration.worker_command || "", implement_runner: implementRunner, result: iteration })}\n`
+    );
     writeJson(paths.result, iteration);
 
     const tokens = tokenEstimate(iteration);

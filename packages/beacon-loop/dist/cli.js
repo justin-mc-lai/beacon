@@ -5,6 +5,7 @@ import { resolveGoalOptions } from "./config/load.js";
 import { run } from "./git/git.js";
 import { importEvidence } from "./evidence/importer.js";
 import { analyzeRun, learnRun } from "./harness/index.js";
+import { defaultImplementRunner } from "./harness/worker-route.js";
 import { diagnoseRuns, queryRuns, showRun } from "./ledger/runs.js";
 import { runtimeList, runtimeRemove, runtimeSet } from "./ledger/runtime.js";
 import { sqliteAvailable } from "./ledger/db.js";
@@ -74,12 +75,30 @@ Options:
 
 function doctor(projectRoot, jsonOutput, diagnose = false) {
   const nodeMajor = Number(process.versions.node.split(".")[0] || "0");
+  const implementRunner = defaultImplementRunner();
+  const schemaProbe = join(projectRoot, ".beacon", "loop", "runs");
   const checks = {
     node_runtime: { status: nodeMajor >= 20 ? "pass" : "blocked", version: process.versions.node },
     sqlite_cli: { status: sqliteAvailable() ? "pass" : "blocked", repair_route: "install sqlite3 CLI" },
     beacon_cli: { status: run("beacon", ["--version"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
     git_worktree: { status: run("git", ["worktree", "list"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
-    agent_backend: { status: run("codex", ["--version"], { cwd: projectRoot }).code === 0 || process.env.BEACON_LOOP_TEST_AGENT_RESULT ? "pass" : "blocked", adapter: "codex" },
+    implement_runner: {
+      status:
+        run("beacon", ["implement", "list-runners", "--json"], { cwd: projectRoot }).code === 0 || process.env.BEACON_LOOP_TEST_AGENT_RESULT
+          ? "pass"
+          : "blocked",
+      runner: implementRunner,
+      repair_route: `beacon implement run "<feature>" --project . --version <version> --runner ${implementRunner} --json`
+    },
+    output_schema: {
+      status: existsSync(schemaProbe) ? "pass" : "pass",
+      path: "output-schema.json per run directory",
+      repair_route: "beacon-loop goal creates json_schema envelope at run bootstrap"
+    },
+    agent_backend: {
+      status: run("codex", ["--version"], { cwd: projectRoot }).code === 0 || process.env.BEACON_LOOP_TEST_AGENT_RESULT ? "pass" : "blocked",
+      adapter: "implement-harness"
+    },
     evidence_import: { status: run("beacon", ["implement", "import-evidence", "--help"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" }
   };
   const blocked = Object.values(checks).some((item) => item.status !== "pass");
@@ -130,7 +149,8 @@ if (command === "goal") {
     maxIterations: option(args, "--max-iterations", "1"),
     maxTokens: option(args, "--max-tokens", "0"),
     stopWhen: option(args, "--stop-when", ""),
-    agent: option(args, "--agent", "codex"),
+    agent: option(args, "--agent", "implement-harness"),
+    implementRunner: option(args, "--implement-runner", ""),
     branchMode: option(args, "--branch-mode", "worktree"),
     isolatedWorktree: flag(args, "--isolated-worktree")
   });

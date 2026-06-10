@@ -39,7 +39,15 @@ promotion_ref: docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestr
 - outcome: 将 `beacon-loop goal "<utterance>"` 升级为 Delivery Orchestrator：原话意图 → 自动 review → truth 补齐 → implement loop → qa → release，且不漂移、不自证 verdict。
 - lake_or_ocean: 海。触及 intent engine、planner subprocess、generator truth_fill 编排、delivery state machine、evaluator 回灌、与 parent runner 的状态合成。
 - truth_gap: 本 research 已晋升为 `features/.../truth.md` 草案；冻结前不得作为 implementation closure authority。
-- recommended_route: `beacon-gen-change` → refreeze → `beacon-gen-implement` Phase E-H
+- recommended_route: `beacon-gen-change` R3 → refreeze → `beacon-gen-implement` Phase J
+
+## R3 Addendum（2026-06-10）
+
+- **outcome extension**: 完整对齐 gnhf「Skill→CLI→Worker」；Beacon Worker = harness CLI（pln/gen/eval），implement = `beacon implement run`
+- **lake_or_ocean**: 海；Phase J 触及 runner adapter、delivery FSM gate、agent surface、真 E2E
+- **truth_gap**: R3 AC-043..052 已写入 reopened truth draft；冻结前不得 implement closure
+- **blocked deferrals**: D-012 subprocess skill MD；D-013 bare codex bypass
+- **recommended_route**: refreeze R3 → Phase J implement → `beacon-eval-qa` with AC-051 real runner E2E
 
 ## Decision Summary
 

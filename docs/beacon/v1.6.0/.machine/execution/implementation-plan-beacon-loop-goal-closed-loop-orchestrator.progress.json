@@ -1,55 +1,28 @@
 {
   "schema_version": "1.0",
-  "plan_id": "plan-beacon-loop-goal-closed-loop-orchestrator-r2",
+  "plan_id": "plan-beacon-loop-goal-closed-loop-orchestrator-r3",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "revision_id": "R2",
+  "revision_id": "R3",
   "plan_path": "docs/beacon/v1.6.0/.machine/execution/implementation-plan-beacon-loop-goal-closed-loop-orchestrator.json",
   "progress_path": "docs/beacon/v1.6.0/.machine/execution/implementation-plan-beacon-loop-goal-closed-loop-orchestrator.progress.json",
-  "status": "completed",
+  "status": "planned",
   "counts": {
-    "total": 29,
+    "total": 39,
     "draft": 0,
-    "planned": 0,
+    "planned": 37,
     "in_progress": 0,
     "blocked": 0,
-    "completed": 29
+    "completed": 2
   },
   "blocked_task_ids": [],
   "blocked_task_titles": [],
   "completed_task_ids": [
     "ITASK-001",
-    "ITASK-002",
-    "ITASK-003",
-    "ITASK-004",
-    "ITASK-005",
-    "ITASK-006",
-    "ITASK-007",
-    "ITASK-008",
-    "ITASK-009",
-    "ITASK-010",
-    "ITASK-011",
-    "ITASK-012",
-    "ITASK-013",
-    "ITASK-014",
-    "ITASK-015",
-    "ITASK-016",
-    "ITASK-017",
-    "ITASK-018",
-    "ITASK-019",
-    "ITASK-020",
-    "ITASK-021",
-    "ITASK-022",
-    "ITASK-023",
-    "ITASK-024",
-    "ITASK-025",
-    "ITASK-026",
-    "ITASK-027",
-    "ITASK-028",
-    "ITASK-029"
+    "ITASK-004"
   ],
-  "next_task_id": "",
-  "next_task_title": "",
+  "next_task_id": "ITASK-002",
+  "next_task_title": "TASK-042 实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
   "task_states": [
     {
       "task_id": "ITASK-001",
@@ -57,17 +30,27 @@
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-004",
-        "AC-016"
+        "AC-008",
+        "AC-021",
+        "AC-010",
+        "AC-029",
+        "AC-009"
       ],
       "mapped_test_ids": [
         "TC-034",
-        "TC-040"
+        "TEST-008",
+        "TC-040",
+        "TEST-010",
+        "TEST-029",
+        "TEST-009"
       ],
       "mapped_scenario_ids": [
         "SC-001",
         "SC-002",
         "SC-003",
-        "SC-004"
+        "SC-004",
+        "SC-006",
+        "SC-007"
       ],
       "mapped_qa_case_ids": [
         "TC-034",
@@ -76,20 +59,38 @@
     },
     {
       "task_id": "ITASK-002",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
-        "AC-008"
+        "AC-013",
+        "AC-022",
+        "AC-016",
+        "AC-019",
+        "AC-025"
       ],
       "mapped_test_ids": [
-        "TEST-008"
+        "TEST-013",
+        "TC-040",
+        "TC-022",
+        "TC-041"
       ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-040",
+        "TC-022",
+        "TC-041"
+      ]
     },
     {
       "task_id": "ITASK-003",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-003"
@@ -99,7 +100,9 @@
       ],
       "mapped_scenario_ids": [
         "SC-001",
-        "SC-004"
+        "SC-004",
+        "SC-006",
+        "SC-007"
       ],
       "mapped_qa_case_ids": [
         "TC-040"
@@ -125,20 +128,20 @@
     },
     {
       "task_id": "ITASK-005",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
-        "AC-009"
+        "AC-014"
       ],
       "mapped_test_ids": [
-        "TEST-009"
+        "TEST-014"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": []
     },
     {
       "task_id": "ITASK-006",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-001",
@@ -153,7 +156,33 @@
     },
     {
       "task_id": "ITASK-007",
-      "status": "completed",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [
+        "AC-024"
+      ],
+      "mapped_test_ids": [
+        "TEST-024"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-008",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [
+        "AC-012"
+      ],
+      "mapped_test_ids": [
+        "TEST-012"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-009",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-006"
@@ -165,36 +194,59 @@
       "mapped_qa_case_ids": []
     },
     {
-      "task_id": "ITASK-008",
-      "status": "completed",
-      "blocked_reason": "",
-      "mapped_ac_ids": [
-        "AC-007",
-        "AC-014"
-      ],
-      "mapped_test_ids": [
-        "TEST-007",
-        "TEST-014"
-      ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
-    },
-    {
-      "task_id": "ITASK-009",
-      "status": "completed",
-      "blocked_reason": "",
-      "mapped_ac_ids": [
-        "AC-010"
-      ],
-      "mapped_test_ids": [
-        "TEST-010"
-      ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
-    },
-    {
       "task_id": "ITASK-010",
-      "status": "completed",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [
+        "AC-026"
+      ],
+      "mapped_test_ids": [
+        "TEST-026"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-011",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [
+        "AC-028",
+        "AC-015",
+        "AC-017",
+        "AC-018",
+        "AC-020",
+        "AC-023",
+        "AC-027"
+      ],
+      "mapped_test_ids": [
+        "TEST-028",
+        "TEST-015",
+        "TEST-017",
+        "TEST-018",
+        "TEST-020",
+        "TEST-023",
+        "TEST-027"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-012",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-013",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [
         "AC-011"
@@ -206,47 +258,8 @@
       "mapped_qa_case_ids": []
     },
     {
-      "task_id": "ITASK-011",
-      "status": "completed",
-      "blocked_reason": "",
-      "mapped_ac_ids": [
-        "AC-012",
-        "AC-013",
-        "AC-015",
-        "AC-017",
-        "AC-018"
-      ],
-      "mapped_test_ids": [
-        "TEST-012",
-        "TEST-013",
-        "TEST-015",
-        "TEST-017",
-        "TEST-018"
-      ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
-    },
-    {
-      "task_id": "ITASK-012",
-      "status": "completed",
-      "blocked_reason": "",
-      "mapped_ac_ids": [],
-      "mapped_test_ids": [],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
-    },
-    {
-      "task_id": "ITASK-013",
-      "status": "completed",
-      "blocked_reason": "",
-      "mapped_ac_ids": [],
-      "mapped_test_ids": [],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": []
-    },
-    {
       "task_id": "ITASK-014",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -255,7 +268,7 @@
     },
     {
       "task_id": "ITASK-015",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -264,7 +277,7 @@
     },
     {
       "task_id": "ITASK-016",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -273,7 +286,7 @@
     },
     {
       "task_id": "ITASK-017",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -282,7 +295,7 @@
     },
     {
       "task_id": "ITASK-018",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -291,7 +304,7 @@
     },
     {
       "task_id": "ITASK-019",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -300,7 +313,7 @@
     },
     {
       "task_id": "ITASK-020",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -309,7 +322,7 @@
     },
     {
       "task_id": "ITASK-021",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -318,7 +331,7 @@
     },
     {
       "task_id": "ITASK-022",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -327,7 +340,7 @@
     },
     {
       "task_id": "ITASK-023",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -336,7 +349,7 @@
     },
     {
       "task_id": "ITASK-024",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -345,7 +358,7 @@
     },
     {
       "task_id": "ITASK-025",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -354,7 +367,7 @@
     },
     {
       "task_id": "ITASK-026",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -363,7 +376,7 @@
     },
     {
       "task_id": "ITASK-027",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -372,7 +385,7 @@
     },
     {
       "task_id": "ITASK-028",
-      "status": "completed",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -381,7 +394,97 @@
     },
     {
       "task_id": "ITASK-029",
-      "status": "completed",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-030",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-031",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-032",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-033",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-034",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-035",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-036",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-037",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-038",
+      "status": "planned",
+      "blocked_reason": "",
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": []
+    },
+    {
+      "task_id": "ITASK-039",
+      "status": "planned",
       "blocked_reason": "",
       "mapped_ac_ids": [],
       "mapped_test_ids": [],
@@ -389,6 +492,6 @@
       "mapped_qa_case_ids": []
     }
   ],
-  "updated_at": "2026-06-10T11:29:31.577520+00:00",
+  "updated_at": "2026-06-10T16:50:46.699390+00:00",
   "task_ledger_path": "docs/beacon/v1.6.0/execution/tasks-beacon-loop-goal-closed-loop-orchestrator.md"
 }

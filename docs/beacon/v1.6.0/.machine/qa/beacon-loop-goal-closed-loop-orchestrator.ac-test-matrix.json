@@ -3,7 +3,7 @@
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "generated_at": "2026-06-10T18:50:49.906391",
+  "generated_at": "2026-06-11T00:38:07.263108",
   "compiler": {
     "requested_mode": "auto",
     "effective_mode": "markdown",
@@ -63,8 +63,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"`",
       "scenario": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-031/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-031/command.txt"
     },
     {
       "tc_id": "TC-032",
@@ -90,8 +90,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"`",
       "scenario": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-032/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-032/command.txt"
     },
     {
       "tc_id": "TC-033",
@@ -117,8 +117,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"`",
       "scenario": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-033/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-033/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -144,8 +144,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-035",
@@ -171,8 +171,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"`",
       "scenario": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-035/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-035/command.txt"
     },
     {
       "tc_id": "TC-036",
@@ -198,8 +198,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"`",
       "scenario": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-036/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-036/command.txt"
     },
     {
       "tc_id": "TC-037",
@@ -225,8 +225,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"`",
       "scenario": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-037/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-037/command.txt"
     },
     {
       "tc_id": "TC-038",
@@ -252,8 +252,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"`",
       "scenario": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-038/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-038/command.txt"
     },
     {
       "tc_id": "TC-039",
@@ -279,8 +279,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"`",
       "scenario": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-039/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-039/command.txt"
     },
     {
       "tc_id": "TC-042",
@@ -306,8 +306,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
       "scenario": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-042/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-042/command.txt"
     },
     {
       "tc_id": "TC-043",
@@ -333,8 +333,8 @@
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
       "scenario": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-043/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-043/command.txt"
     },
     {
       "tc_id": "TC-044",
@@ -360,8 +360,548 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
       "scenario": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-044/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-044/command.txt"
+    },
+    {
+      "tc_id": "TC-045",
+      "ac_id": "AC-043",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-043 :: agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subpr",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
+      "assertion": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-045.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
+      "scenario": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-045/command.txt"
+    },
+    {
+      "tc_id": "TC-046",
+      "ac_id": "AC-044",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-044 :: `implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
+      "assertion": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-046.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
+      "scenario": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-046/command.txt"
+    },
+    {
+      "tc_id": "TC-047",
+      "ac_id": "AC-045",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-045 :: run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iterati",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
+      "assertion": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-047.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
+      "scenario": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-047/command.txt"
+    },
+    {
+      "tc_id": "TC-048",
+      "ac_id": "AC-046",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-046 :: prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"",
+      "assertion": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-048.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
+      "scenario": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-048/command.txt"
+    },
+    {
+      "tc_id": "TC-049",
+      "ac_id": "AC-047",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-047 :: no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"",
+      "assertion": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-049.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
+      "scenario": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-049/command.txt"
+    },
+    {
+      "tc_id": "TC-050",
+      "ac_id": "AC-048",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-048 :: 各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"",
+      "assertion": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-050.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
+      "scenario": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-050/command.txt"
+    },
+    {
+      "tc_id": "TC-051",
+      "ac_id": "AC-049",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-049 :: `repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"",
+      "assertion": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-051.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
+      "scenario": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-051/command.txt"
+    },
+    {
+      "tc_id": "TC-052",
+      "ac_id": "AC-050",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-050 :: AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test",
+      "assertion": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-052.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test`",
+      "scenario": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-052/command.txt"
+    },
+    {
+      "tc_id": "TC-053",
+      "ac_id": "AC-051",
+      "story_id": "",
+      "layer": "e2e",
+      "qa_type": "e2e",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-051 :: 真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"",
+      "assertion": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-053.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
+      "scenario": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-053/command.txt"
+    },
+    {
+      "tc_id": "TC-054",
+      "ac_id": "AC-052",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-052 :: doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json",
+      "assertion": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-054.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
+      "scenario": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-054/command.txt"
+    },
+    {
+      "tc_id": "TC-045",
+      "ac_id": "AC-043",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-043 :: agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subpr",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
+      "assertion": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-045.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
+      "scenario": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-045/command.txt"
+    },
+    {
+      "tc_id": "TC-046",
+      "ac_id": "AC-044",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-044 :: `implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
+      "assertion": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-046.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
+      "scenario": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-046/command.txt"
+    },
+    {
+      "tc_id": "TC-047",
+      "ac_id": "AC-045",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-045 :: run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iterati",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
+      "assertion": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-047.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
+      "scenario": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-047/command.txt"
+    },
+    {
+      "tc_id": "TC-048",
+      "ac_id": "AC-046",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-046 :: prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"",
+      "assertion": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-048.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
+      "scenario": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-048/command.txt"
+    },
+    {
+      "tc_id": "TC-049",
+      "ac_id": "AC-047",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-047 :: no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"",
+      "assertion": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-049.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
+      "scenario": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-049/command.txt"
+    },
+    {
+      "tc_id": "TC-050",
+      "ac_id": "AC-048",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-048 :: 各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"",
+      "assertion": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-050.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
+      "scenario": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-050/command.txt"
+    },
+    {
+      "tc_id": "TC-051",
+      "ac_id": "AC-049",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-049 :: `repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"",
+      "assertion": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-051.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
+      "scenario": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-051/command.txt"
+    },
+    {
+      "tc_id": "TC-052",
+      "ac_id": "AC-050",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-050 :: AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test",
+      "assertion": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-052.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test`",
+      "scenario": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-052/command.txt"
+    },
+    {
+      "tc_id": "TC-053",
+      "ac_id": "AC-051",
+      "story_id": "",
+      "layer": "e2e",
+      "qa_type": "e2e",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-051 :: 真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"",
+      "assertion": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-053.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
+      "scenario": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-053/command.txt"
+    },
+    {
+      "tc_id": "TC-054",
+      "ac_id": "AC-052",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-052 :: doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json",
+      "assertion": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-054.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
+      "scenario": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "steps": "",
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-054/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -412,8 +952,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill` 而非仅 abort（扩展 parent resolver 行为）。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -439,8 +979,8 @@
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "truth gap 与 resolve blocked 共用 truth_fill 子链；parity 缺口有 promotion 记录。",
       "steps": "",
-      "last_run_id": "run-20260610T192844576131",
-      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260610T192844576131/qa9-tc/TC-034/command.txt"
+      "last_run_id": "run-20260611T004809309221",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T004809309221/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -465,6 +1005,31 @@
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "parent orchestrator 子状态（含 `implement_loop`）仍 pass；delivery-state 与之合成。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-022",
+      "ac_id": "AC-019",
+      "story_id": "",
+      "layer": "regression",
+      "qa_type": "regression",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-019 :: parent runner：连续失败 abort；no-op iteration 计 failure；R3 harness worker 路径仍遵守 backo",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"consecutive failures\"",
+      "assertion": "parent runner：连续失败 abort；no-op iteration 计 failure；R3 harness worker 路径仍遵守 backoff 语义。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-022.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"consecutive failures\"`",
+      "scenario": "parent runner：连续失败 abort；no-op iteration 计 failure；R3 harness worker 路径仍遵守 backoff 语义。",
       "steps": ""
     },
     {
@@ -557,7 +1122,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 19,
+    "row_count": 40,
     "enrichment_disabled": true
   }
 }

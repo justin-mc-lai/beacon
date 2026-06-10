@@ -12,6 +12,8 @@ import { defaultRunState } from "./state.js";
 import { classifyIntent } from "../intent/classify.js";
 import { finalizeDeliveryAfterImplement, runDeliveryPipeline } from "../delivery/orchestrator.js";
 import { readDeliveryState, transitionDeliveryState } from "../delivery/state.js";
+import { buildAgentOutputSchema } from "../agents/output-schema.js";
+import { defaultImplementRunner } from "../harness/worker-route.js";
 
 export function createRunId() {
   return `run-${new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -34,7 +36,7 @@ function bootstrapRuntimeFiles(runDir, runPackage, resolver) {
   writeJson(join(runDir, "output-schema.json"), {
     schema_version: "1.0",
     runtime_json_role: RUNTIME_ROLE,
-    required: ["success", "summary", "key_changes_made", "key_learnings"]
+    json_schema: buildAgentOutputSchema({ includeStopField: Boolean(runPackage.stop_when) })
   });
   writeJson(join(runDir, "commits.json"), { commits: [], repair_state: "" });
   writeJson(join(runDir, "run-state.json"), { ...defaultRunState(), started_at: nowIso() });
@@ -139,7 +141,8 @@ export function startGoal(projectRoot, goal, options = {}) {
     version,
     delivery_mode: mode,
     ...refs,
-    agent: options.agent || "codex",
+    agent: options.agent || "implement-harness",
+    implement_runner: options.implementRunner || defaultImplementRunner(),
     branch_mode: options.branchMode || "worktree",
     push: false,
     max_iterations: maxIterations,

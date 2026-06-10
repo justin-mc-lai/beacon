@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-closed-loop-orchestrator
 
 - version: `v1.6.0`
-- change_reason: `R2: D-010 default LLM intent tie-break green-light non-interrupt; reject D-009/D-011 accepted defer; AC-040..042`
+- change_reason: `change-request`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R2`
-- revision_after: `R2`
+- revision_before: `R3`
+- revision_after: `R3`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md)

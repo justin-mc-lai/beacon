@@ -104,6 +104,25 @@ if (args[0] === "implement" && args[1] === "import-evidence") {
   console.log(JSON.stringify({status:"completed", imported:true, surface:"beacon-implement"}));
   process.exit(0);
 }
+if (args[0] === "implement" && args[1] === "run") {
+  require("fs").writeFileSync(require("path").join(process.cwd(), ".beacon-loop-harness-success.txt"), "harness shim\\n");
+  console.log(JSON.stringify({
+    status: "completed",
+    summary: "harness worker shim iteration",
+    changed_files: [".beacon-loop-harness-success.txt"],
+    iteration_result: {
+      success: true,
+      summary: "harness worker shim iteration",
+      key_changes_made: [".beacon-loop-harness-success.txt"],
+      key_learnings: []
+    }
+  }));
+  process.exit(0);
+}
+if (args[0] === "implement" && args[1] === "list-runners") {
+  console.log(JSON.stringify({ runners: [{ id: "codex-subagents" }] }));
+  process.exit(0);
+}
 if (args[0] === "qa" && args[1] === "run") {
   console.log(JSON.stringify({status:"completed", surface:"beacon-qa", closure_verdict:"shim_only_not_release_ready"}));
   process.exit(0);
@@ -224,6 +243,9 @@ test("doctor checks runtime prerequisites", () => {
   assert.equal(payload.checks.beacon_cli.status, "pass");
   assert.equal(payload.checks.git_worktree.status, "pass");
   assert.equal(payload.checks.evidence_import.status, "pass");
+  assert.equal(payload.checks.implement_runner.status, "pass");
+  assert.equal(payload.checks.implement_runner.runner, "codex-subagents");
+  assert.equal(payload.checks.agent_backend.adapter, "implement-harness");
 });
 
 test("multi-iteration orchestrator writes iteration-001..003 and cap_reached", () => {

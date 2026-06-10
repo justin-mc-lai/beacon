@@ -37,6 +37,32 @@ utterance
 plan -> truth -> generate -> evaluate -> release
 ```
 
+### R3：gnhf + Beacon Harness Worker 对齐模型
+
+Beacon 适配 gnhf 三层，**不是**在子进程里加载 Skill MD：
+
+```text
+Layer 0 — Host
+  using-beacon / beacon-loop host skill（launch / steer / companion）
+    ↓
+Layer 1 — CLI 编排器
+  beacon-loop goal | resume | stop | runs * | doctor
+    ↓
+Layer 2 — Delivery 长任务链（Beacon 特有）
+  intent_review → truth_fill → implement_loop → eval chain → repair_from_qa
+    ↓
+Layer 3 — Harness Worker（beacon CLI，Skill 的可执行投影）
+  pln: beacon planner-review run
+  gen-truth: beacon prd-bootstrap / truth / freeze …
+  gen-implement: beacon implement run --runner <runner>   ← R3 强制
+  eval: beacon qa run / release create
+    ↓
+Layer 4 — Agent backend（仅 implement runner 内部）
+  codex exec + output-schema（与 gnhf CodexAgent 同级契约）
+```
+
+**禁止**：`implement_loop` 直接 `spawn codex` 绕过 `beacon implement run`（AC-044）。**禁止**：子进程读取 `$beacon-pln-review` 等 Skill 文件假装执行（D-012 blocked）。
+
 ## Scope Mode
 
 `scope_mode` = **`full_parity`**（delivery orchestrator 层）：
@@ -44,6 +70,7 @@ plan -> truth -> generate -> evaluate -> release
 - 用户原话中的能力请求必须在 `intent-contract` + `review-artifact` 中可追溯
 - 任何从 full delivery 闭环到「仅 implement stub」的降级必须进入 `Deferral Ledger` 并获用户显式接受
 - R2 撤销 D-009..D-011 的 **accepted defer**；D-010 升格为 in-scope（AC-040）；D-009/D-011 改回 in-scope 承诺（见 Parity Matrix / Deferral Ledger）
+- **R3** 扩展 **gnhf worker 契约 + Beacon harness implement 路由**（AC-043..AC-052）；与 parent `full_parity` runner 语义合成，不得 silent 保留裸 codex 路径
 
 ## 背景
 
@@ -53,6 +80,7 @@ plan -> truth -> generate -> evaluate -> release
 2. `slugify(goal)` 隐式猜 feature，易造成 intent 漂移与 MVP 骨架化
 3. AC-030 E2E 止于 import→qa 驱动，未编排 **truth 补齐** 与 **qa fail 回灌**
 4. `beacon-pln-review` 的 intent/parity 契约未在 loop 入口强制执行
+5. **R3**：`implement_loop` 使用裸 `codex exec`，未对齐 gnhf `output-schema` 契约，也未经 `beacon implement run` harness worker（真跑可 success 但 0 commit）
 
 ### 依赖
 
@@ -306,6 +334,35 @@ Loop output 必须包含：
 
 QA fail（AC-037）：`qa_pending` → `repair_from_qa` → `implement_loop`，将 qa findings 注入 `notes.md`，直至 cap 或 qa pass。
 
+## Harness Stage Worker Routing Contract（R3 / AC-048）
+
+`implement_loop` 与 delivery 各 stage 必须通过 **frozen worker 路由表** 调用 Beacon harness CLI，不得硬编码裸 agent spawn（实现可读 `beacon/utils/project_skills.py` registry 或等价 frozen JSON）。
+
+| Delivery state / sub-loop | Harness | Worker command（权威形态） |
+|---------------------------|---------|---------------------------|
+| `intent_review` | pln | `beacon planner-review run <feature> --project … --json` |
+| `truth_fill` / `truth_freeze_gate` | gen-truth | `beacon prd-bootstrap` / `beacon truth …` / freeze 链（见 Truth Fill Subchain） |
+| **`implement_loop`** | **gen-implement** | **`beacon implement run "<feature>" --project … --version … --runner <runner> --json`** |
+| `repair_from_qa` → implement | gen-implement | 同上；notes 含 qa findings |
+| `qa_pending` | eval | `beacon qa run … --json` |
+| `release_pending` | eval-release | `beacon release create … --json` |
+
+默认 `--runner`：`codex-subagents`（可经 `~/.beacon-loop/config.yml` 或 CLI 覆盖，但 **不得** 回退为 loop 内裸 `codex exec`）。
+
+`truth-promotion.json` 与 run artifacts 必须记录 **实际 worker command**（含 runner id）。
+
+## Gnhf Worker Parity Contract（R3 / AC-045..AC-047）
+
+对齐 `kunchenguid/gnhf` 的 Codex worker 语义（经 implement runner 或统一 adapter 暴露）：
+
+1. 每 run 写入 `output-schema.json`（与 gnhf `buildAgentOutputSchema` 等价字段：`success`, `summary`, `key_changes_made`, `key_learnings`, optional `should_fully_stop`）
+2. Codex/implement worker 调用须带 **`--json` + `--output-schema <path>`**（或 implement runner 内部等价）
+3. **Iteration prompt** 须 gnhf 级：`notes.md` 只读、禁止 agent commit、no-op（无 diff 且无 meaningful learnings）= **`success: false`**
+4. stdout 解析 **strict**：无法 schema 校验则 iteration failure，不得 loose parse 为 success
+5. **Delivery hard gate（AC-047）**：no-op iteration 或 zero commit 时 **禁止** `implement_loop` → `evidence_import` / `qa_pending`；须 `iteration_fail_rollback` 或 cap，且 `delivery-state` 记录 `reason_code=implement_no_op_blocked`
+
+Parent runner AC-016..AC-019 语义在 implement 路径上 **不得弱于** gnhf。
+
 ## Source Capability Inventory
 
 | 能力 | 源证据 | 落点 |
@@ -317,24 +374,39 @@ QA fail（AC-037）：`qa_pending` → `repair_from_qa` → `implement_loop`，�
 | plan/execute split | gstack plan modes | `--mode` |
 | runner loop | parent gnhf parity | `implement_loop` 子状态 |
 | qa fail retry | gstack qa loop | `repair_from_qa` |
+| **gnhf Host skill** | `skills/gnhf/SKILL.md` | **AC-043** agent surface / using-beacon |
+| **gnhf codex schema** | `gnhf/src/core/agents/codex.ts` | **AC-045** output-schema + strict parse |
+| **gnhf iteration prompt** | `templates/iteration-prompt.ts` | **AC-046** runner prompt template |
+| **Beacon implement runner** | `beacon implement run --runner codex-subagents` | **AC-044** implement_loop worker |
+| harness registry | `project_skills.builtin_skill_registry` | **AC-048** stage worker routing |
 
 ## Parity Matrix
 
 | Source capability | Target truth | Target tests | Target evidence | Status | Deferral |
 |-------------------|--------------|--------------|-----------------|--------|----------|
 | parent runner AC-001..030 | parent truth | parent tests | parent evidence | covered | none |
-| intent capture verbatim | AC-031 | TC-031 | intent-capture.json | missing | none |
-| deterministic classify | AC-032 | TC-032 | intent-contract.json | missing | none |
-| auto planner review | AC-033 | TC-033 | review-artifact.json | missing | none |
-| truth_fill on resolve blocked | AC-034 | TC-034 | truth-promotion.json | missing | none |
-| frozen gate before implement | AC-035 | TC-035 | delivery-state.json | missing | none |
-| delivery qa/release invoke | AC-036 | TC-036 | summary.md | missing | none |
-| qa fail repair loop | AC-037 | TC-037 | notes.md + delivery-state | missing | none |
-| delivery state resume | AC-038 | TC-038 | delivery-state.json | missing | none |
-| full chain E2E | AC-039 | TC-039 | e2e script | missing | none |
-| parallel review lanes | AC-041 | TC-043 | review-artifact.json | missing | none |
-| LLM intent tie-break default green-light | AC-040 | TC-042 | intent-tiebreak.json | missing | none |
-| Beacon lifecycle auto-route (no AskUser UI) | AC-042 | TC-044 | delivery-state.json | missing | none |
+| intent capture verbatim | AC-031 | TC-031 | intent-capture.json | **implemented R2** | none |
+| deterministic classify | AC-032 | TC-032 | intent-contract.json | **implemented R2** | none |
+| auto planner review | AC-033 | TC-033 | review-artifact.json | **implemented R2** | none |
+| truth_fill on resolve blocked | AC-034 | TC-034 | truth-promotion.json | **implemented R2** | none |
+| frozen gate before implement | AC-035 | TC-035 | delivery-state.json | **implemented R2** | none |
+| delivery qa/release invoke | AC-036 | TC-036 | summary.md | **implemented R2** | none |
+| qa fail repair loop | AC-037 | TC-037 | notes.md + delivery-state | **implemented R2** | none |
+| delivery state resume | AC-038 | TC-038 | delivery-state.json | partial | none |
+| full chain E2E | AC-039 | TC-039 | e2e script | partial | none |
+| parallel review lanes | AC-041 | TC-043 | review-artifact.json | partial | none |
+| LLM intent tie-break default green-light | AC-040 | TC-042 | intent-tiebreak.json | partial | none |
+| Beacon lifecycle auto-route (no AskUser UI) | AC-042 | TC-044 | delivery-state.json | partial | none |
+| **Host skill launch/steer/companion** | **AC-043** | **TC-045** | agent surface docs | **missing R3** | none |
+| **implement via beacon implement run** | **AC-044** | **TC-046** | truth-promotion + iteration logs | **missing R3** | none |
+| **output-schema + strict JSON** | **AC-045** | **TC-047** | output-schema.json | **missing R3** | none |
+| **gnhf iteration prompt + no-op=false** | **AC-046** | **TC-048** | prompt.md | **missing R3** | none |
+| **no-op blocks qa_pending** | **AC-047** | **TC-049** | delivery-state.json | **missing R3** | none |
+| **harness stage worker routing** | **AC-048** | **TC-050** | worker-route.json | **missing R3** | none |
+| **repair_from_qa harness worker** | **AC-049** | **TC-051** | truth-promotion.json | **missing R3** | none |
+| **parent runner no regression** | **AC-050** | **TC-052** | npm test regression | **missing R3** | none |
+| **doctor implement runner check** | **AC-052** | **TC-054** | doctor --json | **missing R3** | none |
+| **真 implement runner E2E ≥1 commit** | **AC-051** | **TC-053** | e2e + git log | **missing R3** | none |
 
 ## Deferral Ledger
 
@@ -344,7 +416,12 @@ QA fail（AC-037）：`qa_pending` → `repair_from_qa` → `implement_loop`，�
 | D-010 | （已撤销 defer）LLM 默认 tie-break | R1 误 accept 规则停等 | 打断 delivery 绿灯流 | **rejected** | R2 AC-040 | beacon-gen-implement |
 | D-011 | （已撤销 defer）AskUserQuestion / CLI flag 主门控 | R1 解法偏离用户意图 | 人工 flag babysitting | **rejected** | R2 AC-042 | beacon-gen-implement |
 
-R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现能力以 AC-040..AC-042 + parity matrix `missing` 跟踪。
+R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现能力以 AC-040..AC-042 + parity matrix 跟踪。
+
+| deferral_id | capability | reason | impact | user_decision | expiry_or_revisit | recommended_route |
+|-------------|------------|--------|--------|---------------|-------------------|-------------------|
+| D-012 | 子进程直接读 Skill MD 执行 | 与 v1.6 harness taxonomy 冲突 | 假 harness、无 HARD GATE | **blocked** | R3 | 使用 beacon CLI worker |
+| D-013 | implement 继续裸 codex bypass | R2 真跑 0 commit | 假 delivery | **blocked** | R3 AC-044 | beacon-gen-implement |
 
 ## Delivery Phases
 
@@ -355,8 +432,9 @@ R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现�
 | G | delivery mode qa/release + qa fail 回灌 | AC-036..AC-037 |
 | H | resume delivery-state + parallel review + E2E | AC-038..AC-039 |
 | I | R2 green-light intent + lifecycle auto-route | AC-040..AC-042 |
+| **J** | **R3 gnhf worker 契约 + harness implement runner + no-op QA gate** | **AC-043..AC-052** |
 
-Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
+Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。Phase J 依赖 Phase E-G 的 delivery plumbing，**替换** implement 层的裸 codex 路径。
 
 ## Non-goals
 
@@ -383,6 +461,17 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
 | AC-040 | **Green-light LLM tie-break**：`delivery` 默认启用；规则 `ambiguous`/低 confidence 时写 `intent-tiebreak.json` 并 **continue**；不得仅因 ambiguous 进入 `user_decision_pending`；hard stop 仅限 intent drift 未 ack、P0 finding、illegal transition、cap。 |
 | AC-041 | **并行 review lane**：planner review runtime `execution_mode=parallel_subagent_review`（或等价真并行）；`review-artifact.json` 含 per-lane evidence ref。 |
 | AC-042 | **Beacon lifecycle auto-route**：无 AskUser UI；loop 消费 `review-artifact.synthesis.recommended_route` 与 Beacon gov route 续跑；`--strict-interrupt` 为 opt-in。 |
+| AC-043 | **Host skill 对齐 gnhf**：agent surface（`using-beacon` 或等价）文档化 `beacon-loop goal` 的 Hands-Off / Companion launch、steer prompt 模板、hard stop 条件；Skill 给 Host 看，不进入 subprocess。 |
+| AC-044 | **`implement_loop` harness worker**：必须 subprocess `beacon implement run "<feature>" … --runner <runner> --json`；loop **禁止**直接 `spawn codex exec`（测试与 doctor 可检测 bypass）。 |
+| AC-045 | **output-schema 契约**：每 run 写 `output-schema.json`；worker 使用 `--output-schema` + strict JSON 校验；parse 失败 = iteration failure。 |
+| AC-046 | **gnhf iteration prompt**：prompt 模板对齐 gnhf（notes 只读、no-op=false、验证后再 JSON、禁止 agent commit）；落盘 `prompt.md` / `iteration-*-prompt.txt`。 |
+| AC-047 | **no-op delivery gate**：no-op iteration 或 zero commit 时禁止进入 `evidence_import` / `qa_pending`；`delivery-state` 记录 `implement_no_op_blocked`。 |
+| AC-048 | **Harness stage worker 路由表**：frozen contract 映射 delivery state → harness → beacon CLI；`truth-promotion.json` 记录 worker command + runner id。 |
+| AC-049 | **`repair_from_qa` harness 一致性**：回灌 `implement_loop` 时使用与 AC-044 相同 implement runner，不得回退裸 codex。 |
+| AC-019 | **Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。 |
+| AC-050 | **Parent runner 语义不回归**：接入 AC-044 后，parent AC-016..AC-019（多轮、caps、stop-when、notes、no-op failure）在 implement 路径仍 pass；delivery-state 与 runner state 合成正确。 |
+| AC-051 | **真 implement runner E2E**：非 fixture-only 路径下，delivery 跑通且 worktree **≥1 commit** 后才允许 `qa_pending`（verdict 仍 Beacon evaluator）。 |
+| AC-052 | **`beacon-loop doctor`** 检查 implement runner 可用性、Codex、`output-schema` 路径；`--diagnose` 给出 repair route。 |
 
 ## Source Advisory
 
@@ -392,5 +481,6 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。
 | `docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md` | promoted research |
 | `features/beacon-loop-native-runner-and-automation-retirement/truth.md` | parent frozen truth |
 | `features/beacon-pln-review-intent-parity-state-machine-v160/truth.md` | planner review contract |
+| `/Users/apple/Developer/Personal/oss-sync/agents/agent-systems/gnhf` | gnhf orchestrator + codex adapter 源对标 |
 
-本文件为 package-authoritative requirement truth（**frozen**，R2 revision）。
+本文件为 package-authoritative requirement truth（**draft**，**R3 revision**，reopened via `beacon-gen-change`）。

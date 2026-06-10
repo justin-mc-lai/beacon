@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-10T10:51:01.864778+00:00",
+  "generated_at": "2026-06-10T16:38:25.966999+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "97bca50d809d25effe8477ad459f45b0e8fb00a2bee916d71636eb822b58d554",
-    "tests": "5d4b568ea42be431cf7f9846469801edc8afc44e0fc77cad0a526dbbea63f2ea",
-    "tasks": "44cc7ab8e70c62fe7b1b44618ed333590177e6def57335c65f6b6bd262f553a3",
-    "evidence": "9c3850da175e1eb4983f525be3e0ba3252a0a4daaabcb7f9100e435b71fda4dd"
+    "truth": "ca8731254a1d75231b34a679433c3d8615333128c64711bc126680eb8191edbc",
+    "tests": "636d6a0b06af3e03ff8751e4499066a70453b6f3fd1e90c0d846f3256e66050e",
+    "tasks": "981472bf96a7052e87153057230166c93cb298c8f04f779120d5afbd0addadb8",
+    "evidence": "420c8d7d7d437b6480494a359f5acf2e7be25b73a7b14b14456146b1eedcb166"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
@@ -98,6 +98,61 @@
     {
       "ac_id": "AC-042",
       "theme": "**Beacon lifecycle auto-route**：无 AskUser UI；loop 消费 `review-artifact.synthesis.recommended_route` 与 Beacon gov route 续跑；`--strict-interrupt` 为 opt-in。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-043",
+      "theme": "**Host skill 对齐 gnhf**：agent surface（`using-beacon` 或等价）文档化 `beacon-loop goal` 的 Hands-Off / Companion launch、steer prompt 模板、hard stop 条件；Skill 给 Host 看，不进入 subprocess。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-044",
+      "theme": "**`implement_loop` harness worker**：必须 subprocess `beacon implement run \"<feature>\" … --runner <runner> --json`；loop **禁止**直接 `spawn codex exec`（测试与 doctor 可检测 bypass）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-045",
+      "theme": "**output-schema 契约**：每 run 写 `output-schema.json`；worker 使用 `--output-schema` + strict JSON 校验；parse 失败 = iteration failure。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-046",
+      "theme": "**gnhf iteration prompt**：prompt 模板对齐 gnhf（notes 只读、no-op=false、验证后再 JSON、禁止 agent commit）；落盘 `prompt.md` / `iteration-*-prompt.txt`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-047",
+      "theme": "**no-op delivery gate**：no-op iteration 或 zero commit 时禁止进入 `evidence_import` / `qa_pending`；`delivery-state` 记录 `implement_no_op_blocked`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-048",
+      "theme": "**Harness stage worker 路由表**：frozen contract 映射 delivery state → harness → beacon CLI；`truth-promotion.json` 记录 worker command + runner id。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-049",
+      "theme": "**`repair_from_qa` harness 一致性**：回灌 `implement_loop` 时使用与 AC-044 相同 implement runner，不得回退裸 codex。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-050",
+      "theme": "**Parent runner 语义不回归**：接入 AC-044 后，parent AC-016..AC-019（多轮、caps、stop-when、notes、no-op failure）在 implement 路径仍 pass；delivery-state 与 runner state 合成正确。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-051",
+      "theme": "**真 implement runner E2E**：非 fixture-only 路径下，delivery 跑通且 worktree **≥1 commit** 后才允许 `qa_pending`（verdict 仍 Beacon evaluator）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-052",
+      "theme": "**`beacon-loop doctor`** 检查 implement runner 可用性、Codex、`output-schema` 路径；`--diagnose` 给出 repair route。",
       "description": ""
     }
   ],
@@ -196,6 +251,86 @@
       "layer": "behavior",
       "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
       "assertion": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-043",
+      "tc_id": "TC-045",
+      "layer": "contract",
+      "command": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
+      "assertion": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-044",
+      "tc_id": "TC-046",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
+      "assertion": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-045",
+      "tc_id": "TC-047",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
+      "assertion": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-046",
+      "tc_id": "TC-048",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
+      "assertion": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-047",
+      "tc_id": "TC-049",
+      "layer": "negative",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
+      "assertion": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-048",
+      "tc_id": "TC-050",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
+      "assertion": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-049",
+      "tc_id": "TC-051",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
+      "assertion": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-050",
+      "tc_id": "TC-052",
+      "layer": "regression",
+      "command": "`cd packages/beacon-loop && npm test`",
+      "assertion": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-051",
+      "tc_id": "TC-053",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
+      "assertion": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-052",
+      "tc_id": "TC-054",
+      "layer": "integration",
+      "command": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
+      "assertion": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
       "evidence_path": ""
     }
   ],
@@ -344,6 +479,56 @@
       "id": "TASK-069",
       "title": "R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。",
       "status": "unchecked"
+    },
+    {
+      "id": "TASK-070",
+      "title": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-071",
+      "title": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-072",
+      "title": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-073",
+      "title": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-074",
+      "title": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-075",
+      "title": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-076",
+      "title": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-077",
+      "title": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-078",
+      "title": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-079",
+      "title": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -428,14 +613,14 @@
     {
       "surface": "delivery-orchestrator",
       "authority": "support_advisory",
-      "canonical_artifact": "packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts",
+      "canonical_artifact": "packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts; review-gate.ts",
       "status": "implemented",
       "route": "qa"
     },
     {
       "surface": "intent-capture",
       "authority": "support_advisory",
-      "canonical_artifact": "packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts",
+      "canonical_artifact": "packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts; tiebreak.ts",
       "status": "implemented",
       "route": "qa"
     },
@@ -449,7 +634,7 @@
     {
       "surface": "delivery-tests",
       "authority": "support_advisory",
-      "canonical_artifact": "packages/beacon-loop/tests/delivery-orchestrator.test.mjs (9 cases, AC-031..039)",
+      "canonical_artifact": "packages/beacon-loop/tests/delivery-orchestrator.test.mjs (12 cases, AC-031..039 + AC-040..042)",
       "status": "implemented",
       "route": "qa"
     },
@@ -461,11 +646,60 @@
       "route": "qa"
     },
     {
-      "surface": "implement-import",
+      "surface": "implement-import-r1",
       "authority": "support_advisory",
       "canonical_artifact": "run-20260610T091306Z-c638",
       "status": "imported",
       "route": "qa"
+    },
+    {
+      "surface": "implement-import-r2",
+      "authority": "support_advisory",
+      "canonical_artifact": "run-20260610T112829Z-717e",
+      "status": "imported",
+      "route": "qa"
+    },
+    {
+      "surface": "writeback-ledger",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/execution/implementation-writeback-ledger-beacon-loop-goal-closed-loop-orchestrator.json (R1 + R2)",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "test-contract-index",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json (12 TC, TC-042..044)",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "qa-acceptance-envelope",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "qa-run-r2",
+      "authority": "support_advisory",
+      "canonical_artifact": "run-20260610T192844576131",
+      "status": "indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "release-gate-artifact",
+      "authority": "support_advisory",
+      "canonical_artifact": ".beacon/release-gate-report.json (stage=release, run_id=run-20260610T192844576131)",
+      "status": "indexed",
+      "route": "release"
+    },
+    {
+      "surface": "release-checklist",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/release/checklist-v1.6.0.md",
+      "status": "indexed",
+      "route": "release"
     }
   ]
 }

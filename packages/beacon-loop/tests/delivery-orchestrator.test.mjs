@@ -133,6 +133,33 @@ if (args[0] === "planner-review" && args[1] === "run") {
   console.log(JSON.stringify({ findings: [], synthesis: { recommended_route: "continue_delivery" }, parity_matrix: [], deferral_ledger: [] }));
   process.exit(0);
 }
+if (args[0] === "implement" && args[1] === "run") {
+  require("fs").writeFileSync(
+    require("path").join(process.cwd(), ".beacon-loop-implement-args.json"),
+    JSON.stringify(args)
+  );
+  if (process.env.BEACON_LOOP_TEST_IMPLEMENT_INVALID_JSON === "1") {
+    console.log("not-valid-iteration-json");
+    process.exit(0);
+  }
+  require("fs").writeFileSync(require("path").join(process.cwd(), ".beacon-loop-harness-success.txt"), "harness shim\\n");
+  console.log(JSON.stringify({
+    status: "completed",
+    summary: "harness worker shim iteration",
+    changed_files: [".beacon-loop-harness-success.txt"],
+    iteration_result: {
+      success: true,
+      summary: "harness worker shim iteration",
+      key_changes_made: [".beacon-loop-harness-success.txt"],
+      key_learnings: []
+    }
+  }));
+  process.exit(0);
+}
+if (args[0] === "implement" && args[1] === "list-runners") {
+  console.log(JSON.stringify({ runners: [{ id: "codex-subagents" }] }));
+  process.exit(0);
+}
 if (args[0] === "implement" && args[1] === "import-evidence") {
   console.log(JSON.stringify({ status: "imported", imported: true, surface: "beacon-implement" }));
   process.exit(0);
@@ -420,3 +447,228 @@ test("lifecycle-auto-route: P1 finding continues on recommended_route (AC-042 / 
   assert.ok(artifact.findings.some((item) => item.severity === "P1"));
   assert.equal(artifact.synthesis.recommended_route, "truth_fill");
 });
+
+test("implement-harness-worker: implement_loop uses beacon implement run (AC-044 / TC-046)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_TEST_AGENT_RESULT: "success",
+    BEACON_LOOP_IMPLEMENT_WORKER: "1"
+  };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "execute-only", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const jsonl = readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "iteration-001.jsonl"), "utf8");
+  const line = JSON.parse(jsonl.trim());
+  assert.match(line.worker_command, /beacon implement run/);
+  assert.match(line.worker_command, /codex-subagents/);
+  assert.equal(line.result.harness, "gen-implement");
+});
+
+test("output-schema: run bootstrap writes json_schema envelope (AC-045 / TC-047)", () => {
+  const project = makeProject();
+  const env = { PATH: makeDeliveryBeaconShim(project) };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--dry-run", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const schemaDoc = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "output-schema.json"), "utf8"));
+  assert.equal(schemaDoc.schema_version, "1.0");
+  assert.equal(schemaDoc.json_schema.type, "object");
+  assert.ok(schemaDoc.json_schema.required.includes("success"));
+  assert.ok(schemaDoc.json_schema.required.includes("should_fully_stop"));
+});
+
+test("output-schema: adapter passes --output-schema to implement run (AC-045 / TC-047)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_IMPLEMENT_WORKER: "1"
+  };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "execute-only", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const runDir = join(project, ".beacon", "loop", "runs", payload.run_id);
+  const worktreePath = JSON.parse(readFileSync(join(runDir, "run-package.json"), "utf8")).worktree.path;
+  const args = JSON.parse(readFileSync(join(worktreePath, ".beacon-loop-implement-args.json"), "utf8"));
+  const schemaIndex = args.indexOf("--output-schema");
+  assert.ok(schemaIndex >= 0, "implement harness must pass --output-schema");
+  assert.match(args[schemaIndex + 1], /output-schema\.json$/);
+});
+
+test("output-schema: invalid implement JSON fails iteration (AC-045 / TC-047)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_IMPLEMENT_WORKER: "1",
+    BEACON_LOOP_TEST_IMPLEMENT_INVALID_JSON: "1"
+  };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "execute-only", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const iterationResult = JSON.parse(
+    readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "iteration-001-result.json"), "utf8")
+  );
+  assert.equal(iterationResult.success, false);
+  assert.match(iterationResult.summary, /invalid iteration JSON/i);
+});
+
+test("gnhf-iteration-prompt: prompt forbids notes edits and agent commits (AC-046 / TC-048)", () => {
+  const project = makeProject();
+  const env = { PATH: makeDeliveryBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "execute-only", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const prompt = readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "prompt.md"), "utf8");
+  assert.match(prompt, /Do NOT modify notes\.md/);
+  assert.match(prompt, /no-op/i);
+  assert.match(prompt, /Do NOT git commit/);
+});
+
+test("noop-blocks-qa: no-op iteration blocks qa_pending (AC-047 / TC-049)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_TEST_REVIEW: "fixture",
+    BEACON_LOOP_TEST_AGENT_RESULT: "noop"
+  };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "delivery", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 2, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.reason_code, "implement_no_op_blocked");
+  const deliveryState = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "delivery-state.json"), "utf8"));
+  assert.notEqual(deliveryState.state, "qa_pending");
+  assert.equal(deliveryState.reason_code, "implement_no_op_blocked");
+});
+
+test("harness-worker-route: worker-route.json maps delivery stages (AC-048 / TC-050)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project),
+    BEACON_LOOP_IMPLEMENT_WORKER: "1"
+  };
+  const result = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "execute-only", "--max-iterations", "1", "--json"],
+    { env }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  const runDir = join(project, ".beacon", "loop", "runs", payload.run_id);
+  const routeDoc = JSON.parse(readFileSync(join(runDir, "worker-route.json"), "utf8"));
+  assert.equal(routeDoc.implement_runner, "codex-subagents");
+  const implementRoute = routeDoc.routes.find((item) => item.delivery_state === "implement_loop");
+  assert.equal(implementRoute.harness, "gen-implement");
+  assert.match(routeDoc.implement_worker_command, /beacon implement run/);
+  const promotion = JSON.parse(readFileSync(join(runDir, "truth-promotion.json"), "utf8"));
+  const implementCall = promotion.calls.find(
+    (entry) => entry.delivery_state === "implement_loop" && entry.harness === "gen-implement"
+  );
+  assert.ok(implementCall, "truth-promotion.json must record implement harness worker");
+  assert.equal(implementCall.implement_runner, "codex-subagents");
+  assert.match(implementCall.command, /beacon implement run/);
+});
+
+test("repair-harness-worker: repair_from_qa resumes through implement runner (AC-049 / TC-051)", () => {
+  const project = makeProject();
+  const env = {
+    PATH: makeDeliveryBeaconShim(project, { qaMode: "fail" }),
+    BEACON_LOOP_TEST_REVIEW: "fixture",
+    BEACON_LOOP_TEST_AGENT_RESULT: "success",
+    BEACON_LOOP_TEST_STOP_AFTER_ITERATION: "1"
+  };
+  const first = run(
+    ["goal", "demo", "--project", project, "--feature", "demo", "--mode", "delivery", "--max-iterations", "3", "--json"],
+    { env }
+  );
+  assert.equal(first.status, 0, first.stderr);
+  const firstPayload = JSON.parse(first.stdout);
+  assert.equal(firstPayload.status, "repair_from_qa");
+  const resumeEnv = {
+    ...env,
+    BEACON_LOOP_IMPLEMENT_WORKER: "1",
+    BEACON_LOOP_TEST_EVAL_CHAIN: "fixture"
+  };
+  const resume = run(["resume", firstPayload.run_id, "--project", project, "--json"], { env: resumeEnv });
+  assert.equal(resume.status, 0, resume.stderr);
+  const resumePayload = JSON.parse(resume.stdout);
+  const jsonl = readFileSync(
+    join(project, ".beacon", "loop", "runs", resumePayload.run_id, "iteration-002.jsonl"),
+    "utf8"
+  );
+  const line = JSON.parse(jsonl.trim());
+  assert.match(line.worker_command, /beacon implement run/);
+  assert.equal(line.result.harness, "gen-implement");
+});
+
+test("doctor-implement-runner: doctor reports harness worker checks (AC-052 / TC-054)", () => {
+  const project = makeProject();
+  const result = run(["doctor", "--project", project, "--diagnose", "--json"], {
+    env: { PATH: makeDeliveryBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" }
+  });
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.checks.implement_runner.status, "pass");
+  assert.equal(payload.checks.implement_runner.runner, "codex-subagents");
+  assert.equal(payload.checks.output_schema.status, "pass");
+  assert.equal(payload.checks.agent_backend.adapter, "implement-harness");
+});
+
+const e2eHarnessEnabled = process.env.BEACON_LOOP_E2E_HARNESS === "1";
+(e2eHarnessEnabled ? test : test.skip)(
+  "e2e-implement-runner-commit: harness worker commits before qa_pending (AC-051 / TC-053)",
+  () => {
+    const project = makeProject();
+    const env = {
+      PATH: makeDeliveryBeaconShim(project),
+      BEACON_LOOP_TEST_REVIEW: "fixture",
+      BEACON_LOOP_TEST_EVAL_CHAIN: "fixture",
+      BEACON_LOOP_IMPLEMENT_WORKER: "1"
+    };
+    const result = run(
+      [
+        "goal",
+        "deliver harness implement path",
+        "--project",
+        project,
+        "--feature",
+        "demo",
+        "--mode",
+        "delivery",
+        "--max-iterations",
+        "1",
+        "--json"
+      ],
+      { env }
+    );
+    assert.equal(result.status, 0, result.stderr);
+    const payload = JSON.parse(result.stdout);
+    const runDir = join(project, ".beacon", "loop", "runs", payload.run_id);
+    const commitsDoc = JSON.parse(readFileSync(join(runDir, "commits.json"), "utf8"));
+    assert.ok(Array.isArray(commitsDoc.commits) && commitsDoc.commits.length >= 1);
+    const jsonl = readFileSync(join(runDir, "iteration-001.jsonl"), "utf8");
+    const line = JSON.parse(jsonl.trim());
+    assert.match(line.worker_command, /beacon implement run/);
+    assert.equal(line.result.harness, "gen-implement");
+    const deliveryState = JSON.parse(readFileSync(join(runDir, "delivery-state.json"), "utf8"));
+    const reachedQa = deliveryState.history.some((entry) => entry.to === "qa_pending");
+    assert.ok(reachedQa, "delivery must reach qa_pending only after implement commits");
+    assert.ok(existsSync(join(runDir, "eval-chain.json")));
+  }
+);

@@ -1,5 +1,5 @@
 import { join } from "node:path";
-import { writeJson } from "../runner/fs.js";
+import { writeJson, readJson } from "../runner/fs.js";
 import { resolveTruth, isFeatureTruthFrozen } from "../beacon/resolve.js";
 import { buildIntentCapture } from "../intent/capture.js";
 import { classifyIntent } from "../intent/classify.js";
@@ -212,6 +212,31 @@ export function runDeliveryPipeline(projectRoot, runDir, ctx) {
 export function finalizeDeliveryAfterImplement(projectRoot, runDir, runPackage, implementResult, options) {
   const mode = options.mode || "delivery";
   if (mode !== "delivery") return implementResult;
+
+  const commitsDoc = readJson(join(runDir, "commits.json"), { commits: [] });
+  const commitCount = Array.isArray(commitsDoc.commits) ? commitsDoc.commits.length : 0;
+  const noOpBlocked =
+    commitCount === 0 ||
+    implementResult.status === "rolled_back" ||
+    implementResult.reason_code === "consecutive_failures_abort";
+
+  if (noOpBlocked) {
+    transitionDeliveryState(runDir, "implement_loop", { truthFrozen: true });
+    const deliveryState = readDeliveryState(runDir);
+    writeDeliveryState(runDir, {
+      ...deliveryState,
+      reason_code: "implement_no_op_blocked",
+      blocked_at: nowIso(),
+      commit_count: commitCount
+    });
+    return {
+      ...implementResult,
+      status: "blocked",
+      reason_code: "implement_no_op_blocked",
+      closure_verdict: "not_provided_by_beacon_loop",
+      delivery_state: readDeliveryState(runDir)?.state
+    };
+  }
 
   let step = transitionDeliveryState(runDir, "evidence_import");
   if (!step.ok) return { ...implementResult, reason_code: step.reason_code };

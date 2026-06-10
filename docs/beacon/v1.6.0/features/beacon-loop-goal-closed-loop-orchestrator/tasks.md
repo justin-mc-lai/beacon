@@ -44,6 +44,19 @@
 - [ ] TASK-068 测试 TC-042..TC-044；更新 deferral ledger 运行时校验（rejected D-009..011）。
 - [ ] TASK-069 R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。
 
+## Phase J — R3 gnhf worker + harness implement runner（AC-043..AC-052）
+
+- [x] TASK-070 更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。
+- [x] TASK-071 `implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。
+- [x] TASK-072 写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。
+- [x] TASK-073 gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。
+- [x] TASK-074 delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。
+- [x] TASK-075 frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。
+- [x] TASK-076 `repair_from_qa` 复用 implement harness worker（AC-049）。
+- [x] TASK-077 parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。
+- [x] TASK-078 真 implement runner E2E opt-in（AC-051 / TC-053）。
+- [x] TASK-079 测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。
+
 ## 边界
 
 - 任务台账不是 implementation completion。

@@ -1,13 +1,13 @@
 {
   "schema_version": "1.0",
-  "plan_id": "plan-beacon-loop-goal-closed-loop-orchestrator-r2",
+  "plan_id": "plan-beacon-loop-goal-closed-loop-orchestrator-r3",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "revision_id": "R2",
-  "baseline_hash": "sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24",
-  "plan_hash": "sha256:3b5f16ba4a0c65adf31a71d3fe354152683f222ed4fb301680e7e9f688f4cd67",
-  "status": "completed",
+  "revision_id": "R3",
+  "baseline_hash": "sha256:909af515dbe441d54288fb4f0b4463a2166a3a04cdfe195d0d624dee89d26bc4",
+  "plan_hash": "sha256:a7cbab848f1d9d14aec11f3e6e1c97bd54388f52eebfa41dfc6f24e07f5ffcd7",
+  "status": "planned",
   "source_refs": {
     "user_story": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
     "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
@@ -79,7 +79,17 @@
         "ITASK-026",
         "ITASK-027",
         "ITASK-028",
-        "ITASK-029"
+        "ITASK-029",
+        "ITASK-030",
+        "ITASK-031",
+        "ITASK-032",
+        "ITASK-033",
+        "ITASK-034",
+        "ITASK-035",
+        "ITASK-036",
+        "ITASK-037",
+        "ITASK-038",
+        "ITASK-039"
       ]
     }
   ],
@@ -98,7 +108,7 @@
     "review_gates": [],
     "qa_coverage_hints": [],
     "evidence_lines": {},
-    "generated_at": "2026-06-10T10:57:15.382920+00:00",
+    "generated_at": "2026-06-10T16:44:56.339593+00:00",
     "feature": "beacon-loop-goal-closed-loop-orchestrator",
     "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
     "prd_ref": "docs/beacon/v1.6.0/prd/beacon-loop-goal-closed-loop-orchestrator.md",
@@ -128,17 +138,27 @@
       ],
       "mapped_ac_ids": [
         "AC-004",
-        "AC-016"
+        "AC-008",
+        "AC-021",
+        "AC-010",
+        "AC-029",
+        "AC-009"
       ],
       "mapped_test_ids": [
         "TC-034",
-        "TC-040"
+        "TEST-008",
+        "TC-040",
+        "TEST-010",
+        "TEST-029",
+        "TEST-009"
       ],
       "mapped_scenario_ids": [
         "SC-001",
         "SC-002",
         "SC-003",
-        "SC-004"
+        "SC-004",
+        "SC-006",
+        "SC-007"
       ],
       "mapped_qa_case_ids": [
         "TC-034",
@@ -162,43 +182,38 @@
         ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/matrix.qa9.json",
         ".beacon/qa/status.json",
         ".beacon/qa/current-session.json",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/contract/command.txt",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/contract/stdout.log",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/contract/stderr.log",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/contract/junit.xml",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/contract/result.json",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/integration/command.txt",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/integration/stdout.log",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/integration/stderr.log",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/integration/junit.xml",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/integration/result.json",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/qa9/tc-execution-map.json",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/qa9/tc-results.json",
-        ".beacon/evidence/auto-test/run-20260610T192024529164/summary.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/contract/command.txt",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/contract/stdout.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/contract/stderr.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/contract/junit.xml",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/contract/result.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/integration/command.txt",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/integration/stdout.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/integration/stderr.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/integration/junit.xml",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/integration/result.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/regression/command.txt",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/regression/stdout.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/regression/stderr.log",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/regression/junit.xml",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/regression/result.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/qa9/tc-execution-map.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/qa9/tc-results.json",
+        ".beacon/evidence/auto-test/run-20260611T004809309221/summary.json",
         ".beacon/flaky-history.json",
         ".beacon/evidence-signature-chain.json",
-        "verify:run-20260610T192024529164",
+        "verify:run-20260611T004809309221",
         ".beacon/auto-test-status.json",
         "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json",
         ".beacon/coverage-summary.json",
         ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/ac-closure.json",
         ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/scorecard.json",
-        ".beacon/release-gate-report.json",
-        "run:run-20260610T112829Z-717e",
-        "verify:run-20260610T192844576131"
+        ".beacon/release-gate-report.json"
       ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665564+00:00",
-      "completed_at": "2026-06-10T11:28:29.665568+00:00",
+      "started_at": "",
+      "completed_at": "2026-06-10T16:50:45.687631+00:00",
       "active_run_id": ""
     },
     {
@@ -210,13 +225,31 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-008"
+        "AC-013",
+        "AC-022",
+        "AC-016",
+        "AC-019",
+        "AC-025"
       ],
       "mapped_test_ids": [
-        "TEST-008"
+        "TEST-013",
+        "TC-040",
+        "TC-022",
+        "TC-041"
       ],
-      "mapped_scenario_ids": [],
-      "mapped_qa_case_ids": [],
+      "mapped_scenario_ids": [
+        "SC-001",
+        "SC-004",
+        "SC-005",
+        "SC-006",
+        "SC-007",
+        "SC-008"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-040",
+        "TC-022",
+        "TC-041"
+      ],
       "depends_on": [
         "ITASK-001"
       ],
@@ -232,23 +265,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665582+00:00",
-      "completed_at": "2026-06-10T11:28:29.665584+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-003",
@@ -266,7 +288,9 @@
       ],
       "mapped_scenario_ids": [
         "SC-001",
-        "SC-004"
+        "SC-004",
+        "SC-006",
+        "SC-007"
       ],
       "mapped_qa_case_ids": [
         "TC-040"
@@ -286,23 +310,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665590+00:00",
-      "completed_at": "2026-06-10T11:28:29.665591+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-004",
@@ -349,22 +362,12 @@
         ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/ac-closure.json",
         ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/scorecard.json",
         ".beacon/release-gate-report.json",
-        "verify:run-20260610T192024529164",
-        "run:run-20260610T112829Z-717e",
-        "verify:run-20260610T192844576131"
+        "verify:run-20260611T004809309221"
       ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665596+00:00",
-      "completed_at": "2026-06-10T11:28:29.665598+00:00",
+      "started_at": "",
+      "completed_at": "2026-06-10T16:50:46.178738+00:00",
       "active_run_id": ""
     },
     {
@@ -376,10 +379,10 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-009"
+        "AC-014"
       ],
       "mapped_test_ids": [
-        "TEST-009"
+        "TEST-014"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -398,23 +401,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665606+00:00",
-      "completed_at": "2026-06-10T11:28:29.665607+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-006",
@@ -449,23 +441,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665612+00:00",
-      "completed_at": "2026-06-10T11:28:29.665614+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-007",
@@ -476,10 +457,10 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-006"
+        "AC-024"
       ],
       "mapped_test_ids": [
-        "TEST-006"
+        "TEST-024"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -498,23 +479,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665619+00:00",
-      "completed_at": "2026-06-10T11:28:29.665620+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-008",
@@ -525,12 +495,10 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-007",
-        "AC-014"
+        "AC-012"
       ],
       "mapped_test_ids": [
-        "TEST-007",
-        "TEST-014"
+        "TEST-012"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -549,23 +517,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665625+00:00",
-      "completed_at": "2026-06-10T11:28:29.665626+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-009",
@@ -576,10 +533,10 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-010"
+        "AC-006"
       ],
       "mapped_test_ids": [
-        "TEST-010"
+        "TEST-006"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -598,23 +555,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665631+00:00",
-      "completed_at": "2026-06-10T11:28:29.665633+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-010",
@@ -625,10 +571,10 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-011"
+        "AC-026"
       ],
       "mapped_test_ids": [
-        "TEST-011"
+        "TEST-026"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -647,23 +593,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665638+00:00",
-      "completed_at": "2026-06-10T11:28:29.665639+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-011",
@@ -674,18 +609,22 @@
         "US-001"
       ],
       "mapped_ac_ids": [
-        "AC-012",
-        "AC-013",
+        "AC-028",
         "AC-015",
         "AC-017",
-        "AC-018"
+        "AC-018",
+        "AC-020",
+        "AC-023",
+        "AC-027"
       ],
       "mapped_test_ids": [
-        "TEST-012",
-        "TEST-013",
+        "TEST-028",
         "TEST-015",
         "TEST-017",
-        "TEST-018"
+        "TEST-018",
+        "TEST-020",
+        "TEST-023",
+        "TEST-027"
       ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
@@ -704,23 +643,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665645+00:00",
-      "completed_at": "2026-06-10T11:28:29.665647+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-012",
@@ -730,8 +658,12 @@
       "mapped_story_ids": [
         "US-001"
       ],
-      "mapped_ac_ids": [],
-      "mapped_test_ids": [],
+      "mapped_ac_ids": [
+        "AC-007"
+      ],
+      "mapped_test_ids": [
+        "TEST-007"
+      ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
       "depends_on": [
@@ -749,23 +681,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665652+00:00",
-      "completed_at": "2026-06-10T11:28:29.665653+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-013",
@@ -775,8 +696,12 @@
       "mapped_story_ids": [
         "US-001"
       ],
-      "mapped_ac_ids": [],
-      "mapped_test_ids": [],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-011"
+      ],
       "mapped_scenario_ids": [],
       "mapped_qa_case_ids": [],
       "depends_on": [
@@ -794,23 +719,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665658+00:00",
-      "completed_at": "2026-06-10T11:28:29.665659+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-014",
@@ -839,23 +753,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665664+00:00",
-      "completed_at": "2026-06-10T11:28:29.665665+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-015",
@@ -884,23 +787,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665670+00:00",
-      "completed_at": "2026-06-10T11:28:29.665671+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-016",
@@ -929,23 +821,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665676+00:00",
-      "completed_at": "2026-06-10T11:28:29.665677+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-017",
@@ -974,23 +855,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665681+00:00",
-      "completed_at": "2026-06-10T11:28:29.665683+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-018",
@@ -1019,23 +889,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665687+00:00",
-      "completed_at": "2026-06-10T11:28:29.665689+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-019",
@@ -1064,23 +923,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665693+00:00",
-      "completed_at": "2026-06-10T11:28:29.665695+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-020",
@@ -1109,23 +957,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665699+00:00",
-      "completed_at": "2026-06-10T11:28:29.665701+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-021",
@@ -1154,23 +991,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665705+00:00",
-      "completed_at": "2026-06-10T11:28:29.665707+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-022",
@@ -1199,23 +1025,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665711+00:00",
-      "completed_at": "2026-06-10T11:28:29.665713+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-023",
@@ -1244,23 +1059,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665717+00:00",
-      "completed_at": "2026-06-10T11:28:29.665719+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-024",
@@ -1289,23 +1093,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665723+00:00",
-      "completed_at": "2026-06-10T11:28:29.665725+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-025",
@@ -1334,23 +1127,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665729+00:00",
-      "completed_at": "2026-06-10T11:28:29.665731+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-026",
@@ -1379,23 +1161,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665735+00:00",
-      "completed_at": "2026-06-10T11:28:29.665737+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-027",
@@ -1424,23 +1195,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665741+00:00",
-      "completed_at": "2026-06-10T11:28:29.665743+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-028",
@@ -1469,23 +1229,12 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665747+00:00",
-      "completed_at": "2026-06-10T11:28:29.665749+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
     },
     {
       "task_id": "ITASK-029",
@@ -1514,23 +1263,352 @@
       "scope_points": [],
       "diagram_review_gates": [],
       "diagram_state_axes": [],
-      "status": "completed",
-      "evidence_refs": [
-        "run:run-20260610T112829Z-717e"
-      ],
-      "changed_files": [
-        "packages/beacon-loop/src/intent/tiebreak.ts",
-        "packages/beacon-loop/src/delivery/review-gate.ts",
-        "packages/beacon-loop/src/delivery/review.ts",
-        "packages/beacon-loop/src/delivery/orchestrator.ts",
-        "packages/beacon-loop/src/cli.ts",
-        "packages/beacon-loop/src/config/load.ts",
-        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs"
-      ],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
       "blocked_reason": "",
-      "started_at": "2026-06-10T11:28:29.665753+00:00",
-      "completed_at": "2026-06-10T11:28:29.665755+00:00",
-      "active_run_id": ""
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-030",
+      "title": "TASK-070 更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+      "description": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+      "source_task_id": "TASK-070",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-029"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-031",
+      "title": "TASK-071 `implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+      "description": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+      "source_task_id": "TASK-071",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-030"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-032",
+      "title": "TASK-072 写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+      "description": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+      "source_task_id": "TASK-072",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-031"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-033",
+      "title": "TASK-073 gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+      "description": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+      "source_task_id": "TASK-073",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-032"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-034",
+      "title": "TASK-074 delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+      "description": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+      "source_task_id": "TASK-074",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-033"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-035",
+      "title": "TASK-075 frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+      "description": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+      "source_task_id": "TASK-075",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-034"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-036",
+      "title": "TASK-076 `repair_from_qa` 复用 implement harness worker（AC-049）。",
+      "description": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+      "source_task_id": "TASK-076",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-035"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-037",
+      "title": "TASK-077 parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+      "description": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+      "source_task_id": "TASK-077",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-036"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-038",
+      "title": "TASK-078 真 implement runner E2E opt-in（AC-051 / TC-053）。",
+      "description": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+      "source_task_id": "TASK-078",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-037"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
+    },
+    {
+      "task_id": "ITASK-039",
+      "title": "TASK-079 测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+      "description": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+      "source_task_id": "TASK-079",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-038"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "planned",
+      "evidence_refs": [],
+      "changed_files": [],
+      "blocked_reason": "",
+      "started_at": "",
+      "completed_at": ""
     }
   ],
   "task_alignment": {
@@ -1543,7 +1621,7 @@
     "version": "v1.6.0",
     "authority": "markdown_feature_package",
     "package_tasks_path": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
-    "task_count": 29,
+    "task_count": 39,
     "resolved": true,
     "alignment_mode": "package_tasks_to_implementation_plan",
     "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
@@ -1721,6 +1799,66 @@
         "task_id": "TASK-069",
         "title": "R2 implement evidence + `beacon-eval-qa` 正式验收 AC-040..042。",
         "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-070",
+        "title": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-071",
+        "title": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-072",
+        "title": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-073",
+        "title": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-074",
+        "title": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-075",
+        "title": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-076",
+        "title": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-077",
+        "title": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-078",
+        "title": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+        "requirement_checkbox_state": "completed",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-079",
+        "title": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+        "requirement_checkbox_state": "completed",
         "implementation_status": "planned"
       }
     ],
@@ -2043,6 +2181,116 @@
         "evidence_refs": [],
         "changed_files": [],
         "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-030",
+        "title": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+        "description": "更新 agent surface / `using-beacon`：gnhf 级 launch、steer、companion 文档（AC-043）。",
+        "source_task_id": "TASK-070",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-031",
+        "title": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+        "description": "`implement_loop` 改为 subprocess `beacon implement run --runner <runner>`；移除裸 `codex exec` 路径（AC-044）。",
+        "source_task_id": "TASK-071",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-032",
+        "title": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+        "description": "写入 `output-schema.json`；adapter strict parse + `--output-schema`（AC-045）。",
+        "source_task_id": "TASK-072",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-033",
+        "title": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+        "description": "gnhf 级 `iteration-prompt` 模板；no-op=false 语义（AC-046）。",
+        "source_task_id": "TASK-073",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-034",
+        "title": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+        "description": "delivery FSM：`implement_no_op_blocked`；禁止 no-op → `qa_pending`（AC-047）。",
+        "source_task_id": "TASK-074",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-035",
+        "title": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+        "description": "frozen harness worker 路由表 + `truth-promotion.json` worker 记录（AC-048）。",
+        "source_task_id": "TASK-075",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-036",
+        "title": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+        "description": "`repair_from_qa` 复用 implement harness worker（AC-049）。",
+        "source_task_id": "TASK-076",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-037",
+        "title": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+        "description": "parent orchestrator 回归 + doctor implement runner 检查（AC-050、AC-052）。",
+        "source_task_id": "TASK-077",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-038",
+        "title": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+        "description": "真 implement runner E2E opt-in（AC-051 / TC-053）。",
+        "source_task_id": "TASK-078",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-039",
+        "title": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+        "description": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
+        "source_task_id": "TASK-079",
+        "source_task_status": "completed",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
       }
     ]
   },
@@ -2051,52 +2299,140 @@
     "feature": "beacon-loop-goal-closed-loop-orchestrator",
     "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
     "version": "v1.6.0",
-    "revision_id": "R2",
-    "source_revision_id": "R1",
+    "revision_id": "R3",
+    "source_revision_id": "R2",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
-    "added_requirement_count": 3,
-    "retained_requirement_count": 15,
+    "added_requirement_count": 11,
+    "retained_requirement_count": 18,
     "removed_requirement_surfaces": [],
     "added_requirement_surfaces": [
       {
-        "revision_id": "R2",
-        "id": "AC-017",
+        "revision_id": "R3",
+        "id": "AC-024",
         "story_id": "",
         "kind": "ac",
-        "theme": "AC-040",
-        "text": "TC-042",
+        "theme": "**AC-047**",
+        "text": "**TC-049**",
         "details": [],
         "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::ac-040::tc-042::"
+        "signature": "ac::::**ac-047**::**tc-049**::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-016",
+        "revision_id": "R3",
+        "id": "AC-025",
         "story_id": "",
         "kind": "ac",
-        "theme": "AC-041",
-        "text": "TC-043",
+        "theme": "**AC-049**",
+        "text": "**TC-051**",
         "details": [],
         "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::ac-041::tc-043::"
+        "signature": "ac::::**ac-049**::**tc-051**::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-018",
+        "revision_id": "R3",
+        "id": "AC-026",
         "story_id": "",
         "kind": "ac",
-        "theme": "AC-042",
-        "text": "TC-044",
+        "theme": "**AC-050**",
+        "text": "**TC-052**",
         "details": [],
         "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::ac-042::tc-044::"
+        "signature": "ac::::**ac-050**::**tc-052**::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-028",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**AC-051**",
+        "text": "**TC-053**",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**ac-051**::**tc-053**::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-027",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**AC-052**",
+        "text": "**TC-054**",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**ac-052**::**tc-054**::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-029",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+        "text": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator ac-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。::**parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator ac-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-010",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`beacon implement run --runner codex-subagents`",
+        "text": "**AC-044** implement_loop worker",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`beacon implement run --runner codex-subagents`::**ac-044** implement_loop worker::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-008",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`gnhf/src/core/agents/codex.ts`",
+        "text": "**AC-045** output-schema + strict parse",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`gnhf/src/core/agents/codex.ts`::**ac-045** output-schema + strict parse::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`project_skills.builtin_skill_registry`",
+        "text": "**AC-048** stage worker routing",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`project_skills.builtin_skill_registry`::**ac-048** stage worker routing::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`skills/gnhf/SKILL.md`",
+        "text": "**AC-043** agent surface / using-beacon",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`skills/gnhf/skill.md`::**ac-043** agent surface / using-beacon::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`templates/iteration-prompt.ts`",
+        "text": "**AC-046** runner prompt template",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`templates/iteration-prompt.ts`::**ac-046** runner prompt template::"
       }
     ],
     "retained_requirement_surfaces": [
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-004",
         "story_id": "",
         "kind": "ac",
@@ -2107,7 +2443,7 @@
         "signature": "ac::::`implement_loop` 子状态复用::`implement_loop` 子状态复用::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-001",
         "story_id": "",
         "kind": "ac",
@@ -2118,8 +2454,8 @@
         "signature": "ac::::ac-031..ac-039 delivery orchestrator::ac-031..ac-039 delivery orchestrator::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-007",
+        "revision_id": "R3",
+        "id": "AC-012",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-031",
@@ -2129,8 +2465,8 @@
         "signature": "ac::::ac-031::tc-031::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-008",
+        "revision_id": "R3",
+        "id": "AC-013",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-032",
@@ -2140,8 +2476,8 @@
         "signature": "ac::::ac-032::tc-032::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-009",
+        "revision_id": "R3",
+        "id": "AC-014",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-033",
@@ -2151,8 +2487,8 @@
         "signature": "ac::::ac-033::tc-033::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-010",
+        "revision_id": "R3",
+        "id": "AC-015",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-034",
@@ -2162,8 +2498,8 @@
         "signature": "ac::::ac-034::tc-034::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-011",
+        "revision_id": "R3",
+        "id": "AC-016",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-035",
@@ -2173,8 +2509,8 @@
         "signature": "ac::::ac-035::tc-035::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-012",
+        "revision_id": "R3",
+        "id": "AC-017",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-036",
@@ -2184,8 +2520,8 @@
         "signature": "ac::::ac-036::tc-036::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-013",
+        "revision_id": "R3",
+        "id": "AC-018",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-037",
@@ -2195,8 +2531,8 @@
         "signature": "ac::::ac-037::tc-037::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-014",
+        "revision_id": "R3",
+        "id": "AC-019",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-038",
@@ -2206,8 +2542,8 @@
         "signature": "ac::::ac-038::tc-038::"
       },
       {
-        "revision_id": "R2",
-        "id": "AC-015",
+        "revision_id": "R3",
+        "id": "AC-020",
         "story_id": "",
         "kind": "ac",
         "theme": "AC-039",
@@ -2217,7 +2553,40 @@
         "signature": "ac::::ac-039::tc-039::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
+        "id": "AC-022",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-040",
+        "text": "TC-042",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-040::tc-042::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-021",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-041",
+        "text": "TC-043",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-041::tc-043::"
+      },
+      {
+        "revision_id": "R3",
+        "id": "AC-023",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "AC-042",
+        "text": "TC-044",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::ac-042::tc-044::"
+      },
+      {
+        "revision_id": "R3",
         "id": "AC-005",
         "story_id": "",
         "kind": "ac",
@@ -2228,7 +2597,7 @@
         "signature": "ac::::delivery-state 写入同一 ledger::delivery-state 写入同一 ledger::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-002",
         "story_id": "",
         "kind": "ac",
@@ -2239,7 +2608,7 @@
         "signature": "ac::::保留；扩展 `--mode`::保留；扩展 `--mode`::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-006",
         "story_id": "",
         "kind": "ac",
@@ -2250,7 +2619,7 @@
         "signature": "ac::::扩展为 ac-039 全链 e2e::扩展为 ac-039 全链 e2e::"
       },
       {
-        "revision_id": "R2",
+        "revision_id": "R3",
         "id": "AC-003",
         "story_id": "",
         "kind": "ac",
@@ -2261,10 +2630,10 @@
         "signature": "ac::::扩展：blocked 时进入 truth_fill，非仅 abort::扩展：blocked 时进入 truth_fill，非仅 abort::"
       }
     ],
-    "current_baseline_hash": "sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24",
-    "source_baseline_hash": "sha256:66327efa4cf6d3ed778dbcde241818445b311c0ff4a34ed689dbefc8ec9426c5",
+    "current_baseline_hash": "sha256:909af515dbe441d54288fb4f0b4463a2166a3a04cdfe195d0d624dee89d26bc4",
+    "source_baseline_hash": "sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24",
     "story_state_ref": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json",
-    "generated_at": "2026-06-10T10:57:15.366393+00:00",
+    "generated_at": "2026-06-10T16:44:56.322433+00:00",
     "json_ref": "docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json",
     "markdown_ref": "docs/beacon/v1.6.0/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.md"
   },
@@ -2414,10 +2783,10 @@
       "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
     ],
     "source": "technical_review_contract",
-    "generated_at": "2026-06-10T10:57:15.384446+00:00",
-    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R2",
-    "transaction_id": "tx-095b1dfec3f8002fa",
-    "source_hash": "sha256:21ca32bc2a8398708e4531b087687f82266182c2904cd55811eaac4fff7bb480",
+    "generated_at": "2026-06-10T16:44:56.341132+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R3",
+    "transaction_id": "tx-fe6084eaf29d9a92f",
+    "source_hash": "sha256:af9b498aa256d3f85777fe013ff0c39a65e140b3c7616047e92c89b51a0ac7eb",
     "projection_seq": 1,
     "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
     "projection_source": "implementation_delivery_baseline_envelope"
@@ -2449,21 +2818,21 @@
     "change_surface": []
   },
   "delivery_baseline": {
-    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R2",
-    "transaction_id": "tx-095b1dfec3f8002fa",
-    "source_hash": "sha256:21ca32bc2a8398708e4531b087687f82266182c2904cd55811eaac4fff7bb480",
+    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R3",
+    "transaction_id": "tx-fe6084eaf29d9a92f",
+    "source_hash": "sha256:af9b498aa256d3f85777fe013ff0c39a65e140b3c7616047e92c89b51a0ac7eb",
     "projection_seq": 1,
     "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
     "projection_source": "implementation_delivery_baseline_envelope"
   },
   "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
-  "generated_at": "2026-06-10T10:57:15.755725+00:00",
-  "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R2",
-  "transaction_id": "tx-095b1dfec3f8002fa",
-  "source_hash": "sha256:21ca32bc2a8398708e4531b087687f82266182c2904cd55811eaac4fff7bb480",
+  "generated_at": "2026-06-10T16:44:56.804035+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R3",
+  "transaction_id": "tx-fe6084eaf29d9a92f",
+  "source_hash": "sha256:af9b498aa256d3f85777fe013ff0c39a65e140b3c7616047e92c89b51a0ac7eb",
   "projection_seq": 1,
   "projection_source": "implementation_delivery_baseline_envelope",
-  "updated_at": "2026-06-10T11:29:31.577520+00:00",
-  "accepted_at": "2026-06-10T11:29:31.577423+00:00",
+  "updated_at": "2026-06-10T16:50:46.699390+00:00",
+  "accepted_at": "2026-06-10T16:50:46.699307+00:00",
   "accepted_by": "qa"
 }

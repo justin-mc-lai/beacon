@@ -86,8 +86,28 @@ R2 起 **无 accepted defer**；未实现能力以 AC-040..042 + parity matrix `
 - `Parent Feature Dependency Matrix`
 - AC-031..AC-042 与 tests/tasks Phase E-I
 
+## R3 Revision（2026-06-10）
+
+- **change_reason**: `gnhf-harness-worker-parity` — beacon-loop 须完整对齐 gnhf「Skill→CLI 编排→Worker」模型，且 Worker 面为 Beacon harness CLI（pln/gen/eval），implement 子循环经 `beacon implement run`，禁止裸 `codex exec` bypass
+- **revision_id**: R3（previous R2）
+- **user_decision**: accepted（用户确认进入 `beacon-gen-change`）
+- **planner_review_ref**: R3 parity matrix F-101..F-108（gnhf + harness orchestration gap）
+
+| 层级 | gnhf 对标 | R2 现状 | R3 承诺 |
+|------|-----------|---------|---------|
+| Host skill | `gnhf/SKILL.md` launch/steer/companion | 无一等 loop host skill | AC-043 agent surface |
+| CLI 编排 | `gnhf` unified entry | `beacon-loop goal` ✅ | 保持 |
+| Worker 契约 | `codex exec --json --output-schema` | 裸 `exec --skip-git-repo-check` | AC-045..AC-046 |
+| Implement worker | Codex 通用 coding agent | 裸 codex，未接 harness | **AC-044** `beacon implement run` |
+| Delivery harness 路由 | N/A（gnhf 单 worker） | truth/qa 用 beacon CLI；implement bypass | **AC-048..AC-049** stage→worker 表 |
+| No-op / QA 门控 | no-op=false；halt | rollback 有，仍进 QA | **AC-047** |
+| 真 E2E | 真 codex + commit | fixture 可 green，真跑空转 | **AC-051** |
+
+R3 **无新 accepted defer**；D-012「子进程读 Skill MD」为 **blocked**（与 v1.6 harness taxonomy 冲突）。
+
 ## Next Route
 
-1. 用户审阅本 change + truth/tests 草案
-2. `beacon change ... --refreeze-chain` 或 `beacon-gen-refreeze` 冻结本 feature package
-3. `beacon-gen-implement` Phase E 起（intent capture + delivery-state 骨架）
+1. ~~用户审阅本 change + truth/tests 草案~~（R1/R2 已完成）
+2. **R3**：审阅 truth/tests Phase J（AC-043..AC-052）→ `beacon change ... --refreeze-chain` 或 `beacon-gen-refreeze`
+3. `beacon-gen-implement` Phase J（gnhf worker 契约 + harness implement runner）
+4. `beacon-eval-qa` 真 E2E（AC-051，非 fixture-only）
