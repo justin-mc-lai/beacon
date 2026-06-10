@@ -162,12 +162,38 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
 
     package_root = Path(payload["package_root"])
     skill_dirs = {item.name for item in package_root.iterdir() if item.is_dir()}
+    planner_dirs = {name for name in skill_dirs if name.startswith("beacon-pln-")}
+    assert planner_dirs == {
+        "beacon-pln-brainstorm",
+        "beacon-pln-source",
+        "beacon-pln-review",
+        "beacon-pln-friction",
+    }
     assert "beacon-pln-source" in skill_dirs
+    assert "beacon-pln-review" in skill_dirs
     assert "beacon-gen-implement" in skill_dirs
     assert "beacon-eval-qa" in skill_dirs
     assert "beacon-gov-router" in skill_dirs
     assert all(name.startswith(("beacon-pln-", "beacon-gen-", "beacon-eval-", "beacon-gov-")) for name in skill_dirs)
-    for old_name in ("beacon-brainstorm", "beacon-prd", "beacon-user-story", "beacon-test-case", "beacon-implement", "beacon-qa", "beacon-release", "using-beacon"):
+    for old_name in (
+        "beacon-brainstorm",
+        "beacon-prd",
+        "beacon-user-story",
+        "beacon-test-case",
+        "beacon-implement",
+        "beacon-qa",
+        "beacon-release",
+        "using-beacon",
+        "beacon-pln-deep",
+        "beacon-pln-founder",
+        "beacon-pln-design",
+        "beacon-pln-security",
+        "beacon-pln-performance",
+        "beacon-pln-doubt",
+        "beacon-pln-context",
+        "beacon-pln-simplify",
+        "beacon-pln-adr",
+    ):
         assert old_name not in skill_dirs
 
     source_driven = (package_root / "beacon-pln-source" / "SKILL.md").read_text(encoding="utf-8")
@@ -199,6 +225,15 @@ def test_v160_skill_package_materialize_should_create_harness_only_package(tmp_p
     assert "`beacon-eval-qa-deep`" in qa
     assert "`beacon-eval-qa-evo-deep`" not in qa
 
+    review = (package_root / "beacon-pln-review" / "SKILL.md").read_text(encoding="utf-8")
+    assert "intent_snapshot" in review
+    assert "scope_mode" in review
+    assert "state_model" in review
+    assert "references/reviewer-catalog.md" in review
+    assert "references/finding-schema.md" in review
+    assert (package_root / "beacon-pln-review" / "references" / "state-machine-review.md").exists()
+    assert (package_root / "beacon-pln-review" / "agents" / "openai.yaml").exists()
+
 
 def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
     pairs = [
@@ -220,6 +255,37 @@ def test_v160_packaged_skills_preserve_legacy_skill_content() -> None:
     assert (truth_refs / "legacy-beacon-prd.md").exists()
     assert (truth_refs / "legacy-beacon-user-story.md").exists()
     assert (truth_refs / "legacy-beacon-test-case.md").exists()
+
+
+def test_v160_planner_review_replaces_fine_grained_public_planner_skills() -> None:
+    source_root = ROOT / "skills" / "beacon"
+    demoted = {
+        "beacon-pln-deep",
+        "beacon-pln-founder",
+        "beacon-pln-design",
+        "beacon-pln-security",
+        "beacon-pln-performance",
+        "beacon-pln-doubt",
+        "beacon-pln-context",
+        "beacon-pln-simplify",
+        "beacon-pln-adr",
+    }
+    for skill_id in demoted:
+        assert not (source_root / skill_id / "SKILL.md").exists()
+
+    catalog = (source_root / "beacon-pln-review" / "references" / "reviewer-catalog.md").read_text(encoding="utf-8")
+    for reviewer in (
+        "founder-business",
+        "adversarial-doubt",
+        "security-boundary",
+        "performance-boundary",
+        "context-engineering",
+        "simplification-risk",
+        "adr-documentation",
+        "design-flow",
+        "state-machine",
+    ):
+        assert reviewer in catalog
 
 
 def test_v160_skill_package_verify_should_fail_for_old_alias_and_missing_gate(tmp_path: Path) -> None:
@@ -525,6 +591,7 @@ def test_v160_skill_eval_kit_uses_harness_routes_and_review_artifact(tmp_path: P
     cases_payload = json.loads((tmp_path / init_payload["cases_path"]).read_text(encoding="utf-8"))
     routes = {case["expected_route"] for case in cases_payload["cases"]}
     assert "beacon-pln-source" in routes
+    assert "beacon-pln-review" in routes
     assert "beacon-gen-implement" in routes
     assert "beacon-eval-qa" in routes
     assert "beacon-gov-status" in routes
@@ -594,9 +661,58 @@ def test_v160_skill_eval_benchmark_outputs_behavior_evidence_for_hard_gate_cases
     assert (root / "analysis" / "analysis.json").exists()
     assert (root / "analysis" / "analysis.md").exists()
 
-    expected_tc_ids = {"TC-006", "TC-007", "TC-008", "TC-009", "TC-010", "TC-011", "TC-017"}
-    expected_behavior_ac_ids = {"AC-006", "AC-007", "AC-008", "AC-009", "AC-010", "AC-011", "AC-017"}
-    expected_benchmark_contract_ac_ids = {"AC-018", "AC-019", "AC-020", "AC-021", "AC-022"}
+    expected_tc_ids = {
+        "TC-004",
+        "TC-005",
+        "TC-006",
+        "TC-007",
+        "TC-008",
+        "TC-009",
+        "TC-010",
+        "TC-011",
+        "TC-012",
+        "TC-014",
+        "TC-015",
+        "TC-016",
+        "TC-017",
+        "TC-018",
+        "TC-021",
+        "TC-022",
+        "TC-023",
+        "TC-024",
+        "TC-025",
+        "TC-026",
+        "TC-027",
+        "TC-028",
+        "TC-029",
+        "TC-030",
+        "TC-031",
+        "TC-032",
+        "TC-033",
+    }
+    expected_behavior_ac_ids = {
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007",
+        "AC-008",
+        "AC-009",
+        "AC-010",
+        "AC-011",
+        "AC-012",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-017",
+        "AC-018",
+        "AC-013",
+        "AC-014",
+        "AC-015",
+        "AC-016",
+        "AC-002",
+        "AC-003",
+    }
+    expected_benchmark_contract_ac_ids = {"AC-018", "AC-019", "AC-020"}
     assert set(payload["covered_tc_ids"]) == expected_tc_ids
     assert set(payload["analysis"]["covered_tc_ids"]) == expected_tc_ids
     assert set(payload["analysis"]["covered_behavior_ac_ids"]) == expected_behavior_ac_ids
@@ -618,4 +734,15 @@ def test_v160_skill_eval_benchmark_outputs_behavior_evidence_for_hard_gate_cases
 
     tc017_grading = json.loads((root / "grading" / "tc-017-hard-gate-injection.with_skill.json").read_text(encoding="utf-8"))
     assert tc017_grading["hard_gate_verified"] is True
+
+    tc006_review_grading = json.loads((root / "grading" / "tc-006-full-parity-scope-mode.with_skill.json").read_text(encoding="utf-8"))
+    assert tc006_review_grading["full_parity_preserved"] is True
+    assert "full_parity_scope_preserved" in tc006_review_grading["reason_codes"]
+
+    tc010_review_grading = json.loads((root / "grading" / "tc-010-state-machine-review-output.with_skill.json").read_text(encoding="utf-8"))
+    assert tc010_review_grading["state_machine_reviewed"] is True
+    assert "state_machine_review_output_verified" in tc010_review_grading["reason_codes"]
+
+    tc014_grading = json.loads((root / "grading" / "tc-014-finding-schema-complete.with_skill.json").read_text(encoding="utf-8"))
+    assert tc014_grading["finding_schema_complete"] is True
     assert "hard_gate_behavior_verified" in tc017_grading["reason_codes"]

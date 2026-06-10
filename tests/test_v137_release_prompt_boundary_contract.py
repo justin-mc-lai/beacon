@@ -258,3 +258,31 @@ def test_v137_gate_prompt_boundary_contract_should_block_when_verdict_not_releas
     assert len(issues) == 1
     assert issues[0]["reason_code"] == "implement_prompt_boundary_missing"
     assert issues[0]["blocked"] is True
+
+
+def test_v137_gate_prompt_boundary_contract_should_allow_not_required_verdict(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.setattr(gate_module, "resolve_runtime_version", lambda *_args, **_kwargs: "v1.5.2")
+    monkeypatch.setattr(
+        gate_module,
+        "project_runtime_feature_enabled",
+        lambda _project_root, feature_version, **_kwargs: feature_version == "v1.3.7",
+    )
+    monkeypatch.setattr(
+        gate_module,
+        "build_release_scorecard",
+        lambda *_args, **_kwargs: {
+            "qa": {"feature": FEATURE},
+            "prompt_boundary": {
+                "required": False,
+                "status": "not_required",
+                "blocked": False,
+                "classification": "",
+                "reason_code": "",
+                "surface": "",
+            },
+        },
+    )
+
+    issues = check_v137_implement_prompt_boundary_contract(tmp_path, GateMode.STRICT, "release", version="v1.0.0")
+
+    assert issues == []

@@ -51,6 +51,12 @@ _V160_PACKAGE_SOURCE_KINDS = {
     "generated_v160_harness_taxonomy_fallback",
     "migrated_v160_harness_taxonomy_preserve_skill_content",
 }
+_V160_PUBLIC_PLANNER_SKILLS = (
+    "beacon-pln-brainstorm",
+    "beacon-pln-source",
+    "beacon-pln-review",
+    "beacon-pln-friction",
+)
 
 
 @dataclass(frozen=True)
@@ -83,17 +89,9 @@ def packaged_beacon_skill_root() -> Path:
 
 _V160_RENAME_MATRIX: tuple[tuple[str, str, str, str], ...] = (
     ("beacon-brainstorm", "beacon-pln-brainstorm", "planner", "粗提示词拆分、湖海判断与路由收敛"),
-    ("beacon-deep", "beacon-pln-deep", "planner", "复杂状态、风险与测试差量分析"),
-    ("beacon-friction-intake", "beacon-pln-friction", "planner", "摩擦记录、排队与只读治理"),
-    ("beacon-ceo-review", "beacon-pln-founder", "planner", "创始人和商业视角挑战"),
-    ("beacon-design-review", "beacon-pln-design", "planner", "UX 和设计方案挑战"),
-    ("beacon-security-review", "beacon-pln-security", "planner", "安全风险挑战"),
-    ("beacon-performance-review", "beacon-pln-performance", "planner", "性能风险挑战"),
-    ("beacon-doubt-review", "beacon-pln-doubt", "planner", "假设和反例挑战"),
     ("beacon-source-driven", "beacon-pln-source", "planner", "源码和证据锚定分析"),
-    ("beacon-context-engineering", "beacon-pln-context", "planner", "上下文重塑与路由建议"),
-    ("beacon-design-simplify", "beacon-pln-simplify", "planner", "简化审计与范围收敛"),
-    ("beacon-documentation-adr", "beacon-pln-adr", "planner", "ADR 和文档清晰度分析"),
+    ("beacon-review", "beacon-pln-review", "planner", "多角度 planner review、意图保真、source parity 和状态机审查"),
+    ("beacon-friction-intake", "beacon-pln-friction", "planner", "摩擦记录、排队与只读治理"),
     ("beacon-truth", "beacon-gen-truth", "generator", "package-authoritative 需求真相总入口"),
     ("beacon-prd-bootstrap", "beacon-gen-truth-init", "generator", "需求真相包初始化"),
     ("beacon-change", "beacon-gen-change", "generator", "受治理的需求真相变更"),
@@ -174,20 +172,45 @@ _V160_REMOVED_OLD_ALIASES = {
     "beacon-user-story",
     "beacon-test-case",
 }
-_V160_OLD_ALIAS_IDS = {row[0] for row in _V160_RENAME_MATRIX} | _V160_REMOVED_OLD_ALIASES | _V160_PREVIOUS_LONG_ALIAS_IDS
+_V160_INTERNAL_PLANNER_ALIAS_REWRITE_MAP = {
+    "beacon-deep": "beacon-pln-review",
+    "beacon-ceo-review": "beacon-pln-review",
+    "beacon-design-review": "beacon-pln-review",
+    "beacon-security-review": "beacon-pln-review",
+    "beacon-performance-review": "beacon-pln-review",
+    "beacon-doubt-review": "beacon-pln-review",
+    "beacon-context-engineering": "beacon-pln-review",
+    "beacon-design-simplify": "beacon-pln-review",
+    "beacon-documentation-adr": "beacon-pln-review",
+    "beacon-planner-deep-analysis": "beacon-pln-review",
+    "beacon-planner-founder-review": "beacon-pln-review",
+    "beacon-planner-design-review": "beacon-pln-review",
+    "beacon-planner-security-review": "beacon-pln-review",
+    "beacon-planner-performance-review": "beacon-pln-review",
+    "beacon-planner-doubt-review": "beacon-pln-review",
+    "beacon-planner-context-engineering": "beacon-pln-review",
+    "beacon-planner-design-simplify": "beacon-pln-review",
+    "beacon-planner-documentation-adr": "beacon-pln-review",
+    "beacon-pln-deep": "beacon-pln-review",
+    "beacon-pln-founder": "beacon-pln-review",
+    "beacon-pln-design": "beacon-pln-review",
+    "beacon-pln-security": "beacon-pln-review",
+    "beacon-pln-performance": "beacon-pln-review",
+    "beacon-pln-doubt": "beacon-pln-review",
+    "beacon-pln-context": "beacon-pln-review",
+    "beacon-pln-simplify": "beacon-pln-review",
+    "beacon-pln-adr": "beacon-pln-review",
+}
+_V160_OLD_ALIAS_IDS = (
+    {row[0] for row in _V160_RENAME_MATRIX}
+    | _V160_REMOVED_OLD_ALIASES
+    | _V160_PREVIOUS_LONG_ALIAS_IDS
+    | set(_V160_INTERNAL_PLANNER_ALIAS_REWRITE_MAP)
+)
 _V160_PREVIOUS_LONG_ALIAS_REWRITE_MAP = {
     "beacon-planner-brainstorm": "beacon-pln-brainstorm",
-    "beacon-planner-deep-analysis": "beacon-pln-deep",
     "beacon-planner-friction-intake": "beacon-pln-friction",
-    "beacon-planner-founder-review": "beacon-pln-founder",
-    "beacon-planner-design-review": "beacon-pln-design",
-    "beacon-planner-security-review": "beacon-pln-security",
-    "beacon-planner-performance-review": "beacon-pln-performance",
-    "beacon-planner-doubt-review": "beacon-pln-doubt",
     "beacon-planner-source-driven": "beacon-pln-source",
-    "beacon-planner-context-engineering": "beacon-pln-context",
-    "beacon-planner-design-simplify": "beacon-pln-simplify",
-    "beacon-planner-documentation-adr": "beacon-pln-adr",
     "beacon-generator-truth-package": "beacon-gen-truth",
     "beacon-generator-truth-bootstrap": "beacon-gen-truth-init",
     "beacon-generator-truth-change": "beacon-gen-change",
@@ -225,6 +248,7 @@ _V160_ROUTE_REWRITE_MAP = {
         "beacon-user-story": "beacon-gen-truth",
         "beacon-test-case": "beacon-gen-truth",
     },
+    **_V160_INTERNAL_PLANNER_ALIAS_REWRITE_MAP,
     **_V160_PREVIOUS_LONG_ALIAS_REWRITE_MAP,
     "beacon-eval-qa-evo-deep": "beacon-eval-qa-deep",
     "beacon-gen-change-refreeze": "beacon-gen-refreeze",

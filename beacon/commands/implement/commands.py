@@ -23,7 +23,6 @@ from beacon.utils.artifact_paths import (
 )
 from beacon.utils.branch_governance import evaluate_branch_governance
 from beacon.utils.archive_governance import load_feature_archive_boundary
-from beacon.utils.automation_runtime import load_feature_automation_runtime
 from beacon.utils.circuit_breaker import CircuitBreaker
 from beacon.utils.artifact_update_obligations import write_artifact_update_obligations
 from beacon.utils.change_surface import build_change_command
@@ -908,47 +907,16 @@ def _requirement_closure_preflight(project_root: Path, *, version: str, feature:
 
 def _automation_runtime_preflight(project_root: Path, *, version: str, feature: str) -> dict[str, Any]:
     resolved_version = resolve_target_version(project_root, version)
-    runtime = load_feature_automation_runtime(project_root, feature=feature)
-    next_route = str(runtime.get("next_route") or "").strip()
-    truth_recompiled_pending = bool(runtime.get("truth_recompiled_pending", False))
-    support_review = runtime.get("support_review") if isinstance(runtime.get("support_review"), dict) else {}
-    truth_gate = runtime.get("truth_recompile_gate") if isinstance(runtime.get("truth_recompile_gate"), dict) else {}
-
-    blocked = False
-    reason_code = ""
-    recommended_command = ""
-    if next_route == "support_review" or bool(support_review.get("required", False)):
-        blocked = True
-        reason_code = "automation_support_review_required"
-        executor = str(support_review.get("executor") or "deep").strip() or "deep"
-        recommended_command = f'beacon {executor} run "{feature}" --project-root {project_root}'
-    elif truth_recompiled_pending or bool(truth_gate.get("required", False)):
-        blocked = True
-        reason_code = "automation_truth_recompile_pending"
-        recommended_command = f'beacon doctor sync-materials --project-root {project_root} --version {resolved_version} --all-features'
-    elif next_route == "change_refreeze":
-        blocked = True
-        reason_code = "automation_truth_refreeze_required"
-        recommended_command = build_change_command(
-            feature=feature,
-            project_root=project_root,
-            version=resolved_version,
-            reason="automation-truth-refreeze-required",
-        )
-
     return {
         "enabled": True,
-        "status": "blocked" if blocked else "pass",
-        "blocked": blocked,
-        "reason_code": reason_code,
-        "recommended_command": recommended_command,
+        "status": "retired",
+        "blocked": False,
+        "reason_code": "",
+        "recommended_command": "beacon-loop goal",
         "feature": feature,
         "version": resolved_version,
-        "runtime_path": str(project_root / ".beacon" / "automation" / "features" / _slug(feature) / "runtime.json"),
-        "next_route": next_route,
-        "truth_recompiled_pending": truth_recompiled_pending,
-        "support_review": support_review,
-        "truth_recompile_gate": truth_gate,
+        "runtime_path": "",
+        "retired": True,
     }
 
 

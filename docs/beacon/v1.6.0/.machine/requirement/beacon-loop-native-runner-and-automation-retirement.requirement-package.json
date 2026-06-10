@@ -1,0 +1,449 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-10T03:22:42.835040+00:00",
+  "feature": "beacon-loop-native-runner-and-automation-retirement",
+  "feature_slug": "beacon-loop-native-runner-and-automation-retirement",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "e149a58876147d7abced48e21209836f6eb0ce075add930c08ca5db9869056b5",
+    "tests": "e60f94cb4584f548695ce3a37c10ecdee7746c9116d949665cb3ff16c6721566",
+    "tasks": "f879675932b9d52edfdca685c78a0cf09b26475d9204d9f9eb369de61d741196",
+    "evidence": "6e0bfb80bdf483b9efee9171c61d9e9e38c7814b39a782e063a909f9915d1a3b"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-loop-native-runner-and-automation-retirement",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "`beacon automation` 业务代码退役，不再作为 active command surface 暴露或执行旧 queue/job/launchd 业务。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "仓库包含 `packages/beacon-loop`，并能独立构建出 `beacon-loop` CLI。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "`beacon-loop goal \"<goal>\"` 是唯一 goal entrypoint；不存在 `beacon-loop lfg` alias、deprecated alias、compatibility route 或 help hint。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "`beacon-loop goal` 启动前调用 `beacon truth-map resolve ... --json` 并记录 resolver refs。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "resolver blocked、feature package 缺失或 truth/test gap 存在时，`beacon-loop` fail closed，并推荐 `beacon-gen-change`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "resolver pass 时，`beacon-loop` 创建 `.beacon/loop/runs/<run-id>/run-package.json`、`prompt.md`、`notes.md`、`output-schema.json`、iteration logs、`evidence.json` 和 `summary.md`。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "runner 默认使用 branch/worktree isolation，并在 dirty worktree 下 fail closed，除非显式 controlled mode 存在。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "成功 iteration 自动 commit；失败 iteration rollback；commit failure 进入 repair state，且 resume 可继续。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "`beacon-loop resume <run-id>` 从既有 run metadata、notes 和 branch/worktree 状态恢复，而不是创建无关新运行。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "`beacon-loop import-evidence <run-id>` 调用 Beacon implementation evidence import，并把 runtime evidence candidate 接入 Beacon 可读实现证据面。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "Beacon QA/release 仍然是唯一 closure verdict；`beacon-loop` output 不得声明 QA pass、release ready 或 feature complete。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "docs、help、tests、command catalog 和 skill routing 全部使用 `goal` 命名，不出现 active `lfg` route。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "旧 automation tests 被删除或重写为 retirement negative tests；新增 `beacon-loop` CLI/package/runner/evidence tests。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "runtime artifacts 明确标记为 runtime process record，不是 requirement truth，不写 `.machine` requirement projection。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "`beacon-loop doctor` 能检查 Beacon CLI 可用性、Node runtime、agent backend、git/worktree 能力和 evidence import prerequisites。",
+      "description": ""
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`beacon --help` / command catalog tests",
+      "assertion": "`automation` 不再作为 active command surface 暴露；如有 stub，只能阻断并提示 `beacon-loop goal`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-002",
+      "layer": "negative",
+      "command": "`rg \"beacon-automation-queue|beacon-hourly-qa|repair-window\" beacon automation tests`",
+      "assertion": "旧 automation queue/job/launchd 业务入口被删除或不再被 active tests/docs 引导。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-003",
+      "layer": "package",
+      "command": "`cd packages/beacon-loop && npm run build`",
+      "assertion": "`packages/beacon-loop` 能构建独立 `beacon-loop` CLI。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-004",
+      "layer": "contract",
+      "command": "`beacon-loop --help`",
+      "assertion": "help 只暴露 `goal`，不暴露 `lfg`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-005",
+      "layer": "negative",
+      "command": "`beacon-loop lfg \"x\"`",
+      "assertion": "`lfg` 不是可执行 alias、deprecated alias 或 compatibility route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-006",
+      "layer": "integration",
+      "command": "`beacon-loop goal \"<goal>\" --dry-run --json`",
+      "assertion": "run package 包含 `beacon truth-map resolve ... --json` 的 resolver refs。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-007",
+      "layer": "negative",
+      "command": "`beacon-loop goal \"<missing-feature>\" --json`",
+      "assertion": "feature package 缺失或 resolver blocked 时 fail closed，并推荐 `beacon-gen-change`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-008",
+      "layer": "integration",
+      "command": "`beacon-loop goal \"<goal>\" --dry-run --json`",
+      "assertion": "创建 `.beacon/loop/runs/<run-id>/run-package.json`、`prompt.md`、`notes.md`、`output-schema.json`、`evidence.json` 和 `summary.md`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-009",
+      "layer": "negative",
+      "command": "dirty worktree fixture",
+      "assertion": "默认 dirty worktree 阻断；未显式 controlled mode 时不启动 agent loop。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-010",
+      "layer": "runner",
+      "command": "mocked agent success/failure tests",
+      "assertion": "success iteration commit；failure iteration rollback；commit failure 保留 repair state。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-011",
+      "layer": "runner",
+      "command": "`beacon-loop resume <run-id> --json`",
+      "assertion": "resume 读取既有 run metadata、notes 和 branch/worktree 状态继续，而不是新建无关 run。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-012",
+      "layer": "integration",
+      "command": "`beacon-loop import-evidence <run-id> --json`",
+      "assertion": "调用 Beacon implementation evidence import，并记录 source refs、summary refs 和 changed files/services。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-013",
+      "layer": "negative",
+      "command": "inspect `beacon-loop` result payloads",
+      "assertion": "`beacon-loop` 不输出 QA pass、release ready 或 feature complete verdict。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-014",
+      "layer": "docs",
+      "command": "`rg \"beacon-loop lfg|\\\\blfg\\\\b\" docs beacon packages tests`",
+      "assertion": "active docs/help/tests/command catalog 不出现 `lfg` route；只允许本 feature truth 中的禁止性说明。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-015",
+      "layer": "test-suite",
+      "command": "focused pytest/npm tests",
+      "assertion": "旧 automation tests 被移除或改为 retirement negative tests；新增 `beacon-loop` build、CLI、runner、evidence tests。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-016",
+      "layer": "contract",
+      "command": "inspect run artifacts",
+      "assertion": "`.beacon/loop/runs/**` artifacts 标记 runtime process record，不写 `.machine` requirement projection。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-017",
+      "layer": "CLI",
+      "command": "`beacon-loop doctor --json`",
+      "assertion": "doctor 检查 Beacon CLI、Node runtime、agent backend、git/worktree 和 evidence import prerequisites。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "从 Beacon command catalog、CLI factory、help、intent routing 和 skill routing 中移除 active `automation` surface。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "删除或改造 `beacon/commands/automation.py`，确保旧 automation queue/job 业务不可继续执行。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "删除或迁移 `beacon/utils/automation_*.py` 中只服务旧 automation 的业务逻辑。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "删除或退役 `automation/jobs/`、`automation/launchd/`、`automation/beacon-automation-queue.json` 和旧 automation 文档入口。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "新增 `packages/beacon-loop` TypeScript package，并配置独立 build/test/bin。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "实现 `beacon-loop goal \"<goal>\"` CLI，且不实现 `beacon-loop lfg` alias。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "实现 Beacon resolver adapter，启动前调用 `beacon truth-map resolve ... --json`。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "实现 resolver blocked / missing feature package / truth gap fail-closed，并推荐 `beacon-gen-change`。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "实现 `.beacon/loop/runs/<run-id>/` runtime package 写入。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "实现 git clean preflight、branch/worktree isolation 和 dirty worktree 阻断。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "实现 runner orchestrator：iteration prompt、structured output schema、notes、logs、token/iteration caps、stop condition。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "实现 success commit、failure rollback、commit failure repair state。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "实现 `status`、`stop`、`resume`、`review`、`import-evidence`、`doctor` 子命令。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "实现至少 `codex` agent adapter，并保留后续 backend extension boundary。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "实现 Beacon evidence import adapter，桥接 `beacon implement import-evidence`。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-016",
+      "title": "确保 `beacon-loop` 不输出 QA/release verdict，closure 只由 Beacon evaluator/release surfaces 裁决。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-017",
+      "title": "新增/更新 tests：automation retirement、CLI build/help、no-lfg negative、resolver integration、runner commit/rollback/resume、evidence import、doctor。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-018",
+      "title": "更新文档，明确同仓库双 CLI、单 truth、外置 loop 和 `goal` 命名。",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/beacon-loop-native-runner-and-automation-retirement.md",
+      "status": "accepted-for-change",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/evidence.md",
+      "status": "evidence-indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "gnhf-analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/oss-sync/index/analysis/kunchenguid-gnhf.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "gnhf-learning-note",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/personal-brain/sources/oss-sync-notes/kunchenguid-gnhf/2026-06-09-104020.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "beacon-project-note",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/personal-brain/projects/notes/beacon/2026-06-09-104021.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "compound-engineering-article",
+      "authority": "support_advisory",
+      "canonical_artifact": "/Users/apple/Developer/Personal/personal-brain/sources/web/mp-weixin-qq-com-superpowers-ai-51-agent-35.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "implementation-python-retirement",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/cli_factory.py; beacon/command_catalog.py; beacon/commands/automation.py; beacon/commands/implement/commands.py",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "implementation-loop-package",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "implementation-automation-tombstone",
+      "authority": "support_advisory",
+      "canonical_artifact": "automation/README.md",
+      "status": "implemented",
+      "route": "generate"
+    },
+    {
+      "surface": "implementation-tests-python",
+      "authority": "support_advisory",
+      "canonical_artifact": "tests/test_v160_beacon_loop_automation_retirement.py",
+      "status": "passing",
+      "route": "qa"
+    },
+    {
+      "surface": "implementation-tests-node",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/tests/beacon-loop.test.mjs",
+      "status": "passing",
+      "route": "qa"
+    }
+  ]
+}

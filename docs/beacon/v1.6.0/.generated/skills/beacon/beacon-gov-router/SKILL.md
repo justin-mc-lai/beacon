@@ -39,7 +39,7 @@ The public surface follows Beacon's current human-facing runtime line. Route by 
 - canonical v1.6.0 routes: `beacon-gen-truth` for truth definition/acceptance/coverage and `beacon-gen-change` for truth changes
 - route to `beacon-gen-prototype` or `beacon-gen-implement` when the request is about execution
 - route to `beacon-eval-qa` or `beacon-eval-release` when the request is about evidence or gate judgment
-- route to `beacon-pln-brainstorm`, `beacon-pln-founder`, `beacon-pln-design`, `beacon-pln-deep`, `beacon-pln-context`, `beacon-pln-source`, `beacon-pln-doubt`, `beacon-pln-security`, `beacon-pln-performance`, `beacon-pln-adr`, `beacon-gov-debug`, `beacon-gov-help`, `beacon-gov-status`, or `beacon-gov-doctor` only when support is the real need
+- route to `beacon-pln-brainstorm`, `beacon-pln-source`, `beacon-pln-review`, `beacon-pln-friction`, `beacon-gov-debug`, `beacon-gov-help`, `beacon-gov-status`, or `beacon-gov-doctor` only when support is the real need
 - if a support surface changes accepted scope, promise, or acceptance assumptions, route back through `beacon-gen-change`
 
 ## Common Rationalizations
@@ -90,18 +90,13 @@ route explanation can distinguish frozen truth and learning hint.
 - `beacon-gen-prototype`
 - `beacon-gen-change`
 - `beacon-pln-brainstorm`
-- `beacon-pln-context`
 - `beacon-pln-source`
-- `beacon-pln-doubt`
-- `beacon-pln-security`
-- `beacon-pln-performance`
-- `beacon-pln-adr`
+- `beacon-pln-review`
+- `beacon-pln-friction`
 - `beacon-gov-debug`
 - `beacon-gen-implement`
 - `beacon-eval-qa`
 - `beacon-eval-release`
-- `beacon-pln-founder`
-- `beacon-pln-design`
 - `beacon-gov-learn`
 - `beacon-gov-help`
 - `beacon-gov-status`
@@ -116,12 +111,9 @@ route explanation can distinguish frozen truth and learning hint.
 - “PRD 已经有了，但 acceptance criteria 还不够可执行” -> `beacon-gen-truth` mode `truth.acceptance` / canonical v1.6.0 route `beacon-gen-truth`
 - “故事线没问题，但测试覆盖和 release proof 还不完整” -> `beacon-gen-truth` mode `truth.coverage` / canonical v1.6.0 route `beacon-gen-truth`, then `beacon-eval-qa`
 - “我不想改 frozen truth，只想继续 challenge 假设或收敛 gap” -> `beacon-pln-brainstorm`
-- “scope 没想改，但当前实现上下文太乱，想先把上下文重排干净” -> `beacon-pln-context`
 - “truth 稳了，想确保实现和 review 时优先锚定 source 而不是自由发挥” -> `beacon-pln-source`
-- “我怀疑方案在自我合理化，想有人专门帮我找盲区和证据洞” -> `beacon-pln-doubt`
-- “这轮要先看安全边界、暴露面、权限或输入风险” -> `beacon-pln-security`
-- “这轮要先看性能瓶颈、热点路径或可扩展性风险” -> `beacon-pln-performance`
-- “这轮要补 ADR、架构决策说明或文档闭环，但不想把它误当成 requirement truth” -> `beacon-pln-adr`
+- “我怀疑方案在自我合理化，或要同时看 founder、doubt、安全、性能、设计、ADR、上下文、简化和状态机” -> `beacon-pln-review`
+- “需要完整复刻 source 能力、保持 full parity、补 parity matrix 或 state-machine review” -> `beacon-pln-review`
 - “我被实现/运行时异常卡住了，想先走恢复与调试支持面” -> `beacon-gov-debug`
 - “scope 要变，或者 freeze 后要补正式 truth” -> `beacon-gen-change`
 - “代码准备动了，直接进入执行” -> `beacon-gen-implement`

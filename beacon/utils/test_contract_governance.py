@@ -611,9 +611,13 @@ def build_test_contract_gate_payload(project_root: Path, *, version: str, featur
         }
     payload = load_test_contract_index(project_root, version=resolved_version)
     structural_codes: list[str] = []
-    if str(payload.get("feature_slug") or "") != feature_slug(feature) or str(payload.get("version") or "") != resolved_version:
+    requested_slug = feature_slug(feature)
+    index_slug = str(payload.get("feature_slug") or "").strip()
+    if index_slug and index_slug != requested_slug:
+        payload = build_test_contract_index(project_root, version=resolved_version, feature=feature, write=False)
+    if str(payload.get("feature_slug") or "") != requested_slug or str(payload.get("version") or "") != resolved_version:
         structural_codes.append("test_contract_index_stale")
-    paths = _source_paths(project_root, resolved_version, feature_slug(feature))
+    paths = _source_paths(project_root, resolved_version, requested_slug)
     expected_hashes = _source_hashes(paths)
     actual_hashes = payload.get("source_hashes") if isinstance(payload.get("source_hashes"), dict) else {}
     if expected_hashes != {str(key): str(value) for key, value in actual_hashes.items()}:

@@ -4,7 +4,7 @@
 - feature: `beacon-skill-harness-taxonomy-v160`
 - revision_id: `R8`
 - verdict: `passed`
-- accepted_at: `2026-06-09T03:40:53.617945+00:00`
+- accepted_at: `2026-06-09T09:16:02.756194+00:00`
 - accepted_by: `qa`
 
 ## Summary

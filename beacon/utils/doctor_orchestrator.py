@@ -16,6 +16,7 @@ from beacon.utils.technical_review_contract import technical_review_contract_jso
 from beacon.utils.version_aggregate_projection import (
     PROJECTION_ROLE,
     write_feature_change_projection,
+    write_version_aggregate_projection,
 )
 from beacon.utils.versioning import describe_project_version_context, resolve_target_version
 from beacon.utils.writeback import acceptance_projection_transaction_contract
@@ -582,23 +583,7 @@ def run_version_aggregate_projection_repair(
         overwrite=overwrite_feature_projection,
     )
 
-    from beacon.commands import release as release_command
-
-    version_payload = release_command._build_version_change_payload(ctx.project_root, version=resolved_version)
-    version_payload = release_command._stabilize_version_change_payload(
-        ctx.project_root,
-        version=resolved_version,
-        payload=version_payload,
-    )
-    version_change_md = change_docs_file(ctx.project_root, resolved_version, f"{resolved_version}.md")
-    version_change_json = change_file_output(ctx.project_root, resolved_version, f"{resolved_version}.json")
-    version_change_md.parent.mkdir(parents=True, exist_ok=True)
-    version_change_json.parent.mkdir(parents=True, exist_ok=True)
-    version_change_md.write_text(release_command._render_version_change_markdown(version_payload), encoding="utf-8")
-    version_change_json.write_text(
-        json.dumps(version_payload, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
+    version_aggregate = write_version_aggregate_projection(ctx.project_root, version=resolved_version)
 
     test_index = build_test_contract_index(ctx.project_root, version=resolved_version, feature=feature, write=True)
     test_gate = build_test_contract_gate_payload(ctx.project_root, version=resolved_version, feature=feature)
@@ -619,17 +604,11 @@ def run_version_aggregate_projection_repair(
             "release_publish_action": False,
             "feature_projection": feature_projection,
             "version_aggregate_projection": {
-                "markdown_path": str(version_change_md.relative_to(ctx.project_root)),
-                "json_path": str(version_change_json.relative_to(ctx.project_root)),
-                "feature_count": int(version_payload.get("feature_count") or 0),
-                "feature_slugs": [
-                    str(item.get("feature_slug") or "")
-                    for item in version_payload.get("features", [])
-                    if isinstance(item, dict) and str(item.get("feature_slug") or "")
-                ],
-                "implementation_order": version_payload.get("implementation_order")
-                if isinstance(version_payload.get("implementation_order"), dict)
-                else {},
+                "markdown_path": version_aggregate["markdown_path"],
+                "json_path": version_aggregate["json_path"],
+                "feature_count": version_aggregate["feature_count"],
+                "feature_slugs": version_aggregate["feature_slugs"],
+                "implementation_order": version_aggregate["implementation_order"],
             },
             "test_contract_index": test_index,
             "test_contract_verify": test_gate,

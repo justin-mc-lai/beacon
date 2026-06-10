@@ -15,7 +15,6 @@ CORE_COMMANDS = (
 )
 
 SUPPORT_COMMANDS = (
-    "automation",
     "board",
     "code2truth",
     "help",
@@ -103,7 +102,6 @@ COMMAND_LAYER_ORDER = (
 
 # Keep the canonical ordering stable for auto-generated docs/tests.
 SUPPORTED_SUBCOMMANDS = (
-    "automation",
     "ask",
     "analyze",
     "archive",

@@ -1,0 +1,1180 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-pln-review-intent-parity-state-machine-v160",
+  "feature_slug": "beacon-pln-review-intent-parity-state-machine-v160",
+  "version": "v1.6.0",
+  "generated_at": "2026-06-09T08:46:58.252399+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "",
+      "text": "founder/security/performance/doubt/context/simplify/adr/design/deep 均作为 internal reviewer 或 references 出现，不作为默认 public planner route。",
+      "scenario_ids": [
+        "SC-AUTO-TC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "",
+      "text": "`SKILL.md` 是薄入口，并直接引用 reviewer catalog、finding schema、intent parity artifacts、state-machine review 和 skill package standard references。",
+      "scenario_ids": [
+        "SC-AUTO-TC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "",
+      "text": "planner 被要求写 truth、写代码、改 `.machine`、给 QA/release verdict 时，`beacon-pln-review` 被 HARD GATE 阻断并 route。",
+      "scenario_ids": [
+        "SC-AUTO-TC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "",
+      "text": "planner review artifact 保留用户原始强意图词和 `intent_snapshot`。",
+      "scenario_ids": [
+        "SC-AUTO-TC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-005",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "",
+      "text": "含“完整复刻/同等能力/做全”的 prompt 默认输出 `scope_mode=full_parity`，不得自动降级 MVP。",
+      "scenario_ids": [
+        "SC-AUTO-TC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-006",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "",
+      "text": "source refs 存在但缺少 `source_capability_inventory` 或 `parity_matrix` 时，freeze/implement route 被阻断。",
+      "scenario_ids": [
+        "SC-AUTO-TC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "",
+      "text": "存在 MVP、延期、裁剪或未覆盖能力但缺少 `deferral_ledger` 和 user decision 时，review 输出 P0/P1 finding。",
+      "scenario_ids": [
+        "SC-AUTO-TC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-008",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "",
+      "text": "reviewer catalog 包含 `state-machine` reviewer，且触发条件覆盖 lifecycle、workflow、loop、resume/stop/recovery、permission 和 source parity。",
+      "scenario_ids": [
+        "SC-AUTO-TC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-009",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "",
+      "text": "state-machine reviewer 输出 states、transitions、invalid transitions、side effects、recovery paths、terminal states、state axes 和 coverage implications。",
+      "scenario_ids": [
+        "SC-AUTO-TC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-010",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "",
+      "text": "复杂 feature 需要 state-machine 但 `truth.md` 缺少 `State Model` / `Diagram Truth Layer` 时，review route 指向 `beacon-gen-truth` 或 `beacon-gen-change`。",
+      "scenario_ids": [
+        "SC-AUTO-TC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-011",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "",
+      "text": "复杂 feature 需要 state-machine 但 `tests.md` 缺少状态转移、非法转移、恢复路径或状态轴组合覆盖时，review route 指向 `beacon-gen-truth` coverage。",
+      "scenario_ids": [
+        "SC-AUTO-TC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-012",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "",
+      "text": "research 状态机图/业务流图被识别为 `support_advisory`，没有 `user_decision` 和 `promotion_ref` 时不能成为 truth closure。",
+      "scenario_ids": [
+        "SC-AUTO-TC-013"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-013",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "",
+      "text": "findings 包含 reviewer、severity、confidence、authority_level、evidence_refs、affected_truth_surface、recommended_route 和 user_decision_required。",
+      "scenario_ids": [
+        "SC-AUTO-TC-014"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-014",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "",
+      "text": "planner findings 默认 `autofix_allowed=false`，不得声明 planner 可自动改 truth 或实现。",
+      "scenario_ids": [
+        "SC-AUTO-TC-015"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-015",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "",
+      "text": "多 reviewer 输出被 merge/dedup/synthesize 为单一 route recommendation，并保留冲突/置信度。",
+      "scenario_ids": [
+        "SC-AUTO-TC-016"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-016",
+          "source_tc_id": "TC-016",
+          "tc_id": "TC-016-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "",
+      "text": "public skills 的 frontmatter、description、references、metadata 和 eval contract 符合 skill-creator anatomy。",
+      "scenario_ids": [
+        "SC-AUTO-TC-017"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-017",
+          "source_tc_id": "TC-017",
+          "tc_id": "TC-017-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "",
+      "text": "eval/benchmark 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。",
+      "scenario_ids": [
+        "SC-AUTO-TC-018"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-018",
+          "source_tc_id": "TC-018",
+          "tc_id": "TC-018-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "",
+      "text": "本 feature 没有新增 Beacon 主生命周期 stage。",
+      "scenario_ids": [
+        "SC-AUTO-TC-019"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-019",
+          "source_tc_id": "TC-019",
+          "tc_id": "TC-019-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "",
+      "text": "安装/投影到 agent surface 后，只暴露收敛后的 public planner surface；细分 planner 能力只以 internal reviewer/reference 存在。",
+      "scenario_ids": [
+        "SC-AUTO-TC-020"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-020",
+          "source_tc_id": "TC-020",
+          "tc_id": "TC-020-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: v1.6.0 materialized skill package 的 public planner surface 只包含 `beacon-pln-brainstorm`、`beacon-p",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill package verify --project-root . --version v1.6.0 --json",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "founder/security/performance/doubt/context/simplify/adr/design/deep 均作为 internal reviewer 或 references 出现，不作为默认 public planner route。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/reviewer-catalog.md\").read_text(); terms=[\"founder-business\",\"adversarial-doubt\",\"security-boundary\",\"performance-boundary\",\"context-engineering\",\"simplification-risk\",\"adr-documentation\",\"design-flow\",\"state-machine\",\"not host-visible public skills\"]; checks=[{\"name\": term, \"status\": \"pass\"} for term in terms if term in text]; assert len(checks)==len(terms), sorted(set(terms)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'",
+      "assertion": "founder/security/performance/doubt/context/simplify/adr/design/deep 均作为 internal reviewer 或 references 出现，不作为默认 public planner route。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`SKILL.md` 是薄入口，并直接引用 reviewer catalog、finding schema、intent parity artifacts、state-machine review 和 skill package standard references。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/SKILL.md\").read_text(); refs=[\"references/reviewer-catalog.md\",\"references/finding-schema.md\",\"references/intent-parity-artifacts.md\",\"references/state-machine-review.md\",\"references/skill-package-standard.md\"]; checks=[{\"name\": ref, \"status\": \"pass\"} for ref in refs if ref in text]; assert len(checks)==len(refs), sorted(set(refs)-set(c[\"name\"] for c in checks)); assert len(text.splitlines()) < 120; print(json.dumps({\"status\":\"pass\",\"checks\":checks+[{\"name\":\"thin_skill_entry\",\"status\":\"pass\"}]}))'",
+      "assertion": "`SKILL.md` 是薄入口，并直接引用 reviewer catalog、finding schema、intent parity artifacts、state-machine review 和 skill package standard references。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "planner 被要求写 truth、写代码、改 `.machine`、给 QA/release verdict 时，`beacon-pln-review` 被 HARD GATE 阻断并 route。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "planner 被要求写 truth、写代码、改 `.machine`、给 QA/release verdict 时，`beacon-pln-review` 被 HARD GATE 阻断并 route。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-005",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "planner review artifact 保留用户原始强意图词和 `intent_snapshot`。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "planner review artifact 保留用户原始强意图词和 `intent_snapshot`。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-006",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "含“完整复刻/同等能力/做全”的 prompt 默认输出 `scope_mode=full_parity`，不得自动降级 MVP。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "含“完整复刻/同等能力/做全”的 prompt 默认输出 `scope_mode=full_parity`，不得自动降级 MVP。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "source refs 存在但缺少 `source_capability_inventory` 或 `parity_matrix` 时，freeze/implement route 被阻断。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "source refs 存在但缺少 `source_capability_inventory` 或 `parity_matrix` 时，freeze/implement route 被阻断。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-008",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "存在 MVP、延期、裁剪或未覆盖能力但缺少 `deferral_ledger` 和 user decision 时，review 输出 P0/P1 finding。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "存在 MVP、延期、裁剪或未覆盖能力但缺少 `deferral_ledger` 和 user decision 时，review 输出 P0/P1 finding。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-009",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "reviewer catalog 包含 `state-machine` reviewer，且触发条件覆盖 lifecycle、workflow、loop、resume/stop/recovery、permission 和 source parity。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib; text=(pathlib.Path(\"skills/beacon/beacon-pln-review/references/reviewer-catalog.md\").read_text()+\"\\n\"+pathlib.Path(\"skills/beacon/beacon-pln-review/references/state-machine-review.md\").read_text()).lower(); terms=[\"state-machine\",\"lifecycle\",\"workflow\",\"loop\",\"resume\",\"stop\",\"recovery\",\"permission\",\"source parity\"]; checks=[{\"name\": term, \"status\": \"pass\"} for term in terms if term in text]; assert len(checks)==len(terms), sorted(set(terms)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'",
+      "assertion": "reviewer catalog 包含 `state-machine` reviewer，且触发条件覆盖 lifecycle、workflow、loop、resume/stop/recovery、permission 和 source parity。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-010",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "state-machine reviewer 输出 states、transitions、invalid transitions、side effects、recovery paths、terminal states、state axes 和 coverage implications。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "state-machine reviewer 输出 states、transitions、invalid transitions、side effects、recovery paths、terminal states、state axes 和 coverage implications。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-011",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "复杂 feature 需要 state-machine 但 `truth.md` 缺少 `State Model` / `Diagram Truth Layer` 时，review route 指向 `beacon-gen-truth` 或 `beacon-gen-change`。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0 --json",
+      "assertion": "复杂 feature 需要 state-machine 但 `truth.md` 缺少 `State Model` / `Diagram Truth Layer` 时，review route 指向 `beacon-gen-truth` 或 `beacon-gen-change`。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-012",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "复杂 feature 需要 state-machine 但 `tests.md` 缺少状态转移、非法转移、恢复路径或状态轴组合覆盖时，review route 指向 `beacon-gen-truth` coverage。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0 --json",
+      "assertion": "复杂 feature 需要 state-machine 但 `tests.md` 缺少状态转移、非法转移、恢复路径或状态轴组合覆盖时，review route 指向 `beacon-gen-truth` coverage。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-013",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "research 状态机图/业务流图被识别为 `support_advisory`，没有 `user_decision` 和 `promotion_ref` 时不能成为 truth closure。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill package verify-research beacon-pln-review-intent-parity-state-machine-v160 --project-root . --version v1.6.0 --json",
+      "assertion": "research 状态机图/业务流图被识别为 `support_advisory`，没有 `user_decision` 和 `promotion_ref` 时不能成为 truth closure。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-014",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-PRIMARY",
+      "ac_id": "AC-014",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "findings 包含 reviewer、severity、confidence、authority_level、evidence_refs、affected_truth_surface、recommended_route 和 user_decision_required。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/finding-schema.md\").read_text(); fields=[\"reviewer\",\"severity\",\"confidence\",\"authority_level\",\"evidence_refs\",\"affected_truth_surface\",\"recommended_route\",\"user_decision_required\"]; checks=[{\"name\": field, \"status\": \"pass\"} for field in fields if field in text]; assert len(checks)==len(fields), sorted(set(fields)-set(c[\"name\"] for c in checks)); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'",
+      "assertion": "findings 包含 reviewer、severity、confidence、authority_level、evidence_refs、affected_truth_surface、recommended_route 和 user_decision_required。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-014/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-015",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-PRIMARY",
+      "ac_id": "AC-015",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "planner findings 默认 `autofix_allowed=false`，不得声明 planner 可自动改 truth 或实现。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib; text=pathlib.Path(\"skills/beacon/beacon-pln-review/references/finding-schema.md\").read_text().lower(); checks=[{\"name\":\"autofix_allowed_default_false\",\"status\":\"pass\"},{\"name\":\"planner_routes_instead_of_fixing\",\"status\":\"pass\"}]; assert \"autofix_allowed` defaults to `false\" in text or \"autofix_allowed` defaults to `false`\" in text; assert \"planner cannot mark qa/release pass\" in text; print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'",
+      "assertion": "planner findings 默认 `autofix_allowed=false`，不得声明 planner 可自动改 truth 或实现。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-015/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-016",
+      "source_tc_id": "TC-016",
+      "tc_id": "TC-016-PRIMARY",
+      "ac_id": "AC-016",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "多 reviewer 输出被 merge/dedup/synthesize 为单一 route recommendation，并保留冲突/置信度。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "多 reviewer 输出被 merge/dedup/synthesize 为单一 route recommendation，并保留冲突/置信度。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-016/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-017",
+      "source_tc_id": "TC-017",
+      "tc_id": "TC-017-PRIMARY",
+      "ac_id": "AC-017",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "public skills 的 frontmatter、description、references、metadata 和 eval contract 符合 skill-creator anatomy。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -c 'import json, pathlib, yaml; root=pathlib.Path(\"skills/beacon/beacon-pln-review\"); skill=(root/\"SKILL.md\").read_text(); meta=yaml.safe_load(skill.split(\"---\",2)[1]); checks=[{\"name\":\"frontmatter_name\",\"status\":\"pass\"},{\"name\":\"description_boundary\",\"status\":\"pass\"},{\"name\":\"direct_references\",\"status\":\"pass\"},{\"name\":\"openai_metadata\",\"status\":\"pass\"},{\"name\":\"eval_contract\",\"status\":\"pass\"}]; assert meta[\"name\"]==\"beacon-pln-review\"; assert \"without writing truth, code, QA verdicts, or release verdicts\" in meta[\"description\"]; assert \"references/skill-package-standard.md\" in skill; assert (root/\"agents/openai.yaml\").exists(); assert \"Eval Contract\" in (root/\"references/skill-package-standard.md\").read_text(); print(json.dumps({\"status\":\"pass\",\"checks\":checks}))'",
+      "assertion": "public skills 的 frontmatter、description、references、metadata 和 eval contract 符合 skill-creator anatomy。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-017/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-018",
+      "source_tc_id": "TC-018",
+      "tc_id": "TC-018-PRIMARY",
+      "ac_id": "AC-018",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "eval/benchmark 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0",
+      "assertion": "eval/benchmark 覆盖 intent parity、source parity、state-machine、boundary negative 和 finding schema。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-018/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-019",
+      "source_tc_id": "TC-019",
+      "tc_id": "TC-019-PRIMARY",
+      "ac_id": "AC-019",
+      "qa_type": "contract",
+      "layer": "docs",
+      "scenario_family": "primary",
+      "title": "本 feature 没有新增 Beacon 主生命周期 stage。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "rg \"plan -> truth -> generate -> evaluate -> release\" docs/beacon/v1.6.0 skills/beacon",
+      "assertion": "本 feature 没有新增 Beacon 主生命周期 stage。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-019/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-020",
+      "source_tc_id": "TC-020",
+      "tc_id": "TC-020-PRIMARY",
+      "ac_id": "AC-020",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "安装/投影到 agent surface 后，只暴露收敛后的 public planner surface；细分 planner 能力只以 internal reviewer/reference 存在。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon doctor verify-agent-surface --project-root . --version v1.6.0 --agent codex --strict --json",
+      "assertion": "安装/投影到 agent surface 后，只暴露收敛后的 public planner surface；细分 planner 能力只以 internal reviewer/reference 存在。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-intent-parity-state-machine-v160/tc-020/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

@@ -204,6 +204,42 @@ def write_feature_change_projection(
     }
 
 
+def write_version_aggregate_projection(project_root: Path, *, version: str) -> dict[str, Any]:
+    """Write the release-facing version aggregate projection/read model."""
+
+    from beacon.commands import release as release_command
+
+    root = project_root.expanduser().resolve()
+    payload = release_command._build_version_change_payload(root, version=version)
+    payload = release_command._stabilize_version_change_payload(root, version=version, payload=payload)
+    markdown_path = change_docs_file(root, version, f"{version}.md")
+    json_path = change_file_output(root, version, f"{version}.json")
+    markdown_path.parent.mkdir(parents=True, exist_ok=True)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    markdown_path.write_text(release_command._render_version_change_markdown(payload), encoding="utf-8")
+    write_json(json_path, payload)
+    return {
+        "schema_version": "1.0",
+        "status": "pass",
+        "version": version,
+        "markdown_path": _rel(root, markdown_path),
+        "json_path": _rel(root, json_path),
+        "feature_count": int(payload.get("feature_count") or 0),
+        "feature_slugs": [
+            str(item.get("feature_slug") or "")
+            for item in payload.get("features", [])
+            if isinstance(item, dict) and str(item.get("feature_slug") or "")
+        ],
+        "projection_role": dict(PROJECTION_ROLE),
+        "truth_authority": False,
+        "lifecycle_stage": False,
+        "release_publish_action": False,
+        "implementation_order": payload.get("implementation_order")
+        if isinstance(payload.get("implementation_order"), dict)
+        else {},
+    }
+
+
 def version_aggregate_projection_status(
     project_root: Path,
     *,

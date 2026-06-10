@@ -15,6 +15,10 @@ from beacon.utils.revision_state import freeze_revision_state, load_revision_sta
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
 from beacon.utils.story_state import feature_slug, freeze_story_state, load_story_state, reopen_story_state
 from beacon.utils.truth_map import feature_package_authoritative_feature, resolve_truth_read_refs
+from beacon.utils.version_aggregate_projection import (
+    write_feature_change_projection,
+    write_version_aggregate_projection,
+)
 from beacon.utils.versioning import resolve_target_version
 
 
@@ -409,6 +413,24 @@ def run_change_refreeze_chain(
         payload["refreeze_status"] = "complete"
         payload["truth_revision_after"] = _revision_ref(frozen_revision)
         payload["revision_delta"] = revision_delta
+        feature_projection = write_feature_change_projection(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            overwrite=True,
+        )
+        version_aggregate_projection = write_version_aggregate_projection(
+            project_root,
+            version=resolved_version,
+        )
+        payload["release_projection_sync"] = {
+            "status": "pass",
+            "truth_authority": False,
+            "lifecycle_stage": False,
+            "release_publish_action": False,
+            "feature_projection": feature_projection,
+            "version_aggregate_projection": version_aggregate_projection,
+        }
         payload["next_route"] = _next_route_payload(
             project_root=project_root,
             version=resolved_version,

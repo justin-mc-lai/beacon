@@ -205,6 +205,23 @@ def test_doctor_build_and_verify_commands(tmp_path: Path) -> None:
     assert verify_payload["result"]["gate"]["status"] == "pass"
 
 
+def test_gate_rebuilds_in_memory_when_global_index_belongs_to_other_feature(tmp_path: Path) -> None:
+    _seed_project(tmp_path)
+    build_test_contract_index(tmp_path, version=VERSION, feature=FEATURE, write=True)
+    index_path = contract_index_path(tmp_path, VERSION)
+    payload = json.loads(index_path.read_text(encoding="utf-8"))
+    payload["feature"] = "other-feature"
+    payload["feature_slug"] = "other-feature"
+    payload["source_hashes"] = {"truth": "sha256:other"}
+    index_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    gate = build_test_contract_gate_payload(tmp_path, version=VERSION, feature=FEATURE)
+
+    assert gate["blocked"] is False
+    assert gate["release_gate"]["blocked"] is False
+    assert "test_contract_index_stale" not in gate["release_gate"]["reason_codes"]
+
+
 def test_verify_missing_index_has_repair_route(tmp_path: Path) -> None:
     _seed_project(tmp_path)
 

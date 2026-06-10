@@ -405,6 +405,26 @@ def test_machine_json_source_hash_freshness(tmp_path: Path) -> None:
     assert len(payload["checked_machine_json"]) == 3
 
 
+def test_truth_map_verify_ignores_other_feature_validation_projection(tmp_path: Path) -> None:
+    _seed_v151_package(tmp_path)
+    rebuild_machine_json(tmp_path, version=VERSION, feature=FEATURE)
+    validation_path = tmp_path / f"docs/beacon/{VERSION}/.machine/requirement/feature-package-validation.json"
+    validation_payload = json.loads(validation_path.read_text(encoding="utf-8"))
+    validation_payload["feature"] = "other-feature"
+    validation_payload["feature_slug"] = "other-feature"
+    validation_payload["source_hashes"] = {"truth": "other"}
+    validation_path.write_text(json.dumps(validation_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+    payload = verify_truth_map(tmp_path, version=VERSION, feature=FEATURE, strict=True)
+
+    assert payload["status"] == "pass"
+    assert not any(
+        item.get("code") == "machine_json_source_hash_stale"
+        and item.get("path") == f"docs/beacon/{VERSION}/.machine/requirement/feature-package-validation.json"
+        for item in payload["diagnostics"]
+    )
+
+
 def test_runtime_json_is_exempt_from_markdown_twin_requirement(tmp_path: Path) -> None:
     runtime_path = tmp_path / ".beacon" / "runs" / "run-1" / "state.json"
     write_json(runtime_path, {"runtime": True})

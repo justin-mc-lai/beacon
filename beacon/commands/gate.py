@@ -2938,6 +2938,9 @@ def check_v137_implement_prompt_boundary_contract(
 
     prompt_status = str(prompt_boundary.get("status") or "").strip().lower()
     prompt_blocked = bool(prompt_boundary.get("blocked", False))
+    prompt_required = bool(prompt_boundary.get("required", False))
+    if not prompt_required and not prompt_blocked:
+        return issues
     if prompt_status != "pass" or prompt_blocked:
         reason_code = str(prompt_boundary.get("reason_code") or "implement_prompt_boundary_missing").strip() or "implement_prompt_boundary_missing"
         issues.append(

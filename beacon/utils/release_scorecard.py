@@ -34,7 +34,6 @@ from beacon.utils.test_contract_governance import build_test_contract_gate_paylo
 from beacon.utils.truth_map import resolve_version_governance
 from beacon.utils.prototype_support import version_requires_prototype
 from beacon.utils.prototype_support import prototype_status
-from beacon.utils.support_surface_transactions import load_support_surface_summary
 from beacon.utils.version_surface import (
     VERSION_SURFACE_GOVERNANCE_REASON_CODE,
     get_version_surface_governance_payload,
@@ -59,14 +58,6 @@ BROWSER_RELEASE_BLOCKER_CODES = (
     "browser_runtime_admission_missing",
     "browser_runner_learning_missing",
 )
-DEFAULT_CEO_CHALLENGE_AXES = (
-    "too_smooth_path",
-    "buried_landmine",
-    "truth_freeze_destabilization",
-    "stage_boundary_sprawl",
-    "false_closure_signal",
-    "operator_cost_underpricing",
-)
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -77,36 +68,6 @@ def _load_json(path: Path) -> dict[str, Any]:
     except Exception:  # noqa: BLE001
         return {}
     return payload if isinstance(payload, dict) else {}
-
-
-def build_ceo_challenge_coverage(ceo_review: dict[str, Any] | None) -> dict[str, Any]:
-    review = ceo_review if isinstance(ceo_review, dict) else {}
-    covered_axes = [
-        str(item).strip()
-        for item in (review.get("challenge_axis_codes") or [])
-        if str(item).strip()
-    ]
-    covered_axis_set = set(covered_axes)
-    missing_axes = [axis for axis in DEFAULT_CEO_CHALLENGE_AXES if axis not in covered_axis_set]
-    status = str(review.get("status") or "").strip()
-    decision = str(review.get("decision") or "").strip()
-    latest_next_route = str(review.get("latest_next_route") or "").strip()
-    needs_challenge = (not status) or bool(missing_axes)
-    gap_status = "warn" if needs_challenge else "pass"
-    return {
-        "status": status or "missing",
-        "decision": decision or "none",
-        "latest_next_route": latest_next_route or "none",
-        "covered_axes": covered_axes,
-        "missing_axes": missing_axes,
-        "coverage_complete": len(missing_axes) == 0 and bool(covered_axes),
-        "needs_challenge": needs_challenge,
-        "gap_status": gap_status,
-        "recommended_action": "rerun_ceo_review" if needs_challenge else "none",
-        "promotion_status": "warn" if needs_challenge else "pass",
-        "promotion_decision": "challenge_refresh_recommended" if needs_challenge else "challenge_coverage_current",
-        "reason_code": "ceo_challenge_gap" if needs_challenge else "",
-    }
 
 
 def _resolve_release_gate_report(project_root: Path, *, version: str) -> dict[str, Any]:
@@ -394,7 +355,12 @@ def _resolve_acceptance_truth(
     )
     effective_scorecard = scorecard_payload or qa_embedded_scorecard
 
-    feature = str(qa_payload.get("feature") or effective_scorecard.get("feature") or "").strip()
+    feature = str(
+        acceptance_payload.get("feature")
+        or effective_scorecard.get("feature")
+        or qa_payload.get("feature")
+        or ""
+    ).strip()
     qa_status_value = str(qa_payload.get("status") or "").strip().lower()
     qa_release_ready = bool(qa_payload.get("release_ready", False))
     qa_evidence_done = bool(qa_payload.get("evidence_done", False))
@@ -1167,15 +1133,6 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "reason_codes": sorted({code for code in host_native_reason_codes if str(code).strip()}),
         "traceability": dict(release_delivery_read_model.get("traceability") or {}),
     }
-    ceo_review = load_support_surface_summary(project_root, surface="beacon-ceo-review")
-    if ceo_review:
-        ceo_version = str(ceo_review.get("version") or "").strip()
-        ceo_feature = str(ceo_review.get("feature") or "").strip()
-        if ceo_version and ceo_version != resolved_version:
-            ceo_review = {}
-        elif feature and ceo_feature and ceo_feature != feature:
-            ceo_review = {}
-    ceo_challenge_coverage = build_ceo_challenge_coverage(ceo_review if isinstance(ceo_review, dict) else {})
     return {
         "schema_version": "1.0",
         "version": resolved_version,
@@ -1268,8 +1225,6 @@ def build_release_scorecard(project_root: Path, *, version: str) -> dict[str, An
         "evidence_manifest": evidence_manifest,
         "delivery_read_model": release_delivery_read_model,
         "host_native_delivery": host_native_delivery,
-        "ceo_review": ceo_review if isinstance(ceo_review, dict) else {},
-        "ceo_challenge_coverage": ceo_challenge_coverage,
     }
 
 
@@ -1340,12 +1295,6 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
     latest_experiment = payload.get("latest_experiment") if isinstance(payload.get("latest_experiment"), dict) else {}
     host_native_delivery = payload.get("host_native_delivery") if isinstance(payload.get("host_native_delivery"), dict) else {}
     reconciliation = payload.get("reconciliation") if isinstance(payload.get("reconciliation"), dict) else {}
-    ceo_review = payload.get("ceo_review") if isinstance(payload.get("ceo_review"), dict) else {}
-    ceo_challenge_coverage = (
-        payload.get("ceo_challenge_coverage")
-        if isinstance(payload.get("ceo_challenge_coverage"), dict)
-        else build_ceo_challenge_coverage(ceo_review)
-    )
     return {
         "release_ready": bool(payload.get("release_ready", False)),
         "gate_status": str(gate.get("status") or "unknown"),
@@ -1462,19 +1411,6 @@ def summarize_release_scorecard(scorecard: dict[str, Any] | None) -> dict[str, A
         "version_surface_governance_repair": list(version_surface_governance.get("repair_commands") or []),
         "host_native_delivery_status": str(host_native_delivery.get("status") or ""),
         "host_native_delivery_reason_codes": list(host_native_delivery.get("reason_codes") or []),
-        "ceo_review_status": str(ceo_review.get("status") or ""),
-        "ceo_review_decision": str(ceo_review.get("decision") or ""),
-        "ceo_review_latest_next_route": str(ceo_review.get("latest_next_route") or ""),
-        "ceo_review_challenge_axis_codes": list(ceo_review.get("challenge_axis_codes") or []),
-        "ceo_challenge_gap_status": str(ceo_challenge_coverage.get("gap_status") or ""),
-        "ceo_challenge_covered_axes": list(ceo_challenge_coverage.get("covered_axes") or []),
-        "ceo_challenge_missing_axes": list(ceo_challenge_coverage.get("missing_axes") or []),
-        "ceo_challenge_coverage_complete": bool(ceo_challenge_coverage.get("coverage_complete", False)),
-        "ceo_challenge_needs_challenge": bool(ceo_challenge_coverage.get("needs_challenge", False)),
-        "ceo_challenge_recommended_action": str(ceo_challenge_coverage.get("recommended_action") or ""),
-        "ceo_challenge_promotion_status": str(ceo_challenge_coverage.get("promotion_status") or ""),
-        "ceo_challenge_promotion_decision": str(ceo_challenge_coverage.get("promotion_decision") or ""),
-        "ceo_challenge_reason_code": str(ceo_challenge_coverage.get("reason_code") or ""),
         "reconciliation_required": bool(reconciliation.get("required", False)),
         "reconciliation_reason_code": str(reconciliation.get("reason_code") or ""),
         "reconciliation_artifact_path": str(reconciliation.get("artifact_path") or ""),

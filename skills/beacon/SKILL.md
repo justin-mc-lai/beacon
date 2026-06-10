@@ -50,19 +50,12 @@ Route by authority boundary, not by old stage names or tool familiarity.
 Planner:
 
 - `beacon-pln-brainstorm`
-- `beacon-pln-deep`
-- `beacon-pln-friction`
-- `beacon-pln-founder`
-- `beacon-pln-design`
-- `beacon-pln-security`
-- `beacon-pln-performance`
-- `beacon-pln-doubt`
 - `beacon-pln-source`
-- `beacon-pln-context`
-- `beacon-pln-simplify`
-- `beacon-pln-adr`
+- `beacon-pln-review`
+- `beacon-pln-friction`
 
 Planner tools may still route to stable CLI commands. For example, `beacon-pln-friction` can recommend `beacon friction-intake run ...` while remaining a planner support surface.
+Former fine-grained planner surfaces such as founder, doubt, security, performance, context, simplify, ADR, design, and deep review are internal reviewers inside `beacon-pln-review`, not default host-visible routes.
 
 Generator:
 

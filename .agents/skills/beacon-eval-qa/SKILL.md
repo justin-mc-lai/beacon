@@ -130,7 +130,7 @@ When writing `features/<slug>/evidence.md`, keep evidence as an index with expli
 
 | Surface | Authority | Canonical Artifact | Status | Route |
 |---------|-----------|--------------------|--------|-------|
-| beacon-pln-deep | support_advisory | docs/beacon/v1.5.2/research/example.md | indexed | change |
+| beacon-pln-review | support_advisory | docs/beacon/v1.5.2/research/example.md | indexed | change |
 | qa | qa_verdict | docs/beacon/v1.5.2/.machine/qa/example.qa9-matrix.json | linked | qa |
 ```
 

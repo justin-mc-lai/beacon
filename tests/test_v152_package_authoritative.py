@@ -37,6 +37,7 @@ from beacon.utils.truth_map import (
     verify_truth_entrypoint_inventory,
     verify_truth_map,
 )
+from beacon.utils.version_aggregate_projection import version_aggregate_projection_status
 
 VERSION = "v1.5.2"
 V151 = "v1.5.1"
@@ -503,6 +504,12 @@ def test_change_refreeze_chain_uses_package_surfaces_without_legacy_triptych(tmp
     assert payload["requirement_package"]["requirement_refs"]["prd"] == f"docs/beacon/{VERSION}/features/{SLUG}/truth.md"
     assert payload["requirement_package"]["story_sync"]["ac_count"] == 8
     assert payload["truth_revision_after"]["baseline_hash"] != "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    assert payload["release_projection_sync"]["status"] == "pass"
+    assert payload["release_projection_sync"]["truth_authority"] is False
+    projection_status = version_aggregate_projection_status(tmp_path, version=VERSION, current_feature=FEATURE)
+    assert projection_status["status"] == "pass"
+    assert projection_status["includes_current_feature"] is True
+    assert projection_status["feature_projection"]["status"] == "pass"
 
 
 def test_change_refreeze_chain_accepts_relative_project_root_for_package_authority(tmp_path: Path, monkeypatch) -> None:

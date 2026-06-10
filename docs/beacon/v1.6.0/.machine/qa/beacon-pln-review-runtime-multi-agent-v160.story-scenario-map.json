@@ -1,0 +1,890 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-pln-review-runtime-multi-agent-v160",
+  "feature_slug": "beacon-pln-review-runtime-multi-agent-v160",
+  "version": "v1.6.0",
+  "generated_at": "2026-06-09T12:05:54.047495+00:00",
+  "expansion_profile": "pua-web",
+  "scenario_depth": "standard",
+  "families_required": [
+    "happy",
+    "negative",
+    "boundary",
+    "recovery",
+    "compatibility"
+  ],
+  "stories": [
+    {
+      "ac_id": "AC-001",
+      "theme": "general",
+      "text": "Acceptance criteria TBD",
+      "scenario_ids": [
+        "SC-001"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-001",
+          "source_tc_id": "TC-001",
+          "tc_id": "TC-001-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "",
+      "text": "runtime artifact 包含 review id、execution mode、host runtime、fallback reason、selected reviewers、reviewer lanes、findings、synthesis 和 evidence paths。",
+      "scenario_ids": [
+        "SC-AUTO-TC-002"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-002",
+          "source_tc_id": "TC-002",
+          "tc_id": "TC-002-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "",
+      "text": "always-on reviewers 每次都生成独立 lane。",
+      "scenario_ids": [
+        "SC-AUTO-TC-003"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-003",
+          "source_tc_id": "TC-003",
+          "tc_id": "TC-003-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "",
+      "text": "conditional reviewer 按 source、deferral、security、performance、design、brownfield、evidence、simplification、founder、doubt、ADR、context 信号选择。",
+      "scenario_ids": [
+        "SC-AUTO-TC-004"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-004",
+          "source_tc_id": "TC-004",
+          "tc_id": "TC-004-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "",
+      "text": "每个 lane 有独立 finding 或 `no_findings`，不得只有综合段落。",
+      "scenario_ids": [
+        "SC-AUTO-TC-005"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-005",
+          "source_tc_id": "TC-005",
+          "tc_id": "TC-005-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "",
+      "text": "合成器输出 `merged_from`、conflict group、最高 severity 和单一 recommended route。",
+      "scenario_ids": [
+        "SC-AUTO-TC-006"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-006",
+          "source_tc_id": "TC-006",
+          "tc_id": "TC-006-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "",
+      "text": "无 subagent runtime 时输出 `single_process_multi_reviewer` 和 fallback reason，不声称 parallel subagent。",
+      "scenario_ids": [
+        "SC-AUTO-TC-007"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-007",
+          "source_tc_id": "TC-007",
+          "tc_id": "TC-007-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "",
+      "text": "artifact 明确禁止 truth/code/.machine/QA/release 写入。",
+      "scenario_ids": [
+        "SC-AUTO-TC-008"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-008",
+          "source_tc_id": "TC-008",
+          "tc_id": "TC-008-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "",
+      "text": "runtime evidence 非 truth、非 formal QA verdict、非 release verdict。",
+      "scenario_ids": [
+        "SC-AUTO-TC-009"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-009",
+          "source_tc_id": "TC-009",
+          "tc_id": "TC-009-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "",
+      "text": "状态机覆盖 request、context、selection、lane execution、synthesis、route、terminal 和 blocked transitions。",
+      "scenario_ids": [
+        "SC-AUTO-TC-010"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-010",
+          "source_tc_id": "TC-010",
+          "tc_id": "TC-010-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "unit",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "",
+      "text": "`beacon-pln-review` references 说明 multi-agent model、fallback 和 planner-only 边界。",
+      "scenario_ids": [
+        "SC-AUTO-TC-011"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-011",
+          "source_tc_id": "TC-011",
+          "tc_id": "TC-011-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "",
+      "text": "benchmark 覆盖 multi-agent lane selection、independent findings、synthesis、fallback transparency 和 planner boundary。",
+      "scenario_ids": [
+        "SC-AUTO-TC-012"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-012",
+          "source_tc_id": "TC-012",
+          "tc_id": "TC-012-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "",
+      "text": "runtime artifact、benchmark grading、skill package projection 和既有 harness taxonomy 回归通过。",
+      "scenario_ids": [
+        "SC-AUTO-TC-013"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-013",
+          "source_tc_id": "TC-013",
+          "tc_id": "TC-013-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "regression",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "",
+      "text": "不新增 host-visible reviewer 子 skill，skill package 仍只有收敛后的 public planner surface。",
+      "scenario_ids": [
+        "SC-AUTO-TC-014"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-014",
+          "source_tc_id": "TC-014",
+          "tc_id": "TC-014-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "",
+      "text": "implementation evidence marker 已存在且记录 changed files、测试命令、benchmark artifact 和 QA 后续路由；QA 只读验证，不重新执行 import 或 reopen implementation。",
+      "scenario_ids": [
+        "SC-AUTO-TC-015"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-015",
+          "source_tc_id": "TC-015",
+          "tc_id": "TC-015-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-001",
+      "tc_id": "TC-001-PRIMARY",
+      "ac_id": "AC-001",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-001 primary path :: feature package 为 package-authoritative truth，且 truth 声明 `full_parity`。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon validate-feature-package beacon-pln-review-runtime-multi-agent-v160 --project . --version v1.6.0 --json",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-001/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-002",
+      "source_tc_id": "TC-002",
+      "tc_id": "TC-002-PRIMARY",
+      "ac_id": "AC-002",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "runtime artifact 包含 review id、execution mode、host runtime、fallback reason、selected reviewers、reviewer lanes、findings、synthesis 和 evidence paths。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_runtime_artifact_contains_required_multi_agent_fields",
+      "assertion": "runtime artifact 包含 review id、execution mode、host runtime、fallback reason、selected reviewers、reviewer lanes、findings、synthesis 和 evidence paths。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-002/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-003",
+      "source_tc_id": "TC-003",
+      "tc_id": "TC-003-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "always-on reviewers 每次都生成独立 lane。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_always_on_reviewers_produce_lanes",
+      "assertion": "always-on reviewers 每次都生成独立 lane。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-003/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-004",
+      "source_tc_id": "TC-004",
+      "tc_id": "TC-004-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "conditional reviewer 按 source、deferral、security、performance、design、brownfield、evidence、simplification、founder、doubt、ADR、context 信号选择。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_conditional_reviewers_are_selected_from_prompt_signals",
+      "assertion": "conditional reviewer 按 source、deferral、security、performance、design、brownfield、evidence、simplification、founder、doubt、ADR、context 信号选择。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-004/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-005",
+      "source_tc_id": "TC-005",
+      "tc_id": "TC-005-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "每个 lane 有独立 finding 或 `no_findings`，不得只有综合段落。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_each_lane_has_finding_or_no_findings_status",
+      "assertion": "每个 lane 有独立 finding 或 `no_findings`，不得只有综合段落。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-005/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-006",
+      "source_tc_id": "TC-006",
+      "tc_id": "TC-006-PRIMARY",
+      "ac_id": "AC-006",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "合成器输出 `merged_from`、conflict group、最高 severity 和单一 recommended route。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_synthesis_merges_dedups_and_preserves_conflicts",
+      "assertion": "合成器输出 `merged_from`、conflict group、最高 severity 和单一 recommended route。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-006/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-007",
+      "source_tc_id": "TC-007",
+      "tc_id": "TC-007-PRIMARY",
+      "ac_id": "AC-007",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "无 subagent runtime 时输出 `single_process_multi_reviewer` 和 fallback reason，不声称 parallel subagent。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_fallback_transparency_blocks_fake_parallel_claims",
+      "assertion": "无 subagent runtime 时输出 `single_process_multi_reviewer` 和 fallback reason，不声称 parallel subagent。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-007/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-008",
+      "source_tc_id": "TC-008",
+      "tc_id": "TC-008-PRIMARY",
+      "ac_id": "AC-008",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "artifact 明确禁止 truth/code/.machine/QA/release 写入。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_planner_boundary_flags_forbid_truth_code_machine_and_verdict_writes",
+      "assertion": "artifact 明确禁止 truth/code/.machine/QA/release 写入。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-008/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-009",
+      "source_tc_id": "TC-009",
+      "tc_id": "TC-009-PRIMARY",
+      "ac_id": "AC-009",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "runtime evidence 非 truth、非 formal QA verdict、非 release verdict。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_runtime_evidence_has_no_truth_or_verdict_authority",
+      "assertion": "runtime evidence 非 truth、非 formal QA verdict、非 release verdict。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-009/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-010",
+      "source_tc_id": "TC-010",
+      "tc_id": "TC-010-PRIMARY",
+      "ac_id": "AC-010",
+      "qa_type": "unit",
+      "layer": "unit",
+      "scenario_family": "primary",
+      "title": "状态机覆盖 request、context、selection、lane execution、synthesis、route、terminal 和 blocked transitions。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "unit",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_review_state_machine_contract_is_materialized",
+      "assertion": "状态机覆盖 request、context、selection、lane execution、synthesis、route、terminal 和 blocked transitions。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-010/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-011",
+      "source_tc_id": "TC-011",
+      "tc_id": "TC-011-PRIMARY",
+      "ac_id": "AC-011",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`beacon-pln-review` references 说明 multi-agent model、fallback 和 planner-only 边界。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_skill_reference_documents_multi_agent_runtime_contract",
+      "assertion": "`beacon-pln-review` references 说明 multi-agent model、fallback 和 planner-only 边界。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-011/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-012",
+      "source_tc_id": "TC-012",
+      "tc_id": "TC-012-PRIMARY",
+      "ac_id": "AC-012",
+      "qa_type": "contract",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "benchmark 覆盖 multi-agent lane selection、independent findings、synthesis、fallback transparency 和 planner boundary。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill eval-kit benchmark --version v1.6.0 --json",
+      "assertion": "benchmark 覆盖 multi-agent lane selection、independent findings、synthesis、fallback transparency 和 planner boundary。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-012/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-013",
+      "source_tc_id": "TC-013",
+      "tc_id": "TC-013-PRIMARY",
+      "ac_id": "AC-013",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "runtime artifact、benchmark grading、skill package projection 和既有 harness taxonomy 回归通过。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py",
+      "assertion": "runtime artifact、benchmark grading、skill package projection 和既有 harness taxonomy 回归通过。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-013/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-014",
+      "source_tc_id": "TC-014",
+      "tc_id": "TC-014-PRIMARY",
+      "ac_id": "AC-014",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "不新增 host-visible reviewer 子 skill，skill package 仍只有收敛后的 public planner surface。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon skill package verify --project-root . --version v1.6.0 --json",
+      "assertion": "不新增 host-visible reviewer 子 skill，skill package 仍只有收敛后的 public planner surface。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-014/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-015",
+      "source_tc_id": "TC-015",
+      "tc_id": "TC-015-PRIMARY",
+      "ac_id": "AC-015",
+      "qa_type": "contract",
+      "layer": "evidence",
+      "scenario_family": "primary",
+      "title": "implementation evidence marker 已存在且记录 changed files、测试命令、benchmark artifact 和 QA 后续路由；QA 只读验证，不重新执行 import 或 reopen implementation。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_implementation_evidence_marker_is_imported_without_reopening",
+      "assertion": "implementation evidence marker 已存在且记录 changed files、测试命令、benchmark artifact 和 QA 后续路由；QA 只读验证，不重新执行 import 或 reopen implementation。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-runtime-multi-agent-v160/tc-015/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

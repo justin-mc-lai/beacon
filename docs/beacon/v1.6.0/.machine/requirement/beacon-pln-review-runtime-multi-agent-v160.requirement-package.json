@@ -1,0 +1,369 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-10T03:24:21.772106+00:00",
+  "feature": "beacon-pln-review-runtime-multi-agent-v160",
+  "feature_slug": "beacon-pln-review-runtime-multi-agent-v160",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "15fa1addc7e3b2db76f782abba597459744f2509a95372e92ba0d8e731f6a91b",
+    "tests": "b87920fb6898bcbda0270d8b5e01a0a2b207f1f7a91f6ff2290274bb58d3e07f",
+    "tasks": "54092a4c48d141844b4711e580256c8644f0cda32d268f7c39e52eb7b1c8716b",
+    "evidence": "6669e0b5b294b8b1225f5fff604cef70543fd559c7c40dcb082a52f092cc0ca4"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-pln-review-runtime-multi-agent-v160",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "feature-truth",
+      "description": "新 feature package 使用 package-authoritative truth，并声明 scope mode 为 `full_parity`。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "runtime-artifact",
+      "description": "planner review runtime artifact 包含 review id、execution mode、host runtime、fallback reason、selected reviewers、reviewer lanes、findings、synthesis 和 evidence paths。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "always-on-lanes",
+      "description": "always-on reviewers 每次都生成独立 reviewer lane。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "conditional-lanes",
+      "description": "source parity、deferral、security、performance、design、brownfield、evidence、simplification、founder、doubt、ADR、context 等 conditional reviewer 按触发信号选择。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "independent-findings",
+      "description": "每个 lane 必须产生独立 finding 或明确 `no_findings`，不得只输出单一综合段落。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "synthesis",
+      "description": "合成器执行 merge/dedup/arbitration，保留 `merged_from`、冲突、最高 severity 和单一 recommended route。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "fallback-transparency",
+      "description": "没有真实 subagent runtime 时，必须显式 `single_process_multi_reviewer` 或 fallback reason，不得声称 parallel subagent execution。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "planner-boundary",
+      "description": "planner runtime evidence 不写 truth、代码、`.machine`、QA verdict 或 release verdict。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "runtime-evidence-authority",
+      "description": "runtime evidence 标记为非 truth、非 formal QA verdict、非 release verdict。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "state-machine",
+      "description": "runtime multi-agent review 自身状态机覆盖 request、context、selection、lane execution、synthesis、route、terminal 和 blocked transitions。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "skill-surface",
+      "description": "`beacon-pln-review` references 说明真实 multi-agent review model、fallback 语义和 planner-only 边界。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "benchmark",
+      "description": "`beacon skill eval-kit benchmark --version v1.6.0` 覆盖 multi-agent lane selection、independent findings、synthesis、fallback transparency 和 planner boundary。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "tests",
+      "description": "单元测试覆盖 runtime artifact builder、benchmark grading 和 skill package projection。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "no-public-sprawl",
+      "description": "不新增 host-visible reviewer 子 skill；reviewer lanes 是 internal runtime evidence。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "implementation-evidence",
+      "description": "实现证据必须列出 changed files、测试命令、benchmark artifact 和 formal QA 后续路由。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "contract",
+      "command": "`beacon validate-feature-package beacon-pln-review-runtime-multi-agent-v160 --project . --version v1.6.0 --json`",
+      "assertion": "feature package 为 package-authoritative truth，且 truth 声明 `full_parity`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_runtime_artifact_contains_required_multi_agent_fields`",
+      "assertion": "runtime artifact 包含 review id、execution mode、host runtime、fallback reason、selected reviewers、reviewer lanes、findings、synthesis 和 evidence paths。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_always_on_reviewers_produce_lanes`",
+      "assertion": "always-on reviewers 每次都生成独立 lane。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_conditional_reviewers_are_selected_from_prompt_signals`",
+      "assertion": "conditional reviewer 按 source、deferral、security、performance、design、brownfield、evidence、simplification、founder、doubt、ADR、context 信号选择。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_each_lane_has_finding_or_no_findings_status`",
+      "assertion": "每个 lane 有独立 finding 或 `no_findings`，不得只有综合段落。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_synthesis_merges_dedups_and_preserves_conflicts`",
+      "assertion": "合成器输出 `merged_from`、conflict group、最高 severity 和单一 recommended route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_fallback_transparency_blocks_fake_parallel_claims`",
+      "assertion": "无 subagent runtime 时输出 `single_process_multi_reviewer` 和 fallback reason，不声称 parallel subagent。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_planner_boundary_flags_forbid_truth_code_machine_and_verdict_writes`",
+      "assertion": "artifact 明确禁止 truth/code/.machine/QA/release 写入。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-009",
+      "tc_id": "TC-009",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_runtime_evidence_has_no_truth_or_verdict_authority`",
+      "assertion": "runtime evidence 非 truth、非 formal QA verdict、非 release verdict。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-010",
+      "tc_id": "TC-010",
+      "layer": "unit",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_review_state_machine_contract_is_materialized`",
+      "assertion": "状态机覆盖 request、context、selection、lane execution、synthesis、route、terminal 和 blocked transitions。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-011",
+      "tc_id": "TC-011",
+      "layer": "contract",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_skill_reference_documents_multi_agent_runtime_contract`",
+      "assertion": "`beacon-pln-review` references 说明 multi-agent model、fallback 和 planner-only 边界。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-012",
+      "tc_id": "TC-012",
+      "layer": "behavior",
+      "command": "`beacon skill eval-kit benchmark --version v1.6.0 --json`",
+      "assertion": "benchmark 覆盖 multi-agent lane selection、independent findings、synthesis、fallback transparency 和 planner boundary。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-013",
+      "tc_id": "TC-013",
+      "layer": "regression",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py`",
+      "assertion": "runtime artifact、benchmark grading、skill package projection 和既有 harness taxonomy 回归通过。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-014",
+      "tc_id": "TC-014",
+      "layer": "integration",
+      "command": "`beacon skill package verify --project-root . --version v1.6.0 --json`",
+      "assertion": "不新增 host-visible reviewer 子 skill，skill package 仍只有收敛后的 public planner surface。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-015",
+      "tc_id": "TC-015",
+      "layer": "evidence",
+      "command": "`python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py::test_implementation_evidence_marker_is_imported_without_reopening`",
+      "assertion": "implementation evidence marker 已存在且记录 changed files、测试命令、benchmark artifact 和 QA 后续路由；QA 只读验证，不重新执行 import 或 reopen implementation。",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "创建 package-authoritative feature package，并冻结 full parity scope。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "新增 planner review runtime artifact builder。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "实现 always-on reviewer lane selection。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "实现 conditional reviewer trigger selection。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "实现 lane result、finding schema、no_findings 状态。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "实现 synthesis merge/dedup/arbitration。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "实现 fallback transparency，禁止 fake parallel subagent claim。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "实现 runtime evidence authority flags。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "实现 review state machine contract。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "更新 `beacon-pln-review` references，写明 multi-agent runtime model。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "扩展 skill eval benchmark multi-agent cases。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "增加 pytest 覆盖 runtime artifact、benchmark grading、projection。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-013",
+      "title": "重新 materialize skill package 和 agent surface。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-014",
+      "title": "导入 implementation evidence。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-015",
+      "title": "路由到 `beacon-eval-qa` 做 formal QA。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "planner-analysis",
+      "authority": "support_advisory",
+      "canonical_artifact": "当前用户确认的“多视角已实现但真实多代理 runtime 缺失”分析",
+      "status": "accepted-for-change",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md",
+      "status": "authoritative",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "prior-feature",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "prior-implementation",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/execution/implementation-summary-beacon-pln-review-intent-parity-state-machine-v160.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "reviewer-catalog",
+      "authority": "support_advisory",
+      "canonical_artifact": "skills/beacon/beacon-pln-review/references/reviewer-catalog.md",
+      "status": "indexed",
+      "route": "source-study"
+    },
+    {
+      "surface": "skill-eval-kit",
+      "authority": "support_advisory",
+      "canonical_artifact": "beacon/utils/skill_eval_kit.py",
+      "status": "pending-implementation",
+      "route": "generate"
+    }
+  ]
+}

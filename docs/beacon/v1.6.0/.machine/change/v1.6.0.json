@@ -13,8 +13,20 @@
   "truth_authority": false,
   "lifecycle_stage": false,
   "release_publish_action": false,
-  "feature_count": 1,
+  "feature_count": 3,
   "features": [
+    {
+      "feature": "beacon-pln-review-compound-parity-v160",
+      "feature_slug": "beacon-pln-review-compound-parity-v160",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "completed"
+    },
+    {
+      "feature": "beacon-pln-review-intent-parity-state-machine-v160",
+      "feature_slug": "beacon-pln-review-intent-parity-state-machine-v160",
+      "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
+      "status": "generated"
+    },
     {
       "feature": "beacon-skill-harness-taxonomy-v160",
       "feature_slug": "beacon-skill-harness-taxonomy-v160",
@@ -24,18 +36,38 @@
   ],
   "implementation_order": {
     "status": "analyzed",
-    "feature_count": 1,
+    "feature_count": 3,
     "ordered_feature_slugs": [
-      "beacon-skill-harness-taxonomy-v160"
+      "beacon-pln-review-intent-parity-state-machine-v160",
+      "beacon-skill-harness-taxonomy-v160",
+      "beacon-pln-review-compound-parity-v160"
     ],
     "waves": [
       {
         "wave": 1,
-        "parallelizable": false,
+        "parallelizable": true,
         "features": [
+          {
+            "feature": "beacon-pln-review-intent-parity-state-machine-v160",
+            "feature_slug": "beacon-pln-review-intent-parity-state-machine-v160",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          },
           {
             "feature": "beacon-skill-harness-taxonomy-v160",
             "feature_slug": "beacon-skill-harness-taxonomy-v160",
+            "depends_on_features": [],
+            "direct_delivery_services": [],
+            "writable_services": [],
+            "parallelizable": true,
+            "reason_code": "parallel_no_conflict"
+          },
+          {
+            "feature": "beacon-pln-review-compound-parity-v160",
+            "feature_slug": "beacon-pln-review-compound-parity-v160",
             "depends_on_features": [],
             "direct_delivery_services": [],
             "writable_services": [],
@@ -47,18 +79,43 @@
     ]
   },
   "added": [
+    "[beacon-pln-review-compound-parity-v160] Feature-level release projection input for QA accepted current feature",
+    "[beacon-pln-review-compound-parity-v160] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-pln-review-compound-parity-v160] Repair-only projection rebuild path for release preflight artifacts",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Feature-level release projection input for QA accepted current feature",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Version aggregate projection inclusion guard and repair metadata",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Repair-only projection rebuild path for release preflight artifacts",
     "[beacon-skill-harness-taxonomy-v160] Feature-level release projection input for QA accepted current feature",
     "[beacon-skill-harness-taxonomy-v160] Version aggregate projection inclusion guard and repair metadata",
     "[beacon-skill-harness-taxonomy-v160] Repair-only projection rebuild path for release preflight artifacts"
   ],
   "removed": [
+    "[beacon-pln-review-compound-parity-v160] Manual-only version aggregate projection repair before release check",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Manual-only version aggregate projection repair before release check",
     "[beacon-skill-harness-taxonomy-v160] Manual-only version aggregate projection repair before release check"
   ],
   "fixed": [
+    "[beacon-pln-review-compound-parity-v160] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-pln-review-compound-parity-v160] Version aggregate projection remains a read model instead of requirement truth",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Release check can route missing current feature projection to an actionable repair path",
+    "[beacon-pln-review-intent-parity-state-machine-v160] Version aggregate projection remains a read model instead of requirement truth",
     "[beacon-skill-harness-taxonomy-v160] Release check can route missing current feature projection to an actionable repair path",
     "[beacon-skill-harness-taxonomy-v160] Version aggregate projection remains a read model instead of requirement truth"
   ],
   "traceability_refs": [
+    "docs/beacon/v1.6.0/change/beacon-pln-review-compound-parity-v160.md",
+    "docs/beacon/v1.6.0/prd/beacon-pln-review-compound-parity-v160.md",
+    "docs/beacon/v1.6.0/user-story/beacon-pln-review-compound-parity-v160.md",
+    "docs/beacon/v1.6.0/qa/test-cases/beacon-pln-review-compound-parity-v160.md",
+    "docs/beacon/v1.6.0/.machine/execution/beacon-pln-review-compound-parity-v160.revision.json",
+    "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-pln-review-compound-parity-v160.json",
+    "docs/beacon/v1.6.0/.machine/change/beacon-pln-review-compound-parity-v160.json",
+    "docs/beacon/v1.6.0/change/beacon-pln-review-intent-parity-state-machine-v160.md",
+    "docs/beacon/v1.6.0/prd/beacon-pln-review-intent-parity-state-machine-v160.md",
+    "docs/beacon/v1.6.0/user-story/beacon-pln-review-intent-parity-state-machine-v160.md",
+    "docs/beacon/v1.6.0/qa/test-cases/beacon-pln-review-intent-parity-state-machine-v160.md",
+    "docs/beacon/v1.6.0/.machine/execution/beacon-pln-review-intent-parity-state-machine-v160.revision.json",
+    "docs/beacon/v1.6.0/.machine/change/beacon-pln-review-intent-parity-state-machine-v160.json",
     "docs/beacon/v1.6.0/change/beacon-skill-harness-taxonomy-v160.md",
     "docs/beacon/v1.6.0/prd/beacon-skill-harness-taxonomy-v160.md",
     "docs/beacon/v1.6.0/user-story/beacon-skill-harness-taxonomy-v160.md",
@@ -67,5 +124,5 @@
     "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-skill-harness-taxonomy-v160.json",
     "docs/beacon/v1.6.0/.machine/change/beacon-skill-harness-taxonomy-v160.json"
   ],
-  "generated_at": "2026-06-08 17:51"
+  "generated_at": "2026-06-09 21:28"
 }

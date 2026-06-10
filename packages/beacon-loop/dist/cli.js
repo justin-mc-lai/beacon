@@ -1,0 +1,138 @@
+#!/usr/bin/env node
+import { existsSync, readFileSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { run } from "./git/git.js";
+import { importEvidence } from "./evidence/importer.js";
+import { latestRunId } from "./runner/fs.js";
+import { resumeRun, startGoal, statusRun, stopRun } from "./runner/run.js";
+
+function option(args, name, fallback = "") {
+  const index = args.indexOf(name);
+  if (index < 0) return fallback;
+  return args[index + 1] || fallback;
+}
+
+function flag(args, name) {
+  return args.includes(name);
+}
+
+function emit(payload, jsonOutput) {
+  if (jsonOutput) {
+    console.log(JSON.stringify(payload, null, 2));
+    return;
+  }
+  console.log(`${payload.command || "beacon-loop"}: ${payload.status || "ok"}`);
+  if (payload.run_id) console.log(`run_id: ${payload.run_id}`);
+  if (payload.reason_code) console.log(`reason_code: ${payload.reason_code}`);
+}
+
+function help() {
+  console.log(`beacon-loop
+
+Commands:
+  goal <goal>
+  status [run-id]
+  stop <run-id>
+  resume <run-id>
+  review <run-id>
+  import-evidence <run-id>
+  doctor
+
+Options:
+  --project <path>
+  --version <version>
+  --dry-run
+  --json
+  --allow-dirty
+  --max-iterations <n>
+  --max-tokens <n>
+  --stop-when <text>
+`);
+}
+
+function doctor(projectRoot, jsonOutput) {
+  const nodeMajor = Number(process.versions.node.split(".")[0] || "0");
+  const checks = {
+    node_runtime: { status: nodeMajor >= 20 ? "pass" : "blocked", version: process.versions.node },
+    beacon_cli: { status: run("beacon", ["--version"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
+    git_worktree: { status: run("git", ["worktree", "list"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" },
+    agent_backend: { status: run("codex", ["--version"], { cwd: projectRoot }).code === 0 || process.env.BEACON_LOOP_TEST_AGENT_RESULT ? "pass" : "blocked", adapter: "codex" },
+    evidence_import: { status: run("beacon", ["implement", "import-evidence", "--help"], { cwd: projectRoot }).code === 0 ? "pass" : "blocked" }
+  };
+  const blocked = Object.values(checks).some((item) => item.status !== "pass");
+  emit({ schema_version: "1.0", surface: "beacon-loop", command: "doctor", status: blocked ? "blocked" : "pass", checks }, jsonOutput);
+  process.exit(blocked ? 2 : 0);
+}
+
+const args = process.argv.slice(2);
+const command = args[0] || "";
+const jsonOutput = flag(args, "--json");
+const projectRoot = resolve(option(args, "--project", option(args, "--project-root", process.cwd())));
+
+if (!command || command === "--help" || command === "-h") {
+  help();
+  process.exit(0);
+}
+
+if (command === "doctor") doctor(projectRoot, jsonOutput);
+
+if (command === "goal") {
+  const goal = args[1] || "";
+  if (!goal) {
+    console.error("goal is required");
+    process.exit(2);
+  }
+  const payload = startGoal(projectRoot, goal, {
+    version: option(args, "--version", "v1.6.0"),
+    feature: option(args, "--feature", ""),
+    dryRun: flag(args, "--dry-run"),
+    allowDirty: flag(args, "--allow-dirty"),
+    maxIterations: option(args, "--max-iterations", "1"),
+    maxTokens: option(args, "--max-tokens", "0"),
+    stopWhen: option(args, "--stop-when", ""),
+    agent: option(args, "--agent", "codex"),
+    branchMode: option(args, "--branch-mode", "worktree")
+  });
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
+}
+
+if (command === "resume") {
+  const payload = resumeRun(projectRoot, args[1] || latestRunId(projectRoot));
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "blocked" ? 2 : 0);
+}
+
+if (command === "stop") {
+  const payload = stopRun(projectRoot, args[1] || latestRunId(projectRoot), flag(args, "--force"));
+  emit(payload, jsonOutput);
+  process.exit(0);
+}
+
+if (command === "status") {
+  emit(statusRun(projectRoot, args[1] || ""), jsonOutput);
+  process.exit(0);
+}
+
+if (command === "review") {
+  const runId = args[1] || latestRunId(projectRoot);
+  const summary = join(projectRoot, ".beacon", "loop", "runs", runId, "summary.md");
+  if (jsonOutput) {
+    emit({ schema_version: "1.0", surface: "beacon-loop", command: "review", status: existsSync(summary) ? "found" : "blocked", run_id: runId, summary_ref: summary }, true);
+  } else if (existsSync(summary)) {
+    console.log(readFileSync(summary, "utf8"));
+  } else {
+    console.error("run summary not found");
+    process.exit(2);
+  }
+  process.exit(0);
+}
+
+if (command === "import-evidence") {
+  const payload = importEvidence(projectRoot, args[1] || latestRunId(projectRoot), jsonOutput);
+  emit(payload, jsonOutput);
+  process.exit(payload.status === "imported" ? 0 : 2);
+}
+
+console.error("Unknown command");
+process.exit(2);

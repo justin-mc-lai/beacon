@@ -80,7 +80,6 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.review import app as review_app
     from .commands.skill import app as skill_app
     from .commands.hooks import app as hooks_app
-    from .commands.automation import app as automation_app
     from .commands.profile import app as profile_app
     from .commands.board import app as board_app
     from .commands.implement import app as implement_app
@@ -151,7 +150,6 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.command("help")(help_entry)
     app.add_typer(board_app, name="board")
     app.add_typer(status_app, name="status")
-    app.add_typer(automation_app, name="automation")
     app.add_typer(doctor_app, name="doctor")
     app.add_typer(manifest_app, name="manifest")
     app.add_typer(truth_app, name="truth")
