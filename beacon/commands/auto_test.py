@@ -698,6 +698,7 @@ def _extract_assertion_count(stdout_text: str, stderr_text: str, *, junit_file: 
         r"tests?\s*[:=]\s*(?P<count>\d+)",
         r"assertions?\s*[:=]\s*(?P<count>\d+)",
         r"(?P<count>\d+)\s+passing(?:\s|\(|$)",
+        r"ℹ\s+pass\s+(?P<count>\d+)(?:\s|\n|$)",
     ]
     for pattern in patterns:
         match = re.search(pattern, text, flags=re.I)

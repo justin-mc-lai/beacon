@@ -3,266 +3,167 @@
   "contract_kind": "beacon_test_contract_index",
   "version": "v1.6.0",
   "runtime_line": "v1.6.0",
-  "runtime_release_line": "v1.5.2",
+  "runtime_release_line": "v1.6.0",
   "docs_line": "v1.6.0",
-  "feature": "beacon-pln-review-compound-parity-v160",
-  "feature_slug": "beacon-pln-review-compound-parity-v160",
-  "feature_line_status": "planning_only",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_line_status": "current_runtime_release",
   "truth_refs": {
-    "truth": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/truth.md",
-    "tests": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-    "tasks": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tasks.md",
-    "evidence": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/evidence.md",
-    "ac_matrix": "docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-    "story_state": "docs/beacon/v1.6.0/.machine/user-story/beacon-pln-review-compound-parity-v160.json"
+    "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md",
+    "ac_matrix": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "story_state": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json"
   },
   "source_hashes": {
-    "truth": "sha256:0427a11a92e8e388092b7d1328f9086c416b8ebce3cce8b17dc7a9756193320f",
-    "tests": "sha256:62b83e62ad0eae06445cb455001ac2393cbb5fbfb22b918971c718568df7d3db",
-    "tasks": "sha256:e0d158152e42729fa6ed4425029c6a44270be4a551cf29bf5ab4c7adc8666be5",
-    "evidence": "sha256:1278fc5e6a9afbd3bb8bbdcb9c7d51da53ec28dae4b4b0885b978982a2e879ef",
-    "ac_matrix": "sha256:62b83e62ad0eae06445cb455001ac2393cbb5fbfb22b918971c718568df7d3db",
-    "story_state": "sha256:d0c7e095474e5a39ad43714f2d5c050d0956708327ef2ed8d3a3e12adf42596c"
+    "truth": "sha256:4b7769ca4b9d24cb1a88de4003ea751c015c59c04278631fa322567a3721bd0f",
+    "tests": "sha256:bf9aed8601f10b775459f97ea005342c99207cfd2f47a87ca907d3496e81e934",
+    "tasks": "sha256:ebbc84b548af3184581dab439beda0063fae1254f2bbd7b44818608e03a66074",
+    "evidence": "sha256:87d49bb3ed7df4cfc90ff8fd2ef426f73037821fb902d5353c8db15335c03646",
+    "ac_matrix": "sha256:bf9aed8601f10b775459f97ea005342c99207cfd2f47a87ca907d3496e81e934",
+    "story_state": "sha256:291b042e248e1fdc11017f38f34972ffdbe431765308ab4ae3aac6def8d4c23a"
   },
   "lanes": {
     "feature_release_facing": [
       {
-        "tc_id": "TC-001",
-        "ac_id": "AC-001",
-        "ac_theme": "feature-package",
+        "tc_id": "TC-031",
+        "ac_id": "AC-031",
+        "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "contract",
-        "command": "beacon validate-feature-package beacon-pln-review-compound-parity-v160 --project . --version v1.6.0 --json",
-        "assertion": "feature package 为 package-authoritative truth，frontmatter 状态为 frozen，并声明 `full_parity`。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-001/__RUN_ID__.json",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"",
+        "assertion": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-031/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-002",
-        "ac_id": "AC-002",
-        "ac_theme": "compound-review-contract",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_review_contract_reference_exists --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "`beacon-pln-review` references 包含 Compound parity output contract 字段。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-002/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-003",
-        "ac_id": "AC-003",
-        "ac_theme": "reviewer-catalog",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_reviewer_catalog_covers_compound_and_beacon_reviewers --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-003/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-004",
-        "ac_id": "AC-004",
-        "ac_theme": "source-parity",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_full_parity_prompt_requires_source_inventory_and_parity_matrix --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "完整复刻、同等能力、做全、不要 MVP 或 source refs 触发 `full_parity`、source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-004/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-005",
-        "ac_id": "AC-005",
-        "ac_theme": "no-silent-mvp",
-        "lane": "feature_release_facing",
-        "layer": "negative",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_unapproved_mvp_downgrade_is_blocked --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "full parity 被降级为 MVP/patch/defer 且无 user decision 时，产生 P0/P1 finding 并阻断 implement/freeze route。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-005/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-006",
-        "ac_id": "AC-006",
-        "ac_theme": "finding-schema",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_finding_schema_contains_synthesis_and_routing_fields --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-006/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-007",
-        "ac_id": "AC-007",
-        "ac_theme": "synthesis",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_synthesis_dedups_conflicts_and_selects_conservative_route --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "synthesis 合并重复 finding，保留冲突，提升最高 severity，并输出单一 recommended route。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-007/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-008",
-        "ac_id": "AC-008",
-        "ac_theme": "autofix-boundary",
-        "lane": "feature_release_facing",
-        "layer": "negative",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_autofix_classification_does_not_execute_repairs --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "planner 只分类 `safe_auto/gated_auto/manual/advisory/release`，不改 truth 或代码；safe_auto 路由到 generator。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-008/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-009",
-        "ac_id": "AC-009",
-        "ac_theme": "diff-scope",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_diff_scope_review_records_worktree_surfaces --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "diff scope 包含 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时 degraded。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-009/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-010",
-        "ac_id": "AC-010",
-        "ac_theme": "release-ops",
-        "lane": "feature_release_facing",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_release_ops_review_routes_install_and_projection_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "release ops review 检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-010/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-012",
-        "ac_id": "AC-012",
-        "ac_theme": "state-machine",
-        "lane": "feature_release_facing",
-        "layer": "contract",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_parity_state_machine_contract_is_materialized --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-012/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-013",
-        "ac_id": "AC-013",
-        "ac_theme": "planner-boundary",
-        "lane": "feature_release_facing",
-        "layer": "negative",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_review_artifact_has_no_truth_or_verdict_authority --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "review artifact 标记非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-013/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-014",
-        "ac_id": "AC-014",
-        "ac_theme": "benchmark",
+        "tc_id": "TC-032",
+        "ac_id": "AC-032",
+        "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "behavior",
-        "command": "beacon skill eval-kit benchmark --version v1.6.0 --json",
-        "assertion": "benchmark 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-014/__RUN_ID__.json",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"",
+        "assertion": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-032/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       },
       {
-        "tc_id": "TC-015",
-        "ac_id": "AC-015",
-        "ac_theme": "tests",
-        "lane": "feature_release_facing",
-        "layer": "regression",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "review contract references、artifact schema、synthesis rules、benchmark grading、multi-agent runtime 和 skill projection 回归通过。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-015/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      },
-      {
-        "tc_id": "TC-016",
-        "ac_id": "AC-016",
-        "ac_theme": "no-public-sprawl",
+        "tc_id": "TC-033",
+        "ac_id": "AC-033",
+        "ac_theme": "",
         "lane": "feature_release_facing",
         "layer": "integration",
-        "command": "beacon skill package verify --project-root . --version v1.6.0 --json",
-        "assertion": "不新增 host-visible reviewer 子 skill；新增能力作为 `beacon-pln-review` internal reviewer/reference/runtime contract 投影。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-016/__RUN_ID__.json",
+        "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"",
+        "assertion": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-033/__RUN_ID__.json",
         "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-034",
+        "ac_id": "AC-034",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
+        "assertion": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-034/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-035",
+        "ac_id": "AC-035",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"",
+        "assertion": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-035/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-036",
+        "ac_id": "AC-036",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "integration",
+        "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"",
+        "assertion": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-036/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-037",
+        "ac_id": "AC-037",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "behavior",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"",
+        "assertion": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-037/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-038",
+        "ac_id": "AC-038",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"",
+        "assertion": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-038/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-039",
+        "ac_id": "AC-039",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "e2e",
+        "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"",
+        "assertion": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-039/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
       }
     ],
     "current_runtime_contract": [],
     "generated_surface_sync": [],
-    "compatibility_contract": [
-      {
-        "tc_id": "TC-011",
-        "ac_id": "AC-011",
-        "ac_theme": "qa-evidence-hygiene",
-        "lane": "compatibility_contract",
-        "layer": "unit",
-        "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_qa_evidence_hygiene_flags_junit_assertion_and_placeholder_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-        "assertion": "QA evidence hygiene 对 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis 产生 finding。",
-        "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-011/__RUN_ID__.json",
-        "evidence_status": "passed",
-        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-        "release_blocking": true,
-        "mapping_status": "pass"
-      }
-    ],
+    "compatibility_contract": [],
     "legacy_snapshot": [],
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 15,
+    "feature_release_facing": 9,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
-    "compatibility_contract": 1,
+    "compatibility_contract": 0,
     "legacy_snapshot": 0,
     "browser_runtime_admission": 0
   },
@@ -276,278 +177,159 @@
   ],
   "test_refs": [
     {
-      "tc_id": "TC-001",
-      "ac_id": "AC-001",
-      "ac_theme": "feature-package",
+      "tc_id": "TC-031",
+      "ac_id": "AC-031",
+      "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "contract",
-      "command": "beacon validate-feature-package beacon-pln-review-compound-parity-v160 --project . --version v1.6.0 --json",
-      "assertion": "feature package 为 package-authoritative truth，frontmatter 状态为 frozen，并声明 `full_parity`。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-001/__RUN_ID__.json",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"",
+      "assertion": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-031/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-002",
-      "ac_id": "AC-002",
-      "ac_theme": "compound-review-contract",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_review_contract_reference_exists --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "`beacon-pln-review` references 包含 Compound parity output contract 字段。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-002/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-003",
-      "ac_id": "AC-003",
-      "ac_theme": "reviewer-catalog",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_reviewer_catalog_covers_compound_and_beacon_reviewers --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "always-on 和 conditional reviewer catalog 覆盖 correctness、testing、maintainability、standards、intent、route、source parity、diff scope、security、performance、API、reliability、browser ops、release ops、adversarial 和 state machine。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-003/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-004",
-      "ac_id": "AC-004",
-      "ac_theme": "source-parity",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_full_parity_prompt_requires_source_inventory_and_parity_matrix --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "完整复刻、同等能力、做全、不要 MVP 或 source refs 触发 `full_parity`、source capability inventory、parity matrix、coverage mapping 和 deferral ledger。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-004/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-005",
-      "ac_id": "AC-005",
-      "ac_theme": "no-silent-mvp",
-      "lane": "feature_release_facing",
-      "layer": "negative",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_unapproved_mvp_downgrade_is_blocked --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "full parity 被降级为 MVP/patch/defer 且无 user decision 时，产生 P0/P1 finding 并阻断 implement/freeze route。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-005/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-006",
-      "ac_id": "AC-006",
-      "ac_theme": "finding-schema",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_finding_schema_contains_synthesis_and_routing_fields --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "findings 包含 severity、confidence、authority、dedup、merged_from、conflict_group、owner、autofix_class、requires_verification 和 recommended_route。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-006/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-007",
-      "ac_id": "AC-007",
-      "ac_theme": "synthesis",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_synthesis_dedups_conflicts_and_selects_conservative_route --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "synthesis 合并重复 finding，保留冲突，提升最高 severity，并输出单一 recommended route。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-007/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-008",
-      "ac_id": "AC-008",
-      "ac_theme": "autofix-boundary",
-      "lane": "feature_release_facing",
-      "layer": "negative",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_autofix_classification_does_not_execute_repairs --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "planner 只分类 `safe_auto/gated_auto/manual/advisory/release`，不改 truth 或代码；safe_auto 路由到 generator。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-008/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-009",
-      "ac_id": "AC-009",
-      "ac_theme": "diff-scope",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_diff_scope_review_records_worktree_surfaces --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "diff scope 包含 base、changed、untracked、generated/projection、deleted、high-risk files 和 scope confidence；scope 不明时 degraded。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-009/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-010",
-      "ac_id": "AC-010",
-      "ac_theme": "release-ops",
-      "lane": "feature_release_facing",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_release_ops_review_routes_install_and_projection_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "release ops review 检查 global/local skill、stale copies、post-release hooks、canary/smoke install、rollback 和 version alignment。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-010/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-011",
-      "ac_id": "AC-011",
-      "ac_theme": "qa-evidence-hygiene",
-      "lane": "compatibility_contract",
-      "layer": "unit",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_qa_evidence_hygiene_flags_junit_assertion_and_placeholder_gaps --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "QA evidence hygiene 对 JUnit、assertion_count、fake runner、placeholder evidence、browser admission、compatibility pair evidence 和 benchmark metadata/grading/analysis 产生 finding。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-011/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-012",
-      "ac_id": "AC-012",
-      "ac_theme": "state-machine",
-      "lane": "feature_release_facing",
-      "layer": "contract",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_compound_parity_state_machine_contract_is_materialized --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "状态机覆盖 scope、source parity、reviewer selection、lane execution、finding synthesis、route recommendation、blocked transitions 和 terminal states。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-012/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-013",
-      "ac_id": "AC-013",
-      "ac_theme": "planner-boundary",
-      "lane": "feature_release_facing",
-      "layer": "negative",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py::test_planner_review_artifact_has_no_truth_or_verdict_authority --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "review artifact 标记非 truth、非 QA verdict、非 release verdict，并禁止 planner 写 truth、代码、`.machine` 或执行修复。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-013/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-014",
-      "ac_id": "AC-014",
-      "ac_theme": "benchmark",
+      "tc_id": "TC-032",
+      "ac_id": "AC-032",
+      "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "behavior",
-      "command": "beacon skill eval-kit benchmark --version v1.6.0 --json",
-      "assertion": "benchmark 覆盖 Compound parity、source parity、防 MVP 缩水、finding synthesis、autofix boundary、diff scope、release ops 和 QA evidence hygiene。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-014/__RUN_ID__.json",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"",
+      "assertion": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-032/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     },
     {
-      "tc_id": "TC-015",
-      "ac_id": "AC-015",
-      "ac_theme": "tests",
-      "lane": "feature_release_facing",
-      "layer": "regression",
-      "command": "python3 -m pytest -q tests/test_v160_pln_review_compound_parity.py tests/test_v160_pln_review_multi_agent.py tests/test_v160_skill_harness_taxonomy.py --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
-      "assertion": "review contract references、artifact schema、synthesis rules、benchmark grading、multi-agent runtime 和 skill projection 回归通过。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-015/__RUN_ID__.json",
-      "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
-      "release_blocking": true,
-      "mapping_status": "pass"
-    },
-    {
-      "tc_id": "TC-016",
-      "ac_id": "AC-016",
-      "ac_theme": "no-public-sprawl",
+      "tc_id": "TC-033",
+      "ac_id": "AC-033",
+      "ac_theme": "",
       "lane": "feature_release_facing",
       "layer": "integration",
-      "command": "beacon skill package verify --project-root . --version v1.6.0 --json",
-      "assertion": "不新增 host-visible reviewer 子 skill；新增能力作为 `beacon-pln-review` internal reviewer/reference/runtime contract 投影。",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-pln-review-compound-parity-v160/tc-016/__RUN_ID__.json",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"",
+      "assertion": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-033/__RUN_ID__.json",
       "evidence_status": "passed",
-      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-pln-review-compound-parity-v160/tests.md",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-034",
+      "ac_id": "AC-034",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
+      "assertion": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-034/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-035",
+      "ac_id": "AC-035",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"",
+      "assertion": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-035/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-036",
+      "ac_id": "AC-036",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "integration",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"",
+      "assertion": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-036/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-037",
+      "ac_id": "AC-037",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "behavior",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"",
+      "assertion": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-037/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-038",
+      "ac_id": "AC-038",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"",
+      "assertion": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-038/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-039",
+      "ac_id": "AC-039",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "e2e",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"",
+      "assertion": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-039/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
-    "AC-001": [
-      "TC-001"
+    "AC-031": [
+      "TC-031"
     ],
-    "AC-002": [
-      "TC-002"
+    "AC-032": [
+      "TC-032"
     ],
-    "AC-003": [
-      "TC-003"
+    "AC-033": [
+      "TC-033"
     ],
-    "AC-004": [
-      "TC-004"
+    "AC-034": [
+      "TC-034"
     ],
-    "AC-005": [
-      "TC-005"
+    "AC-035": [
+      "TC-035"
     ],
-    "AC-006": [
-      "TC-006"
+    "AC-036": [
+      "TC-036"
     ],
-    "AC-007": [
-      "TC-007"
+    "AC-037": [
+      "TC-037"
     ],
-    "AC-008": [
-      "TC-008"
+    "AC-038": [
+      "TC-038"
     ],
-    "AC-009": [
-      "TC-009"
-    ],
-    "AC-010": [
-      "TC-010"
-    ],
-    "AC-011": [
-      "TC-011"
-    ],
-    "AC-012": [
-      "TC-012"
-    ],
-    "AC-013": [
-      "TC-013"
-    ],
-    "AC-014": [
-      "TC-014"
-    ],
-    "AC-015": [
-      "TC-015"
-    ],
-    "AC-016": [
-      "TC-016"
+    "AC-039": [
+      "TC-039"
     ]
   },
   "qa_order_contract": {
@@ -575,14 +357,14 @@
     "status": "pass",
     "blocked": false,
     "reason_code": "",
-    "runtime_line": "v1.5.2",
-    "docs_default_line": "v1.5.2",
-    "current_runtime_release_line": "v1.5.2",
-    "feature_line_status": "planning_only"
+    "runtime_line": "v1.6.0",
+    "docs_default_line": "v1.6.0",
+    "current_runtime_release_line": "v1.6.0",
+    "feature_line_status": "current_runtime_release"
   },
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-06-09T13:28:16.505420+00:00",
+  "generated_at": "2026-06-10T09:44:10.043082+00:00",
   "index_path": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json"
 }
