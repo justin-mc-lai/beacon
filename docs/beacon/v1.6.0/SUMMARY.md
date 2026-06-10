@@ -16,6 +16,8 @@ plan -> truth -> generate -> evaluate -> release
 
 Legacy `prd`, `user-story`, and `test-case` names are not v1.6.0 primary skill categories. They remain migration, rebuild, or absorb concepts under package-authoritative truth.
 
-Primary v1.6.0 feature:
+Primary v1.6.0 features:
 
 - `beacon-skill-harness-taxonomy-v160`
+- `beacon-loop-native-runner-and-automation-retirement` (frozen)
+- `beacon-loop-goal-closed-loop-orchestrator` (frozen — goal delivery orchestrator, AC-031..AC-039)

@@ -1,0 +1,162 @@
+{
+  "feature": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+  "version": "v1.6.0",
+  "ac_to_tc_mapping": {
+    "AC-031": [
+      "TC-031"
+    ],
+    "AC-032": [
+      "TC-032"
+    ],
+    "AC-033": [
+      "TC-033"
+    ],
+    "AC-034": [
+      "TC-034"
+    ],
+    "AC-035": [
+      "TC-035"
+    ],
+    "AC-036": [
+      "TC-036"
+    ],
+    "AC-037": [
+      "TC-037"
+    ],
+    "AC-038": [
+      "TC-038"
+    ],
+    "AC-039": [
+      "TC-039"
+    ],
+    "AC-003": [
+      "TC-040"
+    ],
+    "AC-004": [
+      "TC-034"
+    ],
+    "AC-005": [
+      "TC-034"
+    ],
+    "AC-016": [
+      "TC-040"
+    ],
+    "AC-021": [
+      "TC-040"
+    ],
+    "AC-022": [
+      "TC-040"
+    ],
+    "AC-025": [
+      "TC-041"
+    ]
+  },
+  "scenarios": [
+    {
+      "scenario_id": "SC-001",
+      "source_tc_id": "TC-040",
+      "tc_id": "TC-040-PRIMARY",
+      "ac_id": "AC-003",
+      "qa_type": "regression",
+      "layer": "regression",
+      "scenario_family": "primary",
+      "title": "AC-003 primary path :: parent `goal` entrypoint 保留；本 feature 扩展 `--mode` 不破坏既有 goal 契约。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "regression",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test",
+      "assertion": "No known behavior regression found",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-040-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-002",
+      "source_tc_id": "TC-034",
+      "tc_id": "TC-034-PRIMARY",
+      "ac_id": "AC-004",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-004 primary path :: resolve blocked 时进入 `truth_fill` 而非仅 abort（扩展 parent resolver 行为）。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-034-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-003",
+      "source_tc_id": "TC-034",
+      "tc_id": "TC-034-PRIMARY",
+      "ac_id": "AC-005",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-005 primary path :: truth gap 与 resolve blocked 共用 truth_fill 子链；parity 缺口有 promotion 记录。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-034-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    }
+  ]
+}

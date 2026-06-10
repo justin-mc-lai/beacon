@@ -16,6 +16,13 @@ runner = CliRunner()
 
 
 def _build_loop() -> None:
+    dist = LOOP_PKG / "dist" / "cli.js"
+    src_root = LOOP_PKG / "src"
+    if dist.is_file() and src_root.is_dir():
+        dist_mtime = dist.stat().st_mtime
+        newest_src = max(p.stat().st_mtime for p in src_root.rglob("*") if p.is_file())
+        if dist_mtime >= newest_src:
+            return
     result = subprocess.run(["npm", "run", "build"], cwd=LOOP_PKG, capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
 

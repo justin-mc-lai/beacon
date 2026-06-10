@@ -1,4 +1,5 @@
-import { chmodSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
@@ -6,11 +7,12 @@ import assert from "node:assert/strict";
 
 const root = new URL("..", import.meta.url).pathname;
 const cli = join(root, "dist", "cli.js");
-const testScratchRoot = join(root, ".test-tmp");
+const testScratchRoot = join(tmpdir(), "beacon-loop-tests");
+const createdProjectDirs = new Set();
 
 function makeScratchDir(prefix) {
   mkdirSync(testScratchRoot, { recursive: true });
-  return join(testScratchRoot, `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  return mkdtempSync(join(testScratchRoot, `${prefix}-`));
 }
 
 function removeWorktreesInProject(projectDir) {
@@ -38,8 +40,18 @@ function removeScratchRoot() {
   }
 }
 
+test.before(() => {
+  mkdirSync(testScratchRoot, { recursive: true });
+});
+
 test.after(() => {
-  removeScratchRoot();
+  for (const projectDir of createdProjectDirs) {
+    if (existsSync(projectDir)) {
+      removeWorktreesInProject(projectDir);
+      rmSync(projectDir, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
+    }
+  }
+  createdProjectDirs.clear();
 });
 
 function run(args, options = {}) {
@@ -52,7 +64,7 @@ function run(args, options = {}) {
 
 function makeProject() {
   const dir = makeScratchDir("beacon-loop-test");
-  mkdirSync(dir, { recursive: true });
+  createdProjectDirs.add(dir);
   spawnSync("git", ["init"], { cwd: dir, encoding: "utf8" });
   spawnSync("git", ["config", "user.email", "test@example.invalid"], { cwd: dir });
   spawnSync("git", ["config", "user.name", "Test User"], { cwd: dir });
@@ -68,6 +80,7 @@ function makeBeaconShim(project, mode = "pass") {
   const shim = join(bin, "beacon");
   const payload = {
     feature_truth: {
+      truth_frontmatter: { status: "frozen" },
       source_paths: {
         truth: "docs/beacon/v1.6.0/features/demo/truth.md",
         tests: "docs/beacon/v1.6.0/features/demo/tests.md",
@@ -95,6 +108,10 @@ if (args[0] === "qa" && args[1] === "run") {
   console.log(JSON.stringify({status:"completed", surface:"beacon-qa", closure_verdict:"shim_only_not_release_ready"}));
   process.exit(0);
 }
+if (args[0] === "release" && args[1] === "create") {
+  console.log(JSON.stringify({status:"completed", surface:"beacon-release", closure_verdict:"shim_only_not_release_ready"}));
+  process.exit(0);
+}
 if (args[0] === "implement" && args[1] === "import-evidence" && args.includes("--help")) process.exit(0);
 console.log("{}");
 `,
@@ -102,6 +119,12 @@ console.log("{}");
   );
   chmodSync(shim, 0o755);
   return `${bin}:${process.env.PATH}`;
+}
+
+const EXECUTE_ONLY_FLAGS = ["--mode", "execute-only", "--feature", "demo"];
+
+function goalDemo(project, extraArgs = [], options = {}) {
+  return run(["goal", "demo", "--project", project, ...EXECUTE_ONLY_FLAGS, ...extraArgs], options);
 }
 
 test("help exposes goal and not the retired alias", () => {
@@ -116,7 +139,7 @@ test("help exposes goal and not the retired alias", () => {
 
 test("resolver blocked fails closed to beacon-gen-change", () => {
   const project = makeProject();
-  const result = run(["goal", "missing feature", "--project", project, "--json"], {
+  const result = run(["goal", "missing feature", "--project", project, "--mode", "execute-only", "--feature", "missing-feature", "--json"], {
     env: { PATH: makeBeaconShim(project, "blocked") }
   });
   assert.equal(result.status, 2);
@@ -127,7 +150,7 @@ test("resolver blocked fails closed to beacon-gen-change", () => {
 
 test("dry-run writes runtime package artifacts and resolver refs", () => {
   const project = makeProject();
-  const result = run(["goal", "demo", "--project", project, "--dry-run", "--json"], {
+  const result = goalDemo(project, ["--dry-run", "--json"], {
     env: { PATH: makeBeaconShim(project) }
   });
   assert.equal(result.status, 0, result.stderr);
@@ -146,7 +169,7 @@ test("dry-run writes runtime package artifacts and resolver refs", () => {
 test("dirty worktree blocks by default", () => {
   const project = makeProject();
   writeFileSync(join(project, "dirty.txt"), "dirty\n", "utf8");
-  const result = run(["goal", "demo", "--project", project, "--json"], {
+  const result = goalDemo(project, ["--json"], {
     env: { PATH: makeBeaconShim(project) }
   });
   assert.equal(result.status, 2);
@@ -156,14 +179,14 @@ test("dirty worktree blocks by default", () => {
 test("success, failure rollback, commit repair, resume, and import evidence", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const success = run(["goal", "demo", "--project", project, "--json"], { env });
+  const success = goalDemo(project, ["--json"], { env });
   assert.equal(success.status, 0, success.stderr);
   const payload = JSON.parse(success.stdout);
   assert.equal(payload.status, "implementation_candidate");
   assert.ok(JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "commits.json"), "utf8")).commits.length >= 1);
 
   const repairProject = makeProject();
-  const repairGoal = run(["goal", "demo", "--project", repairProject, "--json"], {
+  const repairGoal = goalDemo(repairProject, ["--json"], {
     env: { PATH: makeBeaconShim(repairProject), BEACON_LOOP_TEST_AGENT_RESULT: "commit-failure" }
   });
   const repairId = JSON.parse(repairGoal.stdout).run_id;
@@ -178,13 +201,13 @@ test("success, failure rollback, commit repair, resume, and import evidence", ()
   assert.equal(JSON.parse(imported.stdout).status, "imported");
 
   const failureProject = makeProject();
-  const failure = run(["goal", "demo", "--project", failureProject, "--json"], {
+  const failure = goalDemo(failureProject, ["--json"], {
     env: { PATH: makeBeaconShim(failureProject), BEACON_LOOP_TEST_AGENT_RESULT: "failure" }
   });
   assert.equal(JSON.parse(failure.stdout).status, "rolled_back");
 
   const repairProject2 = makeProject();
-  const repair = run(["goal", "demo", "--project", repairProject2, "--json"], {
+  const repair = goalDemo(repairProject2, ["--json"], {
     env: { PATH: makeBeaconShim(repairProject2), BEACON_LOOP_TEST_AGENT_RESULT: "commit-failure" }
   });
   assert.equal(JSON.parse(repair.stdout).reason_code, "commit_failure_repair_required");
@@ -206,7 +229,7 @@ test("doctor checks runtime prerequisites", () => {
 test("multi-iteration orchestrator writes iteration-001..003 and cap_reached", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "3", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "3", "--json"], { env });
   assert.equal(result.status, 0, result.stderr);
   const payload = JSON.parse(result.stdout);
   assert.ok(["cap_reached", "implementation_candidate"].includes(payload.status));
@@ -225,7 +248,7 @@ test("multi-iteration orchestrator writes iteration-001..003 and cap_reached", (
 test("resume continues at iteration N+1 on same run-id", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success", BEACON_LOOP_TEST_STOP_AFTER_ITERATION: "1" };
-  const first = run(["goal", "demo", "--project", project, "--max-iterations", "3", "--json"], { env });
+  const first = goalDemo(project, ["--max-iterations", "3", "--json"], { env });
   const firstPayload = JSON.parse(first.stdout);
   assert.equal(firstPayload.iteration, 1);
   const resume = run(["resume", firstPayload.run_id, "--project", project, "--json"], {
@@ -241,7 +264,7 @@ test("resume continues at iteration N+1 on same run-id", () => {
 test("iteration prompt includes accumulated notes", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "2", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "2", "--json"], { env });
   const payload = JSON.parse(result.stdout);
   const prompt = readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "iteration-002-prompt.txt"), "utf8");
   assert.match(prompt, /Accumulated notes:/);
@@ -251,7 +274,7 @@ test("iteration prompt includes accumulated notes", () => {
 test("graceful stop waits until iteration boundary", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success", BEACON_LOOP_TEST_STOP_AFTER_ITERATION: "1" };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "5", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "5", "--json"], { env });
   const payload = JSON.parse(result.stdout);
   assert.ok(["cap_reached", "implementation_candidate"].includes(payload.status));
   assert.equal(payload.iteration, 1);
@@ -266,7 +289,7 @@ test("force stop via interrupt marks force_stopped", () => {
     BEACON_LOOP_TEST_AGENT_RESULT: "success",
     BEACON_LOOP_TEST_FORCE_STOP_ON_ITERATION: "2"
   };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "5", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "5", "--json"], { env });
   const payload = JSON.parse(result.stdout);
   assert.equal(payload.status, "force_stopped");
   const runState = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "run-state.json"), "utf8"));
@@ -276,7 +299,7 @@ test("force stop via interrupt marks force_stopped", () => {
 test("consecutive failures abort after limit", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "failure", BEACON_LOOP_TEST_BACKOFF_MS: "0" };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "5", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "5", "--json"], { env });
   const payload = JSON.parse(result.stdout);
   assert.equal(payload.status, "rolled_back");
   assert.equal(payload.reason_code, "consecutive_failures_abort");
@@ -285,7 +308,7 @@ test("consecutive failures abort after limit", () => {
 test("no-op iteration counts as failure", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "noop", BEACON_LOOP_TEST_BACKOFF_MS: "0" };
-  const result = run(["goal", "demo", "--project", project, "--max-iterations", "5", "--json"], { env });
+  const result = goalDemo(project, ["--max-iterations", "5", "--json"], { env });
   const payload = JSON.parse(result.stdout);
   assert.equal(payload.reason_code, "consecutive_failures_abort");
 });
@@ -293,7 +316,7 @@ test("no-op iteration counts as failure", () => {
 test("ledger query and show after goal", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--json"], { env });
+  const goal = goalDemo(project, ["--json"], { env });
   const runId = JSON.parse(goal.stdout).run_id;
   const query = run(["runs", "query", "--project", project, "--json"], { env });
   assert.equal(query.status, 0, query.stderr);
@@ -319,7 +342,7 @@ test("runs diagnose buckets blocked dirty and healthy paths", () => {
   const dirty = run(["runs", "diagnose", "--project", project, "--json"], { env });
   assert.ok(JSON.parse(dirty.stdout).buckets.dirty_worktree.length >= 1);
 
-  const goal = run(["goal", "demo", "--project", project, "--json"], { env });
+  const goal = goalDemo(project, ["--json"], { env });
   const runId = JSON.parse(goal.stdout).run_id;
   const after = run(["runs", "diagnose", "--project", project, "--json"], { env });
   const afterPayload = JSON.parse(after.stdout);
@@ -329,7 +352,7 @@ test("runs diagnose buckets blocked dirty and healthy paths", () => {
 test("runtime tracking cycle", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--json"], { env });
+  const goal = goalDemo(project, ["--json"], { env });
   const runId = JSON.parse(goal.stdout).run_id;
   const set = run(["runtime-set", runId, "--project", project, "--status", "running", "--port", "4242", "--notes", "test", "--json"], { env });
   assert.equal(set.status, 0, set.stderr);
@@ -345,7 +368,7 @@ test("runtime tracking cycle", () => {
 test("analyze and learn write advisory index artifacts only", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--max-iterations", "2", "--json"], { env });
+  const goal = goalDemo(project, ["--max-iterations", "2", "--json"], { env });
   const runId = JSON.parse(goal.stdout).run_id;
   const analyze = run(["analyze", runId, "--project", project, "--json"], { env });
   assert.equal(analyze.status, 0, analyze.stderr);
@@ -375,7 +398,7 @@ test("doctor --diagnose returns repair buckets", () => {
 test("review exposes rich summary fields", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--max-iterations", "2", "--json"], { env });
+  const goal = goalDemo(project, ["--max-iterations", "2", "--json"], { env });
   const runId = JSON.parse(goal.stdout).run_id;
   const review = run(["review", runId, "--project", project]);
   assert.equal(review.status, 0);
@@ -388,7 +411,7 @@ test("TC-029 branch mode matrix blocks illegal current-branch + isolated-worktre
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
   const blocked = run(
-    ["goal", "demo", "--project", project, "--branch-mode", "current-branch", "--isolated-worktree", "--json"],
+    ["goal", "demo", "--project", project, "--mode", "execute-only", "--feature", "demo", "--branch-mode", "current-branch", "--isolated-worktree", "--json"],
     { env }
   );
   const payload = JSON.parse(blocked.stdout);
@@ -399,7 +422,7 @@ test("TC-029 branch mode matrix blocks illegal current-branch + isolated-worktre
 test("TC-029 current-branch runs in project root without worktree path", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--branch-mode", "current-branch", "--json"], { env });
+  const goal = goalDemo(project, ["--branch-mode", "current-branch", "--json"], { env });
   assert.equal(goal.status, 0, goal.stderr);
   const payload = JSON.parse(goal.stdout);
   const runPackage = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "run-package.json"), "utf8"));
@@ -410,7 +433,7 @@ test("TC-029 current-branch runs in project root without worktree path", () => {
 test("TC-029 run-branch creates beacon-loop/<run-id> branch", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--branch-mode", "run-branch", "--json"], { env });
+  const goal = goalDemo(project, ["--branch-mode", "run-branch", "--json"], { env });
   assert.equal(goal.status, 0, goal.stderr);
   const payload = JSON.parse(goal.stdout);
   const runPackage = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "run-package.json"), "utf8"));
@@ -429,7 +452,7 @@ test("TC-030 config file defaults with CLI override", () => {
   spawnSync("git", ["add", ".beacon-loop/config.yml"], { cwd: project });
   spawnSync("git", ["commit", "-m", "add loop config"], { cwd: project });
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success", BEACON_LOOP_TEST_CLAUDE_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--agent", "codex", "--json"], { env });
+  const goal = goalDemo(project, ["--agent", "codex", "--json"], { env });
   assert.equal(goal.status, 0, goal.stderr);
   const payload = JSON.parse(goal.stdout);
   const runPackage = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "run-package.json"), "utf8"));
@@ -441,7 +464,7 @@ test("TC-030 config file defaults with CLI override", () => {
 test("TC-031 codex multi-iteration path completes at least two iterations", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--max-iterations", "2", "--json"], { env });
+  const goal = goalDemo(project, ["--max-iterations", "2", "--json"], { env });
   assert.equal(goal.status, 0, goal.stderr);
   const payload = JSON.parse(goal.stdout);
   const runState = JSON.parse(readFileSync(join(project, ".beacon", "loop", "runs", payload.run_id, "run-state.json"), "utf8"));
@@ -454,7 +477,7 @@ test("TC-032 claude and acp adapters emit structured contract fields", () => {
     PATH: makeBeaconShim(claudeProject),
     BEACON_LOOP_TEST_CLAUDE_RESULT: "success"
   };
-  const claudeGoal = run(["goal", "demo", "--project", claudeProject, "--agent", "claude", "--json"], { env: claudeEnv });
+  const claudeGoal = goalDemo(claudeProject, ["--agent", "claude", "--json"], { env: claudeEnv });
   assert.equal(claudeGoal.status, 0, claudeGoal.stderr);
   const claudeRunId = JSON.parse(claudeGoal.stdout).run_id;
   assert.ok(existsSync(join(claudeProject, ".beacon", "loop", "worktrees", claudeRunId, `.beacon-loop-claude-${claudeRunId}.txt`)));
@@ -464,7 +487,7 @@ test("TC-032 claude and acp adapters emit structured contract fields", () => {
     PATH: makeBeaconShim(acpProject),
     BEACON_LOOP_TEST_ACP_RESULT: "success"
   };
-  const acpGoal = run(["goal", "demo", "--project", acpProject, "--agent", "acp:demo-target", "--json"], { env: acpEnv });
+  const acpGoal = goalDemo(acpProject, ["--agent", "acp:demo-target", "--json"], { env: acpEnv });
   assert.equal(acpGoal.status, 0, acpGoal.stderr);
   const acpRunId = JSON.parse(acpGoal.stdout).run_id;
   assert.ok(existsSync(join(acpProject, ".beacon", "loop", "worktrees", acpRunId, `.beacon-loop-acp-demo-target-${acpRunId}.txt`)));
@@ -473,7 +496,7 @@ test("TC-032 claude and acp adapters emit structured contract fields", () => {
 test("TC-033 scripted closed loop drives goal import-evidence and beacon qa run", () => {
   const project = makeProject();
   const env = { PATH: makeBeaconShim(project), BEACON_LOOP_TEST_AGENT_RESULT: "success" };
-  const goal = run(["goal", "demo", "--project", project, "--max-iterations", "2", "--json"], { env });
+  const goal = goalDemo(project, ["--max-iterations", "2", "--json"], { env });
   assert.equal(goal.status, 0, goal.stderr);
   const goalPayload = JSON.parse(goal.stdout);
   assert.equal(goalPayload.status, "implementation_candidate");

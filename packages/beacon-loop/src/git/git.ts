@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -27,17 +27,27 @@ export function currentHead(projectRoot) {
   return run("git", ["rev-parse", "HEAD"], { cwd: projectRoot }).stdout.trim();
 }
 
+function removeWorktreePath(projectRoot, worktreePath) {
+  const removed = run("git", ["worktree", "remove", "--force", worktreePath], { cwd: projectRoot });
+  if (removed.code !== 0 && existsSync(worktreePath)) {
+    rmSync(worktreePath, { recursive: true, force: true, maxRetries: 3, retryDelay: 100 });
+  }
+}
+
 export function createWorktree(projectRoot, runId) {
   const worktreePath = join(projectRoot, ".beacon", "loop", "worktrees", runId);
   const branch = `beacon-loop/${runId}`;
   mkdirSync(join(worktreePath, ".."), { recursive: true });
   if (existsSync(worktreePath)) {
-    run("git", ["worktree", "remove", "--force", worktreePath], { cwd: projectRoot });
+    removeWorktreePath(projectRoot, worktreePath);
   }
+  run("git", ["branch", "-D", branch], { cwd: projectRoot });
   run("git", ["worktree", "prune"], { cwd: projectRoot });
   let result = run("git", ["worktree", "add", "-b", branch, worktreePath, "HEAD"], { cwd: projectRoot });
-  if (result.code !== 0 && /already exists/i.test(`${result.stdout}\n${result.stderr}`)) {
+  if (result.code !== 0) {
+    removeWorktreePath(projectRoot, worktreePath);
     run("git", ["branch", "-D", branch], { cwd: projectRoot });
+    run("git", ["worktree", "prune"], { cwd: projectRoot });
     result = run("git", ["worktree", "add", "-b", branch, worktreePath, "HEAD"], { cwd: projectRoot });
   }
   return { branch, worktreePath, result };

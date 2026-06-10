@@ -63,6 +63,11 @@ Options:
   --branch-mode <worktree|current-branch|run-branch>
   --isolated-worktree
   --agent <codex|claude|acp:target>
+  --mode <delivery|execute-only|intent-only|review-only>
+  --feature <slug>
+  --ask-on <P0,P1,...>
+  --auto-decide deferrals
+  --ack-intent-drift
 `);
 }
 
@@ -114,6 +119,10 @@ if (command === "goal") {
   const resolved = resolveGoalOptions(projectRoot, args, {
     version: option(args, "--version", "v1.6.0"),
     feature: option(args, "--feature", ""),
+    mode: option(args, "--mode", "delivery"),
+    askOn: option(args, "--ask-on", "P0,P1"),
+    autoDecideDeferrals: flag(args, "--auto-decide"),
+    ackIntentDrift: flag(args, "--ack-intent-drift"),
     dryRun: flag(args, "--dry-run"),
     allowDirty: flag(args, "--allow-dirty"),
     maxIterations: option(args, "--max-iterations", "1"),

@@ -1,0 +1,1794 @@
+{
+  "schema_version": "1.0",
+  "plan_id": "plan-beacon-loop-goal-closed-loop-orchestrator-r1",
+  "feature": "beacon-loop-goal-closed-loop-orchestrator",
+  "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+  "version": "v1.6.0",
+  "revision_id": "R1",
+  "baseline_hash": "sha256:66327efa4cf6d3ed778dbcde241818445b311c0ff4a34ed689dbefc8ec9426c5",
+  "plan_hash": "sha256:b54f040ca1b6d10db45ac66f97f7fb752e4ac7944f6332bb73f9717e625f72a3",
+  "status": "completed",
+  "source_refs": {
+    "user_story": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "test_case": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "truth": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md",
+    "source_of_truth_root": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator",
+    "ac_matrix": "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json",
+    "story_scenario_map": "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.story-scenario-map.json",
+    "qa9_matrix": "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.qa9-matrix.json",
+    "research_projection": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json"
+  },
+  "architecture_blueprint_ref": "docs/beacon/v1.6.0/execution/architecture-blueprint.md",
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "workstreams": [
+    {
+      "workstream_id": "implementation-main",
+      "title": "Implementation Mainline",
+      "task_ids": [
+        "ITASK-001",
+        "ITASK-002",
+        "ITASK-003",
+        "ITASK-004",
+        "ITASK-005",
+        "ITASK-006",
+        "ITASK-007",
+        "ITASK-008",
+        "ITASK-009",
+        "ITASK-010",
+        "ITASK-011",
+        "ITASK-012",
+        "ITASK-013",
+        "ITASK-014",
+        "ITASK-015",
+        "ITASK-016",
+        "ITASK-017",
+        "ITASK-018",
+        "ITASK-019",
+        "ITASK-020",
+        "ITASK-021",
+        "ITASK-022",
+        "ITASK-023"
+      ]
+    }
+  ],
+  "task_mapping_source": "package-tasks",
+  "diagram_truth": {
+    "schema_version": "1.0",
+    "version": "v1.6.0",
+    "supported": true,
+    "required": false,
+    "ready": true,
+    "diagram_types": [],
+    "state_axes": [],
+    "missing_diagram_types": [],
+    "missing_state_axes": false,
+    "complexity_signals": [],
+    "review_gates": [],
+    "qa_coverage_hints": [],
+    "evidence_lines": {},
+    "generated_at": "2026-06-10T09:03:55.447636+00:00",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+    "prd_ref": "docs/beacon/v1.6.0/prd/beacon-loop-goal-closed-loop-orchestrator.md",
+    "user_story_ref": "docs/beacon/v1.6.0/user-story/beacon-loop-goal-closed-loop-orchestrator.md"
+  },
+  "research_projection": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "version": "v1.6.0",
+    "source": "research:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md",
+    "present": true,
+    "section_count": 0,
+    "sections": {},
+    "derived_items": [],
+    "source_artifact": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json"
+  },
+  "review_gates": [],
+  "qa_coverage_hints": [],
+  "tasks": [
+    {
+      "task_id": "ITASK-001",
+      "title": "TASK-041 新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+      "description": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+      "source_task_id": "TASK-041",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-004"
+      ],
+      "mapped_test_ids": [
+        "TC-034"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-034"
+      ],
+      "depends_on": [],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:run-20260610T172407766304"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648485+00:00",
+      "completed_at": "2026-06-10T09:13:06.648491+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-002",
+      "title": "TASK-042 实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+      "description": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+      "source_task_id": "TASK-042",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-008"
+      ],
+      "mapped_test_ids": [
+        "TEST-008"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-001"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648498+00:00",
+      "completed_at": "2026-06-10T09:13:06.648500+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-003",
+      "title": "TASK-043 扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+      "description": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+      "source_task_id": "TASK-043",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-003"
+      ],
+      "mapped_test_ids": [
+        "TC-040"
+      ],
+      "mapped_scenario_ids": [
+        "SC-001"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-040"
+      ],
+      "depends_on": [
+        "ITASK-002"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648505+00:00",
+      "completed_at": "2026-06-10T09:13:06.648506+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-004",
+      "title": "TASK-044 新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+      "description": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+      "source_task_id": "TASK-044",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-005"
+      ],
+      "mapped_test_ids": [
+        "TC-034"
+      ],
+      "mapped_scenario_ids": [
+        "SC-002",
+        "SC-003"
+      ],
+      "mapped_qa_case_ids": [
+        "TC-034"
+      ],
+      "depends_on": [
+        "ITASK-003"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638",
+        ".beacon/auto-test-status.json",
+        ".beacon/qa/status.json",
+        "docs/beacon/v1.6.0/.machine/qa/beacon-loop-goal-closed-loop-orchestrator.ac-test-matrix.json",
+        ".beacon/coverage-summary.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/ac-closure.json",
+        ".beacon/qa/features/beacon-loop-goal-closed-loop-orchestrator/scorecard.json",
+        ".beacon/release-gate-report.json",
+        "verify:run-20260610T172407766304"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648511+00:00",
+      "completed_at": "2026-06-10T09:13:06.648512+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-005",
+      "title": "TASK-045 实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+      "description": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+      "source_task_id": "TASK-045",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-009"
+      ],
+      "mapped_test_ids": [
+        "TEST-009"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-004"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648517+00:00",
+      "completed_at": "2026-06-10T09:13:06.648518+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-006",
+      "title": "TASK-046 CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+      "description": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+      "source_task_id": "TASK-046",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-001",
+        "AC-002"
+      ],
+      "mapped_test_ids": [
+        "TEST-001",
+        "TEST-002"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-005"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648523+00:00",
+      "completed_at": "2026-06-10T09:13:06.648524+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-007",
+      "title": "TASK-047 CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+      "description": "CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+      "source_task_id": "TASK-047",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-006"
+      ],
+      "mapped_test_ids": [
+        "TEST-006"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-006"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648529+00:00",
+      "completed_at": "2026-06-10T09:13:06.648530+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-008",
+      "title": "TASK-048 测试 TC-031..TC-033、TC-038 骨架。",
+      "description": "测试 TC-031..TC-033、TC-038 骨架。",
+      "source_task_id": "TASK-048",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-007",
+        "AC-014"
+      ],
+      "mapped_test_ids": [
+        "TEST-007",
+        "TEST-014"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-007"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648535+00:00",
+      "completed_at": "2026-06-10T09:13:06.648536+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-009",
+      "title": "TASK-049 实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+      "description": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+      "source_task_id": "TASK-049",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-010"
+      ],
+      "mapped_test_ids": [
+        "TEST-010"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-008"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648541+00:00",
+      "completed_at": "2026-06-10T09:13:06.648542+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-010",
+      "title": "TASK-050 实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+      "description": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+      "source_task_id": "TASK-050",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-011"
+      ],
+      "mapped_test_ids": [
+        "TEST-011"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-009"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648546+00:00",
+      "completed_at": "2026-06-10T09:13:06.648548+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-011",
+      "title": "TASK-051 实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+      "description": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+      "source_task_id": "TASK-051",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [
+        "AC-012",
+        "AC-013",
+        "AC-015"
+      ],
+      "mapped_test_ids": [
+        "TEST-012",
+        "TEST-013",
+        "TEST-015"
+      ],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-010"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648553+00:00",
+      "completed_at": "2026-06-10T09:13:06.648554+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-012",
+      "title": "TASK-052 `execute-only` 模式：强制 `--feature` + resolve pass。",
+      "description": "`execute-only` 模式：强制 `--feature` + resolve pass。",
+      "source_task_id": "TASK-052",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-011"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648558+00:00",
+      "completed_at": "2026-06-10T09:13:06.648560+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-013",
+      "title": "TASK-053 测试 TC-034、TC-035、TC-038b。",
+      "description": "测试 TC-034、TC-035、TC-038b。",
+      "source_task_id": "TASK-053",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-012"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648564+00:00",
+      "completed_at": "2026-06-10T09:13:06.648565+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-014",
+      "title": "TASK-054 `--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+      "description": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+      "source_task_id": "TASK-054",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-013"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648569+00:00",
+      "completed_at": "2026-06-10T09:13:06.648571+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-015",
+      "title": "TASK-055 输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+      "description": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+      "source_task_id": "TASK-055",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-014"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648575+00:00",
+      "completed_at": "2026-06-10T09:13:06.648576+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-016",
+      "title": "TASK-056 实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+      "description": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+      "source_task_id": "TASK-056",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-015"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648580+00:00",
+      "completed_at": "2026-06-10T09:13:06.648581+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-017",
+      "title": "TASK-057 测试 TC-036、TC-037。",
+      "description": "测试 TC-036、TC-037。",
+      "source_task_id": "TASK-057",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-016"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648586+00:00",
+      "completed_at": "2026-06-10T09:13:06.648587+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-018",
+      "title": "TASK-058 `resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+      "description": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+      "source_task_id": "TASK-058",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-017"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648591+00:00",
+      "completed_at": "2026-06-10T09:13:06.648594+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-019",
+      "title": "TASK-059 非法转移 guard 与 TC-038a..d。",
+      "description": "非法转移 guard 与 TC-038a..d。",
+      "source_task_id": "TASK-059",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-018"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648598+00:00",
+      "completed_at": "2026-06-10T09:13:06.648600+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-020",
+      "title": "TASK-060 scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+      "description": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+      "source_task_id": "TASK-060",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-019"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648604+00:00",
+      "completed_at": "2026-06-10T09:13:06.648605+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-021",
+      "title": "TASK-061 defer D-009: review lane 并行化评估与实现。",
+      "description": "defer D-009: review lane 并行化评估与实现。",
+      "source_task_id": "TASK-061",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-020"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648609+00:00",
+      "completed_at": "2026-06-10T09:13:06.648611+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-022",
+      "title": "TASK-062 更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+      "description": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+      "source_task_id": "TASK-062",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-021"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648615+00:00",
+      "completed_at": "2026-06-10T09:13:06.648616+00:00",
+      "active_run_id": ""
+    },
+    {
+      "task_id": "ITASK-023",
+      "title": "TASK-063 `beacon qa run` + release gate 正式验收本 feature。",
+      "description": "`beacon qa run` + release gate 正式验收本 feature。",
+      "source_task_id": "TASK-063",
+      "mapped_story_ids": [
+        "US-001"
+      ],
+      "mapped_ac_ids": [],
+      "mapped_test_ids": [],
+      "mapped_scenario_ids": [],
+      "mapped_qa_case_ids": [],
+      "depends_on": [
+        "ITASK-022"
+      ],
+      "direct_delivery_services": [
+        "."
+      ],
+      "reference_only_services": [
+        "docs"
+      ],
+      "target_modules": [
+        "."
+      ],
+      "scope_points": [],
+      "diagram_review_gates": [],
+      "diagram_state_axes": [],
+      "status": "completed",
+      "evidence_refs": [
+        "run:run-20260610T091306Z-c638"
+      ],
+      "changed_files": [
+        "packages/beacon-loop/src/delivery/orchestrator.ts",
+        "packages/beacon-loop/tests/delivery-orchestrator.test.mjs",
+        "packages/beacon-loop/tests/beacon-loop.test.mjs",
+        "packages/beacon-loop/package.json",
+        "packages/beacon-loop"
+      ],
+      "blocked_reason": "",
+      "started_at": "2026-06-10T09:13:06.648620+00:00",
+      "completed_at": "2026-06-10T09:13:06.648621+00:00",
+      "active_run_id": ""
+    }
+  ],
+  "task_alignment": {
+    "schema_version": "1.0",
+    "status": "aligned",
+    "blocked": false,
+    "reason_code": "",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+    "version": "v1.6.0",
+    "authority": "markdown_feature_package",
+    "package_tasks_path": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md",
+    "task_count": 23,
+    "resolved": true,
+    "alignment_mode": "package_tasks_to_implementation_plan",
+    "progress_write_target": "docs/beacon/<version>/.machine/execution and docs/beacon/<version>/execution",
+    "package_tasks_mutated": false,
+    "tasks": [
+      {
+        "task_id": "TASK-041",
+        "title": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-042",
+        "title": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-043",
+        "title": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-044",
+        "title": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-045",
+        "title": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-046",
+        "title": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-047",
+        "title": "CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-048",
+        "title": "测试 TC-031..TC-033、TC-038 骨架。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-049",
+        "title": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-050",
+        "title": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-051",
+        "title": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-052",
+        "title": "`execute-only` 模式：强制 `--feature` + resolve pass。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-053",
+        "title": "测试 TC-034、TC-035、TC-038b。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-054",
+        "title": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-055",
+        "title": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-056",
+        "title": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-057",
+        "title": "测试 TC-036、TC-037。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-058",
+        "title": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-059",
+        "title": "非法转移 guard 与 TC-038a..d。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-060",
+        "title": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-061",
+        "title": "defer D-009: review lane 并行化评估与实现。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-062",
+        "title": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      },
+      {
+        "task_id": "TASK-063",
+        "title": "`beacon qa run` + release gate 正式验收本 feature。",
+        "requirement_checkbox_state": "planned",
+        "implementation_status": "planned"
+      }
+    ],
+    "draft_implementation_tasks": [
+      {
+        "task_id": "ITASK-001",
+        "title": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+        "description": "新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。",
+        "source_task_id": "TASK-041",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-002",
+        "title": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+        "description": "实现 `beacon-loop-intent-v1` 规则表与 `rules_hash` 计算（AC-032）。",
+        "source_task_id": "TASK-042",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-003",
+        "title": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+        "description": "扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。",
+        "source_task_id": "TASK-043",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-004",
+        "title": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+        "description": "新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。",
+        "source_task_id": "TASK-044",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-005",
+        "title": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+        "description": "实现 planner review subprocess 适配器，写入 `review-artifact.json`（AC-033）。",
+        "source_task_id": "TASK-045",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-006",
+        "title": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+        "description": "CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。",
+        "source_task_id": "TASK-046",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-007",
+        "title": "CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+        "description": "CLI：`--ask-on`、`--auto-decide deferrals`、`--ack-intent-drift`。",
+        "source_task_id": "TASK-047",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-008",
+        "title": "测试 TC-031..TC-033、TC-038 骨架。",
+        "description": "测试 TC-031..TC-033、TC-038 骨架。",
+        "source_task_id": "TASK-048",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-009",
+        "title": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+        "description": "实现 `truth_gap_scan`：resolve + review parity 缺口合成。",
+        "source_task_id": "TASK-049",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-010",
+        "title": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+        "description": "实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。",
+        "source_task_id": "TASK-050",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-011",
+        "title": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+        "description": "实现 `truth_freeze_gate`：frozen 前 block `implement_loop`（AC-035）。",
+        "source_task_id": "TASK-051",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-012",
+        "title": "`execute-only` 模式：强制 `--feature` + resolve pass。",
+        "description": "`execute-only` 模式：强制 `--feature` + resolve pass。",
+        "source_task_id": "TASK-052",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-013",
+        "title": "测试 TC-034、TC-035、TC-038b。",
+        "description": "测试 TC-034、TC-035、TC-038b。",
+        "source_task_id": "TASK-053",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-014",
+        "title": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+        "description": "`--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。",
+        "source_task_id": "TASK-054",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-015",
+        "title": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+        "description": "输出 payload：`closure_verdict`、`beacon_qa_verdict_ref`、`beacon_release_verdict_ref`。",
+        "source_task_id": "TASK-055",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-016",
+        "title": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+        "description": "实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。",
+        "source_task_id": "TASK-056",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-017",
+        "title": "测试 TC-036、TC-037。",
+        "description": "测试 TC-036、TC-037。",
+        "source_task_id": "TASK-057",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-018",
+        "title": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+        "description": "`resume` 扩展：恢复 `delivery-state`（含 `user_decision_pending`、`repair_from_qa`）。",
+        "source_task_id": "TASK-058",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-019",
+        "title": "非法转移 guard 与 TC-038a..d。",
+        "description": "非法转移 guard 与 TC-038a..d。",
+        "source_task_id": "TASK-059",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-020",
+        "title": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+        "description": "scripted E2E `e2e-delivery-closed-loop.mjs`（AC-039 / TC-039）。",
+        "source_task_id": "TASK-060",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-021",
+        "title": "defer D-009: review lane 并行化评估与实现。",
+        "description": "defer D-009: review lane 并行化评估与实现。",
+        "source_task_id": "TASK-061",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-022",
+        "title": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+        "description": "更新 `evidence.md`；parent 回归 TC-040、TC-041。",
+        "source_task_id": "TASK-062",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      },
+      {
+        "task_id": "ITASK-023",
+        "title": "`beacon qa run` + release gate 正式验收本 feature。",
+        "description": "`beacon qa run` + release gate 正式验收本 feature。",
+        "source_task_id": "TASK-063",
+        "source_task_status": "planned",
+        "status": "planned",
+        "evidence_refs": [],
+        "changed_files": [],
+        "blocked_reason": ""
+      }
+    ]
+  },
+  "revision_delta": {},
+  "revision_delta_ref": "",
+  "revision_delta_markdown_ref": "",
+  "team_mode": {
+    "preferred_surface": "implement-team",
+    "preferred_runner": "codex-subagents",
+    "plan_command": "beacon implement team-plan \"beacon-loop-goal-closed-loop-orchestrator\" --project-root /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "run_command": "beacon implement team-run \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "dev_run_command": "beacon implement dev-run \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "ralph_command": "beacon implement run \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0 --mode ralph",
+    "qa_team_command": "beacon qa team-run \"beacon-loop-goal-closed-loop-orchestrator\" --project /Users/apple/Developer/Personal/products/beacon --version v1.6.0",
+    "roles": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "context_isolation": {
+      "role_plane": "implementation",
+      "isolated_from": [
+        "qa-team"
+      ],
+      "shared_inputs": [
+        "docs",
+        "implementation_plan",
+        "evidence_refs"
+      ],
+      "shared_outputs": [
+        "implementation_summary",
+        "technical_archive",
+        "repair_handoff"
+      ],
+      "rule": "qa_must_not_inherit_implement_private_context",
+      "implement_surface": "implement-team",
+      "qa_surface": "qa-team"
+    },
+    "config_source": "beacon/team_roles/implement-team.json",
+    "post_freeze_sequence": [
+      "freeze-pass",
+      "implement-team-plan",
+      "implement-team-run",
+      "implement-ralph",
+      "qa",
+      "release"
+    ],
+    "role_semantics": {
+      "team_reviewer": "checks implementation/spec drift before Ralph or QA closure",
+      "team_tester": "checks implementation evidence and verification readiness before Ralph or QA closure",
+      "ralph": "post-freeze controller that drives next-action routing across implementation, review, qa, and release"
+    },
+    "execution_order": [
+      "planner",
+      "implementation-architect",
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "formal_writeback_roles": [
+      "implementer",
+      "reviewer",
+      "tester"
+    ],
+    "role_contracts": {
+      "planner": {
+        "purpose": "Compile execution-ready task scope from the frozen revision baseline.",
+        "writes_to_formal_truth": false,
+        "outputs": [
+          "execution_plan_note"
+        ]
+      },
+      "implementation-architect": {
+        "purpose": "Translate frozen requirement truth into implementation-safe module boundaries and service ownership guidance.",
+        "writes_to_formal_truth": false,
+        "reads": [
+          "docs/beacon/<version>/user-story",
+          "docs/beacon/<version>/prd",
+          "docs/beacon/<version>/qa/test-cases",
+          "docs/beacon/<version>/execution/architecture-blueprint.md",
+          "implementation_plan",
+          "git_workflow_contract"
+        ],
+        "outputs": [
+          "implementation_architecture_note"
+        ],
+        "restrictions": [
+          "must_not_modify_frozen_requirement_materials",
+          "must_not_overwrite_architecture_blueprint"
+        ]
+      },
+      "implementer": {
+        "purpose": "Write code inside the frozen scope and the implementation architecture note.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "story_writeback",
+          "implementation_summary"
+        ]
+      },
+      "reviewer": {
+        "purpose": "Review implementation/spec drift and architecture-boundary drift.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_spec"
+        ]
+      },
+      "tester": {
+        "purpose": "Check implementation evidence and verification readiness before acceptance.",
+        "writes_to_formal_truth": true,
+        "outputs": [
+          "review_gate_quality"
+        ]
+      }
+    }
+  },
+  "git_workflow": {
+    "schema_version": "1.0",
+    "feature": "beacon-loop-goal-closed-loop-orchestrator",
+    "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
+    "version": "v1.6.0",
+    "mode": "single-repo",
+    "expected_branch": "beacon/v1.6.0",
+    "branch_prefix": "beacon/",
+    "base_branch": "main",
+    "use_git_worktree": false,
+    "require_clean_worktree_for_switch": true,
+    "service_directories": [
+      "."
+    ],
+    "direct_delivery_services": [
+      "."
+    ],
+    "writable_services": [
+      "."
+    ],
+    "reference_only_services": [
+      "docs"
+    ],
+    "git_roots": [
+      "."
+    ],
+    "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+    "implementation_preflight": [
+      "Before implementation, verify the target service belongs to: .",
+      "Before implementation, verify the current branch is beacon/v1.6.0.",
+      "If a branch switch is needed and the worktree is dirty, stop and clean or stash first."
+    ],
+    "source": "technical_review_contract",
+    "generated_at": "2026-06-10T09:03:55.449218+00:00",
+    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R1",
+    "transaction_id": "tx-ce334a01a552a1f90",
+    "source_hash": "sha256:9ce91309132bea6a2db4a8a6a455cb6fabca0d1559b9002be646fcfc08a80950",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "git_workflow_ref": "docs/beacon/v1.6.0/.machine/execution/git-workflow-beacon-loop-goal-closed-loop-orchestrator.json",
+  "git_workflow_markdown_ref": "docs/beacon/v1.6.0/execution/git-workflow-beacon-loop-goal-closed-loop-orchestrator.md",
+  "base_branch": "main",
+  "target_branch": "beacon/v1.6.0",
+  "branch_prefix": "beacon/",
+  "use_git_worktree": false,
+  "worktree_root": "/Users/apple/Developer/Personal/products/beacon",
+  "direct_delivery_services": [
+    "."
+  ],
+  "writable_services": [
+    "."
+  ],
+  "reference_only_services": [
+    "docs"
+  ],
+  "technical_delta": {
+    "project_mode": "greenfield",
+    "source_refs": {
+      "test_case": "docs/beacon/v1.6.0/qa/test-cases/beacon-loop-goal-closed-loop-orchestrator.md"
+    },
+    "current_state": {},
+    "refactor_boundaries": {},
+    "feature_sections": [],
+    "change_surface": []
+  },
+  "delivery_baseline": {
+    "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R1",
+    "transaction_id": "tx-ce334a01a552a1f90",
+    "source_hash": "sha256:9ce91309132bea6a2db4a8a6a455cb6fabca0d1559b9002be646fcfc08a80950",
+    "projection_seq": 1,
+    "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
+    "projection_source": "implementation_delivery_baseline_envelope"
+  },
+  "canonical_envelope_ref": "docs/beacon/v1.6.0/.machine/execution/implementation-delivery-baseline-beacon-loop-goal-closed-loop-orchestrator.json",
+  "generated_at": "2026-06-10T09:03:55.908385+00:00",
+  "baseline_id": "impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R1",
+  "transaction_id": "tx-ce334a01a552a1f90",
+  "source_hash": "sha256:9ce91309132bea6a2db4a8a6a455cb6fabca0d1559b9002be646fcfc08a80950",
+  "projection_seq": 1,
+  "projection_source": "implementation_delivery_baseline_envelope",
+  "updated_at": "2026-06-10T09:24:37.162474+00:00",
+  "accepted_at": "2026-06-10T09:24:37.162411+00:00",
+  "accepted_by": "qa"
+}
