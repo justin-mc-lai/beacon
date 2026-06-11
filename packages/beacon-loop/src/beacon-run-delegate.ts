@@ -146,11 +146,18 @@ export function delegateGoalToBeaconRun(projectRoot, goal, options) {
     };
   }
 
-  const result = spawnSync(process.execPath, [cli, ...built.args], {
+  // encoding forces piped stdio and breaks beacon-run's alt-screen TUI (needs a TTY).
+  const interactive =
+    process.stdout.isTTY === true && process.stdin.isTTY === true;
+  const spawnOptions = {
     cwd: projectRoot,
-    encoding: "utf8",
     env: process.env,
-  });
+    stdio: interactive ? "inherit" : "pipe",
+  };
+  if (!interactive) {
+    spawnOptions.encoding = "utf8";
+  }
+  const result = spawnSync(process.execPath, [cli, ...built.args], spawnOptions);
 
   return {
     status: "delegated",
@@ -159,8 +166,12 @@ export function delegateGoalToBeaconRun(projectRoot, goal, options) {
     beacon_run_cli: cli,
     branch_mode_resolved: built.branchModeResolved,
     exit_code: result.status ?? 1,
-    stdout: result.stdout,
-    stderr: result.stderr,
+    ...(interactive
+      ? {}
+      : {
+          stdout: result.stdout,
+          stderr: result.stderr,
+        }),
   };
 }
 
