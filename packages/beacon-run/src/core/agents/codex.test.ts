@@ -1,5 +1,8 @@
 import { beforeEach, describe, it, expect, vi } from "vitest";
 import { EventEmitter } from "node:events";
+import { mkdtempSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 
 vi.mock("node:child_process", () => ({
   execFileSync: vi.fn(),
@@ -8,6 +11,7 @@ vi.mock("node:child_process", () => ({
 
 import { execFileSync, spawn } from "node:child_process";
 import { CodexAgent } from "./codex.js";
+import { buildAgentOutputSchema } from "./types.js";
 
 const mockSpawn = vi.mocked(spawn);
 
@@ -19,6 +23,21 @@ function createMockProcess() {
     kill: vi.fn(),
   });
   return proc as typeof proc & ReturnType<typeof spawn>;
+}
+
+function emitJson(proc: ReturnType<typeof createMockProcess>, event: unknown) {
+  proc.stdout.emit("data", Buffer.from(`${JSON.stringify(event)}\n`));
+}
+
+function createSchemaPath(includeStopField = false): string {
+  const dir = mkdtempSync(join(tmpdir(), "codex-agent-schema-"));
+  const schemaPath = join(dir, "output-schema.json");
+  writeFileSync(
+    schemaPath,
+    JSON.stringify(buildAgentOutputSchema({ includeStopField })),
+    "utf-8",
+  );
+  return schemaPath;
 }
 
 describe("CodexAgent", () => {
@@ -202,5 +221,102 @@ describe("CodexAgent", () => {
       { stdio: "ignore" },
     );
     expect(proc.kill).not.toHaveBeenCalled();
+  });
+
+  it("parses the final agent_message when codex returns pure JSON", async () => {
+    const proc = createMockProcess();
+    mockSpawn.mockReturnValue(proc);
+    const schemaPath = createSchemaPath();
+    const agent = new CodexAgent(schemaPath);
+    const content = JSON.stringify({
+      success: true,
+      summary: "ok",
+      key_changes_made: [],
+      key_learnings: [],
+    });
+
+    const promise = agent.run("test prompt", "/work/dir");
+    emitJson(proc, {
+      type: "item.completed",
+      item: { type: "agent_message", text: content },
+    });
+    emitJson(proc, {
+      type: "turn.completed",
+      usage: { input_tokens: 3, cached_input_tokens: 0, output_tokens: 5 },
+    });
+    proc.emit("close", 0);
+
+    await expect(promise).resolves.toEqual({
+      output: {
+        success: true,
+        summary: "ok",
+        key_changes_made: [],
+        key_learnings: [],
+      },
+      usage: {
+        inputTokens: 3,
+        outputTokens: 5,
+        cacheReadTokens: 0,
+        cacheCreationTokens: 0,
+      },
+    });
+  });
+
+  it("recovers JSON when codex prepends prose before the final object", async () => {
+    const proc = createMockProcess();
+    mockSpawn.mockReturnValue(proc);
+    const schemaPath = createSchemaPath();
+    const agent = new CodexAgent(schemaPath);
+
+    const promise = agent.run("test prompt", "/work/dir");
+    emitJson(proc, {
+      type: "item.completed",
+      item: {
+        type: "agent_message",
+        text: 'The read-only audit is complete.\n\n{"success":true,"summary":"ok","key_changes_made":[],"key_learnings":[]}',
+      },
+    });
+    proc.emit("close", 0);
+
+    await expect(promise).resolves.toMatchObject({
+      output: {
+        success: true,
+        summary: "ok",
+      },
+    });
+  });
+
+  it("uses an earlier agent_message when the final one is prose-only", async () => {
+    const proc = createMockProcess();
+    mockSpawn.mockReturnValue(proc);
+    const schemaPath = createSchemaPath();
+    const agent = new CodexAgent(schemaPath);
+    const structured = JSON.stringify({
+      success: true,
+      summary: "from earlier message",
+      key_changes_made: [],
+      key_learnings: [],
+    });
+
+    const promise = agent.run("test prompt", "/work/dir");
+    emitJson(proc, {
+      type: "item.completed",
+      item: { type: "agent_message", text: structured },
+    });
+    emitJson(proc, {
+      type: "item.completed",
+      item: {
+        type: "agent_message",
+        text: "The read-only verification finished without additional edits.",
+      },
+    });
+    proc.emit("close", 0);
+
+    await expect(promise).resolves.toMatchObject({
+      output: {
+        success: true,
+        summary: "from earlier message",
+      },
+    });
   });
 });

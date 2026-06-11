@@ -1,12 +1,15 @@
 import { execFileSync, spawn } from "node:child_process";
-import { createWriteStream } from "node:fs";
+import { createWriteStream, readFileSync } from "node:fs";
 import type {
   Agent,
   AgentResult,
   AgentOutput,
+  AgentOutputSchema,
   TokenUsage,
   AgentRunOptions,
 } from "./types.js";
+import { validateAgentOutput } from "./types.js";
+import { parseAgentJson } from "./json-extract.js";
 import {
   parseJSONLStream,
   setupAbortHandler,
@@ -117,6 +120,32 @@ function buildCodexArgs(
   ];
 }
 
+function parseCodexAgentOutput(
+  text: string,
+  schema: AgentOutputSchema,
+): AgentOutput {
+  const parsed = parseAgentJson(text, (value) => {
+    try {
+      validateAgentOutput(value, schema);
+      return true;
+    } catch {
+      return false;
+    }
+  });
+  if (parsed !== null) {
+    return validateAgentOutput(parsed, schema);
+  }
+
+  const fallbackParsed = parseAgentJson(text);
+  if (fallbackParsed !== null) {
+    return validateAgentOutput(fallbackParsed, schema);
+  }
+
+  throw new SyntaxError(
+    "codex output did not contain a parseable JSON object",
+  );
+}
+
 export class CodexAgent implements Agent {
   name = "codex";
 
@@ -163,6 +192,7 @@ export class CodexAgent implements Agent {
       }
 
       let lastAgentMessage: string | null = null;
+      const agentMessages: string[] = [];
       const cumulative: TokenUsage = {
         inputTokens: 0,
         outputTokens: 0,
@@ -177,6 +207,7 @@ export class CodexAgent implements Agent {
           (event as CodexItemCompleted).item.type === "agent_message"
         ) {
           lastAgentMessage = (event as CodexItemCompleted).item.text;
+          agentMessages.push(lastAgentMessage);
           onMessage?.(lastAgentMessage);
         }
 
@@ -190,21 +221,33 @@ export class CodexAgent implements Agent {
       });
 
       setupChildProcessHandlers(child, "codex", logStream, reject, () => {
-        if (!lastAgentMessage) {
+        if (!lastAgentMessage || agentMessages.length === 0) {
           reject(new Error("codex returned no agent message"));
           return;
         }
 
-        try {
-          const output = JSON.parse(lastAgentMessage) as AgentOutput;
-          resolve({ output, usage: cumulative });
-        } catch (err) {
-          reject(
-            new Error(
-              `Failed to parse codex output: ${err instanceof Error ? err.message : err}`,
-            ),
-          );
+        const schema = JSON.parse(
+          readFileSync(this.schemaPath, "utf-8"),
+        ) as AgentOutputSchema;
+
+        let lastError: Error | null = null;
+        for (let i = agentMessages.length - 1; i >= 0; i--) {
+          try {
+            const output = parseCodexAgentOutput(agentMessages[i]!, schema);
+            resolve({ output, usage: cumulative });
+            return;
+          } catch (err) {
+            lastError = err instanceof Error ? err : new Error(String(err));
+          }
         }
+
+        const message = lastError?.message ?? "unknown parse error";
+        const sample = lastAgentMessage.slice(0, 120).replace(/\s+/g, " ");
+        reject(
+          new Error(
+            `Failed to parse codex output: ${message} (sample: ${sample})`,
+          ),
+        );
       });
     });
   }
