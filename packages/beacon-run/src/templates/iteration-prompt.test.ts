@@ -69,6 +69,32 @@ describe("buildIterationPrompt", () => {
     expect(baseline).not.toContain("Stop Condition");
   });
 
+  it("adds should_fully_stop to Output when requireShouldFullyStop is set for beacon runs", () => {
+    const result = buildIterationPrompt({
+      n: 1,
+      runId: "run-1",
+      prompt: "summarize truth",
+      requireShouldFullyStop: true,
+    });
+    expect(result).toContain("should_fully_stop");
+    expect(result).toContain("output-schema.json");
+    expect(result).toContain("Beacon Phase Objective below");
+    expect(result).not.toContain("Stop Condition");
+  });
+
+  it("prefers explicit stopWhen over beacon should_fully_stop wording", () => {
+    const result = buildIterationPrompt({
+      n: 1,
+      runId: "run-1",
+      prompt: "do stuff",
+      stopWhen: "all tasks are done",
+      requireShouldFullyStop: true,
+    });
+    expect(result).toContain("Stop Condition");
+    expect(result).toContain("all tasks are done");
+    expect(result).not.toContain("Beacon Phase Objective below");
+  });
+
   it("injects a stop condition section and should_fully_stop output field when stopWhen is set", () => {
     const result = buildIterationPrompt({
       n: 1,

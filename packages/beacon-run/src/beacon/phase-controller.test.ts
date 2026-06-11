@@ -56,12 +56,16 @@ describe("beacon phase-controller", () => {
       n: 1,
       runId: "run-1",
       prompt: "deliver gum choose/filter parity",
+      requireShouldFullyStop: true,
     });
     const augmented = controller.augmentIterationPrompt(base);
     expect(augmented).toContain("Beacon Harness Context");
     expect(augmented).toContain("Beacon phase: generate");
     expect(augmented).toContain("subprocess Skill MD execution");
     expect(augmented).toContain("deliver gum choose/filter parity");
+    expect(augmented).toContain("should_fully_stop");
+    expect(augmented).toContain("Beacon Output Contract");
+    expect(augmented).toContain("output-schema.json");
   });
 
   it("runs harness-only qa/release phases without agent iterations", async () => {

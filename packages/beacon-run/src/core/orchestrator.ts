@@ -295,6 +295,7 @@ export class Orchestrator extends EventEmitter<OrchestratorEvents> {
           runId: this.runInfo.runId,
           prompt: this.prompt,
           stopWhen: this.limits.stopWhen,
+          requireShouldFullyStop: Boolean(this.beaconHooks),
           commitMessage: this.config.commitMessage,
         });
         const augmentedPrompt = this.beaconHooks?.augmentIterationPrompt

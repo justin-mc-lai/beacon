@@ -319,4 +319,40 @@ describe("CodexAgent", () => {
       },
     });
   });
+
+  it("recovers fenced JSON that includes should_fully_stop for beacon schema", async () => {
+    const proc = createMockProcess();
+    mockSpawn.mockReturnValue(proc);
+    const schemaPath = createSchemaPath(true);
+    const agent = new CodexAgent(schemaPath);
+
+    const promise = agent.run("test prompt", "/work/dir");
+    emitJson(proc, {
+      type: "item.completed",
+      item: {
+        type: "agent_message",
+        text: [
+          "Now I have a comprehensive understanding of truth.md.",
+          "",
+          "```json",
+          JSON.stringify({
+            success: true,
+            summary: "captured three acceptance points",
+            key_changes_made: ["read truth.md"],
+            key_learnings: ["feature is frozen"],
+            should_fully_stop: true,
+          }),
+          "```",
+        ].join("\n"),
+      },
+    });
+    proc.emit("close", 0);
+
+    await expect(promise).resolves.toMatchObject({
+      output: {
+        success: true,
+        should_fully_stop: true,
+      },
+    });
+  });
 });

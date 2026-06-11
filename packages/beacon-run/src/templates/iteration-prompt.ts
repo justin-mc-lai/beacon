@@ -8,6 +8,8 @@ export function buildIterationPrompt(params: {
   runId: string;
   prompt: string;
   stopWhen?: string;
+  /** Align prompt with --beacon output-schema.json (requires should_fully_stop). */
+  requireShouldFullyStop?: boolean;
   commitMessage?: CommitMessageConfig;
 }): string {
   const outputFields = [
@@ -32,6 +34,10 @@ export function buildIterationPrompt(params: {
   if (params.stopWhen !== undefined) {
     outputFields.push(
       "- should_fully_stop: set to true ONLY when the stop condition below is fully met and the entire loop should end. default to false",
+    );
+  } else if (params.requireShouldFullyStop) {
+    outputFields.push(
+      "- should_fully_stop: required by output-schema.json. set to true ONLY when the Beacon Phase Objective below is fully satisfied for this iteration and gnhf should advance to the next Beacon lifecycle phase; otherwise false",
     );
   }
 
