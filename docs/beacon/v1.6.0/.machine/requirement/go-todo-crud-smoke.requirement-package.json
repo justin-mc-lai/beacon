@@ -1,0 +1,250 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-11T08:20:18.701506+00:00",
+  "feature": "go-todo-crud-smoke",
+  "feature_slug": "go-todo-crud-smoke",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "5d7c30a2ce3d70ac589fc42e0f678ef0b72e4e27d9d2d5cbaa3ce844c3be608b",
+    "tests": "1100d8412be4684fac55e61f8932c9e12c345cc7f3c8decda029fe5e47299f6b",
+    "tasks": "27d5b0fb25bb88f7910761932a192ca08439967c9cfc5d759e0f5ea8def5d8f2",
+    "evidence": "d4fc91872933311c3226ca54d5cbafd052563489586d42463a42d13a7c721c5e"
+  },
+  "truth_frontmatter": {
+    "slug": "go-todo-crud-smoke",
+    "version": "v1.6.0",
+    "status": "draft",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "parent_feature": "null"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "go-mod-init",
+      "description": "`examples/go-todo-crud/` 目录包含有效的 `go.mod`，模块路径为 `examples/go-todo-crud`，Go >= 1.21；`go build ./...` 成功。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "get-list",
+      "description": "`GET /todos` 返回 HTTP 200 + JSON 数组；空列表返回 `[]`；每个元素含 `id`(int)、`title`(string)、`completed`(bool)。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "post-create",
+      "description": "`POST /todos` 接受 `{\"title\": \"...\"}`，返回 HTTP 201 + 创建的 TODO（默认 `completed: false`）；空 title 返回 400。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "get-by-id",
+      "description": "`GET /todos/{id}` 存在时返回 200 + JSON；不存在时返回 404。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "put-update",
+      "description": "`PUT /todos/{id}` 接受 `{\"title\": \"...\", \"completed\": true/false}`，成功返回 200 + 更新后 JSON；不存在返回 404；空 title 返回 400。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "delete",
+      "description": "`DELETE /todos/{id}` 成功返回 204 无 body；不存在返回 404；后续 GET 不应包含。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "concurrency",
+      "description": "使用 `sync.RWMutex` 保护内存存储；并发读写无 race（`go test -race` 通过）。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "test-coverage",
+      "description": "`go test ./...` 通过，使用 `httptest.Server` 端到端验证，覆盖 happy path 和 error path。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-001",
+      "tc_id": "TC-001",
+      "layer": "unit",
+      "command": "`cd examples/go-todo-crud && go build ./...`",
+      "assertion": "编译成功，退出码 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-002",
+      "tc_id": "TC-002",
+      "layer": "integration",
+      "command": "`go test -run TestListTodos`",
+      "assertion": "GET /todos 返回 200 + JSON 数组；空列表为 `[]`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-003",
+      "tc_id": "TC-003",
+      "layer": "integration",
+      "command": "`go test -run TestCreateTodo`",
+      "assertion": "POST /todos 返回 201 + 创建的 TODO（含 id/title/completed）；空 title 返回 400",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-004",
+      "tc_id": "TC-004",
+      "layer": "integration",
+      "command": "`go test -run TestGetTodo`",
+      "assertion": "GET /todos/1 返回 200（存在时）；不存在的 ID 返回 404",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-005",
+      "tc_id": "TC-005",
+      "layer": "integration",
+      "command": "`go test -run TestUpdateTodo`",
+      "assertion": "PUT /todos/1 返回 200 + 更新后 JSON；不存在返回 404；空 title 返回 400",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-006",
+      "tc_id": "TC-006",
+      "layer": "integration",
+      "command": "`go test -run TestDeleteTodo`",
+      "assertion": "DELETE /todos/1 返回 204；不存在返回 404；后续 GET 返回 404",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-007",
+      "tc_id": "TC-007",
+      "layer": "unit",
+      "command": "`go test -race -run TestConcurrentAccess`",
+      "assertion": "并发读写无 race condition",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-008",
+      "tc_id": "TC-008",
+      "layer": "unit",
+      "command": "`go test ./...`",
+      "assertion": "所有测试通过，退出码 0",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "TASK-001",
+      "title": "创建 `examples/go-todo-crud/` 目录与 `go.mod`（module `examples/go-todo-crud`，Go >= 1.21）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-002",
+      "title": "创建 `examples/go-todo-crud/todo.go`：定义 `Todo` struct（ID int, Title string, Completed bool）+ `TodoStore`（map[int]Todo + sync.RWMutex + 自增 ID）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-003",
+      "title": "实现 `TodoStore` CRUD 方法：`List()`, `Create(title)`, `Get(id)`, `Update(id, title, completed)`, `Delete(id)`。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-004",
+      "title": "实现 `GET /todos` handler（AC-002）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-005",
+      "title": "实现 `POST /todos` handler：JSON 解析，title 校验，创建并返回 201（AC-003）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-006",
+      "title": "实现 `GET /todos/{id}` handler：路径解析 ID，存在返回 200，不存在返回 404（AC-004）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-007",
+      "title": "实现 `PUT /todos/{id}` handler：JSON 解析，存在则更新返回 200，不存在返回 404（AC-005）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-008",
+      "title": "实现 `DELETE /todos/{id}` handler：存在返回 204，不存在返回 404（AC-006）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-009",
+      "title": "创建 `examples/go-todo-crud/main.go`：注册路由，启动 HTTP 服务器（默认 `:8080`）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-010",
+      "title": "创建 `examples/go-todo-crud/todo_test.go`：实现 TC-002..TC-008。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-011",
+      "title": "运行 `go test ./...` 和 `go test -race ./...` 验证通过。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-012",
+      "title": "`go build ./...` 编译验证。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/research/go-todo-crud-smoke.md",
+      "status": "accepted",
+      "route": "truth.research"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/truth.md",
+      "status": "**draft**",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/tests.md",
+      "status": "draft",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/go-todo-crud-smoke/evidence.md",
+      "status": "evidence-indexed",
+      "route": "evaluate"
+    }
+  ]
+}

@@ -69,6 +69,16 @@
 - [x] TASK-087 R4 refreeze（`beacon change --refreeze-chain` complete，R3→R4）。
 - [x] TASK-088 Phase K implement + `beacon-eval-qa` 验收 AC-053..060。
 
+## Phase L — R5 worktree harness + clarity + smoke exit（AC-061..AC-064）
+
+- [x] TASK-089 `beacon-run`：`--worktree --beacon` 时 harness `projectRoot = effectiveCwd`；beacon-loop delegate 文档化（AC-061）。
+- [x] TASK-090 测试 TC-063：`worktree-harness-project-root`（mock harness，assert truth-promotion path）。
+- [x] TASK-091 `requirement_clarity`：拉丁 marker 词界 + frontmatter/path 豁免；TC-064 fixture `go-todo-crud-smoke`（AC-062）。
+- [x] TASK-092 `buildPhaseHarnessArgs` / phase-controller：读 target `scope_mode`；smoke truth exit 跳过 sync-materials（AC-063）。
+- [x] TASK-093 `beacon-phase.json`：`phase_promoted` + harness 失败日志（AC-064）。
+- [x] TASK-094 merge `go-todo-crud-smoke` 材料入主仓；opt-in E2E TC-067（AC-063 回归）。
+- [x] TASK-095 R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。
+
 ## 边界
 
 - 任务台账不是 implementation completion。

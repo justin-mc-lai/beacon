@@ -65,7 +65,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-06-11T09:00:58.621937",
+    "generated_at": "2026-06-11T17:04:50.667641",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -82,7 +82,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-06-11T09:00:58.620811",
+    "generated_at": "2026-06-11T17:04:50.665347",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -823,7 +823,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-053 :: `packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `be",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"orchestrator\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"orchestrator\"",
       "assertion": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-055.json",
       "required_files": [
@@ -835,7 +835,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"orchestrator\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"orchestrator\"`",
       "scenario": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
       "steps": ""
     },
@@ -848,7 +848,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-054 :: iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 s",
       "priority": "P2",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"",
       "assertion": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-056.json",
       "required_files": [
@@ -860,7 +860,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
       "scenario": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
       "steps": ""
     },
@@ -873,7 +873,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-055 :: truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"",
       "assertion": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-057.json",
       "required_files": [
@@ -885,7 +885,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
       "scenario": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
       "steps": ""
     },
@@ -898,7 +898,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-056 :: 默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
       "priority": "P2",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"",
       "assertion": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-058.json",
       "required_files": [
@@ -910,7 +910,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
       "scenario": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
       "steps": ""
     },
@@ -923,7 +923,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-057 :: 迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"",
       "assertion": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-059.json",
       "required_files": [
@@ -935,7 +935,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
       "scenario": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
       "steps": ""
     },
@@ -945,11 +945,11 @@
       "story_id": "",
       "layer": "regression",
       "qa_type": "regression",
-      "title": "beacon-loop-goal-closed-loop-orchestrator AC-058 :: R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-058 :: 冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-loop.r3-backup-20260610 && npm test",
-      "assertion": "R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。",
+      "command": "cd packages/beacon-loop && npm test",
+      "assertion": "冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-060.json",
       "required_files": [
         "command.txt",
@@ -960,8 +960,8 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-loop.r3-backup-20260610 && npm test`",
-      "scenario": "R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。",
+      "execution_method": "`cd packages/beacon-loop && npm test`",
+      "scenario": "冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
       "steps": ""
     },
     {
@@ -998,7 +998,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-060 :: drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 be",
       "priority": "P2",
       "automation": "auto",
-      "command": "cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm test -- --test-name-pattern \"e2e-gum-drill\"",
+      "command": "cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t \"e2e-gum-drill\"",
       "assertion": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-062.json",
       "required_files": [
@@ -1010,8 +1010,133 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm test -- --test-name-pattern \"e2e-gum-drill\"`",
+      "execution_method": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t \"e2e-gum-drill\"`",
       "scenario": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-063",
+      "ac_id": "AC-061",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-061 :: `--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktr",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"",
+      "assertion": "`--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-063.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
+      "scenario": "`--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-064",
+      "ac_id": "AC-062",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-062 :: clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 ",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"",
+      "assertion": "clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-064.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q`",
+      "scenario": "clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-065",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + tr",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"",
+      "assertion": "target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-065.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "scenario": "target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-066",
+      "ac_id": "AC-064",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-064 :: harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 sile",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"",
+      "assertion": "harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-066.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
+      "scenario": "harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-067",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "e2e",
+      "qa_type": "e2e",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd examples/go-todo-crud && go test ./...",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-067.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd examples/go-todo-crud && go test ./...`",
+      "scenario": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
       "steps": ""
     },
     {
@@ -1048,7 +1173,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-054 :: Beacon lifecycle 编入 iteration prompt。",
       "priority": "P2",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"",
       "assertion": "Beacon lifecycle 编入 iteration prompt。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-056.json",
       "required_files": [
@@ -1060,7 +1185,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
       "scenario": "Beacon lifecycle 编入 iteration prompt。",
       "steps": ""
     },
@@ -1073,7 +1198,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-055 :: truth 阶段走 agent 而非纯模板 CLI。",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"",
       "assertion": "truth 阶段走 agent 而非纯模板 CLI。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-057.json",
       "required_files": [
@@ -1085,7 +1210,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
       "scenario": "truth 阶段走 agent 而非纯模板 CLI。",
       "steps": ""
     },
@@ -1098,7 +1223,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-056 :: 默认禁用模板 truth_fill。",
       "priority": "P2",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"",
       "assertion": "默认禁用模板 truth_fill。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-058.json",
       "required_files": [
@@ -1110,7 +1235,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
       "scenario": "默认禁用模板 truth_fill。",
       "steps": ""
     },
@@ -1123,7 +1248,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-057 :: harness 检查点记账。",
       "priority": "P1",
       "automation": "auto",
-      "command": "cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"",
       "assertion": "harness 检查点记账。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-059.json",
       "required_files": [
@@ -1135,7 +1260,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"`",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
       "scenario": "harness 检查点记账。",
       "steps": ""
     },
@@ -1148,7 +1273,7 @@
       "title": "beacon-loop-goal-closed-loop-orchestrator AC-058 :: beacon-loop 冻结为参考实现。",
       "priority": "P1",
       "automation": "auto",
-      "command": "R3 backup npm test",
+      "command": "cd packages/beacon-loop && npm test",
       "assertion": "beacon-loop 冻结为参考实现。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-060.json",
       "required_files": [
@@ -1160,7 +1285,7 @@
       ],
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-      "execution_method": "R3 backup npm test",
+      "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "beacon-loop 冻结为参考实现。",
       "steps": ""
     },
@@ -1212,6 +1337,131 @@
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`BEACON_RUN_E2E_DRILL=1`",
       "scenario": "gum drill 真项目闭环。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-063",
+      "ac_id": "AC-061",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-061 :: worktree harness root = agent cwd。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"",
+      "assertion": "worktree harness root = agent cwd。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-063.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
+      "scenario": "worktree harness root = agent cwd。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-064",
+      "ac_id": "AC-062",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-062 :: slug 含 todo 不误 block。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "clarity unit / freeze smoke fixture",
+      "assertion": "slug 含 todo 不误 block。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-064.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "clarity unit / freeze smoke fixture",
+      "scenario": "slug 含 todo 不误 block。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-065",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 跳过 sync-materials exit。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"",
+      "assertion": "smoke 跳过 sync-materials exit。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-065.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "scenario": "smoke 跳过 sync-materials exit。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-066",
+      "ac_id": "AC-064",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-064 :: harness 失败可见。",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"",
+      "assertion": "harness 失败可见。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-066.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
+      "scenario": "harness 失败可见。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-067",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "e2e",
+      "qa_type": "e2e",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物；agent goal 为 opt-in。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd examples/go-todo-crud && go test ./...",
+      "assertion": "smoke 交付物；agent goal 为 opt-in。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-067.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd examples/go-todo-crud && go test ./...`",
+      "scenario": "smoke 交付物；agent goal 为 opt-in。",
       "steps": ""
     },
     {
@@ -1669,7 +1919,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 56,
+    "row_count": 66,
     "enrichment_disabled": true
   },
   "compatibility_matrix": {
@@ -1697,7 +1947,7 @@
       }
     ]
   },
-  "generated_at": "2026-06-11T09:00:58.621982",
+  "generated_at": "2026-06-11T17:04:50.667738",
   "research_projection": {
     "schema_version": "1.0",
     "feature": "beacon-loop-goal-closed-loop-orchestrator",

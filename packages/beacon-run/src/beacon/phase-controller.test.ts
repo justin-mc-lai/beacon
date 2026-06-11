@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -99,6 +99,48 @@ describe("beacon phase-controller", () => {
     expect(
       promotion.calls.some((call: { command: string }) => call.command.includes("release check")),
     ).toBe(true);
+  });
+
+  it("records phase_promoted false when smoke truth package is missing (AC-064 / TC-066)", async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-smoke-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/go-todo-crud-smoke",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: go-todo-crud-smoke\n---\nscope_mode = smoke\n",
+      "utf8",
+    );
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot,
+        version: "v1.6.0",
+        feature: "go-todo-crud-smoke",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "truth",
+    );
+
+    await controller.beforeAgentIteration();
+    await controller.afterAgentIteration(true, true);
+
+    const artifact = JSON.parse(
+      readFileSync(join(runDir, "beacon-phase.json"), "utf8"),
+    );
+    expect(artifact.phase).toBe("truth");
+    expect(artifact.phase_promoted).toBe(false);
+    expect(artifact.last_harness_exit?.ok).toBe(false);
+    expect(artifact.last_harness_exit?.reason_code).toBe(
+      "smoke_truth_package_missing",
+    );
+
+    rmSync(projectRoot, { recursive: true, force: true });
   });
 
   it("advances agent phase on should_fully_stop + exit harness", async () => {

@@ -26,31 +26,41 @@
 | AC-050 | TC-052 | regression | `cd packages/beacon-loop && npm test` | AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。 |
 | AC-051 | TC-053 | e2e | `cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern "e2e-implement-runner-commit"` | 真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。 |
 | AC-052 | TC-054 | integration | `cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json` | doctor 报告 implement runner / codex / schema 分桶与 repair route。 |
-| AC-053 | TC-055 | contract | `cd packages/beacon-run && pnpm test -- --test-name-pattern "orchestrator"` | `packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。 |
-| AC-054 | TC-056 | behavior | `cd packages/beacon-run && pnpm test -- --test-name-pattern "beacon-phase-prompt"` | iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。 |
-| AC-055 | TC-057 | integration | `cd packages/beacon-run && pnpm test -- --test-name-pattern "truth-phase-agent"` | truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。 |
-| AC-056 | TC-058 | negative | `cd packages/beacon-run && pnpm test -- --test-name-pattern "no-default-template-truth"` | 默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。 |
-| AC-057 | TC-059 | contract | `cd packages/beacon-run && pnpm test -- --test-name-pattern "harness-checkpoint"` | 迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。 |
-| AC-058 | TC-060 | regression | `cd packages/beacon-loop.r3-backup-20260610 && npm test` | R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。 |
+| AC-053 | TC-055 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "orchestrator"` | `packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。 |
+| AC-054 | TC-056 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "beacon-phase-prompt"` | iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。 |
+| AC-055 | TC-057 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "truth-phase-agent"` | truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。 |
+| AC-056 | TC-058 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "no-default-template-truth"` | 默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。 |
+| AC-057 | TC-059 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "harness-checkpoint"` | 迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。 |
+| AC-058 | TC-060 | regression | `cd packages/beacon-loop && npm test` | 冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。 |
 | AC-059 | TC-061 | integration | `beacon implement run --help` | CLI 暴露 `--output-schema`；与 beacon-run adapter 契约一致。 |
-| AC-060 | TC-062 | e2e | `cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm test -- --test-name-pattern "e2e-gum-drill"` | drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。 |
+| AC-060 | TC-062 | e2e | `cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t "e2e-gum-drill"` | drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。 |
+| AC-061 | TC-063 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "worktree-harness-project-root"` | `--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。 |
+| AC-062 | TC-064 | contract | `python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q` | clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。 |
+| AC-063 | TC-065 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "smoke-truth-exit"` | target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。 |
+| AC-064 | TC-066 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "phase-promotion-visibility"` | harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。 |
+| AC-063 | TC-067 | e2e | `cd examples/go-todo-crud && go test ./...` | smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。 |
 
-## R4 — beacon-run gnhf agent orchestration（AC-053..AC-060）
+## R5 — worktree harness + smoke exit + clarity（AC-061..AC-064）
 
 R4 authoritative rows 已并入上方 **覆盖矩阵**（TC-055..TC-062）。
 
 | AC ID | TC ID | Layer | Command | Assertion |
 |-------|-------|-------|---------|-----------|
 | AC-053 | TC-055 | contract | `cd packages/beacon-run && pnpm test` | gnhf orchestrator + multi-agent factory 在 beacon-run 包内可构建可测。 |
-| AC-054 | TC-056 | behavior | `cd packages/beacon-run && pnpm test -- --test-name-pattern "beacon-phase-prompt"` | Beacon lifecycle 编入 iteration prompt。 |
-| AC-055 | TC-057 | integration | `cd packages/beacon-run && pnpm test -- --test-name-pattern "truth-phase-agent"` | truth 阶段走 agent 而非纯模板 CLI。 |
-| AC-056 | TC-058 | negative | `cd packages/beacon-run && pnpm test -- --test-name-pattern "no-default-template-truth"` | 默认禁用模板 truth_fill。 |
-| AC-057 | TC-059 | contract | `cd packages/beacon-run && pnpm test -- --test-name-pattern "harness-checkpoint"` | harness 检查点记账。 |
-| AC-058 | TC-060 | regression | R3 backup npm test | beacon-loop 冻结为参考实现。 |
+| AC-054 | TC-056 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "beacon-phase-prompt"` | Beacon lifecycle 编入 iteration prompt。 |
+| AC-055 | TC-057 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "truth-phase-agent"` | truth 阶段走 agent 而非纯模板 CLI。 |
+| AC-056 | TC-058 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "no-default-template-truth"` | 默认禁用模板 truth_fill。 |
+| AC-057 | TC-059 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "harness-checkpoint"` | harness 检查点记账。 |
+| AC-058 | TC-060 | regression | `cd packages/beacon-loop && npm test` | beacon-loop 冻结为参考实现。 |
 | AC-059 | TC-061 | integration | `beacon implement run --help` | `--output-schema` 在 Core CLI 可用。 |
 | AC-060 | TC-062 | e2e | `BEACON_RUN_E2E_DRILL=1` | gum drill 真项目闭环。 |
+| AC-061 | TC-063 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "worktree-harness-project-root"` | worktree harness root = agent cwd。 |
+| AC-062 | TC-064 | contract | clarity unit / freeze smoke fixture | slug 含 todo 不误 block。 |
+| AC-063 | TC-065 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "smoke-truth-exit"` | smoke 跳过 sync-materials exit。 |
+| AC-064 | TC-066 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "phase-promotion-visibility"` | harness 失败可见。 |
+| AC-063 | TC-067 | e2e | `cd examples/go-todo-crud && go test ./...` | smoke 交付物；agent goal 为 opt-in。 |
 
-## R3 — gnhf + Harness Worker（AC-043..AC-052）
+## R4 — beacon-run gnhf agent orchestration（AC-053..AC-060）
 
 R3 authoritative rows 已并入上方 **覆盖矩阵**（TC-045..TC-054）；本节保留 AC 分组说明。
 

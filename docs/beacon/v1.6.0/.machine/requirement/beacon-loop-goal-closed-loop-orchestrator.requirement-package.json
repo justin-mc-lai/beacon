@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-11T02:40:39.758968+00:00",
+  "generated_at": "2026-06-11T09:04:56.302331+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "537963f5edc775805ae8c9721accd1664dbf63dad3fd547a012d0f5780482c0f",
-    "tests": "bd9584fb2a3e3029a3a5dbb748eaa8d5f2fedbea36df37a8b2cafdbffac7bdb5",
-    "tasks": "677a691a3d1d1b2480fa1204a8121b716efe1a8818e335bacbda22a2b05b449f",
-    "evidence": "3aa2883a48d05d5a99ebd5018ed892acc5b4f7c565f8da7ca710dbda27b78734"
+    "truth": "63b0c63484b05f63038c2d3107be913af61b47363327c08258cee5a99af466d3",
+    "tests": "663b1a0e18adc6bb449455cf1b2b6bbbaedaf5d451169108bbc4384abacb4e9d",
+    "tasks": "c7d02b0940c0be8ee2c3938f1493ce9d4d54dc711d877979bd3059e28104b1a4",
+    "evidence": "19856e485094f82e6c69af93978d03a38f1831a68bc996bf24bfa23b590961fa"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
@@ -193,6 +193,26 @@
     {
       "ac_id": "AC-060",
       "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-061",
+      "theme": "**Worktree harness project root**：`beacon-run --worktree --beacon` 时，truth/generate/qa/release harness subprocess 的 `--project-root` / `--project` **必须与 agent `effectiveCwd`（worktree）一致**；禁止对主仓跑 greenfield feature 的 `sync-materials` / `verify-context`；`truth-promotion.json` 记录的 command 须含 worktree 绝对路径。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-062",
+      "theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "theme": "**Smoke truth exit harness**：当 target feature `scope_mode=smoke`（读 feature package frontmatter 或 truth 正文）时，truth phase exit **不得**要求 `beacon doctor sync-materials` 或 `beacon freeze` 成功才能 advance 到 `generate`；exit 仅要求 `truth-map resolve` PASS + `features/<slug>/truth.md` 存在且非空；full sync/freeze 仍保留给非 smoke / `full_parity` feature。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-064",
+      "theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
       "description": ""
     }
   ],
@@ -377,7 +397,7 @@
       "ac_id": "AC-053",
       "tc_id": "TC-055",
       "layer": "contract",
-      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"orchestrator\"`",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"orchestrator\"`",
       "assertion": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
       "evidence_path": ""
     },
@@ -385,7 +405,7 @@
       "ac_id": "AC-054",
       "tc_id": "TC-056",
       "layer": "behavior",
-      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"`",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
       "assertion": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
       "evidence_path": ""
     },
@@ -393,7 +413,7 @@
       "ac_id": "AC-055",
       "tc_id": "TC-057",
       "layer": "integration",
-      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"`",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
       "assertion": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
       "evidence_path": ""
     },
@@ -401,7 +421,7 @@
       "ac_id": "AC-056",
       "tc_id": "TC-058",
       "layer": "negative",
-      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"`",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
       "assertion": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
       "evidence_path": ""
     },
@@ -409,7 +429,7 @@
       "ac_id": "AC-057",
       "tc_id": "TC-059",
       "layer": "contract",
-      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"`",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
       "assertion": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
       "evidence_path": ""
     },
@@ -417,8 +437,8 @@
       "ac_id": "AC-058",
       "tc_id": "TC-060",
       "layer": "regression",
-      "command": "`cd packages/beacon-loop.r3-backup-20260610 && npm test`",
-      "assertion": "R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。",
+      "command": "`cd packages/beacon-loop && npm test`",
+      "assertion": "冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
       "evidence_path": ""
     },
     {
@@ -433,8 +453,48 @@
       "ac_id": "AC-060",
       "tc_id": "TC-062",
       "layer": "e2e",
-      "command": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm test -- --test-name-pattern \"e2e-gum-drill\"`",
+      "command": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t \"e2e-gum-drill\"`",
       "assertion": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-061",
+      "tc_id": "TC-063",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
+      "assertion": "`--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-062",
+      "tc_id": "TC-064",
+      "layer": "contract",
+      "command": "`python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q`",
+      "assertion": "clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "tc_id": "TC-065",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "assertion": "target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-064",
+      "tc_id": "TC-066",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
+      "assertion": "harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-063",
+      "tc_id": "TC-067",
+      "layer": "e2e",
+      "command": "`cd examples/go-todo-crud && go test ./...`",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
       "evidence_path": ""
     }
   ],
@@ -678,6 +738,41 @@
       "id": "TASK-088",
       "title": "Phase K implement + `beacon-eval-qa` 验收 AC-053..060。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-089",
+      "title": "`beacon-run`：`--worktree --beacon` 时 harness `projectRoot = effectiveCwd`；beacon-loop delegate 文档化（AC-061）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-090",
+      "title": "测试 TC-063：`worktree-harness-project-root`（mock harness，assert truth-promotion path）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-091",
+      "title": "`requirement_clarity`：拉丁 marker 词界 + frontmatter/path 豁免；TC-064 fixture `go-todo-crud-smoke`（AC-062）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-092",
+      "title": "`buildPhaseHarnessArgs` / phase-controller：读 target `scope_mode`；smoke truth exit 跳过 sync-materials（AC-063）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-093",
+      "title": "`beacon-phase.json`：`phase_promoted` + harness 失败日志（AC-064）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-094",
+      "title": "merge `go-todo-crud-smoke` 材料入主仓；opt-in E2E TC-067（AC-063 回归）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-095",
+      "title": "R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -707,7 +802,7 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "**frozen R4**",
+      "status": "**frozen R5**",
       "route": "implement"
     },
     {

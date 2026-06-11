@@ -9,8 +9,8 @@
   "recovery_kind": "implementation_first_reconciliation",
   "delivery_mode": "recovery_not_normal_delivery",
   "drift_detected_at": "2026-06-10T11:21:08.054156+00:00",
-  "detected_revision_id": "R4",
-  "source_revision_id": "R3",
+  "detected_revision_id": "R6",
+  "source_revision_id": "R5",
   "implementation_artifacts": [
     {
       "revision_id": "R1",
@@ -183,6 +183,26 @@
         "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md"
       ]
+    },
+    {
+      "revision_id": "R4",
+      "run_id": "run-20260611T101218656567",
+      "recorded_at": "2026-06-11T02:51:27.764342+00:00",
+      "implemented_item_ids": [
+        "AC-053",
+        "AC-054",
+        "AC-055",
+        "AC-056",
+        "AC-057",
+        "AC-058",
+        "AC-059",
+        "AC-060"
+      ],
+      "changed_files": [
+        "packages/beacon-run/",
+        "packages/beacon-loop/src/beacon-run-delegate.ts",
+        "packages/beacon-loop/src/cli.ts"
+      ]
     }
   ],
   "missing_truth_surfaces": [
@@ -206,8 +226,8 @@
   "provenance": {
     "post_hoc_writeback_occurred": true,
     "preserve_drift_history": true,
-    "current_revision_id": "R4",
-    "current_delivery_status": "accepted"
+    "current_revision_id": "R6",
+    "current_delivery_status": "idle"
   },
   "change_route": {
     "action": "beacon-change",

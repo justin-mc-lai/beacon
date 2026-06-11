@@ -1019,9 +1019,12 @@ program
 
       let beaconHooks = undefined;
       if (options.beacon) {
+        const beaconProjectRoot = options.worktree
+          ? effectiveCwd
+          : (options.projectRoot || effectiveCwd);
         const beaconContext = resolveBeaconRunContext(effectiveCwd, {
           beacon: true,
-          projectRoot: options.projectRoot,
+          projectRoot: beaconProjectRoot,
           version: options.beaconVersion,
           feature: options.feature,
           truthBootstrap: options.truthBootstrap,

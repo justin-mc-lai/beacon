@@ -13,6 +13,10 @@ import {
 } from "./harness-checkpoint.js";
 import { augmentIterationPromptWithBeacon } from "./iteration-prompt.js";
 import { bootstrapColdStartTruthFallback } from "./truth-bootstrap-fallback.js";
+import {
+  readFeatureScopeMode,
+  smokeTruthPackageReady,
+} from "./scope-mode.js";
 
 export const AGENT_PHASES: BeaconPhase[] = ["truth", "generate"];
 export const HARNESS_PHASES: BeaconPhase[] = ["qa", "release"];
@@ -31,6 +35,14 @@ export type BeaconRunContext = {
   utterance?: string;
 };
 
+export type HarnessExitRecord = {
+  phase: BeaconPhase;
+  ok: boolean;
+  command: string;
+  exit_code: number;
+  reason_code?: string;
+};
+
 export type BeaconPhaseState = {
   schema_version: "1.0";
   phase: BeaconPhase;
@@ -39,6 +51,8 @@ export type BeaconPhaseState = {
   project_root: string;
   truth_bootstrap: "agent" | "fallback";
   phases_completed: BeaconPhase[];
+  phase_promoted: boolean;
+  last_harness_exit?: HarnessExitRecord;
   prompt: string;
   allowed_harness: string[];
   forbidden_harness: string[];
@@ -63,6 +77,10 @@ export function writeBeaconPhaseState(
   ctx: BeaconRunContext,
   phase: BeaconPhase,
   phasesCompleted: BeaconPhase[] = [],
+  extras: {
+    phasePromoted?: boolean;
+    lastHarnessExit?: HarnessExitRecord;
+  } = {},
 ): BeaconPhaseState {
   const artifact = buildBeaconPhaseArtifact({
     phase,
@@ -77,6 +95,8 @@ export function writeBeaconPhaseState(
     project_root: ctx.projectRoot,
     truth_bootstrap: ctx.truthBootstrap,
     phases_completed: phasesCompleted,
+    phase_promoted: extras.phasePromoted ?? false,
+    ...(extras.lastHarnessExit ? { last_harness_exit: extras.lastHarnessExit } : {}),
     prompt: artifact.prompt,
     allowed_harness: artifact.allowed_harness,
     forbidden_harness: artifact.forbidden_harness,
@@ -149,6 +169,11 @@ export class BeaconPhaseController {
       version: this.ctx.version,
       feature: this.ctx.feature,
       implementRunner: this.ctx.implementRunner,
+      scopeMode: readFeatureScopeMode(
+        this.ctx.projectRoot,
+        this.ctx.version,
+        this.ctx.feature,
+      ),
     };
   }
 
@@ -231,19 +256,49 @@ export class BeaconPhaseController {
       return "continue";
     }
 
+    const harnessCtx = this.harnessContext();
     const exitResult = runPhaseHarness(
       this.runDir,
       this.phase,
       "exit",
-      this.harnessContext(),
+      harnessCtx,
     );
-    const ok = exitResult ? beaconJsonSucceeded(exitResult) : true;
-    this.completeCurrentPhase(ok);
+    let ok = exitResult ? beaconJsonSucceeded(exitResult) : true;
+    let reasonCode: string | undefined;
+    if (
+      ok &&
+      this.phase === "truth" &&
+      harnessCtx.scopeMode === "smoke" &&
+      !smokeTruthPackageReady(
+        harnessCtx.projectRoot,
+        harnessCtx.version,
+        harnessCtx.feature,
+      )
+    ) {
+      ok = false;
+      reasonCode = "smoke_truth_package_missing";
+    }
+    if (!ok && exitResult && exitResult.exit_code !== 0) {
+      reasonCode = reasonCode || "harness_exit_failed";
+    }
+    const harnessExit: HarnessExitRecord | undefined = exitResult
+      ? {
+          phase: this.phase,
+          ok,
+          command: exitResult.command,
+          exit_code: exitResult.exit_code,
+          ...(reasonCode ? { reason_code: reasonCode } : {}),
+        }
+      : undefined;
+    this.completeCurrentPhase(ok, harnessExit);
     if (this.isDone()) return "break";
     return "continue";
   }
 
-  private completeCurrentPhase(ok: boolean): void {
+  private completeCurrentPhase(
+    ok: boolean,
+    harnessExit?: HarnessExitRecord,
+  ): void {
     if (!this.phasesCompleted.includes(this.phase)) {
       this.phasesCompleted.push(this.phase);
     }
@@ -256,7 +311,19 @@ export class BeaconPhaseController {
         this.ctx,
         this.phase,
         this.phasesCompleted,
+        { phasePromoted: true, lastHarnessExit: harnessExit },
       );
+      return;
     }
+    writeBeaconPhaseState(
+      this.runDir,
+      this.ctx,
+      this.phase,
+      this.phasesCompleted,
+      {
+        phasePromoted: ok,
+        lastHarnessExit: harnessExit,
+      },
+    );
   }
 }

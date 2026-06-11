@@ -57,6 +57,24 @@ Planner review 与 prior 对话已判定：把 plan 意图直接落成 MVP 骨�
 
 新增 AC-053..AC-060；Phase K tasks TASK-080..087。
 
+## R5 Revision（2026-06-11）
+
+- **change_reason**: `R5-worktree-harness-root-clarity-smoke-exit`
+- **revision_id**: R5（previous R4 frozen）
+- **user_decision**: accepted（planner review REV-101..103 + 用户确认同一 revision；保留 merge `go-todo-crud-smoke` 材料）
+- **planner_review_ref**: go-todo-crud-smoke drill；truth-promotion 主仓 path 错位；requirement_clarity inline_marker 假阳性
+
+| ID | 问题 | R5 承诺 |
+|----|------|---------|
+| REV-101 | worktree agent 写 truth，harness 对主仓 sync | **AC-061** harness projectRoot = worktree |
+| REV-102 | slug `go-todo-crud-smoke` 触发 TODO inline_marker | **AC-062** clarity 词界/上下文过滤 |
+| REV-103 | smoke 仍要求 sync-materials/freeze | **AC-063** smoke truth exit 轻量化 |
+| REV-104 | phases_completed 误导 | **AC-064** phase_promoted + 失败可见 |
+
+**Merge 决策**：worktree 产出的 `docs/beacon/v1.6.0/features/go-todo-crud-smoke/*`、`research/go-todo-crud-smoke.md`、`qa/test-cases/go-todo-crud-smoke.md` 并入主仓，作为 R5 E2E 夹具（draft，非 orchestrator 子 feature truth）。
+
+Phase L tasks TASK-089..095；tests TC-063..TC-067。
+
 ## R2 Revision（2026-06-10）
 
 - **change_reason**: D-010 默认 LLM intent tie-break + green-light 非打断；撤销 D-009/D-011 accepted defer
@@ -124,6 +142,7 @@ R3 **无新 accepted defer**；D-012「子进程读 Skill MD」为 **blocked**�
 ## Next Route
 
 1. ~~用户审阅本 change + truth/tests 草案~~（R1/R2 已完成）
-2. **R3**：审阅 truth/tests Phase J（AC-043..AC-052）→ `beacon change ... --refreeze-chain` 或 `beacon-gen-refreeze`
-3. `beacon-gen-implement` Phase J（gnhf worker 契约 + harness implement runner）
-4. `beacon-eval-qa` 真 E2E（AC-051，非 fixture-only）
+2. ~~**R3**：审阅 truth/tests Phase J~~ → refrozen
+3. ~~**R4**：beacon-run gnhf fork~~ → refrozen
+4. **R5（当前）**：审阅 truth/tests Phase L（AC-061..064）→ `beacon-gen-implement` Phase L → `beacon change ... --refreeze-chain`
+5. `beacon-eval-qa` + opt-in TC-067（go-todo-crud-smoke E2E）

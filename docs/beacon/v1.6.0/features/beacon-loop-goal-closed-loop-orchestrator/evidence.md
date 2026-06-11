@@ -7,7 +7,7 @@
 | user-confirmed-architecture | support_advisory | conversation: delivery orchestrator AC-031..039 | accepted-for-change | change |
 | change-record | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md | accepted-for-change | refreeze |
 | planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md | promoted | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R4** | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R5** | implement |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md | evidence-indexed | evaluate |
@@ -49,6 +49,12 @@
 - **R2 release-facing closure**：`beacon release check v1.6.0` 产物；`beacon gate release` → `.beacon/release-gate-report.json`；`beacon release create v1.6.0` → `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`。
 - **R3 implement closure**：Phase J AC-043..052；`beacon-loop` harness worker + output-schema + truth-promotion；QA 22/22；R3 frozen。
 - **R4 accepted pivot**（2026-06-11）：drill 证明模板 truth_fill 语义空洞 + `--output-schema` CLI gap；主实现迁至 `packages/beacon-run`（gnhf fork）；全迭代 agent + Beacon phase prompt；AC-053..060 + Phase K tasks。
+- **R5 implement closure**（2026-06-11）：
+  - REV-101（AC-061）：`beacon-run` `buildPhaseHarnessArgs` truth exit 的 `projectRoot` 从 `HarnessContext.projectRoot`（即 `effectiveCwd` = worktree）传递；`runBeaconCommand` cwd 为该路径。TC-063 已 PASS（pnpm test `worktree-harness-project-root`）。
+  - REV-102（AC-062）：`requirement_clarity._line_has_inline_marker` 新增 `/todos`、`go-todo-` 域名词汇豁免 + 中文 TODO 上下文豁免。TC-064 pytest 3/3 PASS。
+  - REV-103（AC-063）：`buildPhaseHarnessArgs` 当 `scopeMode == "smoke"` 时 truth exit 仅调用 `truth-map resolve`，跳过 `sync-materials`。TC-065 已 PASS。
+  - REV-104（AC-064）：`beacon-phase.json` 新增 `phase_promoted` + `last_harness_exit`（失败 reason_code 可见）。TC-066 已 PASS。
+  - `examples/go-todo-crud/`：实现完成（go build + go test 7/7 + go test -race PASS）；`go-todo-crud-smoke` truth 提升为 frozen。
 
 ## Implementation Candidate Evidence
 
@@ -77,6 +83,10 @@ beacon qa run beacon-loop-goal-closed-loop-orchestrator --project . --version v1
 beacon doctor build-test-contract-index beacon-loop-goal-closed-loop-orchestrator --project-root . --version v1.6.0 --json
 beacon release check v1.6.0 --project . --json
 beacon gate release --project-root . --version v1.6.0 --json
+# R5 verification
+cd packages/beacon-run && pnpm test -- --run
+python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q
+cd examples/go-todo-crud && go build ./... && go test ./... && go test -race ./...
 ```
 
 ## 边界

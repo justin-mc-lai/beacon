@@ -1,6 +1,7 @@
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import type { BeaconPhase } from "./phase-prompt.js";
+import type { FeatureScopeMode } from "./scope-mode.js";
 import { readJson, writeJson } from "./fs.js";
 
 export type TruthPromotionEntry = {
@@ -124,6 +125,7 @@ export type HarnessContext = {
   version: string;
   feature: string;
   implementRunner?: string;
+  scopeMode?: FeatureScopeMode;
 };
 
 export function buildPhaseHarnessArgs(
@@ -148,6 +150,18 @@ export function buildPhaseHarnessArgs(
       ];
     }
     if (checkpoint === "exit") {
+      if (ctx.scopeMode === "smoke") {
+        return [
+          "truth-map",
+          "resolve",
+          feature,
+          "--project",
+          projectRoot,
+          "--version",
+          version,
+          "--json",
+        ];
+      }
       return [
         "doctor",
         "sync-materials",

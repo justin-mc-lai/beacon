@@ -2,8 +2,8 @@
 
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- revision_id: `R4`
-- source_revision_id: `R3`
+- revision_id: `R6`
+- source_revision_id: `R5`
 - status: `ready`
 - cleanup_required: `False`
 - removed_requirement_count: `0`

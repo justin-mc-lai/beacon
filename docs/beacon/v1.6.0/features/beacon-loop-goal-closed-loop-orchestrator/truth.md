@@ -22,7 +22,8 @@ parent_feature: beacon-loop-native-runner-and-automation-retirement
 在 `beacon-loop-native-runner-and-automation-retirement`（AC-001..AC-030，frozen）之上：
 
 - **R1–R3** 已在 `packages/beacon-loop` 验证 delivery FSM、harness 记账、gnhf prompt/schema 契约（快照：`packages/beacon-loop.r3-backup-20260610`）。
-- **R4（本 revision）** 将 **主实现落点** 迁至 **`packages/beacon-run`**（gnhf lineage，源副本 `packages/gnhf`），`beacon-loop` **降级为兼容/只读参考**，不再作为新功能开发面。
+- **R4（frozen）** 将 **主实现落点** 迁至 **`packages/beacon-run`**（gnhf lineage，源副本 `packages/gnhf`），`beacon-loop` **降级为兼容/只读参考**，不再作为新功能开发面。
+- **R5（本 revision，reopened）** 修复 R4 drill 暴露的 **worktree harness root 错位**、**requirement_clarity TODO 假阳性**、**smoke truth exit 过重**；保留 worktree 产出的 `go-todo-crud-smoke` 材料作为 R5 回归夹具（merge 入主仓，见 Source Advisory）。
 
 R4 目标数据流：
 
@@ -94,6 +95,7 @@ Layer 4 — Harness checkpoints（迭代间 subprocess）
 4. `beacon-pln-review` 的 intent/parity 契约未在 loop 入口强制执行
 5. **R3**：`implement_loop` 使用裸 `codex exec`，未对齐 gnhf `output-schema` 契约，也未经 `beacon implement run` harness worker（真跑可 success 但 0 commit）
 6. **R4（drill 证据）**：模板 `truth_fill` 5s 过 gate 但 truth 空洞；LLM 仅在 implement 单层介入，与「一句话复刻」意图偏离——需 gnhf 全迭代 + prompt 内 Beacon 编排
+7. **R5（go-todo-crud-smoke drill）**：`beacon-loop goal` + `--worktree` + `--beacon` 时 agent 在 worktree 写 truth，但 truth exit harness 对 **主仓** 跑 `sync-materials` → `test_case_sync_failed`；agent 死磕 `freeze` 又被 slug/path 中 `TODO` 的 `inline_marker` 误杀；`scope_mode: smoke` 仍绑定 full sync/freeze 链，无法进入 `generate`
 
 ### 依赖
 
@@ -506,6 +508,28 @@ Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落�
 | AC-058 | **beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。 |
 | AC-059 | **Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。 |
 | AC-060 | **真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。 |
+| AC-061 | **Worktree harness project root**：`beacon-run --worktree --beacon` 时，truth/generate/qa/release harness subprocess 的 `--project-root` / `--project` **必须与 agent `effectiveCwd`（worktree）一致**；禁止对主仓跑 greenfield feature 的 `sync-materials` / `verify-context`；`truth-promotion.json` 记录的 command 须含 worktree 绝对路径。 |
+| AC-062 | **Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。 |
+| AC-063 | **Smoke truth exit harness**：当 target feature `scope_mode=smoke`（读 feature package frontmatter 或 truth 正文）时，truth phase exit **不得**要求 `beacon doctor sync-materials` 或 `beacon freeze` 成功才能 advance 到 `generate`；exit 仅要求 `truth-map resolve` PASS + `features/<slug>/truth.md` 存在且非空；full sync/freeze 仍保留给非 smoke / `full_parity` feature。 |
+| AC-064 | **Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。 |
+
+### R5 Harness Contract（worktree + smoke）
+
+```text
+beacon-loop goal → beacon-run (--worktree --beacon)
+  agent cwd = worktree
+  harness ctx.projectRoot = worktree   # AC-061
+
+truth exit (smoke target feature):
+  resolve PASS + truth.md present → advance generate   # AC-063
+truth exit (full_parity target feature):
+  sync-materials PASS on same projectRoot → advance generate
+
+freeze / requirement_clarity:
+  domain slug/path tokens ≠ inline placeholder          # AC-062
+```
+
+**R5 回归夹具**：`features/go-todo-crud-smoke`（自 worktree merge，draft）+ utterance「在 examples/go-todo-crud 实现最小 Go HTTP CRUD…」；R5 implement 完成后须 truth→generate 至少 1 commit 于 `examples/go-todo-crud/`。
 
 ## Source Advisory
 
@@ -517,5 +541,7 @@ Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落�
 | `features/beacon-pln-review-intent-parity-state-machine-v160/truth.md` | planner review contract |
 | `packages/gnhf` | R4 工作副本（fork 为 `packages/beacon-run`） |
 | `/Users/apple/Developer/Personal/oss-sync/agents/agent-systems/gnhf` | 上游对标 |
+| `features/go-todo-crud-smoke/` | R5 回归夹具（worktree merge，smoke scope） |
+| `docs/beacon/v1.6.0/research/go-todo-crud-smoke.md` | smoke drill research（support_advisory，已 accept merge） |
 
-本文件为 package-authoritative requirement truth（**R4 revision**，via `beacon change --refreeze-chain`）。
+本文件为 package-authoritative requirement truth（**R5 revision**，reopened；refreeze pending）。

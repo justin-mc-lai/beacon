@@ -36,6 +36,30 @@ describe("harness-checkpoint", () => {
     expect(promotion.calls[0]?.exit_code).toBe(0);
   });
 
+  it("uses truth-map resolve for smoke truth exit instead of sync-materials (AC-063 / TC-065)", () => {
+    const args = buildPhaseHarnessArgs("truth", "exit", {
+      projectRoot: "/tmp/worktree",
+      version: "v1.6.0",
+      feature: "go-todo-crud-smoke",
+      scopeMode: "smoke",
+    });
+    expect(args?.[0]).toBe("truth-map");
+    expect(args?.[1]).toBe("resolve");
+    expect(args?.join(" ")).not.toContain("sync-materials");
+  });
+
+  it("builds worktree harness args with worktree project root (AC-061 / TC-063)", () => {
+    const worktree = "/tmp/beacon-gnhf-worktrees/demo-run";
+    const args = buildPhaseHarnessArgs("truth", "exit", {
+      projectRoot: worktree,
+      version: "v1.6.0",
+      feature: "go-todo-crud-smoke",
+      scopeMode: "full_parity",
+    });
+    expect(args).toContain(worktree);
+    expect(args?.join(" ")).not.toContain("/Users/apple/Developer/Personal/products/beacon");
+  });
+
   it("builds phase harness args for truth/generate/qa/release", () => {
     const ctx = {
       projectRoot: "/tmp/project",

@@ -93,6 +93,18 @@
     "AC-060": [
       "TC-062"
     ],
+    "AC-061": [
+      "TC-063"
+    ],
+    "AC-062": [
+      "TC-064"
+    ],
+    "AC-063": [
+      "TC-067"
+    ],
+    "AC-064": [
+      "TC-066"
+    ],
     "AC-003": [
       "TC-040"
     ],
@@ -636,6 +648,146 @@
       "assertion": "assertion defined",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-037-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-016",
+      "source_tc_id": "TC-038",
+      "tc_id": "TC-038-PRIMARY",
+      "ac_id": "AC-038",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-038 primary path :: `delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decisi",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-038-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-017",
+      "source_tc_id": "TC-039",
+      "tc_id": "TC-039-PRIMARY",
+      "ac_id": "AC-039",
+      "qa_type": "e2e",
+      "layer": "e2e",
+      "scenario_family": "primary",
+      "title": "AC-039 primary path :: scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invok",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "e2e",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-039-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-018",
+      "source_tc_id": "TC-042",
+      "tc_id": "TC-042-PRIMARY",
+      "ac_id": "AC-040",
+      "qa_type": "behavior",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "AC-040 primary path :: 规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_dec",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "behavior",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-042-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-019",
+      "source_tc_id": "TC-043",
+      "tc_id": "TC-043-PRIMARY",
+      "ac_id": "AC-041",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-041 primary path :: review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-043-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
