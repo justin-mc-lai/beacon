@@ -1,6 +1,7 @@
 import { execFileSync, spawn } from "node:child_process";
 import {
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
   readdirSync,
@@ -53,6 +54,23 @@ function createRepo(): string {
   return cwd;
 }
 
+function seedFrozenBeaconTruth(
+  cwd: string,
+  feature: string,
+  version: string,
+): void {
+  const featureDir = join(cwd, "docs/beacon", version, "features", feature);
+  mkdirSync(featureDir, { recursive: true });
+  writeFileSync(join(cwd, "docs/beacon/VERSION"), `${version}\n`, "utf-8");
+  writeFileSync(
+    join(featureDir, "truth.md"),
+    `---\nstatus: frozen\nrevision_id: R1\nslug: ${feature}\n---\n\n# ${feature}\n`,
+    "utf-8",
+  );
+  git(["add", "-A"], cwd);
+  git(["commit", "-m", "seed frozen beacon truth"], cwd);
+}
+
 function findRunDir(cwd: string): string {
   const runsDir = join(cwd, ".gnhf", "runs");
   const runs = readdirSync(runsDir);
@@ -98,6 +116,9 @@ describeDrill("e2e-gum-drill", () => {
   it("runs beacon lifecycle with truth iteration, commit, and qa harness", async () => {
     const cwd = createRepo();
     tempDirs.push(cwd);
+    const feature = "gum-choose-filter-parity";
+    const beaconVersion = "v1.6.0";
+    seedFrozenBeaconTruth(cwd, feature, beaconVersion);
     const logDir = mkdtempSync(join(tmpdir(), "gnhf-gum-drill-logs-"));
     tempDirs.push(logDir);
 
@@ -119,9 +140,9 @@ describeDrill("e2e-gum-drill", () => {
         utterance,
         "--beacon",
         "--feature",
-        "gum-choose-filter-parity",
+        feature,
         "--beacon-version",
-        "v1.6.0",
+        beaconVersion,
         "--agent",
         "opencode",
         "--current-branch",

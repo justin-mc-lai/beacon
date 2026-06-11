@@ -9,7 +9,14 @@ export type BeaconPhasePromptInput = {
 };
 
 const DEFAULT_ALLOWED: Record<BeaconPhase, string[]> = {
-  truth: ["beacon truth-map resolve", "beacon change", "beacon doctor sync-materials"],
+  truth: [
+    "beacon truth-map resolve",
+    "beacon change",
+    "beacon doctor sync-materials",
+    "beacon doctor sync-requirement-clarity",
+    "beacon freeze",
+    "beacon truth-cutover run",
+  ],
   generate: ["beacon implement run", "beacon doctor verify-context"],
   repair: ["beacon implement run", "beacon-gov-debug"],
   qa: ["beacon qa run", "beacon-eval-qa"],

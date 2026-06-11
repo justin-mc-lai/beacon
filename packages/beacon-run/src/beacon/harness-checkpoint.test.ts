@@ -1,12 +1,14 @@
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   appendTruthPromotion,
   buildPhaseHarnessArgs,
+  buildTruthFreezeGateArgs,
   readTruthPromotion,
   runPhaseHarness,
+  runTruthPhaseExitHarness,
 } from "./harness-checkpoint.js";
 
 describe("harness-checkpoint", () => {
@@ -36,7 +38,7 @@ describe("harness-checkpoint", () => {
     expect(promotion.calls[0]?.exit_code).toBe(0);
   });
 
-  it("uses truth-map resolve for smoke truth exit instead of sync-materials (AC-063 / TC-065)", () => {
+  it("smoke-truth-exit uses truth-map resolve for smoke truth exit instead of sync-materials (AC-063 / TC-065)", () => {
     const args = buildPhaseHarnessArgs("truth", "exit", {
       projectRoot: "/tmp/worktree",
       version: "v1.6.0",
@@ -79,6 +81,48 @@ describe("harness-checkpoint", () => {
     ]);
     expect(buildPhaseHarnessArgs("qa", "phase", ctx)?.[0]).toBe("qa");
     expect(buildPhaseHarnessArgs("release", "phase", ctx)?.[0]).toBe("release");
+  });
+
+  it("truth-freeze-gate runTruthPhaseExitHarness records freeze gate commands (AC-068 / TC-068)", () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-harness-frozen-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo-feature",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo-feature\nstatus: frozen\n---\n# Demo\n",
+      "utf8",
+    );
+
+    const result = runTruthPhaseExitHarness(runDir, {
+      projectRoot,
+      version: "v1.6.0",
+      feature: "demo-feature",
+      scopeMode: "smoke",
+    });
+    expect(result.ok).toBe(true);
+    const promotion = readTruthPromotion(runDir);
+    expect(
+      promotion.calls.some((call) => call.command.includes("freeze demo-feature")),
+    ).toBe(true);
+    expect(
+      promotion.calls.some((call) => call.checkpoint === "freeze_gate"),
+    ).toBe(true);
+
+    rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("buildTruthFreezeGateArgs includes clarity + freeze (TC-065 reconciled)", () => {
+    const steps = buildTruthFreezeGateArgs({
+      projectRoot: "/tmp/worktree",
+      version: "v1.6.0",
+      feature: "go-todo-crud-smoke",
+    });
+    expect(steps).toHaveLength(2);
+    expect(steps[0]?.[1]).toBe("sync-requirement-clarity");
+    expect(steps[1]?.[0]).toBe("freeze");
   });
 
   it("runPhaseHarness writes truth-promotion.json", () => {

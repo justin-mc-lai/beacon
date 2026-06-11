@@ -100,10 +100,13 @@
       "TC-064"
     ],
     "AC-063": [
-      "TC-067"
+      "TC-065"
     ],
     "AC-064": [
       "TC-066"
+    ],
+    "AC-068": [
+      "TC-070"
     ],
     "AC-003": [
       "TC-040"
@@ -788,6 +791,41 @@
       "assertion": "Integration flow assertions pass",
       "priority": "P1",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-043-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-020",
+      "source_tc_id": "TC-044",
+      "tc_id": "TC-044-PRIMARY",
+      "ac_id": "AC-042",
+      "qa_type": "behavior",
+      "layer": "behavior",
+      "scenario_family": "primary",
+      "title": "AC-042 primary path :: P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "behavior",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
+      "assertion": "assertion defined",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-044-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",

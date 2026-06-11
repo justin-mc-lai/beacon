@@ -7,7 +7,7 @@
 | user-confirmed-architecture | support_advisory | conversation: delivery orchestrator AC-031..039 | accepted-for-change | change |
 | change-record | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md | accepted-for-change | refreeze |
 | planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md | promoted | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R5** | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R8** | implement |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md | evidence-indexed | evaluate |
@@ -55,6 +55,14 @@
   - REV-103（AC-063）：`buildPhaseHarnessArgs` 当 `scopeMode == "smoke"` 时 truth exit 仅调用 `truth-map resolve`，跳过 `sync-materials`。TC-065 已 PASS。
   - REV-104（AC-064）：`beacon-phase.json` 新增 `phase_promoted` + `last_harness_exit`（失败 reason_code 可见）。TC-066 已 PASS。
   - `examples/go-todo-crud/`：实现完成（go build + go test 7/7 + go test -race PASS）；`go-todo-crud-smoke` truth 提升为 frozen。
+- **R6/R8 implement candidate**（2026-06-10，Phase M TASK-096..099）：
+  - `packages/beacon-run/src/beacon/harness-checkpoint.ts`：`runTruthPhaseExitHarness` = smoke resolve 或 full_parity sync-materials + `truth_freeze_gate`（clarity + freeze + cutover retry）；`implementPreflightBlocked` 在 generate exit 触发 demote。
+  - `packages/beacon-run/src/beacon/truth-frozen.ts`：`isFeatureTruthFrozen` / resolve payload 与 frontmatter 一致性检查。
+  - `packages/beacon-run/src/beacon/phase-controller.ts`：generate entry frozen gate；truth/generate demote 至 truth + `truth-promotion.json` freeze_gate 记录。
+  - `packages/beacon-run/src/beacon/phase-prompt.ts`：truth allowed harness 含 `freeze`、`truth-cutover run`。
+  - `packages/beacon-run/src/beacon/scope-mode.ts`：`minimal_smoke` → `smoke`。
+  - 单元测试：`truth-frozen.test.ts`、`harness-checkpoint.test.ts`（freeze_gate）、`phase-controller.test.ts`（TC-068..070）、`scope-mode.test.ts`；`pnpm exec vitest run` → **694 passed**（packages/beacon-run）。
+  - **待 evaluator**：`beacon-eval-qa` 覆盖 AC-063 reconcile + AC-068（TC-065/068..070）。
 
 ## Implementation Candidate Evidence
 
@@ -84,7 +92,9 @@ beacon doctor build-test-contract-index beacon-loop-goal-closed-loop-orchestrato
 beacon release check v1.6.0 --project . --json
 beacon gate release --project-root . --version v1.6.0 --json
 # R5 verification
-cd packages/beacon-run && pnpm test -- --run
+cd packages/beacon-run && pnpm exec vitest run
+# R6/R8 verification (truth_freeze_gate)
+cd packages/beacon-run && pnpm exec vitest run src/beacon/truth-frozen.test.ts src/beacon/harness-checkpoint.test.ts src/beacon/phase-controller.test.ts src/beacon/scope-mode.test.ts
 python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q
 cd examples/go-todo-crud && go build ./... && go test ./... && go test -race ./...
 ```

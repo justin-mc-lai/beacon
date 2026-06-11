@@ -75,6 +75,22 @@ Planner review 与 prior 对话已判定：把 plan 意图直接落成 MVP 骨�
 
 Phase L tasks TASK-089..095；tests TC-063..TC-067。
 
+## R6/R7 Revision（2026-06-11）
+
+- **change_reason**: `R6-truth-freeze-gate-harness-AC-063-068-reconcile`
+- **revision_id**: R7（R6 scope；Beacon revision counter）
+- **user_decision**: accepted（planner review REV-FREEZE-001..004；用户确认 generate 不得在 draft truth 下写产品代码）
+- **planner_review_ref**: post-R5 go-todo-crud-smoke drill；`revision_not_frozen` 12-iteration 空转
+
+| ID | 问题 | R6/R7 承诺 |
+|----|------|------------|
+| REV-FREEZE-001 | beacon-run 无 truth_freeze_gate | **AC-068** harness freeze gate + generate entry frozen check |
+| REV-FREEZE-002 | AC-063 与 AC-035 分裂 | **AC-063 reconcile**：smoke 跳过 sync-materials，**不**跳过 freeze |
+| REV-FREEZE-003 | truth phase 不允许 freeze CLI | **AC-068** phase-prompt allowed harness |
+| REV-FREEZE-004 | implement preflight 空烧 iteration | **AC-068** demote + cutover repair route |
+
+Phase M tasks TASK-096..100；tests TC-068..TC-070；TC-065 断言更新。
+
 ## R2 Revision（2026-06-10）
 
 - **change_reason**: D-010 默认 LLM intent tie-break + green-light 非打断；撤销 D-009/D-011 accepted defer

@@ -3,7 +3,7 @@
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "generated_at": "2026-06-11T17:04:42.860908",
+  "generated_at": "2026-06-11T20:36:29.277502",
   "compiler": {
     "requested_mode": "auto",
     "effective_mode": "markdown",
@@ -58,11 +58,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-capture\"`",
       "scenario": "`goal` 启动后在 run 目录生成 `intent-capture.json`（含 verbatim `utterance`）与 `intent-contract.json`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-031/command.txt"
     },
     {
       "tc_id": "TC-032",
@@ -83,11 +85,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"intent-classify-deterministic\"`",
       "scenario": "相同 utterance + rules_hash 两次分类产出相同 `intent_class`、`scope_mode`；`rules_hash` 与 classifier 版本一致。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-032/command.txt"
     },
     {
       "tc_id": "TC-033",
@@ -108,11 +112,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"`",
       "scenario": "`delivery`/`review-only` 写入 `review-artifact.json`，含 `intent_snapshot`、`scope_mode`、`findings`、`runtime_evidence_only=true`、`formal_verdict_authority=false`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-033/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -133,11 +139,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill`，`truth-promotion.json` 记录 beacon CLI 序列；无 accepted defer 时不写入 implicit mvp scope。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-035",
@@ -158,11 +166,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"`",
       "scenario": "truth 未 frozen 时 `delivery-state` 不得进入 `implement_loop`；`execute-only` 无 `--feature` 或 resolve fail 时 blocked。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-035/command.txt"
     },
     {
       "tc_id": "TC-036",
@@ -183,11 +193,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"`",
       "scenario": "`--mode delivery` 依次 invoke import/qa/release stubs；payload 含 `closure_verdict=not_provided_by_beacon_loop` 与 beacon verdict refs。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-036/command.txt"
     },
     {
       "tc_id": "TC-037",
@@ -208,11 +220,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"`",
       "scenario": "qa fail fixture 触发 `repair_from_qa` → `implement_loop`；`notes.md` 含 qa finding 摘要；cap 后停止。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-037/command.txt"
     },
     {
       "tc_id": "TC-038",
@@ -233,11 +247,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"`",
       "scenario": "`delivery-state.json` 状态转移符合 truth State Model；非法转移测试失败；`resume` 从 `repair_from_qa`/`user_decision_pending` 恢复。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-038/command.txt"
     },
     {
       "tc_id": "TC-039",
@@ -258,11 +274,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"`",
       "scenario": "scripted E2E：utterance → review → truth frozen fixture → implement → import → qa → release invoke；release verdict 来自 beacon fixture 非 loop。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-039/command.txt"
     },
     {
       "tc_id": "TC-042",
@@ -283,11 +301,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"`",
       "scenario": "规则 `ambiguous=true` 时写 `intent-tiebreak.json` 且 `delivery-state` 进入 `truth_gap_scan`（非 `user_decision_pending`）；默认 mode 无 `--strict-interrupt`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-042/command.txt"
     },
     {
       "tc_id": "TC-043",
@@ -308,11 +328,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"`",
       "scenario": "review runtime parallel 模式；`review-artifact.json` 含 per-lane refs。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-043/command.txt"
     },
     {
       "tc_id": "TC-044",
@@ -333,11 +355,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"`",
       "scenario": "P1 finding 默认 continue；`recommended_route` 驱动下一状态；无 AskUser subprocess。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-044/command.txt"
     },
     {
       "tc_id": "TC-045",
@@ -358,11 +382,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
       "scenario": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-045/command.txt"
     },
     {
       "tc_id": "TC-046",
@@ -383,11 +409,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
       "scenario": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-046/command.txt"
     },
     {
       "tc_id": "TC-047",
@@ -408,11 +436,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
       "scenario": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-047/command.txt"
     },
     {
       "tc_id": "TC-048",
@@ -433,11 +463,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
       "scenario": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-048/command.txt"
     },
     {
       "tc_id": "TC-049",
@@ -458,11 +490,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
       "scenario": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-049/command.txt"
     },
     {
       "tc_id": "TC-050",
@@ -483,11 +517,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
       "scenario": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-050/command.txt"
     },
     {
       "tc_id": "TC-051",
@@ -508,11 +544,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
       "scenario": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-051/command.txt"
     },
     {
       "tc_id": "TC-052",
@@ -533,11 +571,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-052/command.txt"
     },
     {
       "tc_id": "TC-053",
@@ -558,11 +598,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
       "scenario": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-053/command.txt"
     },
     {
       "tc_id": "TC-054",
@@ -583,11 +625,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
       "scenario": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-054/command.txt"
     },
     {
       "tc_id": "TC-055",
@@ -608,11 +652,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"orchestrator\"`",
       "scenario": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-055/command.txt"
     },
     {
       "tc_id": "TC-056",
@@ -633,11 +679,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
       "scenario": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-056/command.txt"
     },
     {
       "tc_id": "TC-057",
@@ -658,11 +706,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
       "scenario": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-057/command.txt"
     },
     {
       "tc_id": "TC-058",
@@ -683,11 +733,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
       "scenario": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-058/command.txt"
     },
     {
       "tc_id": "TC-059",
@@ -708,11 +760,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
       "scenario": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-059/command.txt"
     },
     {
       "tc_id": "TC-060",
@@ -733,11 +787,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "冻结的 `packages/beacon-loop` 参考实现测试仍 pass；新 AC 实现于 `beacon-run`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-060/command.txt"
     },
     {
       "tc_id": "TC-061",
@@ -758,11 +814,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`beacon implement run --help`",
       "scenario": "CLI 暴露 `--output-schema`；与 beacon-run adapter 契约一致。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-061/command.txt"
     },
     {
       "tc_id": "TC-062",
@@ -783,11 +841,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm run build && pnpm exec vitest run -t \"e2e-gum-drill\"`",
       "scenario": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-062/command.txt"
     },
     {
       "tc_id": "TC-063",
@@ -808,11 +868,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
       "scenario": "`--worktree --beacon` 时 truth exit harness command cwd/`--project-root` = worktree；`truth-promotion.json` 不含主仓 path（mock spawn）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-063/command.txt"
     },
     {
       "tc_id": "TC-064",
@@ -833,11 +895,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q`",
       "scenario": "clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-064/command.txt"
     },
     {
       "tc_id": "TC-065",
@@ -858,11 +922,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
       "scenario": "target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-065/command.txt"
     },
     {
       "tc_id": "TC-066",
@@ -883,11 +949,94 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
       "scenario": "harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-066/command.txt"
+    },
+    {
+      "tc_id": "TC-068",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"",
+      "assertion": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-068.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "scenario": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-068/command.txt"
+    },
+    {
+      "tc_id": "TC-069",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"",
+      "assertion": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-069.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "scenario": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-069/command.txt"
+    },
+    {
+      "tc_id": "TC-070",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-p",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-070.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "scenario": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-070/command.txt"
     },
     {
       "tc_id": "TC-067",
@@ -895,11 +1044,11 @@
       "story_id": "",
       "layer": "e2e",
       "qa_type": "e2e",
-      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth",
       "priority": "P2",
       "automation": "auto",
       "command": "cd examples/go-todo-crud && go test ./...",
-      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-067.json",
       "required_files": [
         "command.txt",
@@ -908,11 +1057,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd examples/go-todo-crud && go test ./...`",
-      "scenario": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
-      "steps": ""
+      "scenario": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-067/command.txt"
     },
     {
       "tc_id": "TC-055",
@@ -933,11 +1084,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm test`",
       "scenario": "gnhf orchestrator + multi-agent factory 在 beacon-run 包内可构建可测。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-055/command.txt"
     },
     {
       "tc_id": "TC-056",
@@ -958,11 +1111,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"beacon-phase-prompt\"`",
       "scenario": "Beacon lifecycle 编入 iteration prompt。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-056/command.txt"
     },
     {
       "tc_id": "TC-057",
@@ -983,11 +1138,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-phase-agent\"`",
       "scenario": "truth 阶段走 agent 而非纯模板 CLI。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-057/command.txt"
     },
     {
       "tc_id": "TC-058",
@@ -1008,11 +1165,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"no-default-template-truth\"`",
       "scenario": "默认禁用模板 truth_fill。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-058/command.txt"
     },
     {
       "tc_id": "TC-059",
@@ -1033,11 +1192,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"harness-checkpoint\"`",
       "scenario": "harness 检查点记账。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-059/command.txt"
     },
     {
       "tc_id": "TC-060",
@@ -1058,11 +1219,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "beacon-loop 冻结为参考实现。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-060/command.txt"
     },
     {
       "tc_id": "TC-061",
@@ -1083,11 +1246,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`beacon implement run --help`",
       "scenario": "`--output-schema` 在 Core CLI 可用。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-061/command.txt"
     },
     {
       "tc_id": "TC-062",
@@ -1108,11 +1273,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`BEACON_RUN_E2E_DRILL=1`",
       "scenario": "gum drill 真项目闭环。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-062/command.txt"
     },
     {
       "tc_id": "TC-063",
@@ -1133,11 +1300,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"worktree-harness-project-root\"`",
       "scenario": "worktree harness root = agent cwd。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-063/command.txt"
     },
     {
       "tc_id": "TC-064",
@@ -1158,11 +1327,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "clarity unit / freeze smoke fixture",
       "scenario": "slug 含 todo 不误 block。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-064/command.txt"
     },
     {
       "tc_id": "TC-065",
@@ -1183,11 +1354,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
       "scenario": "smoke 跳过 sync-materials exit。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-065/command.txt"
     },
     {
       "tc_id": "TC-066",
@@ -1208,11 +1381,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"phase-promotion-visibility\"`",
       "scenario": "harness 失败可见。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-066/command.txt"
     },
     {
       "tc_id": "TC-067",
@@ -1233,11 +1408,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd examples/go-todo-crud && go test ./...`",
       "scenario": "smoke 交付物；agent goal 为 opt-in。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-067/command.txt"
     },
     {
       "tc_id": "TC-045",
@@ -1258,11 +1435,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`beacon doctor verify-agent-surface --project-root . --agent cursor --strict`",
       "scenario": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-045/command.txt"
     },
     {
       "tc_id": "TC-046",
@@ -1283,11 +1462,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"`",
       "scenario": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-046/command.txt"
     },
     {
       "tc_id": "TC-047",
@@ -1308,11 +1489,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"`",
       "scenario": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-047/command.txt"
     },
     {
       "tc_id": "TC-048",
@@ -1333,11 +1516,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"gnhf-iteration-prompt\"`",
       "scenario": "prompt 含 notes 只读、no-op=false、禁 agent commit；结构对齐 gnhf template 必填节。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-048/command.txt"
     },
     {
       "tc_id": "TC-049",
@@ -1358,11 +1543,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_TEST_AGENT_RESULT=noop npm test -- --test-name-pattern \"noop-blocks-qa\"`",
       "scenario": "no-op iteration 后 `delivery-state` 不得进入 `qa_pending`；含 `implement_no_op_blocked`。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-049/command.txt"
     },
     {
       "tc_id": "TC-050",
@@ -1383,11 +1570,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"harness-worker-route\"`",
       "scenario": "各 delivery stage 映射 harness worker；`truth-promotion.json` 记录 command + runner id。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-050/command.txt"
     },
     {
       "tc_id": "TC-051",
@@ -1408,11 +1597,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"repair-harness-worker\"`",
       "scenario": "`repair_from_qa` 回灌使用同一 implement runner 路径。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-051/command.txt"
     },
     {
       "tc_id": "TC-052",
@@ -1433,11 +1624,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test`",
       "scenario": "AC-044 接入后 parent orchestrator 测试仍 pass（caps/stop/notes/no-op）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-052/command.txt"
     },
     {
       "tc_id": "TC-053",
@@ -1458,11 +1651,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && BEACON_LOOP_E2E_HARNESS=1 npm test -- --test-name-pattern \"e2e-implement-runner-commit\"`",
       "scenario": "真 implement runner 路径；worktree ≥1 commit 后才 `qa_pending`（可 CI opt-in）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-053/command.txt"
     },
     {
       "tc_id": "TC-054",
@@ -1483,11 +1678,121 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
       "scenario": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-054/command.txt"
+    },
+    {
+      "tc_id": "TC-065",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **fre",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"",
+      "assertion": "smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **freeze** 链后才 promote（reconciled AC-063）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-065.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "scenario": "smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **freeze** 链后才 promote（reconciled AC-063）。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-065/command.txt"
+    },
+    {
+      "tc_id": "TC-068",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=t",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"",
+      "assertion": "truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=truth_not_frozen`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-068.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "scenario": "truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=truth_not_frozen`。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-068/command.txt"
+    },
+    {
+      "tc_id": "TC-069",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"",
+      "assertion": "generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-069.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "scenario": "generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-069/command.txt"
+    },
+    {
+      "tc_id": "TC-070",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-p",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-070.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "passed",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "scenario": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-070/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -1533,11 +1838,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "resolve blocked 时进入 `truth_fill` 而非仅 abort（扩展 parent resolver 行为）。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-034",
@@ -1558,11 +1865,13 @@
         "result.json",
         "junit.xml"
       ],
-      "status": "pending",
+      "status": "passed",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"`",
       "scenario": "truth gap 与 resolve blocked 共用 truth_fill 子链；parity 缺口有 promotion 记录。",
-      "steps": ""
+      "steps": "",
+      "last_run_id": "run-20260611T203650055295",
+      "last_evidence_ref": ".beacon/evidence/auto-test/run-20260611T203650055295/qa9-tc/TC-034/command.txt"
     },
     {
       "tc_id": "TC-040",
@@ -1704,7 +2013,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 66,
+    "row_count": 73,
     "enrichment_disabled": true
   }
 }

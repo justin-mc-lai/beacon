@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-11T09:04:56.302331+00:00",
+  "generated_at": "2026-06-11T12:36:41.371593+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,15 +18,16 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "63b0c63484b05f63038c2d3107be913af61b47363327c08258cee5a99af466d3",
-    "tests": "663b1a0e18adc6bb449455cf1b2b6bbbaedaf5d451169108bbc4384abacb4e9d",
-    "tasks": "c7d02b0940c0be8ee2c3938f1493ce9d4d54dc711d877979bd3059e28104b1a4",
-    "evidence": "19856e485094f82e6c69af93978d03a38f1831a68bc996bf24bfa23b590961fa"
+    "truth": "7f53617a2cb7c784793f8b633544256a3e5cccb9c2976bb5d003d8c69584a833",
+    "tests": "e3e309b64a2e8061201ca517b70e89e031d41f437197a2c46125e548003e1b26",
+    "tasks": "1e1913158babae45d73b7bc4a29f211b6b02bb82f3250ab6eaa3b19886725230",
+    "evidence": "46c7d5ed12105e93550a43076e92e7666c1e9add72dadec7c734047af8dbadef"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
     "version": "v1.6.0",
     "status": "frozen",
+    "revision_id": "R8",
     "language": "zh",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
@@ -207,12 +208,17 @@
     },
     {
       "ac_id": "AC-063",
-      "theme": "**Smoke truth exit harness**：当 target feature `scope_mode=smoke`（读 feature package frontmatter 或 truth 正文）时，truth phase exit **不得**要求 `beacon doctor sync-materials` 或 `beacon freeze` 成功才能 advance 到 `generate`；exit 仅要求 `truth-map resolve` PASS + `features/<slug>/truth.md` 存在且非空；full sync/freeze 仍保留给非 smoke / `full_parity` feature。",
+      "theme": "**Smoke truth exit（reconciled）**：当 target feature `scope_mode=smoke` 或 `minimal_smoke` 时，truth phase exit **不得**要求 `beacon doctor sync-materials`；但 **在 promote 到 `generate` 之前** 仍须通过 **`truth_freeze_gate`**（见 AC-068）：`truth-map resolve` PASS + `features/<slug>/truth.md` package ready + **`beacon freeze` PASS**。AC-035 对 smoke **无例外**。",
       "description": ""
     },
     {
       "ac_id": "AC-064",
       "theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "theme": "**`truth_freeze_gate`（beacon-run）**：`packages/beacon-run` 在 truth→generate 间 **必须** fail-closed 执行 freeze gate，对齐 Delivery Loop `truth_freeze_gate` 与 beacon-loop `truth-fill` 末尾 `beacon freeze` 链。**禁止** draft truth 下 `phase_promoted=true` 或 agent 进入 `generate` 写产品代码。truth exit 序列：`resolve` →（full_parity：`sync-materials`）→（按需 `sync-requirement-clarity`）→ **`beacon freeze --json`**；失败时 `phase` 保持 `truth`，`reason_code=truth_not_frozen`。`generate` **entry** 须 `isFeatureTruthFrozen===true`，否则不得 `run_agent`。`generate` exit 若 preflight 为 `revision_not_frozen` 或 `legacy_cutover_required`，须 **phase demote** 到 truth freeze repair（可 harness 尝试 `beacon truth-cutover run … --apply`），**不得** 空烧 iteration cap。truth phase `allowed_harness` 须含 `beacon freeze`。`truth-promotion.json` 须记录 freeze/cutover command。",
       "description": ""
     }
   ],
@@ -490,11 +496,35 @@
       "evidence_path": ""
     },
     {
+      "ac_id": "AC-068",
+      "tc_id": "TC-068",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "assertion": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-069",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "assertion": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-068",
+      "tc_id": "TC-070",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ""
+    },
+    {
       "ac_id": "AC-063",
       "tc_id": "TC-067",
       "layer": "e2e",
       "command": "`cd examples/go-todo-crud && go test ./...`",
-      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
       "evidence_path": ""
     }
   ],
@@ -773,6 +803,31 @@
       "id": "TASK-095",
       "title": "R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-096",
+      "title": "`harness-checkpoint` + `phase-controller`：`truth_freeze_gate` 序列（clarity + freeze + cutover）；smoke 跳过 sync-materials 但不跳过 freeze（AC-063/068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-097",
+      "title": "`phase-prompt`：truth allowed 含 `beacon freeze`；generate entry frozen gate（AC-068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-098",
+      "title": "`scope-mode`：`minimal_smoke` → smoke；`isFeatureTruthFrozen` 共享检查（AC-063）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-099",
+      "title": "测试 TC-068..TC-070 + 更新 TC-065 smoke-truth-exit 断言（AC-068）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-100",
+      "title": "R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -802,7 +857,7 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "**frozen R5**",
+      "status": "**frozen R8**",
       "route": "implement"
     },
     {

@@ -8,7 +8,9 @@ import { readJson, writeJson } from "./fs.js";
 import {
   appendTruthPromotion,
   beaconJsonSucceeded,
+  implementPreflightBlocked,
   runPhaseHarness,
+  runTruthPhaseExitHarness,
   type HarnessContext,
 } from "./harness-checkpoint.js";
 import { augmentIterationPromptWithBeacon } from "./iteration-prompt.js";
@@ -17,6 +19,7 @@ import {
   readFeatureScopeMode,
   smokeTruthPackageReady,
 } from "./scope-mode.js";
+import { isFeatureTruthFrozen } from "./truth-frozen.js";
 
 export const AGENT_PHASES: BeaconPhase[] = ["truth", "generate"];
 export const HARNESS_PHASES: BeaconPhase[] = ["qa", "release"];
@@ -108,9 +111,9 @@ export function writeBeaconPhaseState(
 
 const PHASE_OBJECTIVES: Record<BeaconPhase, string> = {
   truth:
-    "Advance requirement truth for this feature: research, parity notes, truth/tests/tasks drafts, and promotion-ready materials. Do not implement product code in this phase. Set should_fully_stop=true when truth materials are ready for Beacon sync/refreeze.",
+    "Advance requirement truth for this feature: research, parity notes, truth/tests/tasks drafts, and promotion-ready materials. Do not implement product code in this phase. Set should_fully_stop=true only when truth package is ready and beacon freeze gate would pass (frozen truth required before generate).",
   generate:
-    "Implement toward the user objective with verifiable commits. Follow frozen truth when present. Set should_fully_stop=true when implementation is ready for Beacon QA.",
+    "Implement toward the user objective with verifiable commits only after requirement truth is frozen. If truth is still draft, you must not write product code—return to truth phase and complete freeze. Set should_fully_stop=true when implementation is ready for Beacon QA.",
   repair:
     "Repair implementation using QA/release findings already recorded in notes. Set should_fully_stop=true when repair candidate is ready for QA re-run.",
   qa: "Harness-only phase: Beacon QA runs outside the agent loop.",
@@ -239,6 +242,28 @@ export class BeaconPhaseController {
       this.entryHarnessDone = true;
     }
 
+    if (this.phase === "generate") {
+      const frozen = isFeatureTruthFrozen(
+        this.ctx.projectRoot,
+        this.ctx.version,
+        this.ctx.feature,
+      );
+      if (!frozen) {
+        this.demoteToTruthFreeze("truth_not_frozen");
+        writeBeaconPhaseState(this.runDir, this.ctx, this.phase, this.phasesCompleted, {
+          phasePromoted: false,
+          lastHarnessExit: {
+            phase: "generate",
+            ok: false,
+            command: "beacon truth-map resolve (frozen gate)",
+            exit_code: 2,
+            reason_code: "truth_not_frozen",
+          },
+        });
+        return "run_agent";
+      }
+    }
+
     writeBeaconPhaseState(
       this.runDir,
       this.ctx,
@@ -257,29 +282,66 @@ export class BeaconPhaseController {
     }
 
     const harnessCtx = this.harnessContext();
-    const exitResult = runPhaseHarness(
-      this.runDir,
-      this.phase,
-      "exit",
-      harnessCtx,
-    );
-    let ok = exitResult ? beaconJsonSucceeded(exitResult) : true;
+    let exitResult;
+    let ok: boolean;
     let reasonCode: string | undefined;
-    if (
-      ok &&
-      this.phase === "truth" &&
-      harnessCtx.scopeMode === "smoke" &&
-      !smokeTruthPackageReady(
-        harnessCtx.projectRoot,
-        harnessCtx.version,
-        harnessCtx.feature,
-      )
-    ) {
-      ok = false;
-      reasonCode = "smoke_truth_package_missing";
+
+    if (this.phase === "truth") {
+      if (
+        harnessCtx.scopeMode === "smoke" &&
+        !smokeTruthPackageReady(
+          harnessCtx.projectRoot,
+          harnessCtx.version,
+          harnessCtx.feature,
+        )
+      ) {
+        ok = false;
+        reasonCode = "smoke_truth_package_missing";
+        exitResult = {
+          command: "smokeTruthPackageReady",
+          exit_code: 2,
+          stdout: "",
+          stderr: "",
+        };
+      } else {
+        const truthExit = runTruthPhaseExitHarness(this.runDir, harnessCtx);
+        ok = truthExit.ok;
+        reasonCode = truthExit.reason_code;
+        exitResult = {
+          command: truthExit.command,
+          exit_code: truthExit.exit_code,
+          stdout: "",
+          stderr: "",
+        };
+      }
+    } else {
+      exitResult = runPhaseHarness(
+        this.runDir,
+        this.phase,
+        "exit",
+        harnessCtx,
+      );
+      ok = exitResult ? beaconJsonSucceeded(exitResult) : true;
+      if (!ok && exitResult) {
+        const preflight = implementPreflightBlocked(exitResult);
+        if (preflight) {
+          this.demoteToTruthFreeze(
+            preflight === "revision_not_frozen"
+              ? "truth_not_frozen"
+              : preflight,
+          );
+          reasonCode =
+            preflight === "revision_not_frozen"
+              ? "truth_not_frozen"
+              : preflight;
+        } else {
+          reasonCode = "harness_exit_failed";
+        }
+      }
     }
-    if (!ok && exitResult && exitResult.exit_code !== 0) {
-      reasonCode = reasonCode || "harness_exit_failed";
+
+    if (!ok && exitResult && exitResult.exit_code !== 0 && !reasonCode) {
+      reasonCode = "harness_exit_failed";
     }
     const harnessExit: HarnessExitRecord | undefined = exitResult
       ? {
@@ -293,6 +355,18 @@ export class BeaconPhaseController {
     this.completeCurrentPhase(ok, harnessExit);
     if (this.isDone()) return "break";
     return "continue";
+  }
+
+  private demoteToTruthFreeze(reasonCode: string): void {
+    this.phase = "truth";
+    this.entryHarnessDone = false;
+    appendTruthPromotion(this.runDir, {
+      phase: "truth",
+      checkpoint: "freeze_gate",
+      command: `phase-demote:${reasonCode}`,
+      exit_code: 2,
+      mode: reasonCode,
+    });
   }
 
   private completeCurrentPhase(

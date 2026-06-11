@@ -79,6 +79,14 @@
 - [x] TASK-094 merge `go-todo-crud-smoke` 材料入主仓；opt-in E2E TC-067（AC-063 回归）。
 - [x] TASK-095 R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。
 
+## Phase M — R6/R7 truth_freeze_gate（AC-063 reconcile + AC-068）
+
+- [x] TASK-096 `harness-checkpoint` + `phase-controller`：`truth_freeze_gate` 序列（clarity + freeze + cutover）；smoke 跳过 sync-materials 但不跳过 freeze（AC-063/068）。
+- [x] TASK-097 `phase-prompt`：truth allowed 含 `beacon freeze`；generate entry frozen gate（AC-068）。
+- [x] TASK-098 `scope-mode`：`minimal_smoke` → smoke；`isFeatureTruthFrozen` 共享检查（AC-063）。
+- [x] TASK-099 测试 TC-068..TC-070 + 更新 TC-065 smoke-truth-exit 断言（AC-068）。
+- [x] TASK-100 R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。
+
 ## 边界
 
 - 任务台账不是 implementation completion。

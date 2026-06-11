@@ -38,7 +38,10 @@
 | AC-062 | TC-064 | contract | `python3 -m pytest tests/test_requirement_clarity_domain_vocab_r5.py -q` | clarity gate 不因 slug/path 中 todo 误 block；`beacon freeze go-todo-crud-smoke` 在材料 merge 后 PASS。 |
 | AC-063 | TC-065 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "smoke-truth-exit"` | target feature `scope_mode=smoke` 时 truth exit 不调用 `sync-materials`；resolve + truth.md → advance `generate`。 |
 | AC-064 | TC-066 | contract | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "phase-promotion-visibility"` | harness exit fail 时 `beacon-phase.json` 含 `phase_promoted` false + reason；不 silent 留 `phase=truth`。 |
-| AC-063 | TC-067 | e2e | `cd examples/go-todo-crud && go test ./...` | smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。 |
+| AC-068 | TC-068 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "truth-freeze-gate"` | draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。 |
+| AC-068 | TC-069 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "generate-blocked-without-frozen"` | `isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。 |
+| AC-068 | TC-070 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "implement-preflight-demote"` | `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。 |
+| AC-063 | TC-067 | e2e | `cd examples/go-todo-crud && go test ./...` | smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。 |
 
 ## R5 — worktree harness + smoke exit + clarity（AC-061..AC-064）
 
@@ -85,6 +88,17 @@ R3 authoritative rows 已并入上方 **覆盖矩阵**（TC-045..TC-054）；本
 | TC-038b | `truth_gap_scan` | `implement_loop`（truth 未 frozen） | blocked |
 | TC-038c | `implement_loop` | `terminal_closed` | blocked |
 | TC-038d | `qa_pending` | `terminal_closed`（无 release invoke） | blocked |
+| TC-038e | `beacon-run` `truth`（draft） | `generate`（agent 写产品代码） | blocked（AC-068） |
+| TC-038f | `truth_freeze_gate`（freeze fail） | `generate` | blocked（AC-068） |
+
+## Phase M — R6/R7 truth_freeze_gate（AC-063 reconcile + AC-068）
+
+| AC ID | TC ID | Layer | Command | Assertion |
+|-------|-------|-------|---------|-----------|
+| AC-063 | TC-065 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "smoke-truth-exit"` | smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **freeze** 链后才 promote（reconciled AC-063）。 |
+| AC-068 | TC-068 | behavior | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "truth-freeze-gate"` | truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=truth_not_frozen`。 |
+| AC-068 | TC-069 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "generate-blocked-without-frozen"` | generate entry frozen gate；draft 时无 agent product-code iteration。 |
+| AC-068 | TC-070 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "implement-preflight-demote"` | `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。 |
 
 ## Parent 依赖覆盖（parent feature frozen truth）
 

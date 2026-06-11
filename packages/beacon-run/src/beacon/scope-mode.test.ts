@@ -70,6 +70,22 @@ Body with enough content to satisfy smoke truth package readiness checks for bea
     expect(args?.[1]).toBe("sync-materials");
   });
 
+  it("reads minimal_smoke as smoke scope_mode (AC-063)", () => {
+    const dir = join(
+      root,
+      "docs/beacon/v1.6.0/features/minimal-smoke-feature",
+    );
+    mkdirSync(dir, { recursive: true });
+    writeFileSync(
+      join(dir, "truth.md"),
+      "---\nslug: minimal-smoke-feature\n---\nscope_mode = minimal_smoke\n",
+      "utf8",
+    );
+    expect(
+      readFeatureScopeMode(root, "v1.6.0", "minimal-smoke-feature"),
+    ).toBe("smoke");
+  });
+
   it("smokeTruthPackageReady requires non-trivial body", () => {
     writeSmokeTruth();
     expect(smokeTruthPackageReady(root, "v1.6.0", "go-todo-crud-smoke")).toBe(

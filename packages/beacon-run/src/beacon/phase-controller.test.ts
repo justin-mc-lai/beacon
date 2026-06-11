@@ -101,7 +101,7 @@ describe("beacon phase-controller", () => {
     ).toBe(true);
   });
 
-  it("records phase_promoted false when smoke truth package is missing (AC-064 / TC-066)", async () => {
+  it("phase-promotion-visibility records phase_promoted false when smoke truth package is missing (AC-064 / TC-066)", async () => {
     const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-smoke-"));
     const featureDir = join(
       projectRoot,
@@ -143,11 +143,23 @@ describe("beacon phase-controller", () => {
     rmSync(projectRoot, { recursive: true, force: true });
   });
 
-  it("advances agent phase on should_fully_stop + exit harness", async () => {
+  it("advances agent phase on should_fully_stop + exit harness when truth is frozen (AC-068)", async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-frozen-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo\nstatus: frozen\n---\n# Demo\n\nFrozen truth package for harness promotion.\n",
+      "utf8",
+    );
+
     const controller = new BeaconPhaseController(
       {
         enabled: true,
-        projectRoot: "/tmp/project",
+        projectRoot,
         version: "v1.6.0",
         feature: "demo",
         truthBootstrap: "agent",
@@ -161,5 +173,123 @@ describe("beacon phase-controller", () => {
     const after = await controller.afterAgentIteration(true, true);
     expect(after).toBe("continue");
     expect(controller.currentPhase()).toBe("generate");
+
+    rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("truth-freeze-gate does not promote to generate when truth remains draft (AC-068 / TC-068)", async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-draft-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo\nstatus: draft\n---\n# Demo\n\nDraft truth package that must not unlock generate.\n",
+      "utf8",
+    );
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot,
+        version: "v1.6.0",
+        feature: "demo",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "truth",
+    );
+
+    await controller.beforeAgentIteration();
+    await controller.afterAgentIteration(true, true);
+
+    const artifact = JSON.parse(
+      readFileSync(join(runDir, "beacon-phase.json"), "utf8"),
+    );
+    expect(artifact.phase).toBe("truth");
+    expect(artifact.phase_promoted).toBe(false);
+    expect(artifact.last_harness_exit?.reason_code).toBe("truth_not_frozen");
+
+    rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("generate-blocked-without-frozen blocks generate agent iteration when truth is not frozen (AC-068 / TC-069)", async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-gen-block-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo\nstatus: draft\n---\n# Demo\n\nDraft truth must demote generate.\n",
+      "utf8",
+    );
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot,
+        version: "v1.6.0",
+        feature: "demo",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "generate",
+    );
+
+    const decision = await controller.beforeAgentIteration();
+    expect(decision).toBe("run_agent");
+    expect(controller.currentPhase()).toBe("truth");
+
+    rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("implement-preflight-demote demotes generate to truth on implement preflight revision_not_frozen (AC-068 / TC-070)", async () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-phase-demote-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo\nstatus: frozen\n---\n# Demo\n\nFrozen at generate entry; implement preflight still blocked.\n",
+      "utf8",
+    );
+    process.env.BEACON_RUN_MOCK_IMPLEMENT_PREFLIGHT = "revision_not_frozen";
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot,
+        version: "v1.6.0",
+        feature: "demo",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "generate",
+    );
+
+    await controller.beforeAgentIteration();
+    await controller.afterAgentIteration(true, true);
+
+    expect(controller.currentPhase()).toBe("truth");
+    const promotion = JSON.parse(
+      readFileSync(join(runDir, "truth-promotion.json"), "utf8"),
+    );
+    expect(
+      promotion.calls.some(
+        (call: { mode?: string }) => call.mode === "truth_not_frozen",
+      ),
+    ).toBe(true);
+
+    delete process.env.BEACON_RUN_MOCK_IMPLEMENT_PREFLIGHT;
+    rmSync(projectRoot, { recursive: true, force: true });
   });
 });

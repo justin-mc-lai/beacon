@@ -107,6 +107,19 @@ def _ac_items(story_payload: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return out
 
 
+_LEGACY_SNAPSHOT_TEXT_NOISE = (
+    "legacy_cutover_required",
+    "legacy-cutover-required",
+)
+
+
+def _legacy_snapshot_classification_text(text: str) -> str:
+    normalized = str(text or "").lower()
+    for token in _LEGACY_SNAPSHOT_TEXT_NOISE:
+        normalized = normalized.replace(token, " ")
+    return normalized
+
+
 def _classify_lane(entry: dict[str, Any], ac_item: dict[str, Any]) -> str:
     ac_id = str(entry.get("ac_id") or "").strip().lower()
     theme = str(ac_item.get("theme") or "").strip().lower()
@@ -134,7 +147,8 @@ def _classify_lane(entry: dict[str, Any], ac_item: dict[str, Any]) -> str:
             str(entry.get("assertion") or ""),
         ]
     ).lower()
-    if "legacy" in text or "historical snapshot" in text:
+    legacy_text = _legacy_snapshot_classification_text(text)
+    if "legacy" in legacy_text or "historical snapshot" in legacy_text:
         return "legacy_snapshot"
     if "generated_surface" in text or "generated surface" in text or "skill-delivery" in text or "skill delivery" in text:
         return "generated_surface_sync"

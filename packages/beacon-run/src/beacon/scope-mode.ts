@@ -20,6 +20,7 @@ export function readFeatureScopeMode(
   if (!existsSync(path)) return "unknown";
   const text = readFileSync(path, "utf8");
   if (/scope_mode\s*[=:]\s*[`\*]*smoke/i.test(text)) return "smoke";
+  if (/scope_mode\s*[=:]\s*[`\*]*minimal_smoke/i.test(text)) return "smoke";
   if (/scope_mode\s*[=:]\s*[`\*]*full_parity/i.test(text)) return "full_parity";
   return "unknown";
 }

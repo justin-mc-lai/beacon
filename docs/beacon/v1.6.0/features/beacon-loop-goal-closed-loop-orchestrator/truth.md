@@ -2,6 +2,7 @@
 slug: beacon-loop-goal-closed-loop-orchestrator
 version: v1.6.0
 status: frozen
+revision_id: R8
 language: zh
 canonical_refs:
   prd: docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md
@@ -23,7 +24,8 @@ parent_feature: beacon-loop-native-runner-and-automation-retirement
 
 - **R1–R3** 已在 `packages/beacon-loop` 验证 delivery FSM、harness 记账、gnhf prompt/schema 契约（快照：`packages/beacon-loop.r3-backup-20260610`）。
 - **R4（frozen）** 将 **主实现落点** 迁至 **`packages/beacon-run`**（gnhf lineage，源副本 `packages/gnhf`），`beacon-loop` **降级为兼容/只读参考**，不再作为新功能开发面。
-- **R5（本 revision，reopened）** 修复 R4 drill 暴露的 **worktree harness root 错位**、**requirement_clarity TODO 假阳性**、**smoke truth exit 过重**；保留 worktree 产出的 `go-todo-crud-smoke` 材料作为 R5 回归夹具（merge 入主仓，见 Source Advisory）。
+- **R5（frozen）** 修复 R4 drill 暴露的 **worktree harness root 错位**、**requirement_clarity TODO 假阳性**、**smoke truth exit 过重**；保留 worktree 产出的 `go-todo-crud-smoke` 材料作为 R5 回归夹具（merge 入主仓，见 Source Advisory）。
+- **R6/R7（本 revision，reopened）** 闭合 **truth_freeze_gate**：R5 drill 在 draft truth 下 promote 到 `generate`，导致 `implement run` **`revision_not_frozen`** 空转；用户确认 **generate 阶段不得在 truth 仍为 draft 时写产品代码**；beacon-run 须在 truth→generate 间 fail-closed 执行 freeze gate（对齐 AC-035 与 beacon-loop 参考实现）。
 
 R4 目标数据流：
 
@@ -96,6 +98,7 @@ Layer 4 — Harness checkpoints（迭代间 subprocess）
 5. **R3**：`implement_loop` 使用裸 `codex exec`，未对齐 gnhf `output-schema` 契约，也未经 `beacon implement run` harness worker（真跑可 success 但 0 commit）
 6. **R4（drill 证据）**：模板 `truth_fill` 5s 过 gate 但 truth 空洞；LLM 仅在 implement 单层介入，与「一句话复刻」意图偏离——需 gnhf 全迭代 + prompt 内 Beacon 编排
 7. **R5（go-todo-crud-smoke drill）**：`beacon-loop goal` + `--worktree` + `--beacon` 时 agent 在 worktree 写 truth，但 truth exit harness 对 **主仓** 跑 `sync-materials` → `test_case_sync_failed`；agent 死磕 `freeze` 又被 slug/path 中 `TODO` 的 `inline_marker` 误杀；`scope_mode: smoke` 仍绑定 full sync/freeze 链，无法进入 `generate`
+8. **R6 drill 根因（post-R5）**：truth exit 仅 `resolve`/`sync-materials` **未执行 freeze** 即 promote 到 `generate`；agent 在 draft truth 下写 Go CRUD 代码；`generate` exit `implement run` 反复 **`revision_not_frozen`** / **`legacy_cutover_required`**，12 iteration cap 空转
 
 ### 依赖
 
@@ -434,6 +437,7 @@ Parent runner AC-016..AC-019 语义在 implement 路径上 **不得弱于** gnhf
 | **parent runner no regression** | **AC-050** | **TC-052** | npm test regression | **missing R3** | none |
 | **doctor implement runner check** | **AC-052** | **TC-054** | doctor --json | **missing R3** | none |
 | **真 implement runner E2E ≥1 commit** | **AC-051** | **TC-053** | e2e + git log | **missing R3** | none |
+| **beacon-run truth_freeze_gate（beacon-loop parity）** | **AC-068** | **TC-068..070** | truth-promotion.json + beacon-phase.json | **missing R7** | none |
 
 ## Deferral Ledger
 
@@ -461,6 +465,8 @@ R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现�
 | I | R2 green-light intent + lifecycle auto-route | AC-040..AC-042 |
 | **J** | **R3 gnhf worker 契约 + harness implement runner + no-op QA gate** | **AC-043..AC-052** |
 | **K** | **R4 beacon-run（gnhf fork）+ 全迭代 agent + Beacon phase prompt + 非模板 truth** | **AC-053..AC-060** |
+| **L** | **R5 worktree harness + clarity + smoke exit reconcile** | **AC-061..AC-064** |
+| **M** | **R6/R7 truth_freeze_gate + AC-063 reconcile + generate frozen gate** | **AC-063, AC-068** |
 
 Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落地。Phase K **以 `packages/beacon-run` 为主实现面**，可复用 R3 的 prompt/schema/evidence 契约与 `intent/` 薄适配层。
 
@@ -510,8 +516,9 @@ Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落�
 | AC-060 | **真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。 |
 | AC-061 | **Worktree harness project root**：`beacon-run --worktree --beacon` 时，truth/generate/qa/release harness subprocess 的 `--project-root` / `--project` **必须与 agent `effectiveCwd`（worktree）一致**；禁止对主仓跑 greenfield feature 的 `sync-materials` / `verify-context`；`truth-promotion.json` 记录的 command 须含 worktree 绝对路径。 |
 | AC-062 | **Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。 |
-| AC-063 | **Smoke truth exit harness**：当 target feature `scope_mode=smoke`（读 feature package frontmatter 或 truth 正文）时，truth phase exit **不得**要求 `beacon doctor sync-materials` 或 `beacon freeze` 成功才能 advance 到 `generate`；exit 仅要求 `truth-map resolve` PASS + `features/<slug>/truth.md` 存在且非空；full sync/freeze 仍保留给非 smoke / `full_parity` feature。 |
+| AC-063 | **Smoke truth exit（reconciled）**：当 target feature `scope_mode=smoke` 或 `minimal_smoke` 时，truth phase exit **不得**要求 `beacon doctor sync-materials`；但 **在 promote 到 `generate` 之前** 仍须通过 **`truth_freeze_gate`**（见 AC-068）：`truth-map resolve` PASS + `features/<slug>/truth.md` package ready + **`beacon freeze` PASS**。AC-035 对 smoke **无例外**。 |
 | AC-064 | **Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。 |
+| AC-068 | **`truth_freeze_gate`（beacon-run）**：`packages/beacon-run` 在 truth→generate 间 **必须** fail-closed 执行 freeze gate，对齐 Delivery Loop `truth_freeze_gate` 与 beacon-loop `truth-fill` 末尾 `beacon freeze` 链。**禁止** draft truth 下 `phase_promoted=true` 或 agent 进入 `generate` 写产品代码。truth exit 序列：`resolve` →（full_parity：`sync-materials`）→（按需 `sync-requirement-clarity`）→ **`beacon freeze --json`**；失败时 `phase` 保持 `truth`，`reason_code=truth_not_frozen`。`generate` **entry** 须 `isFeatureTruthFrozen===true`，否则不得 `run_agent`。`generate` exit 若 preflight 为 `revision_not_frozen` 或 `legacy_cutover_required`，须 **phase demote** 到 truth freeze repair（可 harness 尝试 `beacon truth-cutover run … --apply`），**不得** 空烧 iteration cap。truth phase `allowed_harness` 须含 `beacon freeze`。`truth-promotion.json` 须记录 freeze/cutover command。 |
 
 ### R5 Harness Contract（worktree + smoke）
 
@@ -519,17 +526,26 @@ Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落�
 beacon-loop goal → beacon-run (--worktree --beacon)
   agent cwd = worktree
   harness ctx.projectRoot = worktree   # AC-061
-
-truth exit (smoke target feature):
-  resolve PASS + truth.md present → advance generate   # AC-063
-truth exit (full_parity target feature):
-  sync-materials PASS on same projectRoot → advance generate
-
-freeze / requirement_clarity:
-  domain slug/path tokens ≠ inline placeholder          # AC-062
 ```
 
-**R5 回归夹具**：`features/go-todo-crud-smoke`（自 worktree merge，draft）+ utterance「在 examples/go-todo-crud 实现最小 Go HTTP CRUD…」；R5 implement 完成后须 truth→generate 至少 1 commit 于 `examples/go-todo-crud/`。
+### R6/R7 Harness Contract（truth_freeze_gate）
+
+```text
+truth agent iteration (package ready, should_fully_stop=true)
+  → truth exit entry: resolve PASS + smokeTruthPackageReady (smoke only)
+  → truth_freeze_gate harness:
+      smoke:     resolve → sync-requirement-clarity (if needed) → freeze
+      full_parity: sync-materials → sync-requirement-clarity (if needed) → freeze
+      legacy:    truth-cutover run --apply --resume-intent implement (on cutover_required)
+  → phase_promoted=true ONLY when isFeatureTruthFrozen===true
+  → generate entry: frozen gate (fail-closed; no product code agent iteration if draft)
+  → generate exit: implement run (requires frozen; demote on revision_not_frozen)
+
+scope_mode reader: smoke | minimal_smoke → smoke path   # AC-063
+requirement_clarity: domain slug/path tokens ≠ inline placeholder   # AC-062
+```
+
+**R5/R6 回归夹具**：`features/go-todo-crud-smoke` + utterance「在 examples/go-todo-crud 实现最小 Go HTTP CRUD…」；**须先 frozen** 再 generate；implement 完成后 ≥1 commit 于 `examples/go-todo-crud/`。
 
 ## Source Advisory
 
@@ -544,4 +560,4 @@ freeze / requirement_clarity:
 | `features/go-todo-crud-smoke/` | R5 回归夹具（worktree merge，smoke scope） |
 | `docs/beacon/v1.6.0/research/go-todo-crud-smoke.md` | smoke drill research（support_advisory，已 accept merge） |
 
-本文件为 package-authoritative requirement truth（**R5 revision**，reopened；refreeze pending）。
+本文件为 package-authoritative requirement truth（**R8 revision frozen**，R6/R7 truth_freeze_gate scope）。

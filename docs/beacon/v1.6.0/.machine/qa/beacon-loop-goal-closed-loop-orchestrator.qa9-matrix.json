@@ -65,7 +65,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-06-11T17:04:50.667641",
+    "generated_at": "2026-06-11T20:36:34.681206",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -82,7 +82,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-06-11T17:04:50.665347",
+    "generated_at": "2026-06-11T20:36:34.679936",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -1115,16 +1115,91 @@
       "steps": ""
     },
     {
+      "tc_id": "TC-068",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS ",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"",
+      "assertion": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-068.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "scenario": "draft truth 时 truth exit / generate entry **不得** promote 到 generate；freeze PASS 后 promote；`revision_not_frozen` 触发 demote/repair route。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-069",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"",
+      "assertion": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-069.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "scenario": "`isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-070",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-p",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-070.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "scenario": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "steps": ""
+    },
+    {
       "tc_id": "TC-067",
       "ac_id": "AC-063",
       "story_id": "",
       "layer": "e2e",
       "qa_type": "e2e",
-      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth",
       "priority": "P2",
       "automation": "auto",
       "command": "cd examples/go-todo-crud && go test ./...",
-      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
       "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-067.json",
       "required_files": [
         "command.txt",
@@ -1136,7 +1211,7 @@
       "status": "pending",
       "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "execution_method": "`cd examples/go-todo-crud && go test ./...`",
-      "scenario": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "scenario": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
       "steps": ""
     },
     {
@@ -1715,6 +1790,106 @@
       "steps": ""
     },
     {
+      "tc_id": "TC-065",
+      "ac_id": "AC-063",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-063 :: smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **fre",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"",
+      "assertion": "smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **freeze** 链后才 promote（reconciled AC-063）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-065.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"smoke-truth-exit\"`",
+      "scenario": "smoke：`scope_mode`/`minimal_smoke` 跳过 sync-materials；但 truth exit 须 invoke **freeze** 链后才 promote（reconciled AC-063）。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-068",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "behavior",
+      "qa_type": "behavior",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=t",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"",
+      "assertion": "truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=truth_not_frozen`。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-068.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"truth-freeze-gate\"`",
+      "scenario": "truth_freeze_gate harness 序列；freeze fail → `phase_promoted=false`，`reason_code=truth_not_frozen`。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-069",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"",
+      "assertion": "generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-069.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"generate-blocked-without-frozen\"`",
+      "scenario": "generate entry frozen gate；draft 时无 agent product-code iteration。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-070",
+      "ac_id": "AC-068",
+      "story_id": "",
+      "layer": "integration",
+      "qa_type": "integration",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-068 :: `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-p",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"",
+      "assertion": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-070.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"implement-preflight-demote\"`",
+      "scenario": "`revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。",
+      "steps": ""
+    },
+    {
       "tc_id": "TC-040",
       "ac_id": "AC-003",
       "story_id": "",
@@ -1919,7 +2094,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 66,
+    "row_count": 73,
     "enrichment_disabled": true
   },
   "compatibility_matrix": {
@@ -1947,7 +2122,7 @@
       }
     ]
   },
-  "generated_at": "2026-06-11T17:04:50.667738",
+  "generated_at": "2026-06-11T20:36:34.681267",
   "research_projection": {
     "schema_version": "1.0",
     "feature": "beacon-loop-goal-closed-loop-orchestrator",
