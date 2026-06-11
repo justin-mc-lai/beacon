@@ -32,8 +32,18 @@ function emit(payload, jsonOutput) {
     return;
   }
   console.log(`${payload.command || "beacon-loop"}: ${payload.status || "ok"}`);
+  if (payload.beacon_run_command) {
+    console.log(`beacon_run_command: ${payload.beacon_run_command}`);
+  }
+  if (payload.branch_mode_resolved) {
+    console.log(`branch_mode: ${payload.branch_mode_resolved}`);
+  }
   if (payload.run_id) console.log(`run_id: ${payload.run_id}`);
   if (payload.reason_code) console.log(`reason_code: ${payload.reason_code}`);
+  if (payload.stderr && payload.status === "delegated" && payload.exit_code !== 0) {
+    const err = String(payload.stderr).trim();
+    if (err) console.error(err);
+  }
 }
 
 function help() {

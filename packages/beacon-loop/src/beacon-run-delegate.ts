@@ -34,6 +34,36 @@ function mapAgent(agent) {
   return value;
 }
 
+function currentGitBranch(projectRoot) {
+  const result = spawnSync("git", ["rev-parse", "--abbrev-ref", "HEAD"], {
+    cwd: projectRoot,
+    encoding: "utf8",
+  });
+  return result.status === 0 ? result.stdout.trim() : "";
+}
+
+function isGnhfBranch(branch) {
+  return branch.startsWith("gnhf/");
+}
+
+function resolveBranchMode(projectRoot, options) {
+  const requested = options.branchMode || "worktree";
+  if (options.isolatedWorktree) {
+    return { branchMode: "worktree", branchModeResolved: "worktree" };
+  }
+  if (requested !== "worktree") {
+    return { branchMode: requested, branchModeResolved: requested };
+  }
+  const branch = currentGitBranch(projectRoot);
+  if (isGnhfBranch(branch)) {
+    return {
+      branchMode: "current-branch",
+      branchModeResolved: "current-branch (auto: gnhf branch)",
+    };
+  }
+  return { branchMode: "worktree", branchModeResolved: "worktree" };
+}
+
 function buildBeaconRunArgs(projectRoot, goal, options) {
   const feature =
     String(options.feature || "").trim() ||
@@ -71,14 +101,14 @@ function buildBeaconRunArgs(projectRoot, goal, options) {
     args.push("--truth-bootstrap", "fallback");
   }
 
-  const branchMode = options.branchMode || "worktree";
-  if (options.isolatedWorktree || branchMode === "worktree") {
+  const { branchMode, branchModeResolved } = resolveBranchMode(projectRoot, options);
+  if (branchMode === "worktree") {
     args.push("--worktree");
   } else if (branchMode === "current-branch" || branchMode === "run-branch") {
     args.push("--current-branch");
   }
 
-  return { args, feature };
+  return { args, feature, branchModeResolved };
 }
 
 export function delegateGoalToBeaconRun(projectRoot, goal, options) {
@@ -105,13 +135,14 @@ export function delegateGoalToBeaconRun(projectRoot, goal, options) {
     };
   }
 
-  const command = `${process.execPath} ${cli} ${built.args.join(" ")}`;
+  const beaconRunCommand = `${process.execPath} ${cli} ${built.args.join(" ")}`;
   if (options.dryRun) {
     return {
       status: "dry_run",
-      command,
+      beacon_run_command: beaconRunCommand,
       feature: built.feature,
       beacon_run_cli: cli,
+      branch_mode_resolved: built.branchModeResolved,
     };
   }
 
@@ -123,9 +154,10 @@ export function delegateGoalToBeaconRun(projectRoot, goal, options) {
 
   return {
     status: "delegated",
-    command,
+    beacon_run_command: beaconRunCommand,
     feature: built.feature,
     beacon_run_cli: cli,
+    branch_mode_resolved: built.branchModeResolved,
     exit_code: result.status ?? 1,
     stdout: result.stdout,
     stderr: result.stderr,
