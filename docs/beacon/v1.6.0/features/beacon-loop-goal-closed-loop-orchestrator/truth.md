@@ -17,51 +17,63 @@ parent_feature: beacon-loop-native-runner-and-automation-retirement
 
 ## 概述
 
-`beacon-loop-goal-closed-loop-orchestrator` 定义 Beacon v1.6.0 下一代长任务入口：**从用户目标原话到稳定交付的全链编排**。
+`beacon-loop-goal-closed-loop-orchestrator` 定义 Beacon v1.6.0 **长任务交付入口**：从用户原话到稳定闭环，**以 gnhf 类 agent 迭代环为执行内核**，Beacon 生命周期与 Skills 边界写入 **iteration prompt + 阶段 harness**，不由模板 CLI 冒充 LLM 推理。
 
-在 `beacon-loop-native-runner-and-automation-retirement`（AC-001..AC-030，frozen）提供的 **execution runner** 之上，本 feature 将 `beacon-loop goal "<utterance>"` 升级为 **Delivery Orchestrator**：
+在 `beacon-loop-native-runner-and-automation-retirement`（AC-001..AC-030，frozen）之上：
+
+- **R1–R3** 已在 `packages/beacon-loop` 验证 delivery FSM、harness 记账、gnhf prompt/schema 契约（快照：`packages/beacon-loop.r3-backup-20260610`）。
+- **R4（本 revision）** 将 **主实现落点** 迁至 **`packages/beacon-run`**（gnhf lineage，源副本 `packages/gnhf`），`beacon-loop` **降级为兼容/只读参考**，不再作为新功能开发面。
+
+R4 目标数据流：
 
 ```text
 utterance
-  → intent capture + deterministic intent contract
-  → automatic planner multi-agent review
-  → truth gap scan + truth_fill (Beacon generator CLI)
-  → implement_loop (parent orchestrator)
-  → import-evidence → beacon qa → beacon release
-  → terminal_closed (Beacon evaluator only)
+  → intent capture + intent-contract（可保留轻量 FSM 或并入 run package）
+  → beacon-run（gnhf Orchestrator）多轮 iteration
+        每轮：codex | claude | opencode | acp:* + Beacon phase prompt
+        迭代间：beacon harness（resolve / freeze / qa / release invoke）
+  → terminal_closed（Beacon evaluator only）
 ```
 
-`beacon-loop` 仍不产出 formal QA/release verdict，不直接写 package truth，不改变 v1.6.0 human-facing lifecycle：
+Beacon 主生命周期不变：
 
 ```text
 plan -> truth -> generate -> evaluate -> release
 ```
 
-### R3：gnhf + Beacon Harness Worker 对齐模型
+长任务执行器 **不** 替代上述阶段权威；它在 **每一轮 agent 调用** 中携带当前阶段剧本，在 **迭代间隙** 调用 harness gate。
 
-Beacon 适配 gnhf 三层，**不是**在子进程里加载 Skill MD：
+### R4：Beacon Run（gnhf 内核）+ Beacon 生命周期 prompt 编排
 
 ```text
 Layer 0 — Host
-  using-beacon / beacon-loop host skill（launch / steer / companion）
+  using-beacon / beacon-run skill（launch / steer / companion）
     ↓
-Layer 1 — CLI 编排器
-  beacon-loop goal | resume | stop | runs * | doctor
+Layer 1 — 长任务 CLI（gnhf lineage）
+  beacon-run run | resume | stop | runs * | doctor
+  （可选兼容别名：beacon-loop goal → 委托 beacon-run，deprecated）
     ↓
-Layer 2 — Delivery 长任务链（Beacon 特有）
-  intent_review → truth_fill → implement_loop → eval chain → repair_from_qa
+Layer 2 — gnhf Orchestrator（每轮都调 agent）
+  iteration-prompt + output-schema + notes + git commit/rollback
+  agent adapters: codex | claude | opencode | acp:*
     ↓
-Layer 3 — Harness Worker（beacon CLI，Skill 的可执行投影）
-  pln: beacon planner-review run
-  gen-truth: beacon prd-bootstrap / truth / freeze …
-  gen-implement: beacon implement run --runner <runner>   ← R3 强制
-  eval: beacon qa run / release create
+Layer 3 — Beacon phase digest（写入 prompt，不读 Skill MD）
+  当前阶段：plan | truth | generate | evaluate
+  允许：beacon-pln-* / beacon-gen-* / beacon-eval-* 职责摘要
+  禁止：自证 QA/release、直写 package truth、placeholder 闭环
     ↓
-Layer 4 — Agent backend（仅 implement runner 内部）
-  codex exec + output-schema（与 gnhf CodexAgent 同级契约）
+Layer 4 — Harness checkpoints（迭代间 subprocess）
+  beacon truth-map resolve | freeze | implement run | qa run | release create
+  证据：truth-promotion.json / run evidence（machine-readable）
 ```
 
-**禁止**：`implement_loop` 直接 `spawn codex` 绕过 `beacon implement run`（AC-044）。**禁止**：子进程读取 `$beacon-pln-review` 等 Skill 文件假装执行（D-012 blocked）。
+**R4 硬约束**
+
+- **禁止** 默认冷启动路径仅用 `prd-bootstrap` + 模板 `brainstorm` 作为「语义 truth」（AC-056）；模板链仅可作 **harness 回退**，非默认。
+- **禁止** 子进程读取 Skill MD 假装执行（D-012）。
+- **禁止** 长任务 runner 产出 formal QA/release verdict；evaluator 唯一。
+
+**R3 保留契约（在 beacon-run 中继承）**：`output-schema` strict parse、no-op=false、禁止 agent 自 commit、zero-commit 不得进入 qa_pending。
 
 ## Scope Mode
 
@@ -81,6 +93,7 @@ Layer 4 — Agent backend（仅 implement runner 内部）
 3. AC-030 E2E 止于 import→qa 驱动，未编排 **truth 补齐** 与 **qa fail 回灌**
 4. `beacon-pln-review` 的 intent/parity 契约未在 loop 入口强制执行
 5. **R3**：`implement_loop` 使用裸 `codex exec`，未对齐 gnhf `output-schema` 契约，也未经 `beacon implement run` harness worker（真跑可 success 但 0 commit）
+6. **R4（drill 证据）**：模板 `truth_fill` 5s 过 gate 但 truth 空洞；LLM 仅在 implement 单层介入，与「一句话复刻」意图偏离——需 gnhf 全迭代 + prompt 内 Beacon 编排
 
 ### 依赖
 
@@ -88,9 +101,9 @@ Layer 4 — Agent backend（仅 implement runner 内部）
 
 | Parent | This feature |
 |--------|--------------|
-| AC-001..AC-030 runner/harness/E2E | AC-031..AC-039 delivery orchestrator |
-| `packages/beacon-loop` orchestrator | `intent/` + `delivery/` 模块 |
-| `.beacon/loop/runs/<id>/` runtime package | 扩展 runtime artifacts |
+| AC-001..AC-030 runner/harness/E2E | AC-031..AC-052 delivery + harness（R3 已完成于 beacon-loop 备份） |
+| `packages/beacon-loop`（R3 快照） | R4 主实现迁至 `packages/beacon-run`（gnhf fork） |
+| `.beacon/loop/runs/<id>/` 或 gnhf run dir | 统一 run evidence 契约 |
 
 ## Parent Feature Dependency Matrix
 
@@ -104,13 +117,20 @@ Layer 4 — Agent backend（仅 implement runner 内部）
 
 ## Command Contract
 
-正式入口不变：
+**R4 主入口（权威）**：
+
+```bash
+beacon-run run "<utterance>" [options]
+# 或 stdin / --prompt-file；agent: --agent codex|claude|opencode|acp:...
+```
+
+**兼容入口（deprecated，R4 Phase K 实现委托）**：
 
 ```bash
 beacon-loop goal "<utterance>" [options]
 ```
 
-新增 orchestrator modes（`--mode`，默认 `delivery`）：
+`beacon-loop` modes（`--mode`，默认 `delivery`）在 R4 中 **映射** 为 beacon-run phase preset，而非独立 FSM 实现：
 
 | Mode | 行为 |
 |------|------|
@@ -298,18 +318,23 @@ Hard stop 例外（不打 green-light）：
 - `intent_drift` 未 ack
 - 用户显式 `--strict-interrupt`
 
-## Truth Fill Subchain Contract
+## Truth Enrichment Contract（R4 取代默认模板 truth_fill）
 
-当 `truth-map resolve` blocked 或 review 判定 truth gap（AC-034）：
+当 `truth-map resolve` blocked 或 review 判定 truth gap（AC-034、AC-056）：
 
-```text
-truth-promotion.json 记录：
-  beacon truth bootstrap / gen-truth / gen-change / refreeze 调用序列
-loop 禁止直接修改 features/*/truth.md
-truth frozen 后重新 resolve，直到 pass 或 terminal_aborted
-```
+**默认路径（R4）**
 
-禁止 silent MVP：truth_fill 不得默认写入 `scope_mode=mvp` 除非 `deferral_ledger` 有 `user_decision=accepted`。
+1. `beacon-run` 进入 **truth phase** iteration（agent bin 执行）
+2. iteration prompt 含：utterance、OSS/source refs（若 utterance 含 repo）、parity/state-machine 义务、禁止直写 package truth
+3. agent 产出 research/parity 材料 → host 或 harness 写回 **经 gen-truth 路由** 的受治理面
+4. 迭代间 harness：`beacon truth-map rebuild-machine`、`beacon freeze` 等；记入 `truth-promotion.json`
+5. frozen 后 `resolve` pass 才进入 generate phase
+
+**回退路径（非默认）**
+
+- `beacon prd-bootstrap` / 模板 `brainstorm` 仅当 `--truth-bootstrap=fallback` 或 doctor 明示缺 agent backend 时启用；不得作为 drill 默认。
+
+禁止 silent MVP：不得默认 `scope_mode=mvp` 除非 `deferral_ledger` 有 `user_decision=accepted`。
 
 ## Delivery Mode Evaluator Chain
 
@@ -433,8 +458,9 @@ R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现�
 | H | resume delivery-state + parallel review + E2E | AC-038..AC-039 |
 | I | R2 green-light intent + lifecycle auto-route | AC-040..AC-042 |
 | **J** | **R3 gnhf worker 契约 + harness implement runner + no-op QA gate** | **AC-043..AC-052** |
+| **K** | **R4 beacon-run（gnhf fork）+ 全迭代 agent + Beacon phase prompt + 非模板 truth** | **AC-053..AC-060** |
 
-Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。Phase J 依赖 Phase E-G 的 delivery plumbing，**替换** implement 层的裸 codex 路径。
+Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落地。Phase K **以 `packages/beacon-run` 为主实现面**，可复用 R3 的 prompt/schema/evidence 契约与 `intent/` 薄适配层。
 
 ## Non-goals
 
@@ -472,6 +498,14 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。Phas
 | AC-050 | **Parent runner 语义不回归**：接入 AC-044 后，parent AC-016..AC-019（多轮、caps、stop-when、notes、no-op failure）在 implement 路径仍 pass；delivery-state 与 runner state 合成正确。 |
 | AC-051 | **真 implement runner E2E**：非 fixture-only 路径下，delivery 跑通且 worktree **≥1 commit** 后才允许 `qa_pending`（verdict 仍 Beacon evaluator）。 |
 | AC-052 | **`beacon-loop doctor`** 检查 implement runner 可用性、Codex、`output-schema` 路径；`--diagnose` 给出 repair route。 |
+| AC-053 | **`packages/beacon-run`** 自 `packages/gnhf` fork，保留 gnhf `Orchestrator` + `createAgent`（codex/claude/opencode/acp）；CLI `beacon-run run` 为 R4 主入口。 |
+| AC-054 | **Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。 |
+| AC-055 | **全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。 |
+| AC-056 | **非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。 |
+| AC-057 | **Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。 |
+| AC-058 | **beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。 |
+| AC-059 | **Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。 |
+| AC-060 | **真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。 |
 
 ## Source Advisory
 
@@ -481,6 +515,7 @@ Parent Phase A-D 必须先满足或与本 feature Phase E 并行不冲突。Phas
 | `docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md` | promoted research |
 | `features/beacon-loop-native-runner-and-automation-retirement/truth.md` | parent frozen truth |
 | `features/beacon-pln-review-intent-parity-state-machine-v160/truth.md` | planner review contract |
-| `/Users/apple/Developer/Personal/oss-sync/agents/agent-systems/gnhf` | gnhf orchestrator + codex adapter 源对标 |
+| `packages/gnhf` | R4 工作副本（fork 为 `packages/beacon-run`） |
+| `/Users/apple/Developer/Personal/oss-sync/agents/agent-systems/gnhf` | 上游对标 |
 
-本文件为 package-authoritative requirement truth（**draft**，**R3 revision**，reopened via `beacon-gen-change`）。
+本文件为 package-authoritative requirement truth（**R4 revision**，via `beacon change --refreeze-chain`）。

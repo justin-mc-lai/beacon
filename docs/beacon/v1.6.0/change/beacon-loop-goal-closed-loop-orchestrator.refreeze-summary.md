@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-closed-loop-orchestrator
 
 - version: `v1.6.0`
-- change_reason: `change-request`
+- change_reason: `R4: pivot to beacon-run gnhf agent orchestration; deprecate template truth_fill default`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
 - revision_before: `R3`
-- revision_after: `R3`
+- revision_after: `R4`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md)

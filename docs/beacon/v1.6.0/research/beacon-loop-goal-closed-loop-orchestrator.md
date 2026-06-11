@@ -49,6 +49,22 @@ promotion_ref: docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestr
 - **blocked deferrals**: D-012 subprocess skill MD；D-013 bare codex bypass
 - **recommended_route**: refreeze R3 → Phase J implement → `beacon-eval-qa` with AC-051 real runner E2E
 
+## R4 Addendum（2026-06-11）
+
+- **outcome**: 主实现迁至 `packages/beacon-run`（gnhf lineage）；全生命周期 agent 迭代；Beacon Skills 边界写入 prompt
+- **lake_or_ocean**: 海；触及新包 fork、Core `--output-schema`、drill E2E
+- **truth_gap**: 已闭合于 R4 AC-053..060 + Phase K tasks
+- **recommended_route**: `beacon change --refreeze-chain` → Phase K `beacon-gen-implement`
+
+## Resolved Decisions
+
+- Scope: deliver **beacon-run** as gnhf-class long-task runner with Beacon phase prompt orchestration; Beacon Core remains governance/evaluator only.
+- Branch coverage: codex, claude, opencode, acp adapters per gnhf factory; truth and generate phases both use agent iterations.
+- State coverage: template `prd-bootstrap` truth_fill is **fallback only**; default is agent truth phase with harness freeze gate.
+- Acceptance: R4 refreeze completes before Phase K implementation; drill utterance gum choose/filter is canonical E2E.
+- Deferrals: further parallel planner subagent LLM lanes defer to post-R4; beacon-loop R3 FSM not extended.
+- Evidence: `packages/gnhf` cloned; `beacon-loop.r3-backup-20260610`; drill run `run-20260610214545-infh8c`.
+
 ## Decision Summary
 
 ```text

@@ -7,14 +7,18 @@
 | user-confirmed-architecture | support_advisory | conversation: delivery orchestrator AC-031..039 | accepted-for-change | change |
 | change-record | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md | accepted-for-change | refreeze |
 | planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md | promoted | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R2** | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R4** | implement |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md | evidence-indexed | evaluate |
 | parent-feature | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-native-runner-and-automation-retirement/truth.md | frozen | dependency |
 | planner-review-contract | requirement_truth | docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md | frozen | dependency |
 | planner-review-runtime | support_advisory | beacon/utils/planner_review_runtime.py | indexed | generate |
-| parent-implementation | support_advisory | packages/beacon-loop/ | extended | qa |
+| parent-implementation | support_advisory | packages/beacon-loop/ | extended R3 | qa |
+| gnhf-work-copy | support_advisory | packages/gnhf/ | cloned fe202c4 | R4 fork |
+| r3-backup | support_advisory | packages/beacon-loop.r3-backup-20260610/ | frozen snapshot | R4 reference |
+| drill-evidence | support_advisory | /private/tmp/beacon-loop-drill run-20260610214545-infh8c | template-truth + implement blocked | R4 pivot |
+| application-boundaries | support_advisory | personal-brain/projects/notes/beacon/application-boundaries.md | compiled truth | R4 architecture |
 | delivery-orchestrator | support_advisory | packages/beacon-loop/src/delivery/orchestrator.ts; state.ts; eval-chain.ts; truth-fill.ts; review.ts; review-gate.ts | implemented | qa |
 | intent-capture | support_advisory | packages/beacon-loop/src/intent/capture.ts; classify.ts; rules.ts; tiebreak.ts | implemented | qa |
 | runner-delivery-integration | support_advisory | packages/beacon-loop/src/runner/run.ts | implemented | qa |
@@ -43,6 +47,8 @@
 - **R2 QA closure**：QA artifact `run-20260610T192844576131`；acceptance envelope `qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json`；matrix 12 AC（AC-031..042）；reconciliation gate cleared（R2 writeback 后 `required=false`）。
 - **R2 test-contract closure**：`beacon doctor build-test-contract-index` 重建 index（9→12 TC，含 TC-042..044）；`verify-test-contract-index --strict` 产物归档。
 - **R2 release-facing closure**：`beacon release check v1.6.0` 产物；`beacon gate release` → `.beacon/release-gate-report.json`；`beacon release create v1.6.0` → `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`。
+- **R3 implement closure**：Phase J AC-043..052；`beacon-loop` harness worker + output-schema + truth-promotion；QA 22/22；R3 frozen。
+- **R4 accepted pivot**（2026-06-11）：drill 证明模板 truth_fill 语义空洞 + `--output-schema` CLI gap；主实现迁至 `packages/beacon-run`（gnhf fork）；全迭代 agent + Beacon phase prompt；AC-053..060 + Phase K tasks。
 
 ## Implementation Candidate Evidence
 

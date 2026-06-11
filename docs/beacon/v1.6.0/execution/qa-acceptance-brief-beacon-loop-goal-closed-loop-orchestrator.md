@@ -2,9 +2,9 @@
 
 - version: `v1.6.0`
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
-- revision_id: `R3`
+- revision_id: `R4`
 - verdict: `passed`
-- accepted_at: `2026-06-10T16:50:46.191288+00:00`
+- accepted_at: `2026-06-11T02:19:54.801319+00:00`
 - accepted_by: `qa`
 
 ## Summary
@@ -30,7 +30,7 @@
 - `.beacon/release-gate-report.json`
 
 ## Verdict Summary
-- required_ac_count: `0`
+- required_ac_count: `7`
 - required_test_count: `0`
 - story_status: `implemented`
 - revision_delivery_status: `implemented`

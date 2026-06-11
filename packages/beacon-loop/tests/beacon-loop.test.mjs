@@ -55,7 +55,11 @@ test.after(() => {
 });
 
 function run(args, options = {}) {
-  return spawnSync("node", [cli, ...args], {
+  const argv = [...args];
+  if (argv[0] === "goal" && !argv.includes("--legacy-delivery")) {
+    argv.push("--legacy-delivery");
+  }
+  return spawnSync("node", [cli, ...argv], {
     cwd: options.cwd || root,
     env: { ...process.env, ...(options.env || {}) },
     encoding: "utf8"

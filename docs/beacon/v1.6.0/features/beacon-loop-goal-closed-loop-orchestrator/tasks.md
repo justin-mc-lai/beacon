@@ -57,6 +57,18 @@
 - [x] TASK-078 真 implement runner E2E opt-in（AC-051 / TC-053）。
 - [x] TASK-079 测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。
 
+## Phase K — R4 beacon-run gnhf fork + agent truth（AC-053..AC-060）
+
+- [x] TASK-080 fork `packages/gnhf` → `packages/beacon-run`；package/bin 重命名；保留 gnhf 测试基线。
+- [x] TASK-081 实现 `beacon-phase-prompt` 模块：注入 Beacon 阶段 + skill boundary digest；落盘 `beacon-phase.json`（AC-054）。
+- [x] TASK-082 truth phase：默认 agent iteration 路径；`--truth-bootstrap=fallback` 回退模板链（AC-055、AC-056）。
+- [x] TASK-083 迭代间 harness checkpoint + `truth-promotion.json` 扩展 phase 字段（AC-057）。
+- [x] TASK-084 `beacon-loop goal` 薄委托 `beacon-run` + deprecated 文档（AC-058）。
+- [x] TASK-085 Core：`beacon implement run --output-schema` 与 branch preflight doctor 消息（AC-059）。
+- [x] TASK-086 drill E2E `e2e-gum-drill` opt-in（AC-060 / TC-062）。
+- [x] TASK-087 R4 refreeze（`beacon change --refreeze-chain` complete，R3→R4）。
+- [x] TASK-088 Phase K implement + `beacon-eval-qa` 验收 AC-053..060。
+
 ## 边界
 
 - 任务台账不是 implementation completion。

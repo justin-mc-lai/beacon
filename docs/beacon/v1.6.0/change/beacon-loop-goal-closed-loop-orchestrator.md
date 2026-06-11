@@ -41,6 +41,22 @@ Planner review 与 prior 对话已判定：把 plan 意图直接落成 MVP 骨�
 
 实现依赖 parent Phase A-D 能力；本 feature Phase E-H 在 parent 之上叠加。
 
+## R4 Revision（2026-06-11）
+
+- **change_reason**: `R4-pivot-beacon-run-gnhf-agent-orchestration`
+- **user_decision**: accepted
+- **drill evidence**: 模板 truth_fill 过 gate 但语义空洞；需 gnhf 全迭代 agent + prompt 内 Beacon 生命周期编排
+
+| 决策 | R3（beacon-loop） | R4（beacon-run） |
+|------|-------------------|------------------|
+| 主实现包 | `packages/beacon-loop` delivery FSM | `packages/beacon-run`（gnhf fork） |
+| LLM 介入 |  mainly implement_loop | **每轮 iteration**（truth + generate + repair） |
+| truth 冷启动 | 默认 prd-bootstrap 模板链 | 默认 **agent truth phase**；模板仅 fallback |
+| R3 代码 | 继续开发 | 冻结备份 `beacon-loop.r3-backup-20260610` |
+| CLI 主入口 | `beacon-loop goal` | `beacon-run run`（loop 委托 deprecated） |
+
+新增 AC-053..AC-060；Phase K tasks TASK-080..087。
+
 ## R2 Revision（2026-06-10）
 
 - **change_reason**: D-010 默认 LLM intent tie-break + green-light 非打断；撤销 D-009/D-011 accepted defer

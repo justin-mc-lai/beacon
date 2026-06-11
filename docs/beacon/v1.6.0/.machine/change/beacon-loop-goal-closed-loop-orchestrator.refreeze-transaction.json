@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "transaction_id": "tx-change-refreeze-beacon-loop-goal-closed-loop-orchestrator-20260610t151149z",
+  "transaction_id": "tx-change-refreeze-beacon-loop-goal-closed-loop-orchestrator-20260611t010112z",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "change_reason": "change-request",
+  "change_reason": "R4: pivot to beacon-run gnhf agent orchestration; deprecate template truth_fill default",
   "touched_surfaces": [
     "change",
     "truth",
@@ -73,15 +73,15 @@
   },
   "truth_revision_before": {
     "revision_id": "R3",
-    "doc_status": "draft",
-    "lifecycle_status": "idle",
-    "baseline_hash": ""
+    "doc_status": "frozen",
+    "lifecycle_status": "accepted",
+    "baseline_hash": "sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5"
   },
   "truth_revision_after": {
-    "revision_id": "R3",
+    "revision_id": "R4",
     "doc_status": "frozen",
     "lifecycle_status": "frozen",
-    "baseline_hash": "sha256:80172dfe2238c7a5b5bd4475899dd98a7af8e2d2b246346e9e1782642a0cd3c1"
+    "baseline_hash": "sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5"
   },
   "refreeze_status": "complete",
   "next_route": {
@@ -95,21 +95,21 @@
     "qa_executed": false,
     "release_executed": false
   },
-  "created_at": "2026-06-10T15:11:49.832151+00:00",
+  "created_at": "2026-06-11T01:01:12.406528+00:00",
   "previous_revision": {
-    "revision_id": "R2",
+    "revision_id": "R3",
     "doc_status": "superseded",
     "lifecycle_status": "superseded",
-    "baseline_hash": ""
+    "baseline_hash": "sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5"
   },
   "opened_revision": {
-    "revision_id": "R3",
+    "revision_id": "R4",
     "doc_status": "draft",
-    "lifecycle_status": "idle",
+    "lifecycle_status": "draft",
     "baseline_hash": ""
   },
   "story_reopen": {
-    "current_revision_id": "R3",
+    "current_revision_id": "R4",
     "lifecycle_status": "draft"
   },
   "requirement_package": {
@@ -154,10 +154,10 @@
         "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
       },
       "source_hashes": {
-        "truth": "41031f0d6d29c59210062fbf40b9ef192435bca9d0f3a925a6a98fa23b776614",
-        "tests": "1f99a6f04266cf1649491dafd9d5da9261314451465d68de68838dbe9fd8bc01",
-        "tasks": "6a4d69829b28dbedf6c6928f09d8e7b7e1189208ec9ffb85c2f1c31bdb63429d",
-        "evidence": "420c8d7d7d437b6480494a359f5acf2e7be25b73a7b14b14456146b1eedcb166"
+        "truth": "537963f5edc775805ae8c9721accd1664dbf63dad3fd547a012d0f5780482c0f",
+        "tests": "bd9584fb2a3e3029a3a5dbb748eaa8d5f2fedbea36df37a8b2cafdbffac7bdb5",
+        "tasks": "4b56a3a46bd89dcbdf2db94692f7f193c29f3b4f5bc00bc11a474b0457914537",
+        "evidence": "6cfff0a2f7131f15677e7ea77460bfea996e81dca6a91cafb1dbff8f6b0ae765"
       },
       "plan": {
         "schema_version": "1.0",
@@ -211,10 +211,18 @@
       "path": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json",
       "feature": "beacon-loop-goal-closed-loop-orchestrator",
       "version": "v1.6.0",
-      "revision_id": "R3",
-      "ac_count": 29,
-      "test_count": 29,
+      "revision_id": "R4",
+      "ac_count": 37,
+      "test_count": 37,
       "story_ids": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -277,7 +285,7 @@
         "review_gates": [],
         "qa_coverage_hints": [],
         "evidence_lines": {},
-        "generated_at": "2026-06-10T15:11:53.014952+00:00",
+        "generated_at": "2026-06-11T01:01:15.696373+00:00",
         "feature": "beacon-loop-goal-closed-loop-orchestrator",
         "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
         "prd_ref": "docs/beacon/v1.6.0/prd/beacon-loop-goal-closed-loop-orchestrator.md",
@@ -358,7 +366,15 @@
             "AC-049",
             "AC-050",
             "AC-051",
-            "AC-052"
+            "AC-052",
+            "AC-053",
+            "AC-054",
+            "AC-055",
+            "AC-056",
+            "AC-057",
+            "AC-058",
+            "AC-059",
+            "AC-060"
           ],
           "user_story_ac_ids": [
             "AC-001",
@@ -392,7 +408,15 @@
             "AC-049",
             "AC-050",
             "AC-051",
-            "AC-052"
+            "AC-052",
+            "AC-053",
+            "AC-054",
+            "AC-055",
+            "AC-056",
+            "AC-057",
+            "AC-058",
+            "AC-059",
+            "AC-060"
           ],
           "test_case_ac_ids": [
             "AC-001",
@@ -426,7 +450,15 @@
             "AC-049",
             "AC-050",
             "AC-051",
-            "AC-052"
+            "AC-052",
+            "AC-053",
+            "AC-054",
+            "AC-055",
+            "AC-056",
+            "AC-057",
+            "AC-058",
+            "AC-059",
+            "AC-060"
           ],
           "upstream_ac_ids": [
             "AC-001",
@@ -460,7 +492,15 @@
             "AC-049",
             "AC-050",
             "AC-051",
-            "AC-052"
+            "AC-052",
+            "AC-053",
+            "AC-054",
+            "AC-055",
+            "AC-056",
+            "AC-057",
+            "AC-058",
+            "AC-059",
+            "AC-060"
           ],
           "missing_test_case_ac_ids": []
         }
@@ -530,7 +570,7 @@
       "finding_count": 0,
       "run_id": "",
       "source": "change.refreeze-chain",
-      "written_at": "2026-06-10T15:11:53.448044+00:00",
+      "written_at": "2026-06-11T01:01:15.978793+00:00",
       "state_path": ".beacon/state/requirement-clarity-beacon-loop-goal-closed-loop-orchestrator.json"
     }
   },
@@ -539,17 +579,18 @@
     "feature": "beacon-loop-goal-closed-loop-orchestrator",
     "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
     "version": "v1.6.0",
-    "revision_id": "R3",
-    "source_revision_id": "R2",
+    "revision_id": "R4",
+    "source_revision_id": "R3",
     "status": "ready",
     "cleanup_required": false,
     "removed_requirement_count": 0,
-    "added_requirement_count": 11,
-    "retained_requirement_count": 18,
+    "added_requirement_count": 0,
+    "retained_requirement_count": 37,
     "removed_requirement_surfaces": [],
-    "added_requirement_surfaces": [
+    "added_requirement_surfaces": [],
+    "retained_requirement_surfaces": [
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-024",
         "story_id": "",
         "kind": "ac",
@@ -560,7 +601,7 @@
         "signature": "ac::::**ac-047**::**tc-049**::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-025",
         "story_id": "",
         "kind": "ac",
@@ -571,7 +612,7 @@
         "signature": "ac::::**ac-049**::**tc-051**::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-026",
         "story_id": "",
         "kind": "ac",
@@ -582,7 +623,7 @@
         "signature": "ac::::**ac-050**::**tc-052**::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-028",
         "story_id": "",
         "kind": "ac",
@@ -593,7 +634,7 @@
         "signature": "ac::::**ac-051**::**tc-053**::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-027",
         "story_id": "",
         "kind": "ac",
@@ -604,8 +645,52 @@
         "signature": "ac::::**ac-052**::**tc-054**::"
       },
       {
-        "revision_id": "R3",
-        "id": "AC-029",
+        "revision_id": "R4",
+        "id": "AC-031",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+        "text": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**beacon phase prompt**：每轮 iteration prompt 注入当前 beacon 阶段、allowed/forbidden harness 命令、skills 职责摘要（非 subprocess 读 md）；落盘 `beacon-phase.json` + prompt 正文。::**beacon phase prompt**：每轮 iteration prompt 注入当前 beacon 阶段、allowed/forbidden harness 命令、skills 职责摘要（非 subprocess 读 md）；落盘 `beacon-phase.json` + prompt 正文。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-035",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+        "text": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**beacon-loop 降级**：`packages/beacon-loop` 冻结为 r3 参考；新 ac 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。::**beacon-loop 降级**：`packages/beacon-loop` 冻结为 r3 参考；新 ac 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-036",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+        "text": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**core cli 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 ac-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。::**core cli 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 ac-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-034",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+        "text": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。::**harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-030",
         "story_id": "",
         "kind": "ac",
         "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
@@ -615,7 +700,51 @@
         "signature": "ac::::**parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator ac-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。::**parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator ac-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
+        "id": "AC-029",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**R4 beacon-run（gnhf fork）+ 全迭代 agent + Beacon phase prompt + 非模板 truth**",
+        "text": "**AC-053..AC-060**",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**r4 beacon-run（gnhf fork）+ 全迭代 agent + beacon phase prompt + 非模板 truth**::**ac-053..ac-060**::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-032",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+        "text": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。::**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-037",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+        "text": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**真项目 drill e2e**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 beacon evaluator。::**真项目 drill e2e**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 beacon evaluator。::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-033",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+        "text": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 oss/parity 信号的 research 而非纯脚手架 ac。::**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 oss/parity 信号的 research 而非纯脚手架 ac。::"
+      },
+      {
+        "revision_id": "R4",
         "id": "AC-010",
         "story_id": "",
         "kind": "ac",
@@ -626,7 +755,7 @@
         "signature": "ac::::`beacon implement run --runner codex-subagents`::**ac-044** implement_loop worker::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-008",
         "story_id": "",
         "kind": "ac",
@@ -637,42 +766,7 @@
         "signature": "ac::::`gnhf/src/core/agents/codex.ts`::**ac-045** output-schema + strict parse::"
       },
       {
-        "revision_id": "R3",
-        "id": "AC-011",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "`project_skills.builtin_skill_registry`",
-        "text": "**AC-048** stage worker routing",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::`project_skills.builtin_skill_registry`::**ac-048** stage worker routing::"
-      },
-      {
-        "revision_id": "R3",
-        "id": "AC-007",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "`skills/gnhf/SKILL.md`",
-        "text": "**AC-043** agent surface / using-beacon",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::`skills/gnhf/skill.md`::**ac-043** agent surface / using-beacon::"
-      },
-      {
-        "revision_id": "R3",
-        "id": "AC-009",
-        "story_id": "",
-        "kind": "ac",
-        "theme": "`templates/iteration-prompt.ts`",
-        "text": "**AC-046** runner prompt template",
-        "details": [],
-        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::`templates/iteration-prompt.ts`::**ac-046** runner prompt template::"
-      }
-    ],
-    "retained_requirement_surfaces": [
-      {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-004",
         "story_id": "",
         "kind": "ac",
@@ -683,18 +777,51 @@
         "signature": "ac::::`implement_loop` 子状态复用::`implement_loop` 子状态复用::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
+        "id": "AC-011",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`project_skills.builtin_skill_registry`",
+        "text": "**AC-048** stage worker routing",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`project_skills.builtin_skill_registry`::**ac-048** stage worker routing::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-007",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`skills/gnhf/SKILL.md`",
+        "text": "**AC-043** agent surface / using-beacon",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`skills/gnhf/skill.md`::**ac-043** agent surface / using-beacon::"
+      },
+      {
+        "revision_id": "R4",
+        "id": "AC-009",
+        "story_id": "",
+        "kind": "ac",
+        "theme": "`templates/iteration-prompt.ts`",
+        "text": "**AC-046** runner prompt template",
+        "details": [],
+        "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+        "signature": "ac::::`templates/iteration-prompt.ts`::**ac-046** runner prompt template::"
+      },
+      {
+        "revision_id": "R4",
         "id": "AC-001",
         "story_id": "",
         "kind": "ac",
-        "theme": "AC-031..AC-039 delivery orchestrator",
-        "text": "AC-031..AC-039 delivery orchestrator",
+        "theme": "AC-031..AC-052 delivery + harness（R3 已完成于 beacon-loop 备份）",
+        "text": "AC-031..AC-052 delivery + harness（R3 已完成于 beacon-loop 备份）",
         "details": [],
         "source": "user-story:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-        "signature": "ac::::ac-031..ac-039 delivery orchestrator::ac-031..ac-039 delivery orchestrator::"
+        "signature": "ac::::ac-031..ac-052 delivery + harness（r3 已完成于 beacon-loop 备份）::ac-031..ac-052 delivery + harness（r3 已完成于 beacon-loop 备份）::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-012",
         "story_id": "",
         "kind": "ac",
@@ -705,7 +832,7 @@
         "signature": "ac::::ac-031::tc-031::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-013",
         "story_id": "",
         "kind": "ac",
@@ -716,7 +843,7 @@
         "signature": "ac::::ac-032::tc-032::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-014",
         "story_id": "",
         "kind": "ac",
@@ -727,7 +854,7 @@
         "signature": "ac::::ac-033::tc-033::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-015",
         "story_id": "",
         "kind": "ac",
@@ -738,7 +865,7 @@
         "signature": "ac::::ac-034::tc-034::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-016",
         "story_id": "",
         "kind": "ac",
@@ -749,7 +876,7 @@
         "signature": "ac::::ac-035::tc-035::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-017",
         "story_id": "",
         "kind": "ac",
@@ -760,7 +887,7 @@
         "signature": "ac::::ac-036::tc-036::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-018",
         "story_id": "",
         "kind": "ac",
@@ -771,7 +898,7 @@
         "signature": "ac::::ac-037::tc-037::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-019",
         "story_id": "",
         "kind": "ac",
@@ -782,7 +909,7 @@
         "signature": "ac::::ac-038::tc-038::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-020",
         "story_id": "",
         "kind": "ac",
@@ -793,7 +920,7 @@
         "signature": "ac::::ac-039::tc-039::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-022",
         "story_id": "",
         "kind": "ac",
@@ -804,7 +931,7 @@
         "signature": "ac::::ac-040::tc-042::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-021",
         "story_id": "",
         "kind": "ac",
@@ -815,7 +942,7 @@
         "signature": "ac::::ac-041::tc-043::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-023",
         "story_id": "",
         "kind": "ac",
@@ -826,7 +953,7 @@
         "signature": "ac::::ac-042::tc-044::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-005",
         "story_id": "",
         "kind": "ac",
@@ -837,7 +964,7 @@
         "signature": "ac::::delivery-state 写入同一 ledger::delivery-state 写入同一 ledger::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-002",
         "story_id": "",
         "kind": "ac",
@@ -848,7 +975,7 @@
         "signature": "ac::::保留；扩展 `--mode`::保留；扩展 `--mode`::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-006",
         "story_id": "",
         "kind": "ac",
@@ -859,7 +986,7 @@
         "signature": "ac::::扩展为 ac-039 全链 e2e::扩展为 ac-039 全链 e2e::"
       },
       {
-        "revision_id": "R3",
+        "revision_id": "R4",
         "id": "AC-003",
         "story_id": "",
         "kind": "ac",
@@ -870,10 +997,10 @@
         "signature": "ac::::扩展：blocked 时进入 truth_fill，非仅 abort::扩展：blocked 时进入 truth_fill，非仅 abort::"
       }
     ],
-    "current_baseline_hash": "sha256:80172dfe2238c7a5b5bd4475899dd98a7af8e2d2b246346e9e1782642a0cd3c1",
-    "source_baseline_hash": "sha256:645a3a1ca33fc51eb4d22c4c476ee5bac869c9aa7b003bd9c644aa94661dfc24",
+    "current_baseline_hash": "sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5",
+    "source_baseline_hash": "sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5",
     "story_state_ref": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json",
-    "generated_at": "2026-06-10T15:11:53.466201+00:00",
+    "generated_at": "2026-06-11T01:01:15.995335+00:00",
     "json_ref": "docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json",
     "markdown_ref": "docs/beacon/v1.6.0/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.md"
   },
@@ -906,8 +1033,8 @@
         "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
         "summary": "Maintains release-facing version aggregate projection guards so QA accepted features are included in version change scope before release check.",
         "status": "completed",
-        "accepted_at": "2026-06-10T11:29:31.368721+00:00",
-        "revision_id": "R3",
+        "accepted_at": "2026-06-10T16:50:46.191288+00:00",
+        "revision_id": "R4",
         "projection_role": {
           "artifact_role": "version_aggregate_projection",
           "truth_source": false,
@@ -937,7 +1064,7 @@
           "docs/beacon/v1.6.0/.machine/execution/beacon-loop-goal-closed-loop-orchestrator.revision.json",
           "docs/beacon/v1.6.0/.machine/execution/qa-acceptance-beacon-loop-goal-closed-loop-orchestrator.json"
         ],
-        "generated_at": "2026-06-10T15:11:53.475627+00:00"
+        "generated_at": "2026-06-11T01:01:16.006036+00:00"
       }
     },
     "version_aggregate_projection": {

@@ -10,6 +10,10 @@ import { diagnoseRuns, queryRuns, showRun } from "./ledger/runs.js";
 import { runtimeList, runtimeRemove, runtimeSet } from "./ledger/runtime.js";
 import { sqliteAvailable } from "./ledger/db.js";
 import { latestRunId } from "./runner/fs.js";
+import {
+  delegateGoalToBeaconRun,
+  formatDelegatePayload,
+} from "./beacon-run-delegate.js";
 import { resumeRun, startGoal, statusRun, stopRun } from "./runner/run.js";
 
 function option(args, name, fallback = "") {
@@ -66,6 +70,8 @@ Options:
   --agent <codex|claude|acp:target>
   --mode <delivery|execute-only|intent-only|review-only>
   --feature <slug>
+  --legacy-delivery     (R3 delivery FSM; default goal delegates to beacon-run)
+  --truth-bootstrap <agent|fallback>
   --strict-interrupt
   --ask-on <P0,P1,...>   (deprecated; use with --strict-interrupt)
   --auto-decide deferrals (deprecated)
@@ -135,6 +141,44 @@ if (command === "goal") {
   if (!goal) {
     console.error("goal is required");
     process.exit(2);
+  }
+  if (!flag(args, "--legacy-delivery")) {
+    const resolvedForDelegate = resolveGoalOptions(projectRoot, args, {
+      version: option(args, "--version", "auto"),
+      feature: option(args, "--feature", ""),
+      maxIterations: option(args, "--max-iterations", "8"),
+      maxTokens: option(args, "--max-tokens", "0"),
+      stopWhen: option(args, "--stop-when", ""),
+      agent: option(args, "--agent", "codex"),
+      implementRunner: option(args, "--implement-runner", ""),
+      branchMode: option(args, "--branch-mode", "worktree"),
+      isolatedWorktree: flag(args, "--isolated-worktree"),
+      dryRun: flag(args, "--dry-run"),
+    });
+    const delegate = delegateGoalToBeaconRun(projectRoot, goal, {
+      version: resolvedForDelegate.version,
+      feature: resolvedForDelegate.feature,
+      agent: resolvedForDelegate.agent,
+      maxIterations: resolvedForDelegate.maxIterations,
+      maxTokens: resolvedForDelegate.maxTokens,
+      stopWhen: resolvedForDelegate.stopWhen,
+      branchMode: resolvedForDelegate.branchMode,
+      isolatedWorktree: resolvedForDelegate.isolatedWorktree,
+      truthBootstrap: option(args, "--truth-bootstrap", "agent"),
+      implementRunner: resolvedForDelegate.implementRunner,
+      dryRun: resolvedForDelegate.dryRun,
+    });
+    const payload = formatDelegatePayload(goal, delegate);
+    emit(payload, jsonOutput);
+    const exitCode =
+      delegate.status === "blocked"
+        ? 2
+        : delegate.status === "dry_run"
+          ? 0
+          : delegate.exit_code === 0
+            ? 0
+            : 1;
+    process.exit(exitCode);
   }
   const resolved = resolveGoalOptions(projectRoot, args, {
     version: option(args, "--version", "auto"),

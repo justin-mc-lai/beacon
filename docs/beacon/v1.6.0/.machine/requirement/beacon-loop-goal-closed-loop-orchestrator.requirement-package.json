@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-10T16:38:25.966999+00:00",
+  "generated_at": "2026-06-11T02:40:39.758968+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,10 +18,10 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "ca8731254a1d75231b34a679433c3d8615333128c64711bc126680eb8191edbc",
-    "tests": "636d6a0b06af3e03ff8751e4499066a70453b6f3fd1e90c0d846f3256e66050e",
-    "tasks": "981472bf96a7052e87153057230166c93cb298c8f04f779120d5afbd0addadb8",
-    "evidence": "420c8d7d7d437b6480494a359f5acf2e7be25b73a7b14b14456146b1eedcb166"
+    "truth": "537963f5edc775805ae8c9721accd1664dbf63dad3fd547a012d0f5780482c0f",
+    "tests": "bd9584fb2a3e3029a3a5dbb748eaa8d5f2fedbea36df37a8b2cafdbffac7bdb5",
+    "tasks": "677a691a3d1d1b2480fa1204a8121b716efe1a8818e335bacbda22a2b05b449f",
+    "evidence": "3aa2883a48d05d5a99ebd5018ed892acc5b4f7c565f8da7ca710dbda27b78734"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
@@ -153,6 +153,46 @@
     {
       "ac_id": "AC-052",
       "theme": "**`beacon-loop doctor`** 检查 implement runner 可用性、Codex、`output-schema` 路径；`--diagnose` 给出 repair route。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-053",
+      "theme": "**`packages/beacon-run`** 自 `packages/gnhf` fork，保留 gnhf `Orchestrator` + `createAgent`（codex/claude/opencode/acp）；CLI `beacon-run run` 为 R4 主入口。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-054",
+      "theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-055",
+      "theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-056",
+      "theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-057",
+      "theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-058",
+      "theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-059",
+      "theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-060",
+      "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
       "description": ""
     }
   ],
@@ -331,6 +371,70 @@
       "layer": "integration",
       "command": "`cd packages/beacon-loop && node dist/cli.js doctor --project .. --diagnose --json`",
       "assertion": "doctor 报告 implement runner / codex / schema 分桶与 repair route。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-053",
+      "tc_id": "TC-055",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"orchestrator\"`",
+      "assertion": "`packages/beacon-run` 自 gnhf fork；`createAgent` 支持 codex/claude/opencode；CLI `beacon-run run` 存在。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-054",
+      "tc_id": "TC-056",
+      "layer": "behavior",
+      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"beacon-phase-prompt\"`",
+      "assertion": "iteration prompt 含 Beacon phase、skill boundary digest、`beacon-phase.json` 落盘；无 subprocess Skill MD。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-055",
+      "tc_id": "TC-057",
+      "layer": "integration",
+      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"truth-phase-agent\"`",
+      "assertion": "truth phase 使用 agent adapter（非仅 harness 模板）；mock agent 记录 phase=truth。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-056",
+      "tc_id": "TC-058",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"no-default-template-truth\"`",
+      "assertion": "默认配置不调用 `prd-bootstrap`；仅 `--truth-bootstrap=fallback` 启用模板链。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-057",
+      "tc_id": "TC-059",
+      "layer": "contract",
+      "command": "`cd packages/beacon-run && pnpm test -- --test-name-pattern \"harness-checkpoint\"`",
+      "assertion": "迭代间 harness 调用写入 `truth-promotion.json`（phase、command、exit_code）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-058",
+      "tc_id": "TC-060",
+      "layer": "regression",
+      "command": "`cd packages/beacon-loop.r3-backup-20260610 && npm test`",
+      "assertion": "R3 备份测试仍 pass；新开发不在 `packages/beacon-loop` 增 AC。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-059",
+      "tc_id": "TC-061",
+      "layer": "integration",
+      "command": "`beacon implement run --help`",
+      "assertion": "CLI 暴露 `--output-schema`；与 beacon-run adapter 契约一致。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-060",
+      "tc_id": "TC-062",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-run && BEACON_RUN_E2E_DRILL=1 pnpm test -- --test-name-pattern \"e2e-gum-drill\"`",
+      "assertion": "drill repo utterance：truth agent iteration + ≥1 commit + qa invoke；verdict 来自 beacon。",
       "evidence_path": ""
     }
   ],
@@ -529,6 +633,51 @@
       "id": "TASK-079",
       "title": "测试 TC-045..TC-054；`beacon change … --refreeze-chain` 冻结 R3 truth package。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-080",
+      "title": "fork `packages/gnhf` → `packages/beacon-run`；package/bin 重命名；保留 gnhf 测试基线。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-081",
+      "title": "实现 `beacon-phase-prompt` 模块：注入 Beacon 阶段 + skill boundary digest；落盘 `beacon-phase.json`（AC-054）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-082",
+      "title": "truth phase：默认 agent iteration 路径；`--truth-bootstrap=fallback` 回退模板链（AC-055、AC-056）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-083",
+      "title": "迭代间 harness checkpoint + `truth-promotion.json` 扩展 phase 字段（AC-057）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-084",
+      "title": "`beacon-loop goal` 薄委托 `beacon-run` + deprecated 文档（AC-058）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-085",
+      "title": "Core：`beacon implement run --output-schema` 与 branch preflight doctor 消息（AC-059）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-086",
+      "title": "drill E2E `e2e-gum-drill` opt-in（AC-060 / TC-062）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-087",
+      "title": "R4 refreeze（`beacon change --refreeze-chain` complete，R3→R4）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-088",
+      "title": "Phase K implement + `beacon-eval-qa` 验收 AC-053..060。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -558,7 +707,7 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "**frozen R2**",
+      "status": "**frozen R4**",
       "route": "implement"
     },
     {
@@ -607,8 +756,36 @@
       "surface": "parent-implementation",
       "authority": "support_advisory",
       "canonical_artifact": "packages/beacon-loop/",
-      "status": "extended",
+      "status": "extended R3",
       "route": "qa"
+    },
+    {
+      "surface": "gnhf-work-copy",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/gnhf/",
+      "status": "cloned fe202c4",
+      "route": "R4 fork"
+    },
+    {
+      "surface": "r3-backup",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop.r3-backup-20260610/",
+      "status": "frozen snapshot",
+      "route": "R4 reference"
+    },
+    {
+      "surface": "drill-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "/private/tmp/beacon-loop-drill run-20260610214545-infh8c",
+      "status": "template-truth + implement blocked",
+      "route": "R4 pivot"
+    },
+    {
+      "surface": "application-boundaries",
+      "authority": "support_advisory",
+      "canonical_artifact": "personal-brain/projects/notes/beacon/application-boundaries.md",
+      "status": "compiled truth",
+      "route": "R4 architecture"
     },
     {
       "surface": "delivery-orchestrator",

@@ -2,10 +2,10 @@
 
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- revision_id: `R3`
+- revision_id: `R4`
 - review_status: `approved`
-- approved_by: `beacon-gen-implement`
-- reviewed_at: `2026-06-10T16:46:38.419499+00:00`
+- approved_by: `beacon-release-gate`
+- reviewed_at: `2026-06-11T02:42:00Z`
 
 ## Git
 - base_branch: `main`
@@ -42,5 +42,5 @@
 - `trivial_task_exception`: trivial task 可以轻量处理，但不能越界
 
 ## Notes
-- `Delivery orchestrator extends packages/beacon-loop only; parent runner remains frozen.`
-- `Loop must not write package truth or formal QA/release verdicts.`
+- `This draft contract must be reviewed and approved before formal implementation.`
+- `Fill approved_by/reviewed_at and update review_status to approved or accepted.`
