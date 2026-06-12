@@ -9,14 +9,14 @@
 
 ## 1. 当前版本是什么
 
-Beacon 当前运行时发布口径是 **v1.5.2**。
+Beacon 当前运行时发布口径是 **v1.6.0**。
 
-> 当前发布线：`v1.5.2`
+> 当前发布线：`v1.6.0`
 
 - **CLI 入口**：`beacon <subcommand>`
 - **标准 skill 包**：`skills/beacon/`
-- **当前包版本**：`1.5.2`
-- **最新已接受文档线**：`v1.5.2`
+- **当前包版本**：`1.6.0`
+- **最新已接受文档线**：`v1.6.0`
 - **文档主源**：`docs/beacon/<version>/`
 - **状态目录**：`.beacon/`
 
@@ -25,12 +25,12 @@ Beacon 当前运行时发布口径是 **v1.5.2**。
 - `docs/beacon/` 是唯一维护的信息源
 - `.beacon/` 是运行时状态，不替代正式交付文档
 - 新生成的 AGENTS / CLAUDE managed block 也遵循以上口径
-- 当前发布请优先以 `docs/beacon/v1.5.2/` 为准
-- 当前架构、命令与 release 说明统一以 `docs/beacon/v1.5.2/` 为准
+- 当前发布请优先以 `docs/beacon/v1.6.0/` 为准
+- 当前架构、命令与 release 说明统一以 `docs/beacon/v1.6.0/` 为准
 
 如果你只记一条：
 
-> **Beacon 现在是 v1.5.2，写文档看 `docs/beacon/v1.5.2/`，执行命令用 `beacon <subcommand>`。**
+> **Beacon 现在是 v1.6.0，写文档看 `docs/beacon/v1.6.0/`，执行命令用 `beacon <subcommand>`。**
 
 ---
 
@@ -52,24 +52,23 @@ Beacon 当前运行时发布口径是 **v1.5.2**。
 - 在 core surface 中公开 team / Ralph / bridge 细节
 - 把外部 skill runner 当作默认 onboarding 路径
 
-### v1.5.2 为什么重要
+### v1.6.0 为什么重要
 
-`v1.5.2` 完成了 **truth-source cutover（真相源切换）**，把 Beacon 的正式生产与消费口径统一到 feature-package：
+`v1.6.0` 在 v1.5.2 feature-package 真相源之上，完成 **harness-first skill taxonomy** 与 **beacon-loop → beacon-run 闭环** 的运行时升级：
 
-- 正式真相源切换为 `truth-map resolver -> features/<slug>/{truth,tests,tasks,evidence}.md`
-- 旧的 `prd/`、`user-story/`、`qa/test-cases/` 不再是规范真相面，仅作为 `doctor` rebuild 与 `change` absorb 的工件
-- 生成的 JSON 一律是 generated state，不再是必需的 truth twin
-- material audit、gate、QA、release、status 统一消费 resolver / package 真相
-- resolver policy 对 v1.5.2+ 报告 `feature_package_authoritative`
+- 公开 skill 面收敛为 planner / generator / evaluator / governor harness taxonomy（`skills/beacon/`）
+- `beacon-loop goal` 默认 delegate 到 `beacon-run`，支持 worktree + Beacon lifecycle phase harness
+- `beacon-pln-review`、native Go/minimal_smoke QA evidence、release harness 与 repair routing 对齐 v1.6.0 回归夹具
+- material audit、gate、QA、release、status 继续消费 resolver / package 真相（`feature_package_authoritative`）
 
 当前推荐阅读顺序：
 
-- `docs/beacon/v1.5.2/SUMMARY.md`
-- `docs/beacon/v1.5.2/execution/index.md`
-- `docs/beacon/v1.5.2/execution/architecture-blueprint.md`
-- `docs/beacon/v1.5.2/execution/project-skill-qa-evolution-blueprint.md`
-- `docs/beacon/v1.5.2/execution/boundaries.md`
-- `docs/beacon/v1.5.2/release/v1.5.2.md`
+- `docs/beacon/v1.6.0/SUMMARY.md`
+- `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
+- `docs/beacon/v1.6.0/execution/project-skill-qa-evolution-blueprint.md`
+- `docs/beacon/v1.6.0/execution/boundaries.md`
+- `docs/beacon/v1.6.0/release/v1.6.0.md`
 
 ---
 
@@ -175,15 +174,15 @@ beacon <subcommand> ...
 
 ### Quick Start / 30-second path
 
-如果你只想用最短路径快速跑通 Beacon v1.5.2，先执行：
+如果你只想用最短路径快速跑通 Beacon v1.6.0，先执行：
 
 ```bash
-beacon help --project-root . --version v1.5.2 --feature "<feature>" --json
-beacon prd bootstrap "<feature>" --project-root . --version v1.5.2 --dry-run --json
-beacon implement plan "<feature>" --project . --version v1.5.2 --json
-beacon qa run "<feature>" --project . --version v1.5.2 --json
-beacon gate check release --project-root . --version v1.5.2 --json
-beacon release check v1.5.2 --project .
+beacon help --project-root . --version v1.6.0 --feature "<feature>" --json
+beacon prd bootstrap "<feature>" --project-root . --version v1.6.0 --dry-run --json
+beacon implement plan "<feature>" --project . --version v1.6.0 --json
+beacon qa run "<feature>" --project . --version v1.6.0 --json
+beacon gate check release --project-root . --version v1.6.0 --json
+beacon release check v1.6.0 --project .
 ```
 
 ### Automation Scaffold
@@ -208,8 +207,8 @@ beacon automation validate-queue --project-root .
 以下入口仍保留给兼容性与文档示例使用：
 
 ```bash
-beacon workflow start "<feature>" --version v1.5.2 --project-root .
-beacon think start "<feature>" --project-root . --version v1.5.2
+beacon workflow start "<feature>" --version v1.6.0 --project-root .
+beacon think start "<feature>" --project-root . --version v1.6.0
 beacon ask "请生成用户故事并给出验收标准" --project-root . --json
 ```
 
@@ -218,27 +217,27 @@ beacon ask "请生成用户故事并给出验收标准" --project-root . --json
 用 doctor 托管 Codex HUD，而不是手工改散落配置：
 
 ```bash
-beacon doctor setup-codex-hud-hook --project-root . --version v1.5.2 --apply --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.5.2 --json
-printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.5.2"}' \
-  | beacon debug codex-fixed-hud --project-root . --version v1.5.2 --json
+beacon doctor setup-codex-hud-hook --project-root . --version v1.6.0 --apply --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.6.0"}' \
+  | beacon debug codex-fixed-hud --project-root . --version v1.6.0 --json
 ```
 
 ### Command Docs / 命令文档入口
 
-- `docs/beacon/v1.5.2/SUMMARY.md`
-- `docs/beacon/v1.5.2/execution/index.md`
-- `docs/beacon/v1.5.2/execution/architecture-blueprint.md`
-- `docs/beacon/v1.5.2/execution/project-skill-qa-evolution-blueprint.md`
-- `docs/beacon/v1.5.2/execution/boundaries.md`
-- `docs/beacon/v1.5.2/release/checklist-v1.5.2.md`
+- `docs/beacon/v1.6.0/SUMMARY.md`
+- `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
+- `docs/beacon/v1.6.0/execution/project-skill-qa-evolution-blueprint.md`
+- `docs/beacon/v1.6.0/execution/boundaries.md`
+- `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`
 
 ### Support Skill Docs / Support Skill 文档入口
 
 如果你要看 `beacon-ceo-review`、`beacon-context-engineering`、`beacon-source-driven`、`beacon-doubt-review`、`beacon-security-review`、`beacon-performance-review`、`beacon-documentation-adr`、`beacon-debug-recovery` 的调用方式与推荐 prompt，从 v1.5.x 起 support skill 的调用指引随包内 `SKILL.md` 走，直接看：
 
 - `skills/beacon/<skill-name>/SKILL.md`
-- `docs/beacon/v1.5.2/execution/project-skill-qa-evolution-blueprint.md`
+- `docs/beacon/v1.6.0/execution/project-skill-qa-evolution-blueprint.md`
 
 ---
 
@@ -246,13 +245,13 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 
 当前 release line 的正式工件：
 
-- `docs/beacon/v1.5.2/SUMMARY.md`
-- `docs/beacon/v1.5.2/features/<slug>/{truth,tests,tasks,evidence}.md`（cutover 后规范真相源）
-- `docs/beacon/v1.5.2/execution/`
-- `docs/beacon/v1.5.2/release/checklist-v1.5.2.md`
-- `docs/beacon/v1.5.2/release/v1.5.2.md`
+- `docs/beacon/v1.6.0/SUMMARY.md`
+- `docs/beacon/v1.6.0/features/<slug>/{truth,tests,tasks,evidence}.md`（cutover 后规范真相源）
+- `docs/beacon/v1.6.0/execution/`
+- `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`
+- `docs/beacon/v1.6.0/release/v1.6.0.md`
 
-> 注：`prd/`、`user-story/`、`qa/test-cases/` 自 v1.5.2 起降级为 `doctor` rebuild / `change` absorb 工件，不再是规范真相面。
+> 注：`prd/`、`user-story/`、`qa/test-cases/` 自 v1.6.0 起降级为 `doctor` rebuild / `change` absorb 工件，不再是规范真相面。
 
 当前 HUD/doctor 相关状态输出：
 
@@ -305,13 +304,13 @@ beacon automation update-queue --project-root .
 
 ```bash
 beacon doctor verify-context --project-root . --strict --json
-beacon doctor verify-materials --project-root . --version v1.5.2 --json
-beacon doctor setup-codex-hud-hook --project-root . --version v1.5.2 --apply --json
-beacon doctor verify-codex-hud-hook --project-root . --version v1.5.2 --json
-beacon gate check release --project-root . --version v1.5.2 --json
-beacon release check v1.5.2 --project . --json
-printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.5.2"}' \
-  | beacon debug codex-fixed-hud --project-root . --version v1.5.2 --json
+beacon doctor verify-materials --project-root . --version v1.6.0 --json
+beacon doctor setup-codex-hud-hook --project-root . --version v1.6.0 --apply --json
+beacon doctor verify-codex-hud-hook --project-root . --version v1.6.0 --json
+beacon gate check release --project-root . --version v1.6.0 --json
+beacon release check v1.6.0 --project . --json
+printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon v1.6.0"}' \
+  | beacon debug codex-fixed-hud --project-root . --version v1.6.0 --json
 ```
 
 ---
@@ -325,30 +324,30 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 - Codex/Claude 安装说明必须明确唯一技能根，并显式避免重复安装到 `~/.codex/skills/beacon`。
 - 后续新增 host-visible skill 时，必须同步写明它是 host skill 还是 CLI 子命令，避免出现 `beacon-change` / `beacon change` 这类误读。
 
-## 7. 当前运行线：v1.5.2
+## 7. 当前运行线：v1.6.0
 
-`v1.5.2` 已经是 Beacon 当前的 runtime 发布线。
+`v1.6.0` 已经是 Beacon 当前的 runtime 发布线。
 
-这一线当前应以 `docs/beacon/v1.5.2/` 下的正式工件为准，重点包括：
+这一线当前应以 `docs/beacon/v1.6.0/` 下的正式工件为准，重点包括：
 
 - current runtime truth:
-  - `beacon/version-truth.json`、`beacon/__init__.py`、`pyproject.toml` 统一提升到 `v1.5.2`
+  - `beacon/version-truth.json`、`beacon/__init__.py`、`pyproject.toml` 统一提升到 `v1.6.0`
 - current delivery tree:
-  - 当前 requirement / execution / release 正式工件统一以 `docs/beacon/v1.5.2/` 为准
+  - 当前 requirement / execution / release 正式工件统一以 `docs/beacon/v1.6.0/` 为准
 - current release governance:
-  - `release scorecard`、`gate check release`、`release check` 已对齐 `v1.5.2`
+  - `release scorecard`、`gate check release`、`release check` 已对齐 `v1.6.0`
 - current branch contract:
-  - `project-version-metadata` 当前 canonical branch 已对齐 `beacon/v1.5.2`
+  - `project-version-metadata` 当前 canonical branch 已对齐 `pre-main`
 
-建议把 `v1.5.2` 作为当前架构与交付口径阅读：
+建议把 `v1.6.0` 作为当前架构与交付口径阅读：
 
-- `docs/beacon/v1.5.2/SUMMARY.md`
-- `docs/beacon/v1.5.2/execution/index.md`
-- `docs/beacon/v1.5.2/execution/architecture-blueprint.md`
-- `docs/beacon/v1.5.2/execution/boundaries.md`
-- `docs/beacon/v1.5.2/features/<slug>/{truth,tests,tasks,evidence}.md`（v1.5.2 规范真相源）
-- `docs/beacon/v1.5.2/release/checklist-v1.5.2.md`
+- `docs/beacon/v1.6.0/SUMMARY.md`
+- `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
+- `docs/beacon/v1.6.0/execution/boundaries.md`
+- `docs/beacon/v1.6.0/features/<slug>/{truth,tests,tasks,evidence}.md`（v1.6.0 规范真相源）
+- `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`
 
 ---
 
-**版本**: v1.5.2
+**版本**: v1.6.0
