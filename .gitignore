@@ -1,5 +1,5 @@
 # BEACON:GITIGNORE:START
-# BEACON:GITIGNORE:VERSION:v1.4.11
+# BEACON:GITIGNORE:VERSION:v1.5.2
 # Local orchestration scratch state
 .omx/
 .omc/
@@ -27,9 +27,6 @@
 
 # Timestamped transient change-impact snapshots
 .beacon/state/change-impact/run-20*.json
-
-# Timestamped lifecycle hook run artifacts (latest.json stays tracked under docs/beacon)
-.beacon/state/hooks/**/run-*.json
 
 # Timestamped transient rolling baselines/spec fingerprints
 .beacon/state/baselines/v*/bl-run-20*.json
@@ -64,10 +61,11 @@
 
 # Local temp scratch
 .tmp/
-packages/beacon-loop/.test-tmp/
 
 # Python cache noise
 __pycache__/
 *.py[cod]
 # BEACON:GITIGNORE:END
+
+
 .understand-anything/
