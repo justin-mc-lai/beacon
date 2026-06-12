@@ -6,6 +6,7 @@
 
 ## Execution Surfaces
 
+- `execution/beacon-loop-usage.md`
 - `execution/boundaries.md`
 - `execution/project-skill-qa-evolution-blueprint.md`
 - `execution/architecture-blueprint.md`

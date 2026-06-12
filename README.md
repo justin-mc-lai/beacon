@@ -65,6 +65,7 @@ Beacon 当前运行时发布口径是 **v1.6.0**。
 
 - `docs/beacon/v1.6.0/SUMMARY.md`
 - `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/beacon-loop-usage.md`
 - `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
 - `docs/beacon/v1.6.0/execution/project-skill-qa-evolution-blueprint.md`
 - `docs/beacon/v1.6.0/execution/boundaries.md`
@@ -172,6 +173,18 @@ beacon doctor verify-agent-surface --project-root . --agent windsurf --strict
 beacon <subcommand> ...
 ```
 
+### beacon-loop（长循环入口）
+
+v1.6.0 默认用 `beacon-loop goal` 委托 `beacon-run` 跑 truth → generate → qa → release。完整说明见 `docs/beacon/v1.6.0/execution/beacon-loop-usage.md`。
+
+```bash
+npm --prefix packages/beacon-loop run build
+npm --prefix packages/beacon-run run build
+
+beacon-loop doctor --project .
+beacon-loop goal "<目标>" --project . --version v1.6.0 --feature "<slug>" --dry-run --json
+```
+
 ### Quick Start / 30-second path
 
 如果你只想用最短路径快速跑通 Beacon v1.6.0，先执行：
@@ -227,6 +240,7 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 
 - `docs/beacon/v1.6.0/SUMMARY.md`
 - `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/beacon-loop-usage.md`
 - `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
 - `docs/beacon/v1.6.0/execution/project-skill-qa-evolution-blueprint.md`
 - `docs/beacon/v1.6.0/execution/boundaries.md`
@@ -343,6 +357,7 @@ printf '%s' '{"hook_event_name":"UserPromptSubmit","prompt":"继续推进 Beacon
 
 - `docs/beacon/v1.6.0/SUMMARY.md`
 - `docs/beacon/v1.6.0/execution/index.md`
+- `docs/beacon/v1.6.0/execution/beacon-loop-usage.md`
 - `docs/beacon/v1.6.0/execution/architecture-blueprint.md`
 - `docs/beacon/v1.6.0/execution/boundaries.md`
 - `docs/beacon/v1.6.0/features/<slug>/{truth,tests,tasks,evidence}.md`（v1.6.0 规范真相源）
