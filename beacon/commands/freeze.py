@@ -14,6 +14,7 @@ from beacon.utils.requirement_clarity import (
     write_requirement_clarity_writeback,
 )
 from beacon.utils.material_sync import sync_change_loop_requirement_package
+from beacon.utils.feature_package import sync_truth_frontmatter_status
 from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state
 from beacon.utils.story_state import freeze_story_state, feature_slug
@@ -81,6 +82,12 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         return 2
     revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
     freeze_story_state(project_root, version=resolved_version, feature=feature)
+    truth_frontmatter_sync = sync_truth_frontmatter_status(
+        project_root,
+        version=resolved_version,
+        feature=feature,
+        status="frozen",
+    )
     revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
     payload = {
         "schema_version": "1.0",
@@ -92,6 +99,7 @@ def _freeze_impl(feature: str, project: Optional[str], version: str, json_output
         "story_path": str((project_root / "docs" / "beacon" / resolved_version / ".machine" / "user-story" / f"{feature_slug(feature)}.json").relative_to(project_root)),
         "requirement_package": requirement_package,
         "revision_delta": revision_delta,
+        "truth_frontmatter_sync": truth_frontmatter_sync,
         "requirement_clarity_gate": clarity_gate,
         "requirement_clarity_report": clarity_report,
         "requirement_clarity_writeback": clarity_writeback,

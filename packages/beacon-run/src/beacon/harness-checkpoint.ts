@@ -4,8 +4,9 @@ import type { BeaconPhase } from "./phase-prompt.js";
 import type { FeatureScopeMode } from "./scope-mode.js";
 import { readJson, writeJson } from "./fs.js";
 import {
-  isFeatureTruthFrozenFromPayload,
+  isFeatureTruthFrozen,
   parseHarnessJsonReason,
+  readStoryLifecycleFrozen,
   readTruthFrontmatterStatus,
 } from "./truth-frozen.js";
 
@@ -94,7 +95,11 @@ function mockHarnessResult(
     feature && projectRoot
       ? readTruthFrontmatterStatus(projectRoot, version, feature)
       : "frozen";
-  const frozen = status === "frozen";
+  const frozen =
+    status === "frozen" ||
+    (feature && projectRoot
+      ? readStoryLifecycleFrozen(projectRoot, version, feature)
+      : false);
 
   if (args[0] === "truth-map" && args[1] === "resolve") {
     return {
@@ -140,6 +145,63 @@ function mockHarnessResult(
               reason_code: "legacy_cutover_required",
             },
       ),
+      stderr: "",
+    };
+  }
+  if (args[0] === "qa" && args[1] === "run") {
+    if (process.env.BEACON_RUN_MOCK_QA_INFRA_BLOCKED === "1") {
+      return {
+        command,
+        exit_code: 2,
+        stdout: JSON.stringify({
+          status: "failed",
+          scorecard: {
+            continue_decision: "stop_for_repair",
+            stop_reasons: [
+              "junit_missing_or_invalid",
+              "assertion_count_zero_pass",
+            ],
+          },
+        }),
+        stderr: "",
+      };
+    }
+    if (process.env.BEACON_RUN_MOCK_QA_BLOCKED === "1") {
+      return {
+        command,
+        exit_code: 2,
+        stdout: JSON.stringify({
+          status: "blocked",
+          blocked: true,
+          reason_codes: ["evidence_binding_missing"],
+        }),
+        stderr: "",
+      };
+    }
+    return {
+      command,
+      exit_code: 0,
+      stdout: JSON.stringify({ status: "pass" }),
+      stderr: "",
+    };
+  }
+  if (args[0] === "release" && args[1] === "check") {
+    if (process.env.BEACON_RUN_MOCK_RELEASE_BLOCKED === "1") {
+      return {
+        command,
+        exit_code: 2,
+        stdout: JSON.stringify({
+          status: "blocked",
+          blocked: true,
+          reason_codes: ["release_gate_failed"],
+        }),
+        stderr: "",
+      };
+    }
+    return {
+      command,
+      exit_code: 0,
+      stdout: JSON.stringify({ status: "pass" }),
       stderr: "",
     };
   }
@@ -365,10 +427,9 @@ export function buildPhaseHarnessArgs(
     return [
       "release",
       "check",
+      version,
       "--project",
       projectRoot,
-      "--version",
-      version,
       "--json",
     ];
   }
@@ -507,17 +568,10 @@ export function runTruthPhaseExitHarness(
       "--json",
     ],
   );
-  let payload: Parameters<typeof isFeatureTruthFrozenFromPayload>[3] = null;
-  try {
-    payload = JSON.parse(resolved.stdout);
-  } catch {
-    payload = null;
-  }
-  const frozen = isFeatureTruthFrozenFromPayload(
+  const frozen = isFeatureTruthFrozen(
     ctx.projectRoot,
     ctx.version,
     ctx.feature,
-    payload,
   );
   if (!frozen) {
     return {

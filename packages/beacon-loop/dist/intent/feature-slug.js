@@ -3,7 +3,9 @@ import { slugify } from "../runner/types.js";
 const CAPABILITY_PATTERNS = [
   { pattern: /\bchoose\b/i, token: "choose" },
   { pattern: /\bfilters?\b/i, token: "filter" },
-  { pattern: /parity|完整|全量|full[- ]?parity/i, token: "parity" }
+  { pattern: /parity|完整|全量|full[- ]?parity/i, token: "parity" },
+  { pattern: /\bcrud\b/i, token: "crud" },
+  { pattern: /\bsmoke\b/i, token: "smoke" },
 ];
 
 function capabilitySuffix(text) {
@@ -20,6 +22,14 @@ export function inferFeatureSlugFromUtterance(utterance, explicitFeature = "") {
 
   const pathMatch = text.match(/features\/([a-z0-9-]+)/i);
   if (pathMatch?.[1]) return slugify(pathMatch[1]);
+
+  const codePath = text.match(
+    /(?:examples|src|pkg|internal|cmd)\/([a-z0-9][a-z0-9._/-]*)/i,
+  );
+  if (codePath?.[1]) {
+    const leaf = codePath[1].split("/").filter(Boolean).pop() || codePath[1];
+    return slugify(`${leaf}-${capabilitySuffix(text)}`);
+  }
 
   if (/^[a-z0-9][a-z0-9-]*$/i.test(text)) return slugify(text);
 

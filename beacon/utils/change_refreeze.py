@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from beacon.utils.artifact_paths import change_docs_file, machine_change_file
-from beacon.utils.feature_package import validate_feature_package
+from beacon.utils.feature_package import sync_truth_frontmatter_status, validate_feature_package
 from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import materialize_requirement_clarity, requirement_clarity_json_path
@@ -405,6 +405,12 @@ def run_change_refreeze_chain(
 
         frozen_revision = freeze_revision_state(project_root, version=resolved_version, feature=feature)
         freeze_story_state(project_root, resolved_version, feature)
+        truth_frontmatter_sync = sync_truth_frontmatter_status(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            status="frozen",
+        )
         revision_delta = materialize_revision_delta(project_root, version=resolved_version, feature=feature)
         payload["surface_statuses"]["requirement_clarity"]["status"] = "passed"
         payload["surface_statuses"]["requirement_clarity"]["exists"] = True
@@ -412,6 +418,7 @@ def run_change_refreeze_chain(
         payload["surface_statuses"]["freeze"]["exists"] = True
         payload["refreeze_status"] = "complete"
         payload["truth_revision_after"] = _revision_ref(frozen_revision)
+        payload["truth_frontmatter_sync"] = truth_frontmatter_sync
         payload["revision_delta"] = revision_delta
         feature_projection = write_feature_change_projection(
             project_root,

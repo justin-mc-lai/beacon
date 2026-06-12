@@ -656,6 +656,48 @@ def _structured_assertion_count(stdout_text: str, stderr_text: str) -> int:
     return 0
 
 
+_NATIVE_COMPILE_TEST_PATTERNS = (
+    re.compile(r"\bgo\s+(?:build|test|vet)\b", re.I),
+    re.compile(r"\bcargo\s+(?:build|test|check)\b", re.I),
+    re.compile(r"\bmake\s+(?:test|check|build)\b", re.I),
+)
+
+
+def _is_native_compile_test_command(command: str) -> bool:
+    normalized = " ".join(str(command or "").split())
+    return any(pattern.search(normalized) for pattern in _NATIVE_COMPILE_TEST_PATTERNS)
+
+
+def _native_toolchain_pass_assertion_count(
+    command: str,
+    stdout_text: str,
+    stderr_text: str,
+) -> int:
+    if not _is_native_compile_test_command(command):
+        return 0
+    text = "\n".join([stdout_text or "", stderr_text or ""])
+    if re.search(r"\bgo\s+test\b", command, flags=re.I):
+        ok_lines = [
+            line
+            for line in text.splitlines()
+            if re.search(r"^\s*ok\s+\S+", line, flags=re.I)
+        ]
+        if ok_lines:
+            return len(ok_lines)
+        if re.search(r"^\s*PASS\b", text, flags=re.M):
+            return max(1, len(re.findall(r"^\s*PASS\b", text, flags=re.M)))
+    if re.search(r"\bgo\s+(?:build|vet)\b", command, flags=re.I):
+        return 1
+    if re.search(r"\bcargo\s+test\b", command, flags=re.I):
+        passed = len(re.findall(r"test\s+result:\s*ok\.", text, flags=re.I))
+        return passed or 1
+    if re.search(r"\bcargo\s+(?:build|check)\b", command, flags=re.I):
+        return 1
+    if re.search(r"\bmake\s+test\b", command, flags=re.I):
+        return 1
+    return 1
+
+
 def _successful_command_assertion_evidence(
     *,
     command: str,
@@ -861,12 +903,26 @@ def _run_layer_command(
         if command_assertions > 0:
             assertion_count = command_assertions
             structured_evidence_refs = command_refs
+        else:
+            native_assertions = _native_toolchain_pass_assertion_count(
+                command,
+                stdout_text,
+                stderr_text,
+            )
+            if native_assertions > 0:
+                assertion_count = native_assertions
     if status == "passed" and assertion_count > 0 and not _is_valid_junit_file(junit_file):
+        junit_reason = (
+            "native_toolchain_pass"
+            if _is_native_compile_test_command(command)
+            else "structured_cli_assertions"
+        )
         _write_synthetic_junit(
             junit_file,
             layer=layer,
             command=command,
             assertion_count=assertion_count,
+            reason=junit_reason,
         )
     fingerprint_input = "\n".join(
         [

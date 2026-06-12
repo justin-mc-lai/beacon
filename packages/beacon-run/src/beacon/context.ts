@@ -1,11 +1,16 @@
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import {
+  resolveBeaconFeature,
+  type FeatureResolveResult,
+} from "./feature-resolve.js";
 
 export type BeaconCliOptions = {
   beacon?: boolean;
   projectRoot?: string;
   version?: string;
   feature?: string;
+  utterance?: string;
   truthBootstrap?: "agent" | "fallback";
   implementRunner?: string;
 };
@@ -27,7 +32,6 @@ export function resolveBeaconRunContext(
 
   const projectRoot = options.projectRoot || cwd;
   const version = options.version || readBeaconVersionFile(projectRoot);
-  const feature = String(options.feature || "").trim();
 
   if (!version) {
     return {
@@ -36,12 +40,17 @@ export function resolveBeaconRunContext(
         "Beacon mode requires --beacon-version or docs/beacon/VERSION in the project root.",
     };
   }
-  if (!feature) {
-    return {
-      ok: false,
-      error: "Beacon mode requires --feature <slug>.",
-    };
+
+  const resolved = resolveBeaconFeature({
+    projectRoot,
+    version,
+    explicitFeature: options.feature,
+    utterance: options.utterance,
+  });
+  if ("ok" in resolved) {
+    return { ok: false, error: resolved.error };
   }
+  const featureResolution: FeatureResolveResult = resolved;
 
   const truthBootstrap =
     options.truthBootstrap === "fallback" ? "fallback" : "agent";
@@ -52,7 +61,8 @@ export function resolveBeaconRunContext(
       enabled: true,
       projectRoot,
       version,
-      feature,
+      feature: featureResolution.feature,
+      featureResolution,
       truthBootstrap,
       implementRunner:
         options.implementRunner ||

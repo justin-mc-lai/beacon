@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { buildIterationPrompt } from "../templates/iteration-prompt.js";
-import { BeaconPhaseController } from "./phase-controller.js";
+import { BeaconPhaseController, normalizeResumedBeaconPhase } from "./phase-controller.js";
 
 describe("beacon phase-controller", () => {
   let runDir: string;
@@ -291,5 +291,131 @@ describe("beacon phase-controller", () => {
 
     delete process.env.BEACON_RUN_MOCK_IMPLEMENT_PREFLIGHT;
     rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("normalizeResumedBeaconPhase advances past completed phases on resume", () => {
+    expect(
+      normalizeResumedBeaconPhase("truth", ["truth", "generate"]),
+    ).toEqual({ phase: "qa", normalized: true });
+    expect(normalizeResumedBeaconPhase("truth", ["truth"])).toEqual({
+      phase: "generate",
+      normalized: true,
+    });
+    expect(normalizeResumedBeaconPhase("generate", ["truth"])).toEqual({
+      phase: "generate",
+      normalized: false,
+    });
+  });
+
+  it("harness-only qa failure demotes to repair instead of retry spin (AC-037)", async () => {
+    process.env.BEACON_RUN_MOCK_QA_BLOCKED = "1";
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot: "/tmp/project",
+        version: "v1.6.0",
+        feature: "demo",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "qa",
+      ["truth", "generate"],
+    );
+
+    const first = await controller.beforeAgentIteration();
+    expect(first).toBe("run_agent");
+    expect(controller.currentPhase()).toBe("repair");
+
+    const artifact = JSON.parse(
+      readFileSync(join(runDir, "beacon-phase.json"), "utf8"),
+    );
+    expect(artifact.phase).toBe("repair");
+    expect(artifact.phase_promoted).toBe(false);
+    expect(artifact.phases_completed).toEqual(["truth", "generate"]);
+    expect(artifact.last_harness_exit?.ok).toBe(false);
+    expect(artifact.last_harness_exit?.phase).toBe("qa");
+
+    const second = await controller.beforeAgentIteration();
+    expect(second).toBe("run_agent");
+    expect(controller.currentPhase()).toBe("repair");
+
+    const promotion = JSON.parse(
+      readFileSync(join(runDir, "truth-promotion.json"), "utf8"),
+    );
+    const qaCalls = promotion.calls.filter((call: { command: string }) =>
+      call.command.includes("qa run"),
+    );
+    expect(qaCalls.length).toBe(1);
+
+    delete process.env.BEACON_RUN_MOCK_QA_BLOCKED;
+    await controller.afterAgentIteration(true, true);
+    expect(controller.currentPhase()).toBe("qa");
+
+    const third = await controller.beforeAgentIteration();
+    expect(third).toBe("retry");
+    expect(controller.currentPhase()).toBe("release");
+  });
+
+  it("routes infrastructure qa failures to governance repair harness (AC-038)", async () => {
+    process.env.BEACON_RUN_MOCK_QA_INFRA_BLOCKED = "1";
+
+    const controller = new BeaconPhaseController(
+      {
+        enabled: true,
+        projectRoot: "/tmp/project",
+        version: "v1.6.0",
+        feature: "demo",
+        truthBootstrap: "agent",
+        implementRunner: "codex-subagents",
+      },
+      runDir,
+      "qa",
+      ["truth", "generate"],
+    );
+
+    await controller.beforeAgentIteration();
+
+    const artifact = JSON.parse(
+      readFileSync(join(runDir, "beacon-phase.json"), "utf8"),
+    );
+    expect(artifact.phase).toBe("repair");
+    expect(artifact.repair_kind).toBe("governance");
+    expect(artifact.allowed_harness).toContain("beacon change");
+    expect(artifact.allowed_harness).not.toContain("beacon implement run");
+
+    delete process.env.BEACON_RUN_MOCK_QA_INFRA_BLOCKED;
+  });
+
+  it("fromRunDir does not resume into truth when generate already completed", () => {
+    writeFileSync(
+      join(runDir, "beacon-phase.json"),
+      JSON.stringify({
+        schema_version: "1.0",
+        phase: "truth",
+        feature: "demo",
+        version: "v1.6.0",
+        project_root: "/tmp/project",
+        truth_bootstrap: "agent",
+        phases_completed: ["truth", "generate"],
+        phase_promoted: false,
+        prompt: "",
+        allowed_harness: [],
+        forbidden_harness: [],
+        updated_at: new Date().toISOString(),
+      }),
+      "utf8",
+    );
+
+    const controller = BeaconPhaseController.fromRunDir(runDir, {
+      enabled: true,
+      projectRoot: "/tmp/project",
+      version: "v1.6.0",
+      feature: "demo",
+      truthBootstrap: "agent",
+      implementRunner: "codex-subagents",
+    });
+    expect(controller.currentPhase()).toBe("qa");
   });
 });

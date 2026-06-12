@@ -80,7 +80,14 @@ describe("harness-checkpoint", () => {
       "--json",
     ]);
     expect(buildPhaseHarnessArgs("qa", "phase", ctx)?.[0]).toBe("qa");
-    expect(buildPhaseHarnessArgs("release", "phase", ctx)?.[0]).toBe("release");
+    expect(buildPhaseHarnessArgs("release", "phase", ctx)).toEqual([
+      "release",
+      "check",
+      "v1.6.0",
+      "--project",
+      "/tmp/project",
+      "--json",
+    ]);
   });
 
   it("truth-freeze-gate runTruthPhaseExitHarness records freeze gate commands (AC-068 / TC-068)", () => {
@@ -110,6 +117,40 @@ describe("harness-checkpoint", () => {
     expect(
       promotion.calls.some((call) => call.checkpoint === "freeze_gate"),
     ).toBe(true);
+
+    rmSync(projectRoot, { recursive: true, force: true });
+  });
+
+  it("truth exit harness accepts draft frontmatter when story machine is frozen", () => {
+    const projectRoot = mkdtempSync(join(tmpdir(), "beacon-run-harness-story-"));
+    const featureDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/features/demo-feature",
+    );
+    mkdirSync(featureDir, { recursive: true });
+    writeFileSync(
+      join(featureDir, "truth.md"),
+      "---\nslug: demo-feature\nstatus: draft\n---\n# Demo\n",
+      "utf8",
+    );
+    const storyDir = join(
+      projectRoot,
+      "docs/beacon/v1.6.0/.machine/user-story",
+    );
+    mkdirSync(storyDir, { recursive: true });
+    writeFileSync(
+      join(storyDir, "demo-feature.json"),
+      JSON.stringify({ lifecycle_status: "frozen" }),
+      "utf8",
+    );
+
+    const result = runTruthPhaseExitHarness(runDir, {
+      projectRoot,
+      version: "v1.6.0",
+      feature: "demo-feature",
+      scopeMode: "smoke",
+    });
+    expect(result.ok).toBe(true);
 
     rmSync(projectRoot, { recursive: true, force: true });
   });

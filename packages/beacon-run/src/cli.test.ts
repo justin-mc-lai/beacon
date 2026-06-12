@@ -3276,6 +3276,67 @@ describe("cli", () => {
     }
   });
 
+  it("includes should_fully_stop when resuming a preserved worktree with --beacon", async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), "gnhf-cli-worktree-resume-"));
+    const repoRoot = join(tempDir, "repo");
+    const hash = createHash("sha256")
+      .update("ship it")
+      .digest("hex")
+      .slice(0, 6);
+    const runId = `ship-it-${hash}`;
+    const branch = `gnhf/${runId}`;
+    const worktreeRoot = join(tempDir, "repo-gnhf-worktrees");
+    const worktreePath = join(worktreeRoot, runId);
+    mkdirSync(join(worktreePath, ".gnhf", "runs", runId), {
+      recursive: true,
+    });
+
+    const resumeRun = vi.fn(() => ({
+      ...stubRunInfo,
+      runId,
+      runDir: join(worktreePath, ".gnhf", "runs", runId),
+    }));
+
+    try {
+      await runCliWithMocks(
+        [
+          "ship it",
+          "--worktree",
+          "--beacon",
+          "--project-root",
+          repoRoot,
+          "--beacon-version",
+          "v1.6.0",
+          "--feature",
+          "go-todo-crud-smoke",
+        ],
+        {
+          agent: "claude",
+          agentPathOverride: {},
+          agentArgsOverride: {},
+          acpRegistryOverrides: {},
+          maxConsecutiveFailures: 3,
+          preventSleep: false,
+          beacon: true,
+        },
+        {
+          getRepoRootDir: vi.fn(() => repoRoot),
+          getCurrentBranch: vi.fn((cwd: string) =>
+            cwd === worktreePath ? branch : "main",
+          ),
+          listWorktreePaths: vi.fn(() => new Set([worktreePath])),
+          resumeRun,
+        },
+      );
+
+      expect(resumeRun).toHaveBeenCalledWith(runId, worktreePath, {
+        includeStopField: true,
+      });
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
   it("clears stop-when when resuming a preserved worktree with an empty value", async () => {
     const tempDir = mkdtempSync(join(tmpdir(), "gnhf-cli-worktree-resume-"));
     const repoRoot = join(tempDir, "repo");

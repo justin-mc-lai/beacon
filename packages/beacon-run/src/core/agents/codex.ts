@@ -242,7 +242,10 @@ export class CodexAgent implements Agent {
         }
 
         const message = lastError?.message ?? "unknown parse error";
-        const sample = lastAgentMessage.slice(0, 120).replace(/\s+/g, " ");
+        const sampleSource =
+          agentMessages.find((message) => /\{[\s\S]*\}/.test(message)) ??
+          lastAgentMessage;
+        const sample = sampleSource.slice(0, 120).replace(/\s+/g, " ");
         reject(
           new Error(
             `Failed to parse codex output: ${message} (sample: ${sample})`,

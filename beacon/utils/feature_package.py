@@ -509,3 +509,44 @@ def validate_feature_package(
         payload["report_path"] = _rel(project_root, report_path)
         refresh_evidence_manifest(project_root, refs=[payload["report_path"]], version=version)
     return payload
+
+
+def sync_truth_frontmatter_status(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+    status: str,
+) -> dict[str, Any]:
+    """Align features/<slug>/truth.md frontmatter status with machine freeze state."""
+    paths = package_paths(project_root, version=version, feature=feature)
+    truth_path = paths["truth"]
+    if not truth_path.exists():
+        return {"updated": False, "reason": "truth_missing", "path": _rel(project_root, truth_path)}
+
+    text = _read_text(truth_path)
+    if not text.startswith("---\n"):
+        return {"updated": False, "reason": "frontmatter_missing", "path": _rel(project_root, truth_path)}
+
+    end = text.find("\n---", 4)
+    if end < 0:
+        return {"updated": False, "reason": "frontmatter_unclosed", "path": _rel(project_root, truth_path)}
+
+    block = text[4:end]
+    current_match = re.search(r"^status:\s*(\S+)", block, re.MULTILINE)
+    current = current_match.group(1) if current_match else ""
+    if current == status:
+        return {"updated": False, "status": current, "path": _rel(project_root, truth_path)}
+
+    if current_match:
+        block = re.sub(r"^status:\s*\S+", f"status: {status}", block, count=1, flags=re.MULTILINE)
+    else:
+        block = f"status: {status}\n{block}"
+
+    truth_path.write_text(f"---\n{block}\n---{text[end + 4:]}", encoding="utf-8")
+    return {
+        "updated": True,
+        "status": status,
+        "previous_status": current,
+        "path": _rel(project_root, truth_path),
+    }

@@ -39,14 +39,25 @@ status: ${status}
     expect(readTruthFrontmatterStatus(root, "v1.6.0", "demo-feature")).toBe(
       "frozen",
     );
-    expect(isFeatureTruthFrozenFromPayload(root, "v1.6.0", "demo-feature", {
-      feature_truth: { frontmatter: { status: "draft" } },
-    })).toBe(false);
+    expect(
+      isFeatureTruthFrozenFromPayload(root, "v1.6.0", "demo-feature", {
+        feature_truth: { frontmatter: { status: "draft" } },
+      }),
+    ).toBe(true);
     expect(
       isFeatureTruthFrozenFromPayload(root, "v1.6.0", "demo-feature", {
         feature_truth: { frontmatter: { status: "frozen" } },
       }),
     ).toBe(true);
+  });
+
+  it("draft resolver payload stays not frozen without machine or disk frozen", () => {
+    writeTruth("draft");
+    expect(
+      isFeatureTruthFrozenFromPayload(root, "v1.6.0", "demo-feature", {
+        feature_truth: { frontmatter: { status: "draft" } },
+      }),
+    ).toBe(false);
   });
 
   it("isFeatureTruthFrozen reads draft truth as not frozen (mock harness)", () => {
@@ -58,6 +69,25 @@ status: ${status}
 
   it("isFeatureTruthFrozen reads frozen truth (mock harness)", () => {
     writeTruth("frozen");
+    process.env.BEACON_RUN_MOCK_HARNESS = "1";
+    expect(isFeatureTruthFrozen(root, "v1.6.0", "demo-feature")).toBe(true);
+    delete process.env.BEACON_RUN_MOCK_HARNESS;
+  });
+
+  it("resolver draft frontmatter is frozen when story machine is frozen", () => {
+    writeTruth("draft");
+    const storyDir = join(root, "docs/beacon/v1.6.0/.machine/user-story");
+    mkdirSync(storyDir, { recursive: true });
+    writeFileSync(
+      join(storyDir, "demo-feature.json"),
+      JSON.stringify({ lifecycle_status: "frozen" }),
+      "utf8",
+    );
+    expect(
+      isFeatureTruthFrozenFromPayload(root, "v1.6.0", "demo-feature", {
+        feature_truth: { frontmatter: { status: "draft" } },
+      }),
+    ).toBe(true);
     process.env.BEACON_RUN_MOCK_HARNESS = "1";
     expect(isFeatureTruthFrozen(root, "v1.6.0", "demo-feature")).toBe(true);
     delete process.env.BEACON_RUN_MOCK_HARNESS;

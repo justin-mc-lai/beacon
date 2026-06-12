@@ -12,6 +12,7 @@ import {
   runPhaseHarness,
   runTruthPhaseExitHarness,
   type HarnessContext,
+  type HarnessRunResult,
 } from "./harness-checkpoint.js";
 import { augmentIterationPromptWithBeacon } from "./iteration-prompt.js";
 import { bootstrapColdStartTruthFallback } from "./truth-bootstrap-fallback.js";
@@ -19,7 +20,15 @@ import {
   readFeatureScopeMode,
   smokeTruthPackageReady,
 } from "./scope-mode.js";
-import { isFeatureTruthFrozen } from "./truth-frozen.js";
+import {
+  isFeatureTruthFrozen,
+  parseHarnessJsonReason,
+} from "./truth-frozen.js";
+import type { FeatureResolveResult } from "./feature-resolve.js";
+import {
+  classifyHarnessRepairKind,
+  type RepairKind,
+} from "./repair-routing.js";
 
 export const AGENT_PHASES: BeaconPhase[] = ["truth", "generate"];
 export const HARNESS_PHASES: BeaconPhase[] = ["qa", "release"];
@@ -33,6 +42,7 @@ export type BeaconRunContext = {
   projectRoot: string;
   version: string;
   feature: string;
+  featureResolution?: FeatureResolveResult;
   truthBootstrap: "agent" | "fallback";
   implementRunner: string;
   utterance?: string;
@@ -55,6 +65,7 @@ export type BeaconPhaseState = {
   truth_bootstrap: "agent" | "fallback";
   phases_completed: BeaconPhase[];
   phase_promoted: boolean;
+  repair_kind?: RepairKind;
   last_harness_exit?: HarnessExitRecord;
   prompt: string;
   allowed_harness: string[];
@@ -83,12 +94,14 @@ export function writeBeaconPhaseState(
   extras: {
     phasePromoted?: boolean;
     lastHarnessExit?: HarnessExitRecord;
+    repairKind?: RepairKind;
   } = {},
 ): BeaconPhaseState {
   const artifact = buildBeaconPhaseArtifact({
     phase,
     feature: ctx.feature,
     version: ctx.version,
+    repairKind: extras.repairKind,
   });
   const state: BeaconPhaseState = {
     schema_version: "1.0",
@@ -99,6 +112,7 @@ export function writeBeaconPhaseState(
     truth_bootstrap: ctx.truthBootstrap,
     phases_completed: phasesCompleted,
     phase_promoted: extras.phasePromoted ?? false,
+    ...(extras.repairKind ? { repair_kind: extras.repairKind } : {}),
     ...(extras.lastHarnessExit ? { last_harness_exit: extras.lastHarnessExit } : {}),
     prompt: artifact.prompt,
     allowed_harness: artifact.allowed_harness,
@@ -115,13 +129,31 @@ const PHASE_OBJECTIVES: Record<BeaconPhase, string> = {
   generate:
     "Implement toward the user objective with verifiable commits only after requirement truth is frozen. If truth is still draft, you must not write product code—return to truth phase and complete freeze. Set should_fully_stop=true when implementation is ready for Beacon QA.",
   repair:
-    "Repair implementation using QA/release findings already recorded in notes. Set should_fully_stop=true when repair candidate is ready for QA re-run.",
+    "Repair using the routed harness only: implementation defects use implement/debug; infrastructure blockers (junit, reconciliation, version surfaces) use change/governor/qa repair commands. Set should_fully_stop=true when the routed repair is ready for QA re-run.",
   qa: "Harness-only phase: Beacon QA runs outside the agent loop.",
   release: "Harness-only phase: Beacon release check runs outside the agent loop.",
 };
 
+export function normalizeResumedBeaconPhase(
+  phase: BeaconPhase,
+  phasesCompleted: BeaconPhase[] = [],
+): { phase: BeaconPhase; normalized: boolean } {
+  const completed = new Set(phasesCompleted);
+  const phaseIndex = BEACON_LIFECYCLE_PHASES.indexOf(phase);
+  const firstIncomplete = BEACON_LIFECYCLE_PHASES.find((p) => !completed.has(p));
+  if (!firstIncomplete) {
+    return { phase: "release", normalized: phase !== "release" };
+  }
+  const firstIncompleteIndex = BEACON_LIFECYCLE_PHASES.indexOf(firstIncomplete);
+  if (phaseIndex >= 0 && phaseIndex < firstIncompleteIndex) {
+    return { phase: firstIncomplete, normalized: true };
+  }
+  return { phase, normalized: false };
+}
+
 export class BeaconPhaseController {
   private phase: BeaconPhase;
+  private repairKind?: RepairKind;
   private phasesCompleted: BeaconPhase[];
   private entryHarnessDone = false;
   private truthFallbackDone = false;
@@ -131,23 +163,52 @@ export class BeaconPhaseController {
     private readonly runDir: string,
     initialPhase: BeaconPhase = "truth",
     phasesCompleted: BeaconPhase[] = [],
+    repairKind?: RepairKind,
   ) {
     this.phase = initialPhase;
     this.phasesCompleted = [...phasesCompleted];
-    writeBeaconPhaseState(this.runDir, this.ctx, this.phase, this.phasesCompleted);
+    this.repairKind = repairKind;
+    writeBeaconPhaseState(
+      this.runDir,
+      this.ctx,
+      this.phase,
+      this.phasesCompleted,
+      this.phaseExtras(),
+    );
   }
 
   static fromRunDir(runDir: string, ctx: BeaconRunContext): BeaconPhaseController {
     const saved = readBeaconPhaseState(runDir);
     if (saved) {
-      return new BeaconPhaseController(
-        ctx,
-        runDir,
+      const { phase } = normalizeResumedBeaconPhase(
         saved.phase,
         saved.phases_completed || [],
       );
+      return new BeaconPhaseController(
+        ctx,
+        runDir,
+        phase,
+        saved.phases_completed || [],
+        saved.repair_kind,
+      );
     }
     return new BeaconPhaseController(ctx, runDir);
+  }
+
+  private phaseExtras(
+    extras: {
+      phasePromoted?: boolean;
+      lastHarnessExit?: HarnessExitRecord;
+      repairKind?: RepairKind;
+    } = {},
+  ) {
+    const repairKind =
+      extras.repairKind ??
+      (this.phase === "repair" ? this.repairKind : undefined);
+    return {
+      ...extras,
+      ...(repairKind ? { repairKind } : {}),
+    };
   }
 
   currentPhase(): BeaconPhase {
@@ -194,13 +255,28 @@ export class BeaconPhaseController {
     if (this.isDone()) return "break";
 
     if (this.isHarnessOnlyPhase()) {
+      const harnessPhase = this.phase;
       const result = runPhaseHarness(
         this.runDir,
-        this.phase,
+        harnessPhase,
         "phase",
         this.harnessContext(),
       );
-      this.completeCurrentPhase(result ? beaconJsonSucceeded(result) : true);
+      const ok = result ? beaconJsonSucceeded(result) : true;
+      if (!ok && result) {
+        const reasonCode =
+          parseHarnessJsonReason(result) || "harness_phase_failed";
+        this.demoteToHarnessRepair(harnessPhase, result, reasonCode);
+        return "run_agent";
+      }
+      this.completeCurrentPhase(ok, result
+        ? {
+            phase: harnessPhase,
+            ok,
+            command: result.command,
+            exit_code: result.exit_code,
+          }
+        : undefined);
       if (this.isDone()) return "break";
       return "retry";
     }
@@ -277,6 +353,23 @@ export class BeaconPhaseController {
     success: boolean,
     shouldFullyStop: boolean,
   ): Promise<BeaconAfterIterationDecision> {
+    if (this.phase === "repair") {
+      if (!success || !shouldFullyStop) {
+        return "continue";
+      }
+      this.phase = "qa";
+      this.repairKind = undefined;
+      this.entryHarnessDone = false;
+      writeBeaconPhaseState(
+        this.runDir,
+        this.ctx,
+        this.phase,
+        this.phasesCompleted,
+        { phasePromoted: false },
+      );
+      return "continue";
+    }
+
     if (!success || !shouldFullyStop || this.isHarnessOnlyPhase()) {
       return "continue";
     }
@@ -369,11 +462,52 @@ export class BeaconPhaseController {
     });
   }
 
+  private demoteToHarnessRepair(
+    failedPhase: "qa" | "release",
+    result: HarnessRunResult,
+    reasonCode: string,
+  ): void {
+    const harnessExit: HarnessExitRecord = {
+      phase: failedPhase,
+      ok: false,
+      command: result.command,
+      exit_code: result.exit_code,
+      reason_code: reasonCode,
+    };
+    this.repairKind = classifyHarnessRepairKind(result, reasonCode);
+    this.phasesCompleted = this.phasesCompleted.filter((p) => p !== failedPhase);
+    this.phase = "repair";
+    this.entryHarnessDone = false;
+    appendTruthPromotion(this.runDir, {
+      phase: failedPhase,
+      checkpoint: "phase",
+      command: `phase-demote:repair_from_${failedPhase}`,
+      exit_code: harnessExit.exit_code,
+      mode:
+        this.repairKind === "governance"
+          ? `governance_repair_from_${failedPhase}`
+          : failedPhase === "qa"
+            ? "repair_from_qa"
+            : "repair_from_release",
+    });
+    writeBeaconPhaseState(
+      this.runDir,
+      this.ctx,
+      this.phase,
+      this.phasesCompleted,
+      this.phaseExtras({
+        phasePromoted: false,
+        lastHarnessExit: harnessExit,
+        repairKind: this.repairKind,
+      }),
+    );
+  }
+
   private completeCurrentPhase(
     ok: boolean,
     harnessExit?: HarnessExitRecord,
   ): void {
-    if (!this.phasesCompleted.includes(this.phase)) {
+    if (ok && !this.phasesCompleted.includes(this.phase)) {
       this.phasesCompleted.push(this.phase);
     }
     const nextIndex = BEACON_LIFECYCLE_PHASES.indexOf(this.phase) + 1;

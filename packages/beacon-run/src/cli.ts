@@ -218,6 +218,17 @@ function buildResumeSchemaOptions(
   return buildSchemaOptions(stopWhen, commitMessage);
 }
 
+function buildCliResumeSchemaOptions(
+  stopWhen: string | undefined,
+  commitMessage: CommitMessageConfig | undefined,
+  beaconEnabled: boolean | undefined,
+): RunSchemaOptions {
+  return withBeaconSchemaOptions(
+    buildResumeSchemaOptions(stopWhen, commitMessage),
+    beaconEnabled,
+  );
+}
+
 function initializeNewBranch(
   prompt: string,
   cwd: string,
@@ -635,7 +646,10 @@ program
     "--beacon-version <version>",
     "Beacon docs version (defaults to docs/beacon/VERSION)",
   )
-  .option("--feature <slug>", "Beacon feature slug for harness routing")
+  .option(
+    "--feature <slug>",
+    "Beacon feature slug (optional: utterance can match existing feature or bootstrap greenfield slug)",
+  )
   .option(
     "--truth-bootstrap <mode>",
     "Truth bootstrap: agent (default) or fallback template chain",
@@ -785,7 +799,11 @@ program
           prompt,
           cwd,
           schemaOptions,
-          buildResumeSchemaOptions(options.stopWhen, effectiveCommitMessage),
+          buildCliResumeSchemaOptions(
+            options.stopWhen,
+            effectiveCommitMessage,
+            options.beacon,
+          ),
         );
         runInfo = wt.runInfo;
         effectiveCwd = wt.effectiveCwd;
@@ -833,7 +851,11 @@ program
         const existing = resumeCurrentBranchRun(
           prompt,
           cwd,
-          buildResumeSchemaOptions(options.stopWhen, effectiveCommitMessage),
+          buildCliResumeSchemaOptions(
+            options.stopWhen,
+            effectiveCommitMessage,
+            options.beacon,
+          ),
         );
 
         if (existing) {
@@ -858,24 +880,24 @@ program
         );
 
         if (!prompt || prompt === existingPrompt) {
-          const existing = resumeRun(
+          runInfo = resumeRun(
             existingRunId,
             cwd,
-            buildResumeSchemaOptions(
+            buildCliResumeSchemaOptions(
               options.stopWhen,
               existingMetadata.commitMessage,
+              options.beacon,
             ),
           );
-          const resumeStopWhen = existing.stopWhen;
+          const resumeStopWhen = runInfo.stopWhen;
           schemaOptions = withBeaconSchemaOptions(
-            buildSchemaOptions(resumeStopWhen, existing.commitMessage),
+            buildSchemaOptions(resumeStopWhen, runInfo.commitMessage),
             options.beacon,
           );
           prompt = existingPrompt;
-          runInfo = existing;
           effectiveStopWhen = resumeStopWhen;
-          effectiveCommitMessage = existing.commitMessage;
-          startIteration = getLastIterationNumber(existing);
+          effectiveCommitMessage = runInfo.commitMessage;
+          startIteration = getLastIterationNumber(runInfo);
         } else {
           const answer = await ask(
             `You are on gnhf branch "${currentBranch}".\n` +
@@ -892,9 +914,10 @@ program
             const existing = resumeRun(
               existingRunId,
               cwd,
-              buildResumeSchemaOptions(
+              buildCliResumeSchemaOptions(
                 options.stopWhen,
                 existingMetadata.commitMessage,
+                options.beacon,
               ),
             );
             const resumeStopWhen = existing.stopWhen;
@@ -1027,6 +1050,7 @@ program
           projectRoot: beaconProjectRoot,
           version: options.beaconVersion,
           feature: options.feature,
+          utterance: prompt,
           truthBootstrap: options.truthBootstrap,
           implementRunner: options.implementRunner,
         });
@@ -1041,6 +1065,7 @@ program
         beaconHooks = createBeaconOrchestratorHooks(phaseController);
         appendDebugLog("beacon:lifecycle-enabled", {
           feature: beaconContext.ctx.feature,
+          featureResolution: beaconContext.ctx.featureResolution,
           version: beaconContext.ctx.version,
           phase: phaseController.currentPhase(),
           truthBootstrap: beaconContext.ctx.truthBootstrap,

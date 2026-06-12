@@ -24,6 +24,33 @@ export function readTruthFrontmatterStatus(
   return match?.[1] || "";
 }
 
+export function readStoryLifecycleFrozen(
+  projectRoot: string,
+  version: string,
+  feature: string,
+): boolean {
+  const storyPath = join(
+    projectRoot,
+    "docs/beacon",
+    version,
+    ".machine/user-story",
+    `${feature}.json`,
+  );
+  if (!existsSync(storyPath)) return false;
+  try {
+    const story = JSON.parse(readFileSync(storyPath, "utf8")) as {
+      lifecycle_status?: string;
+      current_revision?: { status?: string };
+    };
+    return (
+      story.lifecycle_status === "frozen" ||
+      story.current_revision?.status === "frozen"
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function isFeatureTruthFrozenFromPayload(
   projectRoot: string,
   version: string,
@@ -39,30 +66,15 @@ export function isFeatureTruthFrozenFromPayload(
       "",
   );
   if (frontmatterStatus === "frozen") return true;
-  if (frontmatterStatus && frontmatterStatus !== "frozen") return false;
-  const storyPath = join(
-    projectRoot,
-    "docs/beacon",
-    version,
-    ".machine/user-story",
-    `${feature}.json`,
-  );
-  if (existsSync(storyPath)) {
-    try {
-      const story = JSON.parse(readFileSync(storyPath, "utf8")) as {
-        lifecycle_status?: string;
-        current_revision?: { status?: string };
-      };
-      if (
-        story.lifecycle_status === "frozen" ||
-        story.current_revision?.status === "frozen"
-      ) {
-        return true;
-      }
-    } catch {
-      /* ignore */
-    }
+
+  if (readStoryLifecycleFrozen(projectRoot, version, feature)) {
+    return true;
   }
+
+  if (frontmatterStatus && frontmatterStatus !== "frozen") {
+    return readTruthFrontmatterStatus(projectRoot, version, feature) === "frozen";
+  }
+
   return readTruthFrontmatterStatus(projectRoot, version, feature) === "frozen";
 }
 
@@ -83,6 +95,19 @@ export function parseHarnessJsonReason(result: {
     );
   } catch {
     return "";
+  }
+}
+
+export function parseBeaconFreezeFrozen(result: {
+  stdout: string;
+  exit_code: number;
+}): boolean {
+  if (result.exit_code !== 0) return false;
+  try {
+    const payload = JSON.parse(result.stdout) as { status?: string };
+    return payload.status === "frozen";
+  } catch {
+    return false;
   }
 }
 
@@ -113,7 +138,12 @@ export function resolveFeatureTruthState(
       feature_truth: { frontmatter: { status } },
     };
     return {
-      frozen: status === "frozen",
+      frozen: isFeatureTruthFrozenFromPayload(
+        projectRoot,
+        version,
+        feature,
+        payload,
+      ),
       result: {
         command,
         exit_code: 0,

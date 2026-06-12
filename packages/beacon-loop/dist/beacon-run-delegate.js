@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { inferFeatureSlugFromUtterance } from "./intent/feature-slug.js";
+import { resolveDelegateFeature } from "./intent/feature-resolve.js";
 
 function moduleDir() {
   return dirname(fileURLToPath(import.meta.url));
@@ -65,10 +65,12 @@ function resolveBranchMode(projectRoot, options) {
 }
 
 function buildBeaconRunArgs(projectRoot, goal, options) {
-  const feature =
-    String(options.feature || "").trim() ||
-    inferFeatureSlugFromUtterance(goal) ||
-    "";
+  const feature = resolveDelegateFeature(
+    projectRoot,
+    options.version,
+    goal,
+    String(options.feature || "").trim(),
+  );
   if (!feature) {
     throw new Error("feature_slug_required");
   }
