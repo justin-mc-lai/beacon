@@ -7,7 +7,7 @@
 | user-confirmed-architecture | support_advisory | conversation: delivery orchestrator AC-031..039 | accepted-for-change | change |
 | change-record | support_advisory | docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md | accepted-for-change | refreeze |
 | planner-research | support_advisory | docs/beacon/v1.6.0/research/beacon-loop-goal-closed-loop-orchestrator.md | promoted | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R8** | implement |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md | **frozen R10** | implement |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md | authoritative | truth.coverage |
 | package-tasks | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tasks.md | task-intent-indexed | generate |
 | package-evidence | support_advisory | docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md | evidence-indexed | evaluate |
@@ -63,6 +63,18 @@
   - `packages/beacon-run/src/beacon/scope-mode.ts`：`minimal_smoke` → `smoke`。
   - 单元测试：`truth-frozen.test.ts`、`harness-checkpoint.test.ts`（freeze_gate）、`phase-controller.test.ts`（TC-068..070）、`scope-mode.test.ts`；`pnpm exec vitest run` → **694 passed**（packages/beacon-run）。
   - **待 evaluator**：`beacon-eval-qa` 覆盖 AC-063 reconcile + AC-068（TC-065/068..070）。
+- **R10 implement closure**（2026-06-12，Phase N TASK-101..103）：
+  - AC-069：`packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts` + `packages/beacon-loop/tests/beacon-loop.test.mjs` TC-071（dry-run；live opt-in `BEACON_RUN_E2E_GO_TODO=1`）。
+  - AC-070：`docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` + `packages/beacon-loop/src/spine/show.ts` + TC-072。
+  - AC-071：`packages/beacon-run/src/core/stop-when-gate.ts` + `--stop-check-cmd` + TC-073 / vitest `stop-when-exec-gate`。
+  - `beacon implement import-evidence` → `run-20260612T110636Z-c038`；writeback ledger 补录 **R10**。
+  - `beacon implement plan` → `plan-beacon-loop-goal-closed-loop-orchestrator-r10`（revision **R10**）。
+- **R10 QA closure**：QA artifact `run-20260612T182801183358`；38/38 AC、41/41 scenario（TC-071..073 PASS）。
+- **R10 release-facing closure**：
+  - `implementation-first-reconciliation` refreeze complete（`-reconciliation.json` status=completed）。
+  - `beacon doctor build/verify-test-contract-index` + `sync-technical-review-contract --revision-id R10`。
+  - `beacon release check v1.6.0` 产物归档；`beacon release create v1.6.0` → `docs/beacon/v1.6.0/release/checklist-v1.6.0.md`。
+  - **注意**：`beacon gate release` 是 **v1.6.0 全版本 runtime promotion** 门禁（terminal.json / formal package 等），不是本 feature v1.6.1 止血 patch 的 feature release 路径。
 
 ## Implementation Candidate Evidence
 
@@ -90,7 +102,10 @@ beacon implement import-evidence beacon-loop-goal-closed-loop-orchestrator --pro
 beacon qa run beacon-loop-goal-closed-loop-orchestrator --project . --version v1.6.0 --json
 beacon doctor build-test-contract-index beacon-loop-goal-closed-loop-orchestrator --project-root . --version v1.6.0 --json
 beacon release check v1.6.0 --project . --json
-beacon gate release --project-root . --version v1.6.0 --json
+beacon release create v1.6.0 --project .
+# R10 Phase N smoke
+npm --prefix packages/beacon-loop test -- --test-name-pattern "TC-071|TC-072|TC-073"
+cd packages/beacon-run && pnpm exec vitest run src/core/orchestrator.test.ts -t stop-when
 # R5 verification
 cd packages/beacon-run && pnpm exec vitest run
 # R6/R8 verification (truth_freeze_gate)

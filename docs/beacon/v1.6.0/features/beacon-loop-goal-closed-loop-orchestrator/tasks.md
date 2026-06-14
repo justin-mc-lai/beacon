@@ -87,6 +87,13 @@
 - [x] TASK-099 测试 TC-068..TC-070 + 更新 TC-065 smoke-truth-exit 断言（AC-068）。
 - [x] TASK-100 R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。
 
+## Phase N — R10 v1.6.1 止血 Loop Engineering 对齐（AC-069..AC-071）
+
+- [x] TASK-101 闭合 AC-069：`BEACON_RUN_E2E_GO_TODO=1` worktree+freeze E2E；回归 `go-todo-crud-smoke` 不断链。（TC-071 QA passed；live opt-in 见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）
+- [x] TASK-102 闭合 AC-070：新增 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`；实现 `beacon-loop spine show`（或 `status --spine`）+ TC-072。
+- [x] TASK-103 闭合 AC-071：`stop-when` 外部可执行 gate（harness / `--stop-check-cmd`）；`stop_when_unverified` 路径 + TC-073。
+- [x] TASK-104 R10 交付闭环：`implementation-first-reconciliation` refreeze + QA `run-20260612T182801183358` + import-evidence `run-20260612T110636Z-c038` + `beacon release check v1.6.0` 产物归档。
+
 ## 边界
 
 - 任务台账不是 implementation completion。

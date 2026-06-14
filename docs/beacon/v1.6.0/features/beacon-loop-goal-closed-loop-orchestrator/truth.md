@@ -2,7 +2,7 @@
 slug: beacon-loop-goal-closed-loop-orchestrator
 version: v1.6.0
 status: frozen
-revision_id: R8
+revision_id: R10
 language: zh
 canonical_refs:
   prd: docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md
@@ -25,7 +25,9 @@ parent_feature: beacon-loop-native-runner-and-automation-retirement
 - **R1–R3** 已在 `packages/beacon-loop` 验证 delivery FSM、harness 记账、gnhf prompt/schema 契约（快照：`packages/beacon-loop.r3-backup-20260610`）。
 - **R4（frozen）** 将 **主实现落点** 迁至 **`packages/beacon-run`**（gnhf lineage，源副本 `packages/gnhf`），`beacon-loop` **降级为兼容/只读参考**，不再作为新功能开发面。
 - **R5（frozen）** 修复 R4 drill 暴露的 **worktree harness root 错位**、**requirement_clarity TODO 假阳性**、**smoke truth exit 过重**；保留 worktree 产出的 `go-todo-crud-smoke` 材料作为 R5 回归夹具（merge 入主仓，见 Source Advisory）。
-- **R6/R7（本 revision，reopened）** 闭合 **truth_freeze_gate**：R5 drill 在 draft truth 下 promote 到 `generate`，导致 `implement run` **`revision_not_frozen`** 空转；用户确认 **generate 阶段不得在 truth 仍为 draft 时写产品代码**；beacon-run 须在 truth→generate 间 fail-closed 执行 freeze gate（对齐 AC-035 与 beacon-loop 参考实现）。
+- **R6/R7（frozen）** 闭合 **truth_freeze_gate**：R5 drill 在 draft truth 下 promote 到 `generate`，导致 `implement run` **`revision_not_frozen`** 空转；用户确认 **generate 阶段不得在 truth 仍为 draft 时写产品代码**；beacon-run 须在 truth→generate 间 fail-closed 执行 freeze gate（对齐 AC-035 与 beacon-loop 参考实现）。
+- **R9（frozen）** change refreeze 事务：`v1.6.1止血` 意图进入 governed change 链；revision 标记与 machine projection 对齐（无新增 AC 正文）。
+- **R10（本 revision，draft→freeze）** **v1.6.1 止血 patch**：在 R6/R7 之上闭合三条 Loop Engineering 对齐能力——**worktree+freeze 不断链**、**state spine 文档+查询**、**stop-when 挂钩可执行检查**（禁止 agent 自说自话判 done）。semver **v1.6.1** 为交付标签；requirement 仍落在 **v1.6.0 docs line** 本 feature package。
 
 R4 目标数据流：
 
@@ -467,6 +469,7 @@ R2 起：**不得**再将 D-009..D-011 作为 accepted defer 引用；未实现�
 | **K** | **R4 beacon-run（gnhf fork）+ 全迭代 agent + Beacon phase prompt + 非模板 truth** | **AC-053..AC-060** |
 | **L** | **R5 worktree harness + clarity + smoke exit reconcile** | **AC-061..AC-064** |
 | **M** | **R6/R7 truth_freeze_gate + AC-063 reconcile + generate frozen gate** | **AC-063, AC-068** |
+| **N** | **R10 v1.6.1 止血：Loop Engineering 对齐（patch，非 v2）** | **AC-069..AC-071** |
 
 Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落地。Phase K **以 `packages/beacon-run` 为主实现面**，可复用 R3 的 prompt/schema/evidence 契约与 `intent/` 薄适配层。
 
@@ -519,6 +522,22 @@ Parent Phase A-D 必须先满足。Phase J 已在 `beacon-loop` R3 备份中落�
 | AC-063 | **Smoke truth exit（reconciled）**：当 target feature `scope_mode=smoke` 或 `minimal_smoke` 时，truth phase exit **不得**要求 `beacon doctor sync-materials`；但 **在 promote 到 `generate` 之前** 仍须通过 **`truth_freeze_gate`**（见 AC-068）：`truth-map resolve` PASS + `features/<slug>/truth.md` package ready + **`beacon freeze` PASS**。AC-035 对 smoke **无例外**。 |
 | AC-064 | **Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。 |
 | AC-068 | **`truth_freeze_gate`（beacon-run）**：`packages/beacon-run` 在 truth→generate 间 **必须** fail-closed 执行 freeze gate，对齐 Delivery Loop `truth_freeze_gate` 与 beacon-loop `truth-fill` 末尾 `beacon freeze` 链。**禁止** draft truth 下 `phase_promoted=true` 或 agent 进入 `generate` 写产品代码。truth exit 序列：`resolve` →（full_parity：`sync-materials`）→（按需 `sync-requirement-clarity`）→ **`beacon freeze --json`**；失败时 `phase` 保持 `truth`，`reason_code=truth_not_frozen`。`generate` **entry** 须 `isFeatureTruthFrozen===true`，否则不得 `run_agent`。`generate` exit 若 preflight 为 `revision_not_frozen` 或 `legacy_cutover_required`，须 **phase demote** 到 truth freeze repair（可 harness 尝试 `beacon truth-cutover run … --apply`），**不得** 空烧 iteration cap。truth phase `allowed_harness` 须含 `beacon freeze`。`truth-promotion.json` 须记录 freeze/cutover command。 |
+| AC-069 | **v1.6.1 — worktree+freeze 不断链（E2E）**：在 `go-todo-crud-smoke` 回归夹具上，`beacon-loop goal "<utterance>" --worktree --beacon --feature go-todo-crud-smoke --version v1.6.0` **必须** 完成：`truth-promotion.json` 内全部 harness 的 `--project-root`/`cwd` = worktree；**不得** 出现 `test_case_sync_failed`（主仓 sync）；**不得** 在 draft truth 下进入 `generate`；truth frozen 后 **必须** promote 到 `generate` 且 `implement run` **不得** 因 `revision_not_frozen` 空转。强化 AC-061 + AC-068 的 **real-project opt-in E2E**（`BEACON_RUN_E2E_GO_TODO=1`）。 |
+| AC-070 | **v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。 |
+| AC-071 | **v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。 |
+
+### Loop Engineering 对齐（R10 normative reference）
+
+| Osmani 原语 | Beacon v1.6.1 落地 | AC |
+|-------------|---------------------|-----|
+| `/goal` run-until-verifiable-done | `beacon-loop goal` → `beacon-run` + phase harness | AC-039, AC-071 |
+| Worktrees | `--worktree` harness root = agent cwd | AC-061, AC-069 |
+| Skills | Host skills + phase digest（非 subprocess 读 MD） | AC-054, AC-043 |
+| Sub-agents maker≠checker | pln/gen/eval/gov + harness subprocess | AC-033, AC-071 |
+| State / memory spine | disk artifacts + **spine show** | AC-070 |
+| Automations heartbeat | hooks（非 loop 包内 schedule） | non-goal；D-le-002 |
+
+**scope_mode（R10）**：`patch` + `compatibility_only`。**Non-goals（R10）**：v2 Rust orchestrator、独立 judge 模型服务、Automations Tab 对等物。
 
 ### R5 Harness Contract（worktree + smoke）
 

@@ -65,7 +65,7 @@
       ]
     },
     "project_type": "ai-agent-skill",
-    "generated_at": "2026-06-11T20:36:34.681206",
+    "generated_at": "2026-06-12T19:12:22.900440",
     "prompt_ref": "beacon.qa9.llm.plan.v1.0.2",
     "skip_reason": "",
     "qa_types": [
@@ -82,7 +82,7 @@
   },
   "qa_strategy": {
     "schema_version": "1.0.2",
-    "generated_at": "2026-06-11T20:36:34.679936",
+    "generated_at": "2026-06-12T19:12:22.898854",
     "project_type": "ai-agent-skill",
     "project_scan": {
       "language": "python",
@@ -1215,6 +1215,81 @@
       "steps": ""
     },
     {
+      "tc_id": "TC-071",
+      "ac_id": "AC-069",
+      "story_id": "",
+      "layer": "e2e",
+      "qa_type": "e2e",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-069 :: worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"",
+      "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-071.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"`",
+      "scenario": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-072",
+      "ac_id": "AC-070",
+      "story_id": "",
+      "layer": "contract",
+      "qa_type": "contract",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-070 :: `spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_path",
+      "priority": "P1",
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"",
+      "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-072.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"`",
+      "scenario": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "steps": ""
+    },
+    {
+      "tc_id": "TC-073",
+      "ac_id": "AC-071",
+      "story_id": "",
+      "layer": "negative",
+      "qa_type": "negative",
+      "title": "beacon-loop-goal-closed-loop-orchestrator AC-071 :: agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unv",
+      "priority": "P2",
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"",
+      "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-073.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ],
+      "status": "pending",
+      "source": "qa:test-cases:/Users/apple/Developer/Personal/products/beacon/docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "execution_method": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"`",
+      "scenario": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "steps": ""
+    },
+    {
       "tc_id": "TC-055",
       "ac_id": "AC-053",
       "story_id": "",
@@ -2094,7 +2169,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 73,
+    "row_count": 76,
     "enrichment_disabled": true
   },
   "compatibility_matrix": {
@@ -2122,7 +2197,7 @@
       }
     ]
   },
-  "generated_at": "2026-06-11T20:36:34.681267",
+  "generated_at": "2026-06-12T19:12:22.900579",
   "research_projection": {
     "schema_version": "1.0",
     "feature": "beacon-loop-goal-closed-loop-orchestrator",

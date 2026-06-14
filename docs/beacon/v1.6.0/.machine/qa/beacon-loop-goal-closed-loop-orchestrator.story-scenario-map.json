@@ -3,7 +3,7 @@
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
-  "generated_at": "2026-06-11T12:36:34.684672+00:00",
+  "generated_at": "2026-06-12T11:12:22.907507+00:00",
   "expansion_profile": "pua-web",
   "scenario_depth": "standard",
   "families_required": [
@@ -444,9 +444,8 @@
     },
     {
       "ac_id": "AC-033",
-      "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
-      "text_hash": "sha256:ae7b81dcc12ec391bf10962a70d1f51d83103e36f4675a5e93dc41bff096bf98",
-      "text_bytes": 241,
+      "theme": "**R10 v1.6.1 止血：Loop Engineering 对齐（patch，非 v2）**",
+      "text": "**AC-069..AC-071**",
       "scenario_ids": [
         "SC-011"
       ],
@@ -468,9 +467,9 @@
     },
     {
       "ac_id": "AC-034",
-      "theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
-      "text_hash": "sha256:4acd91a595be140e0375e2eb047fdf334edd37d4b8bf214020b26cce96741098",
-      "text_bytes": 208,
+      "theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+      "text_hash": "sha256:ae7b81dcc12ec391bf10962a70d1f51d83103e36f4675a5e93dc41bff096bf98",
+      "text_bytes": 241,
       "scenario_ids": [
         "SC-012"
       ],
@@ -492,9 +491,9 @@
     },
     {
       "ac_id": "AC-035",
-      "theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
-      "text_hash": "sha256:6b734439f00417aafbb7a8ac15c363a1d687dec5118a03a2629e3153aed8a9ed",
-      "text_bytes": 129,
+      "theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+      "text_hash": "sha256:4acd91a595be140e0375e2eb047fdf334edd37d4b8bf214020b26cce96741098",
+      "text_bytes": 208,
       "scenario_ids": [
         "SC-013"
       ],
@@ -516,9 +515,9 @@
     },
     {
       "ac_id": "AC-036",
-      "theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
-      "text_hash": "sha256:226ec4f43442308d997eba8d1a31057a2882656a8e04f038d4ee64f69520803b",
-      "text_bytes": 211,
+      "theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+      "text_hash": "sha256:6b734439f00417aafbb7a8ac15c363a1d687dec5118a03a2629e3153aed8a9ed",
+      "text_bytes": 129,
       "scenario_ids": [
         "SC-014"
       ],
@@ -540,9 +539,9 @@
     },
     {
       "ac_id": "AC-037",
-      "theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
-      "text_hash": "sha256:c460d2275f8d82b39d47dccdbbbebd7fe15688955fe14843d55b5f5ad7af4857",
-      "text_bytes": 160,
+      "theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+      "text_hash": "sha256:226ec4f43442308d997eba8d1a31057a2882656a8e04f038d4ee64f69520803b",
+      "text_bytes": 211,
       "scenario_ids": [
         "SC-015"
       ],
@@ -564,9 +563,9 @@
     },
     {
       "ac_id": "AC-038",
-      "theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
-      "text_hash": "sha256:57e888f9d457ced20837927f1c8481e5c2ce8d914792191e92d606bf3275ef7a",
-      "text_bytes": 170,
+      "theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+      "text_hash": "sha256:c460d2275f8d82b39d47dccdbbbebd7fe15688955fe14843d55b5f5ad7af4857",
+      "text_bytes": 160,
       "scenario_ids": [
         "SC-016"
       ],
@@ -588,9 +587,9 @@
     },
     {
       "ac_id": "AC-039",
-      "theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
-      "text_hash": "sha256:dac8ff588c70e7ab100c290ddb707f16b75b8d58e7d579de1cb747a8a6e58aae",
-      "text_bytes": 153,
+      "theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+      "text_hash": "sha256:57e888f9d457ced20837927f1c8481e5c2ce8d914792191e92d606bf3275ef7a",
+      "text_bytes": 170,
       "scenario_ids": [
         "SC-017"
       ],
@@ -612,9 +611,9 @@
     },
     {
       "ac_id": "AC-040",
-      "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
-      "text_hash": "sha256:89da6311e7e7dd1a94a892aca44d19f62471418cf0f54e29de6df9854ae7698f",
-      "text_bytes": 189,
+      "theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+      "text_hash": "sha256:dac8ff588c70e7ab100c290ddb707f16b75b8d58e7d579de1cb747a8a6e58aae",
+      "text_bytes": 153,
       "scenario_ids": [
         "SC-018"
       ],
@@ -636,9 +635,9 @@
     },
     {
       "ac_id": "AC-041",
-      "theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
-      "text_hash": "sha256:93608e3083b7c34c5f421884dc154c62341fdf095c4cee9c7825304b0ae46ebd",
-      "text_bytes": 365,
+      "theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+      "text_hash": "sha256:89da6311e7e7dd1a94a892aca44d19f62471418cf0f54e29de6df9854ae7698f",
+      "text_bytes": 189,
       "scenario_ids": [
         "SC-019"
       ],
@@ -660,9 +659,9 @@
     },
     {
       "ac_id": "AC-042",
-      "theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
-      "text_hash": "sha256:4dafca5dda31d6313fa1f19eccb54c6b5d3df225aad95d62df0c328c1982833c",
-      "text_bytes": 276,
+      "theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
+      "text_hash": "sha256:93608e3083b7c34c5f421884dc154c62341fdf095c4cee9c7825304b0ae46ebd",
+      "text_bytes": 365,
       "scenario_ids": [
         "SC-020"
       ],
@@ -684,18 +683,30 @@
     },
     {
       "ac_id": "AC-043",
-      "theme": "",
-      "text": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
+      "text_hash": "sha256:4dafca5dda31d6313fa1f19eccb54c6b5d3df225aad95d62df0c328c1982833c",
+      "text_bytes": 276,
       "scenario_ids": [
-        "SC-AUTO-TC-045"
+        "SC-021",
+        "SC-022"
       ],
       "scenario_families": [
+        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-AUTO-TC-045",
+          "scenario_id": "SC-021",
+          "source_tc_id": "TC-045",
+          "tc_id": "TC-045-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-022",
           "source_tc_id": "TC-045",
           "tc_id": "TC-045-PRIMARY",
           "scenario_family": "primary",
@@ -707,18 +718,30 @@
     },
     {
       "ac_id": "AC-044",
-      "theme": "",
-      "text": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "theme": "**v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。",
+      "text_hash": "sha256:0c97c9e576665726128dec9e08fd7fb860d68a94edaec48b882fd80cc0863612",
+      "text_bytes": 582,
       "scenario_ids": [
-        "SC-AUTO-TC-046"
+        "SC-023",
+        "SC-024"
       ],
       "scenario_families": [
+        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-AUTO-TC-046",
+          "scenario_id": "SC-023",
+          "source_tc_id": "TC-046",
+          "tc_id": "TC-046-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-024",
           "source_tc_id": "TC-046",
           "tc_id": "TC-046-PRIMARY",
           "scenario_family": "primary",
@@ -730,18 +753,30 @@
     },
     {
       "ac_id": "AC-045",
-      "theme": "",
-      "text": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
+      "text_hash": "sha256:9b5919f0c489dcac59167f3c269f80edb2664ba323875a22d62ed2a3c7e0043b",
+      "text_bytes": 845,
       "scenario_ids": [
-        "SC-AUTO-TC-047"
+        "SC-025",
+        "SC-026"
       ],
       "scenario_families": [
+        "primary",
         "primary"
       ],
       "required_families": [],
       "scenarios": [
         {
-          "scenario_id": "SC-AUTO-TC-047",
+          "scenario_id": "SC-025",
+          "source_tc_id": "TC-047",
+          "tc_id": "TC-047-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        },
+        {
+          "scenario_id": "SC-026",
           "source_tc_id": "TC-047",
           "tc_id": "TC-047-PRIMARY",
           "scenario_family": "primary",
@@ -1239,6 +1274,75 @@
           "tc_id": "TC-070-PRIMARY",
           "scenario_family": "primary",
           "qa_type": "integration",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-069",
+      "theme": "",
+      "text": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "scenario_ids": [
+        "SC-AUTO-TC-071"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-071",
+          "source_tc_id": "TC-071",
+          "tc_id": "TC-071-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-070",
+      "theme": "",
+      "text": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "scenario_ids": [
+        "SC-AUTO-TC-072"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-072",
+          "source_tc_id": "TC-072",
+          "tc_id": "TC-072-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
+          "browser_required": false,
+          "replay_required": false
+        }
+      ]
+    },
+    {
+      "ac_id": "AC-071",
+      "theme": "",
+      "text": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "scenario_ids": [
+        "SC-AUTO-TC-073"
+      ],
+      "scenario_families": [
+        "primary"
+      ],
+      "required_families": [],
+      "scenarios": [
+        {
+          "scenario_id": "SC-AUTO-TC-073",
+          "source_tc_id": "TC-073",
+          "tc_id": "TC-073-PRIMARY",
+          "scenario_family": "primary",
+          "qa_type": "contract",
           "browser_required": false,
           "replay_required": false
         }
@@ -1947,14 +2051,14 @@
       ]
     },
     {
-      "scenario_id": "SC-AUTO-TC-045",
+      "scenario_id": "SC-021",
       "source_tc_id": "TC-045",
       "tc_id": "TC-045-PRIMARY",
       "ac_id": "AC-043",
       "qa_type": "contract",
       "layer": "contract",
       "scenario_family": "primary",
-      "title": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "title": "AC-043 primary path :: agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -1970,9 +2074,9 @@
       "stop_on_fail": false,
       "automation": "auto",
       "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
-      "assertion": "agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load 要求。",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-045/__RUN_ID__.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-045-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -1982,14 +2086,49 @@
       ]
     },
     {
-      "scenario_id": "SC-AUTO-TC-046",
+      "scenario_id": "SC-022",
+      "source_tc_id": "TC-045",
+      "tc_id": "TC-045-PRIMARY",
+      "ac_id": "AC-043",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-043 primary path :: agent surface / using-beacon 含 `beacon-loop goal` launch、steer、hard stop；无 subprocess skill load",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-045-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-023",
       "source_tc_id": "TC-046",
       "tc_id": "TC-046-PRIMARY",
       "ac_id": "AC-044",
       "qa_type": "integration",
       "layer": "integration",
       "scenario_family": "primary",
-      "title": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "title": "AC-044 primary path :: `implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` byp",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -2005,9 +2144,9 @@
       "stop_on_fail": false,
       "automation": "auto",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
-      "assertion": "`implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` bypass。",
+      "assertion": "Integration flow assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-046/__RUN_ID__.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-046-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -2017,14 +2156,49 @@
       ]
     },
     {
-      "scenario_id": "SC-AUTO-TC-047",
+      "scenario_id": "SC-024",
+      "source_tc_id": "TC-046",
+      "tc_id": "TC-046-PRIMARY",
+      "ac_id": "AC-044",
+      "qa_type": "integration",
+      "layer": "integration",
+      "scenario_family": "primary",
+      "title": "AC-044 primary path :: `implement_loop` subprocess 为 `beacon implement run … --runner`；grep/ shim 证明无裸 `codex exec` byp",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "integration",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
+      "assertion": "Integration flow assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-046-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-025",
       "source_tc_id": "TC-047",
       "tc_id": "TC-047-PRIMARY",
       "ac_id": "AC-045",
       "qa_type": "contract",
       "layer": "contract",
       "scenario_family": "primary",
-      "title": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "title": "AC-045 primary path :: run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
       "browser_required": false,
       "replay_required": false,
       "exploratory_runner": "native",
@@ -2040,9 +2214,44 @@
       "stop_on_fail": false,
       "automation": "auto",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
-      "assertion": "run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "assertion": "Provider/consumer contract assertions pass",
       "priority": "P1",
-      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-047/__RUN_ID__.json",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-047-PRIMARY.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-026",
+      "source_tc_id": "TC-047",
+      "tc_id": "TC-047-PRIMARY",
+      "ac_id": "AC-045",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "AC-045 primary path :: run 目录存在 `output-schema.json`；adapter 传 `--output-schema`；invalid JSON → iteration failure。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
+      "assertion": "Provider/consumer contract assertions pass",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/test-results/beacon-loop-goal-closed-loop-orchestrator/{run_id}/TC-047-PRIMARY.json",
       "required_files": [
         "command.txt",
         "stdout.log",
@@ -2855,6 +3064,111 @@
         "result.json",
         "junit.xml"
       ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-071",
+      "source_tc_id": "TC-071",
+      "tc_id": "TC-071-PRIMARY",
+      "ac_id": "AC-069",
+      "qa_type": "contract",
+      "layer": "e2e",
+      "scenario_family": "primary",
+      "title": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"",
+      "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-071/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-072",
+      "source_tc_id": "TC-072",
+      "tc_id": "TC-072-PRIMARY",
+      "ac_id": "AC-070",
+      "qa_type": "contract",
+      "layer": "contract",
+      "scenario_family": "primary",
+      "title": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"",
+      "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-072/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
+    },
+    {
+      "scenario_id": "SC-AUTO-TC-073",
+      "source_tc_id": "TC-073",
+      "tc_id": "TC-073-PRIMARY",
+      "ac_id": "AC-071",
+      "qa_type": "contract",
+      "layer": "negative",
+      "scenario_family": "primary",
+      "title": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "browser_required": false,
+      "replay_required": false,
+      "exploratory_runner": "native",
+      "deterministic_runner": "native",
+      "explore_command": "",
+      "replay_command": "",
+      "coverage_axes": [
+        "primary",
+        "contract",
+        "non-browser"
+      ],
+      "depends_on": [],
+      "stop_on_fail": false,
+      "automation": "auto",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"",
+      "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "priority": "P1",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-073/__RUN_ID__.json",
+      "required_files": [
+        "command.txt",
+        "stdout.log",
+        "stderr.log",
+        "result.json",
+        "junit.xml"
+      ]
     }
   ],
   "research_projection": {
@@ -2871,7 +3185,7 @@
     "truth_mode": "markdown",
     "fail_closed": true,
     "source": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
-    "row_count": 73,
+    "row_count": 76,
     "enrichment_disabled": true
   }
 }

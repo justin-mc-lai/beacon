@@ -17,12 +17,12 @@
     "story_state": "docs/beacon/v1.6.0/.machine/user-story/beacon-loop-goal-closed-loop-orchestrator.json"
   },
   "source_hashes": {
-    "truth": "sha256:7f53617a2cb7c784793f8b633544256a3e5cccb9c2976bb5d003d8c69584a833",
-    "tests": "sha256:e3e309b64a2e8061201ca517b70e89e031d41f437197a2c46125e548003e1b26",
-    "tasks": "sha256:1e1913158babae45d73b7bc4a29f211b6b02bb82f3250ab6eaa3b19886725230",
-    "evidence": "sha256:46c7d5ed12105e93550a43076e92e7666c1e9add72dadec7c734047af8dbadef",
-    "ac_matrix": "sha256:e3e309b64a2e8061201ca517b70e89e031d41f437197a2c46125e548003e1b26",
-    "story_state": "sha256:e9ce06cbf8895b925fa0850260304861f60f9ae7e2a653b55a50b8e7c81a1e9f"
+    "truth": "sha256:1878c06216353f568a9a9bf07e749a9e31e0a9d26b8de731a45591c793e71a19",
+    "tests": "sha256:bd242d3a0e234c18c3a29d27df73a9be8ae9223f95457ee27915cb6f91ab1f2e",
+    "tasks": "sha256:a8002e427c898989fa54f804825106264af5e83cb114f12d9ac79d57f991952a",
+    "evidence": "sha256:6d05ee71f2cabaaf418a40a91bebc28bed522e4bb6ebce626d5e7c25b05f37d9",
+    "ac_matrix": "sha256:bd242d3a0e234c18c3a29d27df73a9be8ae9223f95457ee27915cb6f91ab1f2e",
+    "story_state": "sha256:9ccf29111d6d24323dcbb387d57f1be709c81d0d8b4e4f368af07b2dcb7e743b"
   },
   "lanes": {
     "feature_release_facing": [
@@ -57,7 +57,7 @@
       {
         "tc_id": "TC-033",
         "ac_id": "AC-033",
-        "ac_theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+        "ac_theme": "**R10 v1.6.1 止血：Loop Engineering 对齐（patch，非 v2）**",
         "lane": "feature_release_facing",
         "layer": "integration",
         "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"",
@@ -71,7 +71,7 @@
       {
         "tc_id": "TC-034",
         "ac_id": "AC-034",
-        "ac_theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+        "ac_theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
         "lane": "feature_release_facing",
         "layer": "integration",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
@@ -85,7 +85,7 @@
       {
         "tc_id": "TC-035",
         "ac_id": "AC-035",
-        "ac_theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+        "ac_theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
         "lane": "feature_release_facing",
         "layer": "negative",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"",
@@ -99,7 +99,7 @@
       {
         "tc_id": "TC-036",
         "ac_id": "AC-036",
-        "ac_theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+        "ac_theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
         "lane": "feature_release_facing",
         "layer": "integration",
         "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"",
@@ -113,7 +113,7 @@
       {
         "tc_id": "TC-037",
         "ac_id": "AC-037",
-        "ac_theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+        "ac_theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
         "lane": "feature_release_facing",
         "layer": "behavior",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"",
@@ -127,7 +127,7 @@
       {
         "tc_id": "TC-038",
         "ac_id": "AC-038",
-        "ac_theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+        "ac_theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
         "lane": "feature_release_facing",
         "layer": "contract",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"",
@@ -141,7 +141,7 @@
       {
         "tc_id": "TC-039",
         "ac_id": "AC-039",
-        "ac_theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+        "ac_theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
         "lane": "feature_release_facing",
         "layer": "e2e",
         "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"",
@@ -155,7 +155,7 @@
       {
         "tc_id": "TC-042",
         "ac_id": "AC-040",
-        "ac_theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+        "ac_theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
         "lane": "feature_release_facing",
         "layer": "behavior",
         "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
@@ -169,7 +169,7 @@
       {
         "tc_id": "TC-043",
         "ac_id": "AC-041",
-        "ac_theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
+        "ac_theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
         "lane": "feature_release_facing",
         "layer": "integration",
         "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
@@ -183,7 +183,7 @@
       {
         "tc_id": "TC-044",
         "ac_id": "AC-042",
-        "ac_theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
+        "ac_theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
         "lane": "feature_release_facing",
         "layer": "behavior",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
@@ -197,7 +197,7 @@
       {
         "tc_id": "TC-045",
         "ac_id": "AC-043",
-        "ac_theme": "",
+        "ac_theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
         "lane": "feature_release_facing",
         "layer": "contract",
         "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
@@ -211,7 +211,7 @@
       {
         "tc_id": "TC-046",
         "ac_id": "AC-044",
-        "ac_theme": "",
+        "ac_theme": "**v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。",
         "lane": "feature_release_facing",
         "layer": "integration",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
@@ -225,7 +225,7 @@
       {
         "tc_id": "TC-047",
         "ac_id": "AC-045",
-        "ac_theme": "",
+        "ac_theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
         "lane": "feature_release_facing",
         "layer": "contract",
         "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
@@ -557,6 +557,48 @@
         "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
         "release_blocking": true,
         "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-071",
+        "ac_id": "AC-069",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "e2e",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"",
+        "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-071/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-072",
+        "ac_id": "AC-070",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "contract",
+        "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"",
+        "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-072/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
+      },
+      {
+        "tc_id": "TC-073",
+        "ac_id": "AC-071",
+        "ac_theme": "",
+        "lane": "feature_release_facing",
+        "layer": "negative",
+        "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"",
+        "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+        "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-073/__RUN_ID__.json",
+        "evidence_status": "passed",
+        "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+        "release_blocking": true,
+        "mapping_status": "pass"
       }
     ],
     "current_runtime_contract": [],
@@ -566,7 +608,7 @@
     "browser_runtime_admission": []
   },
   "lane_counts": {
-    "feature_release_facing": 38,
+    "feature_release_facing": 41,
     "current_runtime_contract": 0,
     "generated_surface_sync": 0,
     "compatibility_contract": 0,
@@ -613,7 +655,7 @@
     {
       "tc_id": "TC-033",
       "ac_id": "AC-033",
-      "ac_theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
+      "ac_theme": "**R10 v1.6.1 止血：Loop Engineering 对齐（patch，非 v2）**",
       "lane": "feature_release_facing",
       "layer": "integration",
       "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=fixture npm test -- --test-name-pattern \"planner-review-artifact\"",
@@ -627,7 +669,7 @@
     {
       "tc_id": "TC-034",
       "ac_id": "AC-034",
-      "ac_theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
+      "ac_theme": "**Parent failure backoff（继承 parent）**：`implement_loop` 复用 parent orchestrator AC-019：agent-reported failure 立即下一轮；retryable hard error 指数退避；连续失败达上限 abort；no-op iteration 计为 failure。",
       "lane": "feature_release_facing",
       "layer": "integration",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"truth-fill-on-blocked\"",
@@ -641,7 +683,7 @@
     {
       "tc_id": "TC-035",
       "ac_id": "AC-035",
-      "ac_theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
+      "ac_theme": "**Beacon phase prompt**：每轮 iteration prompt 注入当前 Beacon 阶段、allowed/forbidden harness 命令、Skills 职责摘要（非 subprocess 读 MD）；落盘 `beacon-phase.json` + prompt 正文。",
       "lane": "feature_release_facing",
       "layer": "negative",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"frozen-gate-before-implement\"",
@@ -655,7 +697,7 @@
     {
       "tc_id": "TC-036",
       "ac_id": "AC-036",
-      "ac_theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
+      "ac_theme": "**全迭代 agent backend**：truth/generate/repair 阶段均通过 agent adapter 执行；不得仅 implement 单层调 codex。",
       "lane": "feature_release_facing",
       "layer": "integration",
       "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_EVAL_CHAIN=fixture npm test -- --test-name-pattern \"delivery-eval-chain\"",
@@ -669,7 +711,7 @@
     {
       "tc_id": "TC-037",
       "ac_id": "AC-037",
-      "ac_theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
+      "ac_theme": "**非模板 truth 默认**：冷启动默认走 agent truth phase；`prd-bootstrap` 模板链仅 `--truth-bootstrap=fallback`；drill utterance 须产出含 OSS/parity 信号的 research 而非纯脚手架 AC。",
       "lane": "feature_release_facing",
       "layer": "behavior",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"qa-fail-repair-loop\"",
@@ -683,7 +725,7 @@
     {
       "tc_id": "TC-038",
       "ac_id": "AC-038",
-      "ac_theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
+      "ac_theme": "**Harness 阶段检查点**：迭代间强制可记账 harness 调用（resolve/freeze/qa/release）；`truth-promotion.json` 含 phase + command + exit_code。",
       "lane": "feature_release_facing",
       "layer": "contract",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"delivery-state-machine\"",
@@ -697,7 +739,7 @@
     {
       "tc_id": "TC-039",
       "ac_id": "AC-039",
-      "ac_theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
+      "ac_theme": "**beacon-loop 降级**：`packages/beacon-loop` 冻结为 R3 参考；新 AC 实现于 `beacon-run`；`beacon-loop goal` 可委托 beacon-run（deprecated 文档化）。",
       "lane": "feature_release_facing",
       "layer": "e2e",
       "command": "cd packages/beacon-loop && BEACON_LOOP_E2E_DELIVERY=1 npm test -- --test-name-pattern \"e2e-utterance-to-release\"",
@@ -711,7 +753,7 @@
     {
       "tc_id": "TC-042",
       "ac_id": "AC-040",
-      "ac_theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
+      "ac_theme": "**Core CLI 契约对齐**：`beacon implement run` 支持 `--output-schema`（与 AC-045 一致）；branch/dirty preflight 错误须 doctor 可诊断。",
       "lane": "feature_release_facing",
       "layer": "behavior",
       "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_TIEBREAK=fixture npm test -- --test-name-pattern \"llm-tiebreak-green-light\"",
@@ -725,7 +767,7 @@
     {
       "tc_id": "TC-043",
       "ac_id": "AC-041",
-      "ac_theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
+      "ac_theme": "**真项目 drill E2E**：greenfield + utterance（gum choose/filter）经 beacon-run：≥1 agent iteration on truth、≥1 commit on generate、qa invoke；verdict 仅 Beacon evaluator。",
       "lane": "feature_release_facing",
       "layer": "integration",
       "command": "cd packages/beacon-loop && BEACON_LOOP_TEST_REVIEW=parallel-fixture npm test -- --test-name-pattern \"parallel-review-lanes\"",
@@ -739,7 +781,7 @@
     {
       "tc_id": "TC-044",
       "ac_id": "AC-042",
-      "ac_theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
+      "ac_theme": "**Requirement clarity domain vocabulary**：`requirement_clarity` 的 `inline_marker`（TBD/TODO/??? 等）须用词界或上下文过滤，**不得**因 feature slug、路径、`canonical_refs` 行、frontmatter 中的合法领域词（如 `go-todo-crud-smoke`）误 block `freeze`；须含回归 fixture：`go-todo-crud-smoke` 材料完整时 clarity gate PASS。",
       "lane": "feature_release_facing",
       "layer": "behavior",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"lifecycle-auto-route\"",
@@ -753,7 +795,7 @@
     {
       "tc_id": "TC-045",
       "ac_id": "AC-043",
-      "ac_theme": "",
+      "ac_theme": "**Phase promotion visibility**：harness exit 失败时 `beacon-phase.json` 须区分 `phases_completed`（agent 迭代完成）与 `phase_promoted`（harness 放行）；TUI / `gnhf.log` 须输出结构化 `harness_exit_failed`（含 `reason_code`、command、exit_code）。",
       "lane": "feature_release_facing",
       "layer": "contract",
       "command": "beacon doctor verify-agent-surface --project-root . --agent cursor --strict",
@@ -767,7 +809,7 @@
     {
       "tc_id": "TC-046",
       "ac_id": "AC-044",
-      "ac_theme": "",
+      "ac_theme": "**v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。",
       "lane": "feature_release_facing",
       "layer": "integration",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"implement-harness-worker\"",
@@ -781,7 +823,7 @@
     {
       "tc_id": "TC-047",
       "ac_id": "AC-045",
-      "ac_theme": "",
+      "ac_theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
       "lane": "feature_release_facing",
       "layer": "contract",
       "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"output-schema\"",
@@ -1113,6 +1155,48 @@
       "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
       "release_blocking": true,
       "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-071",
+      "ac_id": "AC-069",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "e2e",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"",
+      "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-071/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-072",
+      "ac_id": "AC-070",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "contract",
+      "command": "cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"",
+      "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-072/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
+    },
+    {
+      "tc_id": "TC-073",
+      "ac_id": "AC-071",
+      "ac_theme": "",
+      "lane": "feature_release_facing",
+      "layer": "negative",
+      "command": "cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"",
+      "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "evidence_path": ".beacon/evidence/qa-feature/beacon-loop-goal-closed-loop-orchestrator/tc-073/__RUN_ID__.json",
+      "evidence_status": "passed",
+      "source": "feature-package:docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/tests.md",
+      "release_blocking": true,
+      "mapping_status": "pass"
     }
   ],
   "ac_to_test_refs": {
@@ -1223,6 +1307,15 @@
       "TC-068",
       "TC-069",
       "TC-070"
+    ],
+    "AC-069": [
+      "TC-071"
+    ],
+    "AC-070": [
+      "TC-072"
+    ],
+    "AC-071": [
+      "TC-073"
     ]
   },
   "qa_order_contract": {
@@ -1258,6 +1351,6 @@
   "status": "pass",
   "blocked": false,
   "reason_codes": [],
-  "generated_at": "2026-06-11T13:29:54.837765+00:00",
+  "generated_at": "2026-06-12T11:18:23.388885+00:00",
   "index_path": "docs/beacon/v1.6.0/.machine/testing/test-contract-index.json"
 }
