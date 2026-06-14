@@ -48,7 +48,7 @@ def run_cmd(
         evidence_refs=evidence_refs,
         host_runtime=os.environ.get("BEACON_AGENT_RUNTIME", "codex"),
         subagent_runtime_available=subagent_available,
-        write=False,
+        write=True,
     )
     if json_output:
         typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))

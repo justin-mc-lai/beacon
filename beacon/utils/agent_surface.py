@@ -1130,10 +1130,14 @@ def verify_v160_no_fake_delivery(payload: dict[str, Any]) -> dict[str, Any]:
     detected: list[str] = []
     patterns = {
         "placeholder_implementation": r"placeholder[- ]implementation|占位实现|假实现",
-        "docs_only_completion": r"docs[- ]only[- ]completion|docs[- ]only|只写文档|文档完成",
+        "placeholder_acceptance": r"placeholder[- ]acceptance|占位验收|placeholder ac|stub-only closure",
+        "docs_only_completion": r"(?<!非)(?<!不)docs[- ]only[- ]completion|(?<!非)(?<!不)docs[- ]only(?!\s*闭环)|只写文档|文档完成",
         "fake_runner_evidence": r"fake[- ]runner[- ]evidence|fake[- ]runner|假 runner|假运行器",
         "zero_assertions": r"zero[- ]assertions|0 assertions|0 个断言|零断言",
         "placeholder_evidence": r"placeholder[- ]evidence|占位证据|假证据",
+        "soft_test_only": r"soft[- ]test[- ]only|软占位验证",
+        "pending_deferral": r"user_decision:\s*pending|\|\s*pending\s*\|",
+        "implementation_claim_without_evidence": r"implementation claim without evidence|无证据声称完成",
     }
     for code, pattern in patterns.items():
         if re.search(pattern, text):

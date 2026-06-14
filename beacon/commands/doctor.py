@@ -32,6 +32,7 @@ from beacon.utils.doctor_orchestrator import (
     run_package_upgrade,
     run_quiet_worktree,
     run_requirement_clarity_sync,
+    run_truth_integrity_verify,
     run_runtime_ledger_export,
     run_runtime_ledger_rebuild,
     run_runtime_ledger_verify,
@@ -846,6 +847,38 @@ def sync_requirement_clarity(
         typer.echo(f"json: {report.get('json', '')}")
         typer.echo(f"markdown: {report.get('markdown', '')}")
         typer.echo(f"state: {writeback.get('state_path', '')}")
+    raise typer.Exit(code=execution.exit_code)
+
+
+@app.command("verify-truth-integrity")
+def verify_truth_integrity(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    mode: str = typer.Option("audit", "--mode", help="Gate mode: audit or block"),
+    strict: bool = typer.Option(False, "--strict", help="Treat audit findings as blocking"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify feature package truth integrity (TIG) before freeze or for audit."""
+    execution = run_truth_integrity_verify(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        mode=mode,
+        strict=strict,
+    )
+    output = execution.payload
+    result = output.get("result", {}) if isinstance(output.get("result"), dict) else {}
+    if json_output:
+        typer.echo(json.dumps(output, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Truth Integrity")
+        typer.echo("=" * 30)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {result.get('status', '')}")
+        typer.echo(f"blocked: {result.get('blocked', False)}")
+        typer.echo(f"finding_count: {result.get('finding_count', 0)}")
+        typer.echo(f"reason_code: {result.get('reason_code', '')}")
     raise typer.Exit(code=execution.exit_code)
 
 

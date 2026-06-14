@@ -1,5 +1,7 @@
 # Multi-Agent Review Runtime
 
+Implementation line: `beacon-pln-review-runtime-multi-agent-v160` (`beacon/utils/planner_review_runtime.py` + `beacon planner-review run`).
+
 `beacon-pln-review` supports planner-only multi-reviewer runtime evidence.
 
 This is not a new lifecycle stage and not a set of host-visible reviewer skills. Reviewer lanes are internal runtime evidence used to make planning review auditable before routing to truth/change/implement/QA/release.

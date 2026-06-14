@@ -469,6 +469,44 @@ def run_requirement_clarity_sync(
     return DoctorExecutionResult(payload=payload, exit_code=0)
 
 
+def run_truth_integrity_verify(
+    *,
+    project_root: str,
+    version: str,
+    feature: str,
+    mode: str = "audit",
+    strict: bool = False,
+) -> DoctorExecutionResult:
+    """Run Truth Integrity Gate for one feature (audit or block mode)."""
+    from beacon.utils.truth_integrity import build_truth_integrity_gate
+
+    ctx = build_doctor_execution_context(project_root, version=version)
+    gate_mode = "audit" if str(mode).strip().lower() == "audit" else "block"
+    gate = build_truth_integrity_gate(
+        ctx.project_root,
+        version=version,
+        feature=feature,
+        mode=gate_mode,
+    )
+    status = str(gate.get("status") or "pass").upper()
+    if strict and int(gate.get("finding_count") or 0) > 0:
+        status = "BLOCKED"
+    exit_code = 0
+    if gate_mode == "block" and bool(gate.get("blocked")):
+        exit_code = 2
+    elif strict and int(gate.get("finding_count") or 0) > 0:
+        exit_code = 2
+    elif status in {"FAIL", "BLOCKED"}:
+        exit_code = 2
+    payload = {
+        "schema_version": "2.0",
+        "action": "verify-truth-integrity",
+        "status": status,
+        "result": gate,
+    }
+    return DoctorExecutionResult(payload=payload, exit_code=exit_code)
+
+
 def run_technical_review_contract_sync(
     *,
     project_root: str,

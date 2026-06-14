@@ -69,12 +69,150 @@ support research
   -> truth.define
   -> truth.acceptance
   -> truth.coverage
+  -> Truth Freeze Intent Loop (mandatory before freeze)
   -> requirement_clarity
   -> freeze
   -> implement
   -> qa
   -> release
 ```
+
+## Truth Freeze Intent Loop（HARD GATE — freeze 前强制）
+
+Generator **不得**在单轮 `truth.coverage` 后直接建议 freeze。必须按轮次煮干用户意图；任一 Round 失败则回到对应 mode 重写，**不得**用占位 AC/TC 凑 closure 形状。
+
+### 煮干定义（全部满足才可进入 Round 7）
+
+1. `truth.md` 含 **User Intent 一行** + `User Intent Snapshot`（含 `lake_or_ocean`）。
+2. **Alignment Surface** 与 **Phased Backlog** 已拆分；海级 scope 不在单包 draft 宣称全 plan closure。
+3. **Deferral Ledger** 零 `user_decision: pending`。
+4. `tests.md` 每行 TC 含 **Command + Assertion**；禁止验证列仅为 `integration` / `目录存在` / 裸 `fixture` / `可选`（允许显式 `BLOCKED:<reason>`）。
+5. `beacon skill package verify-closure` **pass**（无 placeholder/docs-only/fake-runner/zero-assertion）。
+6. `beacon-pln-review` intent-parity：**不得**在 pending deferral 或 intent drift 时推荐 freeze。
+
+### Round 0 — Research gate（海级强制）
+
+**When**：`lake_or_ocean=海` 或 research 已 classify 为 ocean。
+
+**Mandatory**：
+
+- Read：`docs/beacon/<version>/research/<slug>.md`
+- 确认 `user_decision=promoted`；否则停止，路由 `beacon-pln-brainstorm`
+- 在 `truth.define` 写入 **Alignment Surface**（本 revision 必煮干）与 **Phased Backlog**（显式不在本包 closure 的范围）
+
+### Round 1 — Define + resolver
+
+**Mandatory shell**：
+
+```bash
+beacon truth-map resolve <feature> --project . --version <version> --json
+```
+
+**Mandatory read**：resolver 返回的 `truth.md`, `tests.md`, `tasks.md`, `evidence.md`
+
+**Write**：`truth.define` — User Intent 一行；`scope_mode` 与 Alignment/Phased 一致；禁止 placeholder AC。
+
+### Round 2 — Planner review（mandatory skill）
+
+**Mandatory**：加载并执行 `beacon-pln-review`（至少 **intent-fidelity** + **deferral-sovereignty** + **source-parity**）。
+
+**Read**：`skills/beacon/beacon-pln-review/references/intent-parity-artifacts.md`
+
+**Output**：Intent Snapshot 对照表；Deferral Ledger 须用户拍板（accepted/rejected，**无 pending**）。
+
+**Hard stop**：review 结论为 intent drift / pending deferral / 海级单包 full closure → **禁止**进入 Round 6–7。
+
+### Round 3 — Acceptance tighten
+
+**Mode**：`truth.acceptance`
+
+- 删除或改写含 `占位` / `placeholder` / `contract test 占位` / `TBD` 的 AC。
+- Agent/integration 类 AC 须声明最低 tier（integration，非 contract-only）。
+
+### Round 4 — Coverage behavior-level
+
+**Mode**：`truth.coverage`
+
+- 每个 AC 至少一行 TC；**Alignment Surface** 对应 TC 须行为级命令（参照 v1.6 closed-loop tests 矩阵格式：`Command | Assertion`）。
+- 扫描并修复软占位行（grep 验证列：`integration$|目录存在|^fixture$|^可选$`）。
+
+**Mandatory self-check (shell)**：
+
+```bash
+rg -n 'integration$|目录存在|^fixture$|^可选$' docs/beacon/<version>/features/<slug>/tests.md \
+  && echo "SOFT_TC_FOUND: fix before freeze" && exit 1 || echo "soft_tc_scan: pass"
+```
+
+### Round 5 — Fake-delivery closure verify（mandatory CLI）
+
+**Mandatory shell** — 优先使用与 freeze 同源的 TIG doctor：
+
+```bash
+beacon doctor verify-truth-integrity <slug> --project-root . --version <version> --mode block --json
+```
+
+等价 payload 路径（legacy）：
+
+```bash
+python3 - <<'PY'
+import json, pathlib
+root = pathlib.Path("docs/beacon/<version>/features/<slug>")
+payload = {
+  "truth": (root / "truth.md").read_text(encoding="utf-8"),
+  "tests": (root / "tests.md").read_text(encoding="utf-8"),
+  "tasks": (root / "tasks.md").read_text(encoding="utf-8"),
+  "evidence": (root / "evidence.md").read_text(encoding="utf-8"),
+}
+path = pathlib.Path("/tmp/beacon-truth-closure-payload.json")
+path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+print(path)
+PY
+
+beacon skill package verify-closure --feature <slug> --project-root . --version <version> --json
+```
+
+**Hard stop**：`blocked=true`、`status=blocked/fail` 或 `closure_allowed=false` → 回到 Round 3–4。
+
+**Additional grep gate**：
+
+```bash
+rg -n 'user_decision:\s*pending|占位|placeholder' docs/beacon/<version>/features/<slug>/truth.md \
+  && echo "DEFERRAL_OR_PLACEHOLDER: fix before freeze" && exit 1 || echo "deferral_scan: pass"
+```
+
+### Round 6 — Requirement clarity materialize
+
+**Mandatory shell**：
+
+```bash
+beacon doctor sync-requirement-clarity <feature> --project-root . --version <version> --json
+```
+
+**Interpret**：`gate.blocked=true` → 列出 findings，修复 package 或 machine 链后重跑 Round 4–6。**不得**在未修复时建议 freeze。
+
+### Round 7 — Pre-freeze gate + user freeze
+
+**Mandatory shell**（blocked 亦视为有效预检 — 记录 reason_code，修复后重跑）：
+
+```bash
+beacon freeze <feature> --project . --version <version> --json
+```
+
+**Only when**：Round 2–6 全 pass **且** 用户显式要求 freeze → 再次执行 Round 7 非 blocked 结果。
+
+**Never**：generator 自证「可 freeze」；freeze 权威在 CLI + 用户确认。
+
+### Loop routing table
+
+| 信号 | 回到 |
+|------|------|
+| scope/边界/open question | Round 1 `truth.define` |
+| AC 模糊/占位/TBD | Round 3 `truth.acceptance` |
+| TC 软占位/零断言 | Round 4 `truth.coverage` |
+| fake-delivery patterns | Round 3–4 |
+| deferral pending | Round 2 + 用户拍板 |
+| clarity blocked | Round 4–6 |
+| 海级 + 单包 100 AC 投影 | Round 0 拆 phase / 缩 Alignment Surface |
 
 ## Canonical v1.6.0 Routes
 
@@ -105,6 +243,7 @@ Use the new mode names when explaining lifecycle shape. Use compact skill names 
 - If frozen truth must change, choose `truth.change`.
 - If the user only wants read-only challenge, route to `beacon-pln-brainstorm` and require promotion back to truth before freeze.
 - If the user asks for implementation, QA, or release, leave `beacon-gen-truth` and route to `beacon-gen-implement`, `beacon-eval-qa`, or `beacon-eval-release`.
+- **Before any freeze recommendation**, complete **Truth Freeze Intent Loop** Rounds 0–7; ocean-scope features **must** run Round 2 `beacon-pln-review` and Round 5 `verify-closure`.
 
 ## Anti-Inertia Notes
 
@@ -117,6 +256,9 @@ Use the new mode names when explaining lifecycle shape. Use compact skill names 
 ## Backstop CLI
 
 - `beacon truth-map resolve <feature> --project . --version v1.5.2 --json`
+- `beacon skill package verify-closure --payload-path <path> --version v1.6.0 --json`
+- `beacon doctor sync-requirement-clarity <feature> --project-root . --version <version> --json`
+- `beacon freeze <feature> --project . --version <version> --json`
 - `beacon prd ...` for `truth.define` compatibility
 - `beacon user-story ...` for `truth.acceptance` compatibility
 - `beacon test-case ...` for `truth.coverage` compatibility
