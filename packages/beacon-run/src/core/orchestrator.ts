@@ -28,6 +28,7 @@ import {
 import { buildCommitMessage } from "./commit-message.js";
 import { buildIterationPrompt } from "../templates/iteration-prompt.js";
 import type { BeaconOrchestratorHooks } from "../beacon/hooks.js";
+import { evaluateStopWhenGate } from "./stop-when-gate.js";
 
 export interface IterationRecord {
   number: number;
@@ -76,6 +77,7 @@ export interface RunLimits {
   maxIterations?: number;
   maxTokens?: number;
   stopWhen?: string;
+  stopCheckCmd?: string;
   push?: boolean;
 }
 
@@ -373,9 +375,24 @@ export class Orchestrator extends EventEmitter<OrchestratorEvents> {
           if (afterDecision === "break") {
             break;
           }
-        } else if (this.limits.stopWhen !== undefined && result.shouldFullyStop) {
-          this.abort("stop condition met");
-          break;
+        } else if (
+          this.limits.stopWhen !== undefined &&
+          result.shouldFullyStop
+        ) {
+          const gate = evaluateStopWhenGate({
+            stopWhen: this.limits.stopWhen,
+            shouldFullyStop: true,
+            stopCheckCmd: this.limits.stopCheckCmd,
+            cwd: this.cwd,
+          });
+          if (gate.verified) {
+            this.abort("stop condition met");
+            break;
+          }
+          appendDebugLog("stop-when:unverified", {
+            reason_code: gate.reason_code || "stop_when_unverified",
+            check: gate.check || "",
+          });
         }
 
         const postIterationAbortReason = this.getPostIterationAbortReason();

@@ -607,6 +607,10 @@ program
     'End when the agent reports this condition, after any commit-failure repair; resumes reuse it, pass a new value to overwrite or "" to clear',
   )
   .option(
+    "--stop-check-cmd <shell>",
+    "Shell command that must exit 0 to verify --stop-when (maker≠checker gate; agent self-report alone is insufficient)",
+  )
+  .option(
     "--prevent-sleep <mode>",
     'Prevent system sleep during the run ("on" or "off")',
     parseOnOffBoolean,
@@ -668,6 +672,7 @@ program
         maxIterations?: number;
         maxTokens?: number;
         stopWhen?: string;
+        stopCheckCmd?: string;
         preventSleep?: boolean;
         worktree: boolean;
         currentBranch: boolean;
@@ -1014,6 +1019,7 @@ program
         maxIterations: options.maxIterations,
         maxTokens: options.maxTokens,
         stopWhen: effectiveStopWhen,
+        stopCheckCmd: options.stopCheckCmd,
         commitMessage: effectiveCommitMessage,
         preventSleep: config.preventSleep,
         agentArgsOverride: getNativeAgentName(config.agent)
@@ -1083,6 +1089,7 @@ program
           maxIterations: options.maxIterations,
           maxTokens: options.maxTokens,
           stopWhen: effectiveStopWhen,
+          stopCheckCmd: options.stopCheckCmd,
           ...(options.push ? { push: true } : {}),
         },
         beaconHooks,
