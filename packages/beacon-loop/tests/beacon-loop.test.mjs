@@ -262,7 +262,7 @@ test("multi-iteration orchestrator writes iteration-001..003 and cap_reached", (
   assert.equal(payload.iteration, 3);
   const runDir = join(project, ".beacon", "loop", "runs", payload.run_id);
   const runState = JSON.parse(readFileSync(join(runDir, "run-state.json"), "utf8"));
-  assert.ok(["max_iterations", "stop_when"].includes(runState.cap_reason));
+  assert.equal(runState.cap_reason, "max_iterations");
   for (const name of ["iteration-001-result.json", "iteration-002-result.json", "iteration-003-result.json"]) {
     assert.ok(existsSync(join(runDir, name)), name);
   }
@@ -542,4 +542,47 @@ test("TC-033 scripted closed loop drives goal import-evidence and beacon qa run"
   const qaPayload = JSON.parse(qa.stdout);
   assert.equal(qaPayload.surface, "beacon-qa");
   assert.notEqual(qaPayload.closure_verdict, "release_ready");
+});
+
+test("TC-072 spine-show returns operator progress ledger JSON", () => {
+  const repoRoot = join(root, "..", "..");
+  const result = run(["spine", "show", "--project", repoRoot, "--json"], { cwd: root });
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.command, "spine show");
+  assert.ok(Array.isArray(payload.authoritative_paths));
+  assert.ok(payload.authoritative_paths.length > 0);
+  assert.ok("phase" in payload);
+  assert.ok("next_action" in payload);
+  assert.ok(payload.doc_ref.includes("beacon-loop-state-spine.md"));
+});
+
+test("TC-071 go-todo worktree delegate dry-run routes worktree harness", () => {
+  const repoRoot = join(root, "..", "..");
+  const result = spawnSync(
+    "node",
+    [
+      cli,
+      "goal",
+      "在 examples/go-todo-crud 实现最小 Go HTTP CRUD",
+      "--project",
+      repoRoot,
+      "--version",
+      "v1.6.0",
+      "--feature",
+      "go-todo-crud-smoke",
+      "--worktree",
+      "--dry-run",
+      "--json",
+    ],
+    { cwd: root, encoding: "utf8" },
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const payload = JSON.parse(result.stdout);
+  assert.equal(payload.status, "dry_run");
+  assert.equal(payload.delegation, "beacon-run");
+  assert.match(payload.beacon_run_command, /--worktree/);
+  assert.match(payload.beacon_run_command, /--project-root/);
+  assert.match(payload.beacon_run_command, /go-todo-crud-smoke/);
+  assert.match(payload.beacon_run_command, /--beacon/);
 });
