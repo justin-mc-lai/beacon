@@ -1,0 +1,746 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-13T23:09:10.139656+00:00",
+  "feature": "beacon-v2-rust-kernel-redesign",
+  "feature_slug": "beacon-v2-rust-kernel-redesign",
+  "version": "v2.0.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+    "tests": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+    "tasks": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+    "evidence": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "53cc14aed816ab49dbc50499978cd8e076eba1d9c771ea1b7c9b80ea1a0ebbda",
+    "tests": "8c87c37a540c65902a717cb0f7f898a0b0cc1f7156ad4401c748c4e35f4dc0dd",
+    "tasks": "b08d044cbde9d7902a3f2ee1fd5388e5a11a8f9899e76ec6b917cf8deaf9615e",
+    "evidence": "8ee3404e6290203f17496840e079270c07d6a284156f242a766c9e374b5260f7"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-v2-rust-kernel-redesign",
+    "version": "v2.0.0",
+    "status": "frozen",
+    "language": "zh",
+    "revision": "r4-frozen",
+    "canonical_refs": {
+      "prd": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "user_story": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "test_case": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "source_plan": "docs/plans/beacon-v2-redesign.md",
+    "planner_review": "beacon-pln-review option-A true-integration"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-001",
+      "theme": "",
+      "description": "- **AC-001**：v2 默认执行面为 Rust workspace（`packages/beacon-rs/` 或等价根）。"
+    },
+    {
+      "ac_id": "AC-002",
+      "theme": "",
+      "description": "- **AC-002**：`beacon-python` 通过 PyO3 暴露 v1 兼容 API；33 个 host skills 在 P4 前不得破坏路由契约。"
+    },
+    {
+      "ac_id": "AC-003",
+      "theme": "",
+      "description": "- **AC-003**：Python 层在 P4 前可继续承载未迁移子命令；新能力优先落 Rust CLI。"
+    },
+    {
+      "ac_id": "AC-004",
+      "theme": "",
+      "description": "- **AC-004**：`features/<slug>/truth.md` 与 `docs/beacon/<version>/` 为 **唯一** requirement authority。"
+    },
+    {
+      "ac_id": "AC-005",
+      "theme": "",
+      "description": "- **AC-005**：`~/.beacon/beacon.db` 不得存储可编辑的需求正文；只可存 metadata、FSM、gate、artifact 指针。"
+    },
+    {
+      "ac_id": "AC-006",
+      "theme": "",
+      "description": "- **AC-006**：`.beacon/qa/*.json`、`.beacon/gate-report.json` 等 v1 投影在 v2 为 **非权威**；Spine 读 DB 优先，文件仅 fallback/export。"
+    },
+    {
+      "ac_id": "AC-007",
+      "theme": "",
+      "description": "- **AC-007**：实现必须遵守上表三层分离。"
+    },
+    {
+      "ac_id": "AC-008",
+      "theme": "",
+      "description": "- **AC-008**：**禁止** `<project>/.beacon/beacon.db` 作为运行态权威（v2 明确否决 per-project DB）。"
+    },
+    {
+      "ac_id": "AC-009",
+      "theme": "",
+      "description": "- **AC-009**：**禁止** `<project>/.beacon/loop/ledger/loop-runs.db` 作为 v2 权威；v1.6 ledger 须在 migration 中导入全局库后只读归档。"
+    },
+    {
+      "ac_id": "AC-010",
+      "theme": "",
+      "description": "- **AC-010**：Blob 文件变更时 `artifact_refs` 必须更新 `content_hash`；hash 不匹配时 Spine 标记 `stale`。"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "",
+      "description": "- **AC-011**：`beacon doctor projection rebuild` 须能从已注册 `project_root` 的 MD + blob + 遗留 v1 JSON **重建**全局库索引（plan §2.5 原则 4）；rebuild 后 `spine show` 与 rebuild 前 snapshot 在 lifecycle/gate 字段上一致（artifact 指针允许 stale 标记）。"
+    },
+    {
+      "ac_id": "AC-012",
+      "theme": "",
+      "description": "- **AC-012**：Append-only `lifecycle_events`；状态覆盖写 `feature_lifecycle` 当前快照。"
+    },
+    {
+      "ac_id": "AC-013",
+      "theme": "",
+      "description": "- **AC-013**：每次 gate 评估写入 `gate_results`（pass/fail/blocked + reason_codes JSON）。"
+    },
+    {
+      "ac_id": "AC-014",
+      "theme": "",
+      "description": "- **AC-014**：每次 run 启动写入 `runs`；checkpoint 写入 `checkpoints`。"
+    },
+    {
+      "ac_id": "AC-015",
+      "theme": "",
+      "description": "- **AC-015**：Spine 查询 **DB-first**；blob 仅当 `artifact_refs` 存在且 hash 有效时拼接。"
+    },
+    {
+      "ac_id": "AC-016",
+      "theme": "",
+      "description": "- **AC-016**：v1 JSON 运行态只允许 **export/import 迁移**，不得与 DB 双写竞争权威。"
+    },
+    {
+      "ac_id": "AC-017",
+      "theme": "",
+      "description": "- **AC-017**：必须实现 `beacon spine show [--project PATH] [--feature SLUG] [--json]`。"
+    },
+    {
+      "ac_id": "AC-018",
+      "theme": "",
+      "description": "- **AC-018**：必须实现 `beacon spine list [--project PATH] [--status STATUS] [--json]`。"
+    },
+    {
+      "ac_id": "AC-019",
+      "theme": "",
+      "description": "- **AC-019**：必须实现 `beacon spine artifacts <run-id> [--json]`。"
+    },
+    {
+      "ac_id": "AC-020",
+      "theme": "",
+      "description": "- **AC-020**：必须实现 `beacon spine gate <feature> [--version vX] [--json]`。"
+    },
+    {
+      "ac_id": "AC-021",
+      "theme": "",
+      "description": "- **AC-021**：必须实现 `beacon projects list|register|show [--json]`（机器级多项目）。"
+    },
+    {
+      "ac_id": "AC-022",
+      "theme": "",
+      "description": "- **AC-022**：workspace 必须包含六 crate（core/store/orchestrator/gate/cli/python）。"
+    },
+    {
+      "ac_id": "AC-023",
+      "theme": "",
+      "description": "- **AC-023**：crate 依赖方向：`cli -> {gate, orchestrator, store, core}`；`store -> core`；`orchestrator -> {store, core}`；禁止循环依赖。"
+    },
+    {
+      "ac_id": "AC-024",
+      "theme": "",
+      "description": "- **AC-024**：v2.0.0 **不交付** `beacon-proto`/gRPC（**D-V2-001 accepted defer**）；CLI 与 orchestrator 不得硬依赖 gRPC；未来版本可单独 reopen。"
+    },
+    {
+      "ac_id": "AC-025",
+      "theme": "",
+      "description": "- **AC-025**：单文件模块超过 500 行须拆分或 ADR 说明例外（对齐 D-02）。"
+    },
+    {
+      "ac_id": "AC-026",
+      "theme": "",
+      "description": "- **AC-026**：`WorkflowStage` 与 `StageStatus` 在 `beacon-core` 以 Rust `enum` 定义，禁止字符串裸奔。"
+    },
+    {
+      "ac_id": "AC-027",
+      "theme": "",
+      "description": "- **AC-027**：阶段转换表显式编码；非法转换返回 typed error + reason_code。"
+    },
+    {
+      "ac_id": "AC-028",
+      "theme": "",
+      "description": "- **AC-028**：`Blocked` 必须携带 `reason_codes: Vec<String>` 与可选 `blocking_gate`。"
+    },
+    {
+      "ac_id": "AC-029",
+      "theme": "",
+      "description": "- **AC-029**：`Skipped` 仅允许带 `user_accepted_deferral_id` 或 deferral ledger 引用。"
+    },
+    {
+      "ac_id": "AC-030",
+      "theme": "",
+      "description": "- **AC-030**：`Crashed` / `TimedOut` / `Interrupted` 须写入 `lifecycle_events` 且可触发 recovery 路径。"
+    },
+    {
+      "ac_id": "AC-031",
+      "theme": "",
+      "description": "- **AC-031**：Delivery 运行时 12 状态在 `beacon-core` 定义并与 `runs.status` CHECK 一致。"
+    },
+    {
+      "ac_id": "AC-032",
+      "theme": "",
+      "description": "- **AC-032**：plan 主链节点转换须写入 `lifecycle_events`（可审计，非仅内存）。"
+    },
+    {
+      "ac_id": "AC-033",
+      "theme": "",
+      "description": "- **AC-033**：`Paused` / `Stopping` / `Stopped` 与 v1 beacon-loop graceful+force stop 对齐。"
+    },
+    {
+      "ac_id": "AC-034",
+      "theme": "",
+      "description": "- **AC-034**：`Repairing` 须持久化 repair payload 到 `artifact_refs`。"
+    },
+    {
+      "ac_id": "AC-035",
+      "theme": "",
+      "description": "- **AC-035**：`AwaitingQa` 仅在 `import-evidence` 成功后可进入。"
+    },
+    {
+      "ac_id": "AC-036",
+      "theme": "",
+      "description": "- **AC-036**：`Closed` 仅 release gate pass 或用户显式 archive；orchestrator **不得**自设 Closed。"
+    },
+    {
+      "ac_id": "AC-037",
+      "theme": "",
+      "description": "- **AC-037**：`EvidenceChain` 含 `manifest_hash`、`signature_chain`、`artifact_refs` 有序列表。"
+    },
+    {
+      "ac_id": "AC-038",
+      "theme": "",
+      "description": "- **AC-038**：import 断链 fail-closed → `EVIDENCE_CHAIN_BROKEN`。"
+    },
+    {
+      "ac_id": "AC-039",
+      "theme": "",
+      "description": "- **AC-039**：v1 `.beacon/evidence-signature-chain.json` 可迁移为 v2 记录。"
+    },
+    {
+      "ac_id": "AC-040",
+      "theme": "",
+      "description": "- **AC-040**：`beacon-orchestrator` 经 `beacon-cli` 暴露 goal/resume/stop/status。"
+    },
+    {
+      "ac_id": "AC-041",
+      "theme": "",
+      "description": "- **AC-041**：启动前 `truth-map resolve`；blocked → exit != 0 + 推荐 `beacon-gen-change`。"
+    },
+    {
+      "ac_id": "AC-042",
+      "theme": "",
+      "description": "- **AC-042**：`AgentBackend` trait 定义 `iterate`, `health_check`, `abort`, `name`；`IterationResult` 在 `beacon-core` 强类型定义。"
+    },
+    {
+      "ac_id": "AC-043",
+      "theme": "",
+      "description": "- **AC-043**（P2）：`CodexBackend` **真多轮** integration：同一 run-id 下 ≥2 次成功 `iterate` 或触达 `--max-iterations`/`--stop-when`；iteration 产物写入 `artifact_refs`；**非** env fixture 单次返回。"
+    },
+    {
+      "ac_id": "AC-044",
+      "theme": "",
+      "description": "- **AC-044**（P2）：`SubprocessBackend` 完成 1 次真 integration iteration（可控测试 harness 命令），输出符合 AC-042 schema。"
+    },
+    {
+      "ac_id": "AC-045",
+      "theme": "",
+      "description": "- **AC-045**（P3）：`ClaudeBackend` 完成 1 次真 integration iteration；`health_check` 与 `abort` 有 integration 测试证据；输出 schema 与 AC-042 一致。"
+    },
+    {
+      "ac_id": "AC-046",
+      "theme": "",
+      "description": "- **AC-046**（P3）：`AcpBackend`（CLI `acp:<target>`）完成 1 次真 integration iteration；输出 schema 与 AC-042 一致。**Cursor 宿主不单独列为 backend**，走 ACP 或 subprocess。"
+    },
+    {
+      "ac_id": "AC-099",
+      "theme": "",
+      "description": "- **AC-099**（P3）：Git **worktree 全模式 parity**（**D-V2-004 rejected defer**）：支持 `worktree`、`current-branch`、`beacon-run/<run-id>`（或 plan 等价 run-branch）branch 模式；非法组合 fail-closed（如 `current-branch` + `--isolated-worktree`）；harness/agent `project-root` 与 worktree cwd 对齐（对齐 v1.6 AC-026）。"
+    },
+    {
+      "ac_id": "AC-100",
+      "theme": "",
+      "description": "- **AC-100**（P3）：`ImplementHarnessBackend` 完成 1 次真 integration iteration（**D-V2-005 rejected defer**）：经 `beacon implement` harness 在 worktree 内跑通一轮；输出 schema 与 AC-042 一致；**非** subprocess 替身或空 contract。"
+    },
+    {
+      "ac_id": "AC-047",
+      "theme": "",
+      "description": "- **AC-047**：checkpoint resume 后 iteration 递增；notes 注入写入 `lifecycle_events`（可审计）。"
+    },
+    {
+      "ac_id": "AC-048",
+      "theme": "",
+      "description": "- **AC-048**：`stop_when` 移植 v1 `stop-when-gate`（含 gate pass 早停）。"
+    },
+    {
+      "ac_id": "AC-049",
+      "theme": "",
+      "description": "- **AC-049**：orchestrator **禁止**输出 QA pass / release ready / feature complete verdict。"
+    },
+    {
+      "ac_id": "AC-050",
+      "theme": "",
+      "description": "- **AC-050**：Phase Controller 四阶段写入 `runs.metadata_json`；phase 转换写 `lifecycle_events`。"
+    },
+    {
+      "ac_id": "AC-059",
+      "theme": "",
+      "description": "- **AC-059**：`beacon-python` 暴露 `beacon_doctor`、`beacon_status` 等 v1 高频 shim。"
+    },
+    {
+      "ac_id": "AC-060",
+      "theme": "",
+      "description": "- **AC-060**：`BEACON_V2=1` 启用 Rust 路径；P6 前 opt-in。"
+    },
+    {
+      "ac_id": "AC-061",
+      "theme": "",
+      "description": "- **AC-061**：`BEACON_STORE_PATH` 测试隔离；生产默认 `~/.beacon/beacon.db`。"
+    },
+    {
+      "ac_id": "AC-062",
+      "theme": "",
+      "description": "- **AC-062**：Python fallback 时 `--verbose` 打印 `compat_route=python`。"
+    },
+    {
+      "ac_id": "AC-063",
+      "theme": "",
+      "description": "- **AC-063**：**33** 个 host skills 的 `beacon skill list` 与 **全量** `--help`/路由 smoke 回归（非抽样）；失败路由 `beacon-gov-doctor`。"
+    },
+    {
+      "ac_id": "AC-064",
+      "theme": "",
+      "description": "- **AC-064**：spine/projects/workflow/truth-map/implement/qa/release/run 子命令可解析且 `--help` snapshot 稳定。"
+    },
+    {
+      "ac_id": "AC-065",
+      "theme": "",
+      "description": "- **AC-065**：spine/projects/run 支持 `--json` 且 schema 可校验。"
+    },
+    {
+      "ac_id": "AC-066",
+      "theme": "",
+      "description": "- **AC-066**：v1 reason_codes 对齐：`gate_results.reason_codes_json` 失败样例须含 documented code；`docs/beacon/v2.0.0/execution/reason-codes.md` 与 **集成测试** 中至少 5 个 code 往返一致。"
+    },
+    {
+      "ac_id": "AC-067",
+      "theme": "",
+      "description": "- **AC-067**：`projects`（id, root_path UNIQUE, name, registered_at）"
+    },
+    {
+      "ac_id": "AC-068",
+      "theme": "",
+      "description": "- **AC-068**：`project_versions`（id, project_id, version, docs_root, is_current）"
+    },
+    {
+      "ac_id": "AC-069",
+      "theme": "",
+      "description": "- **AC-069**：`feature_packages`（id, project_version_id, slug, truth_path, tests_path, status）"
+    },
+    {
+      "ac_id": "AC-070",
+      "theme": "",
+      "description": "- **AC-070**：`feature_lifecycle`（feature_id, stage, status, reason_codes_json, updated_at）"
+    },
+    {
+      "ac_id": "AC-071",
+      "theme": "",
+      "description": "- **AC-071**：`runs`（id, feature_id, run_kind, status, iteration, started_at, ended_at, metadata_json）"
+    },
+    {
+      "ac_id": "AC-072",
+      "theme": "",
+      "description": "- **AC-072**：`lifecycle_events`（id, feature_id, run_id, event_type, payload_json, created_at）"
+    },
+    {
+      "ac_id": "AC-073",
+      "theme": "",
+      "description": "- **AC-073**：`gate_results`（id, feature_id, gate_type, verdict, reason_codes_json, evaluated_at）"
+    },
+    {
+      "ac_id": "AC-074",
+      "theme": "",
+      "description": "- **AC-074**：`artifact_refs`（id, run_id, kind, abs_path, content_hash, size_bytes, created_at）"
+    },
+    {
+      "ac_id": "AC-075",
+      "theme": "",
+      "description": "- **AC-075**：`checkpoints`（id, run_id, iteration, state_json, created_at）"
+    },
+    {
+      "ac_id": "AC-076",
+      "theme": "",
+      "description": "- **AC-076**：`beacon-store` 提供 ProjectDao, FeatureDao, RunDao, GateDao, ArtifactDao, SpineDao。"
+    },
+    {
+      "ac_id": "AC-077",
+      "theme": "",
+      "description": "- **AC-077**：migration `v1_runtime_ledger`：自 `~/.beacon/runtime-ledger/runtime-ledger.sqlite3` 导入。"
+    },
+    {
+      "ac_id": "AC-078",
+      "theme": "",
+      "description": "- **AC-078**：migration `v1_loop_ledger`：扫描各项目 `loop-runs.db` 一次性导入。"
+    },
+    {
+      "ac_id": "AC-079",
+      "theme": "",
+      "description": "- **AC-079**：migration `v1_qa_projection`：可选历史只读导入。"
+    },
+    {
+      "ac_id": "AC-080",
+      "theme": "",
+      "description": "- **AC-080**：schema `user_version` 管理；降级禁止。"
+    },
+    {
+      "ac_id": "AC-081",
+      "theme": "",
+      "description": "- **AC-081**：`SpineDao::snapshot` 联查 lifecycle + run + gate + artifacts。"
+    },
+    {
+      "ac_id": "AC-082",
+      "theme": "",
+      "description": "- **AC-082**：`list` 支持 lifecycle/run status 过滤。"
+    },
+    {
+      "ac_id": "AC-083",
+      "theme": "",
+      "description": "- **AC-083**：`artifact_refs.abs_path` 必须绝对路径。"
+    },
+    {
+      "ac_id": "AC-063",
+      "theme": "",
+      "description": "| P4 | Python shim + **AC-063** 全 skill 回归 | opt-in `BEACON_V2=1` |"
+    },
+    {
+      "ac_id": "AC-084",
+      "theme": "",
+      "description": "- **AC-084**..**AC-090**：P0–P6 阶段出口（见 tests.md TC-084–090）；**P5 在 v2.0.0 以 D-V2-001 accepted defer 跳过**，不阻塞 P6 switch-over。"
+    },
+    {
+      "ac_id": "AC-091",
+      "theme": "",
+      "description": "- **AC-091**：CI **必须**执行 `cargo build/test` for `beacon-rs` matrix（macOS + Linux 至少）；非仅 README 声明。"
+    },
+    {
+      "ac_id": "AC-092",
+      "theme": "",
+      "description": "- **AC-092**：migration 前自动备份 runtime-ledger 与既有 DB。"
+    },
+    {
+      "ac_id": "AC-093",
+      "theme": "",
+      "description": "- **AC-093**：双写期 **单一写者**；双向同时写须测试失败。"
+    },
+    {
+      "ac_id": "AC-094",
+      "theme": "",
+      "description": "- **AC-094**：skill 回归失败 → `beacon-gov-doctor`，禁止静默 Python 回退。"
+    },
+    {
+      "ac_id": "AC-095",
+      "theme": "",
+      "description": "- **AC-095**：benchmark 相对 baseline 回退 >10% 阻断 P6 switch-over。"
+    },
+    {
+      "ac_id": "AC-096",
+      "theme": "",
+      "description": "- **AC-096**：每 phase 跑 tests.md 对应 TC 子集 + phase integration job。"
+    },
+    {
+      "ac_id": "AC-097",
+      "theme": "",
+      "description": "- **AC-097**：全量 AC closure 由 evaluator 裁决；generator/implementer 不得自证 release ready。"
+    },
+    {
+      "ac_id": "AC-098",
+      "theme": "",
+      "description": "- **AC-098**：frozen package 权威高于 plan；plan 变更须 promote。"
+    },
+    {
+      "ac_id": "AC-099",
+      "theme": "",
+      "description": "| D-V2-004 | worktree 全模式 parity | 用户拒绝延期 | **rejected**（in-scope **AC-099** P3） | — |"
+    },
+    {
+      "ac_id": "AC-100",
+      "theme": "",
+      "description": "| D-V2-005 | ImplementHarnessBackend 真集成 | 用户拒绝延期 | **rejected**（in-scope **AC-100** P3） | — |"
+    },
+    {
+      "ac_id": "AC-011",
+      "theme": "",
+      "description": "**AC**：AC-077–079, AC-092, **AC-011**"
+    }
+  ],
+  "test_rows": [],
+  "task_rows": [
+    {
+      "id": "TASK-P0-001",
+      "title": "创建 `packages/beacon-rs/` workspace 与六 crate。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P0-002",
+      "title": "Diagram Truth Layer 类型：WorkflowStage（含 Prototype）、StageStatus（含 Crashed/TimedOut/Interrupted）、Delivery 运行时 enum + plan 链 event_type 常量。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P0-003",
+      "title": "`IterationResult` 与 `AgentBackend` trait 类型定义（beacon-core）。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P0-004",
+      "title": "schema v1 九表 + WAL + 六 DAO skeleton。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P0-005",
+      "title": "migration **skeleton**（user_version、备份钩子）；**非** production 全量迁移。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P0-006",
+      "title": "unit：TC-026–031, TC-067–076, TC-084。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P1-001",
+      "title": "spine show/list/artifacts/gate + SpineSnapshot JSON schema。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P1-002",
+      "title": "projects register/list/show。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P1-003",
+      "title": "reason-codes.md + storage-authority.md；TC-066 预备。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P1-004",
+      "title": "plan↔package drift 脚本（TC-098）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-001",
+      "title": "run goal/resume/stop/status + truth-map preflight。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-002",
+      "title": "**CodexBackend 真多轮**（AC-043 / TC-043）：≥2 iterate，artifact_refs 写入，禁 fixture 单次。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-003",
+      "title": "**SubprocessBackend 真一轮**（AC-044 / TC-044）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-004",
+      "title": "checkpoints + stop_when + graceful/force stop。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-005",
+      "title": "phase controller metadata + lifecycle_events。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P2-006",
+      "title": "integration：TC-040–041, TC-043–044, TC-047–050, TC-086。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-001",
+      "title": "gate 写 `gate_results` + reason_codes 集成测试（TC-066）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-002",
+      "title": "**ClaudeBackend 真 integration**（AC-045 / TC-045）：iterate + health_check + abort。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-003",
+      "title": "**AcpBackend 真 integration**（AC-046 / TC-046）：`acp:<target>` 一轮。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-004",
+      "title": "**worktree 全模式 parity**（AC-099 / TC-099）：worktree/current-branch/run-branch + 非法组合 fail-closed。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-005",
+      "title": "**ImplementHarnessBackend 真 integration**（AC-100 / TC-100）：worktree 内 implement harness 一轮。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-006",
+      "title": "全量 migration + **projection rebuild**（AC-011 / TC-011）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-007",
+      "title": "单一写者 + migration 备份。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P3-008",
+      "title": "integration：TC-045–046, TC-099–100, TC-077–079, TC-087, TC-011。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-001",
+      "title": "PyO3 + CI matrix（TC-091 可执行）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-002",
+      "title": "BEACON_V2 路由 + compat verbose。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-003",
+      "title": "**33 skills 全量** smoke（TC-063，非抽样 10）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P4-004",
+      "title": "integration：TC-059–063, TC-088, TC-094。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P5-001",
+      "title": "**不实施**：`beacon-proto`/gRPC 推迟至 post-v2.0.0；TC-089 以 deferral 记录验收。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-P6-001",
+      "title": "criterion bench 套件 + baseline（TC-051–058, TC-095）。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P6-002",
+      "title": "默认 BEACON_V2=1；v1 JSON 只读。",
+      "status": "unchecked"
+    },
+    {
+      "id": "TASK-P6-003",
+      "title": "E2E TC-E01–E04；evaluator 全矩阵。",
+      "status": "unchecked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "source-plan",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/plans/beacon-v2-redesign.md",
+      "status": "indexed",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/research/beacon-v2-rust-kernel-redesign.md",
+      "status": "promoted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "feature-package-truth",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/truth.md",
+      "status": "**frozen R1**",
+      "route": "truth.define"
+    },
+    {
+      "surface": "planner-review-r2",
+      "authority": "support_advisory",
+      "canonical_artifact": "conversation: beacon-pln-review option-A",
+      "status": "accepted-for-truth",
+      "route": "truth.define"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "package-tasks",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/tasks.md",
+      "status": "task-intent-indexed",
+      "route": "generate"
+    },
+    {
+      "surface": "package-evidence",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v2.0.0/features/beacon-v2-rust-kernel-redesign/evidence.md",
+      "status": "evidence-indexed",
+      "route": "evaluate"
+    },
+    {
+      "surface": "v1-runtime-ledger",
+      "authority": "support_advisory",
+      "canonical_artifact": "~/.beacon/runtime-ledger/runtime-ledger.sqlite3",
+      "status": "migration-source",
+      "route": "P3"
+    },
+    {
+      "surface": "v1-loop-ledger",
+      "authority": "support_advisory",
+      "canonical_artifact": "<project>/.beacon/loop/ledger/loop-runs.db",
+      "status": "migration-source",
+      "route": "P3"
+    },
+    {
+      "surface": "v1-spine-doc",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md",
+      "status": "semantic-ref",
+      "route": "truth.define"
+    },
+    {
+      "surface": "v134-blueprint",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/archive/v1.3.4/execution/architecture-blueprint.md",
+      "status": "semantic-ref",
+      "route": "truth.define"
+    },
+    {
+      "surface": "implementation-beacon-rs",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-rs/",
+      "status": "**P0 scaffolded**",
+      "route": "generate"
+    }
+  ]
+}
