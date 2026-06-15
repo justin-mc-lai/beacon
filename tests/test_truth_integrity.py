@@ -213,3 +213,88 @@ def test_tig_feature_package_block_mode() -> None:
     assert fake.get("closure_allowed", True)
     validation = gate.get("feature_package_validation", {})
     assert str(validation.get("status", "")).lower() != "blocked"
+
+
+# --- TIG-DC Phase A tests ---
+
+def test_dc_english_placeholder_blocks(tmp_path: Path) -> None:
+    """English placeholder words (TBD/TODO) should block freeze."""
+    slug = "dc-english-placeholder"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    truth = truth + "\nThe implementation details are TBD.\n"
+    _write_package(tmp_path, slug, truth_body=truth, tests_body=tests, tasks_body=tasks, evidence_body=evidence)
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="block")
+    assert gate["blocked"]
+    assert gate.get("determinism_check", {}).get("placeholder_count", 0) > 0
+    kinds = {f.get("kind") for f in gate.get("findings", [])}
+    assert any(k.startswith("dc_placeholder_") for k in kinds)
+
+
+def test_dc_chinese_placeholder_blocks(tmp_path: Path) -> None:
+    """Chinese placeholder words (待定/待确认) should block freeze."""
+    slug = "dc-chinese-placeholder"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    truth = truth + "\n具体实现方案待定，待进一步确认。\n"
+    _write_package(tmp_path, slug, truth_body=truth, tests_body=tests, tasks_body=tasks, evidence_body=evidence)
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="block")
+    assert gate["blocked"]
+    assert gate.get("determinism_check", {}).get("placeholder_count", 0) > 0
+    kinds = {f.get("kind") for f in gate.get("findings", [])}
+    assert any(k.startswith("dc_placeholder_") for k in kinds)
+
+
+def test_dc_domain_vocab_no_false_positive(tmp_path: Path) -> None:
+    """Domain vocabulary like go-todo-crud-smoke or TODO CRUD should not be flagged."""
+    slug = "dc-domain-vocab-safe"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    truth = truth.replace("GET health returns 200.", "GET /todos returns list of TODO items for go-todo-crud-smoke.")
+    _write_package(tmp_path, slug, truth_body=truth, tests_body=tests, tasks_body=tasks, evidence_body=evidence)
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="block")
+    assert not gate["blocked"]
+    assert gate.get("determinism_check", {}).get("placeholder_count", 0) == 0
+
+
+def test_dc_hollow_template_warns_not_blocks(tmp_path: Path) -> None:
+    """Hollow template sentences should be flagged as warnings but NOT block freeze."""
+    slug = "dc-hollow-template"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    truth = truth + "\n该系统具有良好的用户体验。\n"
+    _write_package(tmp_path, slug, truth_body=truth, tests_body=tests, tasks_body=tasks, evidence_body=evidence)
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="block")
+    # Hollow templates are warn-only; should not block on their own
+    assert not gate["blocked"]
+    assert gate.get("determinism_check", {}).get("hollow_template_count", 0) > 0
+    kinds = {f.get("kind") for f in gate.get("findings", [])}
+    assert any(k.startswith("dc_hollow_") for k in kinds)
+
+
+def test_dc_audit_mode_does_not_block(tmp_path: Path) -> None:
+    """In audit mode, placeholder findings are reported but do not block."""
+    slug = "dc-audit-mode"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    truth_body = truth + "\nThis feature is pending.\n"
+    # Manually construct frozen frontmatter and write files directly
+    fm = _frontmatter(slug).replace("status: draft", "status: frozen")
+    feature_dir = tmp_path / "docs/beacon" / VERSION / "features" / slug
+    feature_dir.mkdir(parents=True, exist_ok=True)
+    (tmp_path / "docs/beacon/VERSION").write_text(f"{VERSION}\n", encoding="utf-8")
+    (feature_dir / "truth.md").write_text(fm + truth_body, encoding="utf-8")
+    (feature_dir / "tests.md").write_text(tests, encoding="utf-8")
+    (feature_dir / "tasks.md").write_text(tasks, encoding="utf-8")
+    (feature_dir / "evidence.md").write_text(evidence, encoding="utf-8")
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="audit")
+    assert not gate["blocked"]
+    assert gate["status"] == "audit_only"
+    assert gate.get("determinism_check", {}).get("placeholder_count", 0) > 0
+
+
+def test_dc_clean_truth_passes(tmp_path: Path) -> None:
+    """A clean truth with no placeholders or hollow templates should pass fully."""
+    slug = "dc-clean-truth"
+    truth, tests, tasks, evidence = _minimal_good_bodies(slug)
+    _write_package(tmp_path, slug, truth_body=truth, tests_body=tests, tasks_body=tasks, evidence_body=evidence)
+    gate = build_truth_integrity_gate(tmp_path, version=VERSION, feature=slug, mode="block")
+    assert gate["status"] == "pass"
+    assert not gate["blocked"]
+    assert gate.get("determinism_check", {}).get("placeholder_count", 0) == 0
+    assert gate.get("determinism_check", {}).get("hollow_template_count", 0) == 0

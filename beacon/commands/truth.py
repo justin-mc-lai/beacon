@@ -22,6 +22,15 @@ from beacon.utils.truth_template import (
     render_user_story_template,
 )
 from beacon.utils.versioning import resolve_target_version
+from beacon.utils.intent_first import (
+    capture_intents_from_utterance,
+    derive_ac_from_intent,
+    render_intent_first_truth,
+    render_intent_first_tests,
+    render_intent_first_tasks,
+    render_intent_first_evidence,
+)
+from beacon.utils.truth_integrity import build_truth_integrity_gate
 
 app = typer.Typer(
     name="truth",
@@ -214,3 +223,95 @@ def show_cmd(
         raise typer.Exit(2)
 
     typer.echo(content)
+
+
+@app.command("gen")
+def gen_cmd(
+    feature: str = typer.Option(..., "--feature", "-f", help="Feature name"),
+    version: str = typer.Option("auto", "--version", "-v", help="Version"),
+    utterance: str = typer.Option("", "--utterance", "-u", help="User utterance / intent description"),
+    intent_first: bool = typer.Option(False, "--intent-first", help="Use intent-first protocol instead of template-driven generation"),
+    project: Optional[str] = typer.Option(None, "--project", "-p", help="Project root"),
+    force: bool = typer.Option(False, "--force", help="Overwrite existing files"),
+    lang: str = typer.Option("en", "--lang", "-l", help="Language: en|zh"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Preview output without writing files"),
+) -> None:
+    """Generate truth package. Use --intent-first to drive generation from user intent."""
+    project_root = _resolve_root(project)
+    resolved = resolve_target_version(project_root, version)
+    slug = feature.strip().lower().replace(" ", "-").replace("_", "-")
+
+    if intent_first:
+        if not utterance:
+            typer.echo("--intent-first requires --utterance (user intent description).", err=True)
+            raise typer.Exit(2)
+
+        # Phase 1: Intent Capture
+        intents = capture_intents_from_utterance(utterance)
+        if not intents:
+            typer.echo("No intents captured from utterance. Provide a more descriptive statement.", err=True)
+            raise typer.Exit(2)
+
+        typer.echo(f"Captured {len(intents)} intent(s) from utterance:")
+        for idx, intent in enumerate(intents, start=1):
+            typer.echo(f"  {idx}. {intent.text}")
+
+        # Phase 3: Structured Truth Derivation
+        ac_rows = [derive_ac_from_intent(intent, idx) for idx, intent in enumerate(intents, start=1)]
+        truth_content = render_intent_first_truth(feature, resolved, intents, utterance)
+        tests_content = render_intent_first_tests(feature, ac_rows)
+        tasks_content = render_intent_first_tasks(feature, ac_rows)
+        evidence_content = render_intent_first_evidence(feature)
+    else:
+        # Template-driven fallback (delegates to init logic)
+        if feature_package_authoritative(resolved):
+            typer.echo("Template-driven gen not supported for feature-package-authoritative versions. Use --intent-first.", err=True)
+            raise typer.Exit(2)
+        from beacon.utils.truth_template import (
+            render_prd_template,
+            render_user_story_template,
+            render_test_case_template,
+        )
+        truth_content = render_prd_template(feature_slug=slug, version=resolved, lang=lang)
+        tests_content = render_test_case_template(feature_slug=slug, version=resolved, lang=lang)
+        tasks_content = ""
+        evidence_content = ""
+
+    # Write or preview
+    feature_dir = project_root / "docs" / "beacon" / resolved / "features" / slug
+    paths = {
+        "truth": feature_dir / "truth.md",
+        "tests": feature_dir / "tests.md",
+        "tasks": feature_dir / "tasks.md",
+        "evidence": feature_dir / "evidence.md",
+    }
+
+    if dry_run:
+        typer.echo("\n--- Dry-run preview (truth.md) ---")
+        typer.echo(truth_content[:800] + "\n...")
+        typer.echo("--- End preview ---")
+        return
+
+    for key, content in (("truth", truth_content), ("tests", tests_content), ("tasks", tasks_content), ("evidence", evidence_content)):
+        if not content:
+            continue
+        path = paths[key]
+        if path.exists() and not force:
+            typer.echo(f"File already exists: {path}. Use --force to overwrite.", err=True)
+            raise typer.Exit(2)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(content, encoding="utf-8")
+        typer.echo(f"✓ Created {key}: {path}")
+
+    # Phase 4: Determinism Verification (TIG-DC)
+    if intent_first:
+        gate = build_truth_integrity_gate(project_root, version=resolved, feature=slug, mode="block")
+        dc = gate.get("determinism_check", {})
+        typer.echo(f"\nTIG-DC check: placeholder={dc.get('placeholder_count', 0)}, hollow={dc.get('hollow_template_count', 0)}")
+        if gate["blocked"]:
+            typer.echo(f"✗ TIG-DC blocked: {gate.get('reason_code', '')}", err=True)
+            for f in gate.get("findings", []):
+                if isinstance(f, dict):
+                    typer.echo(f"  - {f.get('kind')}: {f.get('text', '')[:80]}", err=True)
+            raise typer.Exit(2)
+        typer.echo("✓ TIG-DC passed — truth is deterministic.")

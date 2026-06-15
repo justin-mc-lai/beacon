@@ -882,6 +882,62 @@ def verify_truth_integrity(
     raise typer.Exit(code=execution.exit_code)
 
 
+@app.command("verify-truth-quality")
+def verify_truth_quality(
+    feature: str = typer.Argument(..., help="Feature name"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("latest-docs", "--version", "-v", help="Target docs version"),
+    mode: str = typer.Option("audit", "--mode", help="Gate mode: audit or block"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify truth determinism quality (TIG-DC): placeholder words and hollow templates."""
+    from beacon.utils.truth_integrity import build_truth_integrity_gate
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    gate = build_truth_integrity_gate(root, version=version, feature=feature, mode=mode)
+    dc_findings = [
+        f for f in gate.get("findings", [])
+        if isinstance(f, dict)
+        and str(f.get("reason_code", "")) in {
+            "TRUTH_DETERMINISM_PLACEHOLDER",
+            "TRUTH_DETERMINISM_HOLLOW_TEMPLATE",
+        }
+    ]
+    determinism = gate.get("determinism_check", {})
+    result = {
+        "feature": feature,
+        "version": gate.get("version", version),
+        "mode": mode,
+        "status": gate.get("status", ""),
+        "blocked": gate.get("blocked", False),
+        "placeholder_count": determinism.get("placeholder_count", 0),
+        "hollow_template_count": determinism.get("hollow_template_count", 0),
+        "findings": dc_findings,
+        "finding_count": len(dc_findings),
+    }
+    payload = {"schema_version": "1.0", "action": "doctor-verify-truth-quality", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Truth Quality (TIG-DC)")
+        typer.echo("=" * 37)
+        typer.echo(f"feature: {feature}")
+        typer.echo(f"status: {result['status']}")
+        typer.echo(f"blocked: {result['blocked']}")
+        typer.echo(f"placeholder_count: {result['placeholder_count']}")
+        typer.echo(f"hollow_template_count: {result['hollow_template_count']}")
+        if dc_findings:
+            typer.echo("\nFindings")
+            typer.echo("-" * 37)
+            for f in dc_findings:
+                kind = str(f.get("kind", ""))
+                line = int(f.get("line", 0))
+                text = str(f.get("text", "")).strip()
+                typer.echo(f"- {kind} (L{line}): {text[:80]}")
+    exit_code = 2 if result["blocked"] else 0
+    raise typer.Exit(code=exit_code)
+
+
 @app.command("sync-technical-review-contract")
 def sync_technical_review_contract(
     feature: str = typer.Argument(..., help="Feature name"),

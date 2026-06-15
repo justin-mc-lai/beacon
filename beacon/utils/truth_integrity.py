@@ -71,6 +71,40 @@ _DEFERRAL_PENDING_RE = re.compile(
     r"\|\s*pending\s*\||user_decision:\s*pending|状态\s*pending", re.IGNORECASE
 )
 
+# --- TIG-DC: Determinism Check patterns (Phase A) ---
+
+_DC_PLACEHOLDER_PATTERNS: dict[str, re.Pattern[str]] = {
+    "english_tbd": re.compile(r"\bTBD\b"),
+    "english_todo": re.compile(r"\bTODO\b"),
+    "english_tbc": re.compile(r"\bTBC\b"),
+    "english_pending": re.compile(r"\bpending\b", re.IGNORECASE),
+    "chinese_daiding": re.compile("待定"),
+    "chinese_daiqueren": re.compile("待确认"),
+    "chinese_xujinyibuqueren": re.compile("需进一步确认"),
+    "chinese_shiqingkuangerding": re.compile("视情况而定"),
+    "chinese_houxubuchong": re.compile("后续补充"),
+    "chinese_dai_x_queren": re.compile(r"待.+确认"),
+}
+
+_DC_HOLLOW_TEMPLATE_PATTERNS: dict[str, re.Pattern[str]] = {
+    "hollow_good": re.compile("具有良好的"),
+    "hollow_all": re.compile("支持所有"),
+    "hollow_full_compat": re.compile("兼容全部"),
+    "hollow_actual": re.compile("根据实际情况"),
+    "hollow_per_spec": re.compile(r"按照.+规范"),
+}
+
+_DC_DOMAIN_VOCAB_SKIP_RE = re.compile(
+    r"^(slug|canonical_refs|prd|user_story|test_case|version|language|parser_contract"
+    r"|truth_source_model|truth_map_contract|status|parent_feature)\s*:"
+    r"|docs/beacon/"
+    r"|go-todo-"
+    r"|/todos"
+    r"|TODO\s*(CRUD|api|model|item|handler|service|route|controller|repo|store|list|entity|struct|type|interface)"
+    r"|创建的\s*TODO",
+    re.IGNORECASE,
+)
+
 
 def _rel(project_root: Path, path: Path) -> str:
     try:
@@ -151,6 +185,87 @@ def scan_fake_delivery_lines(
                             repair_route="beacon-gen-truth",
                         )
                     )
+    return findings
+
+
+def scan_determinism_lines(
+    project_root: Path,
+    *,
+    version: str,
+    feature: str,
+) -> list[dict[str, Any]]:
+    """TIG-DC: scan for placeholder words and hollow template sentences in feature package files."""
+    paths = package_paths(project_root, version=version, feature=feature)
+    findings: list[dict[str, Any]] = []
+
+    for key in ("truth", "tests", "tasks", "evidence"):
+        path = paths[key]
+        if not path.exists():
+            continue
+        text = _read_text(path)
+        lines = text.splitlines()
+        in_frontmatter = False
+        frontmatter_done = False
+        in_code_fence = False
+
+        for line_number, line in enumerate(lines, start=1):
+            stripped = line.strip()
+
+            # Skip YAML frontmatter
+            if not frontmatter_done:
+                if line_number == 1 and stripped == "---":
+                    in_frontmatter = True
+                    continue
+                if in_frontmatter:
+                    if stripped == "---":
+                        in_frontmatter = False
+                        frontmatter_done = True
+                    continue
+                frontmatter_done = True
+
+            # Skip code fences
+            if stripped.startswith("```"):
+                in_code_fence = not in_code_fence
+                continue
+            if in_code_fence:
+                continue
+
+            # Skip domain vocabulary lines (slugs, paths, data model names)
+            if _DC_DOMAIN_VOCAB_SKIP_RE.search(stripped):
+                continue
+
+            # Skip heading lines
+            if stripped.startswith("#"):
+                continue
+
+            # Placeholder word detection (block severity)
+            for code, pattern in _DC_PLACEHOLDER_PATTERNS.items():
+                if pattern.search(stripped):
+                    findings.append(
+                        _finding(
+                            kind=f"dc_placeholder_{code}",
+                            file=path,
+                            line=line_number,
+                            text=line,
+                            reason_code="TRUTH_DETERMINISM_PLACEHOLDER",
+                            repair_route="beacon-gen-truth",
+                        )
+                    )
+
+            # Hollow template detection (warn severity)
+            for code, pattern in _DC_HOLLOW_TEMPLATE_PATTERNS.items():
+                if pattern.search(stripped):
+                    findings.append(
+                        _finding(
+                            kind=f"dc_hollow_{code}",
+                            file=path,
+                            line=line_number,
+                            text=line,
+                            reason_code="TRUTH_DETERMINISM_HOLLOW_TEMPLATE",
+                            repair_route="beacon-gen-truth",
+                        )
+                    )
+
     return findings
 
 
@@ -315,6 +430,12 @@ def build_truth_integrity_gate(
     findings.extend(scan_integrity_extension_lines(project_root, version=resolved_version, feature=feature))
     findings.extend(scan_fake_delivery_lines(project_root, version=resolved_version, feature=feature))
 
+    # TIG-DC: Determinism Check (placeholder + hollow template)
+    dc_findings = scan_determinism_lines(project_root, version=resolved_version, feature=feature)
+    findings.extend(dc_findings)
+    dc_placeholder_count = sum(1 for f in dc_findings if f.get("reason_code") == "TRUTH_DETERMINISM_PLACEHOLDER")
+    dc_hollow_count = sum(1 for f in dc_findings if f.get("reason_code") == "TRUTH_DETERMINISM_HOLLOW_TEMPLATE")
+
     closure_payload = build_closure_payload_from_package(
         project_root, version=resolved_version, feature=feature
     )
@@ -330,7 +451,12 @@ def build_truth_integrity_gate(
 
     truth_status = _truth_frontmatter_status(project_root, resolved_version, feature)
     integrity_findings = [f for f in findings if f.get("kind") != "inline_marker" or True]
-    has_blocking = bool(integrity_findings) or not fake_delivery.get("closure_allowed", True)
+    # TIG-DC: hollow template findings are warn-only, not blocking
+    blocking_findings = [
+        f for f in integrity_findings
+        if f.get("reason_code") != "TRUTH_DETERMINISM_HOLLOW_TEMPLATE"
+    ]
+    has_blocking = bool(blocking_findings) or not fake_delivery.get("closure_allowed", True)
     if str(validation.get("status") or "").lower() == "blocked":
         has_blocking = True
 
@@ -370,6 +496,10 @@ def build_truth_integrity_gate(
         "requirement_clarity": clarity_gate,
         "fake_delivery": fake_delivery,
         "feature_package_validation": validation,
+        "determinism_check": {
+            "placeholder_count": dc_placeholder_count,
+            "hollow_template_count": dc_hollow_count,
+        },
         "closure_contract": {
             "closure_allowed": fake_delivery.get("closure_allowed", not blocked),
             "detected": fake_delivery.get("detected", []),

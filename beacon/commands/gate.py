@@ -290,6 +290,8 @@ REASON_CODES = [
     "browser_runtime_admission_missing",
     "browser_runner_learning_missing",
     VERSION_SURFACE_GOVERNANCE_REASON_CODE,
+    "TRUTH_DETERMINISM_PLACEHOLDER",
+    "TRUTH_DETERMINISM_HOLLOW_TEMPLATE",
 ]
 
 # Default gate evaluation stages
