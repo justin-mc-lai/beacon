@@ -11,6 +11,7 @@ from typing import Any
 from beacon.commands.auto_test import LAYER_NAMES
 from beacon.utils.artifact_paths import qa_feature_evidence_contract_candidates, qa_matrix_candidates
 from beacon.utils.artifact_update_obligations import blocking_obligations, load_artifact_update_obligations
+from beacon.utils.python_exec import normalize_qa_shell_command
 from beacon.utils.qa9 import QA9_TYPES, default_command_for_qa_type, normalize_qa_type
 from beacon.utils.qa_acceptance import BROWSER_QA_LAYER, build_qa_acceptance_capability_summary
 from beacon.utils.qa_precision import (
@@ -495,7 +496,7 @@ def _resolve_entry_command(
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
     if "beacon.adapters.browser_use_runner" in normalized and qa_type in {"functional", "compatibility"} and ui_runner != "browser-use":
         return default_command_for_qa_type(qa_type, ui_runner=ui_runner)
-    return normalized
+    return normalize_qa_shell_command(normalized, project_root=project_root)
 
 
 def _apply_feature_evidence_contract(

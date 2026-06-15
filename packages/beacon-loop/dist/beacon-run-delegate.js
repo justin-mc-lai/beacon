@@ -96,6 +96,9 @@ function buildBeaconRunArgs(projectRoot, goal, options) {
   if (options.stopWhen) {
     args.push("--stop-when", options.stopWhen);
   }
+  if (options.stopCheckCmd) {
+    args.push("--stop-check-cmd", options.stopCheckCmd);
+  }
   if (options.implementRunner) {
     args.push("--implement-runner", options.implementRunner);
   }

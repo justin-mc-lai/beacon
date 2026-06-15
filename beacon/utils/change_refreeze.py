@@ -10,6 +10,7 @@ from beacon.utils.feature_package import sync_truth_frontmatter_status, validate
 from beacon.utils.legacy_cutover import build_legacy_cutover_preflight
 from beacon.utils.material_sync import sync_change_loop_requirement_package
 from beacon.utils.requirement_clarity import materialize_requirement_clarity, requirement_clarity_json_path
+from beacon.utils.truth_integrity import build_truth_integrity_gate
 from beacon.utils.revision_delta import materialize_revision_delta
 from beacon.utils.revision_state import freeze_revision_state, load_revision_state, reopen_revision_state
 from beacon.utils.runtime import now_iso, utc_compact_ts, write_json
@@ -373,6 +374,12 @@ def run_change_refreeze_chain(
             source="change.refreeze-chain",
         )
         clarity_gate = requirement_clarity.get("gate") if isinstance(requirement_clarity.get("gate"), dict) else {}
+        integrity_gate = build_truth_integrity_gate(
+            project_root,
+            version=resolved_version,
+            feature=feature,
+            mode="block",
+        )
         payload.update(
             {
                 "previous_revision": _revision_ref(previous_revision),
@@ -383,8 +390,26 @@ def run_change_refreeze_chain(
                 },
                 "requirement_package": requirement_package,
                 "requirement_clarity": requirement_clarity,
+                "truth_integrity_gate": integrity_gate,
             }
         )
+        if bool(integrity_gate.get("blocked")):
+            payload["surface_statuses"]["requirement_clarity"]["status"] = "blocked"
+            payload["surface_statuses"]["requirement_clarity"]["exists"] = True
+            payload["surface_statuses"]["freeze"]["status"] = "blocked"
+            payload["blocked_reason"] = str(integrity_gate.get("reason_code") or "truth_integrity_blocked")
+            payload["truth_revision_after"] = _revision_ref(
+                load_revision_state(project_root, version=resolved_version, feature=feature)
+            )
+            payload["next_route"] = _next_route_payload(
+                project_root=project_root,
+                version=resolved_version,
+                feature=feature,
+                refreeze_status="blocked",
+                blocked_reason=payload["blocked_reason"],
+            )
+            payload["artifacts"] = _write_transaction(project_root, version=resolved_version, feature=feature, payload=payload)
+            return payload
         if bool(clarity_gate.get("blocked")):
             payload["surface_statuses"]["requirement_clarity"]["status"] = "blocked"
             payload["surface_statuses"]["requirement_clarity"]["exists"] = True

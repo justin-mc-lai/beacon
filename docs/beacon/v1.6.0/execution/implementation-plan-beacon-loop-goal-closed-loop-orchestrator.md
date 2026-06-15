@@ -1,13 +1,13 @@
 # Beacon Implementation Plan
 
-- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r4`
+- plan_id: `plan-beacon-loop-goal-closed-loop-orchestrator-r10`
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- revision_id: `R4`
-- baseline_hash: `sha256:674f54e41f7687f0f07330367a0f422ab11c90aeab2dcb49ea3d10e296f89ba5`
-- delivery_baseline_id: `impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R4`
-- delivery_baseline_source_hash: `sha256:87e246c6f6d0f301d3bf05d024b739adfe5f47c8079d5a0814c90b75391e3396`
-- plan_hash: `sha256:e43e541dd63b5d5355b2e6bd36f4fe361c1d7c5bd88bae5089fe84a35a89838d`
+- revision_id: `R10`
+- baseline_hash: `sha256:6d684eb1456f2a4476f8927a120ed0443f2f0e30927af031fa5b82d4f155dbbe`
+- delivery_baseline_id: `impl-delivery-baseline-v1.6.0-beacon-loop-goal-closed-loop-orchestrator-R10`
+- delivery_baseline_source_hash: `sha256:58777be16c8c7586aa9d2f2c385bcad7eb2cd4c1376297cf560ad4f92a9f3b18`
+- plan_hash: `sha256:9fcd54d5d347b819fcf4113f71a94197cd66f6fdb61eebd846ec9c47d57d3357`
 - status: `completed`
 
 ## Source Refs
@@ -68,8 +68,8 @@
 - section_count: `0`
 
 ## Revision Delta
-- revision_id: `R4`
-- source_revision_id: `R3`
+- revision_id: `R10`
+- source_revision_id: `R9`
 - cleanup_required: `False`
 - revision_delta_ref: `docs/beacon/v1.6.0/.machine/execution/revision-delta-beacon-loop-goal-closed-loop-orchestrator.json`
 
@@ -77,10 +77,10 @@
 
 ### ITASK-001 — TASK-041 新增 `packages/beacon-loop/src/intent/capture.ts` 与 `classify.ts`，落盘 `intent-capture.json` / `intent-contract.json`。
 - status: `completed`
-- mapped_ac_ids: AC-031
-- mapped_test_ids: TC-031
-- mapped_scenario_ids: SC-009
-- mapped_qa_case_ids: TC-031
+- mapped_ac_ids: AC-044
+- mapped_test_ids: TC-046
+- mapped_scenario_ids: SC-023, SC-024
+- mapped_qa_case_ids: TC-046
 - depends_on: -
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -101,10 +101,10 @@
 
 ### ITASK-003 — TASK-043 扩展 `startGoal()`：utterance 与 feature slug 解耦；`--feature` 显式化；禁止仅 `slugify(utterance)`。
 - status: `completed`
-- mapped_ac_ids: AC-003
-- mapped_test_ids: TC-040
-- mapped_scenario_ids: SC-001, SC-004, SC-006, SC-007
-- mapped_qa_case_ids: TC-040
+- mapped_ac_ids: AC-042, AC-003
+- mapped_test_ids: TC-044, TC-040
+- mapped_scenario_ids: SC-001, SC-004, SC-006, SC-007, SC-020
+- mapped_qa_case_ids: TC-044, TC-040
 - depends_on: ITASK-002
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -113,10 +113,10 @@
 
 ### ITASK-004 — TASK-044 新增 `packages/beacon-loop/src/delivery/state.ts` 与 `delivery-state.json` 读写。
 - status: `completed`
-- mapped_ac_ids: AC-035
-- mapped_test_ids: TC-035
-- mapped_scenario_ids: SC-013
-- mapped_qa_case_ids: TC-035
+- mapped_ac_ids: AC-035, AC-039, AC-001, AC-038, AC-040, AC-043, AC-045
+- mapped_test_ids: TC-035, TC-039, TEST-001, TC-038, TC-042, TC-045, TC-047
+- mapped_scenario_ids: SC-013, SC-016, SC-017, SC-018, SC-021, SC-022, SC-025, SC-026
+- mapped_qa_case_ids: TC-035, TC-038, TC-039, TC-042, TC-045, TC-047
 - depends_on: ITASK-003
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -137,10 +137,10 @@
 
 ### ITASK-006 — TASK-046 CLI：`--mode delivery|execute-only|intent-only|review-only`（默认 `delivery`）。
 - status: `completed`
-- mapped_ac_ids: AC-036
-- mapped_test_ids: TC-036
-- mapped_scenario_ids: SC-014
-- mapped_qa_case_ids: TC-036
+- mapped_ac_ids: AC-002, AC-005, AC-037
+- mapped_test_ids: TEST-002, TC-034, TC-037
+- mapped_scenario_ids: SC-002, SC-003, SC-012, SC-015
+- mapped_qa_case_ids: TC-034, TC-037
 - depends_on: ITASK-005
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -149,10 +149,10 @@
 
 ### ITASK-007 — TASK-047 CLI：`--strict-interrupt`（opt-in）、`--ack-intent-drift`；`--ask-on` deprecated。
 - status: `completed`
-- mapped_ac_ids: AC-037, AC-024
-- mapped_test_ids: TC-037, TEST-024
-- mapped_scenario_ids: SC-015
-- mapped_qa_case_ids: TC-037
+- mapped_ac_ids: AC-041, AC-024
+- mapped_test_ids: TC-043, TEST-024
+- mapped_scenario_ids: SC-019
+- mapped_qa_case_ids: TC-043
 - depends_on: ITASK-006
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -161,8 +161,8 @@
 
 ### ITASK-008 — TASK-048 测试 TC-031..TC-033、TC-038 骨架。
 - status: `completed`
-- mapped_ac_ids: AC-012, AC-014, AC-019, AC-001
-- mapped_test_ids: TEST-012, TEST-014, TC-022, TEST-001
+- mapped_ac_ids: AC-012, AC-014, AC-019
+- mapped_test_ids: TEST-012, TEST-014, TC-022
 - mapped_scenario_ids: SC-005
 - mapped_qa_case_ids: TC-022
 - depends_on: ITASK-007
@@ -173,10 +173,10 @@
 
 ### ITASK-009 — TASK-049 实现 `truth_gap_scan`：resolve + review parity 缺口合成。
 - status: `completed`
-- mapped_ac_ids: AC-034
-- mapped_test_ids: TC-034
-- mapped_scenario_ids: SC-002, SC-003, SC-012
-- mapped_qa_case_ids: TC-034
+- mapped_ac_ids: AC-036, AC-025, AC-030
+- mapped_test_ids: TC-036, TC-041, TEST-030
+- mapped_scenario_ids: SC-008, SC-014
+- mapped_qa_case_ids: TC-036, TC-041
 - depends_on: ITASK-008
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -185,8 +185,8 @@
 
 ### ITASK-010 — TASK-050 实现 `truth_fill` 子链编排器，记录 `truth-promotion.json`（beacon gen-* CLI 序列）。
 - status: `completed`
-- mapped_ac_ids: AC-029, AC-005, AC-010, AC-026
-- mapped_test_ids: TEST-029, TC-034, TEST-010, TEST-026
+- mapped_ac_ids: AC-034
+- mapped_test_ids: TC-034
 - mapped_scenario_ids: SC-002, SC-003, SC-012
 - mapped_qa_case_ids: TC-034
 - depends_on: ITASK-009
@@ -233,8 +233,8 @@
 
 ### ITASK-014 — TASK-054 `--mode delivery` 自动链：import-evidence → beacon qa → beacon release（subprocess + JSON 解析）。
 - status: `completed`
-- mapped_ac_ids: AC-002
-- mapped_test_ids: TEST-002
+- mapped_ac_ids: AC-010
+- mapped_test_ids: TEST-010
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-013
@@ -257,8 +257,8 @@
 
 ### ITASK-016 — TASK-056 实现 `repair_from_qa`：qa findings 注入 notes，回灌 `implement_loop`。
 - status: `completed`
-- mapped_ac_ids: AC-030
-- mapped_test_ids: TEST-030
+- mapped_ac_ids: AC-007
+- mapped_test_ids: TEST-007
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-015
@@ -293,8 +293,8 @@
 
 ### ITASK-019 — TASK-059 非法转移 guard 与 TC-038a..d。
 - status: `completed`
-- mapped_ac_ids: AC-007
-- mapped_test_ids: TEST-007
+- mapped_ac_ids: AC-008
+- mapped_test_ids: TEST-008
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-018
@@ -329,10 +329,10 @@
 
 ### ITASK-022 — TASK-062 更新 `evidence.md`；parent 回归 TC-040、TC-041。
 - status: `completed`
-- mapped_ac_ids: AC-025
-- mapped_test_ids: TC-041
-- mapped_scenario_ids: SC-008
-- mapped_qa_case_ids: TC-041
+- mapped_ac_ids: AC-009
+- mapped_test_ids: TEST-009
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
 - depends_on: ITASK-021
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -341,10 +341,10 @@
 
 ### ITASK-023 — TASK-063 `beacon qa run` + release gate 正式验收本 feature（R1 AC-031..039）。
 - status: `completed`
-- mapped_ac_ids: AC-013, AC-023, AC-028
-- mapped_test_ids: TEST-013, TEST-023, TEST-028
-- mapped_scenario_ids: -
-- mapped_qa_case_ids: -
+- mapped_ac_ids: AC-031
+- mapped_test_ids: TC-031
+- mapped_scenario_ids: SC-009
+- mapped_qa_case_ids: TC-031
 - depends_on: ITASK-022
 - direct_delivery_services: .
 - reference_only_services: docs
@@ -353,8 +353,8 @@
 
 ### ITASK-024 — TASK-064 实现 LLM intent tie-break adapter + `intent-tiebreak.json` 落盘（AC-040）。
 - status: `completed`
-- mapped_ac_ids: AC-008
-- mapped_test_ids: TEST-008
+- mapped_ac_ids: AC-013, AC-023, AC-026, AC-028, AC-029
+- mapped_test_ids: TEST-013, TEST-023, TEST-026, TEST-028, TEST-029
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-023
@@ -365,8 +365,8 @@
 
 ### ITASK-025 — TASK-065 默认 green-light：`orchestrator` 移除 ambiguous→`user_decision_pending`；hard stop 白名单。
 - status: `completed`
-- mapped_ac_ids: AC-009
-- mapped_test_ids: TEST-009
+- mapped_ac_ids: AC-011
+- mapped_test_ids: TEST-011
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-024
@@ -377,8 +377,8 @@
 
 ### ITASK-026 — TASK-066 CLI：`--strict-interrupt` opt-in；deprecate `--auto-decide deferrals` 作为 ambiguous 门控。
 - status: `completed`
-- mapped_ac_ids: AC-011
-- mapped_test_ids: TEST-011
+- mapped_ac_ids: -
+- mapped_test_ids: -
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-025
@@ -646,6 +646,198 @@
 - mapped_scenario_ids: -
 - mapped_qa_case_ids: -
 - depends_on: ITASK-047
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-049 — TASK-089 `beacon-run`：`--worktree --beacon` 时 harness `projectRoot = effectiveCwd`；beacon-loop delegate 文档化（AC-061）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-048
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-050 — TASK-090 测试 TC-063：`worktree-harness-project-root`（mock harness，assert truth-promotion path）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-049
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-051 — TASK-091 `requirement_clarity`：拉丁 marker 词界 + frontmatter/path 豁免；TC-064 fixture `go-todo-crud-smoke`（AC-062）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-050
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-052 — TASK-092 `buildPhaseHarnessArgs` / phase-controller：读 target `scope_mode`；smoke truth exit 跳过 sync-materials（AC-063）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-051
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-053 — TASK-093 `beacon-phase.json`：`phase_promoted` + harness 失败日志（AC-064）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-052
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-054 — TASK-094 merge `go-todo-crud-smoke` 材料入主仓；opt-in E2E TC-067（AC-063 回归）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-053
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-055 — TASK-095 R5 refreeze（`beacon change ... --refreeze-chain`）+ `beacon-eval-qa` AC-061..064。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-054
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-056 — TASK-096 `harness-checkpoint` + `phase-controller`：`truth_freeze_gate` 序列（clarity + freeze + cutover）；smoke 跳过 sync-materials 但不跳过 freeze（AC-063/068）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-055
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-057 — TASK-097 `phase-prompt`：truth allowed 含 `beacon freeze`；generate entry frozen gate（AC-068）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-056
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-058 — TASK-098 `scope-mode`：`minimal_smoke` → smoke；`isFeatureTruthFrozen` 共享检查（AC-063）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-057
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-059 — TASK-099 测试 TC-068..TC-070 + 更新 TC-065 smoke-truth-exit 断言（AC-068）。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-058
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-060 — TASK-100 R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-059
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-061 — TASK-101 闭合 AC-069：`BEACON_RUN_E2E_GO_TODO=1` worktree+freeze E2E；回归 `go-todo-crud-smoke` 不断链。（TC-071 QA passed；live opt-in 见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-060
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-062 — TASK-102 闭合 AC-070：新增 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`；实现 `beacon-loop spine show`（或 `status --spine`）+ TC-072。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-061
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-063 — TASK-103 闭合 AC-071：`stop-when` 外部可执行 gate（harness / `--stop-check-cmd`）；`stop_when_unverified` 路径 + TC-073。
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-062
+- direct_delivery_services: .
+- reference_only_services: docs
+- target_modules: .
+- diagram_review_gates: -
+
+### ITASK-064 — TASK-104 R10 refreeze（`beacon change ... --refreeze-chain`）；`beacon-eval-qa` v1.6.1 止血验收。（QA `run-20260612T182801183358` passed 38/38 AC、41/41 scenario；refreeze 待用户确认是否重跑）
+- status: `completed`
+- mapped_ac_ids: -
+- mapped_test_ids: -
+- mapped_scenario_ids: -
+- mapped_qa_case_ids: -
+- depends_on: ITASK-063
 - direct_delivery_services: .
 - reference_only_services: docs
 - target_modules: .

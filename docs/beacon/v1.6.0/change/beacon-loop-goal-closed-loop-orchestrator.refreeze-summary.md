@@ -1,12 +1,12 @@
 # Change Refreeze Summary: beacon-loop-goal-closed-loop-orchestrator
 
 - version: `v1.6.0`
-- change_reason: `check`
+- change_reason: `implementation-first-reconciliation`
 - refreeze_status: `complete`
 - blocked_reason: ``
 - next_route: `beacon-gen-implement`
-- revision_before: `R7`
-- revision_after: `R8`
+- revision_before: `R9`
+- revision_after: `R10`
 
 ## Surface Statuses
 - `change`: `present` (docs/beacon/v1.6.0/change/beacon-loop-goal-closed-loop-orchestrator.md)

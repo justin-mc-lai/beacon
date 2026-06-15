@@ -369,84 +369,134 @@ describe("Orchestrator stop limits", () => {
     expect(orchestrator.getState().status).toBe("aborted");
   });
 
-  it("aborts after the iteration when the agent reports should_fully_stop and stopWhen is set", async () => {
-    const agent: Agent = {
-      name: "claude",
-      run: vi.fn(async () => ({
-        output: {
-          success: true,
-          summary: "all tasks done",
-          key_changes_made: ["file.ts"],
-          key_learnings: [],
-          should_fully_stop: true,
+  describe("stop-when-exec-gate", () => {
+    const execGateCwd = process.cwd();
+
+    it("does not stop when the agent self-reports should_fully_stop without stop-check-cmd", async () => {
+      const agent: Agent = {
+        name: "claude",
+        run: vi.fn(async () => ({
+          output: {
+            success: true,
+            summary: "stop-when matched for tests",
+            key_changes_made: ["file.ts"],
+            key_learnings: [],
+            should_fully_stop: true,
+          },
+          usage: {
+            inputTokens: 0,
+            outputTokens: 0,
+            cacheReadTokens: 0,
+            cacheCreationTokens: 0,
+          },
+        })),
+      };
+      const orchestrator = new Orchestrator(
+        config,
+        agent,
+        runInfo,
+        "ship it",
+        "/repo",
+        0,
+        { stopWhen: "all tasks done", maxIterations: 2 },
+      );
+
+      const abort = vi.fn();
+      orchestrator.on("abort", abort);
+
+      await orchestrator.start();
+
+      expect(agent.run).toHaveBeenCalledTimes(2);
+      expect(abort).toHaveBeenCalledWith("max iterations reached (2)");
+      expect(abort).not.toHaveBeenCalledWith("stop condition met");
+    });
+
+    it("stops only when --stop-check-cmd exits 0 after agent reports should_fully_stop", async () => {
+      const agent: Agent = {
+        name: "claude",
+        run: vi.fn(async () => ({
+          output: {
+            success: true,
+            summary: "all tasks done",
+            key_changes_made: ["file.ts"],
+            key_learnings: [],
+            should_fully_stop: true,
+          },
+          usage: {
+            inputTokens: 0,
+            outputTokens: 0,
+            cacheReadTokens: 0,
+            cacheCreationTokens: 0,
+          },
+        })),
+      };
+      const orchestrator = new Orchestrator(
+        config,
+        agent,
+        runInfo,
+        "ship it",
+        execGateCwd,
+        0,
+        {
+          stopWhen: "all tasks done",
+          stopCheckCmd: "true",
+          maxIterations: 5,
         },
-        usage: {
-          inputTokens: 0,
-          outputTokens: 0,
-          cacheReadTokens: 0,
-          cacheCreationTokens: 0,
+      );
+
+      const abort = vi.fn();
+      orchestrator.on("abort", abort);
+
+      await orchestrator.start();
+
+      expect(agent.run).toHaveBeenCalledTimes(1);
+      expect(mockCommitAll).toHaveBeenCalledTimes(1);
+      expect(abort).toHaveBeenCalledWith("stop condition met");
+      expect(orchestrator.getState().status).toBe("aborted");
+    });
+
+    it("continues with stop_when_unverified when stop-check-cmd fails", async () => {
+      const agent: Agent = {
+        name: "claude",
+        run: vi.fn(async () => ({
+          output: {
+            success: true,
+            summary: "all tasks done",
+            key_changes_made: ["file.ts"],
+            key_learnings: [],
+            should_fully_stop: true,
+          },
+          usage: {
+            inputTokens: 0,
+            outputTokens: 0,
+            cacheReadTokens: 0,
+            cacheCreationTokens: 0,
+          },
+        })),
+      };
+      const orchestrator = new Orchestrator(
+        config,
+        agent,
+        runInfo,
+        "ship it",
+        execGateCwd,
+        0,
+        {
+          stopWhen: "all tasks done",
+          stopCheckCmd: "false",
+          maxIterations: 2,
         },
-      })),
-    };
-    const orchestrator = new Orchestrator(
-      config,
-      agent,
-      runInfo,
-      "ship it",
-      "/repo",
-      0,
-      { stopWhen: "all tasks done", maxIterations: 5 },
-    );
+      );
 
-    const abort = vi.fn();
-    orchestrator.on("abort", abort);
+      const abort = vi.fn();
+      orchestrator.on("abort", abort);
 
-    await orchestrator.start();
+      await orchestrator.start();
 
-    expect(agent.run).toHaveBeenCalledTimes(1);
-    expect(mockCommitAll).toHaveBeenCalledTimes(1);
-    expect(abort).toHaveBeenCalledWith("stop condition met");
-    expect(orchestrator.getState().status).toBe("aborted");
-  });
-
-  it("aborts when the agent reports should_fully_stop with success=false and stopWhen is set", async () => {
-    const agent: Agent = {
-      name: "claude",
-      run: vi.fn(async () => ({
-        output: {
-          success: false,
-          summary: "nothing left to do",
-          key_changes_made: [],
-          key_learnings: [],
-          should_fully_stop: true,
-        },
-        usage: {
-          inputTokens: 0,
-          outputTokens: 0,
-          cacheReadTokens: 0,
-          cacheCreationTokens: 0,
-        },
-      })),
-    };
-    const orchestrator = new Orchestrator(
-      config,
-      agent,
-      runInfo,
-      "ship it",
-      "/repo",
-      0,
-      { stopWhen: "all tasks done", maxIterations: 5 },
-    );
-
-    const abort = vi.fn();
-    orchestrator.on("abort", abort);
-
-    await orchestrator.start();
-
-    expect(agent.run).toHaveBeenCalledTimes(1);
-    expect(mockCommitAll).not.toHaveBeenCalled();
-    expect(abort).toHaveBeenCalledWith("stop condition met");
-    expect(orchestrator.getState().status).toBe("aborted");
+      expect(agent.run).toHaveBeenCalledTimes(2);
+      expect(abort).toHaveBeenCalledWith("max iterations reached (2)");
+      expect(abort).not.toHaveBeenCalledWith("stop condition met");
+    });
   });
 
   it("ignores should_fully_stop when stopWhen is not set", async () => {

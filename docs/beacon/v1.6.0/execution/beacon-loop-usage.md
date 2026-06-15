@@ -1,6 +1,12 @@
-# beacon-loop 使用指南（v1.6.0）
+# beacon-loop 使用指南（v1.6.0 / v1.6.1 止血）
 
 Canonical operator doc for the native long-loop entrypoint. Automation queue/job/launchd assets are retired; use `beacon-loop` instead.
+
+**v1.6.1 止血（R10）** 在默认 `goal → beacon-run` 路径上补齐三件事：
+
+1. **Worktree 不断链**：agent 与 harness 的 `project-root` / cwd 对齐到同一 worktree，避免主仓 `sync-materials` 误伤。
+2. **State spine 查询**：不用手拼四份 state 文件；一条命令看进度（见 §2.1）。
+3. **Stop-when 可验证**：`--stop-when` 不能靠 agent 自说自话结束；须 harness 或 `--stop-check-cmd` exit 0（见 §3）。
 
 ## 它是什么
 
@@ -103,6 +109,25 @@ beacon-run "<goal>" --beacon --project-root . --beacon-version v1.6.0 \
 
 Agent 阶段走 Codex/Claude；QA/Release 走 Beacon CLI harness，**不由 loop 自判 release verdict**。
 
+### 2.1 查进度（state spine）
+
+不用打开 `beacon-phase.json`、`run-package.json`、ledger 四处找——用 spine：
+
+```bash
+# 最新 run
+beacon-loop spine show --project . --json
+
+# 指定 run
+beacon-loop spine show --run-id <id> --project . --json
+
+# 等价别名
+beacon-loop status --spine --project . --json
+```
+
+JSON 含 `phase`、`phases_completed`、`phase_promoted`、`next_harness`、`next_action`、`authoritative_paths[]`、`run_id`。
+
+字段语义与权威文件清单见 [`beacon-loop-state-spine.md`](./beacon-loop-state-spine.md)。
+
 ## 3. 常用参数
 
 | 参数 | 默认 | 说明 |
@@ -113,8 +138,10 @@ Agent 阶段走 Codex/Claude；QA/Release 走 Beacon CLI harness，**不由 loop
 | `--agent` | `codex` | `codex` / `claude` / `acp:...` |
 | `--max-iterations` | `8` | **总迭代上限**（绝对计数，非「再跑 N 轮」） |
 | `--max-tokens` | `0` | `0` = 不限制 |
-| `--stop-when` | — | agent 报告某条件后停止 |
+| `--stop-when` | — | 自然语言停止条件（**须**配合外部验证，见下） |
+| `--stop-check-cmd` | — | shell 命令；exit 0 才允许因 stop-when 停迭代（AC-071） |
 | `--branch-mode` | `worktree` | `worktree` / `current-branch` / `run-branch` |
+| `--mode` | `delivery` | `delivery` / `execute-only` / `intent-only` / `review-only` |
 | `--isolated-worktree` | off | 强制 worktree |
 | `--implement-runner` | 自动 | generate harness 用的 runner |
 | `--truth-bootstrap` | `agent` | `agent` 或 `fallback`（模板链，一般不用） |
@@ -136,6 +163,28 @@ branch_mode: worktree
 
 CLI 显式 flag 会覆盖 config。
 
+### Stop-when：写代码的人不能给自己打分 done
+
+Loop Engineering 对齐：**agent 结构化输出里写「stop-when matched」不算完成**。
+
+每轮 agent 之后至少要有一种 **外部可验证** 的检查通过：
+
+| 方式 | 何时生效 |
+|------|----------|
+| 阶段 harness | 默认：`beacon qa run` / phase 对应 gate exit 0 |
+| `--stop-check-cmd` | 你显式给的 shell（如 `npm test`、`go test ./...`）exit 0 |
+| Terminal harness | lifecycle 已到 qa/release evaluator |
+
+仅 agent 自报 → `reason_code=stop_when_unverified`，**继续下一 iteration**，不会 silent done。
+
+```bash
+beacon-loop goal "修完 login 空邮箱 bug 且单测全绿" \
+  --feature auth-login-fix \
+  --stop-when "login 空邮箱用例通过" \
+  --stop-check-cmd "cd services/auth && go test ./... -run TestLoginEmptyEmail" \
+  --max-iterations 8
+```
+
 ### 环境变量
 
 | 变量 | 说明 |
@@ -143,7 +192,163 @@ CLI 显式 flag 会覆盖 config。
 | `BEACON_RUN_CLI` | 显式指定 `beacon-run` 的 `cli.mjs` 路径 |
 | `BEACON_LOOP_IMPLEMENT_RUNNER` | 默认 implement runner |
 
-## 4. 典型场景
+## 4. 示例一览（从小到大）
+
+下面四条是**同一套 CLI**、不同目标粒度。共性：
+
+- 默认 **`delivery`**：intent → truth → generate → qa → release harness。
+- 默认 **`worktree`**：改代码在隔离 worktree，主分支保持干净。
+- **`--feature`** 尽量显式写 slug（推断失败会 `feature_slug_required`）。
+- 大任务提高 **`--max-iterations`**（绝对计数，不是「再跑 N 轮」）。
+
+意图分类（deterministic，见 truth AC-032）会从 goal 文案里读信号：
+
+| 你写的关键词 | 典型 `scope_mode` / class |
+|--------------|---------------------------|
+| 修 bug / hotfix / 修复 | `patch` |
+| 完整复刻 / 全量 / parity | `full_parity` |
+| 调研 / 探索 | `research`（不进 implement） |
+| frozen + 只跑实现 | `execute_bound` → 用 `--mode execute-only` |
+
+---
+
+### 示例 1 — 修一个已知问题（最小）
+
+**场景**：生产上「空邮箱登录返回 500」，truth 可能还没有，或已有 frozen patch feature。
+
+**路径 A — 从零走闭环（推荐首次）**
+
+```bash
+cd /path/to/your-app
+
+beacon-loop goal "修复 auth 登录：email 为空时返回 400 而不是 500，补单测" \
+  --project . \
+  --version v1.6.0 \
+  --feature auth-login-empty-email-fix \
+  --agent codex \
+  --max-iterations 10 \
+  --stop-when "空邮箱登录用例通过" \
+  --stop-check-cmd "cd services/auth && go test ./... -run TestLoginEmptyEmail"
+```
+
+**路径 B — truth 已 frozen，只跑实现 + QA**
+
+```bash
+beacon-loop goal "按 features/auth-login-empty-email-fix/truth.md 实现并过 QA" \
+  --mode execute-only \
+  --feature auth-login-empty-email-fix \
+  --project . \
+  --version v1.6.0 \
+  --max-iterations 8
+```
+
+**你会看到什么**：worktree 里改 `services/auth/` → harness 跑 test/qa → spine 里 `phase` 从 `generate` 走向 `qa`。
+
+**查进度**：
+
+```bash
+beacon-loop spine show --project . --json | jq '{phase, next_action, phase_promoted}'
+```
+
+---
+
+### 示例 2 — 局部重构（中等）
+
+**场景**：把 `payment` 模块从 handler 里抽成 service 层，接口行为不变，测试不回归。
+
+```bash
+cd /path/to/your-app
+
+beacon-loop goal "重构 payment 模块：提取 PaymentService，handler 只编排；行为不变，现有测试全绿" \
+  --project . \
+  --version v1.6.0 \
+  --feature payment-service-extraction \
+  --agent codex \
+  --max-iterations 20 \
+  --stop-check-cmd "npm test -- payment"
+```
+
+**要点**：
+
+- goal 里写清 **边界**（只动 payment、不改 API 契约）比写「重构一下」省迭代。
+- `--stop-check-cmd` 绑在你已有的 payment 测试套件上，避免 agent 自报「重构完成」。
+- 若 truth 里 `scope_mode` 是 `mvp`，freeze gate 走 smoke 路径；全量 parity 会走 `sync-materials` 链（更慢但更严）。
+
+---
+
+### 示例 3 — 接手现有项目，加一块能力（中偏大）
+
+**场景**：brownfield——已有电商后台，要加 OAuth2 登录，不动订单核心。
+
+```bash
+cd /path/to/ecommerce-admin
+
+# 首次接入 Beacon 上下文（一次性）
+beacon init --apply
+beacon doctor setup-context --project-root .
+beacon doctor verify-context --project-root . --strict
+
+beacon-loop goal "在现有 admin 加 OAuth2 登录（Google/GitHub），保留邮箱密码登录；文档写进 features/oauth-login/truth.md" \
+  --project . \
+  --version v1.6.0 \
+  --feature oauth-login \
+  --agent codex \
+  --max-iterations 35
+```
+
+**要点**：
+
+- 先说 **保留什么、新增什么**（intent contract 会记 verbatim utterance）。
+- 大改动默认 worktree；合并前在主仓 review worktree diff。
+- QA/release verdict 仍以 `beacon qa` / `beacon release check` 为准，不是 loop stdout。
+
+---
+
+### 示例 4 — 复刻 / 对标开源项目（最大）
+
+**场景**：对标 `https://github.com/todosaurus/todo-api`（示例名），在本仓 `examples/todo-api/` 做 **full parity** 最小可运行版 + Beacon truth + QA。
+
+```bash
+cd /path/to/greenfield-or-examples-repo
+
+beacon init --apply
+beacon doctor setup-context --project-root .
+
+beacon-loop goal "完整复刻 todosaurus/todo-api 的核心 REST API（CRUD + 健康检查），代码落在 examples/todo-api，不要 MVP 裁剪，truth 与 tests 对齐开源行为" \
+  --project . \
+  --version v1.6.0 \
+  --feature todo-api-parity \
+  --agent codex \
+  --max-iterations 50 \
+  --stop-check-cmd "cd examples/todo-api && go test ./... && curl -sf http://127.0.0.1:8080/health"
+```
+
+**要点**：
+
+- goal 里 **「完整复刻 / full parity / 不要 MVP」** 会推高 `scope_mode`，freeze gate 走 full sync 链。
+- 迭代预算给足（30–50+）；中途用 spine 看卡在哪一 phase。
+- 可选 **dry-run** 先看委托命令：
+
+```bash
+beacon-loop goal "..." --feature todo-api-parity --dry-run --json | jq .beacon_run_command
+```
+
+- Beacon 仓内回归夹具（worktree + smoke）：`--feature go-todo-crud-smoke` + utterance 含 `examples/go-todo-crud`（见 truth R5/R6）。
+
+---
+
+### 示例对照表
+
+| 级别 | 目标类型 | 建议 `--mode` | 典型 `--max-iterations` | 是否建议 `--stop-check-cmd` |
+|------|----------|---------------|-------------------------|----------------------------|
+| 1 小 | 单 bug / hotfix | `delivery` 或 `execute-only`（truth 已冻） | 8–12 | **强烈建议** |
+| 2 中 | 模块重构 | `delivery` | 15–25 | **建议** |
+| 3 中大 | brownfield 新能力 | `delivery` | 25–40 | 可选（用模块测试） |
+| 4 大 | 开源复刻 / full parity | `delivery` | 40–60+ | 可选（集成测试/health） |
+
+---
+
+## 5. 其它典型场景
 
 ### A. 在业务项目里跑 smoke / drill
 
@@ -157,7 +362,7 @@ beacon-loop goal "完成 go-todo-crud smoke：truth frozen 后实现并通过 na
   --max-iterations 30
 ```
 
-Worktree 一般在 `../beacon-gnhf-worktrees/<slug>-*` 一类路径。
+Worktree 一般在 `../beacon-gnhf-worktrees/<slug>-*` 或 `<repo>-gnhf-worktrees/*` 一类路径。
 
 ### B. 已在 worktree / gnhf 分支上 resume
 
@@ -188,12 +393,14 @@ node packages/beacon-run/dist/cli.mjs \
   --feature <slug> --agent codex --worktree --max-iterations 25
 ```
 
-## 5. 辅助命令（loop ledger）
+## 6. 辅助命令（loop ledger）
 
-这些主要服务 **R3 legacy delivery** 与 loop run 账本。默认 `goal` 委托路径以 **beacon-run 的 run 目录**为主（如 `.beacon/runs/`、`beacon-phase.json`）。
+默认 `goal → beacon-run` 路径以 **`.gnhf/runs/<id>/beacon-phase.json`** 为主进度；legacy loop 账本在 `.beacon/loop/runs/`。
 
 | 命令 | 用途 |
 |------|------|
+| `beacon-loop spine show [--run-id]` | **推荐** — operator 进度 spine（AC-070） |
+| `beacon-loop status --spine` | 同上 |
 | `beacon-loop status [run-id]` | 查看 loop run 状态 |
 | `beacon-loop resume <run-id>` | 恢复 legacy loop run |
 | `beacon-loop stop <run-id> [--force]` | 停止 run |
@@ -203,7 +410,7 @@ node packages/beacon-run/dist/cli.mjs \
 | `beacon-loop review <run-id>` | 打印 `summary.md` |
 | `beacon-loop analyze / learn <run-id>` | harness 分析/学习 |
 
-## 6. Legacy delivery（R3 FSM）
+## 7. Legacy delivery（R3 FSM）
 
 ```bash
 beacon-loop goal "..." \
@@ -217,7 +424,7 @@ beacon-loop goal "..." \
 
 v1.6.0 主路径已迁到 **beacon-run + phase harness**；legacy 仅用于兼容与对照。
 
-## 7. 排错速查
+## 8. 排错速查
 
 | 现象 | 原因 | 处理 |
 |------|------|------|
@@ -227,19 +434,23 @@ v1.6.0 主路径已迁到 **beacon-run + phase harness**；legacy 仅用于兼�
 | harness repair 循环 | infra/QA 失败 | 看 `beacon-phase.json` 的 `last_harness_exit`；修 gate/QA 后 resume |
 | TUI 乱码/无交互 | 非 TTY 环境 | 在真实终端跑；CI 用 pipe 模式 |
 | `--max-iterations` 太小 | 绝对计数已耗尽 | 设更大值（≥ 已跑迭代数） |
+| `stop_when_unverified` | agent 自报 stop 但检查未过 | 加/修 `--stop-check-cmd` 或等 phase harness |
+| `test_case_sync_failed`（worktree） | harness 对主仓 sync | 确认 v1.6.1+；harness cwd 应对齐 worktree |
+| `revision_not_frozen` 空转 | generate 在 draft truth 上跑 | 等 truth phase freeze；看 spine `phase_promoted` |
 
 ### 建议诊断顺序
 
 ```bash
 beacon-loop doctor --project . --diagnose --json
+beacon-loop spine show --project . --json
 beacon doctor verify-context --project-root . --strict
 beacon truth-map resolve <feature> --project . --version v1.6.0 --json
 beacon status --verbose
 # worktree 内
-cat beacon-phase.json
+cat .gnhf/runs/*/beacon-phase.json
 ```
 
-## 8. 与 Beacon 其它面的关系
+## 9. 与 Beacon 其它面的关系
 
 ```text
 Operator
@@ -255,7 +466,7 @@ Operator
 - **人工干预**：Cursor/Codex 里仍可用 `beacon-pln-review`、`beacon-gen-implement` 等 skills
 - **Release 判定**：以 `beacon release check v1.6.0` / gate 为准，不是 loop stdout
 
-## 9. 本机快速验证（beacon 仓）
+## 10. 本机快速验证（beacon 仓）
 
 ```bash
 cd /path/to/beacon
@@ -271,6 +482,7 @@ beacon-loop goal "smoke: verify beacon-loop delegates to beacon-run" \
 
 ## 相关文档
 
+- State spine：`docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`
 - Feature truth：`docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md`
 - Architecture：`docs/beacon/v1.6.0/execution/architecture-blueprint.md`
 - Automation retirement：`automation/README.md`

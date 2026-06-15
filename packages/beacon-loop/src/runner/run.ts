@@ -148,6 +148,7 @@ export function startGoal(projectRoot, goal, options = {}) {
     max_iterations: maxIterations,
     max_tokens: Number(options.maxTokens || 0),
     stop_when: options.stopWhen || "resolver-selected tests have an implementation evidence candidate",
+    stop_check_cmd: options.stopCheckCmd || "",
     beacon_commands: {
       resolve_truth: resolver.command || `beacon truth-map resolve ${feature || "<feature>"} --project ${projectRoot} --version ${version} --json`,
       import_evidence: `beacon implement import-evidence ${feature || "<feature>"} --project ${projectRoot} --version ${version}`,

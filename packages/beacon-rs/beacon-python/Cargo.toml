@@ -1,0 +1,14 @@
+[package]
+name = "beacon-python"
+description = "Beacon v2 PyO3 bindings (P4+)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+
+[lib]
+name = "beacon_python"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+beacon-core = { workspace = true }
+beacon-store = { workspace = true }

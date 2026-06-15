@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { join } from "node:path";
+import { spawnSync } from "node:child_process";
 import { resolveWorkspace } from "../git/branches.js";
 import { commitAll, currentHead, rollback } from "../git/git.js";
 import { runAgentAdapter } from "../agents/index.js";
@@ -39,14 +40,21 @@ function tokenEstimate(result) {
   return Math.max(1, Math.ceil(summary.length / 4));
 }
 
-function stopWhenMatched(stopWhen, iterationResult, iteration, maxIterations) {
-  const needle = String(stopWhen || "").toLowerCase();
+function stopWhenMatched(stopWhen, iterationResult, stopCheckCmd, cwd) {
+  const needle = String(stopWhen || "").trim();
   if (!needle) return false;
-  if (iterationResult?.raw?.stop_signal === true) return true;
-  const summary = String(iterationResult?.summary || "").toLowerCase();
-  if (summary.includes("stop-when matched")) return true;
-  if (needle.includes("implementation evidence candidate") && iterationResult?.success && iteration >= maxIterations) return true;
-  return false;
+  const agentStop =
+    iterationResult?.raw?.stop_signal === true ||
+    iterationResult?.raw?.should_fully_stop === true;
+  if (!agentStop) return false;
+  const cmd = String(stopCheckCmd || "").trim();
+  if (!cmd) return false;
+  const result = spawnSync("sh", ["-c", cmd], {
+    cwd,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  return (result.status ?? 1) === 0;
 }
 
 function isNoOpFailure(result) {
@@ -262,7 +270,7 @@ export function runOrchestrator(projectRoot, runDir, runPackage, resolver, optio
       finalStatus = "cap_reached";
       break;
     }
-    if (stopWhenMatched(runPackage.stop_when, iteration, n, maxIterations)) {
+    if (stopWhenMatched(runPackage.stop_when, iteration, runPackage.stop_check_cmd, worktreePath)) {
       runState.machine_state = RUN_STATES.CAP_REACHED;
       runState.cap_reason = "stop_when";
       finalStatus = "cap_reached";

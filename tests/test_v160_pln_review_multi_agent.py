@@ -184,6 +184,7 @@ def test_skill_reference_documents_multi_agent_runtime_contract() -> None:
     reference = (root / "references/multi-agent-runtime.md").read_text(encoding="utf-8")
 
     assert "references/multi-agent-runtime.md" in skill
+    assert "beacon planner-review run" in skill
     assert "single_process_multi_reviewer" in reference
     assert "not requirement truth" in reference
     assert "not formal QA verdict" in reference

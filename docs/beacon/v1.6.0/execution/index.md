@@ -6,7 +6,8 @@
 
 ## Execution Surfaces
 
-- `execution/beacon-loop-usage.md`
+- `execution/beacon-loop-usage.md` — **beacon-loop / beacon-run operator guide**（含从小到大示例）
+- `execution/beacon-loop-state-spine.md` — loop 进度 spine 语义与 `spine show`
 - `execution/boundaries.md`
 - `execution/project-skill-qa-evolution-blueprint.md`
 - `execution/architecture-blueprint.md`

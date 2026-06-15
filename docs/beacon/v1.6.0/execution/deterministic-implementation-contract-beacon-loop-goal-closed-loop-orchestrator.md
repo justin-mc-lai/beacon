@@ -2,10 +2,10 @@
 
 - feature: `beacon-loop-goal-closed-loop-orchestrator`
 - version: `v1.6.0`
-- revision_id: `R8`
+- revision_id: `R10`
 - review_status: `approved`
 - approved_by: `beacon-release-gate`
-- reviewed_at: `2026-06-12T02:30:00Z`
+- reviewed_at: `2026-06-12T10:47:54.302666+00:00`
 
 ## Git
 - base_branch: `main`

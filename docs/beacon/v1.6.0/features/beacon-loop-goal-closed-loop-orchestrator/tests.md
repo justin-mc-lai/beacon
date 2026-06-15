@@ -42,8 +42,11 @@
 | AC-068 | TC-069 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "generate-blocked-without-frozen"` | `isFeatureTruthFrozen===false` 时 generate phase **不得** `run_agent` 写产品代码。 |
 | AC-068 | TC-070 | integration | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "implement-preflight-demote"` | `revision_not_frozen` / `legacy_cutover_required` 不空烧 cap；phase demote + truth-promotion 记录 cutover。 |
 | AC-063 | TC-067 | e2e | `cd examples/go-todo-crud && go test ./...` | smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。 |
+| AC-069 | TC-071 | e2e | `cd packages/beacon-loop && npm test -- --test-name-pattern "TC-071"` | worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。 |
+| AC-070 | TC-072 | contract | `cd packages/beacon-loop && npm test -- --test-name-pattern "spine-show"` | `spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。 |
+| AC-071 | TC-073 | negative | `cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t "stop-when-exec-gate"` | agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。 |
 
-## R5 — worktree harness + smoke exit + clarity（AC-061..AC-064）
+## R10 — v1.6.1 止血 Loop Engineering 对齐（AC-069..AC-071）
 
 R4 authoritative rows 已并入上方 **覆盖矩阵**（TC-055..TC-062）。
 
@@ -124,6 +127,6 @@ R3 authoritative rows 已并入上方 **覆盖矩阵**（TC-045..TC-054）；本
 
 - Benchmark/runtime evidence 不能替代 formal `beacon-eval-qa` 或 release verdict。
 - TC-033/036/039 允许 test fixture 模拟 beacon/planner subprocess；生产路径必须调用真实 CLI。
-- 本包 R2 refreeze 后 AC-040..AC-042 进入 authoritative coverage；R1 实现仅覆盖 AC-031..AC-039，R2 implement 前 TC-042..044 可 blocked/pending。
+- 本包 R2 refreeze 后 AC-040..AC-042 进入 authoritative coverage；R1 实现仅覆盖 AC-031..AC-039，R2 implement 前 TC-042..044 状态可为 blocked 或未完成。
 - **R3 authoritative**：AC-043..AC-052（TC-045..TC-054）已并入覆盖矩阵；refreeze 后 formal QA 必须执行。
 - TC-053 真 E2E 可在 CI 设 `BEACON_LOOP_E2E_HARNESS=1` opt-in；不得用 fixture-only 替代 AC-051 closure。

@@ -1,0 +1,164 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-15T02:25:56.086662+00:00",
+  "feature": "beacon-truth-integrity-gates-v160",
+  "feature_slug": "beacon-truth-integrity-gates-v160",
+  "version": "v1.6.0",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+    "tests": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/tests.md",
+    "tasks": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/tasks.md",
+    "evidence": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "9388ecd0ed66ea74b450a9a7a38256e315249b7eeb9bbb4f8a85d39a1354f8cd",
+    "tests": "bebe078ef1ea20a122f882051b48d60d2776f4de9410fb6f11e4e9b89f4924ce",
+    "tasks": "0a61bf6171a40c8b5f0c452a31ccc06690f3dcb62a6a1d7a5a3370681f343fc9",
+    "evidence": "a304a65c270e8610447f443302f3f2cf97a484a7da7bc51325ad6f2f2d483db7"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-truth-integrity-gates-v160",
+    "version": "v1.6.0",
+    "status": "frozen",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+      "user_story": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+      "test_case": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-TIG-001",
+      "theme": "单一阻断源",
+      "description": "`build_truth_integrity_gate` 为 `beacon freeze` 与 `change_refreeze` 冻结前唯一 hard block 源（含 clarity + fake_delivery + package validation）。"
+    },
+    {
+      "ac_id": "AC-TIG-002",
+      "theme": "占位检测",
+      "description": "占位 AC、软 TC、未拍板 deferral 必须产生带 `repair_route` 的 line-level findings。"
+    },
+    {
+      "ac_id": "AC-TIG-003",
+      "theme": "verify-closure 对齐",
+      "description": "`beacon skill package verify-closure` 与 TIG `fake_delivery` 切片结果一致。"
+    },
+    {
+      "ac_id": "AC-TIG-004",
+      "theme": "prose AC",
+      "description": "prose AC 与 hardened tests 可通过 `validate_feature_package`（不再仅认 AC 表格）。"
+    },
+    {
+      "ac_id": "AC-TIG-005",
+      "theme": "金样例 pytest",
+      "description": "`tests/test_truth_integrity.py` 覆盖好包 pass、坏包 block（≥6 fixtures）。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-TIG-001",
+      "tc_id": "TC-TIG-001",
+      "layer": "integration",
+      "command": "`beacon doctor verify-truth-integrity beacon-truth-integrity-gates-v160 --project-root . --version v1.6.0 --mode block --json`",
+      "assertion": "`blocked=false` 且 `status=pass` 于本包 draft 通过后",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TIG-002",
+      "tc_id": "TC-TIG-002",
+      "layer": "unit",
+      "command": "`python -m pytest tests/test_truth_integrity.py -q`",
+      "assertion": "坏 fixture 触发 `placeholder_ac_language` / `soft_test_assertion` / `deferral_pending`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TIG-003",
+      "tc_id": "TC-TIG-003",
+      "layer": "contract",
+      "command": "`beacon skill package verify-closure --feature beacon-truth-integrity-gates-v160 --project-root . --version v1.6.0 --json`",
+      "assertion": "`closure_allowed=true` 与 TIG `fake_delivery.closure_allowed` 一致",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TIG-004",
+      "tc_id": "TC-TIG-004",
+      "layer": "unit",
+      "command": "`python -m pytest tests/test_truth_integrity.py::test_prose_ac_validation_passes -q`",
+      "assertion": "prose AC 包不报 `acceptance_criteria_table_missing`",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-TIG-005",
+      "tc_id": "TC-TIG-005",
+      "layer": "integration",
+      "command": "`beacon doctor verify-truth-integrity beacon-v2-rust-kernel-redesign --project-root . --version v2.0.0 --mode audit --json`",
+      "assertion": "frozen v2 r4 包 `status=pass` 或 `audit_only` 且无 block",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-5",
+      "title": "TASK-TIG-01 实现 `beacon/utils/truth_integrity.py` 与 finding kinds。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-6",
+      "title": "TASK-TIG-02 扩展 `verify_v160_no_fake_delivery` pattern 集。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-7",
+      "title": "TASK-TIG-03 `freeze.py` / `change_refreeze.py` 接线 TIG。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-8",
+      "title": "TASK-TIG-04 `feature_package.py` prose AC、tests 硬规则、checkbox 修复。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-9",
+      "title": "TASK-TIG-05 `beacon doctor verify-truth-integrity` CLI。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-10",
+      "title": "TASK-TIG-06 `tests/test_truth_integrity.py` + fixtures。",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-11",
+      "title": "TASK-TIG-07 更新 `beacon-gen-truth` Round 5 调用 TIG doctor。",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "implement",
+      "authority": "support_advisory",
+      "canonical_artifact": "packages/beacon-loop/",
+      "status": "indexed",
+      "route": "implement"
+    },
+    {
+      "surface": "qa",
+      "authority": "qa_verdict",
+      "canonical_artifact": "tests/test_truth_integrity.py",
+      "status": "linked",
+      "route": "qa"
+    }
+  ]
+}

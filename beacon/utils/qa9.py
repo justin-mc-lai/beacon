@@ -340,14 +340,14 @@ def command_presets_from_project_scan(
         presets["interface"] = f"npx newman run {postman_collection}"
 
     if first_api_spec:
-        presets["contract"] = f"python -m schemathesis run {first_api_spec}"
+        presets["contract"] = f"python3 -m schemathesis run {first_api_spec}"
         if "interface" not in presets:
-            presets["interface"] = f"python -m schemathesis run {first_api_spec} --checks all"
+            presets["interface"] = f"python3 -m schemathesis run {first_api_spec} --checks all"
 
     if (project_root / "docker-compose.test.yml").exists():
         presets["integration"] = "docker compose -f docker-compose.test.yml up --abort-on-container-exit"
     elif (project_root / "testcontainers").exists():
-        presets["integration"] = "python -m pytest -q -k integration --maxfail=1"
+        presets["integration"] = "python3 -m pytest -q -k integration --maxfail=1"
 
     for qa_type in QA9_TYPES:
         presets.setdefault(qa_type, default_command_for_qa_type(qa_type, ui_runner=ui_runner))

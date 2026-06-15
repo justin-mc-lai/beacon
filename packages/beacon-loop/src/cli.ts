@@ -15,6 +15,7 @@ import {
   formatDelegatePayload,
 } from "./beacon-run-delegate.js";
 import { resumeRun, startGoal, statusRun, stopRun } from "./runner/run.js";
+import { showSpine, spineDocExists } from "./spine/show.js";
 
 function option(args, name, fallback = "") {
   const index = args.indexOf(name);
@@ -65,6 +66,7 @@ Commands:
   runtime-remove <run-id>
   analyze <run-id>
   learn <run-id>
+  spine show [--run-id <id>]
 
 Options:
   --project <path>
@@ -75,6 +77,7 @@ Options:
   --max-iterations <n>
   --max-tokens <n>
   --stop-when <text>
+  --stop-check-cmd <shell>   External verifier for --stop-when (exit 0 required)
   --branch-mode <worktree|current-branch|run-branch>
   --isolated-worktree
   --agent <codex|claude|acp:target>
@@ -159,6 +162,7 @@ if (command === "goal") {
       maxIterations: option(args, "--max-iterations", "8"),
       maxTokens: option(args, "--max-tokens", "0"),
       stopWhen: option(args, "--stop-when", ""),
+      stopCheckCmd: option(args, "--stop-check-cmd", ""),
       agent: option(args, "--agent", "codex"),
       implementRunner: option(args, "--implement-runner", ""),
       branchMode: option(args, "--branch-mode", "worktree"),
@@ -172,6 +176,7 @@ if (command === "goal") {
       maxIterations: resolvedForDelegate.maxIterations,
       maxTokens: resolvedForDelegate.maxTokens,
       stopWhen: resolvedForDelegate.stopWhen,
+      stopCheckCmd: option(args, "--stop-check-cmd", ""),
       branchMode: resolvedForDelegate.branchMode,
       isolatedWorktree: resolvedForDelegate.isolatedWorktree,
       truthBootstrap: option(args, "--truth-bootstrap", "agent"),
@@ -203,6 +208,7 @@ if (command === "goal") {
     maxIterations: option(args, "--max-iterations", "1"),
     maxTokens: option(args, "--max-tokens", "0"),
     stopWhen: option(args, "--stop-when", ""),
+    stopCheckCmd: option(args, "--stop-check-cmd", ""),
     agent: option(args, "--agent", "implement-harness"),
     implementRunner: option(args, "--implement-runner", ""),
     branchMode: option(args, "--branch-mode", "worktree"),
@@ -226,8 +232,35 @@ if (command === "stop") {
 }
 
 if (command === "status") {
+  if (flag(args, "--spine")) {
+    const payload = showSpine(projectRoot, args[1] || option(args, "--run-id", ""));
+    if (!spineDocExists(projectRoot)) {
+      payload.status = "blocked";
+      payload.reason_code = "spine_doc_missing";
+    }
+    emit(payload, jsonOutput);
+    process.exit(payload.status === "blocked" ? 2 : 0);
+  }
   emit(statusRun(projectRoot, args[1] || ""), jsonOutput);
   process.exit(0);
+}
+
+if (command === "spine") {
+  const sub = args[1] || "";
+  if (sub === "show") {
+    const payload = showSpine(
+      projectRoot,
+      args[2] || option(args, "--run-id", ""),
+    );
+    if (!spineDocExists(projectRoot)) {
+      payload.status = "blocked";
+      payload.reason_code = "spine_doc_missing";
+    }
+    emit(payload, jsonOutput);
+    process.exit(payload.status === "blocked" ? 2 : 0);
+  }
+  console.error("Unknown spine subcommand");
+  process.exit(2);
 }
 
 if (command === "review") {

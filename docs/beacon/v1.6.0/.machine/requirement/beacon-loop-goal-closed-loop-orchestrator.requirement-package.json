@@ -5,7 +5,7 @@
   "truth_package_contract": "beacon-feature-package-v2",
   "machine_json_role": "generated_state_not_truth",
   "generated_by": "beacon.truth_map.resolver",
-  "generated_at": "2026-06-11T12:36:41.371593+00:00",
+  "generated_at": "2026-06-12T11:12:27.106423+00:00",
   "feature": "beacon-loop-goal-closed-loop-orchestrator",
   "feature_slug": "beacon-loop-goal-closed-loop-orchestrator",
   "version": "v1.6.0",
@@ -18,16 +18,16 @@
     "evidence": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/evidence.md"
   },
   "source_hashes": {
-    "truth": "7f53617a2cb7c784793f8b633544256a3e5cccb9c2976bb5d003d8c69584a833",
-    "tests": "e3e309b64a2e8061201ca517b70e89e031d41f437197a2c46125e548003e1b26",
-    "tasks": "1e1913158babae45d73b7bc4a29f211b6b02bb82f3250ab6eaa3b19886725230",
-    "evidence": "46c7d5ed12105e93550a43076e92e7666c1e9add72dadec7c734047af8dbadef"
+    "truth": "1878c06216353f568a9a9bf07e749a9e31e0a9d26b8de731a45591c793e71a19",
+    "tests": "bd242d3a0e234c18c3a29d27df73a9be8ae9223f95457ee27915cb6f91ab1f2e",
+    "tasks": "a8002e427c898989fa54f804825106264af5e83cb114f12d9ac79d57f991952a",
+    "evidence": "6d05ee71f2cabaaf418a40a91bebc28bed522e4bb6ebce626d5e7c25b05f37d9"
   },
   "truth_frontmatter": {
     "slug": "beacon-loop-goal-closed-loop-orchestrator",
     "version": "v1.6.0",
     "status": "frozen",
-    "revision_id": "R8",
+    "revision_id": "R10",
     "language": "zh",
     "canonical_refs": {
       "prd": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
@@ -219,6 +219,21 @@
     {
       "ac_id": "AC-068",
       "theme": "**`truth_freeze_gate`（beacon-run）**：`packages/beacon-run` 在 truth→generate 间 **必须** fail-closed 执行 freeze gate，对齐 Delivery Loop `truth_freeze_gate` 与 beacon-loop `truth-fill` 末尾 `beacon freeze` 链。**禁止** draft truth 下 `phase_promoted=true` 或 agent 进入 `generate` 写产品代码。truth exit 序列：`resolve` →（full_parity：`sync-materials`）→（按需 `sync-requirement-clarity`）→ **`beacon freeze --json`**；失败时 `phase` 保持 `truth`，`reason_code=truth_not_frozen`。`generate` **entry** 须 `isFeatureTruthFrozen===true`，否则不得 `run_agent`。`generate` exit 若 preflight 为 `revision_not_frozen` 或 `legacy_cutover_required`，须 **phase demote** 到 truth freeze repair（可 harness 尝试 `beacon truth-cutover run … --apply`），**不得** 空烧 iteration cap。truth phase `allowed_harness` 须含 `beacon freeze`。`truth-promotion.json` 须记录 freeze/cutover command。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-069",
+      "theme": "**v1.6.1 — worktree+freeze 不断链（E2E）**：在 `go-todo-crud-smoke` 回归夹具上，`beacon-loop goal \"<utterance>\" --worktree --beacon --feature go-todo-crud-smoke --version v1.6.0` **必须** 完成：`truth-promotion.json` 内全部 harness 的 `--project-root`/`cwd` = worktree；**不得** 出现 `test_case_sync_failed`（主仓 sync）；**不得** 在 draft truth 下进入 `generate`；truth frozen 后 **必须** promote 到 `generate` 且 `implement run` **不得** 因 `revision_not_frozen` 空转。强化 AC-061 + AC-068 的 **real-project opt-in E2E**（`BEACON_RUN_E2E_GO_TODO=1`）。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-070",
+      "theme": "**v1.6.1 — state spine 文档+查询**：新增 execution 文档 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md` 定义 **单一 operator 进度账本**：权威文件（`beacon-phase.json`、`run-package.json`、`.beacon/loop/runs/<id>/`、`ledger`）与 **done / in_progress / next_action** 语义。CLI **`beacon-loop spine show [--run-id]`**（或等价 `status --spine`）输出 machine-readable JSON：`phase`、`phases_completed`、`phase_promoted`、`next_harness`、`authoritative_paths[]`、`run_id`；**不得** 要求 operator 手工拼四份 state 文件。",
+      "description": ""
+    },
+    {
+      "ac_id": "AC-071",
+      "theme": "**v1.6.1 — stop-when 可执行检查（maker≠checker）**：当 `--stop-when <condition>` 非空时，loop **禁止** 仅因 agent structured output / summary 自报「stop-when matched」而终止 iteration 环。每轮 agent 后 **必须** 至少执行一种 **外部可验证检查**：**(a)** 已配置的 harness gate（默认：`beacon qa run` 或 phase-appropriate harness）exit 0；**(b)** `--stop-check-cmd` 显式 shell 命令 exit 0；**(c)** lifecycle phase 已达 terminal harness（qa/release evaluator）。Agent 自报 alone → `reason_code=stop_when_unverified`，**continue** 下一 iteration 或进入 repair（不得 silent done）。对齐 [Loop Engineering `/goal`](https://addyosmani.com/blog/loop-engineering/)「写代码的人不能给自己打分 done」；**defer** 独立 judge 小模型至 v2（D-le-001）。",
       "description": ""
     }
   ],
@@ -526,6 +541,30 @@
       "command": "`cd examples/go-todo-crud && go test ./...`",
       "assertion": "smoke 交付物可构建可测；完整 agent goal 路径为 CI opt-in（`BEACON_RUN_E2E_GO_TODO=1`），**须 truth frozen 后进 generate**。",
       "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-069",
+      "tc_id": "TC-071",
+      "layer": "e2e",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"TC-071\"`",
+      "assertion": "worktree delegate dry-run 含 `--worktree`、`--project-root`、`--beacon` 与 `go-todo-crud-smoke`；live worktree+freeze 为 opt-in（`BEACON_RUN_E2E_GO_TODO=1`，见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-070",
+      "tc_id": "TC-072",
+      "layer": "contract",
+      "command": "`cd packages/beacon-loop && npm test -- --test-name-pattern \"spine-show\"`",
+      "assertion": "`spine show`（或 `status --spine`）JSON 含 `phase`、`next_action`、`authoritative_paths`；execution doc 存在。",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-071",
+      "tc_id": "TC-073",
+      "layer": "negative",
+      "command": "`cd packages/beacon-run && pnpm run build && pnpm exec vitest run -t \"stop-when-exec-gate\"`",
+      "assertion": "agent 自报 stop  alone 不终止；harness/`--stop-check-cmd` exit 0 才 stop；`stop_when_unverified` 继续。",
+      "evidence_path": ""
     }
   ],
   "task_rows": [
@@ -828,6 +867,26 @@
       "id": "TASK-100",
       "title": "R7/R8 refreeze（`beacon change ... --refreeze-chain` + cutover + `beacon freeze`）；`refreeze_status=complete`。",
       "status": "checked"
+    },
+    {
+      "id": "TASK-101",
+      "title": "闭合 AC-069：`BEACON_RUN_E2E_GO_TODO=1` worktree+freeze E2E；回归 `go-todo-crud-smoke` 不断链。（TC-071 QA passed；live opt-in 见 `packages/beacon-run/e2e/e2e-go-todo-worktree.test.ts`）",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-102",
+      "title": "闭合 AC-070：新增 `docs/beacon/v1.6.0/execution/beacon-loop-state-spine.md`；实现 `beacon-loop spine show`（或 `status --spine`）+ TC-072。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-103",
+      "title": "闭合 AC-071：`stop-when` 外部可执行 gate（harness / `--stop-check-cmd`）；`stop_when_unverified` 路径 + TC-073。",
+      "status": "checked"
+    },
+    {
+      "id": "TASK-104",
+      "title": "R10 交付闭环：`implementation-first-reconciliation` refreeze + QA `run-20260612T182801183358` + import-evidence `run-20260612T110636Z-c038` + `beacon release check v1.6.0` 产物归档。",
+      "status": "checked"
     }
   ],
   "checkbox_errors": [],
@@ -857,7 +916,7 @@
       "surface": "feature-package",
       "authority": "requirement_truth",
       "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
-      "status": "**frozen R8**",
+      "status": "**frozen R10**",
       "route": "implement"
     },
     {

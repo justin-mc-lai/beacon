@@ -111,7 +111,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     from .commands.moscow import app as moscow_app
     from .commands.evolution_summary import app as evolution_summary_app
     from .commands.manifest import app as manifest_app
-    from .commands.truth import app as truth_app
+    from .commands.truth import app as truth_app, gen_cmd
     from .commands.truth_map import app as truth_map_app
     from .commands.truth_cutover import app as truth_cutover_app
     from .commands.code2truth import app as code2truth_app
@@ -154,6 +154,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(doctor_app, name="doctor")
     app.add_typer(manifest_app, name="manifest")
     app.add_typer(truth_app, name="truth")
+    app.command("gen-truth", help="Alias for `beacon truth gen`. Use --intent-first for intent-driven generation.")(gen_cmd)
     app.add_typer(truth_map_app, name="truth-map")
     app.add_typer(truth_cutover_app, name="truth-cutover")
     app.add_typer(code2truth_app, name="code2truth")

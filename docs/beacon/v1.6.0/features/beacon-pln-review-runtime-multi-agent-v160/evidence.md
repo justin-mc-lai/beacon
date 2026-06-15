@@ -4,29 +4,31 @@
 
 | Surface | Authority | Canonical Artifact | Status | Route |
 |---------|-----------|--------------------|--------|-------|
-| planner-analysis | support_advisory | 当前用户确认的“多视角已实现但真实多代理 runtime 缺失”分析 | accepted-for-change | truth.define |
-| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md | authoritative | truth.define |
+| feature-package | requirement_truth | docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/truth.md | **frozen R1** | truth.define |
 | package-tests | test_truth | docs/beacon/v1.6.0/features/beacon-pln-review-runtime-multi-agent-v160/tests.md | authoritative | truth.coverage |
+| runtime-builder | support_advisory | beacon/utils/planner_review_runtime.py | **implemented** | generate |
+| planner-cli | support_advisory | beacon/commands/planner_review.py | **implemented** | generate |
+| loop-delegate | support_advisory | packages/beacon-loop/src/delivery/review.ts | **implemented** | generate |
+| skill-surface | support_advisory | skills/beacon/beacon-pln-review/SKILL.md | **implemented** | generate |
+| skill-eval-kit | support_advisory | beacon/utils/skill_eval_kit.py (TC-021–025) | **implemented** | evaluate |
 | prior-feature | support_advisory | docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md | indexed | source-study |
-| prior-implementation | support_advisory | docs/beacon/v1.6.0/execution/implementation-summary-beacon-pln-review-intent-parity-state-machine-v160.md | indexed | source-study |
-| reviewer-catalog | support_advisory | skills/beacon/beacon-pln-review/references/reviewer-catalog.md | indexed | source-study |
-| skill-eval-kit | support_advisory | beacon/utils/skill_eval_kit.py | pending-implementation | generate |
 
 ## 决策记录
 
-- 已接受：当前能力不能只停留在 reviewer catalog，多代理必须有 runtime evidence。
-- 已接受：本 feature 不是 MVP，scope mode 是 `full_parity`。
-- 已接受：没有 subagent runtime 时必须显式 fallback，不能假装并行多代理。
-- 已接受：planner 多代理 evidence 仍是 support/runtime evidence，不是 truth、QA verdict 或 release verdict。
+- 已接受：多代理必须有 runtime evidence，不能只用 reviewer catalog。
+- 已接受：scope mode 为 `full_parity`；无 subagent 时必须显式 fallback。
+- 已接受：runtime evidence 非 truth、非 QA verdict、非 release verdict。
 
-## 待实现证据
+## Implementation Evidence
 
-由 `beacon-gen-implement` 追加：
+| 项 | 值 |
+|----|-----|
+| changed files | `beacon/utils/planner_review_runtime.py`, `beacon/commands/planner_review.py`, `packages/beacon-loop/src/delivery/review.ts`, `skills/beacon/beacon-pln-review/**`, `beacon/utils/skill_eval_kit.py`, `tests/test_v160_pln_review_multi_agent.py` |
+| pytest | `python3 -m pytest -q tests/test_v160_pln_review_multi_agent.py` → 12 passed |
+| benchmark | `beacon skill eval-kit benchmark --version v1.6.0 --json` → TC-021–025 covered |
+| summary | docs/beacon/v1.6.0/execution/implementation-summary-beacon-pln-review-runtime-multi-agent-v160.md |
+| QA | formal QA accepted（见 `.beacon/qa/features/beacon-pln-review-runtime-multi-agent-v160/`） |
 
-- changed files；
-- runtime artifact builder；
-- skill reference 更新；
-- benchmark artifacts；
-- pytest output；
-- package verify / truth-map verify output；
-- implementation evidence import marker。
+## QA / Release Verdict
+
+Formal QA：**accepted**（support/runtime feature；非 release-blocking v1.6 promotion 项以外自洽）。

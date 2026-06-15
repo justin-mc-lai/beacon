@@ -26,6 +26,7 @@ from beacon.utils.agent_surface import (
     validate_v160_research_artifact,
     v160_rename_matrix,
 )
+from beacon.utils.truth_integrity import verify_closure_via_tig
 from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
 from beacon.utils.runtime import now_iso
 from beacon.utils.skill_config import load_yaml_like, write_yaml_like
@@ -249,11 +250,18 @@ def package_verify_promotion(
 def package_verify_closure(
     payload_json: str = typer.Option("", "--payload-json", help="Closure payload JSON string"),
     payload_path: str = typer.Option("", "--payload-path", help="Closure payload JSON file"),
+    feature: str = typer.Option("", "--feature", help="Feature slug to verify from package files"),
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root when using --feature"),
     version: str = typer.Option("v1.6.0", "--version", "-v", help="Target skill package taxonomy version"),
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Reject fake-delivery payloads as implementation, QA, or release closure."""
     _require_v160(version)
+    root = Path(project_root or ".").expanduser().resolve()
+    if feature.strip() and not payload_path and not payload_json:
+        result = verify_closure_via_tig(root, version=version, feature=feature.strip())
+        _emit_payload(result, json_output=json_output, fail_on_status=True)
+        return
     payload: dict[str, Any] = {}
     if payload_path:
         loaded = json.loads(Path(payload_path).read_text(encoding="utf-8"))
@@ -261,7 +269,12 @@ def package_verify_closure(
     elif payload_json:
         loaded = json.loads(payload_json)
         payload = loaded if isinstance(loaded, dict) else {"payload": loaded}
-    result = verify_v160_no_fake_delivery(payload)
+    if feature.strip():
+        result = verify_closure_via_tig(root, version=version, feature=feature.strip(), payload=payload)
+    else:
+        from beacon.utils.agent_surface import verify_v160_no_fake_delivery
+
+        result = verify_v160_no_fake_delivery(payload)
     _emit_payload(result, json_output=json_output, fail_on_status=True)
 
 

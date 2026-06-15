@@ -155,10 +155,19 @@ R2 起 **无 accepted defer**；未实现能力以 AC-040..042 + parity matrix `
 
 R3 **无新 accepted defer**；D-012「子进程读 Skill MD」为 **blocked**（与 v1.6 harness taxonomy 冲突）。
 
+## R10 — v1.6.1 止血（2026-06-12）
+
+- change_reason: `v1.6.1止血：worktree+freeze不断链、state spine、stop-when可执行检查`
+- user_decision: `accepted`
+- scope: patch on v1.6.0 docs line；semver label v1.6.1；**非 v2**
+- new AC: AC-069（worktree+freeze E2E）、AC-070（state spine doc+CLI）、AC-071（stop-when exec gate）
+- reference: [Loop Engineering](https://addyosmani.com/blog/loop-engineering/) — `/goal` verifiable done；maker≠checker
+
 ## Next Route
 
 1. ~~用户审阅本 change + truth/tests 草案~~（R1/R2 已完成）
 2. ~~**R3**：审阅 truth/tests Phase J~~ → refrozen
 3. ~~**R4**：beacon-run gnhf fork~~ → refrozen
-4. **R5（当前）**：审阅 truth/tests Phase L（AC-061..064）→ `beacon-gen-implement` Phase L → `beacon change ... --refreeze-chain`
-5. `beacon-eval-qa` + opt-in TC-067（go-todo-crud-smoke E2E）
+4. ~~**R5（当前）**：审阅 truth/tests Phase L（AC-061..064）→ `beacon-gen-implement` Phase L → `beacon change ... --refreeze-chain`~~
+5. ~~**R9/R10**：v1.6.1 止血（AC-069..071 Loop Engineering 对齐）→ refreeze~~
+6. **`beacon-gen-implement` Phase N**（AC-069..071）→ `beacon-eval-qa` + opt-in TC-071 E2E

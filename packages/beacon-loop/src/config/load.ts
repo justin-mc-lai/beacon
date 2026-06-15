@@ -56,6 +56,9 @@ export function resolveGoalOptions(projectRoot, args, cli = {}) {
     maxIterations: has("--max-iterations") ? cli.maxIterations : String(config.max_iterations ?? cli.maxIterations ?? "1"),
     maxTokens: has("--max-tokens") ? cli.maxTokens : String(config.max_tokens ?? cli.maxTokens ?? "0"),
     stopWhen: has("--stop-when") ? cli.stopWhen : config.stop_when || cli.stopWhen || "",
+    stopCheckCmd: has("--stop-check-cmd")
+      ? cli.stopCheckCmd
+      : config.stop_check_cmd || cli.stopCheckCmd || "",
     isolatedWorktree: has("--isolated-worktree") ? true : Boolean(cli.isolatedWorktree),
     dryRun: cli.dryRun,
     allowDirty: cli.allowDirty

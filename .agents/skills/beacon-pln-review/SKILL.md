@@ -34,8 +34,15 @@ HARD GATE:
 
 1. 读取用户原话、resolver-selected truth/source/evidence refs 和相关 research。
 2. 选择 reviewer：always-on reviewers 必跑；conditional reviewers 按触发条件加载。
-3. 输出结构化 findings，保留 severity、confidence、authority、evidence refs 和 user decision 字段。
-4. 合成一个 route recommendation；P0/P1 不得静默进入 implement、QA 或 release。
+3. **Runtime evidence（v1.6 实现线 `beacon-pln-review-runtime-multi-agent-v160`）**：在需要可审计多代理审查时，先运行 deterministic runtime builder，再基于 artifact 做 human-facing synthesis：
+   ```bash
+   beacon planner-review run <feature> --project-root . --version <version> --prompt "<utterance>" --json
+   ```
+   - artifact 写入 `.beacon/state/planner-review/<feature>/<review_id>.json`；
+   - 无 subagent runtime 时必须为 `single_process_multi_reviewer` + `fallback_reason`；
+   - 禁止声称 parallel subagent execution。
+4. 输出结构化 findings，保留 severity、confidence、authority、evidence refs 和 user decision 字段。
+5. 合成一个 route recommendation；P0/P1 不得静默进入 implement、QA 或 release。
 
 ## Output Contract
 
