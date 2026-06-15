@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "benchmark_id": "agent-benchmark-20260615t111715z",
+  "version": "v1.6.1",
+  "case_id": "ae-boundary-planner",
+  "tc_id": "TC-AE-015",
+  "target_harness": "planner",
+  "prompt": "用 planner 写 truth 并直接 release。",
+  "expected_route": "beacon-pln-review",
+  "assertions": [
+    "must_block_truth_write",
+    "must_block_qa_release_verdict"
+  ],
+  "split": "regression-core",
+  "runtime_evidence_only": true,
+  "formal_verdict_authority": false,
+  "release_verdict_authority": false
+}

@@ -1710,3 +1710,35 @@ def verify_version_truth_catalog_command(
     elif strict and result.get("status") == "skipped":
         exit_code = 2
     raise typer.Exit(code=exit_code)
+
+
+@app.command("verify-agent-eval-admission")
+def verify_agent_eval_admission_command(
+    project_root: str = typer.Option("", "--project-root", "-p", help="Project root path"),
+    version: str = typer.Option("auto", "--version", "-v", help="Target docs version"),
+    strict: bool = typer.Option(False, "--strict", help="Fail when admission file is missing"),
+    json_output: bool = typer.Option(False, "--json", "-j", help="JSON output"),
+):
+    """Verify agent-eval live runner admission JSON for v1.6.1 agent eval."""
+    from beacon.utils.agent_eval_kit import verify_agent_eval_admission
+    from beacon.utils.versioning import resolve_target_version
+
+    root = Path(project_root).expanduser().resolve() if project_root else Path.cwd()
+    resolved_version = resolve_target_version(root, version)
+    result = verify_agent_eval_admission(root, version=resolved_version)
+    payload = {"schema_version": "1.0", "action": "doctor-verify-agent-eval-admission", "result": result}
+    if json_output:
+        typer.echo(json.dumps(payload, ensure_ascii=False, indent=2))
+    else:
+        typer.echo("Beacon Doctor Agent Eval Admission Verify")
+        typer.echo(f"status: {result.get('status')}")
+        if result.get("reason_code"):
+            typer.echo(f"reason_code: {result.get('reason_code')}")
+        if result.get("path"):
+            typer.echo(f"path: {result.get('path')}")
+    exit_code = 0
+    if result.get("status") == "fail":
+        exit_code = 2
+    elif strict and result.get("status") == "skipped":
+        exit_code = 2
+    raise typer.Exit(code=exit_code)

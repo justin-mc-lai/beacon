@@ -14,8 +14,10 @@ from beacon.utils.delivery_baseline import (
     projection_metadata,
     validate_projection_against_baseline,
 )
+from beacon.utils.branch_governance import resolve_branch_governance_view
 from beacon.utils.global_boundaries import global_boundary_principle_summaries
 from beacon.utils.implement_adapters import load_beacon_config
+from beacon.utils.project_metadata import resolve_project_metadata_view
 from beacon.utils.runtime import now_iso, write_json
 from beacon.utils.runtime import read_json
 from beacon.utils.story_state import feature_slug
@@ -290,13 +292,33 @@ def _default_technical_review_contract(project_root: Path, *, version: str, feat
         branch_prefix = target_branch.split("/", 1)[0] + "/" if "/" in target_branch else "beacon/"
     service_directories = git_roots or ["."]
     direct_delivery_services = list(service_directories)
+    base_branch = str(branch_guard_cfg.get("base_branch", "") or "main").strip() or "main"
+    metadata_view = resolve_project_metadata_view(project_root, version=version)
+    branch_governance = resolve_branch_governance_view(
+        project_root=project_root,
+        version=version,
+        feature=feature,
+        metadata_view=metadata_view,
+        git_workflow={},
+    )
+    governed_target = str(branch_governance.get("target_branch") or "").strip()
+    if governed_target:
+        target_branch = governed_target
+        branch_prefix = (
+            target_branch.split("/", 1)[0] + "/"
+            if "/" in target_branch
+            else f"{target_branch}/"
+        )
+    governed_base = str(branch_governance.get("base_branch") or "").strip()
+    if governed_base:
+        base_branch = governed_base
     return {
         "schema_version": "1.0",
         "feature": feature,
         "feature_slug": feature_slug(feature),
         "version": version,
         "revision_id": revision_id or "",
-        "base_branch": str(branch_guard_cfg.get("base_branch", "") or "main").strip() or "main",
+        "base_branch": base_branch,
         "target_branch": target_branch,
         "branch_prefix": branch_prefix,
         "branch_strategy": "single-branch" if not git_roots else "workspace-multi-service",

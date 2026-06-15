@@ -1116,6 +1116,7 @@ def _run_ralph_controller(  # noqa: PLR0913
     host_runtime: str | None,
     max_rounds: int,
 ) -> tuple[int, dict[str, Any]]:
+    project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     requested_runner = None if str(runner or "").strip().lower() == "auto" else runner
     executor_mode = "single" if str(requested_runner or "").strip() == "native-single" else "team"
@@ -2407,6 +2408,7 @@ def run_implement_stage(  # noqa: PLR0913
     auto_switch_branch: bool | None = None,
     team_runtime: str | None = None,
 ) -> tuple[int, dict[str, Any]]:
+    project_root = Path(project_root).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     prompt_boundary_payload = prompt_boundary if isinstance(prompt_boundary, dict) else {}
     archive_boundary = load_feature_archive_boundary(project_root, version=resolved_version, feature=feature)
@@ -4172,7 +4174,7 @@ def run(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Run implementation using the resolved skill adapter."""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     prompt_boundary = _resolve_host_prompt_boundary(
         project_root=project_root,
         version=version,
@@ -4549,7 +4551,7 @@ def sync_git_workflow(
     json_output: bool = typer.Option(False, "--json", help="Emit JSON output"),
 ):
     """Materialize or refresh the versioned git workflow contract for a feature."""
-    project_root = Path(project) if project else Path.cwd()
+    project_root = (Path(project) if project else Path.cwd()).expanduser().resolve()
     resolved_version = resolve_target_version(project_root, version)
     payload = ensure_implementation_git_workflow_contract(
         project_root,

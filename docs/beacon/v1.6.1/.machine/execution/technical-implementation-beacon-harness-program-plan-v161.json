@@ -1,0 +1,155 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-harness-program-plan-v161",
+  "feature_slug": "beacon-harness-program-plan-v161",
+  "version": "v1.6.1",
+  "revision_id": "",
+  "run_id": "run-20260615T075600Z-2236",
+  "implemented_at": "2026-06-15T07:56:05.041900+00:00",
+  "runner": "native-single",
+  "skill": "",
+  "profile_id": "",
+  "git_commit": "819eefa4baed947f8fceda1b8e040cbd494057ef",
+  "services": [],
+  "boundary_principles": [
+    {
+      "id": "explicit_assumptions",
+      "heading": "显式假设与歧义管理"
+    },
+    {
+      "id": "simplicity_first",
+      "heading": "简单优先"
+    },
+    {
+      "id": "surgical_changes",
+      "heading": "外科手术式改动"
+    },
+    {
+      "id": "goal_driven_execution",
+      "heading": "目标驱动验证闭环"
+    },
+    {
+      "id": "trivial_task_exception",
+      "heading": "trivial task 可以轻量处理，但不能越界"
+    }
+  ],
+  "implementation_scope_summary": "native-single implementation completed",
+  "business_goal_summary": "native-single implementation completed",
+  "acceptance_scope": [],
+  "assumptions": [],
+  "simplicity_notes": [],
+  "scope_guard": {
+    "in_scope": true,
+    "summary": "",
+    "allowed_paths": []
+  },
+  "changed_files": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/state/agent-surfaces.json",
+    ".cursor/rules/beacon-agent-surface.mdc",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "beacon/commands/change.py",
+    "beacon/commands/implement/commands.py",
+    "beacon/commands/skill.py",
+    "beacon/utils/agent_surface.py",
+    "beacon/utils/technical_review_contract.py",
+    "beacon/version-truth.json",
+    "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+    "docs/beacon/governance/project-version-governance.md",
+    "skills/beacon/metadata.json"
+  ],
+  "modules_touched": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/state",
+    ".cursor/rules",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "beacon/commands",
+    "beacon/utils",
+    "beacon/version-truth.json",
+    "docs/beacon",
+    "skills/beacon"
+  ],
+  "additions": [],
+  "modifications": [],
+  "deletions": [],
+  "refactors": [],
+  "data_operations": [],
+  "db_changes": {
+    "none": true,
+    "new_tables": [],
+    "altered_tables": [],
+    "indexes": [],
+    "migrations": []
+  },
+  "cache_changes": [],
+  "event_contract_changes": [],
+  "api_changes": {
+    "none": true,
+    "new_endpoints": [],
+    "changed_endpoints": [],
+    "removed_endpoints": []
+  },
+  "external_integrations": [],
+  "queue_or_job_changes": [],
+  "cron_changes": [],
+  "config_changes": [],
+  "env_changes": [],
+  "feature_flags": [],
+  "deployment_notes": [],
+  "verification": [
+    {
+      "command": "beacon implement run --runner native-single",
+      "status": "passed"
+    }
+  ],
+  "verification_signals": {
+    "count": 1,
+    "has_acceptance_scope": false,
+    "has_assumptions": false
+  },
+  "known_risks": [],
+  "rollback_notes": [],
+  "compatibility_notes": [],
+  "artifact_updates": {
+    "user_story": {
+      "required": false,
+      "reason": "story machine state writeback recorded"
+    },
+    "review_quality": {
+      "required": true,
+      "reason": "run quality review after native implementation"
+    },
+    "acceptance": {
+      "required": true,
+      "reason": "acceptance remains a formal post-verify action"
+    }
+  },
+  "revision_cleanup": {
+    "schema_version": "1.0",
+    "revision_id": "R2",
+    "source_revision_id": "R1",
+    "revision_delta_ref": "docs/beacon/v1.6.1/.machine/execution/revision-delta-beacon-harness-program-plan-v161.json",
+    "revision_delta_markdown_ref": "docs/beacon/v1.6.1/execution/revision-delta-beacon-harness-program-plan-v161.md",
+    "cleanup_required": true,
+    "cleanup_review_completed": false,
+    "removed_requirement_surfaces": [
+      {
+        "id": "AC-001",
+        "text": "Acceptance criteria TBD",
+        "label": "AC-001: Acceptance criteria TBD",
+        "signature": "ac::::general::acceptance criteria tbd::"
+      }
+    ],
+    "removed_surfaces": [],
+    "retained_legacy_surfaces": [],
+    "cleanup_rationale": ""
+  },
+  "traceability": {
+    "request_path": ".beacon/implement/run-20260615T075600Z-2236/request.json",
+    "result_path": ".beacon/implement/run-20260615T075600Z-2236/result.json",
+    "stdout_path": "",
+    "stderr_path": ""
+  }
+}

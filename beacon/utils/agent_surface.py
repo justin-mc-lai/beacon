@@ -56,6 +56,9 @@ _V160_PUBLIC_PLANNER_SKILLS = (
     "beacon-pln-source",
     "beacon-pln-review",
     "beacon-pln-friction",
+    "beacon-pln-program",
+    "beacon-pln-program-auto",
+    "beacon-pln-program-interactive",
 )
 
 
@@ -658,7 +661,35 @@ def _v160_skill_projections() -> list[SkillProjection]:
                 files=extra_files,
             )
         )
+    projections = _append_v160_native_planner_projections(projections, source_root)
     return sorted(projections, key=lambda item: item.id)
+
+
+def _append_v160_native_planner_projections(
+    projections: list[SkillProjection],
+    source_root: Path,
+) -> list[SkillProjection]:
+    """Include net-new planner skills packaged under skills/beacon/ but absent from rename matrix."""
+    existing_ids = {item.id for item in projections}
+    extra: list[SkillProjection] = []
+    for skill_id in _V160_PUBLIC_PLANNER_SKILLS:
+        if skill_id in existing_ids:
+            continue
+        source_skill = source_root / skill_id
+        if not (source_skill / "SKILL.md").exists():
+            continue
+        normalized_content = normalize_v160_skill_content((source_skill / "SKILL.md").read_text(encoding="utf-8"))
+        extra.append(
+            SkillProjection(
+                id=skill_id,
+                source_path=str(source_skill.relative_to(source_root)),
+                source_hash=_hash_projected_source_dir(source_skill, skill_text=normalized_content),
+                source_kind="migrated_v160_harness_taxonomy_preserve_skill_content",
+                content=normalized_content,
+                source_dir=source_skill,
+            )
+        )
+    return projections + extra
 
 
 def v160_skill_package_projection() -> list[SkillProjection]:

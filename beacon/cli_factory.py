@@ -127,11 +127,14 @@ def build_app(*, package_version: str) -> typer.Typer:
     # Design & Collaboration commands
     from .commands.ui_spec import app as ui_spec_app
     from .commands.prototype import app as prototype_app
+    from .commands.eval import app as eval_app
     from .commands.friction_intake import app as friction_intake_app
     from .commands.lighthouse import app as lighthouse_app
     from .commands.memory_friction_evolution import app as memory_friction_evolution_app
     from .commands.prd_bootstrap import app as prd_bootstrap_app
     from .commands.planner_review import app as planner_review_app
+    from .commands.plan import app as plan_app
+    from .commands.program import app as program_app
     from .commands.save import app as save_app
     from .commands.recall import app as recall_app
     from .commands.remember import app as remember_app
@@ -166,6 +169,7 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(init_app, name="init")
     app.add_typer(profile_app, name="profile")
     app.add_typer(skill_app, name="skill")
+    app.add_typer(eval_app, name="eval")
     app.add_typer(hooks_app, name="hooks")
     app.add_typer(run_app, name="run", hidden=True)
     app.command("freeze")(freeze_entry)
@@ -205,6 +209,8 @@ def build_app(*, package_version: str) -> typer.Typer:
     app.add_typer(memory_friction_evolution_app, name="memory-friction-evolution", hidden=True)
     app.add_typer(prd_bootstrap_app, name="prd-bootstrap", hidden=True)
     app.add_typer(planner_review_app, name="planner-review", hidden=True)
+    app.add_typer(plan_app, name="plan")
+    app.add_typer(program_app, name="program")
     app.add_typer(save_app, name="save", hidden=True)
     app.add_typer(recall_app, name="recall", hidden=True)
     app.add_typer(remember_app, name="remember", hidden=True)

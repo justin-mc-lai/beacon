@@ -25,6 +25,7 @@ from beacon.utils.agent_surface import (
     verify_v160_skill_package,
     validate_v160_research_artifact,
     v160_rename_matrix,
+    _uses_v160_taxonomy,
 )
 from beacon.utils.truth_integrity import verify_closure_via_tig
 from beacon.utils.project_skills import bind_feature_profile, list_skill_registry
@@ -67,8 +68,8 @@ def _adapter_defined_in_project_config(project_root: Path, adapter_id: str) -> b
 
 
 def _require_v160(version: str) -> None:
-    if str(version).strip() != "v1.6.0":
-        typer.echo("skill package taxonomy commands currently target v1.6.0 only", err=True)
+    if not _uses_v160_taxonomy(version):
+        typer.echo("skill package taxonomy commands require docs version v1.6.0 or newer", err=True)
         raise typer.Exit(2)
 
 

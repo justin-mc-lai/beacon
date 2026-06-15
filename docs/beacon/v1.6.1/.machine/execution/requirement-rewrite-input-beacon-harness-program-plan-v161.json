@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "feature": "beacon-harness-program-plan-v161",
+  "feature_slug": "beacon-harness-program-plan-v161",
+  "version": "v1.6.1",
+  "generated_at": "2026-06-15T07:56:08.506055+00:00",
+  "technical_archive_path": "docs/beacon/v1.6.1/.machine/execution/technical-implementation-beacon-harness-program-plan-v161.json",
+  "run_id": "run-20260615T075600Z-2236",
+  "modules_touched": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/state",
+    ".cursor/rules",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "beacon/commands",
+    "beacon/utils",
+    "beacon/version-truth.json",
+    "docs/beacon",
+    "skills/beacon"
+  ],
+  "changed_files": [
+    ".beacon/evidence-manifest.json",
+    ".beacon/state/agent-surfaces.json",
+    ".cursor/rules/beacon-agent-surface.mdc",
+    "beacon/cli_factory.py",
+    "beacon/command_catalog.py",
+    "beacon/commands/change.py",
+    "beacon/commands/implement/commands.py",
+    "beacon/commands/skill.py",
+    "beacon/utils/agent_surface.py",
+    "beacon/utils/technical_review_contract.py",
+    "beacon/version-truth.json",
+    "docs/beacon/.machine/hooks/beacon-post-release-local-install.latest.json",
+    "docs/beacon/governance/project-version-governance.md",
+    "skills/beacon/metadata.json"
+  ],
+  "known_risks": [],
+  "rollback_notes": [],
+  "artifact_update_obligations": [
+    "review_quality",
+    "acceptance"
+  ],
+  "verification_commands": [
+    "beacon implement run --runner native-single"
+  ],
+  "rewrite_targets": {
+    "prd": [],
+    "test_case": [],
+    "version_research": [
+      "Open artifact writeback obligations: ['review_quality', 'acceptance']"
+    ]
+  },
+  "baseline_uplift_candidates": [
+    "artifact_updates.required items must become explicit follow-up obligations before closure."
+  ],
+  "benchmark_refs": [
+    "docs/beacon/v1.6.1/.machine/execution/technical-implementation-beacon-harness-program-plan-v161.json"
+  ]
+}

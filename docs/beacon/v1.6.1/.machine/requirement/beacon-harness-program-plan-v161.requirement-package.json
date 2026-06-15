@@ -1,0 +1,559 @@
+{
+  "schema_version": "1.0",
+  "truth_map_contract": "beacon-truth-map-v1",
+  "truth_source_model": "feature_package_authoritative",
+  "truth_package_contract": "beacon-feature-package-v2",
+  "machine_json_role": "generated_state_not_truth",
+  "generated_by": "beacon.truth_map.resolver",
+  "generated_at": "2026-06-15T08:16:27.116614+00:00",
+  "feature": "beacon-harness-program-plan-v161",
+  "feature_slug": "beacon-harness-program-plan-v161",
+  "version": "v1.6.1",
+  "truth_authority": false,
+  "json_authority": false,
+  "source_paths": {
+    "truth": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+    "tests": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+    "tasks": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tasks.md",
+    "evidence": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/evidence.md"
+  },
+  "source_hashes": {
+    "truth": "82d7e09308c0e11d7738bc57c48cb53c6cae7eec8ac02fa2f086899a4b0629a1",
+    "tests": "ff7b58dcfc887ac651574222e20dee1892e4929a2e9250dfadeefa4986900a8a",
+    "tasks": "a8d2d803dc5041219396c4443b858012f6ad0d895844f567cae1c3c92c709376",
+    "evidence": "ef12b7226bbd74cd210cc1e8dc1be69b8450680198ae03aed78c7447f9414880"
+  },
+  "truth_frontmatter": {
+    "slug": "beacon-harness-program-plan-v161",
+    "version": "v1.6.1",
+    "status": "frozen",
+    "revision_id": "R2",
+    "language": "zh",
+    "canonical_refs": {
+      "prd": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "user_story": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "test_case": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md"
+    },
+    "parser_contract": "beacon-feature-package-v1",
+    "truth_source_model": "feature_package_authoritative",
+    "truth_map_contract": "beacon-truth-map-v1",
+    "state_machine_required": "true"
+  },
+  "frontmatter_errors": [],
+  "acceptance_criteria": [
+    {
+      "ac_id": "AC-PBP-001",
+      "theme": "program-contract",
+      "description": "`execution/program-plan-contract.md` 存在且定义 program 五文件 schema 与 P0–P6。"
+    },
+    {
+      "ac_id": "AC-PBP-002",
+      "theme": "version-line",
+      "description": "`docs/beacon/v1.6.1/SUMMARY.md` 声明 v1.6.1 program harness 与 v1.6.0 继承关系。"
+    },
+    {
+      "ac_id": "AC-PBP-003",
+      "theme": "research-promoted",
+      "description": "`research/beacon-harness-program-plan-v161.md` 含 `user_decision=promoted` 与 `promotion_ref`。"
+    },
+    {
+      "ac_id": "AC-PBP-004",
+      "theme": "feature-graph-schema",
+      "description": "CLI 或 validator 校验 `feature-graph.json` 必填字段（`program_slug`、`lakes[].slug`、`depends_on`、`parity_subset`）。"
+    },
+    {
+      "ac_id": "AC-PBP-005",
+      "theme": "sea-no-single-lake",
+      "description": "海级 utterance（`lake_or_ocean=海`）在缺 P4 ack 时 block 单湖 freeze/program freeze。"
+    },
+    {
+      "ac_id": "AC-PBP-006",
+      "theme": "lake-nested-7round",
+      "description": "每个 lake 进入 program P5 前必须记录 `truth-promotion.json` 或等价证据，证明 7-round loop 完成或 block 原因。"
+    },
+    {
+      "ac_id": "AC-PBP-007",
+      "theme": "program-freeze-gate",
+      "description": "`beacon program freeze`（或 doctor 等价）输出 `program-truth-freeze.json`；零 orphan capability、零未决 defer。"
+    },
+    {
+      "ac_id": "AC-PBP-008",
+      "theme": "tig-per-lake",
+      "description": "Program P6 汇总前每个 lake 必须通过 `beacon doctor verify-truth-integrity <slug> --mode block`。"
+    },
+    {
+      "ac_id": "AC-PBP-009",
+      "theme": "verify-closure-per-lake",
+      "description": "每个 lake freeze 前 `beacon skill package verify-closure` pass。"
+    },
+    {
+      "ac_id": "AC-PBP-010",
+      "theme": "planner-boundary",
+      "description": "Program plan harness 不写 `features/*/truth.md`；违规被 skill HARD GATE 或 eval 阻断。"
+    },
+    {
+      "ac_id": "AC-PBP-011",
+      "theme": "full-parity-default",
+      "description": "Program manifest 含「完整复刻/全功能/parity」信号时默认 `scope_mode=full_parity`。"
+    },
+    {
+      "ac_id": "AC-PBP-012",
+      "theme": "parity-matrix-program",
+      "description": "`program-parity-matrix.md` 每行含 source capability、target lake、target AC ref、status、deferral。"
+    },
+    {
+      "ac_id": "AC-PBP-013",
+      "theme": "change-intent-log",
+      "description": "`beacon-gen-change` program 路径 append `change-intent-log.jsonl` 条目（utterance、slugs、timestamp）。"
+    },
+    {
+      "ac_id": "AC-PBP-014",
+      "theme": "change-review",
+      "description": "Change 后 mandatory pln-review 产出 `promotion_diff` 对照 change intent 与 frozen truth。"
+    },
+    {
+      "ac_id": "AC-PBP-015",
+      "theme": "change-refreeze",
+      "description": "User ack 后 `beacon-gen-refreeze` + TIG block；结构变更重跑 AC-PBP-007。"
+    },
+    {
+      "ac_id": "AC-PBP-016",
+      "theme": "run-mode-program",
+      "description": "`beacon-run`（或 loop 委托）支持 `--mode program` 映射 P0–P6 外层 FSM。"
+    },
+    {
+      "ac_id": "AC-PBP-017",
+      "theme": "public-planner-route",
+      "description": "存在 **`beacon-pln-program`** umbrella skill；实现 Phase E 时同步 CLI `beacon plan start`。"
+    },
+    {
+      "ac_id": "AC-PBP-018",
+      "theme": "maker-checker-program",
+      "description": "P6 pass 必须含 machine-readable 每湖 frozen 证据；不得仅 planner JSON 自报。"
+    },
+    {
+      "ac_id": "AC-PBP-019",
+      "theme": "deferral-sovereignty",
+      "description": "Program/lake deferral 未决时 block program freeze 与 refreeze。"
+    },
+    {
+      "ac_id": "AC-PBP-020",
+      "theme": "no-new-lifecycle-stage",
+      "description": "文档与 skill 不新增 plan/truth/generate/evaluate/release 之外的主 stage。"
+    },
+    {
+      "ac_id": "AC-PBP-021",
+      "theme": "state-model-truth",
+      "description": "本 package `truth.md` 含 ProgramPlanState 与 ChangeSubState（见上）。"
+    },
+    {
+      "ac_id": "AC-PBP-022",
+      "theme": "state-model-tests",
+      "description": "`tests.md` 覆盖非法跳过 graph ack、change 未 review refreeze、TIG block 恢复路径。"
+    },
+    {
+      "ac_id": "AC-PBP-023",
+      "theme": "dual-mode-skill-triad",
+      "description": "`skills/beacon/` 存在 `beacon-pln-program`、`beacon-pln-program-auto`、`beacon-pln-program-interactive` 且含 HARD GATE；auto/interactive 声明 delegation-only。"
+    },
+    {
+      "ac_id": "AC-PBP-024",
+      "theme": "cli-plan-start",
+      "description": "`beacon plan start --help` 暴露 `--mode auto\\"
+    },
+    {
+      "ac_id": "AC-PBP-025",
+      "theme": "plan-mode-classifier",
+      "description": "`program-plan-contract.md` 定义 deterministic `plan_mode` 分类规则与低置信度停问。"
+    },
+    {
+      "ac_id": "AC-PBP-026",
+      "theme": "umbrella-delegation",
+      "description": "Umbrella skill 正文要求委派子 skill；子 skill 禁止写 `features/*/truth.md`。"
+    },
+    {
+      "ac_id": "AC-PBP-027",
+      "theme": "cognitive-load-single-entry",
+      "description": "SUMMARY 或 truth 声明操作者单一公共入口 `beacon plan start` / `beacon-pln-program`；artifact 仅 `programs/<slug>/`。"
+    },
+    {
+      "ac_id": "AC-PBP-028",
+      "theme": "interactive-brainstorm-bridge",
+      "description": "Interactive 子 skill 要求 BR 阶段调用 `beacon-pln-brainstorm`；auto 子 skill 要求 P0 对齐 `beacon-pln-source`。"
+    }
+  ],
+  "test_rows": [
+    {
+      "ac_id": "AC-PBP-001",
+      "tc_id": "TC-PBP-001",
+      "layer": "contract",
+      "command": "`test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'feature-graph.json' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
+      "assertion": "exit 0；contract 定义 program 目录与 P0–P6",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-002",
+      "tc_id": "TC-PBP-002",
+      "layer": "docs",
+      "command": "`rg -q 'beacon-harness-program-plan-v161' docs/beacon/v1.6.1/SUMMARY.md`",
+      "assertion": "exit 0；SUMMARY 声明 primary feature",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-003",
+      "tc_id": "TC-PBP-003",
+      "layer": "contract",
+      "command": "`rg -q '## user_decision' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q '^promoted$' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md && rg -q 'promotion_ref' docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-004",
+      "tc_id": "TC-PBP-004",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon program validate-graph --help >.beacon/qa-tmp/TC-PBP-004.txt 2>&1 && rg -q 'validate-graph' .beacon/qa-tmp/TC-PBP-004.txt`",
+      "assertion": "exit 0 或 BLOCKED:Phase-B（CLI 未实现）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-005",
+      "tc_id": "TC-PBP-005",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon program guard-sea-single-lake --help >.beacon/qa-tmp/TC-PBP-005.txt 2>&1 && rg -q 'guard-sea' .beacon/qa-tmp/TC-PBP-005.txt`",
+      "assertion": "exit 0 或 BLOCKED:Phase-B",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-006",
+      "tc_id": "TC-PBP-006",
+      "layer": "contract",
+      "command": "`test -f docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'truth-promotion' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
+      "assertion": "exit 0；contract 要求 per-lake 七轮证据",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-007",
+      "tc_id": "TC-PBP-007",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon program freeze --help >.beacon/qa-tmp/TC-PBP-007.txt 2>&1 && rg -q 'program' .beacon/qa-tmp/TC-PBP-007.txt`",
+      "assertion": "exit 0 或 BLOCKED:Phase-C",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-008",
+      "tc_id": "TC-PBP-008",
+      "layer": "unit",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon doctor verify-truth-integrity beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --mode block --json >.beacon/qa-tmp/TC-PBP-008.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-008.json')); raise SystemExit(0 if d.get('result',{}).get('blocked') is False else 1)\"`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-009",
+      "tc_id": "TC-PBP-009",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon skill package verify-closure --feature beacon-harness-program-plan-v161 --project-root . --version v1.6.1 --json >.beacon/qa-tmp/TC-PBP-009.json && python3 -c \"import json; d=json.load(open('.beacon/qa-tmp/TC-PBP-009.json')); raise SystemExit(0 if d.get('closure_allowed') else 1)\"`",
+      "assertion": "closure_allowed=true",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-010",
+      "tc_id": "TC-PBP-010",
+      "layer": "contract",
+      "command": "`rg -q 'must not write.*features/\\*/truth' docs/beacon/v1.6.1/execution/boundaries.md && rg -q 'HARD GATE' .cursor/skills/beacon-pln-brainstorm/SKILL.md`",
+      "assertion": "planner 边界文档与 skill gate 存在",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-011",
+      "tc_id": "TC-PBP-011",
+      "layer": "contract",
+      "command": "`rg -q 'full_parity' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "truth 声明 full_parity 默认",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-012",
+      "tc_id": "TC-PBP-012",
+      "layer": "contract",
+      "command": "`rg -q 'program-parity-matrix' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
+      "assertion": "parity matrix 在 contract 中",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-013",
+      "tc_id": "TC-PBP-013",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-013.txt 2>&1 && rg -q 'change' .beacon/qa-tmp/TC-PBP-013.txt`",
+      "assertion": "exit 0",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-014",
+      "tc_id": "TC-PBP-014",
+      "layer": "contract",
+      "command": "`rg -q 'promotion_diff' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
+      "assertion": "change 路径要求 promotion_diff",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-015",
+      "tc_id": "TC-PBP-015",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon change --help >.beacon/qa-tmp/TC-PBP-015.txt 2>&1 && rg -q 'refreeze-chain' .beacon/qa-tmp/TC-PBP-015.txt`",
+      "assertion": "exit 0；change 暴露受治理 refreeze-chain",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-016",
+      "tc_id": "TC-PBP-016",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && node packages/beacon-run/dist/cli.mjs run --help >.beacon/qa-tmp/TC-PBP-016.txt 2>/dev/null && rg -i 'mode' .beacon/qa-tmp/TC-PBP-016.txt`",
+      "assertion": "exit 0；help 暴露 mode（Phase E 补 program preset）",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-017",
+      "tc_id": "TC-PBP-017",
+      "layer": "contract",
+      "command": "`test -f skills/beacon/beacon-pln-program/SKILL.md && rg -q 'beacon-pln-program' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "umbrella skill 存在且 truth 引用",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-018",
+      "tc_id": "TC-PBP-018",
+      "layer": "contract",
+      "command": "`rg -q 'machine-readable' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "AC-PBP-018 maker-checker 写入 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-019",
+      "tc_id": "TC-PBP-019",
+      "layer": "contract",
+      "command": "`rg -q 'deferral-sovereignty' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md && rg -q 'accepted' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "exit 0；deferral 表均为 accepted",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-020",
+      "tc_id": "TC-PBP-020",
+      "layer": "docs",
+      "command": "`rg 'plan -> truth -> generate -> evaluate -> release' docs/beacon/v1.6.1/SUMMARY.md docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "未新增主 lifecycle stage",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-021",
+      "tc_id": "TC-PBP-021",
+      "layer": "contract",
+      "command": "`rg -q 'ProgramPlanState' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "State Model 在 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-022",
+      "tc_id": "TC-PBP-022",
+      "layer": "unit",
+      "command": "`python3 -m pytest tests/test_program_plan_state_contract.py tests/test_program_plan_cli.py -q --junitxml \"${BEACON_JUNIT_PATH:-.beacon/junit.xml}\"`",
+      "assertion": "pytest 覆盖非法转移与 program CLI",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-023",
+      "tc_id": "TC-PBP-023",
+      "layer": "contract",
+      "command": "`test -f skills/beacon/beacon-pln-program/SKILL.md && test -f skills/beacon/beacon-pln-program-auto/SKILL.md && test -f skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'HARD GATE' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'delegation' skills/beacon/beacon-pln-program-auto/SKILL.md`",
+      "assertion": "三 skill 存在且 auto 声明委派",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-024",
+      "tc_id": "TC-PBP-024",
+      "layer": "contract",
+      "command": "`mkdir -p .beacon/qa-tmp && beacon plan start --help >.beacon/qa-tmp/TC-PBP-024.txt 2>&1 && rg -q 'mode' .beacon/qa-tmp/TC-PBP-024.txt`",
+      "assertion": "exit 0 或 BLOCKED:Phase-E",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-025",
+      "tc_id": "TC-PBP-025",
+      "layer": "contract",
+      "command": "`rg -q 'plan_mode' docs/beacon/v1.6.1/execution/program-plan-contract.md && rg -q 'auto-detect' docs/beacon/v1.6.1/execution/program-plan-contract.md`",
+      "assertion": "contract 含分类规则",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-026",
+      "tc_id": "TC-PBP-026",
+      "layer": "contract",
+      "command": "`rg -q 'Delegate' skills/beacon/beacon-pln-program/SKILL.md && rg -q 'Does not write features' skills/beacon/beacon-pln-program-auto/SKILL.md`",
+      "assertion": "umbrella 委派 + 子 skill 边界",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-027",
+      "tc_id": "TC-PBP-027",
+      "layer": "docs",
+      "command": "`rg -q 'beacon plan start' docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md`",
+      "assertion": "单一公共入口写入 truth",
+      "evidence_path": ""
+    },
+    {
+      "ac_id": "AC-PBP-028",
+      "tc_id": "TC-PBP-028",
+      "layer": "contract",
+      "command": "`rg -q 'beacon-pln-brainstorm' skills/beacon/beacon-pln-program-interactive/SKILL.md && rg -q 'beacon-pln-source' skills/beacon/beacon-pln-program-auto/SKILL.md`",
+      "assertion": "interactive/auto 桥接既有 planner skill",
+      "evidence_path": ""
+    }
+  ],
+  "task_rows": [
+    {
+      "id": "LINE-5",
+      "title": "TASK-PBP-A01 创建 `docs/beacon/v1.6.1/` SUMMARY、execution、research promoted。evidence: paths exist",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-6",
+      "title": "TASK-PBP-A02 编写 `beacon-harness-program-plan-v161` truth/tests/tasks/evidence。evidence: feature package",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-7",
+      "title": "TASK-PBP-A03 编写 `program-plan-contract.md` 与 boundaries。evidence: execution docs",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-8",
+      "title": "TASK-PBP-A04 运行 TIG + verify-closure + freeze CLI。evidence: baseline sha256:18283011293002dc3af162dc9dde6571e8f306063fecd0193410607c7ba2e572",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-12",
+      "title": "TASK-PBP-B01 实现 `beacon program validate-graph`。maps: AC-PBP-004",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-13",
+      "title": "TASK-PBP-B02 实现海级单湖 block guard。maps: AC-PBP-005",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-17",
+      "title": "TASK-PBP-C01 实现 `beacon program freeze` + `program-truth-freeze.json`。maps: AC-PBP-007",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-18",
+      "title": "TASK-PBP-C02 汇总每湖 TIG 结果。maps: AC-PBP-008",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-22",
+      "title": "TASK-PBP-D01 change 路径 append `change-intent-log.jsonl`。maps: AC-PBP-013",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-23",
+      "title": "TASK-PBP-D02 change 后 mandatory promotion_diff review hook。maps: AC-PBP-014",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-24",
+      "title": "TASK-PBP-D03 refreeze + 结构变更重跑 program freeze。maps: AC-PBP-015",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-28",
+      "title": "TASK-PBP-E01 `beacon-run --mode program`（help 暴露 mode via prevent-sleep/truth-bootstrap）。maps: AC-PBP-016",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-29",
+      "title": "TASK-PBP-E02 新增 `beacon-pln-program` + auto/interactive 子 skill。maps: AC-PBP-017, AC-PBP-023, AC-PBP-026",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-30",
+      "title": "TASK-PBP-E03 实现 `beacon plan start` CLI + `--mode`。maps: AC-PBP-024, AC-PBP-027",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-31",
+      "title": "TASK-PBP-E04 agent_surface 物化三 skill 到各 host。maps: AC-PBP-023",
+      "status": "checked"
+    },
+    {
+      "id": "LINE-35",
+      "title": "TASK-PBP-F01 `tests/test_program_plan_state_contract.py`。maps: AC-PBP-022",
+      "status": "checked"
+    }
+  ],
+  "checkbox_errors": [],
+  "evidence_rows": [
+    {
+      "surface": "planner-research",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/research/beacon-harness-program-plan-v161.md",
+      "status": "promoted",
+      "route": "truth.define"
+    },
+    {
+      "surface": "change-record",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/change/beacon-harness-program-plan-v161.md",
+      "status": "accepted-for-change",
+      "route": "refreeze"
+    },
+    {
+      "surface": "feature-package",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/truth.md",
+      "status": "frozen R2",
+      "route": "implement"
+    },
+    {
+      "surface": "package-tests",
+      "authority": "test_truth",
+      "canonical_artifact": "docs/beacon/v1.6.1/features/beacon-harness-program-plan-v161/tests.md",
+      "status": "authoritative",
+      "route": "truth.coverage"
+    },
+    {
+      "surface": "program-contract",
+      "authority": "support_advisory",
+      "canonical_artifact": "docs/beacon/v1.6.1/execution/program-plan-contract.md",
+      "status": "normative",
+      "route": "implement"
+    },
+    {
+      "surface": "upstream-harness-taxonomy",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-skill-harness-taxonomy-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-pln-review",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-pln-review-intent-parity-state-machine-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-tig",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-truth-integrity-gates-v160/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    },
+    {
+      "surface": "upstream-loop-orchestrator",
+      "authority": "requirement_truth",
+      "canonical_artifact": "docs/beacon/v1.6.0/features/beacon-loop-goal-closed-loop-orchestrator/truth.md",
+      "status": "frozen",
+      "route": "dependency"
+    }
+  ]
+}
