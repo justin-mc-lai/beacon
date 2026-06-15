@@ -111,7 +111,7 @@ Planner research closure 只能有以下状态：
 | Status | Meaning | Allowed next step |
 |---|---|---|
 | `queued` | 已记录但用户未接受进入主链 | 保持 queue/defer，不写 truth |
-| `routeable` | 已形成明确 route recommendation，但还没有用户接受 | 等待用户确认 |
+| `routeable` | 已形成明确 route recommendation，但还没有用户接受 | 须由用户显式确认 |
 | `promoted` | 用户已确认进入主链，且已有 promotion_ref | 进入 truth/change/refreeze/generate/evaluate |
 | `rejected` | 用户拒绝或明确不进入主链 | 不再推动 |
 | `deferred` | 用户要求延后或拆分 | 保留 research，不进入 truth |
@@ -157,7 +157,7 @@ HARD GATE:
 禁止调用或执行超出本 harness 边界的 skill、命令、工具或动作。
 即使跨界动作看起来方便，也必须停止并路由，不能顺手执行。
 唯一允许产物是 <allowed surface>。
-如果用户请求需要另一个 harness，输出 route recommendation，并等待用户确认。
+如果用户请求需要另一个 harness，输出 route recommendation，并须由用户显式确认。
 ```
 
 Planner HARD GATE：
@@ -168,7 +168,7 @@ HARD GATE:
 禁止调用 implementation/generator/evaluator/release 类 skill。
 禁止写代码、搭脚手架、修改 package truth、修改 `.machine/`、给 QA/release verdict。
 你的唯一产出是 research/planning artifact、gap/risk 分析、湖/海判断和 route recommendation。
-如需进入 truth/change/refreeze/generate/evaluate，必须停止并路由，等待用户确认。
+如需进入 truth/change/refreeze/generate/evaluate，必须停止并路由，须由用户显式确认。
 ```
 
 Generator HARD GATE：

@@ -302,7 +302,7 @@ Review gate：
 
 - P0 finding → **hard stop**（`terminal_aborted` 或需 `--ack-intent-drift` / explicit strict flag）
 - P1 finding → **默认 green-light continue**；写入 `review-artifact.json` 与 `notes.md`，由 `recommended_route` 驱动下一跳（truth_fill / implement_loop 等）
-- `deferral_ledger` 含 `user_decision: pending` → block `truth_fill` / `implement_loop`（scope cut 仍须用户主权）
+- `deferral_ledger` 含 `user_decision` 状态为未决时 → block `truth_fill` / `implement_loop`（scope cut 仍须用户主权）
 - `scope_mode=full_parity` 且 parity missing 无 accepted defer → route truth_fill
 
 ## LLM Intent Tie-Break Contract（AC-040）

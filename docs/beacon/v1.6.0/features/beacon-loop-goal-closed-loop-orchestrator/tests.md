@@ -127,6 +127,6 @@ R3 authoritative rows 已并入上方 **覆盖矩阵**（TC-045..TC-054）；本
 
 - Benchmark/runtime evidence 不能替代 formal `beacon-eval-qa` 或 release verdict。
 - TC-033/036/039 允许 test fixture 模拟 beacon/planner subprocess；生产路径必须调用真实 CLI。
-- 本包 R2 refreeze 后 AC-040..AC-042 进入 authoritative coverage；R1 实现仅覆盖 AC-031..AC-039，R2 implement 前 TC-042..044 可 blocked/pending。
+- 本包 R2 refreeze 后 AC-040..AC-042 进入 authoritative coverage；R1 实现仅覆盖 AC-031..AC-039，R2 implement 前 TC-042..044 状态可为 blocked 或未完成。
 - **R3 authoritative**：AC-043..AC-052（TC-045..TC-054）已并入覆盖矩阵；refreeze 后 formal QA 必须执行。
 - TC-053 真 E2E 可在 CI 设 `BEACON_LOOP_E2E_HARNESS=1` opt-in；不得用 fixture-only 替代 AC-051 closure。
