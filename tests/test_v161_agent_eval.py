@@ -5,6 +5,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from beacon.utils.agent_surface import v160_skill_package_projection
+
 
 def _invoke(args: list[str], *, cwd: Path) -> dict:
     env = {"BEACON_ALLOW_CONTEXT_VERSION_DRIFT": "1", **dict(__import__("os").environ)}
@@ -20,6 +22,12 @@ def _invoke(args: list[str], *, cwd: Path) -> dict:
         payload = json.loads(proc.stdout)
     payload["_exit_code"] = proc.returncode
     return payload
+
+
+def test_v161_taxonomy_includes_beacon_eval_agent() -> None:
+    skill_ids = {item.id for item in v160_skill_package_projection()}
+    assert "beacon-eval-agent" in skill_ids
+    assert len(skill_ids) == 37
 
 
 def test_agent_eval_help_lists_subcommands(tmp_path: Path):

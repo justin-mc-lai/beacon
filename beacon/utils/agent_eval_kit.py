@@ -196,24 +196,11 @@ def _skill_catalog_entries(project_root: Path) -> list[dict[str, Any]]:
                 "skill_present": skill_file.exists(),
             }
         )
-    eval_agent = project_root / "skills" / "beacon" / "beacon-eval-agent" / "SKILL.md"
-    entries.append(
-        {
-            "id": "skill.beacon-eval-agent",
-            "harness": "eval",
-            "surface": "host-visible-skill",
-            "command": "beacon-eval-agent",
-            "p0": True,
-            "live_required": True,
-            "skill_id": "beacon-eval-agent",
-            "skill_present": eval_agent.exists(),
-        }
-    )
     return entries
 
 
 def materialize_agent_eval_live_skill_matrix(project_root: Path, *, version: str = AGENT_EVAL_VERSION) -> dict[str, Any]:
-    expected_ids = {item.id for item in v160_skill_package_projection()} | {"beacon-eval-agent"}
+    expected_ids = {item.id for item in v160_skill_package_projection()}
     entries: list[dict[str, Any]] = []
     for skill_id in sorted(expected_ids):
         harness = _harness_short_from_skill_id(skill_id) or "eval"
