@@ -18,6 +18,7 @@ import typer
 
 from beacon.utils.browser_task_compiler import build_browser_task, default_browser_runner_command, write_browser_task
 from beacon.utils.coverage import write_coverage_summary
+from beacon.utils.python_exec import normalize_qa_shell_command
 from beacon.utils.qa9 import (
     QA9_TYPES,
     default_command_for_qa_type,
@@ -799,6 +800,7 @@ def _run_layer_command(
     ac_id: str = "",
     timeout_seconds: int | None = None,
 ) -> dict:
+    command = normalize_qa_shell_command(command, project_root=project_root)
     command_log = layer_dir / "command.txt"
     stdout_log = layer_dir / "stdout.log"
     stderr_log = layer_dir / "stderr.log"
