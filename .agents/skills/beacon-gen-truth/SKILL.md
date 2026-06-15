@@ -145,7 +145,13 @@ rg -n 'integration$|目录存在|^fixture$|^可选$' docs/beacon/<version>/featu
 
 ### Round 5 — Fake-delivery closure verify（mandatory CLI）
 
-**Mandatory shell** — 将 package 正文组装为 JSON payload 文件后校验：
+**Mandatory shell** — 优先使用与 freeze 同源的 TIG doctor：
+
+```bash
+beacon doctor verify-truth-integrity <slug> --project-root . --version <version> --mode block --json
+```
+
+等价 payload 路径（legacy）：
 
 ```bash
 python3 - <<'PY'
@@ -162,10 +168,10 @@ path.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
 print(path)
 PY
 
-beacon skill package verify-closure --payload-path /tmp/beacon-truth-closure-payload.json --version v1.6.0 --json
+beacon skill package verify-closure --feature <slug> --project-root . --version <version> --json
 ```
 
-**Hard stop**：`status=fail` 或 `closure_allowed=false` → 回到 Round 3–4。
+**Hard stop**：`blocked=true`、`status=blocked/fail` 或 `closure_allowed=false` → 回到 Round 3–4。
 
 **Additional grep gate**：
 
